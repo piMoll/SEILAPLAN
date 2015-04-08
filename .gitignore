@@ -61,3 +61,6 @@ target/
 backups+testFiles/
 commonPaths.txt
 
+# PyCharm
+.idea/
+
