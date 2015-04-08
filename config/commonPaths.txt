@@ -1,3 +1,0 @@
-1 1 1 0 
-/home/pi/Seilaplan
-/home/pi/Dropbox/Seiloptimierung/Output
