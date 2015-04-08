@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/plugins/SeilaplanPlugin" >
+        <file>icons/icon_app.png</file>
+        <file>icons/icon_save.png</file>
+        <file>icons/icon_open.png</file>
+        <file>icons/icon_reload.png</file>
+        <file>icons/icon_green.png</file>
+        <file>icons/icon_yellow.png</file>
+        <file>icons/icon_red.png</file>
+        <file>icons/icon_map.png</file>
+    </qresource>
+</RCC>

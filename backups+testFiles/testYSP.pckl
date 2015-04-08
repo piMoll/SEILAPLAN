@@ -1,0 +1,501 @@
+(lp0
+(lp1
+(dp2
+S'Bodenabst_min'
+p3
+(lp4
+F7.0
+aVMinimaler Abstand Tragseil - Boden
+p5
+aVm
+p6
+aV9
+p7
+asS'Min_Dist_Mast'
+p8
+(lp9
+I10
+aVMinimaler Abstand zwischen Stützen
+p10
+ag6
+aV15
+p11
+asS'Bodenabst_A'
+p12
+(lp13
+I40
+aVeinzuhalten ab (vom Startpunkt)
+p14
+ag6
+aV10
+p15
+asS'Bodenabst_E'
+p16
+(lp17
+I40
+aVeinzuhalten bis (vor dem Endpunkt)
+p18
+ag6
+aV11
+p19
+asS'HM_Delta'
+p20
+(lp21
+I2
+aVAbstufungsinterval
+p22
+ag6
+aV20
+p23
+asS'L_min'
+p24
+(lp25
+F30.0
+aVMinimale Länge eines Seilfeldes
+p26
+ag6
+aV29
+p27
+asS'Befahr_E'
+p28
+(lp29
+I0
+aVBefahrbarkeit bis (vor dem Endpunkt)
+p30
+ag6
+aV14
+p31
+asS'Befahr_A'
+p32
+(lp33
+I0
+aVBefahrbarkeit ab (vom Startpunkt)
+p34
+ag6
+aV13
+p35
+asS'HM_fix_d'
+p36
+(lp37
+I234
+asS'L_Delta'
+p38
+(lp39
+I10
+aVHoriz. Auflösung mögl. Stützenstandorte
+p40
+ag6
+aV16
+p41
+asS'd_Anker_E'
+p42
+(lp43
+F10.0
+aVLänge der Verankerung
+p44
+ag6
+aV25
+p45
+asS'GravSK'
+p46
+(lp47
+S'ja'
+p48
+aVGravitationsseilkran?
+p49
+aV
+p50
+aV12
+p51
+asS'HM_fix_h'
+p52
+(lp53
+I-1
+asS'd_Anker_A'
+p54
+(lp55
+F10.0
+aVLänge der Verankerung
+p56
+ag6
+aV22
+p57
+asS'HM_Anfang'
+p58
+(lp59
+I11
+aVHöhe der Anfangsstütze
+p60
+ag6
+aV21
+p61
+asS'N_Zw_Mast_max'
+p62
+(lp63
+I10
+aVMaximale Anzahl Zwischenstützen
+p64
+ag50
+aV17
+p65
+asS'A'
+p66
+(lp67
+F380.0
+aVQuerschnittssfläche Tragseil
+p68
+aVmm2
+p69
+aV3
+p70
+asS'HM_min'
+p71
+(lp72
+I8
+aVMinimale Stützenhöhe
+p73
+ag6
+aV18
+p74
+asS'E'
+p75
+(lp76
+F100.0
+aVElastizitätsmodul Tragseil
+p77
+aVkN/mm2
+p78
+aV4
+p79
+asS'qT'
+p80
+(lp81
+F0.0228
+aVGewicht Tragseil
+p82
+aVkN/m
+p83
+aV2
+p84
+asS'Min_Gradient'
+p85
+(lp86
+F0.0
+aVMin. nötiger Gradient
+p87
+ag50
+aV27
+p88
+asS'qz1'
+p89
+(lp90
+F0.0058
+aVGewicht des Zugseils links
+p91
+aVkN/m
+p92
+aV7
+p93
+asS'qz2'
+p94
+(lp95
+F0.0
+aVGewicht des Zugseils rechts
+p96
+aVkN/m
+p97
+aV8
+p98
+asS'zul_SK'
+p99
+(lp100
+F179.0
+aVMaximal zulässige Seilzugkraft
+p101
+aVkN
+p102
+aV5
+p103
+asS'Q'
+p104
+(lp105
+F25.0
+aVGewicht der Last inkl. Laufwagen
+p106
+aVkN
+p107
+aV1
+p108
+asS'min_SK'
+p109
+(lp110
+F50.0
+aVMinimal zulässige Seilzugkraft
+p111
+aVkN
+p112
+aV6
+p113
+asS'Federkonstante'
+p114
+(lp115
+Finf
+aVFederkonstante der Verankerung
+p116
+aVkN/m
+p117
+aV28
+p118
+asS'A_SK'
+p119
+(lp120
+F12.0
+aVAnfangsseilkraft
+p121
+aVkN
+p122
+aV26
+p123
+asS'HM_max'
+p124
+(lp125
+I18
+aVMaximal Stützenhöhe
+p126
+ag6
+aV19
+p127
+asS'HM_Ende_max'
+p128
+(lp129
+I10
+aVMaximale Höhe der Endstütze
+p130
+ag6
+aV24
+p131
+asS'noStue'
+p132
+(lp133
+sS'HM_Ende_min'
+p134
+(lp135
+I0
+aVMinimale Höhe der Endstütze
+p136
+ag6
+aV23
+p137
+asa(dp138
+S'Laenge'
+p139
+V420
+p140
+sS'fixeStuetzen'
+p141
+(dp142
+I1
+(lp143
+V234
+p144
+aV1149
+p145
+aV-1
+p146
+assS'header'
+p147
+VProjektname      test003_2\u000aHoehenmodell     /home/pi/Dropbox/Seiloptimierung/geodata/dhm_foersterschule_mels.txt\u000aAnfangspunkt     746'794 / 212'532\u000aEndpunkt         746'699 / 212'123\u000aFixe Stuetzen    01:     234,    1149,   -1  /  \u000a\u000a\u000aParameter:\u000aName             Wert        Label                                        Einheit  \u000a-----------------------------------------------------------------------------------\u000a
+p148
+sS'Hoehenmodell'
+p149
+(dp150
+S'name'
+p151
+Vdhm_foersterschule_mels
+p152
+sS'ncols'
+p153
+I1984
+sS'cellsize'
+p154
+F2.0
+sS'nrows'
+p155
+I1348
+sS'extent'
+p156
+(lp157
+F744598.54303589
+aF214370.03861001
+aF748566.54303589
+aF211674.03861001
+asS'path'
+p158
+V/home/pi/Dropbox/Seiloptimierung/geodata/dhm_foersterschule_mels.txt
+p159
+sS'spatialRef'
+p160
+VEPSG:4326
+p161
+ssS'projFile'
+p162
+V/home/pi/Dropbox/Seiloptimierung/Output/test003_2_Projekt.txt
+p163
+sS'outputOpt'
+p164
+(dp165
+S'plot'
+p166
+I1
+sS'outputPath'
+p167
+V/home/pi/Dropbox/Seiloptimierung/Output
+p168
+sS'geodata'
+p169
+I0
+sS'saveProj'
+p170
+I1
+sS'coords'
+p171
+I0
+sS'report'
+p172
+I1
+ssS'Projektname'
+p173
+Vtest003_2
+p174
+sS'Params'
+p175
+(lp176
+(lp177
+g106
+aS'25 kN'
+p178
+aa(lp179
+g82
+aS'0.0228 kN/m'
+p180
+aa(lp181
+g68
+aS'380 mm2'
+p182
+aa(lp183
+g77
+aS'100 kN/mm2'
+p184
+aa(lp185
+g101
+aS'179 kN'
+p186
+aa(lp187
+g111
+aS'50 kN'
+p188
+aa(lp189
+g91
+aS'0.0058 kN/m'
+p190
+aa(lp191
+g96
+aS'0 kN/m'
+p192
+aa(lp193
+g5
+aS'7 m'
+p194
+aa(lp195
+g14
+aS'40 m'
+p196
+aa(lp197
+g18
+aS'40 m'
+p198
+aa(lp199
+g49
+ag48
+aa(lp200
+g34
+aS'0 m'
+p201
+aa(lp202
+g30
+aS'0 m'
+p203
+aa(lp204
+g10
+aS'10 m'
+p205
+aa(lp206
+g40
+aS'10 m'
+p207
+aa(lp208
+g64
+aS'10'
+p209
+aa(lp210
+g73
+aS'8 m'
+p211
+aa(lp212
+g126
+aS'18 m'
+p213
+aa(lp214
+g22
+aS'2 m'
+p215
+aa(lp216
+g60
+aS'11 m'
+p217
+aa(lp218
+g56
+aS'10 m'
+p219
+aa(lp220
+g136
+aS'0 m'
+p221
+aa(lp222
+g130
+aS'10 m'
+p223
+aa(lp224
+g44
+aS'10 m'
+p225
+aa(lp226
+g121
+aS'12 kN'
+p227
+aa(lp228
+g87
+aS'0'
+p229
+aa(lp230
+g116
+aS'inf kN/m'
+p231
+aa(lp232
+g26
+aS'30 m'
+p233
+aasS'Anfangspunkt'
+p234
+(lp235
+I746794
+aI212532
+asS'Endpunkt'
+p236
+(lp237
+I746699
+aI212123
+asS'keineStuetzen'
+p238
+g133
+saa.
