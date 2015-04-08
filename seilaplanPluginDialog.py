@@ -24,6 +24,7 @@
 import os
 import io
 import re
+import numpy
 from operator import itemgetter
 import unicodedata
 
