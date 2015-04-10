@@ -1,20 +1,40 @@
 # -*- coding: utf-8 -*-
 """
-Nach diesen Beispielen implementiert:
-https://github.com/eliben/code-for-blog/blob/master/2009/qt_mpl_bars.py
-http://www.technicaljar.com/?p=688
+/***************************************************************************
+ SeilaplanPlugin
+                                 A QGIS plugin
+ Seilkran-Layoutplaner
+                              -------------------
+        begin                : 2013
+        copyright            : (C) 2015 by ETH Zürich
+        email                : pi1402@gmail.com
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
+ Code is based on these two examples:
+ https://github.com/eliben/code-for-blog/blob/master/2009/qt_mpl_bars.py
+ http://www.technicaljar.com/?p=688
 """
-# GUI und QGIS Bibiliotheken
+
+import numpy as np
 from PyQt4 import QtCore
 from PyQt4 import QtGui
 from PyQt4.QtCore import QObject, SIGNAL
 from qgis.core import QGis, QgsGeometry, QgsPoint
 from qgis.gui import QgsRubberBand
-import numpy as np
 
 from profilePlot import QtMplCanvas
 from guiHelperFunctions import QgsMovingCross
-from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
+from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg \
+    as NavigationToolbar
 
 css = "QLineEdit {background-color: white;}"
 cssErr = "QLineEdit {background-color: red;}"
@@ -43,19 +63,19 @@ class ProfileWindow(QtGui.QDialog):
         self.grid = QtGui.QGridLayout()
         self.gridM.addLayout(self.grid, 0, 0, 1, 1)
 
-        # Variabeln für fixe Stützen-Werte
-        self.fixStueOld = self.toolWin.fixStue     # Werte der fixen Stützen
+        # Get fixed intermediate support data
+        self.fixStueOld = self.toolWin.fixStue
         self.fixStueProp = []
         self.menu = False
 
-        # GUI Felder
+        # GUI fields
         self.stueTitle = QtGui.QLabel(u"<b>Stützenstandorte anpassen</b>")
         self.hbox = QtGui.QHBoxLayout()
         self.addGUIfields()
         self.buttonBox = QtGui.QDialogButtonBox(self.main_widget)
         self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|
                                           QtGui.QDialogButtonBox.Ok)
-        # GUI aufbauen
+        # Build up GUI
         self.container = QtGui.QVBoxLayout(self.main_widget)
         self.container.addWidget(self.sc)
         self.container.addWidget(bar)
@@ -65,7 +85,7 @@ class ProfileWindow(QtGui.QDialog):
         self.container.addLayout(self.gridM)
         self.container.addWidget(self.buttonBox)
 
-        # Signale der PushButtons verbinden
+        # Connect signals
         QObject.connect(self.fixStueAdd, SIGNAL("clicked()"),
                         self.sc.acitvateFadenkreuz)
         QObject.connect(self.noStueAdd, SIGNAL("clicked()"),
@@ -74,7 +94,7 @@ class ProfileWindow(QtGui.QDialog):
         QObject.connect(self.buttonBox, SIGNAL("accepted()"), self.Apply)
         self.setLayout(self.container)
 
-        # Falls bereits fixe Stützen gespeichert wurden, diese wieder anzeigen
+        # If fixed intermediate supports where already defined, redraw them
         if len(self.fixStueOld) > 0:
             for key, values in self.fixStueOld.iteritems():
                 order = key-1
@@ -90,45 +110,36 @@ class ProfileWindow(QtGui.QDialog):
         self.line2.setFrameShape(QtGui.QFrame.HLine)
         self.line2.setFrameShadow(QtGui.QFrame.Sunken)
 
-        # Label und Buttons definieren
+        # Create lables and buttons
         self.fixStueAdd = QtGui.QPushButton(u"Fixe Stütze definieren")
         self.noStueAdd = QtGui.QPushButton(u"Abschnitte ohne Stützen definieren")
-        # self.noStueAdd.setMaximumSize(QtCore.QSize(20, 20))
-        # self.fixStueAdd.setMaximumSize(QtCore.QSize(20, 20))
         spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding,
                                         QtGui.QSizePolicy.Minimum)
         self.hbox.addWidget(self.fixStueAdd)
         self.hbox.addItem(spacerItem1)
         self.hbox.addWidget(self.noStueAdd)
         self.hbox.setAlignment(self.noStueAdd, QtCore.Qt.AlignRight)
-        # self.hbox.setAlignment(w, QtCore.Qt.AlignVCenter)
-
-        # self.hbox.setAlignment(QtCore.Qt.AlignLeft)
 
     def CreateFixStue(self, pointX, pointY, drawnPoint, pointH = u'', order=None):
-        if not self.menu:       # Falls keine fixe Stütze vorhanden
+        if not self.menu:       # If there is no fixed intermediate support yet
             self.initMenu()
-        if not order:           # Posiiton der Felder definieren
+        if not order:           # Position of field in list
             order = len(self.fixStueProp)
 
         guiPos, guiH, guiRemove = self.addRow2Grid(order)
         guiPos.setText(pointX)
-
         if pointH == u'-1':
             pointH = u''
         guiH.setText(pointH)
 
-        # Marker in Karte zeichnen
+        # Draw marker on canvas
         [x, y] = self.toolWin.transform2MapCoords(float(pointX))
         self.toolWin.drawStueMarker(QgsPoint(x, y))
-        # Daten der deinierten Stütze abspeichern
+        # Save data of intermediate support
         self.addStueToDict(order, pointX, pointY, pointH, guiPos, guiH,
                            drawnPoint)
 
     def initMenu(self):
-        # import pydevd
-        # pydevd.settrace('localhost', port=53100,
-        #      stdoutToServer=True, stderrToServer=True)
         spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding,
                                         QtGui.QSizePolicy.Minimum)
         spacerItem2 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum,
@@ -153,16 +164,15 @@ class ProfileWindow(QtGui.QDialog):
         self.menu = True
 
     def addRow2Grid(self, row):
-        # Label kreieren
-        stueLabel = QtGui.QLabel()
-        stueLabel.setText(u"Fixe Stütze {}".format(row+1))
+        # label
+        stueLabel = QtGui.QLabel(u"Fixe Stütze {}".format(row+1))
         stueLabel.setAlignment(QtCore.Qt.AlignRight)
         stueLabel.setMinimumSize(QtCore.QSize(120, 0))
         stueLabel.setAlignment(QtCore.Qt.AlignRight|
                                QtCore.Qt.AlignTrailing|
                                QtCore.Qt.AlignVCenter)
 
-        # Feld mit Horizontalposition
+        # Field for horizontal position in profile
         guiPos = QtGui.QLineEdit()
         guiH = QtGui.QLineEdit()
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred,
@@ -175,19 +185,19 @@ class ProfileWindow(QtGui.QDialog):
         guiPos.setAlignment(QtCore.Qt.AlignRight)
         guiPos.setObjectName(u'{:0>2}_guiPos'.format(row))
 
-        # Feld mit optionaler Stützenhöhe
+        # Field for support height
         guiH.setSizePolicy(sizePolicy)
         guiH.setMaximumSize(QtCore.QSize(70, 16777215))
         guiH.setLayoutDirection(QtCore.Qt.RightToLeft)
         guiH.setAlignment(QtCore.Qt.AlignRight)
         guiH.setObjectName(u'{:0>2}_guiH'.format(row))
 
-        # Button um Stütze zu entfernen
+        # Button to remove row and support
         guiRemove = QtGui.QPushButton(u"x")
         guiRemove.setMaximumSize(QtCore.QSize(20, 20))
         guiRemove.setObjectName(u'{:0>2}_guiRemove'.format(row))
 
-        # Signale verbinden
+        # Connect signals
         QObject.connect(guiPos,
             SIGNAL("editingFinished()"), self.fixStueChanged)
         QObject.connect(guiH,
@@ -195,7 +205,7 @@ class ProfileWindow(QtGui.QDialog):
         QObject.connect(guiRemove,
             SIGNAL("clicked()"), self.removeStue)
 
-        # Gui Felder in Dialog platzieren
+        # Place fields in GUI
         hbox1 = QtGui.QHBoxLayout()
         hbox1.addWidget(guiPos)
         hbox1.setAlignment(QtCore.Qt.AlignCenter)
@@ -223,27 +233,26 @@ class ProfileWindow(QtGui.QDialog):
         order = int(senderName[:2])
         fieldType = senderName[3:]
         newval = self.sender().text()
-        # Wenn die x-Position (Horizontaldistanz) verändert wird
+        # If x coord has changed
         if fieldType == 'guiPos':
             self.sc.DeletePoint(self.fixStueProp[order]['drawnPnt'])
-            # Testen ob neuer Wert (1) leer, (2) gleich null ist
-            # oder (3) Buchstaben enthält
+            # Test if new value is (1) empty, (2) zero or (3) has letters
             if newval == '' or int(newval) == 0 or newval.isalpha():
                 newval = None
                 self.sender().setStyleSheet(cssErr)
             else:
-                # Zugehörige y-Koordinate berechnen
+                # Calculate y coordinate
                 indx = np.searchsorted(self.sc.x_data, [int(newval)])[0]
                 yPos = self.sc.y_data[indx-1]
                 drawnPoint = self.sc.CreatePoint(newval, yPos)
                 self.fixStueProp[order]['drawnPnt'] = drawnPoint
                 self.fixStueProp[order]['y'] = str(int(yPos))
-                # Punkt auf Karte löschen und neu zeichnen
+                # Remove old point and draw new point on canvas
                 self.toolWin.removeStueMarker(2+order)
                 [x, y] = self.toolWin.transform2MapCoords(float(newval))
                 self.toolWin.drawStueMarker(QgsPoint(x, y))
             self.fixStueProp[order]['x'] = str(int(float(newval)))
-        # Wenn die Stützenhöhe verändert wird
+        # If height has changed
         if fieldType == 'guiH':
             self.fixStueProp[order]['h'] = newval
 
@@ -251,19 +260,17 @@ class ProfileWindow(QtGui.QDialog):
         senderName = self.sender().objectName()
         order = int(senderName[:2])
         print order
-        # Punkt im Plot wird gelöscht
+        # Remove point from plot and from canvas
         self.sc.DeletePoint(self.fixStueProp[order]['drawnPnt'])
-        # Punkt auf Karte wird gelöscht
         self.toolWin.removeStueMarker(2+order)
-        # Werte der fixen Stützen werden gelöscht
+        # Delete intermediate support data
         del self.fixStueProp[order]
         rowCount = len(self.fixStueProp)
-        # GUI anpassen:
-        # Zu löschende Reihe und alle nachfolgenden werden im Grid gelöscht
+        # Adjust GUI
+        # Remove row of deleted support and all subsequent rows
         for row in reversed(range(order+1, rowCount+2)):
             self.removeStueField(row)
-        # Nachfolgende Reihen rücken nach und werden an der richtigen Stelle
-        # ins Grid gefüllt
+        # Subsequent rows move up
         for row in range(order, rowCount):
             guiPos, guiH, guiRemove = self.addRow2Grid(row)
             guiPos.setText(self.fixStueProp[row]['x'])
@@ -272,8 +279,8 @@ class ProfileWindow(QtGui.QDialog):
             self.fixStueProp[row]['guiPos'] = guiPos
             self.fixStueProp[row]['guiH'] = guiH
             self.fixStueProp[row]['guiRemove'] = guiRemove
-        # Falls einzige fixe Stütze gelöscht wurde, wird auch Header gelöscht
         self.setLayout(self.container)
+        # If only remaining row was deleted also delete header
         if rowCount == 0:
             self.grid.takeAt(1).widget().deleteLater()
             self.grid.takeAt(0).widget().deleteLater()
@@ -281,9 +288,9 @@ class ProfileWindow(QtGui.QDialog):
         self.setLayout(self.container)
 
     def removeStueField(self, row):
-        pos = row*4 + 1     # Header = 0 und 1
+        pos = row*4 + 1     # Header is in field 0 and 1
         for i in reversed(range(pos-3, pos+1)):
-            # Widgets werden ausgewählt und entfernt
+            # Remove widgets and layout items
             item = self.grid.takeAt(i)
             if item.widget() is not None:
                 item.widget().deleteLater()
@@ -302,7 +309,6 @@ class ProfileWindow(QtGui.QDialog):
     def deactivateMapMarker(self):
         self.canvas.scene().removeItem(self.mapMarker)
         self.mapMarker = None
-        # self.canvas.refresh()
 
     def updateMapMarker(self, horiDist):
         if not self.mapMarker:
@@ -324,7 +330,7 @@ class ProfileWindow(QtGui.QDialog):
         mapLine.setColor(QtGui.QColor(255, 250, 90))
         self.mapLines.append(mapLine)
         self.pointsToDraw = []
-        # Erster Punkt erzeugen
+        # Create first point
         [xCoord, yCoord] = self.toolWin.transform2MapCoords(horiDist)
         initPoint = QgsPoint(xCoord, yCoord)
         self.pointsToDraw.append(initPoint)
@@ -357,9 +363,6 @@ class ProfileWindow(QtGui.QDialog):
     ###########################################################################
 
     def getValues(self):
-        # import pydevd
-        # pydevd.settrace('localhost', port=53100,
-        #              stdoutToServer=True, stderrToServer=True)
         return [self.dist, self.height]
 
     def Apply(self):
@@ -393,12 +396,12 @@ class ProfileWindow(QtGui.QDialog):
 
 
 class MyNavigationToolbar(NavigationToolbar):
-    # only display the buttons we need
+    # Only display the buttons we need
     toolitems = [t for t in NavigationToolbar.toolitems if
                  t[0] in ('Home', 'Pan', 'Zoom')]
 
     def __init__(self, *args, **kwargs):
         super(MyNavigationToolbar, self).__init__(*args, **kwargs)
-        self.layout().takeAt(3)  # 3 = Anzahl Tools auf der Toolbar
+        self.layout().takeAt(3)  # 3 = Amount of tools we need
 
 

@@ -1,16 +1,32 @@
 # -*- coding: utf-8 -*-
 """
-Nach diesen Beispielen implementiert:
-https://github.com/eliben/code-for-blog/blob/master/2009/qt_mpl_bars.py
-http://www.technicaljar.com/?p=688
+/***************************************************************************
+ SeilaplanPlugin
+                                 A QGIS plugin
+ Seilkran-Layoutplaner
+                              -------------------
+        begin                : 2013
+        copyright            : (C) 2015 by ETH Zürich
+        email                : pi1402@gmail.com
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
+ Code is based on these two examples:
+ https://github.com/eliben/code-for-blog/blob/master/2009/qt_mpl_bars.py
+ http://www.technicaljar.com/?p=688
 """
 
-from PyQt4.QtCore import *
 import numpy as np
+from PyQt4.QtCore import *
 
-# import matplotlib
-# Force matplotlib to not use any Xwindows backend.
-# matplotlib.use('Cairo')
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.collections import LineCollection
@@ -19,9 +35,6 @@ from ..bo.plotExtent import PlotExtent
 
 class QtMplCanvas(FigureCanvas):
     def __init__(self, interface, profile, profileWin):
-        # import pydevd
-        # pydevd.settrace('localhost', port=53100,
-        #              stdoutToServer=True, stderrToServer=True)
         self.iface = interface
         self.profile = profile
         self.win = profileWin
@@ -50,31 +63,23 @@ class QtMplCanvas(FigureCanvas):
         self.yRange = np.max(y_data) - np.min(y_data)
         self.yT = self.yRange * 0.1
         stueH = self.yRange * 0.2
-        # Start- und Endstütze einzeichnen
+        # Draw start and end point
         self.axes.vlines(x_data[[0, -1]], y_data[[0, -1]],
                          y_data[[0, -1]]+stueH, colors='#0101D5', linewidth='2')
         self.xcursor = self.x_data[len(self.x_data)/2]
         self.ycursor = self.y_data[len(self.x_data)/2]
-        # Fadenkreuz
+        # Cursor cross
         self.lx = self.axes.axhline(lw=2, ls='dashed', y=self.ycursor)
         self.ly = self.axes.axvline(lw=2, ls='dashed', x=self.xcursor)
-        # self.horiLine = self.axes.axhline(lw=2, ls='dotted', y=self.ycursor,
-        #                                   color='#F4CC13')
-        # import pydevd
-        # pydevd.settrace('localhost', port=53100,
-        #              stdoutToServer=True, stderrToServer=True)
         self.ly.set_visible(False)
         self.lx.set_visible(False)
-        # self.horiLine.set_visible(False)
 
         self.__setupAxes(self.axes)
         FigureCanvas.__init__(self, self.fig)
-
         self.setFocusPolicy(Qt.ClickFocus)
         self.setFocus()
 
     def acitvateFadenkreuz(self):
-        # Connections
         self.cidMove = self.mpl_connect('motion_notify_event',self.mouse_move)
         self.cidPress = self.mpl_connect('button_press_event',self.mouse_press)
         self.ly.set_color('#4444FF')
@@ -106,7 +111,7 @@ class QtMplCanvas(FigureCanvas):
         self.xcursor = xa
         self.ycursor = ya
         self.fig.canvas.draw()
-        # Cursor in Karte aktualisieren
+        # Update cursor on map
         self.win.updateMapMarker(xa)
 
     def mouse_press(self, event):
@@ -128,7 +133,6 @@ class QtMplCanvas(FigureCanvas):
         self.fig.canvas.draw()
 
     def acitvateFadenkreuz2(self):
-        # Connections
         self.cidMove2 = self.mpl_connect('motion_notify_event',self.mouse_move2)
         self.cidPress2 = self.mpl_connect('button_press_event',self.mouse_press2)
         self.ly.set_color('#F4CC13')
@@ -136,7 +140,6 @@ class QtMplCanvas(FigureCanvas):
         self.win.activateMapMarkerLine(1)
         self.ly.set_visible(True)
         self.lx.set_visible(True)
-        # self.win.activateMapLine(self.xcursor)
         self.fig.canvas.draw()
 
     def deactivateFadenkreuz2(self):
@@ -157,18 +160,16 @@ class QtMplCanvas(FigureCanvas):
         indx = np.searchsorted(self.x_data, [x])[0]
         xa = self.x_data[indx-1]
         ya = self.y_data[indx-1]
-        # update the line positions
+        # Update the line positions
         self.lx.set_ydata(ya)
         self.ly.set_xdata(xa)
         self.xcursor = xa
         self.ycursor = ya
-        # Profillinie überzeichnen
+        # Overdraw profile line
         self.win.updateMapMarker(xa)
         if self.line_exists:
             self.win.lineMoved(xa)
         self.fig.canvas.draw()
-        # Cursor in Karte aktualisieren
-        # self.win.updateMapMarker(xa)
 
     def mouse_press2(self, event):
         if not event.inaxes:
@@ -179,14 +180,14 @@ class QtMplCanvas(FigureCanvas):
         ya = self.y_data[indx-1]
 
         if len(self.linePoints) == 0:
-            # Markierungslinien für Beriche ohne Stützen initialiseren
+            # Initialize marker lines for sections without supports
             self.vLine = self.axes.vlines(xa, ya-self.yT, ya+self.yT, lw=2,
                              color='#F4CC13', label='Start')
             self.linePoints.append(xa)
             self.line_exists = True
             self.win.activateMapLine(xa)
         elif len(self.linePoints) == 1:
-            # Linienmarkierung setzten
+            # Set line
             self.axes.vlines(xa, ya-self.yT, ya+self.yT, lw=2,
                              color='#F4CC13', label='Ende')
             self.linePoints.append(xa)

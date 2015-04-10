@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 """
 /***************************************************************************
- SeilbahnPluginDialog
+ SeilaplanPlugin
                                  A QGIS plugin
- Optimierung von Sielbahnlinien
-                             -------------------
-        begin                : 2014-07-01
-        copyright            : (C) 2014 by P.M.
-        email                : p@m.com
+ Seilkran-Layoutplaner
+                              -------------------
+        begin                : 2013
+        copyright            : (C) 2015 by ETH Zürich
+        email                : pi1402@gmail.com
  ***************************************************************************/
 
 /***************************************************************************
@@ -17,13 +17,12 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  *                                                                         *
- *****
- """
+ ***************************************************************************/
+"""
 
 import os
 import io
 
-# GUI und QGIS Bibiliotheken
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtCore import QObject, SIGNAL
 from qgis.gui import QgsVertexMarker
@@ -47,7 +46,7 @@ class DialogWithImage(QtGui.QDialog):
         self.buttonBox = QtGui.QDialogButtonBox(self.main_widget)
         self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Ok)
         QObject.connect(self.buttonBox, SIGNAL("accepted()"), self.Apply)
-        #Access the Layout of the MessageBox to add the Checkbox
+        # Access the layout of the MessageBox to add the checkbox
         self.container = QtGui.QVBoxLayout(self.main_widget)
         self.container.addWidget(self.label)
         self.container.addWidget(self.buttonBox)
@@ -57,6 +56,7 @@ class DialogWithImage(QtGui.QDialog):
 
     def Apply(self):
         self.close()
+
 
 class QgsStueMarker(QgsVertexMarker):
     def __init__(self, canvas):
@@ -84,6 +84,7 @@ class DialogOutputOptions(QtGui.QDialog):
         self.setWindowTitle(u"Output Optionen")
         self.main_widget = QtGui.QWidget(self)
 
+        # Build up gui
         self.hbox = QtGui.QHBoxLayout()
         self.saveLabel = QtGui.QLabel(u"Speicherpfad")
         self.pathField = QtGui.QComboBox()
@@ -94,9 +95,10 @@ class DialogOutputOptions(QtGui.QDialog):
         self.openButton = QtGui.QPushButton()
         self.openButton.setMaximumSize(QtCore.QSize(27, 27))
         icon = QtGui.QIcon()
-        # TODO: Hardcoded Pfad anpassen wenn richtiger Name steht
-        icon.addPixmap(QtGui.QPixmap(":/plugins/SeilaplanPlugin/icons/icon_open.png"),
-                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        iconPath = os.path.join(os.path.dirname(os.path.dirname(__file__)),
+                                'icons', 'icon_open.png')
+        icon.addPixmap(QtGui.QPixmap(iconPath), QtGui.QIcon.Normal,
+                       QtGui.QIcon.Off)
         self.openButton.setIcon(icon)
         self.openButton.setIconSize(QtCore.QSize(24, 24))
         QObject.connect(self.openButton, SIGNAL("clicked()"), self.onOpenDialog)
@@ -104,23 +106,26 @@ class DialogOutputOptions(QtGui.QDialog):
         self.hbox.addWidget(self.saveLabel)
         self.hbox.addWidget(self.pathField)
         self.hbox.addWidget(self.openButton)
-        # Checkboxen erzeugen
-        self.questionLabel = QtGui.QLabel(u"Welche Produkte sollen erzeugt werden?")
+        # Create checkboxes
+        self.questionLabel = \
+            QtGui.QLabel(u"Welche Produkte sollen erzeugt werden?")
         self.checkBoxReport = QtGui.QCheckBox(u"Technischer Bericht")
         self.checkBoxPlot = QtGui.QCheckBox(u"Diagramm")
-        self.checkBoxGeodata = QtGui.QCheckBox(u"Shape-Daten der Stützen und Seillinie")
-        self.checkBoxCoords = QtGui.QCheckBox(u"Koordinaten-Tabellen der Stützen und Seillinie")
-        # Hacken richtig setzten
+        self.checkBoxGeodata = \
+            QtGui.QCheckBox(u"Shape-Daten der Stützen und Seillinie")
+        self.checkBoxCoords = \
+            QtGui.QCheckBox(u"Koordinaten-Tabellen der Stützen und Seillinie")
+        # Set tick correctly
         self.checkBoxReport.setChecked(self.tool.outputOpt['report'])
         self.checkBoxPlot.setChecked(self.tool.outputOpt['plot'])
         self.checkBoxGeodata.setChecked(self.tool.outputOpt['geodata'])
         self.checkBoxCoords.setChecked(self.tool.outputOpt['coords'])
-        # Ok/Cancel Button erzeugen und verbinden
+        # Create Ok/Cancel Button and connect signal
         self.buttonBox = QtGui.QDialogButtonBox(self.main_widget)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Ok|QtGui.QDialogButtonBox.Cancel)
+        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Ok|
+                                          QtGui.QDialogButtonBox.Cancel)
         QObject.connect(self.buttonBox, SIGNAL("accepted()"), self.Apply)
         QObject.connect(self.buttonBox, SIGNAL("rejected()"), self.Reject)
-
         # Layout
         self.container = QtGui.QVBoxLayout(self.main_widget)
         self.container.addLayout(self.hbox)
@@ -132,7 +137,6 @@ class DialogOutputOptions(QtGui.QDialog):
         self.container.addWidget(self.checkBoxCoords)
         self.container.addWidget(self.buttonBox)
         self.container.setAlignment(QtCore.Qt.AlignLeft)
-        # self.container.setSizeConstraint(QtGui.QLayout.SetFixedSize)
         self.setLayout(self.container)
 
     def fillInDropDown(self, pathList):
@@ -149,31 +153,29 @@ class DialogOutputOptions(QtGui.QDialog):
         self.fillInDropDown(self.tool.commonPaths)
 
     def Apply(self):
-        # Wert der Checkboxen in Variable outputOpt speichern
+        # Save checkbox status
         self.tool.outputOpt['outputPath'] = self.pathField.currentText()
         self.tool.outputOpt['report'] = int(self.checkBoxReport.isChecked())
         self.tool.outputOpt['plot'] = int(self.checkBoxPlot.isChecked())
         self.tool.outputOpt['geodata'] = int(self.checkBoxGeodata.isChecked())
         self.tool.outputOpt['coords'] = int(self.checkBoxCoords.isChecked())
 
-        # Liste der verwendeten Pfade wird aktualisiert und gewählter Pfad an
-        #   erste Stelle gesetzt
+        # Update output location with currently selected path
         self.tool.updateCommonPathList(self.pathField.currentText())
         self.close()
 
     def Reject(self):
         self.close()
 
+
 def readFromTxt(path):
-    """ Generische Methode, die eine txt-Datei öffnet, den Inhalt sammt
-    Header ausliest und in ein Dicitonary speichert. Das Dictionary
-    besteht wiederum aus Dictionaries welche die verschiedenen Spalten
-    als Key besitzen."""
+    """Generic Method to read a txt file with header information and save it
+    to a dictionary. The keys of the dictionary are the header items.
+    """
     fileData = {}
     if os.path.exists(path):
         with io.open(path, encoding='utf-8') as f:
             lines = f.read().splitlines()
-            # Header sollten im ascii Format sein, nicht utf-8
             header = lines[0].encode('ascii').split('\t')
             for line in lines[1:]:
                 if line == '': break
@@ -181,7 +183,6 @@ def readFromTxt(path):
                 row = {}
                 for i in range(1, len(header)):
                     row[header[i]] = line[i]
-                # Keys der Dicitionaries sollten im ascii Format sein
                 key = line[0].encode('ascii')
                 fileData[key] = row
         return fileData, header
@@ -190,7 +191,7 @@ def readFromTxt(path):
 
 
 def strToNum(coord):
-    """ String in Nummer verwandeln.
+    """ Convert string to number by removing the ' sign.
     """
     try:
         num = int(coord.replace("'", ''))
@@ -200,7 +201,7 @@ def strToNum(coord):
 
 
 def generateName():
-    """ Projektname generieren.
+    """ Generate a unique project name.
     """
     import time
     now = time.time()
@@ -217,8 +218,7 @@ def valueToIdx(val):
 
 
 def formatNum(number):
-    """ Koordinate ein 1000er-Strich und wenn nötig Millionen-Strich
-    hinzufügen.
+    """ Layout Coordinates with thousand markers.
     """
     roundNum = int(round(number))
     strNum = str(roundNum)
