@@ -89,9 +89,6 @@ class SeilaplanPlugin:
         # Control variables for possible rerun of algorithm
         reRun = True
         reRunProj = None
-        # import pydevd
-        # pydevd.settrace('localhost', port=53100,
-        #                 stdoutToServer=True, stderrToServer=True)
 
         while reRun:
             # Initalize helper GUI that later will start algorithm

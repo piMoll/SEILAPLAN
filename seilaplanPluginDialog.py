@@ -1129,12 +1129,36 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
             toolData['noStue'] = self.profileWin.sc.getNoStue()
         return toolData
 
+    def checkParamSet(self, userData):
+        """ Checks if the user has changed parameter data. If yes, the
+        parameter set changes to 'user defined'. This information is used to
+        write it (1) to a saved project (2) to the drop down menu when a
+        project is opened.
+        """
+        paramName = u'benutzerdefiniert'
+        valChanged = False
+
+        if self.paramSet:
+            for name, row in self.param.items():
+                setVal = row[self.paramSet]
+                userVal = userData[name][0]
+                if setVal != userVal:
+                    valChanged = True
+                    break
+            if not valChanged:
+                paramName = self.paramSet
+        return paramName
+
 
     ###########################################################################
     ### Methods for OK and Cancel Button
     ###########################################################################
 
     def apply(self):
+        import pydevd
+        pydevd.settrace('localhost', port=53100,
+                    stdoutToServer=True, stderrToServer=True)
+
         # Extract values from GUI fields
         noError, toolData, projInfo = self.getGuiContent()
         if noError:
@@ -1142,6 +1166,8 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
         else:
             # If there was an error extracting the values return to GUI
             return False
+        # Checks if parameter data has been changed by the user or not
+        paramDataType = self.checkParamSet(toolData)
 
         # Project data gets layout for report generation
         projInfo['Params'] = self.layoutToolParams(toolData)
