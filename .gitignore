@@ -60,6 +60,7 @@ target/
 # project specific
 backups+testFiles/
 commonPaths.txt
+*.txt~
 
 # PyCharm
 .idea/
