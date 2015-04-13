@@ -7,6 +7,6 @@
   <homepage><![CDATA[http://www.lue.ethz.ch/]]></homepage>
   <file_name>SEILAPLAN-master.zip</file_name>
   <author_name>Leo Bont (Konzept, Mechanik) und Patricia Moll (Implementation in Python / QGIS)</author_name>
-  <download_url><![CDATA[https://github.com/piMoll/SEILAPLAN/archive/SEILAPLAN-master.zip]]></download_url>
+  <download_url><![CDATA[https://github.com/piMoll/SEILAPLAN/archive/master.zip]]></download_url>
  </pyqgis_plugin>
 </plugins>
