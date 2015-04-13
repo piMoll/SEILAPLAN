@@ -133,6 +133,8 @@ class QtMplCanvas(FigureCanvas):
         self.fig.canvas.draw()
 
     def acitvateFadenkreuz2(self):
+        """ Cursor cross for defining sections without supports.
+        """
         self.cidMove2 = self.mpl_connect('motion_notify_event',self.mouse_move2)
         self.cidPress2 = self.mpl_connect('button_press_event',self.mouse_press2)
         self.ly.set_color('#F4CC13')

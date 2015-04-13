@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'seilaplanDialog.ui'
 #
-# Created: Tue Apr  7 14:06:31 2015
+# Created: Mon Apr 13 14:18:12 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -137,9 +137,9 @@ class Ui_Dialog(object):
         self.gridLayout_5.setObjectName(_fromUtf8("gridLayout_5"))
         self.gridLayout_17 = QtGui.QGridLayout()
         self.gridLayout_17.setObjectName(_fromUtf8("gridLayout_17"))
-        self.zeichnen = QtGui.QPushButton(self.groupBox_3)
-        self.zeichnen.setObjectName(_fromUtf8("zeichnen"))
-        self.gridLayout_17.addWidget(self.zeichnen, 0, 1, 1, 1)
+        self.draw = QtGui.QPushButton(self.groupBox_3)
+        self.draw.setObjectName(_fromUtf8("draw"))
+        self.gridLayout_17.addWidget(self.draw, 0, 1, 1, 1)
         self.label_25 = QtGui.QLabel(self.groupBox_3)
         self.label_25.setObjectName(_fromUtf8("label_25"))
         self.gridLayout_17.addWidget(self.label_25, 0, 0, 1, 1)
@@ -1080,7 +1080,7 @@ class Ui_Dialog(object):
         self.groupBox_5.setTitle(_translate("Dialog", "Projekt", None))
         self.label_7.setText(_translate("Dialog", "Projektname", None))
         self.groupBox_3.setTitle(_translate("Dialog", "Verlauf der Seillinie", None))
-        self.zeichnen.setText(_translate("Dialog", "zeichnen", None))
+        self.draw.setText(_translate("Dialog", "zeichnen", None))
         self.label_25.setText(_translate("Dialog", "Seillinienverlauf in Karte einzeichnen", None))
         self.contourLyrButton.setToolTip(_translate("Dialog", "Höhenlinien berechnen", None))
         self.symA.setText(_translate("Dialog", "<html><head/><body><p><img src=\":/plugins/SeilaplanPlugin/icons/icon_yellow.png\"/></p></body></html>", None))
