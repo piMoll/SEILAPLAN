@@ -72,7 +72,6 @@ infImg = {'Bodenabstand': u'Erklärungen zum Bodenabstand',
           'VerankerungE': u'Erklärungen zur Verankerung am Anfangspunkt',
           'Stuetzen': u'Erklärungen zu den Zwischenstützen'}
 
-# TODO: add license and disclaimer
 # Info button text
 infoTxt = (u"SEILAPLAN - Seilkran-Layoutplaner\n\n"
     u"SEILAPLAN berechnet auf Grund eines digitalen Höhenmodells zwischen "
@@ -82,8 +81,11 @@ infoTxt = (u"SEILAPLAN - Seilkran-Layoutplaner\n\n"
     u"Realisierung:\nProfessur für forstliches Ingenieurwesen\n"
     u"ETH Zürich\n8092 Zürich\n\nBeteiligte Personen:\n"
     u"Leo Bont (Konzept, Mechanik)\nPatricia Moll "
-    u"(Implementation in Python / QGIS)")
-
+    u"(Implementation in Python / QGIS)\n\n"
+    u"SEILAPLAN ist freie Software: Sie können es unter den Bedingungen "
+    u"der GNU General Public License, wie von der Free Software Foundation, "
+    u"Version 2 der Lizenz oder (nach Ihrer Wahl) jeder neueren "
+    u"veröffentlichten Version, weiterverbreiten und/oder modifizieren.\n")
 
 
 class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
@@ -1135,13 +1137,23 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
         write it (1) to a saved project (2) to the drop down menu when a
         project is opened.
         """
+        import pydevd
+        pydevd.settrace('localhost', port=53100,
+                    stdoutToServer=True, stderrToServer=True)
+
         paramName = u'benutzerdefiniert'
         valChanged = False
 
         if self.paramSet:
             for name, row in self.param.items():
-                setVal = row[self.paramSet]
-                userVal = userData[name][0]
+                setVal = float(row[self.paramSet])
+                # Special treatment for drop down value
+                if name == 'GravSK':
+                    if userData[name][0] == 'ja':
+                        userVal = 1
+                    else: userVal = 0
+                else:
+                    userVal = userData[name][0]
                 if setVal != userVal:
                     valChanged = True
                     break
@@ -1155,9 +1167,7 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
     ###########################################################################
 
     def apply(self):
-        import pydevd
-        pydevd.settrace('localhost', port=53100,
-                    stdoutToServer=True, stderrToServer=True)
+
 
         # Extract values from GUI fields
         noError, toolData, projInfo = self.getGuiContent()
