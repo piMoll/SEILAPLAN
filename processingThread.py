@@ -1,4 +1,24 @@
 # -*- coding: utf-8 -*-
+"""
+/***************************************************************************
+ SeilaplanPlugin
+                                 A QGIS plugin
+ Seilkran-Layoutplaner
+                              -------------------
+        begin                : 2013
+        copyright            : (C) 2015 by ETH Zürich
+        email                : pi1402@gmail.com
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+"""
 
 import os
 import sys
@@ -14,8 +34,9 @@ from tool.outputReport import getTimestamp, plotData, generateReportText, \
 from tool.outputGeo import generateGeodata, addToMap, generateCoordTable
 
 """
-Nach http://gis.stackexchange.com/questions/45514/how-do-i-maintain-a-resposive-gui-using-qthread-with-pyqgis
-implementiert
+Implementation based on
+http://gis.stackexchange.com/questions/45514/how-do-i-
+maintain-a-resposive-gui-using-qthread-with-pyqgis
 """
 
 textOK = (u"Die Berechnungen wurden erfolgreich abgeschlossen! Die Ergebnisse "
@@ -32,9 +53,9 @@ textBad = (u"Aufgrund der Geländeform oder den Eingabeparametern konnten keine 
            u"erzeugen.'")
 
 class MultithreadingControl(QDialog):
-    """ Spezielle Klasse um es dem Programm zu ermöglichen, Benutzerparameter
-    von der Hauptroutine zu schicken und die Berechnungen durchzuführen ohne
-    dass QGIS einfrirrt.
+    """ Calculation and progress dialog window is handled in separate thread
+    so that QGIS is still responsive. User parameters are send to method
+    setValue.
     """
     def __init__( self, iface):
         QDialog.__init__(self, iface.mainWindow())
@@ -45,7 +66,6 @@ class MultithreadingControl(QDialog):
         self.input = None
         self.state = False
         self.projInfo = None
-        self.reportFile = None
         self.outputLoc = None
         self.resultStatus = None
         self.reRun = False
@@ -66,7 +86,6 @@ class MultithreadingControl(QDialog):
         return self.state
 
     def initGui(self):
-        # TODO: Name ändern
         self.setWindowTitle(u"SEILAPLAN wird ausgeführt")
         self.resize(500, 100)
         self.container = QVBoxLayout()
@@ -93,11 +112,6 @@ class MultithreadingControl(QDialog):
         self.hbox.addWidget(self.cancelButton)
         self.hbox.setAlignment(self.cancelButton, Qt.AlignHCenter)
 
-
-        # hbox = QHBoxLayout()
-        # hbox.addWidget(self.cancelButton, Qt.AlignHCenter)
-        # hbox.setAlignment(w, Qt.AlignVCenter)
-
         self.container.addWidget(self.progressBar)
         self.container.addWidget(self.statusLabel)
         self.container.addWidget(self.resultLabel)
@@ -107,13 +121,13 @@ class MultithreadingControl(QDialog):
 
     def run(self):
         self.runThread()
-        # Zeige Dialog im modalen Modus (QGIS ist immer noch bedienbar)
+        # Show modal dialog window (QGIS is still responsive)
         self.show()
-        # Event loop starten
+        # start event loop
         self.exec_()
 
     def runThread( self):
-        # Signale des Threads verbinden
+        # Connet signals of thread
         QObject.connect(self.workerThread,
             SIGNAL("jobEnded(PyQt_PyObject)"), self.jobEnded)
         QObject.connect(self.workerThread,
@@ -132,11 +146,8 @@ class MultithreadingControl(QDialog):
             SIGNAL("error(PyQt_PyObject)"), self.onError)
         QObject.connect(self.rerunButton,
             SIGNAL("clicked()"), self.onRerun)
-        # TODO: zweimal dasselbe Signal
-        # QObject.connect(self.workerThread,
-        #     SIGNAL("result(PyQt_PyObject)"), self.onResultClicked)
 
-        # Thread starten
+        # Start thread
         self.workerThread.start()
 
     def jobEnded(self, success):
@@ -145,13 +156,11 @@ class MultithreadingControl(QDialog):
             self.progressBar.setValue(self.progressBar.maximum())
             self.setFinalMessage()
 
-        else:           # Falls ein Abbruch durch den Nutzer erfolgt ist
-            # Berechnungen wurden abgebrochen oder Fehler ist aufgetreten
+        else:           # If there was an abort by the user
             self.statusLabel.setText(u"Berechnungen abgebrochen.")
             self.progressBar.setValue(self.progressBar.minimum())
         self.finallyDo()
         self.rerunButton.setVisible(True)
-
 
     def valueFromThread(self, value):
         self.progressBar.setValue(value)
@@ -166,39 +175,36 @@ class MultithreadingControl(QDialog):
         self.statusLabel.setText(value)
 
     def resultFromThread(self, result):
-        [self.outputLoc, self.projFile, self.resultStatus] = result
+        [self.outputLoc, self.resultStatus] = result
 
     def setFinalMessage(self):
-        # clickable(self.resultLabel).connect(self.onResultClicked)
-        # QObject.connect(self.resultLabel,
-        #         SIGNAL("clicked"), self.onResultClicked)
         self.connect(self.resultLabel, SIGNAL('clicked()'), self.onResultClicked)
         self.resultLabel.blockSignals(True)
         linkToFolder = (u'<html><head/><body><p></p><p><a href='
                         u'"file:////{0}"><span style="text-decoration: '
                         u'underline; color:#0000ff;">{0}</span></a></p>'
                         u'</body></html>'.format(self.outputLoc))
-        # Berechnungen erfolgreich
+        # Optimization successful
         if self.resultStatus == 1:
             self.resultLabel.setText(textOK+linkToFolder)
             self.resultLabel.blockSignals(False)
-        # Seil hebt von Stütze ab
+        # Cable takes off from support
         elif self.resultStatus == 2:
             self.resultLabel.setText(textSeil+linkToFolder)
             self.resultLabel.blockSignals(False)
-        # Berechnungen teilweise erfolgreich
+        # Optimization partially successful
         elif self.resultStatus == 3:
             self.resultLabel.setText(textHalf+linkToFolder)
             self.resultLabel.blockSignals(False)
-        # Berechnungen nicht erfolgreich
+        # Optimization not successful
         elif self.resultStatus == 4:
             self.resultLabel.setText(textBad)
         self.setLayout(self.container)
-        # Bei Klick auf Label wird Ordner geöffnet
+
 
     def onResultClicked(self):
         path = self.outputLoc
-        # Öffne Ordner-Fenster in...
+        # Open a folder window
         if sys.platform == 'darwin':        # MAC
             subprocess.call(["open", "-R", path])
         elif sys.platform == 'linux2':      # LINUX
@@ -215,18 +221,18 @@ class MultithreadingControl(QDialog):
         self.cancelThread()
 
     def cancelThread(self):
-        """Manueller Abbruch durch den Benutzers"""
-        self.workerThread.stop()        # Beendet des Prozess sauber
+        """Manual abort by user.
+        """
+        self.workerThread.stop()        # Terminates process cleanly
 
     def onError(self, exception_string):
-        # txt = u'Ein Fehler ist aufgetreten:\n{}'.format(exception_string)
         self.statusLabel.setText(u"Ein unerwarteter Fehler ist aufgetreten.")
         self.progressBar.setValue(self.progressBar.minimum())
         self.finallyDo()
 
     def onRerun(self):
         self.reRun = True
-        self.savedProj = self.projFile
+        self.savedProj = self.workerThread.projInfo['projFile']
         self.onClose()
 
     def finallyDo(self):
@@ -234,11 +240,10 @@ class MultithreadingControl(QDialog):
         self.cancelButton.clicked.connect(self.onClose)
 
     def cleanUp(self):
-        # TODO Eventuell nicht nötig
+        # TODO probably not necessary
         self.input = None
         self.state = False
         self.projInfo = None
-        self.reportFile = u''
         self.outputLoc = None
         self.resultStatus = None
         self.resultLabel.setText(u'')
@@ -251,17 +256,13 @@ class MultithreadingControl(QDialog):
         self.close()
 
 class ExtendedQLabel(QLabel):
-    """ Anpassung der Label-Klasse, damit bei Klick auf das Label ein Signal
-    gesendet wird.
+    """ Customized label class which sends a signal when label is clicked.
     """
     def __init(self, parent):
         QLabel.__init__(self, parent)
 
     def mouseReleaseEvent(self, ev):
-        # TODO nochmals anschauen
-        # super(ExtendedQLabel, self).mouseReleaseEvent(ev)
         self.emit(SIGNAL('clicked()'))
-
 
 
 class WorkerThread(QThread):
@@ -279,7 +280,8 @@ class WorkerThread(QThread):
         self.emit(SIGNAL("jobEnded(PyQt_PyObject)"), self.success)
 
     def stop(self):
-        """Manueller Abbruch des Benutzers"""
+        """Manual abort by user.
+        """
         self.running = False
 
     def doWork(self):
@@ -294,26 +296,22 @@ class WorkerThread(QThread):
         # pickle.dump([self.userInput], f)
         # f.close()
 
-        # import pydevd
-        # pydevd.settrace('localhost', port=53100,
-        #              stdoutToServer=True, stderrToServer=True)
-
-        # Berechnungen starten
+        # Start algorithm
         output = main(self, self.inputData, self.projInfo)
-        if not output:      # Falls Abbruch durch Benutzer oder Fehler im Code
+        if not output:      # If abort by user or error in code
             self.success = False
             return
         else:
             [self.result, self.resultStatus] = output
-        # Ausgabe: resultStatus
-        #   1 = Berechnungen erfolgreich abgeschlossen
-        #   2 = Berechnungen erfolgreich, jedoch hebt Seil von Stützen ab
-        #   3 = Berechnungen teilweise erfolgreich, Seil spannt nicht ganze Länge
-        #   4 = Seilverlauf konnte überhaupt nicht berechnet werden
+        # Output resultStatus
+        #   1 = Optimization successful
+        #   2 = Cable takes off from support
+        #   3 = Optimization partially successful
+        #   4 = Optimization not successful
         if self.resultStatus == 4:
             self.emit(SIGNAL("result(PyQt_PyObject)"), [None, self.resultStatus])
             return
-        # Resultate entpacken
+        # Unpack results
         [t_start, disp_data, seilDaten, gp, HM,
          konkav, IS, kraft, optSTA, optiLen] = self.result
 
@@ -324,57 +322,52 @@ class WorkerThread(QThread):
         # f = open(storefile, 'w')
         # pickle.dump([output, self.userInput], f)
         # f.close()
-        #
-        # import pydevd
-        # pydevd.settrace('localhost', port=53100,
-        #              stdoutToServer=True, stderrToServer=True)
 
         self.emit(SIGNAL("value(PyQt_PyObject)"), optiLen*1.01)
         self.emit(SIGNAL("text(PyQt_PyObject)"), u"Outputdaten werden generiert...")
 
-        # OUTPUT GENERIEREN
+        # Generate output
         ###################
         outputFolder = self.projInfo['outputOpt']['outputPath']
         outputName = self.projInfo['Projektname']
         self.outputLoc = createOutputFolder(outputFolder, outputName)
-        # Gespeichertes Projekt in Output Ordner verschieben
+        # Move saved project file to output folder
         if os.path.exists(self.projInfo['projFile']):
             newpath = os.path.join(self.outputLoc,
                         os.path.basename(self.projInfo['projFile']))
             os.rename(self.projInfo['projFile'], newpath)
             self.projInfo['projFile'] = newpath
-        # Generiere Plot für Report
+        # Generate plot
         plotSavePath = os.path.join(self.outputLoc, "{}_Diagramm.pdf".format(outputName))
         plotImage, labelTxt = plotData(disp_data, gp["di"], seilDaten, konkav,
                                        HM, self.inputData, self.projInfo,
                                        self.resultStatus, plotSavePath)
         self.emit(SIGNAL("value(PyQt_PyObject)"), optiLen*1.015)
-        # Berechnungsdauer und Zeitstempel auslesen
+        # Calculate duration and generate time stamp
         duration, timestamp1, timestamp2 = getTimestamp(t_start)
 
-        # Bericht erzeugen
+        # Create report
         if self.projInfo['outputOpt']['report']:
             reportSavePath = os.path.join(self.outputLoc,
                                           "{}_Bericht.pdf".format(outputName))
             reportText = generateReportText(IS, self.projInfo, HM,
                                             kraft, optSTA, duration,
                                             timestamp2, labelTxt)
-            # Generiere Report.pdf
             generateReport(reportText, reportSavePath, outputName)
 
-        # Plot als PDF erzeugen
+        # Create plot
         if not self.projInfo['outputOpt']['plot']:
-            # Wurde bereits erzeugt. Falls nicht nötig, wird es hier gelöscht
+            # was already created before and gets deleted if not used
             if os.path.exists(plotImage):
                 os.remove(plotImage)
 
-        # Geodaten erzeugen
+        # Generate geo data
         if self.projInfo['outputOpt']['geodata']:
             geodata = generateGeodata(self.projInfo, HM, seilDaten,
                                       labelTxt[0], self.outputLoc)
             addToMap(self.iface, geodata, outputName)
 
-        # Koordinatentabellen erzeugen
+        # Generate coordinate tables
         if self.projInfo['outputOpt']['coords']:
             table1SavePath = os.path.join(self.outputLoc,
                                           outputName + '_KoordStuetzen.csv')
@@ -384,4 +377,4 @@ class WorkerThread(QThread):
                                [table1SavePath, table2SavePath], labelTxt[0])
 
         self.emit(SIGNAL("result(PyQt_PyObject)"), [self.outputLoc,
-                                self.projInfo['projFile'], self.resultStatus])
+                                                    self.resultStatus])
