@@ -840,6 +840,12 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
         self.changeCoordA([strToNum(pointA[0]), strToNum(pointA[1])])
         self.changeCoordE([strToNum(pointE[0]), strToNum(pointE[1])])
         self.updateLineFromGui()
+        # Set the correct parameter set name in drop down menu
+        self.fieldParamSet.blockSignals(True)
+        idx = self.fieldParamSet.findText(projHeader['Parameterset'])
+        self.fieldParamSet.setCurrentIndex(idx)
+        self.fieldParamSet.blockSignals(False)
+
         # Extract and update data of fixed intermediate support
         fixStueString = projHeader['Fixe Stuetzen'].split('/')[:-1]
         for stue in fixStueString:
@@ -872,7 +878,7 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
 
     def saveProjToTxt(self, path):
         # Extract field data
-        noError, toolData, projInfo = self.getGuiContent()
+        noError, userData, projInfo = self.verifyFieldData()
         if not noError:
             # If there where invalid values
             return False
@@ -880,7 +886,7 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
             # Get the order of the parameter values for the output
             self.getParamOrder()
         # Extract project data (project name, elevation model...)
-        _, fileheader = self.getProjectInfo()
+        _, fileheader = self.getProjectInfo(userData)
         if os.path.exists(path):
             os.remove(path)
         with io.open(path, encoding='utf-8', mode='w+') as f:
@@ -889,7 +895,7 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
             # Write parameter values
             for name, sortNr in self.paramOrder:
                 try:
-                    d = toolData[name][0]
+                    d = userData[name][0]
                 except KeyError:
                     continue
                 p = self.param[name]
@@ -906,11 +912,11 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
         if os.path.exists(path):
             with io.open(path, encoding='utf-8') as f:
                 lines = f.read().splitlines()
-                for hLine in lines[:5]:
+                for hLine in lines[:6]:
                     # Dictionary keys cant be in unicode
                     name = hLine[:17].rstrip().encode('ascii')
                     projInfo[name] = hLine[17:]
-                for line in lines[10:]:
+                for line in lines[11:]:
                     if line == u'': break
                     line = re.split(r'\s{2,}', line)
                     if line[1] == u'-':
@@ -953,15 +959,9 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
     ### Methods for extracting and checking GUI field values
     ###########################################################################
 
-    def getGuiContent(self):
-        try:
-            projInfo, projHeader = self.getProjectInfo()
-        except:
-            return False, False, False
-        projInfo['header'] = projHeader
+    def verifyFieldData(self):
         fieldData = self.getFieldValues()
-
-        toolData = {}
+        userData = {}
         errTxt = []
         finalErrorState = True
         for name, d in self.param.items():
@@ -1004,7 +1004,8 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
                     finalErrorState = False
                     continue
             # If there was no error value is saved to dictionary
-            toolData[name] = [cval, d['label'], d['unit'], d['sort']]
+            userData[name] = [cval, d['label'], d['unit'], d['sort']]
+
 
         # Show dialog window with error messages
         if finalErrorState is False:
@@ -1014,7 +1015,14 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
                                           QtGui.QMessageBox.Ok)
             return finalErrorState, {}, {}
 
-        return finalErrorState, toolData, projInfo
+        # Get general project info
+        try:
+            projInfo, projHeader = self.getProjectInfo(userData)
+        except:
+            return False, False, False
+        projInfo['header'] = projHeader
+
+        return finalErrorState, userData, projInfo
 
     def getFieldValues(self):
         """Read out values from GUI fields.
@@ -1055,11 +1063,13 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
         else:
             return False, rangeSet
 
-    def getProjectInfo(self):
+    def getProjectInfo(self, userData):
         Ax = strToNum(self.coordAx.text())
         Ay = strToNum(self.coordAy.text())
         Ex = strToNum(self.coordEx.text())
         Ey = strToNum(self.coordEy.text())
+        # Checks if predefine parameter data has been changed by the user or not
+        parameterSet = self.checkParamSet(userData)
         noStue = []
         if self.profileWin:
             noStue = self.profileWin.sc.getNoStue()
@@ -1069,7 +1079,8 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
                     'Endpunkt': [Ex, Ey],
                     'Laenge': self.laenge.text(),
                     'fixeStuetzen': self.fixStue,
-                    'keineStuetzen': noStue}
+                    'keineStuetzen': noStue,
+                    'Parameterset': parameterSet}
         # Layout project data
         projHeader = ''
         coord = []
@@ -1080,7 +1091,8 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
         info = [[u'Projektname', projInfo['Projektname']],
                 [u'Hoehenmodell', '{}'. format(self.dhm['path'])],
                 [u'Anfangspunkt', '{0: >7} / {1: >7}'.format(*tuple(coord[:2]))],
-                [u'Endpunkt', '{0: >7} / {1: >7}'.format(*tuple(coord[2:]))]]
+                [u'Endpunkt', '{0: >7} / {1: >7}'.format(*tuple(coord[2:]))],
+                [u'Parameterset', parameterSet]]
                 # TODO: save cable line sections that shouldn't contain
                 # TODO:     intermediate support
         fixStueString = u''
@@ -1119,17 +1131,17 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
             txt.append(line)
         return txt
 
-    def getStueInfo(self, toolData):
-        toolData['HM_fix_d'] = []
-        toolData['HM_fix_h'] = []
-        toolData['noStue'] = []
+    def getStueInfo(self, userData):
+        userData['HM_fix_d'] = []
+        userData['HM_fix_h'] = []
+        userData['noStue'] = []
         if self.fixStue:
             for [pointX, _, pointH] in self.fixStue.itervalues():
-                toolData['HM_fix_d'].append(int(pointX))
-                toolData['HM_fix_h'].append(int(pointH))
+                userData['HM_fix_d'].append(int(pointX))
+                userData['HM_fix_h'].append(int(pointH))
         if self.profileWin:
-            toolData['noStue'] = self.profileWin.sc.getNoStue()
-        return toolData
+            userData['noStue'] = self.profileWin.sc.getNoStue()
+        return userData
 
     def checkParamSet(self, userData):
         """ Checks if the user has changed parameter data. If yes, the
@@ -1137,28 +1149,28 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
         write it (1) to a saved project (2) to the drop down menu when a
         project is opened.
         """
-        import pydevd
-        pydevd.settrace('localhost', port=53100,
-                    stdoutToServer=True, stderrToServer=True)
-
         paramName = u'benutzerdefiniert'
         valChanged = False
 
-        if self.paramSet:
-            for name, row in self.param.items():
-                setVal = float(row[self.paramSet])
-                # Special treatment for drop down value
-                if name == 'GravSK':
-                    if userData[name][0] == 'ja':
-                        userVal = 1
-                    else: userVal = 0
-                else:
-                    userVal = userData[name][0]
-                if setVal != userVal:
-                    valChanged = True
-                    break
-            if not valChanged:
-                paramName = self.paramSet
+        try:
+            if self.paramSet:
+                for name, row in self.param.items():
+                    if row['ftype'] == u'no_field':
+                        continue
+                    # Special treatment for drop down value
+                    if name == 'GravSK':
+                        setVal = valueToIdx(row[self.paramSet])
+                        userVal = valueToIdx(userData[name][0])
+                    else:
+                        setVal = float(row[self.paramSet])
+                        userVal = userData[name][0]
+                    if setVal != userVal:
+                        valChanged = True
+                        break
+                if not valChanged:
+                    paramName = self.paramSet
+        except BaseException as e:
+            print "h"
         return paramName
 
 
@@ -1167,29 +1179,29 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
     ###########################################################################
 
     def apply(self):
-
+        # import pydevd
+        # pydevd.settrace('localhost', port=53100,
+        #             stdoutToServer=True, stderrToServer=True)
 
         # Extract values from GUI fields
-        noError, toolData, projInfo = self.getGuiContent()
+        noError, userData, projInfo = self.verifyFieldData()
         if noError:
             self.threadingControl.setState(True)
         else:
-            # If there was an error extracting the values return to GUI
+            # If there was an error extracting the values, return to GUI
             return False
-        # Checks if parameter data has been changed by the user or not
-        paramDataType = self.checkParamSet(toolData)
 
         # Project data gets layout for report generation
-        projInfo['Params'] = self.layoutToolParams(toolData)
+        projInfo['Params'] = self.layoutToolParams(userData)
         projInfo['outputOpt'] = self.outputOpt
         # Project data is saved to reload it later
         projInfo['projFile'] = os.path.join(projInfo['outputOpt']['outputPath'],
                                             self.projName + '_Projekt.txt')
         self.saveProjToTxt(projInfo['projFile'])
         # Save fixed intermediate supports
-        toolData = self.getStueInfo(toolData)
+        userData = self.getStueInfo(userData)
         # All user data is handed over to class that handles calculation
-        self.threadingControl.setValue(toolData, projInfo)
+        self.threadingControl.setValue(userData, projInfo)
         self.close()
 
     def cleanUp(self):
