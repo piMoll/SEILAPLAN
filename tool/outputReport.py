@@ -499,6 +499,9 @@ def generateReportText(IS, projInfo, HM, kraft, OptSTA, duration,
         part2 = ['']
         part3 = annahmen[i+lenAnn]
         str_anna.append(part1+part2+part3)
+    # Add information about used parameter set
+    str_anna = [[u'Parameterset:', projInfo['Parameterset'], u'', u''],
+                [u'']*4] + str_anna
 
     text = [str_time, str_posi, str_abst, str_opti, str_laen, str_durc,
             str_seil, str_stue, str_wink, str_nach, str_anna]
