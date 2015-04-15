@@ -21,7 +21,7 @@ import osgeo.osr as osr
 
 
 
-def generateGeodata(projInfo, stuetzenDaten, seilDaten, stueLabel, savePath):
+def generateGeodata(projInfo, HM, seilDaten, stueLabel, savePath):
     projName = projInfo['Projektname']
     [Ax, Ay] = projInfo['Anfangspunkt']
     [Ex, Ey] = projInfo['Endpunkt']
@@ -37,11 +37,6 @@ def generateGeodata(projInfo, stuetzenDaten, seilDaten, stueLabel, savePath):
     seilHoriDist = seilDaten['l_coord']
     seilLeerZ = seilDaten['z_Leer']
     seilLastZ = seilDaten['z_Zweifel']
-    # Stützen
-    stueH = stuetzenDaten['HM_h']
-    stueX = stuetzenDaten['HM_x']
-    stueY = stuetzenDaten['HM_y']
-    stueZ = stuetzenDaten['HM_z']
 
     # X- und Y-Koordinate der Geodaten im Projektionssystem berechnen
     dx = float(Ex - Ax)
@@ -56,7 +51,7 @@ def generateGeodata(projInfo, stuetzenDaten, seilDaten, stueLabel, savePath):
     seilX = Ax + seilHoriDist * math.cos(azimut)
     seilY = Ay + seilHoriDist * math.sin(azimut)
 
-    stueGeo = np.swapaxes(np.array([stueX, stueY, stueZ]), 1, 0)
+    stueGeo = np.swapaxes(np.array([HM['x'], HM['y'], HM['z']]), 1, 0)
     seilLeerGeo = np.swapaxes(np.array([seilX, seilY, seilLeerZ]), 1, 0)
     seilLastGeo = np.swapaxes(np.array([seilX, seilY, seilLastZ]), 1, 0)
 
@@ -65,7 +60,7 @@ def generateGeodata(projInfo, stuetzenDaten, seilDaten, stueLabel, savePath):
     stuePath = os.path.join(savePath, stueName + '.shp')
     checkShpPath(stuePath)
     save2PointShape(stuePath, 'Stuetzen', stueGeo, 'StuetzenH',
-                    stueH, stueLabel, spatialRef)
+                    HM['h'], stueLabel, spatialRef)
     # Leerseil abspeichern
     seilLeerName = '{}_Leerseil'.format(projName.replace("'", "."))
     seilLeerPath = os.path.join(savePath, seilLeerName + '.shp')
@@ -204,10 +199,6 @@ def addToMap(iface, geodata, projName):
 def generateCoordTable(seil, zi, HM, savePath, labelTxt):
     savePathSeil = savePath[0]
     savePathStue = savePath[1]
-    HM_h = HM['HM_h']
-    HM_x = HM['HM_x']
-    HM_y = HM['HM_y']
-    HM_z = HM['HM_z']
 
     # Seildaten (in Meter-Auflösung)
     # -----------------------------
@@ -238,11 +229,11 @@ def generateCoordTable(seil, zi, HM, savePath, labelTxt):
     with open(savePathStue, 'w') as f:
         fi = csv.writer(f, delimiter=';', dialect='excel', lineterminator='\n')
         fi.writerow(["Stuetze", "X", "Y", "Z Boden", "Z Stuetze", "Stuetzenhoehe"])
-        for i in range(len(HM_h)):
+        for i in range(len(HM['h'])):
             name = [unicode2acii(labelTxt[i])]
-            coords = ([round(e, 1) for e in [HM_x[i], HM_y[i],
-                                             HM_z[i] - HM_h[i], HM_z[i],
-                                             HM_h[i]]])
+            coords = ([round(e, 1) for e in [HM['x'][i], HM['y'][i],
+                                             HM['z'][i] - HM['h'][i], HM['z'][i],
+                                             HM['h'][i]]])
             row = name + coords
             fi.writerow(row)
 

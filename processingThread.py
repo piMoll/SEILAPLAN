@@ -313,7 +313,7 @@ class WorkerThread(QThread):
             return
         # Unpack results
         [t_start, disp_data, seilDaten, gp, HM,
-         konkav, IS, kraft, optSTA, optiLen] = self.result
+         IS, kraft, optSTA, optiLen] = self.result
 
         # import pickle
         # self.projInfo['Hoehenmodell'].pop('layer')
@@ -339,8 +339,8 @@ class WorkerThread(QThread):
             self.projInfo['projFile'] = newpath
         # Generate plot
         plotSavePath = os.path.join(self.outputLoc, "{}_Diagramm.pdf".format(outputName))
-        plotImage, labelTxt = plotData(disp_data, gp["di"], seilDaten, konkav,
-                                       HM, self.inputData, self.projInfo,
+        plotImage, labelTxt = plotData(disp_data, gp["di"], seilDaten, HM,
+                                       self.inputData, self.projInfo,
                                        self.resultStatus, plotSavePath)
         self.emit(SIGNAL("value(PyQt_PyObject)"), optiLen*1.015)
         # Calculate duration and generate time stamp

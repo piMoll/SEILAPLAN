@@ -64,7 +64,8 @@ def main(progress, IS, projInfo):
     if not progress.running:
             return False
     # Mögliche Stützenpositionen finden
-    gp, StuetzenPos, z_kon, peakLoc, diIdx = stuePos(IS, gp_old)
+    gp, StuetzenPos, peakLoc, diIdx = stuePos(IS, gp_old)
+    possStue = gp['di_s'][StuetzenPos==1]
 
     # IS['HM_fix'] =
     IS['Ank'] = calcAnker(IS, inputPoints, rasterdata, gp)
@@ -103,12 +104,11 @@ def main(progress, IS, projInfo):
     progress.emit(SIGNAL("value(PyQt_PyObject)"), optiLen*1.005)
 
     # Transformiere berechnete Daten in richtiges Koordinatensystem)
-    [disp_data, seilDaten,
-     HM, konkav] = vectorData(gp['xi'], gp['yi'], gp['di_n'], zi_disp,
-                              seil, stuetzIdx, HM, z_kon)
+    [disp_data, seilDaten, HM] = vectorData(gp['xi'], gp['yi'], gp['di_n'],
+                                        zi_disp, seil, stuetzIdx, HM, possStue)
 
     # IS.pop('Ank', None)
-    return [t_start, disp_data, seilDaten, gp, HM, konkav, IS, kraft,
+    return [t_start, disp_data, seilDaten, gp, HM, IS, kraft,
             optSTA, optiLen], max(resultStatus)
     # except:
     #     sys.exit()

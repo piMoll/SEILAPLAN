@@ -343,57 +343,8 @@ def stuePos(IS, gp):
     # Idee an zweiter und zweitletzter Stelle soll immer eine Stütze möglich
     # sein, wegen zum Teil tiefen Anfangs- und Endstützenhoehen (0m)
     Maststandort[[1,-2]] = 1
-    # --------------------------------------
 
-    # Berechnung Konkave Geländestellen
-    # Noch einmal dasselbe aber mit genaueren Werten (für Darstellung)
-    di_diff = np.append(gp['di_n'][1:] - gp['di_n'][:-1], np.nan)
-    zi_diff = np.append(gp['zi_n'][1:] - gp['zi_n'][:-1], np.nan)
-    d2 = np.append(di_diff[1:] + di_diff[:-1], np.nan)
-    z2 = np.append(zi_diff[1:] + zi_diff[:-1], np.nan)
-
-    z_dir = z2 / d2 * di_diff
-    v = zi_diff - z_dir
-    v = np.insert(v[:-1], 0, np.nan)
-
-    z_kon = np.copy(gp['zi_n'])
-    for element in enumerate(v):
-        if element[1] <= 0:
-            z_kon[element[0]] = np.nan
-    z_kon2 = np.copy(z_kon)
-    # Nur grössere Geländestellen auswählen (> 4m)
-    for i in range(1, len(z_kon)-1):
-        if np.isnan(z_kon[i+1]) and np.isnan(z_kon[i-1]):
-            z_kon2[i] = np.nan
-    for i in range(1, len(z_kon2)-2):
-        if not np.isnan(z_kon2[i]):
-            if np.isnan(z_kon2[i-1]):
-                if np.isnan(z_kon2[i+2]):
-                    z_kon2[i] = np.nan
-                    z_kon2[i+1] = np.nan
-
-    # Maststandorte mit Baumstandorten ergänzen
-    ###########################################
-    # # Fake tree file
-    # # trees = np.random.random_integers(8, 18, (nrows, ncols))
-    # loc = r'Q:\01_Projekte\01_ScriptTransportSys\CodePython\version5.0\TreeSupport.txt'
-    # # np.savetxt(loc, trees, fmt='%1i')
-    # trees = np.loadtxt(loc, delimiter=',', dtype=int)
-    #
-    # # Linear Interpolation
-    # # kx, ky bezeichnen grad der interpolation, 1=linear
-    # coordX = gp['linspaces'][0]
-    # coordY = gp['linspaces'][1]
-    # splineTree = interpolate.RectBivariateSpline(-coordY, coordX, trees,
-    #                                              kx=1, ky=1)
-    # treeSupport = splineTree.ev(-gp['yi_s'], gp['xi_s'])
-
-    # Für schnellere Testläufe
-    # loc = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config', 'trees.txt')
-    # gp['tree'] = np.loadtxt(loc)
-
-    # gp.pop('linspaces', None)
-    return gp, Maststandort, z_kon2, peakLoc, di_ind
+    return gp, Maststandort, peakLoc, di_ind
 
 
 def calcAnker(IS, inputPoints, rasterdata, gp):

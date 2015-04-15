@@ -21,7 +21,7 @@ p = 21
 nl = unicode(os.linesep)
 
 
-def vectorData(xi, yi, di, zi_disp, seil, stuetzIdx, HM, z_kon):
+def vectorData(xi, yi, di, zi_disp, seil, stuetzIdx, HM, possStue):
     """ Kombination und Trasformation der Resultate
     Packt wichtige Resultate zusammen, abspeichern in Arrays/Dictionarys"""
     # Horizontaldistanz von float nach int umwandeln
@@ -41,8 +41,6 @@ def vectorData(xi, yi, di, zi_disp, seil, stuetzIdx, HM, z_kon):
     z_Leer = z_Leer + y_data[p] + HM[0]
     z_Zweifel = z_Zweifel + y_data[p] + HM[0]
     stuetzeH = y_data[stuetzIdx+p] + np.array(HM)
-    zi_n = np.round(z_kon, 2)/10
-    konkav = y_data[p] + zi_n
 
     # CH-Koordinaten der Seillinien
     Seillinien_data = {'x': xi,
@@ -53,13 +51,15 @@ def vectorData(xi, yi, di, zi_disp, seil, stuetzIdx, HM, z_kon):
                        'Laengsprofil_di': di}
 
     # Koordinaten der Stuetzen
-    HM_data = {'HM_x': xi[stuetzIdx],
-               'HM_y': yi[stuetzIdx],
-               'HM_z': stuetzeH,
-               'HM_h': np.array([int(i) for i in HM]),
-               'HM_idx': stuetzIdx}
+    HM_data = {'x': xi[stuetzIdx],
+               'y': yi[stuetzIdx],
+               'z': stuetzeH,
+               'h': np.array([int(i) for i in HM]),
+               'idx': stuetzIdx,
+               'poss_x': possStue,
+               'poss_y': y_data[possStue.astype(int)+p]}
 
-    return [x_data, y_data], Seillinien_data, HM_data, konkav
+    return [x_data, y_data], Seillinien_data, HM_data
 
 
 def getTimestamp(tStart):
@@ -78,8 +78,7 @@ def getTimestamp(tStart):
     return tdFormated, tsFormated1, tsFormated2
 
 
-def plotData(disp_data, di, seilDaten, konkav, HM, IS, projInfo, resultStatus,
-             locPlot):
+def plotData(disp_data, di, seilDaten, HM, IS, projInfo, resultStatus, locPlot):
     # import matplotlib
     # matplotlib.use('Cairo')
     from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
@@ -93,9 +92,9 @@ def plotData(disp_data, di, seilDaten, konkav, HM, IS, projInfo, resultStatus,
     seillinieZweifel = seilDaten['z_Zweifel']
     seil_di = seilDaten['l_coord']
     di = np.int32(di)
-    hoeheStue = HM['HM_h']
-    zStue = HM['HM_z']
-    idxStue = HM['HM_idx']
+    hoeheStue = HM['h']
+    zStue = HM['z']
+    idxStue = HM['idx']
 
     # Erstelle Figure
     # Höhe der Figur angepasst an Höhendistanz der Seillinie (verzerrungsfrei)
@@ -138,8 +137,8 @@ def plotData(disp_data, di, seilDaten, konkav, HM, IS, projInfo, resultStatus,
     axes.fill_between(x_data, min(y_data), y_data, facecolor='#A4C9AC')
 
     axes.plot(x_data, y_data, color='#6F9679', linewidth=3)
-    axes.plot(di, konkav, linewidth=2, color='#F3FF3E',
-             label=u"Konkaves Gelände")
+    axes.plot(HM['poss_x'], HM['poss_y'], 'o', markersize=6, color='#F3FF3E',
+             label=u"Mögliche Stützenstandorte")
     # Ankerfelder
     if xAnkerseil[0] != xAnkerseil[1]:      # Falls Anker vom Benutzer definiert wurden
         axes.plot(xAnkerseil[:2], zAnkerseil[:2], color='#FF4D44', linewidth=1.8)
@@ -280,18 +279,13 @@ def removeTxtElements(text, key):
 def generateReportText(IS, projInfo, HM, kraft, OptSTA, duration,
                        timestamp, labelTxt):
     import math
-    # Absteckinformationen Horziontaldist, Schraegdist, Azimut
-    HM_h = HM['HM_h']
-    HM_x = HM['HM_x']
-    HM_y = HM['HM_y']
-    HM_z = HM['HM_z']
 
     # Report zusammenstellen
     # TODO: Länge des Seils oder Höhenunterschied auffschreiben?
     projname = projInfo['Projektname']
     hmodell = projInfo['Hoehenmodell']['path']
     laenge = projInfo['Laenge']
-    Hdiff = int(abs(HM_z[-1]-HM_z[0]))
+    Hdiff = int(abs(HM['z'][-1]-HM['z'][0]))
 
     # TODO: Fixe Stützen auf irgend eine Weise markieren. Sind hier gespeichert:
     fixeStue = projInfo['fixeStuetzen']
@@ -299,8 +293,8 @@ def generateReportText(IS, projInfo, HM, kraft, OptSTA, duration,
     # Berechnungen für Absteckung
     hDist = []
     sDist = []
-    dY = HM_y[-1] - HM_y[0]
-    dX = HM_x[-1] - HM_x[0]
+    dY = HM['y'][-1] - HM['y'][0]
+    dX = HM['x'][-1] - HM['x'][0]
     ri = math.atan(dX/dY) * 180/math.pi
     if dY < 0:
         az = ri + 180
@@ -308,14 +302,14 @@ def generateReportText(IS, projInfo, HM, kraft, OptSTA, duration,
         az = ri + 360
     else:
         az = ri
-    for i in range(len(HM_z)-1):
-        dX = HM_x[i+1] - HM_x[i]
-        dY = HM_y[i+1] - HM_y[i]
-        dZ = HM_z[i+1] - HM_z[i]
+    for i in range(len(HM['z'])-1):
+        dX = HM['x'][i+1] - HM['x'][i]
+        dY = HM['y'][i+1] - HM['y'][i]
+        dZ = HM['z'][i+1] - HM['z'][i]
         hDist.append((dX**2 + dY**2)**0.5)
         sDist.append((hDist[i]**2 + dZ**2)**0.5)
 
-    anzSt = len(HM_z)
+    anzSt = len(HM['z'])
     anzFe = anzSt - 1
     sHeader = labelTxt[0]
     fHeader = labelTxt[1]
@@ -337,8 +331,8 @@ def generateReportText(IS, projInfo, HM, kraft, OptSTA, duration,
     # Abschnitt Stützenpositionen
     str_posi = [["", "Höhe", "X-Koordinate", "Y-Koordinate", "Z-Koordinate", "(M.ü.M)"]]
     for s in range(anzSt):
-        tex = u"{};{:.0f} m;{};{};{};".format(sHeader[s], HM_h[s],
-            formatNum(HM_x[s]), formatNum(HM_y[s]), formatNum(HM_z[s])).split(';')
+        tex = u"{};{:.0f} m;{};{};{};".format(sHeader[s], HM['h'][s],
+            formatNum(HM['x'][s]), formatNum(HM['y'][s]), formatNum(HM['z'][s])).split(';')
         str_posi.append(tex)
 
     sHeader = [label.strip(u"°*") for label in sHeader] # Markierungen entfernen
