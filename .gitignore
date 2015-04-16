@@ -61,6 +61,11 @@ target/
 backups+testFiles/
 commonPaths.txt
 *.txt~
+YenKSP/
+networkx/
+yen_igraph.py
+mainOptiBACKUP.py
+optiSolutionPath.py
 
 # PyCharm
 .idea/

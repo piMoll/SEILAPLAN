@@ -18,6 +18,7 @@ import numpy as np
 from PyQt4.QtCore import SIGNAL
 from geoExtract import ismember
 from optiSTA import calcSTA
+import scipy.sparse as sps
 from optiSolutionPath import findOptiSolution
 
 
@@ -186,149 +187,69 @@ def optimization(IS, gp, StuetzenPos, progress):
 
     # Shortest Path bestimmen
     # -------------------------------------------------------------------------
-    # Falls irgendwann Baumstützen implementiert werden
 
-    [Loesung_HM, stueIdx,
-     Value, OptSTA] = findOptiSolution(zi, di, HeightE, Pos, HM, MinSTA,
-                                       MaxSTA, aa, ee, arraySize, IS)
-    # try:
-    #     natStuetze = IS['HMnat'][0]
-    # except KeyError:
-    #     natStuetze = 14
-    # kStuetz = HeightE > natStuetze
-    # KostStue = (HeightE + 100)**2 * (1 + (4*(kStuetz + 0)))
-    # # TODO: Was muss man hier schreiben wenn keine Baumspitzen berücksichtigt werden?
-    # # KostStue = (HeightE + 100)**2       # Ohne Berücksichtigung nat. Stützen
-    # indexMax = np.where(Pos==np.max(Pos))[0]
-    # emptyMatrix = np.zeros((arraySize+1, arraySize+1))      # Entspricht N+2
-    #
-    # min_SK = int(IS['min_SK'][0])
-    # zul_SK = int(IS['zul_SK'][0])
-    # mem = np.array([np.inf] * (zul_SK+1))
-    # memLength = np.zeros(zul_SK+1)
-    # min_path = ''
-    # min_dist = float('inf')
-    # Max_LengthInLP = 0
-    #
-    # # Gleichzeitige überprüfung des Leerseilknickwinkels
-    # LSKmax = 18        # Maximaler Leerseilknickwinkel
-    # mas = { 'STA': [],
-    #         'LSK': [],
-    #         'dist': [],
-    #         'path': [],
-    #         'hebtAb': []
-    #         }
-    # testAbheben = True
-    # testKraefteKlein = False
-    #
-    #
-    #
-    # for sk in range(min_SK, zul_SK+1):
-    #     # try:
-    #         if sk == 100:
-    #             print sk
-    #         # if progress.abort is True:
-    #         #     progress.killed.emit()
-    #         G = emptyMatrix
-    #         # OPTI sk ausserhalb for Schleife erstellen und > < ausserhalb abfragen
-    #         ind = (MinSTA < sk) & (MaxSTA > sk)
-    #         G[aa, ee] = KostStue * ind
-    #         G[indexMax, arraySize] = 1
-    #         # Shortest Path
-    #         Weight = sps.csc_matrix(G)
-    #
-    #         dist, predecessors = sps.csgraph.dijkstra(Weight, directed=True,
-    #                                 indices=0, return_predecessors=True)
-    #         LengthInLP = np.where(dist < float('inf'))[0][-1]
-    #         dist = dist[LengthInLP]
-    #
-    #         # Extrahiere kürzesten Pfad
-    #         i = LengthInLP
-    #         path = []
-    #         while i != 0:
-    #             path.append(i)
-    #             i = predecessors[i]
-    #         path.append(0)
-    #
-    #         if path[0]+1 > arraySize:
-    #             # Pfad umkehren und ohne letztes Element
-    #             pathTemp = path[::-1][:-1]
-    #             HM_ = HM[pathTemp]
-    #             Pos_ = Pos[pathTemp]
-    #             [LSK, seilHebtAb] = preciseCableLight(zi, di, IS, sk, HM_, Pos_)
-    #             LSKval = np.sum((LSK[LSK > LSKmax] - LSKmax)**2)
-    #             mas['STA'].append(sk)
-    #             mas['LSK'].append(LSKval)
-    #             mas['dist'].append(dist)
-    #             mas['path'].append(path)
-    #             mas['hebtAb'].append(seilHebtAb)
-    #             if (seilHebtAb or np.max(LSK) > LSKmax) and dist < min_dist:
-    #                 t = 1
-    #                 t_mem = float('inf')
-    #                 # shPath = yenKSP.ksp_yen(DiGraph(G), 1, arraySize, 20)
-    #                 # KK = shPath.size
-    #
-    #
-    #                 # dt = [('weight', float)]
-    #                 # A = Weight.astype(dt)
-    #                 # G = nx.from_numpy_matrix(A)
-    #                 # G.edges(data=True)
-    #
-    #                 GG = nx.Graph(G)
-    #                 yksp = YenKShortestPaths(GG, cap=None)
-    #                 shPath = yksp.findFirstShortestPath(0, arraySize)
-    #                 path = shPath.nodeList
-    #                 KK = path.size
-    #
-    #                 while (seilHebtAb or np.max(LSK) > LSKmax) and KK >= 1:
-    #                     nxtShPath = yksp.getNextShortestPath()
-    #                     path = nxtShPath.nodeList
-    #
-    #                     [LSK, seilHebtAb] = preciseCableLight(zi, di, IS, sk,
-    #                                                           HM_, Pos_)
-    #                     LSKval = np.sum((LSK[LSK > LSKmax] - LSKmax)**2)
-    #                     mas['STA'].append(sk)
-    #                     mas['LSK'].append(LSKval)
-    #                     mas['dist'].append(dist)
-    #                     mas['path'].append(path)
-    #                     mas['hebtAb'].append(seilHebtAb)
-    #                     if t_mem > t:
-    #                         if not seilHebtAb:
-    #                             path = shPath[t]
-    #                             dist = dist[t]
-    #                             t_mem = t
-    #                         else:
-    #                             path = []
-    #                             dist = float('inf')
-    #                     t += 1
-    #
-    #         mem[sk] = dist
-    #         memLength[sk] = LengthInLP
-    #         if LengthInLP >= Max_LengthInLP:
-    #             if LengthInLP > Max_LengthInLP:
-    #                 min_dist = float('inf')
-    #                 min_path = []
-    #                 Max_LengthInLP = LengthInLP
-    #             if dist < min_dist:
-    #                 min_dist = dist
-    #                 min_path = path
-    #     # except TypeError, e:
-    #     #     import traceback
-    #     #     print traceback.format_exc()
-    #
-    # min_path = min_path[::-1]
-    # Ind_Max_Length = [var for var in range(zul_SK+1)
-    #                   if memLength[var] == max(memLength)]
-    # mem_neu = np.array([np.inf] * (zul_SK+1))
-    # mem_neu[Ind_Max_Length] = mem[Ind_Max_Length]
-    #
-    # # Indizes beachten!
-    # OptSTA = np.array([var for var in range(zul_SK+1)
-    #                    if mem_neu[var] == min(mem_neu)])
-    #
-    # min_path = min_path[:-1]
-    # Value = min_dist
-    # Loesung_HM = [HM[i] for i in min_path]
-    # stueIdx = [Pos[i] for i in min_path]
+    # [Loesung_HM, stueIdx,
+    #     Value, OptSTA] = findOptiSolution(zi, di, HeightE, Pos, HM, MinSTA,
+    #                                    MaxSTA, aa, ee, arraySize, IS)
+    natStuetze = IS['HMnat'][0]
+    kStuetz = HeightE > natStuetze
+    KostStue = (HeightE + 100)**2 * (1 + (4*(kStuetz + 0)))
+    indexMax = np.where(Pos==np.max(Pos))[0]
+    emptyMatrix = np.zeros((arraySize+1, arraySize+1))      # Entspricht N+2
+
+    min_SK = int(IS['min_SK'][0])
+    zul_SK = int(IS['zul_SK'][0])
+    mem = np.array([np.inf] * (zul_SK+1))
+    memLength = np.zeros(zul_SK+1)
+    min_path = ''
+    min_dist = float('inf')
+    Max_LengthInLP = 0
+
+    for sk in range(min_SK, zul_SK+1):
+        G = emptyMatrix
+        ind = (MinSTA < sk) & (MaxSTA > sk)
+        G[aa, ee] = KostStue * ind
+        G[indexMax, arraySize] = 1
+        # Shortest Path
+        Weight = sps.csc_matrix(G)
+
+        dist, predecessors = sps.csgraph.dijkstra(Weight, directed=True,
+                                indices=0, return_predecessors=True)
+        LengthInLP = np.where(dist < float('inf'))[0][-1]
+        dist = dist[LengthInLP]
+
+        # Route of shortest path
+        i = LengthInLP
+        path = []
+        while i != 0:
+            path.append(i)
+            i = predecessors[i]
+        path.append(0)
+
+        mem[sk] = dist
+        memLength[sk] = LengthInLP
+        if LengthInLP >= Max_LengthInLP:
+            if LengthInLP > Max_LengthInLP:
+                min_dist = float('inf')
+                min_path = []
+                Max_LengthInLP = LengthInLP
+            if dist < min_dist:
+                min_dist = dist
+                min_path = path
+
+    min_path = min_path[::-1]
+    Ind_Max_Length = [var for var in range(zul_SK+1)
+                      if memLength[var] == max(memLength)]
+    mem_neu = np.array([np.inf] * (zul_SK+1))
+    mem_neu[Ind_Max_Length] = mem[Ind_Max_Length]
+
+    # Indizes beachten!
+    OptSTA = np.array([var for var in range(zul_SK+1)
+                       if mem_neu[var] == min(mem_neu)])
+
+    min_path = min_path[:-1]
+    Value = min_dist
+    Loesung_HM = [HM[i] for i in min_path]
+    stueIdx = [Pos[i] for i in min_path]
 
     return Loesung_HM, stueIdx, Value, OptSTA, optiLen

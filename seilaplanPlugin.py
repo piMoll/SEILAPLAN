@@ -22,13 +22,13 @@
 
 
 # TODO: clear when testing is over
-import sys
-path1 = "/home/pi/Software/PyCharm/pycharm-4.0.3/debug-eggs/pycharm-debug.egg"
-path2 = "/home/pi/Software/pycharm-4.0/debug-eggs/pycharm-debug.egg"
-if path1 not in sys.path:
-    sys.path.append(path1)
-if path2 not in sys.path:
-    sys.path.append(path2)
+# import sys
+# path1 = "/home/pi/Software/PyCharm/pycharm-4.0.3/debug-eggs/pycharm-debug.egg"
+# path2 = "/home/pi/Software/pycharm-4.0/debug-eggs/pycharm-debug.egg"
+# if path1 not in sys.path:
+#     sys.path.append(path1)
+# if path2 not in sys.path:
+#     sys.path.append(path2)
 
 import os
 from PyQt4.QtCore import QSettings, QTranslator, qVersion, QCoreApplication, \
