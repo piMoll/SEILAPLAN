@@ -33,11 +33,6 @@ from tool.outputReport import getTimestamp, plotData, generateReportText, \
     generateReport, createOutputFolder
 from tool.outputGeo import generateGeodata, addToMap, generateCoordTable
 
-"""
-Implementation based on
-http://gis.stackexchange.com/questions/45514/how-do-i-
-maintain-a-resposive-gui-using-qthread-with-pyqgis
-"""
 
 textOK = (u"Die Berechnungen wurden erfolgreich abgeschlossen! Die Ergebnisse "
           u"sind in folgendem Ordner abgespeichert:")
