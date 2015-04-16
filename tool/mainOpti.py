@@ -19,7 +19,7 @@ from PyQt4.QtCore import SIGNAL
 from geoExtract import ismember
 from optiSTA import calcSTA
 import scipy.sparse as sps
-from optiSolutionPath import findOptiSolution
+# from optiSolutionPath import findOptiSolution
 
 
 
