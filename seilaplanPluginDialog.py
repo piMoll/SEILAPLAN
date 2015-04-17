@@ -497,9 +497,9 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
         with io.open(self.commonPathsFile, encoding='utf-8', mode='w+') as f:
             f.writelines(u"{} {} {} {} {}".format(self.outputOpt['report'],
                     self.outputOpt['plot'], self.outputOpt['geodata'],
-                    self.outputOpt['coords'], nl))
+                    self.outputOpt['coords'], '\n'))
             for path in self.commonPaths:
-                f.writelines(path.encode('utf-8') + nl)
+                f.writelines(path.encode('utf-8') + '\n')
 
     def setProjName(self, projname):
         self.projName = projname
@@ -929,8 +929,9 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
                     continue
                 p = self.param[name]
                 name = name.decode('utf-8')
+
                 line = u'{0: <17}{1: <12}{2: <45}{3: <9}{4}'.format(name, d,
-                                                 p['label'], p['unit'], nl)
+                                                 p['label'], p['unit'], '\n')
                 f.writelines(line)
 
     def openProjFromTxt(self, path):
@@ -1132,10 +1133,10 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
 
         for title, txt in info:
             line = u'{0: <17}{1}'.format(title, unicode(txt))
-            projHeader += line + nl
+            projHeader += line + '\n'
         paramHeader = u'{5}{5}{0}{5}{1: <17}{2: <12}{3: <45}{4: <9}' \
                       u'{5:-<84}{5}'.format(u'Parameter:', u'Name', u'Wert',
-                                            u'Label', u'Einheit', nl)
+                                            u'Label', u'Einheit', '\n')
         projHeader += paramHeader
         return projInfo, projHeader
 
