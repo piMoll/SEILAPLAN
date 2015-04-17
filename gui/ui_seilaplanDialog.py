@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'seilaplanDialog.ui'
 #
-# Created: Mon Apr 13 14:18:12 2015
+# Created: Fri Apr 17 11:03:13 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -67,20 +67,6 @@ class Ui_Dialog(object):
         self.buttonRefreshRa.setIconSize(QtCore.QSize(24, 24))
         self.buttonRefreshRa.setObjectName(_fromUtf8("buttonRefreshRa"))
         self.horizontalLayout.addWidget(self.buttonRefreshRa)
-        self.ButtonOpenRa = QtGui.QPushButton(self.groupBox_2)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.ButtonOpenRa.sizePolicy().hasHeightForWidth())
-        self.ButtonOpenRa.setSizePolicy(sizePolicy)
-        self.ButtonOpenRa.setMaximumSize(QtCore.QSize(27, 27))
-        self.ButtonOpenRa.setText(_fromUtf8(""))
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/plugins/SeilaplanPlugin/icons/icon_open.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.ButtonOpenRa.setIcon(icon1)
-        self.ButtonOpenRa.setIconSize(QtCore.QSize(24, 24))
-        self.ButtonOpenRa.setObjectName(_fromUtf8("ButtonOpenRa"))
-        self.horizontalLayout.addWidget(self.ButtonOpenRa)
         self.gridLayout_4.addWidget(self.groupBox_2, 1, 0, 1, 1)
         self.groupBox_5 = QtGui.QGroupBox(Dialog)
         self.groupBox_5.setStyleSheet(_fromUtf8("QGroupBox\n"
@@ -109,9 +95,9 @@ class Ui_Dialog(object):
         self.buttonSavePr.setSizePolicy(sizePolicy)
         self.buttonSavePr.setMaximumSize(QtCore.QSize(27, 27))
         self.buttonSavePr.setText(_fromUtf8(""))
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/plugins/SeilaplanPlugin/icons/icon_save.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.buttonSavePr.setIcon(icon2)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/plugins/SeilaplanPlugin/icons/icon_save.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.buttonSavePr.setIcon(icon1)
         self.buttonSavePr.setIconSize(QtCore.QSize(24, 24))
         self.buttonSavePr.setObjectName(_fromUtf8("buttonSavePr"))
         self.gridLayout.addWidget(self.buttonSavePr, 0, 4, 1, 1)
@@ -123,7 +109,9 @@ class Ui_Dialog(object):
         self.buttonOpenPr.setSizePolicy(sizePolicy)
         self.buttonOpenPr.setMaximumSize(QtCore.QSize(27, 27))
         self.buttonOpenPr.setText(_fromUtf8(""))
-        self.buttonOpenPr.setIcon(icon1)
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/plugins/SeilaplanPlugin/icons/icon_open.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.buttonOpenPr.setIcon(icon2)
         self.buttonOpenPr.setIconSize(QtCore.QSize(24, 24))
         self.buttonOpenPr.setObjectName(_fromUtf8("buttonOpenPr"))
         self.gridLayout.addWidget(self.buttonOpenPr, 0, 5, 1, 1)
