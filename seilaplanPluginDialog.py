@@ -341,16 +341,21 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
         """Put list of raster layers into drop down menu of self.rasterField.
         If raster name contains some kind of "DHM", select it.
         """
-        for i in range(self.rasterField.count()):
+        for i in reversed(range(self.rasterField.count())):
             self.rasterField.removeItem(i)
         idx = None
         searchStr = ['dhm', 'Dhm', 'DHM', 'dtm', 'DTM', 'Dtm']
         for i, rLyr in enumerate(rasterList):
+            print rLyr.name
             self.rasterField.addItem(rLyr.name)
             if not idx and sum([item in rLyr.name for item in searchStr]) > 0:
                 idx = i
-        if idx:
+                print idx
+        print idx
+        # Set an elevation model as current selection
+        if idx >= 0:
             self.rasterField.setCurrentIndex(idx)
+        # If a raster was added to the drop down menu, get raster information
         if not self.rasterField.currentText() == '':
             self.setRaster(self.rasterField.currentText())
             self.draw.setEnabled(True)
@@ -455,13 +460,37 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
             if not os.path.exists(userPath):
                 os.mkdir(userPath)
             commonPaths.append(userPath)
-        # Maximum length of drop down menu
+        # Delete duplicates in list
+        unique = []
+        [unique.append(item) for item in commonPaths if item not in unique]
+        commonPaths = unique
+        # Maximum length of drop down menu is 12 entries
         if len(commonPaths) > 12:
             del commonPaths[0]      # Delete oldest entry
         return commonPaths, outputOpt
 
+    def updateCommonPathList(self, newPath):
+        """Updates the list of common paths so that the current selected
+        path is first in the list.
+        """
+        dublicateIdx = None
+        # Checks if path already exists
+        for idx, path in enumerate(self.commonPaths):
+            if newPath == path:
+                dublicateIdx = idx
+                break
+        # Adds entry
+        if os.path.exists(newPath):
+            self.commonPaths.append(newPath)
+        # If a duplicate is present, it gets removed
+        if dublicateIdx+1:
+            del self.commonPaths[dublicateIdx]
+        if len(self.commonPaths) > 12:
+            # Firs (=oldest) entry is removed
+            del self.commonPaths[0]
+
     def updateCommonPathFile(self):
-        """File 'commonPaths.txt' gets updated.
+        """File 'commonPaths.txt' is updated.
         """
         if os.path.exists(self.commonPathsFile):
             os.remove(self.commonPathsFile)
@@ -1152,25 +1181,22 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
         paramName = u'benutzerdefiniert'
         valChanged = False
 
-        try:
-            if self.paramSet:
-                for name, row in self.param.items():
-                    if row['ftype'] == u'no_field':
-                        continue
-                    # Special treatment for drop down value
-                    if name == 'GravSK':
-                        setVal = valueToIdx(row[self.paramSet])
-                        userVal = valueToIdx(userData[name][0])
-                    else:
-                        setVal = float(row[self.paramSet])
-                        userVal = userData[name][0]
-                    if setVal != userVal:
-                        valChanged = True
-                        break
-                if not valChanged:
-                    paramName = self.paramSet
-        except BaseException as e:
-            print "h"
+        if self.paramSet:
+            for name, row in self.param.items():
+                if row['ftype'] == u'no_field':
+                    continue
+                # Special treatment for drop down value
+                if name == 'GravSK':
+                    setVal = valueToIdx(row[self.paramSet])
+                    userVal = valueToIdx(userData[name][0])
+                else:
+                    setVal = float(row[self.paramSet])
+                    userVal = userData[name][0]
+                if setVal != userVal:
+                    valChanged = True
+                    break
+            if not valChanged:
+                paramName = self.paramSet
         return paramName
 
 
