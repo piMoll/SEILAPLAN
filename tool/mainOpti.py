@@ -191,7 +191,7 @@ def optimization(IS, gp, StuetzenPos, progress):
     # [Loesung_HM, stueIdx,
     #     Value, OptSTA] = findOptiSolution(zi, di, HeightE, Pos, HM, MinSTA,
     #                                    MaxSTA, aa, ee, arraySize, IS)
-    natStuetze = IS['HMnat'][0]
+    natStuetze = IS['HM_nat'][0]
     kStuetz = HeightE > natStuetze
     KostStue = (HeightE + 100)**2 * (1 + (4*(kStuetz + 0)))
     indexMax = np.where(Pos==np.max(Pos))[0]

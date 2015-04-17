@@ -63,10 +63,10 @@ class ProfiletoolMapTool(QgsMapTool):
         self.emit(SIGNAL("deactivate"))
         self.canvas.setCursor(QCursor(Qt.OpenHandCursor))
         #self.button.setCheckable(False)
-        #QgsMapTool.deactivate(self)
+        QgsMapTool.deactivate(self)
 
     def isZoomTool(self):
         return False
 
     def setCursor(self, cursor):
-        self.cursor = QCursor(cursor)
+        self.cursor = cursor
