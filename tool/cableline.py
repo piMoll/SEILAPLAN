@@ -39,38 +39,22 @@ def calcBandH(zi, di, H_Anfangsmast, H_Endmast, z_null, z_ende, d_null, d_ende):
     return b, h, feld
 
 
-def checkCable(zi, si, sc, befGSK, GravSK):
-    # R_R = Rückerrichtung  1 = rauf, -1 = runter
-    # GravSK = 1    1 = Gravitationsseilkran, 0 = kein Gravitationsseilkran
-    # R_R = 0 --> egal ob rauf oder runder weil kein Gravitationsseilkran
-    """ RR_eval: tatsächliche Rückerichtung, unterscheidet sich von R_R dadurch
-    das auch bei Grund-Seilung Einstellung ohne Gravitationsseilkran (R_R=0)
-    evaluiert wird, ob theoretisch mit Gravitationsseilkran gerückt werden
-    könnte und dann das entsprechende Resultat ausgegeben wird [-1 oder 1]"""
-
-    # min_sz = min(si-zi)
+def checkCable(zi, si, sc, befGSK, GravSK, R_R):
+    """ Prüft ob an allen Punkten die minimale Bodenfreiheit gegeben ist
+    R_R = Rückerrichtung  1 = rauf, -1 = runter
+    GravSK = 1    1 = Gravitationsseilkran, 0 = kein Gravitationsseilkran
+    R_R = 0 --> egal ob rauf oder runder weil kein Gravitationsseilkran
+    """
     sc_dm = np.array(sc*10, dtype=np.int)
-    # sc_dm[np.where(sc_dm==0)] = -10
-    sc_dm_copy = np.copy(sc_dm)
-    sc_dm_copy[sc_dm==0] = -10.0
-    bodenabst = np.sum((si-zi) > sc_dm_copy, axis=0) == sc_dm_copy.size
+    sc_dm[sc_dm == 0] = -10
+    bodenabst = np.sum((si-zi) > sc_dm, axis=0) == sc_dm.size
 
-    if GravSK == 'nein':     # Kein Gravitationsbetrieb
-        # Cable_Possible = min_sz > min_Bodenabstand      # True/False
-        # Prüft ob an allen Punkten die minimale Bodenfreiheit gegeben ist
+    if GravSK == 'nein':    # Kein Gravitationsbetrieb
         Cable_Possible = bodenabst
-
-    else:       # Gravitationsbetrieb
-        try:
-            # if zi[i] < 100 --> keine Ahnung was das soll
-            index = [i for i in range(len(zi) -1, -1, -1) if zi[i] < 300][0]
-        except IndexError:
-            index = -1
-        if zi[index] > zi[0]:   # für Gravitationslift (runter rücken)
-            #Cable_Possible = (min_sz > min_Bodenabstand) and (si[1] > si[0])
+    else:                   # Gravitationsbetrieb
+        if R_R == -1:       #runter
             Cable_Possible = bodenabst and (si[1] > si[0] or befGSK[0]==0)
-        else:        # für Gravitationslift (rauf rücken)
-            #Cable_Possible = (min_sz > min_Bodenabstand) and (si[-2] > si[-1])
+        else:               # für Gravitationslift (rauf rücken)
             Cable_Possible = bodenabst and (si[-2] > si[-1] or befGSK[-1]==0)
     return Cable_Possible
 
@@ -296,7 +280,8 @@ def calcCable(IS, zi, di, sc, befGSK, z_null, STA, b, h, feld):
 
             ym_z = ym       # Ausgabegrösse: dient zur Kontrolle
             si = 10 * (x_coord_last_zweifel + z_null)
-            Cable_Possible = checkCable(zi, si, sc, befGSK, IS['GravSK'][0])
+            Cable_Possible = checkCable(zi, si, sc, befGSK, IS['GravSK'][0],
+                                        IS['R_R'][0])
             # add_values = [ym, HT, Hs, Hm, STfm_Last]
 
     return Cable_Possible, ZulSK_erfuellt, ym_z #,  si , add_values

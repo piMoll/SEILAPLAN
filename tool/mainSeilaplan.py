@@ -64,8 +64,9 @@ def main(progress, IS, projInfo):
     if not progress.running:
             return False
     # Mögliche Stützenpositionen finden
-    gp, StuetzenPos, peakLoc, diIdx = stuePos(IS, gp_old)
+    gp, StuetzenPos, peakLoc, diIdx, R_R = stuePos(IS, gp_old)
     possStue = gp['di_s'][StuetzenPos==1]
+    IS['R_R'] = [R_R]
 
     # IS['HM_fix'] =
     IS['Ank'] = calcAnker(IS, inputPoints, rasterdata, gp)

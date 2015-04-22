@@ -299,8 +299,8 @@ def stuePos(IS, gp):
     befGSK_E = IS['Befahr_E'][0]        # int
 
     befahrbar = np.ones(profilLen)
-    befahrbar[:befGSK_A] = 0
-    befahrbar[-befGSK_E:] = 0
+    befahrbar[:befGSK_A+1] = 0
+    befahrbar[-befGSK_E+1:] = 0
     gp['befGSK'] = befahrbar
     gp['befGSK_s'] = befahrbar[locb]
 
@@ -344,7 +344,21 @@ def stuePos(IS, gp):
     # sein, wegen zum Teil tiefen Anfangs- und Endstützenhoehen (0m)
     Maststandort[[1,-2]] = 1
 
-    return gp, Maststandort, peakLoc, di_ind
+    # Rückerichtung bestimmen
+    #########################
+    if IS['GravSK'][0] == 'nein':
+        R_R = 0
+    else:
+        try:
+            index = [i for i in range(len(gp['di_s']) -1, -1, -1) if di[i] < 100][0]
+        except IndexError:
+            index = -1
+        if gp['zi_s'][index] > gp['zi_s'][0]:
+            R_R = -1    # runter
+        else:
+            R_R = 1     # rauf
+
+    return gp, Maststandort, peakLoc, di_ind, R_R
 
 
 def calcAnker(IS, inputPoints, rasterdata, gp):
@@ -353,7 +367,6 @@ def calcAnker(IS, inputPoints, rasterdata, gp):
     dhm = rasterdata['subraster']
     [Xa, Ya, Xe, Ye] = inputPoints
     # Letzte Koordinate in xi/yi entspricht nicht exakt den Endkoordinaten
-    # TODO: Diese Änderung überprüfen
     Xe_ = gp['xi'][-1]
     Ye_ = gp['yi'][-1]
 
