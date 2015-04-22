@@ -197,8 +197,8 @@ def addToMap(iface, geodata, projName):
     # lastseil.setRendererV2(QgsSingleSymbolRendererV2(pntSymbol))
 
 def generateCoordTable(seil, zi, HM, savePath, labelTxt):
-    savePathSeil = savePath[0]
-    savePathStue = savePath[1]
+    savePathStue = savePath[0]
+    savePathSeil = savePath[1]
 
     # Seildaten (in Meter-Auflösung)
     # -----------------------------
