@@ -91,9 +91,9 @@ class SeilaplanPlugin:
         reRunProj = None
 
         while reRun:
-            # Initalize helper GUI that later will start algorithm
+            # Initialize helper GUI that later will start algorithm
             self.threadControl = MultithreadingControl(self.iface)
-            # Initalize dialog window
+            # Initialize dialog window
             self.dlg = SeilaplanPluginDialog(self.iface, self.threadControl)
             # Get available raster from table of content in QGIS
             self.dlg.updateRasterList()
