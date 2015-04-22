@@ -346,12 +346,9 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
         idx = None
         searchStr = ['dhm', 'Dhm', 'DHM', 'dtm', 'DTM', 'Dtm']
         for i, rLyr in enumerate(rasterList):
-            print rLyr.name
             self.rasterField.addItem(rLyr.name)
             if not idx and sum([item in rLyr.name for item in searchStr]) > 0:
                 idx = i
-                print idx
-        print idx
         # Set an elevation model as current selection
         if idx >= 0:
             self.rasterField.setCurrentIndex(idx)
@@ -994,6 +991,7 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
         userData = {}
         errTxt = []
         finalErrorState = True
+        errorCount = 0
         for name, d in self.param.items():
             if d['ftype'] ==  'no_field':
                 val = d['std_val']
@@ -1006,6 +1004,7 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
                               u"Bitte geben Sie eine korrekte "
                               u"Zahl ein.".format(val, unicode(d['label'])))
                 finalErrorState = False
+                errorCount += 1
                 continue
             # Check value range
             if d['ftype'] not in ['drop_field', 'no_field']:
@@ -1041,6 +1040,8 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
         if finalErrorState is False:
             errorMsg = u"Es wurden folgende Fehler gefunden:" + nl
             errorMsg += nl.join(errTxt)
+            if errorCount >= 10:
+                errorMsg = u"Bitte definieren Sie einen Parametersatz."
             QtGui.QMessageBox.information(self, 'Fehler', errorMsg,
                                           QtGui.QMessageBox.Ok)
             return finalErrorState, {}, {}
