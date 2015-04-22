@@ -209,7 +209,7 @@ def generateCoordTable(seil, zi, HM, savePath, labelTxt):
     y = seil['y']*-1
     z_last = seil['z_Zweifel'][::10]
     z_leer = seil['z_Leer'][::10]
-    gelaende = zi * 10
+    gelaende = zi / 10
     # Seildaten zu Matrix zusammenfassen
     seilDataMatrix = np.array([horiDist, x, y, z_last, z_leer, gelaende])
     seilDataMatrix = seilDataMatrix.transpose()
