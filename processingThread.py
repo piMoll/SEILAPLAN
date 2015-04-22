@@ -45,7 +45,7 @@ textHalf = (u"Die Seillinie konnte nicht komplett berechnet werden, es "
             u"abgespeichert:")
 textBad = (u"Aufgrund der Geländeform oder den Eingabeparametern konnten keine "
            u"Stützenstandorte bestimmt werden. Es wurden keine Output-Daten "
-           u"erzeugen.'")
+           u"erzeugt.")
 
 class MultithreadingControl(QDialog):
     """ Calculation and progress dialog window is handled in separate thread

@@ -75,14 +75,14 @@ infImg = {'Bodenabstand': u'Erklärungen zum Bodenabstand',
 # Info button text
 infoTxt = (u"SEILAPLAN - Seilkran-Layoutplaner\n\n"
     u"SEILAPLAN berechnet auf Grund eines digitalen Höhenmodells zwischen "
-    u"definierten Anfangs- und Endkoordinaten sowie technischer Parameter das "
-    u"optimale Seillinienlayout, d.h. Position und Höhe der Stützen und "
-    u"schreibt die wichtigsten Kennwerte dieser Seillinie heraus.\n\n"
+    u"definierten Anfangs- und Endkoordinaten sowie technischen Parametern das "
+    u"optimale Seillinienlayout. Es werden Position und Höhe der Stütze,"
+    u"sowie die wichtigsten Kennwerte der Seillinie bestimmt.\n\n"
     u"Realisierung:\nProfessur für forstliches Ingenieurwesen\n"
     u"ETH Zürich\n8092 Zürich\n\nBeteiligte Personen:\n"
     u"Leo Bont (Konzept, Mechanik)\nPatricia Moll "
     u"(Implementation in Python / QGIS)\n\n"
-    u"SEILAPLAN ist freie Software: Sie können es unter den Bedingungen "
+    u"SEILAPLAN ist freie Software: Sie können sie unter den Bedingungen "
     u"der GNU General Public License, wie von der Free Software Foundation, "
     u"Version 2 der Lizenz oder (nach Ihrer Wahl) jeder neueren "
     u"veröffentlichten Version, weiterverbreiten und/oder modifizieren.\n")
