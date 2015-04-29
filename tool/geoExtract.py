@@ -283,13 +283,9 @@ def stuePos(IS, gp):
     clearA = IS['Bodenabst_A'][0]       # int
     clearE = IS['Bodenabst_E'][0]       # int
 
-    if bodenabst % 1 == 0:
-        bodenabst = int(bodenabst)
     groundClear = np.ones(profilLen) * bodenabst
-    if clearA != 0:
-        groundClear[:clearA] = 0
-    if clearE != 0:
-        groundClear[-clearE:] = 0
+    groundClear[di<clearA+1] = 0
+    groundClear[di>(di[-1]-clearE)] = 0
     gp['sc'] = groundClear
     gp['sc_s'] = groundClear[locb]
 
@@ -299,8 +295,8 @@ def stuePos(IS, gp):
     befGSK_E = IS['Befahr_E'][0]        # int
 
     befahrbar = np.ones(profilLen)
-    befahrbar[:befGSK_A+1] = 0
-    befahrbar[-befGSK_E+1:] = 0
+    befahrbar[di<befGSK_A+1] = 0
+    befahrbar[di>(di[-1]-befGSK_E)] = 0
     gp['befGSK'] = befahrbar
     gp['befGSK_s'] = befahrbar[locb]
 
