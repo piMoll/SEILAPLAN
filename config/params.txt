@@ -1,30 +1,30 @@
 name	set_Standardwerte	set_3t SF 20.5mm, Seil (F30 TB)	set_Mounty 3000, 18.5mm (F30 TB)	std_val	label	unit	ftype	dtype	min	max	tooltip	sort
 Q	25	33.94	34		Gewicht der Last inkl. Laufwagen	kN	field	float	1	100	Gewicht der Last inkl. Laufwagen	1
-qT	0.0228	0.0189	0.0168		Gewicht Tragseil	kN/m	field	float	0.001	1	Gewicht Tragseil	2
-A	380	329.9	268.67		Querschnittssfläche Tragseil	mm2	field	float	50	5000	Querschnittssfläche Tragseil	3
-E	100	100	100		Elastizitätsmodul Tragseil	kN/mm2	field	float	10	1000	Elastizitätsmodul Tragseil	4
+qT	0.0228	0.0189	0.0168		Gewicht Tragseil	kN/m	field	float	0.001	1	Gewicht des Tragseils	2
+A	380	329.9	268.67		Querschnittssfläche Tragseil	mm2	field	float	50	5000	Querschnittssfläche des Tragseils	3
+E	100	100	100		Elastizitätsmodul Tragseil	kN/mm2	field	float	10	1000	Elastizitätsmodul des Tragseils	4
 zul_SK	179	181	148		Maximal zulässige Seilzugkraft	kN	field	float	10	500	Maximal zulässige Seilzugkraft	5
 min_SK	50	50	50		Minimal zulässige Seilzugkraft	kN	field	float	10	zul_SK	Minimal zulässige Seilzugkraft	6
 qz1	0.0058	0.0059	0.0059		Gewicht des Zugseils links	kN/m	field	float	0	1	Gewicht des Zugseils links	7
 qz2	0	0	0		Gewicht des Zugseils rechts	kN/m	field	float	0	1	Gewicht des Zugseils rechts	8
-Bodenabst_min	7	7	7		Minimaler Abstand Tragseil - Boden	m	field	float	0	HM_min	Minimaler Abstand Seil - Boden	9
-Bodenabst_A	40	40	40		einzuhalten ab (vom Startpunkt)	m	field	int	0	200	    einzuhalten ab (vom Startpunkt)	10
-Bodenabst_E	40	40	40		einzuhalten bis (vor dem Endpunkt)	m	field	int	0	200	    einzuhalten bis (vor dem Endpunkt)	11
-GravSK	ja	ja	ja		Gravitationsseilkran?		drop_field	string	nein	ja	Gravitationsseilkran?	12
-Befahr_A	0	0	0		Befahrbarkeit ab (vom Startpunkt)	m	field	int	0	1000	    Befahrbarkeit ab (vom Startpunkt)	13
-Befahr_E	0	0	0		Befahrbarkeit bis (vor dem Endpunkt)	m	field	int	0	1000	    Befahrbarkeit bis (vor dem Endpunkt)	14
-HM_Anfang	11	11	13		Höhe der Anfangsstütze	m	field	int	0	30	Stützenhöhe am Anfang	15
-d_Anker_A	10	10	10		Länge der Verankerung	m	field	float	0	100	Verankerung Anfang - Länge	16
-HM_Ende_min	0	0	0		Minimale Höhe der Endstütze	m	field	int	0	HM_max	Minimale Höhe der Endstütze	17
-HM_Ende_max	10	10	10		Maximale Höhe der Endstütze	m	field	int	0	HM_max	Maximale Höhe der Endstütze	18
-d_Anker_E	10	10	10		Länge der Verankerung	m	field	float	0	100	Verankerung Ende - Länge	19
+Bodenabst_min	7	7	7		Minimaler Abstand Tragseil - Boden	m	field	float	0	HM_min	Minimaler Abstand Seil - Boden, Achtung: kleiner oder gleich minimale Stützenhöhe	9
+Bodenabst_A	40	40	40		einzuhalten ab (vom Startpunkt)	m	field	int	0	200	einzuhalten ab ... Meter vom Startpunkt	10
+Bodenabst_E	40	40	40		einzuhalten bis (vor dem Endpunkt)	m	field	int	0	200	einzuhalten bis ... Meter vor dem Endpunkt	11
+GravSK	ja	ja	ja		Gravitationsseilkran?		drop_field	string	nein	ja	Gravitationsseilkran ja/nein?	12
+Befahr_A	0	0	0		Befahrbarkeit ab (vom Startpunkt)	m	field	int	0	1000	Befahrbarkeit ab ... Meter vom Startpunkt	13
+Befahr_E	0	0	0		Befahrbarkeit bis (vor dem Endpunkt)	m	field	int	0	1000	Befahrbarkeit bis ... Meter vor dem Endpunkt	14
+HM_Anfang	11	11	13		Höhe der Anfangsstütze	m	field	int	0	30	Höhe der Anfangsstütze	15
+d_Anker_A	10	10	10		Länge der Verankerung	m	field	float	0	100	Länge der Verankerung bei der Anfangsstütze	16
+HM_Ende_min	0	0	0		Minimale Höhe der Endstütze	m	field	int	0	HM_max	Minimal zulässige Höhe der Endstütze	17
+HM_Ende_max	10	10	10		Maximale Höhe der Endstütze	m	field	int	0	HM_max	Maximal zulässige Höhe der Endstütze	18
+d_Anker_E	10	10	10		Länge der Verankerung	m	field	float	0	100	Länge der Verankerung bei der Endstütze	19
 Min_Dist_Mast	10	10	10		Minimaler Abstand zwischen Stützen	m	field	int	0	200	Minimaler Abstand zwischen Stützen	20
-L_Delta	10	10	10		Horiz. Auflösung mögl. Stützenstandorte	m	field	int	1	20	Horiz. Auflösung mögl. Stützenstandorte	21
+L_Delta	10	10	10		Horiz. Auflösung mögl. Stützenstandorte	m	field	int	1	20	Horizontale Auflösung möglicher Stützenstandorte	21
 N_Zw_Mast_max	10	10	10		Maximale Anzahl Zwischenstützen		field	int	1	30	Maximale Anzahl Zwischenstützen	22
-HM_min	8	8	8		Minimale Stützenhöhe	m	field	int	Bodenabst_min	HM_max	    Minimale Stützenhöhe	23
-HM_max	18	18	18		Maximal Stützenhöhe	m	field	int	HM_min	30	    Maximal Stützenhöhe	24
-HM_Delta	2	2	2		Abstufungsinterval	m	field	int	1	5	    Abstufungsinterval	25
-HM_nat	14	14	14		Künstliche Stützen ab Stützenhöhe	m	field	int	0	100	Künstliche Stützen ab Stützenhöhe	26
+HM_min	8	8	8		Minimale Stützenhöhe	m	field	int	Bodenabst_min	HM_max	Minimale Stützenhöhe, Achtung: grösser oder gleich minimaler Bodenabstand	23
+HM_max	18	18	18		Maximal Stützenhöhe	m	field	int	HM_min	30	Maximale Stützenhöhe	24
+HM_Delta	2	2	2		Abstufungsinterval	m	field	int	1	5	Abstufungsinterval der möglichen Stützenhöhen	25
+HM_nat	14	14	14		Künstliche Stützen ab Stützenhöhe	m	field	int	0	100	Künstliche Stützen werden ab ... Höhe verwendet	26
 A_SK				12	Anfangsseilkraft	kN	no_field	float	1	500	Anfangsseilkraft	27
 Min_Gradient				0	Min. nötiger Gradient		no_field	float	0	inf	Min. nötiger Gradient	28
 Federkonstante				inf	Federkonstante der Verankerung	kN/m	no_field	float	0	inf	Federkonstante der Verankerung	29
