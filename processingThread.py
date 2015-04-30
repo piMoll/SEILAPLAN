@@ -34,17 +34,17 @@ from tool.outputReport import getTimestamp, plotData, generateReportText, \
 from tool.outputGeo import generateGeodata, addToMap, generateCoordTable
 
 
-textOK = (u"Die Berechnungen wurden erfolgreich abgeschlossen! Die Ergebnisse "
+textOK = (u"Die Berechnungen wurden <b>erfolgreich</b> abgeschlossen! Die Ergebnisse "
           u"sind in folgendem Ordner abgespeichert:")
-textSeil = (u"Die Seillinie wurde berechnet, das Tragseil hebt jedoch "
-            u"bei mindestens einer Stütze ab. "
+textSeil = (u"Die Seillinie wurde berechnet, das <b>Tragseil hebt jedoch "
+            u"bei mindestens einer Stütze ab</b>."
             u"Die Resultate sind in folgendem Ordner abgespeichert:")
-textHalf = (u"Die Seillinie konnte nicht komplett berechnet werden, es "
+textHalf = (u"Die Seillinie konnte <b>nicht komplett berechnet</b> werden, es "
             u"sind nicht genügend Stützenstandorte bestimmbar. Die "
             u"unvollständigen Resultate sind in folgendem Ordner "
             u"abgespeichert:")
-textBad = (u"Aufgrund der Geländeform oder den Eingabeparametern konnten keine "
-           u"Stützenstandorte bestimmt werden. Es wurden keine Output-Daten "
+textBad = (u"Aufgrund der Geländeform oder der Eingabeparameter konnten <b>keine "
+           u"Stützenstandorte bestimmt</b> werden. Es wurden keine Output-Daten "
            u"erzeugt.")
 
 class MultithreadingControl(QDialog):
