@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <?xml-stylesheet type="text/xsl" href="plugins.xsl" ?>
 <plugins>
- <pyqgis_plugin version="1.0" name="SEILAPLAN">
+ <pyqgis_plugin version="1.1" name="SEILAPLAN">
   <qgis_minimum_version>2.4.0</qgis_minimum_version>
   <description>Seilkran-Layoutplaner - Berechnet basierend auf einem digitalen Höhenmodell zwischen definierten Anfangs- und Endkoordinaten sowie technischer Parametern das optimale Seillinienlayout. Resultate der Berechnung sind Position und Höhe der Stützen und die wichtigsten Kennwerte der Seillinie.</description>
   <homepage><![CDATA[http://www.lue.ethz.ch/]]></homepage>

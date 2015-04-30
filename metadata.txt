@@ -12,7 +12,7 @@ qgisMinimumVersion=2.0
 description=Seilkran-Layoutplaner
 version=1.0
 author=Patricia Moll, Leo Bont
-email=pi1402@gmail.com
+email=patricia.edith.moll@gmail.com;leo.bont@gmail.com
 
 # End of mandatory metadata
 
