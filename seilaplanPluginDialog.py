@@ -28,7 +28,7 @@ import unicodedata
 
 # GUI and QGIS libraries
 from PyQt4 import QtCore, QtGui
-from PyQt4.QtCore import QObject, SIGNAL, QFileInfo
+from PyQt4.QtCore import QObject, SIGNAL, QFileInfo, QSettings
 from qgis.core import QGis, QgsRasterLayer, QgsVectorLayer, QgsGeometry, \
     QgsPoint, QgsFeature, QgsMapLayerRegistry
 from qgis.gui import QgsRubberBand
@@ -815,20 +815,36 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
             self.osmLyrOn = True
 
     def onClickContourButton(self):
+        # Get current CRS of qgis project
+        s = QSettings()
+        oldValidation = s.value("/Projections/defaultBehaviour")
+        crs = self.canvas.mapSettings().destinationCrs()
+        crsEPSG = crs.authid()
+        # If project and raster CRS are equal and set correctly
+        if crsEPSG == self.dhm['spatialRef'] and u"USER" not in crsEPSG:
+            s.setValue("/Projections/defaultBehaviour", u"useProject")
+        else:
+            crs = self.dhm['layer'].crs()
+
         contourLyr = self.dhm['contour']
         if contourLyr:
             QgsMapLayerRegistry.instance().removeMapLayer(contourLyr.id())
         else:
             algOutput = processing.runalg("gdalogr:contour", self.dhm['layer'],
-                                       100.0, "Hoehe", None, None)
+                                          20.0, "Hoehe", None, None)
             contourPath = algOutput['OUTPUT_VECTOR']
             contourName = u"Hoehenlinien_" + self.dhm['name']
             contour = QgsVectorLayer(contourPath, contourName, "ogr")
+            # Set the same CRS as qgis project
+            contour.setCrs(crs)
             QgsMapLayerRegistry.instance().addMapLayer(contour)
             self.dhm['contour'] = contour
+            s.setValue("/Projections/defaultBehaviour", oldValidation)
+
         # More useful stuff
-        # layer.crs().authid() == u'EPSG:21781'
-        # layer.featureCount()
+        # uri = "linestring?crs=epsg:{}".format(crsNum)
+        # contourName = u"Hoehenlinien_" + self.dhm['name']
+        # contour = QgsVectorLayer(uri, contourName,  "memory")
 
     ###########################################################################
     ### Methods for loading and saving projects
