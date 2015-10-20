@@ -59,6 +59,7 @@ target/
 # project specific
 backups+testFiles/
 commonPaths.txt
+paramsBackup.txt
 *.txt~
 YenKSP/
 networkx/
