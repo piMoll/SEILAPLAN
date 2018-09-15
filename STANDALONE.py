@@ -11,7 +11,7 @@ from tool.outputReport import getTimestamp, plotData, generateReportText, \
 from tool.outputGeo import generateGeodata, generateCoordTable
 from tool.mainSeilaplan import main as mainSeilaplan
 
-class Dummy():
+class Dummy:
     def __init__(self):
         self.running = True
 
@@ -132,7 +132,7 @@ def main(storeDump):
     #              stdoutToServer=True, stderrToServer=True)
 
     # Berechnungen starten
-    [result, resultStatus] = mainSeilaplan(inputData, projInfo)
+    [result, resultStatus] = mainSeilaplan(Dummy, inputData, projInfo)
     # Resultate entpacken
     [t_start, disp_data, seilDaten, gp, HM,
      konkav, IS, kraft, optSTA, optiLen] = result

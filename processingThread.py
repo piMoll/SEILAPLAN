@@ -24,8 +24,10 @@ import os
 import sys
 import subprocess
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt4.QtCore import Qt, QObject, QThread, SIGNAL
+from PyQt4.QtGui import QDialog, QVBoxLayout, QProgressBar, QLabel, \
+    QHBoxLayout, QDialogButtonBox, QSizePolicy, QPushButton, QSpacerItem, \
+    QLayout
 
 # Import Tool Scripts
 from tool.mainSeilaplan import main

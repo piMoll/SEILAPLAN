@@ -25,7 +25,7 @@
 """
 
 import numpy as np
-from PyQt4.QtCore import *
+from PyQt4.QtCore import Qt
 
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure

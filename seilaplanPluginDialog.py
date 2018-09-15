@@ -25,14 +25,17 @@ import io
 import re
 from operator import itemgetter
 import unicodedata
+from math import atan, pi
 
 # GUI and QGIS libraries
-from PyQt4 import QtCore, QtGui
-from PyQt4.QtCore import QObject, SIGNAL, QFileInfo, QSettings
+from PyQt4.QtCore import QObject, SIGNAL, QFileInfo, QSettings, QString, \
+    QFileInfo
+from PyQt4.QtGui import QDialog, QAction, QIcon, QColor, QMessageBox, \
+    QFileDialog, QPixmap
 from qgis.core import QGis, QgsRasterLayer, QgsVectorLayer, QgsGeometry, \
     QgsPoint, QgsFeature, QgsMapLayerRegistry
 from qgis.gui import QgsRubberBand
-import processing
+from processing import runalg
 
 # Further GUI modules for functionality
 from gui.guiHelperFunctions import Raster, valueToIdx, QgsStueMarker, \
@@ -47,7 +50,7 @@ from gui.profileDialog import ProfileWindow
 
 # UTF-8 coding
 try:
-    utf8 = QtCore.QString.fromUtf8
+    utf8 = QString.fromUtf8
 except AttributeError:
     utf8 = lambda s: s
 
@@ -88,9 +91,9 @@ infoTxt = (u"SEILAPLAN - Seilkran-Layoutplaner\n\n"
     u"veröffentlichten Version, weiterverbreiten und/oder modifizieren.\n")
 
 
-class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
+class SeilaplanPluginDialog(QDialog, Ui_Dialog):
     def __init__(self, interface, helper):
-        QtGui.QDialog.__init__(self, interface.mainWindow())
+        QDialog.__init__(self, interface.mainWindow())
         # import pydevd
         # pydevd.settrace('localhost', port=53100,
         #             stdoutToServer=True, stderrToServer=True)
@@ -99,8 +102,8 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
         self.iface = interface
         # QGIS map canvas
         self.canvas = self.iface.mapCanvas()
-        self.action = QtGui.QAction(
-            QtGui.QIcon(":/plugins/SeilaplanPlugin/icons/icon_app.png"),
+        self.action = QAction(
+            QIcon(":/plugins/SeilaplanPlugin/icons/icon_app.png"),
             u"SEILAPLAN", self.iface.mainWindow())
         self.action.setWhatsThis("SEILAPLAN")
         # Separate class to start algorithm
@@ -169,7 +172,7 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
         # Drawn line
         self.rubberband = QgsRubberBand(self.canvas, self.polygon)
         self.rubberband.setWidth(3)
-        self.rubberband.setColor(QtGui.QColor(231, 28, 35))
+        self.rubberband.setColor(QColor(231, 28, 35))
         self.markers = []           # Point markers on each end of the line
         self.pointsToDraw = []
         self.dblclktemp = None
@@ -399,7 +402,7 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
                 break
         if not rasterFound:
             if os.path.exists(path):
-                baseName = QtCore.QFileInfo(path).baseName()
+                baseName = QFileInfo(path).baseName()
                 rlayer = QgsRasterLayer(path, baseName)
                 QgsMapLayerRegistry.instance().addMapLayer(rlayer)
                 self.updateRasterList()
@@ -410,7 +413,7 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
                 txt = u"Raster mit dem Pfad {} ist " \
                       u"nicht vorhanden".format(path)
                 title = u"Fehler beim Laden des Rasters"
-                QtGui.QMessageBox.information(self, title, txt)
+                QMessageBox.information(self, title, txt)
 
     def setCorrectRasterInField(self, rasterName):
         for idx in range(self.rasterField.count()):
@@ -695,14 +698,13 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
     def setAzimut(self):
         dx = (self.pointE[0] - self.pointA[0]) * 1.0
         dy = (self.pointE[1] - self.pointA[1]) * 1.0
-        import math
         if dx == 0:
             dx = 0.0001
-        azimut = math.atan(dy/dx)
+        azimut = atan(dy/dx)
         if dx > 0:
-            azimut += 2 * math.pi
+            azimut += 2 * pi
         else:
-            azimut += math.pi
+            azimut += pi
         self.azimut = azimut
 
     def checkLenghtStatus(self):
@@ -830,7 +832,7 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
         if contourLyr:
             QgsMapLayerRegistry.instance().removeMapLayer(contourLyr.id())
         else:
-            algOutput = processing.runalg("gdalogr:contour", self.dhm['layer'],
+            algOutput = runalg("gdalogr:contour", self.dhm['layer'],
                                           20.0, "Hoehe", None, None)
             contourPath = algOutput['OUTPUT_VECTOR']
             contourName = u"Hoehenlinien_" + self.dhm['name']
@@ -863,7 +865,7 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
     def onLoadProjects(self):
         title = 'Projekt laden'
         fFilter = 'Txt Dateien (*.txt)'
-        filename = QtGui.QFileDialog.getOpenFileName(self, title,
+        filename = QFileDialog.getOpenFileName(self, title,
                                         self.outputOpt['outputPath'], fFilter)
         if filename:
             self.loadProj(filename)
@@ -902,8 +904,8 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
     def onSaveProjects(self):
         title = 'Projekt speichern'
         fFilter = 'TXT (*.txt)'
-        dialog = QtGui.QFileDialog(self, title, self.outputOpt['outputPath'])
-        dialog.setAcceptMode(QtGui.QFileDialog.AcceptSave)
+        dialog = QFileDialog(self, title, self.outputOpt['outputPath'])
+        dialog.setAcceptMode(QFileDialog.AcceptSave)
         dialog.setNameFilter(fFilter)
         dialog.setDefaultSuffix('txt')
         if self.projName != '':
@@ -971,8 +973,8 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
             return False, False
 
     def onInfo(self):
-        QtGui.QMessageBox.information(self, "SEILAPLAN Info", infoTxt,
-                                      QtGui.QMessageBox.Ok)
+        QMessageBox.information(self, "SEILAPLAN Info", infoTxt,
+                                QMessageBox.Ok)
 
     def getParamOrder(self):
         """Get order of parameters to layout them correctly for the output
@@ -990,7 +992,7 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
         imgPath = os.path.join(self.homePath, 'img', infoType + '.png')
         self.imgBox.setWindowTitle(infoTitle)
         # Load image
-        myPixmap = QtGui.QPixmap(imgPath)
+        myPixmap = QPixmap(imgPath)
         self.imgBox.label.setPixmap(myPixmap)
         self.imgBox.setLayout(self.imgBox.container)
         self.imgBox.show()
@@ -1058,8 +1060,7 @@ class SeilaplanPluginDialog(QtGui.QDialog, Ui_Dialog):
             errorMsg += nl.join(errTxt)
             if errorCount >= 10:
                 errorMsg = u"Bitte definieren Sie einen Parametersatz."
-            QtGui.QMessageBox.information(self, 'Fehler', errorMsg,
-                                          QtGui.QMessageBox.Ok)
+            QMessageBox.information(self, 'Fehler', errorMsg, QMessageBox.Ok)
             return finalErrorState, {}, {}
 
         # Get general project info

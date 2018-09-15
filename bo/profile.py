@@ -1,8 +1,7 @@
 #from qgis.core import QgsMessageLog
 from plotExtent import PlotExtent
 #import itertools
-from PyQt4.QtGui import *
-import os
+from PyQt4.QtGui import QApplication
 
 
 class Profile:
