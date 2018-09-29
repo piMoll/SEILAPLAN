@@ -4,18 +4,18 @@ import time
 import os
 import sys
 import numpy as np
-from PyQt4.QtCore import SIGNAL
+
 # Pfad zu zusätzliche Libraries ergänzen
 packagesPath = os.path.join(os.path.dirname(
                             os.path.dirname(__file__)), 'packages')
 sys.path.append(packagesPath)
 
 
-from geoExtract import generateDhm, calcProfile, stuePos, \
+from .geoExtract import generateDhm, calcProfile, stuePos, \
     calcAnker, updateAnker, markFixStue
-from mainOpti import optimization
-from cablelineFinal import preciseCable
-from outputReport import vectorData
+from .mainOpti import optimization
+from .cablelineFinal import preciseCable
+from .outputReport import vectorData
 
 
 def checkInputParams(IS):
@@ -51,7 +51,7 @@ def main(progress, IS, projInfo):
     DeltaH = 1      # DEFAULT 1m Genauigkeit, nicht änderbar!
     # Mindestdistanz zwischen Masten
     DeltaL = IS["L_Delta"][0]       # int
-    coeff = DeltaL/DeltaH
+    coeff = int(DeltaL/DeltaH)
     inputPoints = projInfo['Anfangspunkt'][:]
     inputPoints += projInfo['Endpunkt'][:]
 
@@ -75,8 +75,7 @@ def main(progress, IS, projInfo):
     out = optimization(IS, gp, StuetzenPos, progress)
     if not out:
         return False
-    progress.emit(SIGNAL("text(PyQt_PyObject)"), u"Berechnung der optimale "
-                                                 u"Seillinie...")
+    progress.sig_text.emit("Berechnung der optimale Seillinie...")
     [HM, HMidx, optValue, optSTA, optiLen] = out
     stuetzIdx = np.int32(diIdx[HMidx])
     IS['Ank'] = updateAnker(IS['Ank'], HM, stuetzIdx)
@@ -102,7 +101,7 @@ def main(progress, IS, projInfo):
     if not seil_possible:       # Falls Seil von Stütze abhebt
         resultStatus.append(2)
 
-    progress.emit(SIGNAL("value(PyQt_PyObject)"), optiLen*1.005)
+    progress.sig_value.emit(optiLen*1.005)
 
     # Transformiere berechnete Daten in richtiges Koordinatensystem)
     [disp_data, seilDaten, HM] = vectorData(gp['xi'], gp['yi'], gp['di_n'],

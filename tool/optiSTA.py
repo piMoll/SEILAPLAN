@@ -11,7 +11,8 @@
 # Licence:     <your licence>
 #------------------------------------------------------------------------------
 """
-from cableline import calcCable, calcBandH
+
+from .cableline import calcCable, calcBandH
 
 
 def calcSTA(IS, zi, di, sc, befGSK, H_Anfangsmast, H_Endmast, z_null,

@@ -4,7 +4,7 @@
     This implementation uses a modified Dijkstra algorithm
     for computing shortest paths to allow its use in diverse route computations.
 """
-from ..packages import networkx as nx
+from packages import networkx as nx
 import heapq
 
 class YenKShortestPaths(object):

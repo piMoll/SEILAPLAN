@@ -13,7 +13,7 @@
 """
 
 import numpy as np
-import math
+from math import pi
 
 
 def xfrange(start, stop, step):
@@ -274,8 +274,8 @@ def preciseCable(zi, di, HM, LP, IS):
     phi_un =  np.array([np.nan]*anzStue)
     phi_ob[1:] = np.arctan(tg_phi_ob)
     phi_un[:-1] = np.arctan(tg_phi_un)
-    phi[0] = phi_ob / math.pi*180
-    phi[1] = phi_un / math.pi*180
+    phi[0] = phi_ob / pi*180
+    phi[1] = phi_un / pi*180
     kraft['Anlegewinkel_Lastseil'] = phi
 
     # Seilzugkräfte
@@ -329,11 +329,11 @@ def preciseCable(zi, di, HM, LP, IS):
     phi_o = phi_o
     phi_u = phi_u
     phi_leer = np.array([[np.nan]*anzStue]*2)
-    phi_leer[0] = phi_o / math.pi*180
-    phi_leer[1] = phi_u / math.pi*180
+    phi_leer[0] = phi_o / pi*180
+    phi_leer[1] = phi_u / pi*180
     kraft['Anlegewinkel_Leerseil'] = phi_leer
     # TODO: Werte sind +- 2 Grad anders als in matlab
-    kraft['Leerseilknickwinkel'] = (phi_o - phi_u) / math.pi*180
+    kraft['Leerseilknickwinkel'] = (phi_o - phi_u) / pi*180
 
     # TODO: Test funktioniert nicht richtig. Wenn Winkel negativ ist, ist Nachweis nicht erbracht
     # TODO: Beim Test für Fall: Anker-Anfangsstütze oder Endstütze-Anker nur Warnung ausgeben, dass Anker kürzer gewählt werden müssen
@@ -513,7 +513,7 @@ def preciseCableLight(zi, di, IS, STA, HM, LP):
     phi_u[-1] = phi_oE
 
     # TODO: Werte sind +- 2 Grad anders als in matlab
-    leerseilknickwinkel = (phi_o - phi_u) / math.pi*180
+    leerseilknickwinkel = (phi_o - phi_u) / pi*180
 
     zqT = z*qT
     ST = STA + zqT

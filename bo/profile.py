@@ -1,7 +1,7 @@
-#from qgis.core import QgsMessageLog
-from plotExtent import PlotExtent
-#import itertools
-from PyQt4.QtGui import QApplication
+# -*- coding: utf-8 -*-
+
+from .plotExtent import PlotExtent
+from qgis.PyQt.QtWidgets import QApplication
 
 
 class Profile:

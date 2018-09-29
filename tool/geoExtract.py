@@ -18,7 +18,7 @@ import math
 from scipy import interpolate
 from osgeo import gdal
 
-from peakdetect import peakdetect
+from .peakdetect import peakdetect
 
 # Spezieller Import, noetig für Operation 'scipy interpolate'
 # frozen == Programm wird in EXE verwandelt
@@ -26,7 +26,7 @@ from peakdetect import peakdetect
 #     from scipy.sparse.csgraph import _validation
 
 p = 21
-nl = unicode(os.linesep)
+nl = os.linesep
 
 
 def generateDhm(rasterdata, coords):
@@ -167,7 +167,7 @@ def calcProfile(inputPoints, rasterdata, IS, Delta, coeff):
     #                      stdoutToServer=True, stderrToServer=True)
 
     # Distanz in der Horizontalen
-    di = np.array(range(len(zi))) * 1.0
+    di = np.arange(len(zi)) * 1.0
 
     # Da Y-Achse und DHM gespiegelt sind, müsse Koordianten vertauscht und
     # umgekehrt werden

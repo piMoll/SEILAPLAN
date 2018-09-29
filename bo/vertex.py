@@ -2,10 +2,8 @@
 
 import os
 import unicodedata
-from PyQt4.QtCore import QVariant
-from settings import enumVertexType
-from qgis.core import QGis
-from qgis.core import QgsMessageLog
+from qgis.PyQt.QtCore import QVariant
+from .settings import enumVertexType
 
 
 class Vertex:
@@ -27,17 +25,18 @@ class Vertex:
                  ):
         self.attribNames = []
         self.attributes = []
-        if QGis.QGIS_VERSION_INT < 10900:
-            for (k, attr) in attribMap.iteritems():
-                #QgsMessageLog.logMessage('new Vextex: {0}:{1}'.format(k, attr.toString()), 'VoGis')
-                if fields is not None:
-                    self.attribNames.append(fields[k].name())
-                self.attributes.append(attr)
-        else:
-            for k in range(len(attribMap)):
-                if fields is not None:
-                    self.attribNames.append(fields[k].name())
-                self.attributes.append(attribMap[k])
+        # if QGis.QGIS_VERSION_INT < 10900:
+        #     from qgis.core import QgsMessageLog
+        #     for (k, attr) in attribMap.items():
+        #         #QgsMessageLog.logMessage('new Vextex: {0}:{1}'.format(k, attr.toString()), 'VoGis')
+        #         if fields is not None:
+        #             self.attribNames.append(fields[k].name())
+        #         self.attributes.append(attr)
+        # else:
+        for k in range(len(attribMap)):
+            if fields is not None:
+                self.attribNames.append(fields[k].name())
+            self.attributes.append(attribMap[k])
         self.vertexType = vertexType
         self.x = x
         self.y = y
@@ -112,10 +111,10 @@ class Vertex:
             else:
                 a2 = a
             #if isinstance(a2, (int, long, float, complex)):
-            if isinstance(a2, (long, float, complex)):
+            if isinstance(a2, (int, float, complex)):
                 aTxt += ('{0}{1:.2f}'.format(delimiter, a2)).replace('.', decimalDelimiter)
             else:
-                aTxt += '{0}{1}'.format(delimiter, unicodedata.normalize('NFKD', unicode(a2)).encode('ascii', 'ignore'))
+                aTxt += '{0}{1}'.format(delimiter, unicodedata.normalize('NFKD', str(a2)).encode('ascii', 'ignore'))
         return aTxt
 
     def getAttributeVals(self):
@@ -129,10 +128,10 @@ class Vertex:
             #if isinstance(a2, (int, long, float, complex)):
             if isinstance(a2, float):
                 attribs.append(round(a2, 3))
-            elif isinstance(a2, (long, float, complex)):
+            elif isinstance(a2, (int, float, complex)):
                 attribs.append(a2)
             else:
-                attribs.append(unicodedata.normalize('NFKD', unicode(a2)).encode('ascii', 'ignore'))
+                attribs.append(unicodedata.normalize('NFKD', str(a2)).encode('ascii', 'ignore'))
         return attribs
 
     def getType(self):

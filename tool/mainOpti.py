@@ -13,11 +13,10 @@
 # Licence:      <your licence>
 #------------------------------------------------------------------------------
 """
-
 import numpy as np
-from PyQt4.QtCore import SIGNAL
-from geoExtract import ismember
-from optiSTA import calcSTA
+
+from .geoExtract import ismember
+from .optiSTA import calcSTA
 import scipy.sparse as sps
 # from optiSolutionPath import findOptiSolution
 
@@ -162,15 +161,14 @@ def optimization(IS, gp, StuetzenPos, progress):
     d_ende = di[-1]
 
     # Progressbar einrichten
-    progress.emit(SIGNAL("range(PyQt_PyObject)"), [0, optiLen*1.02])
-    progress.emit(SIGNAL("text(PyQt_PyObject)"), u"Berechnung der optimalen "
-                                                 u"Stützenpositionen...")
+    progress.sig_range.emit([0, optiLen*1.02])
+    progress.sig_text.emit("Berechnung der optimalen Stützenpositionen...")
 
     for i in range(optiLen):
         if not progress.running:
-            # Überprüfen ob vom Benutzer ein Abbruch durchgeführt wurde
+        #     # Überprüfen ob vom Benutzer ein Abbruch durchgeführt wurde
             return False
-        progress.emit(SIGNAL("value(PyQt_PyObject)"), i)
+        progress.sig_value.emit(i)
         zi_part = zi_n[Pos_gp_A[i]:Pos_gp_E[i]+1]
         di_part = di_n[Pos_gp_A[i]:Pos_gp_E[i]+1]
         sc_part = sc[Pos_gp_A[i]:Pos_gp_E[i]+1]

@@ -13,7 +13,7 @@
 #------------------------------------------------------------------------------
 """
 import numpy as np
-import math
+from math import cos, sin, atan, pi
 import os
 import csv
 import osgeo.ogr as ogr
@@ -43,13 +43,13 @@ def generateGeodata(projInfo, HM, seilDaten, stueLabel, savePath):
     dy = float(Ey - Ay)
     if dx == 0:
         dx = 0.0001
-    azimut = math.atan(dy/dx)
+    azimut = atan(dy/dx)
     if dx > 0:
-        azimut += 2 * math.pi
+        azimut += 2 * pi
     else:
-        azimut += math.pi
-    seilX = Ax + seilHoriDist * math.cos(azimut)
-    seilY = Ay + seilHoriDist * math.sin(azimut)
+        azimut += pi
+    seilX = Ax + seilHoriDist * cos(azimut)
+    seilY = Ay + seilHoriDist * sin(azimut)
 
     stueGeo = np.swapaxes(np.array([HM['x'], HM['y'], HM['z']]), 1, 0)
     seilLeerGeo = np.swapaxes(np.array([seilX, seilY, seilLeerZ]), 1, 0)
@@ -146,15 +146,15 @@ def checkShpPath(path):
             os.remove(path+ending)
 
 def addToMap(iface, geodata, projName):
-    from qgis.core import QgsVectorLayer, QgsMapLayerRegistry, QgsProject
+    from qgis.core import QgsVectorLayer, QgsProject
     stue = QgsVectorLayer(geodata['stuetzen'], u"Stützen", "ogr")
     leerseil = QgsVectorLayer(geodata['leerseil'], u"Leerseil", "ogr")
     lastseil = QgsVectorLayer(geodata['lastseil'], u"Lastseil", "ogr")
 
     # Map Layer erstellen
-    QgsMapLayerRegistry.instance().addMapLayer(stue, False)
-    QgsMapLayerRegistry.instance().addMapLayer(leerseil, False)
-    QgsMapLayerRegistry.instance().addMapLayer(lastseil, False)
+    QgsProject.instance().addMapLayer(stue, False)
+    QgsProject.instance().addMapLayer(leerseil, False)
+    QgsProject.instance().addMapLayer(lastseil, False)
 
     # Neue Layer-Gruppe im TOC erstellen und Layer hinzufügen
     root = QgsProject.instance().layerTreeRoot()

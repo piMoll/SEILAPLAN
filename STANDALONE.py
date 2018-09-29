@@ -14,6 +14,10 @@ from tool.mainSeilaplan import main as mainSeilaplan
 class Dummy:
     def __init__(self):
         self.running = True
+        
+    def emit(*args):
+        return
+    
 
 
 def main(storeDump):
@@ -126,16 +130,28 @@ def main(storeDump):
 
 
     [inputData, projInfo] = userInput
+    
+    #Hack
+    inputData['HM_nat'] = [14, 14, 14]
 
     # import pydevd
     # pydevd.settrace('localhost', port=53100,
     #              stdoutToServer=True, stderrToServer=True)
 
     # Berechnungen starten
-    [result, resultStatus] = mainSeilaplan(Dummy, inputData, projInfo)
+    output = mainSeilaplan(Dummy(), inputData, projInfo)
     # Resultate entpacken
+    [result, resultStatus] = output
+    # Output resultStatus
+    #   1 = Optimization successful
+    #   2 = Cable takes off from support
+    #   3 = Optimization partially successful
+    #   4 = Optimization not successful
+    if resultStatus == 4:
+        return
+    # Unpack results
     [t_start, disp_data, seilDaten, gp, HM,
-     konkav, IS, kraft, optSTA, optiLen] = result
+     IS, kraft, optSTA, optiLen] = result
 
 
     # OUTPUT GENERIEREN
@@ -151,8 +167,8 @@ def main(storeDump):
         projInfo['projFile'] = newpath
     # Generiere Plot für Report
     plotSavePath = os.path.join(outputLoc, "{}_Diagramm.pdf".format(outputName))
-    plotImage, labelTxt = plotData(disp_data, gp["di"], seilDaten, konkav,
-                                   HM, inputData, projInfo,
+    plotImage, labelTxt = plotData(disp_data, gp["di"], seilDaten, HM,
+                                   inputData, projInfo,
                                    resultStatus, plotSavePath)
     # Berechnungsdauer und Zeitstempel auslesen
     duration, timestamp1, timestamp2 = getTimestamp(t_start)

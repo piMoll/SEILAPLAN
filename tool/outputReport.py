@@ -18,7 +18,7 @@ import math
 import time
 
 p = 21
-nl = unicode(os.linesep)
+nl = os.linesep
 
 
 def vectorData(xi, yi, di, zi_disp, seil, stuetzIdx, HM, possStue):
@@ -81,7 +81,7 @@ def getTimestamp(tStart):
 def plotData(disp_data, di, seilDaten, HM, IS, projInfo, resultStatus, locPlot):
     # import matplotlib
     # matplotlib.use('Cairo')
-    from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+    from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
     from matplotlib.figure import Figure
     import matplotlib.patheffects as PathEffects
     from matplotlib.font_manager import FontProperties
@@ -138,7 +138,9 @@ def plotData(disp_data, di, seilDaten, HM, IS, projInfo, resultStatus, locPlot):
 
     axes.plot(x_data, y_data, color='#6F9679', linewidth=3)
     axes.plot(HM['poss_x'], HM['poss_y'], 'o', markersize=6, color='#F3FF3E',
-             label=u"Mögliche Stützenstandorte")
+             label="Mögliche Stützenstandorte")
+    
+    
     # Ankerfelder
     if xAnkerseil[0] != xAnkerseil[1]:      # Falls Anker vom Benutzer definiert wurden
         axes.plot(xAnkerseil[:2], zAnkerseil[:2], color='#FF4D44', linewidth=1.8)
@@ -146,14 +148,14 @@ def plotData(disp_data, di, seilDaten, HM, IS, projInfo, resultStatus, locPlot):
         # Falls Anker vom Benutzer definiert wurden
         axes.plot(xAnkerseil[2:], zAnkerseil[2:], color='#FF4D44', linewidth=1.8)
     # Stützen
-    axes.vlines(idxStue, y_data[idxStue+p], zStue, colors='#484A4C',
-               linewidth='3')
+    # axes.vlines(idxStue.astype(float), y_data[idxStue+p].astype(float), zStue.astype(float), colors='#484A4C',
+    #            linewidth='3')
 
     # Beschriftungen setzten
     porjTitle = projInfo['Projektname']
-    horiLabel = u"Horizontaldistanz [m] von der Anfangsstütze aus"
-    vertiLabel = u"Höhe [m.ü.M]"
-    titelLabel = u"SEILAPLAN Diagramm\n{}".format(porjTitle)
+    horiLabel = "Horizontaldistanz [m] von der Anfangsstütze aus"
+    vertiLabel = "Höhe [m.ü.M]"
+    titelLabel = "SEILAPLAN Diagramm\n{}".format(porjTitle)
     axes.set_xlabel(horiLabel, fontsize=12)
     axes.set_ylabel(vertiLabel, verticalalignment='top', fontsize=12,
                     horizontalalignment='center', labelpad=20)
@@ -162,7 +164,8 @@ def plotData(disp_data, di, seilDaten, HM, IS, projInfo, resultStatus, locPlot):
     axes.set_ylim([data_ylow, data_yhi])
     axes.set_xlim([data_xlow, data_xhi])
     axes.set_aspect('equal')
-    stepx = stepy = 10
+    stepx = 10
+    stepy = 10
     if data_xhi >= 300:
         stepx = 20
     if data_xhi >= 500:
@@ -185,41 +188,41 @@ def plotData(disp_data, di, seilDaten, HM, IS, projInfo, resultStatus, locPlot):
     if np.sum(findFixStueX) > 0:
         ncol = 4
         axes.plot([data_xlow], [data_ylow], linewidth=0,
-                  label=(u"Fixe Stützen: ° = fixe Position, "
-                         u"°* = fixe Position und Höhe"))
+                  label=("Fixe Stützen: ° = fixe Position, "
+                         "°* = fixe Position und Höhe"))
     axes.legend(loc='lower center', prop=fontP, bbox_to_anchor=(0.5, 0),
                 ncol=ncol)
 
     # Annotiations (Beschriftungen im Graph) und Text für Report vorbereiten
     # ----------------------------------------------------------------------
     # Stützenbeschriftungen
-    stueLabel = [u"Anfangsstütze",  u"Endstütze"]
+    stueLabel = ["Anfangsstütze",  "Endstütze"]
     # Feldbeschriftungen
     feldLabel = []
     # Zwischenstützen hinzufügen
     i = 0
     for i in range(1, len(idxStue)-1):
-        marker = u''
+        marker = ''
         if findFixStueX[i] > 0:
-            marker = u'°'
+            marker = '°'
             if findFixStueZ[i] > 0:
-                marker = u'°*'
-        stueLabel.insert(i, u"{}. Stütze{}".format(i+1, marker))
-        feldLabel.insert(i-1, u"{}. Feld".format(i))
+                marker = '°*'
+        stueLabel.insert(i, "{}. Stütze{}".format(i+1, marker))
+        feldLabel.insert(i-1, "{}. Feld".format(i))
     # Letztes Feld hinzufügen
-    feldLabel.insert(i, u"{}. Feld".format(i+1))
+    feldLabel.insert(i, "{}. Feld".format(i+1))
 
     # Formatierung der Angaben für Stützenhöhen
     stueLabelH = []
     for i in range(len(hoeheStue)):
         if hoeheStue[i] == 0:        # Keine Höhenangabe falls Stütze == Anker
-            stueLabelH.append(u"")
+            stueLabelH.append("")
         else:
             # Formatierung je nach Zahlentyp mit oder ohne Nachkommastellen
             if hoeheStue[i]%1 == 0.0:
-                stueLabelH.append(u"{:.0f} m".format(hoeheStue[i]))
+                stueLabelH.append("{:.0f} m".format(hoeheStue[i]))
             else:
-                stueLabelH.append(u"{:.1f} m".format(hoeheStue[i]))
+                stueLabelH.append("{:.1f} m".format(hoeheStue[i]))
 
     for i in range(len(idxStue)):
         axes.annotate(stueLabel[i], xy=(idxStue[i], zStue[i]),
@@ -247,8 +250,9 @@ def plotData(disp_data, di, seilDaten, HM, IS, projInfo, resultStatus, locPlot):
     # outPlotPNG = os.path.join(outputLoc, '{}_Plot.png'.format(outputName))
     outPlotPDF = os.path.join(locPlot)
     # canvas.print_png(outPlotPNG, dpi=dpi)
-    canvas.print_pdf(outPlotPDF)
+    canvas.print_figure(outPlotPDF)
     del canvas
+    del fig
 
     return outPlotPDF, [stueLabel, feldLabel]
 
@@ -322,27 +326,27 @@ def generateReportText(IS, projInfo, HM, kraft, OptSTA, duration,
     # Abschnitt Zeit und Höhenmodell
     str_time = [[], ["Zeitpunkt", "{}, Berechnungsdauer: {}".format(timestamp, duration)],
                 ["Höhenmodell", hmodell], [],
-                [u"Erklärungen und Diagramme zu den technischen Werten sind "
-                 u"in der Dokumentation zu finden."],
-                [(u"Markierung für fixe Stützen: ° = fixe Position, "
-                    u"°* = fixe Position und Höhe")]]
+                ["Erklärungen und Diagramme zu den technischen Werten sind "
+                 "in der Dokumentation zu finden."],
+                [("Markierung für fixe Stützen: ° = fixe Position, "
+                    "°* = fixe Position und Höhe")]]
 
 
     # Abschnitt Stützenpositionen
     str_posi = [["", "Höhe", "X-Koordinate", "Y-Koordinate", "Z-Koordinate", "(M.ü.M)"]]
     for s in range(anzSt):
-        tex = u"{};{:.0f} m;{};{};{};".format(sHeader[s], HM['h'][s],
+        tex = "{};{:.0f} m;{};{};{};".format(sHeader[s], HM['h'][s],
             formatNum(HM['x'][s]), formatNum(HM['y'][s]), formatNum(HM['z'][s])).split(';')
         str_posi.append(tex)
 
-    sHeader = [label.strip(u"°*") for label in sHeader] # Markierungen entfernen
+    sHeader = [label.strip("°*") for label in sHeader] # Markierungen entfernen
 
     # Abschnitt Absteckung im Feld
     str_abst = [["Azimut: {:.1f} gon".format(az)],
-                ["", u"Horizontaldistanz", u"Schrägdistanz"]]
+                ["", "Horizontaldistanz", "Schrägdistanz"]]
     for f in range(anzFe):
-        tex = (u"von {} zu {},{: >3.0f} m,"
-               u"{: >3.0f} m").format(sHeader[f], sHeader[f+1], hDist[f], sDist[f]).split(',')
+        tex = ("von {} zu {},{: >3.0f} m,"
+               "{: >3.0f} m").format(sHeader[f], sHeader[f+1], hDist[f], sDist[f]).split(',')
         str_abst.append(tex)
 
     # Abschnitt Vorspannung der Seilzugkraft
@@ -494,8 +498,8 @@ def generateReportText(IS, projInfo, HM, kraft, OptSTA, duration,
         part3 = annahmen[i+lenAnn]
         str_anna.append(part1+part2+part3)
     # Add information about used parameter set
-    str_anna = [[u'Parameterset:', projInfo['Parameterset'], u'', u''],
-                [u'']*4] + str_anna
+    str_anna = [['Parameterset:', projInfo['Parameterset'], '', ''],
+                ['']*4] + str_anna
 
     text = [str_time, str_posi, str_abst, str_opti, str_laen, str_durc,
             str_seil, str_stue, str_wink, str_nach, str_anna]
@@ -704,7 +708,7 @@ def generateReport(reportText, savePath, projname):
         ('ALIGN', (4, 0), (4, -1), 'RIGHT'),
         ('FONT', (0, 0), (-1, -1), font, fontSize)]))
 
-    # notiz = [[u"Erklärungen und Diagramme zu den Seildaten sind in der Dokumentation zu finden."]]
+    # notiz = [["Erklärungen und Diagramme zu den Seildaten sind in der Dokumentation zu finden."]]
     # t_notiz = Table(notiz, Bdoc, Hzeile)
     # t_notiz.setStyle(TableStyle(stdStyleB + [
     #     ('FONT', (0, 0), (-1, -1), font, fontSize)

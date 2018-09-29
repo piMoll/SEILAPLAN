@@ -24,8 +24,8 @@
 #
 #---------------------------------------------------------------------
 
-from PyQt4.QtCore import Qt, SIGNAL
-from PyQt4.QtGui import QCursor
+from qgis.PyQt.QtCore import Qt
+from qgis.PyQt.QtGui import QCursor
 from qgis.gui import QgsMapTool
 
 class ProfiletoolMapTool(QgsMapTool):
@@ -37,19 +37,17 @@ class ProfiletoolMapTool(QgsMapTool):
         self.button = button
 
     def canvasMoveEvent(self, event):
-        self.emit( SIGNAL("moved"), {'x': event.pos().x(),
-                                     'y': event.pos().y()} )
+        self.moved.emit({'x': event.pos().x(), 'y': event.pos().y()})
 
     def canvasReleaseEvent(self, event):
         if event.button() == Qt.RightButton:
-            self.emit( SIGNAL("rightClicked"), {'x': event.pos().x(),
-                                                'y': event.pos().y()} )
+            self.rightClicked.emit({'x': event.pos().x(), 'y': event.pos().y()})
         else:
-            self.emit( SIGNAL("leftClicked"), {'x': event.pos().x(),
-                                               'y': event.pos().y()} )
+            self.leftClicked.emit({'x': event.pos().x(), 'y': event.pos().y()})
+
     def canvasDoubleClickEvent(self,event):
-        self.emit( SIGNAL("doubleClicked"), {'x': event.pos().x(),
-                                             'y': event.pos().y()} )
+        self.doubleClicked.emit({'x': event.pos().x(), 'y': event.pos().y()})
+
     def activate(self):
         QgsMapTool.activate(self)
         self.canvas.setCursor(self.cursor)
@@ -57,10 +55,7 @@ class ProfiletoolMapTool(QgsMapTool):
         self.button.setChecked(True)
 
     def deactivate(self):
-        # import pydevd
-        # pydevd.settrace('localhost', port=53100,
-        #             stdoutToServer=True, stderrToServer=True)
-        self.emit(SIGNAL("deactivate"))
+        self.deactivate.emit()
         self.canvas.setCursor(QCursor(Qt.OpenHandCursor))
         #self.button.setCheckable(False)
         QgsMapTool.deactivate(self)

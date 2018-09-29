@@ -20,23 +20,20 @@
  ***************************************************************************/
 """
 
-
-
-
 import os
-from PyQt4.QtCore import QSettings, QTranslator, qVersion, QCoreApplication, \
-    QObject, SIGNAL
-from PyQt4.QtGui import QAction, QIcon
+from qgis.PyQt.QtCore import QSettings, QTranslator, qVersion, QCoreApplication
+from qgis.PyQt.QtWidgets import QAction
+from qgis.PyQt.QtGui import QIcon
 import qgis.utils
 # Initialize Qt resources from file resources.py
-import resources_rc
+from . import resources_rc
 # GUI
-from seilaplanPluginDialog import SeilaplanPluginDialog
+from .seilaplanPluginDialog import SeilaplanPluginDialog
 # Algorithm
-from processingThread import MultithreadingControl, WorkerThread
+from .processingThread import MultithreadingControl, WorkerThread
 
 
-class SeilaplanPlugin:
+class SeilaplanPlugin(object):
     """QGIS Plugin Implementation."""
     def __init__(self, iface):
         # Save reference to the QGIS interface
@@ -59,13 +56,13 @@ class SeilaplanPlugin:
         # Create action that will start plugin configuration
         self.action = QAction(
             QIcon(":/plugins/SeilaplanPlugin/icons/icon_app.png"),
-            u"SEILAPLAN", self.iface.mainWindow())
+            "SEILAPLAN", self.iface.mainWindow())
         # Connect the action to the run method
-        QObject.connect(self.action, SIGNAL("triggered()"), self.run)
+        self.action.triggered.connect(self.run)
 
         # Add toolbar button and menu item
         self.iface.addToolBarIcon(self.action)
-        self.iface.addPluginToMenu(u"&SEILAPLAN", self.action)
+        self.iface.addPluginToMenu("&SEILAPLAN", self.action)
 
 
     def unload(self):
@@ -75,9 +72,13 @@ class SeilaplanPlugin:
 
     def run(self):
         """Run method that performs all the real work"""
-        # import pydevd
-        # pydevd.settrace('localhost', port=53100,
-        #             stdoutToServer=True, stderrToServer=True)
+        
+        try:
+            import pydevd
+            pydevd.settrace('localhost', port=53100,
+                        stdoutToServer=True, stderrToServer=True)
+        except ConnectionRefusedError:
+            pass
 
         # Control variables for possible rerun of algorithm
         reRun = True

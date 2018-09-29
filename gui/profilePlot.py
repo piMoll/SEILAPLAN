@@ -25,7 +25,7 @@
 """
 
 import numpy as np
-from PyQt4.QtCore import Qt
+from qgis.PyQt.QtCore import Qt
 
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -199,8 +199,8 @@ class QtMplCanvas(FigureCanvas):
         self.fig.canvas.draw()
 
     def __setupAxes(self, axe1):
-        axe1.set_xlabel(u"Horizontaldistanz von Startpunkt aus")
-        axe1.set_ylabel(u"Höhe")
+        axe1.set_xlabel("Horizontaldistanz von Startpunkt aus")
+        axe1.set_ylabel("Höhe")
         axe1.grid()
         axe1.set_aspect('equal', 'datalim')
         axe1.ticklabel_format(style='plain', useOffset=False)

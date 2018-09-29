@@ -9,11 +9,11 @@ except ImportError:
     pass
 except:
     pass
-from settings import enumVertexType
+from .settings import enumVertexType
 #from bo.line import Line
-from profile import Profile
-from segment import Segment
-from vertex import Vertex
+from .profile import Profile
+from .segment import Segment
+from .vertex import Vertex
 #from bo.zVal import ZVal
 from qgis.core import QgsMessageLog, QgsGeometry
 from math import sqrt
@@ -161,7 +161,7 @@ class CreateProfile:
         #                     pass
         # else:
         identifyResult = raster.dataProvider().identify(pnt, 1)
-        for bndNr, pixVal in identifyResult.results().iteritems():
+        for bndNr, pixVal in identifyResult.results().items():
             if 1 == bndNr:
                 try:
                     rasterVal = float(pixVal)

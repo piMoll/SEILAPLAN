@@ -28,34 +28,33 @@ import unicodedata
 from math import atan, pi
 
 # GUI and QGIS libraries
-from PyQt4.QtCore import QObject, SIGNAL, QFileInfo, QSettings, QString, \
-    QFileInfo
-from PyQt4.QtGui import QDialog, QAction, QIcon, QColor, QMessageBox, \
-    QFileDialog, QPixmap
-from qgis.core import QGis, QgsRasterLayer, QgsVectorLayer, QgsGeometry, \
-    QgsPoint, QgsFeature, QgsMapLayerRegistry
+from qgis.PyQt.QtCore import QSettings, QFileInfo, pyqtSlot
+from qgis.PyQt.QtWidgets import QDialog, QAction, QMessageBox, QFileDialog
+from qgis.PyQt.QtGui import QIcon, QColor, QPixmap
+from qgis.core import QgsRasterLayer, QgsVectorLayer, QgsGeometry, QgsPoint, \
+    QgsPointXY, QgsFeature, QgsProject
 from qgis.gui import QgsRubberBand
-from processing import runalg
+from processing import run
 
 # Further GUI modules for functionality
-from gui.guiHelperFunctions import Raster, valueToIdx, QgsStueMarker, \
+from .gui.guiHelperFunctions import Raster, valueToIdx, QgsStueMarker, \
     strToNum, DialogOutputOptions, generateName, DialogWithImage, formatNum, \
     readFromTxt, castToNumber
-from bo.ptmaptool import ProfiletoolMapTool
-from bo.createProfile import CreateProfile
+from .bo.ptmaptool import ProfiletoolMapTool
+from .bo.createProfile import CreateProfile
 # GUI elements
-from gui.ui_seilaplanDialog import Ui_Dialog
-from gui.profileDialog import ProfileWindow
+from .gui.ui_seilaplanDialog import Ui_Dialog
+from .gui.profileDialog import ProfileWindow
 
 
 # UTF-8 coding
-try:
-    utf8 = QString.fromUtf8
-except AttributeError:
-    utf8 = lambda s: s
+# try:
+#     utf8 = QString.fromUtf8
+# except AttributeError:
+#     utf8 = lambda s: s
 
 # OS dependent line break
-nl = unicode(os.linesep)
+nl = os.linesep
 
 # Source of icons in GUI
 greenIcon = '<html><head/><body><p><img src=":/plugins/SeilaplanPlugin/' \
@@ -76,19 +75,19 @@ infImg = {'Bodenabstand': u'Erklärungen zum Bodenabstand',
           'Stuetzen': u'Erklärungen zu den Zwischenstützen'}
 
 # Info button text
-infoTxt = (u"SEILAPLAN - Seilkran-Layoutplaner\n\n"
-    u"SEILAPLAN berechnet auf Grund eines digitalen Höhenmodells zwischen "
-    u"definierten Anfangs- und Endkoordinaten sowie technischen Parametern das "
-    u"optimale Seillinienlayout. Es werden Position und Höhe der Stütze,"
-    u"sowie die wichtigsten Kennwerte der Seillinie bestimmt.\n\n"
-    u"Realisierung:\nProfessur für forstliches Ingenieurwesen\n"
-    u"ETH Zürich\n8092 Zürich\n\nBeteiligte Personen:\n"
-    u"Leo Bont (Konzept, Mechanik)\nPatricia Moll "
-    u"(Implementation in Python / QGIS)\n\n"
-    u"SEILAPLAN ist freie Software: Sie können sie unter den Bedingungen "
-    u"der GNU General Public License, wie von der Free Software Foundation, "
-    u"Version 2 der Lizenz oder (nach Ihrer Wahl) jeder neueren "
-    u"veröffentlichten Version, weiterverbreiten und/oder modifizieren.\n")
+infoTxt = ("SEILAPLAN - Seilkran-Layoutplaner\n\n"
+    "SEILAPLAN berechnet auf Grund eines digitalen Höhenmodells zwischen "
+    "definierten Anfangs- und Endkoordinaten sowie technischen Parametern das "
+    "optimale Seillinienlayout. Es werden Position und Höhe der Stütze,"
+    "sowie die wichtigsten Kennwerte der Seillinie bestimmt.\n\n"
+    "Realisierung:\nProfessur für forstliches Ingenieurwesen\n"
+    "ETH Zürich\n8092 Zürich\n\nBeteiligte Personen:\n"
+    "Leo Bont (Konzept, Mechanik)\nPatricia Moll "
+    "(Implementation in Python / QGIS)\n\n"
+    "SEILAPLAN ist freie Software: Sie können sie unter den Bedingungen "
+    "der GNU General Public License, wie von der Free Software Foundation, "
+    "Version 2 der Lizenz oder (nach Ihrer Wahl) jeder neueren "
+    "veröffentlichten Version, weiterverbreiten und/oder modifizieren.\n")
 
 
 class SeilaplanPluginDialog(QDialog, Ui_Dialog):
@@ -104,7 +103,7 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         self.canvas = self.iface.mapCanvas()
         self.action = QAction(
             QIcon(":/plugins/SeilaplanPlugin/icons/icon_app.png"),
-            u"SEILAPLAN", self.iface.mainWindow())
+            "SEILAPLAN", self.iface.mainWindow())
         self.action.setWhatsThis("SEILAPLAN")
         # Separate class to start algorithm
         self.threadingControl = helper
@@ -192,54 +191,36 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
     def connectFields(self):
         """Connect GUI fields.
         """
-        QObject.connect(self.buttonOkCancel,
-            SIGNAL(utf8("rejected()")), self.Reject)
-        QObject.connect(self.buttonOkCancel,
-            SIGNAL(utf8("accepted()")), self.apply)
-        QObject.connect(self.buttonOpenPr,
-            SIGNAL(utf8("clicked()")), self.onLoadProjects)
-        QObject.connect(self.buttonSavePr,
-            SIGNAL(utf8("clicked()")), self.onSaveProjects)
-        QObject.connect(self.rasterField,
-            SIGNAL(utf8("currentIndexChanged(const QString&)")), self.setRaster)
-        QObject.connect(self.buttonRefreshRa,
-            SIGNAL(utf8("clicked()")), self.updateRasterList)
-        QObject.connect(self.buttonInfo,
-            SIGNAL(utf8("clicked()")), self.onInfo)
-        QObject.connect(self.buttonOptionen,
-            SIGNAL(utf8("clicked()")), self.onShowOutputOpt)
+        self.buttonOkCancel.rejected.connect(self.Reject)
+        self.buttonOkCancel.accepted.connect(self.apply)
+        self.buttonOpenPr.clicked.connect(self.onLoadProjects)
+        self.buttonSavePr.clicked.connect(self.onSaveProjects)
+        self.rasterField.currentIndexChanged.connect(self.setRaster)
+        self.buttonRefreshRa.clicked.connect(self.updateRasterList)
+        self.buttonInfo.clicked.connect(self.onInfo)
+        self.buttonOptionen.clicked.connect(self.onShowOutputOpt)
+        
         # Info buttons
-        QObject.connect(self.infoBodenabstand,
-            SIGNAL(utf8("clicked()")), self.onShowInfoImg)
-        QObject.connect(self.infoVerankerungA,
-            SIGNAL(utf8("clicked()")), self.onShowInfoImg)
-        QObject.connect(self.infoVerankerungE,
-            SIGNAL(utf8("clicked()")), self.onShowInfoImg)
-        QObject.connect(self.infoStuetzen,
-            SIGNAL(utf8("clicked()")), self.onShowInfoImg)
+        self.infoBodenabstand.clicked.connect(self.onShowInfoImg)
+        self.infoVerankerungA.clicked.connect(self.onShowInfoImg)
+        self.infoVerankerungE.clicked.connect(self.onShowInfoImg)
+        self.infoStuetzen.clicked.connect(self.onShowInfoImg)
+        
         # OSM map and contour buttons
-        QObject.connect(self.osmLyrButton,
-            SIGNAL(utf8("clicked()")), self.onClickOsmButton)
-        QObject.connect(self.contourLyrButton,
-            SIGNAL(utf8("clicked()")), self.onClickContourButton)
+        self.osmLyrButton.clicked.connect(self.onClickOsmButton)
+        self.contourLyrButton.clicked.connect(self.onClickContourButton)
 
-        QObject.connect(self.fieldProjName,
-            SIGNAL(utf8("textChanged (const QString&)")), self.setProjName)
-        QObject.connect(self.draw,
-            SIGNAL(utf8("clicked()")), self.drawLine)
-        QObject.connect(self.buttonShowProf,
-            SIGNAL(utf8("clicked()")), self.onShowProfile)
-        QObject.connect(self.fieldParamSet,
-            SIGNAL(utf8("currentIndexChanged(const QString&)")), self.setParamSet)
+        self.fieldProjName.textChanged.connect(self.setProjName)
+        self.draw.clicked.connect(self.drawLine)
+        self.buttonShowProf.clicked.connect(self.onShowProfile)
+        self.fieldParamSet.currentIndexChanged.connect(self.setParamSet)
+
         # Action for changed Coordinates (when coordinate is changed by hand)
-        QObject.connect(self.coordAx,
-            SIGNAL(utf8("editingFinished()")), self.changedPointAField)
-        QObject.connect(self.coordAy,
-            SIGNAL(utf8("editingFinished()")), self.changedPointAField)
-        QObject.connect(self.coordEx,
-            SIGNAL(utf8("editingFinished()")), self.changedPointEField)
-        QObject.connect(self.coordEy,
-            SIGNAL(utf8("editingFinished()")), self.changedPointEField)
+        self.coordAx.editingFinished.connect(self.changedPointAField)
+        self.coordAy.editingFinished.connect(self.changedPointAField)
+        self.coordEx.editingFinished.connect(self.changedPointEField)
+        self.coordEy.editingFinished.connect(self.changedPointEField)
+
 
 
     def groupFields(self):
@@ -289,17 +270,22 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         for i in range(self.fieldParamSet.count()):
             self.fieldParamSet.removeItem(i)
         self.fieldParamSet.addItems(avaSets)
-        self.fieldParamSet.setCurrentIndex(-1)
+        # self.fieldParamSet.setCurrentIndex(-1)
         self.fieldParamSet.blockSignals(False)
         # Generate project name
         self.fieldProjName.setText(generateName())
         self.enableToolTips()
 
     def enableToolTips(self):
-        for [name, field] in self.settingFields.items():
-            field.setToolTip(self.param[name]['tooltip'])
+        for [name, field] in list(self.settingFields.items()):
+            try:
+                field.setToolTip(self.param[name]['tooltip'])
+            except KeyError:
+                # If parameter is not present on GUI, ignore
+                pass
 
-    def setParamSet(self, setName):
+    def setParamSet(self, idx):
+        setName = self.fieldParamSet.currentText()
         self.paramSet = 'set_' + setName
         # Fill in values of parameter set
         self.fillInValues(self.param, self.paramSet)
@@ -307,7 +293,7 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
     def fillInValues(self, data, datafield):
         """Fills in GUI fields with parameters of a certain cable type.
         """
-        for name, field in self.settingFields.items():
+        for name, field in list(self.settingFields.items()):
             val = data[name][datafield]
             if self.param[name]['ftype'] == 'drop_field':
                 field.setCurrentIndex(valueToIdx(val))
@@ -326,25 +312,24 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
     def getAvailableRaster(self):
         """Go trough table of content and collect all raster layers.
         """
-        legend = self.iface.legendInterface()
-        availLayers = legend.layers()
+        availLayers = QgsProject.instance().mapLayers().values()
         rColl = []
 
         for lyr in availLayers:
-            if legend.isLayerVisible(lyr):
-                lyrType = lyr.type()
-                lyrName = unicodedata.normalize('NFKD',
-                                 unicode(lyr.name())).encode('ascii', 'ignore')
-                if lyrType == 1:        # = raster
-                    r = Raster(lyr.id(), lyrName, lyr)
-                    rColl.append(r)
+            # TODO: Nur auswählen, falls im TOC aktiviert / sichtbar
+            # if legend.isLayerVisible(lyr):
+            lyrType = lyr.type()
+            if lyrType == 1:        # = raster
+                lyrName = lyr.name()
+                r = Raster(lyr.id(), lyrName, lyr)
+                rColl.append(r)
         return rColl
 
     def addRastersToGui(self, rasterList):
         """Put list of raster layers into drop down menu of self.rasterField.
         If raster name contains some kind of "DHM", select it.
         """
-        for i in reversed(range(self.rasterField.count())):
+        for i in reversed(list(range(self.rasterField.count()))):
             self.rasterField.removeItem(i)
         idx = None
         searchStr = ['dhm', 'Dhm', 'DHM', 'dtm', 'DTM', 'Dtm']
@@ -353,7 +338,7 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
             if not idx and sum([item in rLyr.name for item in searchStr]) > 0:
                 idx = i
         # Set an elevation model as current selection
-        if idx >= 0:
+        if idx and idx >= 0:
             self.rasterField.setCurrentIndex(idx)
         # If a raster was added to the drop down menu, get raster information
         if not self.rasterField.currentText() == '':
@@ -404,15 +389,15 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
             if os.path.exists(path):
                 baseName = QFileInfo(path).baseName()
                 rlayer = QgsRasterLayer(path, baseName)
-                QgsMapLayerRegistry.instance().addMapLayer(rlayer)
+                QgsProject.instance().addMapLayer(rlayer)
                 self.updateRasterList()
                 self.setCorrectRasterInField(baseName)
                 self.setRaster(baseName)
                 self.draw.setEnabled(True)
             else:
-                txt = u"Raster mit dem Pfad {} ist " \
-                      u"nicht vorhanden".format(path)
-                title = u"Fehler beim Laden des Rasters"
+                txt = "Raster mit dem Pfad {} ist " \
+                      "nicht vorhanden".format(path)
+                title = "Fehler beim Laden des Rasters"
                 QMessageBox.information(self, title, txt)
 
     def setCorrectRasterInField(self, rasterName):
@@ -495,11 +480,11 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         if os.path.exists(self.commonPathsFile):
             os.remove(self.commonPathsFile)
         with io.open(self.commonPathsFile, encoding='utf-8', mode='w+') as f:
-            f.writelines(u"{} {} {} {} {}".format(self.outputOpt['report'],
+            f.writelines("{} {} {} {} {}".format(self.outputOpt['report'],
                     self.outputOpt['plot'], self.outputOpt['geodata'],
-                    self.outputOpt['coords'], u'\n'))
+                    self.outputOpt['coords'], nl))
             for path in self.commonPaths:
-                f.writelines(path.encode('utf-8') + u'\n')
+                f.writelines(path + nl)
 
     def setProjName(self, projname):
         self.projName = projname
@@ -567,7 +552,7 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
 
     def drawStueMarker(self, point):
         marker = QgsStueMarker(self.canvas)
-        marker.setCenter(point)
+        marker.setCenter(QgsPointXY(point))
         self.markers.append(marker)
         self.canvas.refresh()
 
@@ -588,17 +573,19 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         self.canvas.setMapTool(self.savedTool)
 
     def activateDigiTool(self):
-        QObject.connect(self.tool, SIGNAL("moved"), self.moved)
-        QObject.connect(self.tool, SIGNAL("rightClicked"), self.rightClicked)
-        QObject.connect(self.tool, SIGNAL("leftClicked"), self.leftClicked)
-        QObject.connect(self.tool, SIGNAL("doubleClicked"), self.doubleClicked)
-        QObject.connect(self.tool, SIGNAL("deactivate"), self.deactivateDigiTool)
+        # self.tool.canvasMoveEvent.connect(self.moved)
+        # self.tool.rightClicked.connect(self.rightClicked)
+        # self.tool.leftClicked.connect(self.leftClicked)
+        # self.tool.doubleClicked.connect(self.doubleClicked)
+        # self.tool.deactivate.connect(self.deactivateDigiTool)
+        return
 
     def deactivateDigiTool(self):
-        QObject.disconnect(self.tool, SIGNAL("moved"), self.moved)
-        QObject.disconnect(self.tool, SIGNAL("leftClicked"), self.leftClicked)
-        QObject.disconnect(self.tool, SIGNAL("rightClicked"), self.rightClicked)
-        QObject.disconnect(self.tool, SIGNAL("doubleClicked"), self.doubleClicked)
+        # self.tool.moved.disconnect(self.moved)
+        # self.tool.leftClicked.disconnect(self.leftClicked)
+        # self.tool.rightClicked.disconnect(self.rightClicked)
+        # self.tool.doubleClicked.disconnect(self.doubleClicked)
+        return
 
     def moved(self, position):
         if len(self.pointsToDraw) > 0:
@@ -606,14 +593,13 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
                 toMapCoordinates(position["x"], position["y"])
             self.rubberband.reset(self.polygon)
             newPnt = QgsPoint(mapPos.x(), mapPos.y())
-            if QGis.QGIS_VERSION_INT < 10900:
-                for i in range(0, len(self.pointsToDraw)):
-                    self.rubberband.addPoint(self.pointsToDraw[i])
-                self.rubberband.addPoint(newPnt)
-            else:
-                pnts = self.pointsToDraw + [newPnt]
-                self.rubberband.setToGeometry(QgsGeometry.fromPolyline(pnts),
-                                              None)
+            # if QGis.QGIS_VERSION_INT < 10900:
+            #     for i in range(0, len(self.pointsToDraw)):
+            #         self.rubberband.addPoint(self.pointsToDraw[i])
+            #     self.rubberband.addPoint(newPnt)
+            # else:
+            pnts = self.pointsToDraw + [newPnt]
+            self.rubberband.setToGeometry(QgsGeometry.fromPolyline(pnts), None)
 
     def rightClicked(self, position):
         # Reroute signal, it doesn't matter which mouse button is clicked
@@ -735,7 +721,8 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
             self.clearMap()
             self.drawStueMarker(points[0])
             self.drawStueMarker(points[1])
-            self.createProfile()
+            # TODO: Pofileerstellung funktioniert nicht wegen fehlendem package shapely
+            # self.createProfile()
         else:
             self.clearMap()
 
@@ -777,7 +764,7 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
                 self.symTxtE.setText(redTxt)
 
     def removeCoords(self):
-        for field in self.coordFields.values():
+        for field in list(self.coordFields.values()):
             field.setText('')
 
     def transform2MapCoords(self, dist):
@@ -806,14 +793,14 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
 
         if self.osmLyrOn:
             # Remove OSM layer
-            QgsMapLayerRegistry.instance().removeMapLayer(self.osmLayer.id())
+            QgsProject.instance().removeMapLayer(self.osmLayer.id())
             self.osmLyrOn = False
         else:
             # Add OSM layer
             xmlPath = os.path.join(self.homePath, 'config', 'OSM_Karte.xml')
             baseName = QFileInfo(xmlPath).baseName()
             self.osmLayer = QgsRasterLayer(xmlPath, baseName)
-            QgsMapLayerRegistry.instance().addMapLayer(self.osmLayer)
+            QgsProject.instance().addMapLayer(self.osmLayer)
             self.osmLyrOn = True
 
     def onClickContourButton(self):
@@ -823,29 +810,29 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         crs = self.canvas.mapSettings().destinationCrs()
         crsEPSG = crs.authid()
         # If project and raster CRS are equal and set correctly
-        if crsEPSG == self.dhm['spatialRef'] and u"USER" not in crsEPSG:
-            s.setValue("/Projections/defaultBehaviour", u"useProject")
+        if crsEPSG == self.dhm['spatialRef'] and "USER" not in crsEPSG:
+            s.setValue("/Projections/defaultBehaviour", "useProject")
         else:
             crs = self.dhm['layer'].crs()
 
         contourLyr = self.dhm['contour']
         if contourLyr:
-            QgsMapLayerRegistry.instance().removeMapLayer(contourLyr.id())
+            QgsProject.instance().removeMapLayer(contourLyr.id())
         else:
-            algOutput = runalg("gdalogr:contour", self.dhm['layer'],
+            algOutput = run("gdalogr:contour", self.dhm['layer'],
                                           20.0, "Hoehe", None, None)
             contourPath = algOutput['OUTPUT_VECTOR']
-            contourName = u"Hoehenlinien_" + self.dhm['name']
+            contourName = "Hoehenlinien_" + self.dhm['name']
             contour = QgsVectorLayer(contourPath, contourName, "ogr")
             # Set the same CRS as qgis project
             contour.setCrs(crs)
-            QgsMapLayerRegistry.instance().addMapLayer(contour)
+            QgsProject.instance().addMapLayer(contour)
             self.dhm['contour'] = contour
             s.setValue("/Projections/defaultBehaviour", oldValidation)
 
         # More useful stuff
         # uri = "linestring?crs=epsg:{}".format(crsNum)
-        # contourName = u"Hoehenlinien_" + self.dhm['name']
+        # contourName = "Hoehenlinien_" + self.dhm['name']
         # contour = QgsVectorLayer(uri, contourName,  "memory")
 
     ###########################################################################
@@ -865,7 +852,7 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
     def onLoadProjects(self):
         title = 'Projekt laden'
         fFilter = 'Txt Dateien (*.txt)'
-        filename = QFileDialog.getOpenFileName(self, title,
+        filename, __ = QFileDialog.getOpenFileName(self, title,
                                         self.outputOpt['outputPath'], fFilter)
         if filename:
             self.loadProj(filename)
@@ -912,7 +899,7 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
             defaultFilename = u'{}.txt'.format(self.projName)
             dialog.selectFile(defaultFilename)
         if dialog.exec_():
-            filename = unicode(dialog.selectedFiles()[0])
+            filename = dialog.selectedFiles()[0]
             fileExtention = u'.txt'
             if filename[-4:] != fileExtention:
                 filename += fileExtention
@@ -943,10 +930,8 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
                 except KeyError:
                     continue
                 p = self.param[name]
-                name = name.decode('utf-8')
 
-                line = u'{0: <17}{1: <12}{2: <45}{3: <9}{4}'.format(name, d,
-                                                 p['label'], p['unit'], u'\n')
+                line = '{0: <17}{1: <12}{2: <45}{3: <9}{4}'.format(name, d, p['label'], p['unit'], '\n')
                 f.writelines(line)
 
     def openProjFromTxt(self, path):
@@ -959,14 +944,14 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
                 lines = f.read().splitlines()
                 for hLine in lines[:6]:
                     # Dictionary keys cant be in unicode
-                    name = hLine[:17].rstrip().encode('ascii')
+                    name = hLine[:17].rstrip()
                     projInfo[name] = hLine[17:]
                 for line in lines[11:]:
-                    if line == u'': break
+                    if line == '': break
                     line = re.split(r'\s{2,}', line)
-                    if line[1] == u'-':
-                        line[1] = u''
-                    key = line[0].encode('ascii')
+                    if line[1] == '-':
+                        line[1] = ''
+                    key = line[0]
                     fileData[key] = {'Wert': line[1]}
             return projInfo, fileData
         else:
@@ -981,14 +966,14 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         report.
         """
         orderList = []
-        for name, d in self.param.items():
+        for name, d in list(self.param.items()):
             orderList.append([name, int(d['sort'])])
         self.paramOrder = sorted(orderList, key=itemgetter(1))
 
     def onShowInfoImg(self):
         sender = self.sender().objectName()
         infoType = sender[4:]
-        infoTitle = infImg[infoType.encode('ascii')]
+        infoTitle = infImg[infoType]
         imgPath = os.path.join(self.homePath, 'img', infoType + '.png')
         self.imgBox.setWindowTitle(infoTitle)
         # Load image
@@ -1010,7 +995,7 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         errTxt = []
         finalErrorState = True
         errorCount = 0
-        for name, d in self.param.items():
+        for name, d in list(self.param.items()):
             if d['ftype'] ==  'no_field':
                 val = d['std_val']
             else:
@@ -1018,9 +1003,9 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
             # Check value type
             cval, errState  = castToNumber(val, d['dtype'])
             if errState:
-                errTxt.append(u"-->Der Wert '{}' im Feld '{}' ist ungültig. "
-                              u"Bitte geben Sie eine korrekte "
-                              u"Zahl ein.".format(val, unicode(d['label'])))
+                errTxt.append("-->Der Wert '{}' im Feld '{}' ist ungültig. "
+                              "Bitte geben Sie eine korrekte "
+                              "Zahl ein.".format(val, d['label']))
                 finalErrorState = False
                 errorCount += 1
                 continue
@@ -1037,17 +1022,17 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
                     if int(fieldData['HM_Ende_max']) == 0:
                         ankerError = True
                 if ankerError:
-                    errTxt.append(u"--> Der Wert '{}' im Feld '{}' ist "
-                                  u"ungültig. Anker können nur definiert "
-                                  u"werden, wenn die entsprechende Stütze "
-                                  u"höher als 0 Meter ist.".format(cval,
-                                                        unicode(d['label'])))
+                    errTxt.append("--> Der Wert '{}' im Feld '{}' ist "
+                                  "ungültig. Anker können nur definiert "
+                                  "werden, wenn die entsprechende Stütze "
+                                  "höher als 0 Meter ist.".format(cval,
+                                                        d['label']))
                     finalErrorState = False
                 if result is False:
-                    errTxt.append(u"--> Der Wert '{}' im Feld '{}' ist "
-                                  u"ungültig. Bitte wählen Sie einen Wert "
-                                  u"zwischen {} und {} {}.".format(cval,
-                                   unicode(d['label']), rMin, rMax, d['unit']))
+                    errTxt.append("--> Der Wert '{}' im Feld '{}' ist "
+                                  "ungültig. Bitte wählen Sie einen Wert "
+                                  "zwischen {} und {} {}.".format(cval,
+                                   d['label'], rMin, rMax, d['unit']))
                     finalErrorState = False
                     continue
             # If there was no error value is saved to dictionary
@@ -1056,10 +1041,10 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
 
         # Show dialog window with error messages
         if finalErrorState is False:
-            errorMsg = u"Es wurden folgende Fehler gefunden:" + nl
+            errorMsg = "Es wurden folgende Fehler gefunden:" + nl
             errorMsg += nl.join(errTxt)
             if errorCount >= 10:
-                errorMsg = u"Bitte definieren Sie einen Parametersatz."
+                errorMsg = "Bitte definieren Sie einen Parametersatz."
             QMessageBox.information(self, 'Fehler', errorMsg, QMessageBox.Ok)
             return finalErrorState, {}, {}
 
@@ -1077,7 +1062,7 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         """
         fieldData = {}
 
-        for name, field in self.settingFields.items():
+        for name, field in list(self.settingFields.items()):
             d = self.param[name]
             if d['ftype'] == 'drop_field':
                 val = field.currentText()
@@ -1085,7 +1070,7 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
                 val = field.text()
             if val == '':
                 val = '-'
-            fieldData[name] = unicode(val)
+            fieldData[name] = val
         return fieldData
 
     def checkValues(self, val, dtype, rangeMin, rangeMax):
@@ -1136,25 +1121,25 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
             val = formatNum(i)
             coord.append(val)
 
-        info = [[u'Projektname', projInfo['Projektname']],
-                [u'Hoehenmodell', '{}'. format(self.dhm['path'])],
-                [u'Anfangspunkt', '{0: >7} / {1: >7}'.format(*tuple(coord[:2]))],
-                [u'Endpunkt', '{0: >7} / {1: >7}'.format(*tuple(coord[2:]))],
-                [u'Parameterset', parameterSet]]
+        info = [['Projektname', projInfo['Projektname']],
+                ['Hoehenmodell', '{}'. format(self.dhm['path'])],
+                ['Anfangspunkt', '{0: >7} / {1: >7}'.format(*tuple(coord[:2]))],
+                ['Endpunkt', '{0: >7} / {1: >7}'.format(*tuple(coord[2:]))],
+                ['Parameterset', parameterSet]]
                 # TODO: save cable line sections that shouldn't contain
                 # TODO:     intermediate support
-        fixStueString = u''
-        for key, values in self.fixStue.iteritems():
+        fixStueString = ''
+        for key, values in list(self.fixStue.items()):
                 fixStueString += '{0:0>2}: {1: >7}, {2: >7}, ' \
                                  '{3: >4}  /  '.format(key, *tuple(values))
-        info.append([u'Fixe Stuetzen', fixStueString])
+        info.append(['Fixe Stuetzen', fixStueString])
 
         for title, txt in info:
-            line = u'{0: <17}{1}'.format(title, unicode(txt))
-            projHeader += line + u'\n'
-        paramHeader = u'{5}{5}{0}{5}{1: <17}{2: <12}{3: <45}{4: <9}' \
-                      u'{5:-<84}{5}'.format(u'Parameter:', u'Name', u'Wert',
-                                            u'Label', u'Einheit', u'\n')
+            line = '{0: <17}{1}'.format(title, txt)
+            projHeader += line + '\n'
+        paramHeader = '{5}{5}{0}{5}{1: <17}{2: <12}{3: <45}{4: <9}' \
+                      '{5:-<84}{5}'.format('Parameter:', 'Name', 'Wert',
+                                            'Label', 'Einheit', '\n')
         projHeader += paramHeader
         return projInfo, projHeader
 
@@ -1184,7 +1169,7 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         userData['HM_fix_h'] = []
         userData['noStue'] = []
         if self.fixStue:
-            for [pointX, _, pointH] in self.fixStue.itervalues():
+            for [pointX, _, pointH] in self.fixStue.values():
                 userData['HM_fix_d'].append(int(pointX))
                 userData['HM_fix_h'].append(int(pointH))
         if self.profileWin:
@@ -1197,12 +1182,12 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         write it (1) to a saved project (2) to the drop down menu when a
         project is opened.
         """
-        paramName = u'benutzerdefiniert'
+        paramName = 'benutzerdefiniert'
         valChanged = False
 
         if self.paramSet:
-            for name, row in self.param.items():
-                if row['ftype'] == u'no_field':
+            for name, row in list(self.param.items()):
+                if row['ftype'] == 'no_field':
                     continue
                 # Special treatment for drop down value
                 if name == 'GravSK':
@@ -1224,27 +1209,50 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
     ###########################################################################
 
     def apply(self):
-        # import pydevd
-        # pydevd.settrace('localhost', port=53100,
-        #             stdoutToServer=True, stderrToServer=True)
+        # ERSETZEN mit PICKLE
 
-        # Extract values from GUI fields
-        noError, userData, projInfo = self.verifyFieldData()
-        if noError:
-            self.threadingControl.setState(True)
-        else:
-            # If there was an error extracting the values, return to GUI
-            return False
+        # # Extract values from GUI fields
+        # noError, userData, projInfo = self.verifyFieldData()
+        # if noError:
+        #     self.threadingControl.setState(True)
+        # else:
+        #     # If there was an error extracting the values, return to GUI
+        #     return False
+        #
+        # # Project data gets layout for report generation
+        # projInfo['Params'] = self.layoutToolParams(userData)
+        # projInfo['outputOpt'] = self.outputOpt
+        # # Project data is saved to reload it later
+        # projInfo['projFile'] = os.path.join(projInfo['outputOpt']['outputPath'],
+        #                                     self.projName + '_Projekt.txt')
+        # self.saveProjToTxt(projInfo['projFile'])
+        # # Save fixed intermediate supports
+        # userData = self.getStueInfo(userData)
+        #
 
-        # Project data gets layout for report generation
-        projInfo['Params'] = self.layoutToolParams(userData)
-        projInfo['outputOpt'] = self.outputOpt
-        # Project data is saved to reload it later
-        projInfo['projFile'] = os.path.join(projInfo['outputOpt']['outputPath'],
-                                            self.projName + '_Projekt.txt')
-        self.saveProjToTxt(projInfo['projFile'])
-        # Save fixed intermediate supports
-        userData = self.getStueInfo(userData)
+
+        picklefile = '20180923_1145.pckl'
+
+        # import pickle
+        # homePath = os.path.dirname(__file__)
+        # storefile = os.path.join(homePath, 'backups+testFiles', picklefile)
+        # projInfo['Hoehenmodell'].pop('layer')
+        # f = open(storefile, 'wb')
+        # pickle.dump([userData, projInfo], f)
+        # f.close()
+
+        import pickle
+        homePath = os.path.dirname(__file__)
+        storefile = os.path.join(homePath, 'backups+testFiles',
+                                 '{}'.format(picklefile))
+        f = open(storefile, 'rb')
+        dump = pickle.load(f)
+        f.close()
+        [userData, projInfo] = dump
+        self.threadingControl.setState(True)
+        
+        
+        
         # All user data is handed over to class that handles calculation
         self.threadingControl.setValue(userData, projInfo)
         self.close()

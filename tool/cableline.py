@@ -12,7 +12,7 @@
 #------------------------------------------------------------------------------
 """
 import numpy as np
-from itertools import izip
+
 
 
 def calcBandH(zi, di, H_Anfangsmast, H_Endmast, z_null, z_ende, d_null, d_ende):
@@ -20,8 +20,8 @@ def calcBandH(zi, di, H_Anfangsmast, H_Endmast, z_null, z_ende, d_null, d_ende):
     hilfh = [z_null, zi[0] * 0.1 + H_Anfangsmast,
              zi[-1] * 0.1 + H_Endmast, z_ende]
     hilfb = [d_null, di[0], di[-1], d_ende]
-    h = [a - b for a, b in izip(hilfh[1:4], hilfh[0:3])]
-    b = [a - b for a, b in izip(hilfb[1:4], hilfb[0:3])]
+    h = [a - b for a, b in zip(hilfh[1:4], hilfh[0:3])]
+    b = [a - b for a, b in zip(hilfb[1:4], hilfb[0:3])]
 
     # Nullfelder löschen
     indices = [i for i in range(len(b) -1, -1, -1) if b[i] == 0]
@@ -58,7 +58,7 @@ def checkCable(zi, si, sc, befGSK, GravSK, R_R):
             Cable_Possible = bodenabst and (si[-2] > si[-1] or befGSK[-1]==0)
     return Cable_Possible
 
-class vectorSum():
+class vectorSum:
     """ Ersetzt Pythons numpy.sum, da es bei kurzen Arrays performanter ist,
     wenn Vektorelemente einzeln (vektor[i]) summiert werden.
     """
@@ -270,8 +270,7 @@ def calcCable(IS, zi, di, sc, befGSK, z_null, STA, b, h, feld):
             # Hier kann es vorkommen, dass von negativen Zahlen die Wurzel
             # gezogen wird
             if Hs < 0:
-                print "Fehler, Hs < 0 "
-                print Hs
+                print("Fehler, Hs < 0 ", Hs)
             H = Hs * (1-(1-(Hs / Hs)**2) * (1-2*bi / b_feld)**2)**0.5
             y_last_zweifel = ym * Hs / H * (1-(1-2*bi/b_feld)**2)
             h_sehne = bi / b_feld * h[feld]

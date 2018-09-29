@@ -24,30 +24,30 @@ import os
 import sys
 import subprocess
 
-from PyQt4.QtCore import Qt, QObject, QThread, SIGNAL
-from PyQt4.QtGui import QDialog, QVBoxLayout, QProgressBar, QLabel, \
+from qgis.PyQt.QtCore import Qt, QThread, pyqtSignal
+from qgis.PyQt.QtWidgets import QDialog, QVBoxLayout, QProgressBar, QLabel, \
     QHBoxLayout, QDialogButtonBox, QSizePolicy, QPushButton, QSpacerItem, \
     QLayout
 
 # Import Tool Scripts
-from tool.mainSeilaplan import main
-from tool.outputReport import getTimestamp, plotData, generateReportText, \
+from .tool.mainSeilaplan import main
+from .tool.outputReport import getTimestamp, plotData, generateReportText, \
     generateReport, createOutputFolder
-from tool.outputGeo import generateGeodata, addToMap, generateCoordTable
+from .tool.outputGeo import generateGeodata, addToMap, generateCoordTable
 
 
-textOK = (u"Die Berechnungen wurden <b>erfolgreich</b> abgeschlossen! Die Ergebnisse "
-          u"sind in folgendem Ordner abgespeichert:")
-textSeil = (u"Die Seillinie wurde berechnet, das <b>Tragseil hebt jedoch "
-            u"bei mindestens einer Stütze ab</b>."
-            u"Die Resultate sind in folgendem Ordner abgespeichert:")
-textHalf = (u"Die Seillinie konnte <b>nicht komplett berechnet</b> werden, es "
-            u"sind nicht genügend Stützenstandorte bestimmbar. Die "
-            u"unvollständigen Resultate sind in folgendem Ordner "
-            u"abgespeichert:")
-textBad = (u"Aufgrund der Geländeform oder der Eingabeparameter konnten <b>keine "
-           u"Stützenstandorte bestimmt</b> werden. Es wurden keine Output-Daten "
-           u"erzeugt.")
+textOK = ("Die Berechnungen wurden <b>erfolgreich</b> abgeschlossen! Die Ergebnisse "
+          "sind in folgendem Ordner abgespeichert:")
+textSeil = ("Die Seillinie wurde berechnet, das <b>Tragseil hebt jedoch "
+            "bei mindestens einer Stütze ab</b>."
+            "Die Resultate sind in folgendem Ordner abgespeichert:")
+textHalf = ("Die Seillinie konnte <b>nicht komplett berechnet</b> werden, es "
+            "sind nicht genügend Stützenstandorte bestimmbar. Die "
+            "unvollständigen Resultate sind in folgendem Ordner "
+            "abgespeichert:")
+textBad = ("Aufgrund der Geländeform oder der Eingabeparameter konnten <b>keine "
+           "Stützenstandorte bestimmt</b> werden. Es wurden keine Output-Daten "
+           "erzeugt.")
 
 class MultithreadingControl(QDialog):
     """ Calculation and progress dialog window is handled in separate thread
@@ -67,6 +67,7 @@ class MultithreadingControl(QDialog):
         self.resultStatus = None
         self.reRun = False
         self.savedProj = None
+        self.workerThread = None
         self.initGui()
 
     def setValue(self, toolData, projInfo):
@@ -83,7 +84,7 @@ class MultithreadingControl(QDialog):
         return self.state
 
     def initGui(self):
-        self.setWindowTitle(u"SEILAPLAN wird ausgeführt")
+        self.setWindowTitle("SEILAPLAN wird ausgeführt")
         self.resize(500, 100)
         self.container = QVBoxLayout()
         self.progressBar = QProgressBar(self)
@@ -98,7 +99,7 @@ class MultithreadingControl(QDialog):
         self.resultLabel.setSizePolicy(
             QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding))
         self.resultLabel.setWordWrap(True)
-        self.rerunButton = QPushButton(u"Berechnungen wiederholen")
+        self.rerunButton = QPushButton("Berechnungen wiederholen")
         self.rerunButton.setVisible(False)
         spacer = QSpacerItem(40, 20, QSizePolicy.Expanding,
                              QSizePolicy.Minimum)
@@ -125,36 +126,27 @@ class MultithreadingControl(QDialog):
 
     def runThread( self):
         # Connet signals of thread
-        QObject.connect(self.workerThread,
-            SIGNAL("jobEnded(PyQt_PyObject)"), self.jobEnded)
-        QObject.connect(self.workerThread,
-            SIGNAL("value(PyQt_PyObject)"), self.valueFromThread)
-        QObject.connect(self.workerThread,
-            SIGNAL("range(PyQt_PyObject)"), self.rangeFromThread)
-        QObject.connect(self.workerThread,
-            SIGNAL("max(PyQt_PyObject)"), self.maxFromThread)
-        QObject.connect(self.workerThread,
-            SIGNAL("text(PyQt_PyObject)"), self.textFromThread)
-        QObject.connect(self.workerThread,
-            SIGNAL("result(PyQt_PyObject)"), self.resultFromThread)
-        QObject.connect(self.workerThread,
-            SIGNAL("abort(PyQt_PyObject)"), self.onAbort)
-        QObject.connect(self.workerThread,
-            SIGNAL("error(PyQt_PyObject)"), self.onError)
-        QObject.connect(self.rerunButton,
-            SIGNAL("clicked()"), self.onRerun)
+        self.workerThread.sig_jobEnded.connect(self.jobEnded)
+        self.workerThread.sig_value.connect(self.valueFromThread)
+        self.workerThread.sig_range.connect(self.rangeFromThread)
+        # self.workerThread.sig_max.connect(self.maxFromThread)
+        self.workerThread.sig_text.connect(self.textFromThread)
+        self.workerThread.sig_result.connect(self.resultFromThread)
+        # self.workerThread.sig_abort.connect(self.onAbort)
+        # self.workerThread.sig_error.connect(self.onError)
+        self.rerunButton.clicked.connect(self.onRerun)
 
         # Start thread
-        self.workerThread.start()
+        self.workerThread.run()
 
     def jobEnded(self, success):
         if success:
-            self.statusLabel.setText(u"Berechnungen abgeschlossen.")
+            self.statusLabel.setText("Berechnungen abgeschlossen.")
             self.progressBar.setValue(self.progressBar.maximum())
             self.setFinalMessage()
 
         else:           # If there was an abort by the user
-            self.statusLabel.setText(u"Berechnungen abgebrochen.")
+            self.statusLabel.setText("Berechnungen abgebrochen.")
             self.progressBar.setValue(self.progressBar.minimum())
         self.finallyDo()
         self.rerunButton.setVisible(True)
@@ -175,12 +167,12 @@ class MultithreadingControl(QDialog):
         [self.outputLoc, self.resultStatus] = result
 
     def setFinalMessage(self):
-        self.connect(self.resultLabel, SIGNAL('clicked()'), self.onResultClicked)
+        self.resultLabel.clicked.connect(self.onResultClicked)
         self.resultLabel.blockSignals(True)
-        linkToFolder = (u'<html><head/><body><p></p><p><a href='
-                        u'"file:////{0}"><span style="text-decoration: '
-                        u'underline; color:#0000ff;">{0}</span></a></p>'
-                        u'</body></html>'.format(self.outputLoc))
+        linkToFolder = ('<html><head/><body><p></p><p><a href='
+                        '"file:////{0}"><span style="text-decoration: '
+                        'underline; color:#0000ff;">{0}</span></a></p>'
+                        '</body></html>'.format(self.outputLoc))
         # Optimization successful
         if self.resultStatus == 1:
             self.resultLabel.setText(textOK+linkToFolder)
@@ -214,7 +206,7 @@ class MultithreadingControl(QDialog):
                 pass
 
     def onAbort(self):
-        self.statusLabel.setText(u"Laufender Prozess wird abgebrochen...")
+        self.statusLabel.setText("Laufender Prozess wird abgebrochen...")
         self.cancelThread()
 
     def cancelThread(self):
@@ -223,7 +215,7 @@ class MultithreadingControl(QDialog):
         self.workerThread.stop()        # Terminates process cleanly
 
     def onError(self, exception_string):
-        self.statusLabel.setText(u"Ein unerwarteter Fehler ist aufgetreten.")
+        self.statusLabel.setText("Ein unerwarteter Fehler ist aufgetreten.")
         self.progressBar.setValue(self.progressBar.minimum())
         self.finallyDo()
 
@@ -259,10 +251,22 @@ class ExtendedQLabel(QLabel):
         QLabel.__init__(self, parent)
 
     def mouseReleaseEvent(self, ev):
-        self.emit(SIGNAL('clicked()'))
+        self.clicked.emit()
 
 
 class WorkerThread(QThread):
+    
+    # Signals
+    sig_jobEnded = pyqtSignal(bool)
+    sig_value = pyqtSignal(float)
+    sig_range = pyqtSignal(list)
+    # sig_max = pyqtSignal()
+    sig_text = pyqtSignal(str)
+    sig_result = pyqtSignal(list)
+    sig_abort = pyqtSignal()
+    sig_error = pyqtSignal()
+    
+    
     def __init__(self, parentThread):
         QThread.__init__(self, parentThread)
         self.iface = None
@@ -274,7 +278,7 @@ class WorkerThread(QThread):
     def run(self):
         self.running = True
         self.doWork()
-        self.emit(SIGNAL("jobEnded(PyQt_PyObject)"), self.success)
+        self.sig_jobEnded.emit(self.success)
 
     def stop(self):
         """Manual abort by user.
@@ -282,14 +286,14 @@ class WorkerThread(QThread):
         self.running = False
 
     def doWork(self):
-        self.emit(SIGNAL("text(PyQt_PyObject)"), u"Berechnungen werden gestartet...")
+        self.sig_text.emit("Berechnungen werden gestartet...")
         [self.inputData, self.projInfo] = self.userInput
 
         # import pickle
-        # self.projInfo['Hoehenmodell'].pop('layer')
+        # self.userInput[1]['Hoehenmodell'].pop('layer')
         # homePath = os.path.dirname(__file__)
         # storefile = os.path.join(homePath, 'backups+testFiles', 'testYSP.pckl')
-        # f = open(storefile, 'w')
+        # f = open(storefile, 'wb')
         # pickle.dump([self.userInput], f)
         # f.close()
 
@@ -306,7 +310,7 @@ class WorkerThread(QThread):
         #   3 = Optimization partially successful
         #   4 = Optimization not successful
         if self.resultStatus == 4:
-            self.emit(SIGNAL("result(PyQt_PyObject)"), [None, self.resultStatus])
+            self.sig_result.emit([None, self.resultStatus])
             return
         # Unpack results
         [t_start, disp_data, seilDaten, gp, HM,
@@ -320,8 +324,8 @@ class WorkerThread(QThread):
         # pickle.dump([output, self.userInput], f)
         # f.close()
 
-        self.emit(SIGNAL("value(PyQt_PyObject)"), optiLen*1.01)
-        self.emit(SIGNAL("text(PyQt_PyObject)"), u"Outputdaten werden generiert...")
+        self.sig_value.emit(optiLen*1.01)
+        self.sig_text.emit("Outputdaten werden generiert...")
 
         # Generate output
         ###################
@@ -339,7 +343,7 @@ class WorkerThread(QThread):
         plotImage, labelTxt = plotData(disp_data, gp["di"], seilDaten, HM,
                                        self.inputData, self.projInfo,
                                        self.resultStatus, plotSavePath)
-        self.emit(SIGNAL("value(PyQt_PyObject)"), optiLen*1.015)
+        self.sig_value.emit(optiLen*1.015)
         # Calculate duration and generate time stamp
         duration, timestamp1, timestamp2 = getTimestamp(t_start)
 
@@ -373,5 +377,4 @@ class WorkerThread(QThread):
             generateCoordTable(seilDaten, gp["zi"], HM,
                                [table1SavePath, table2SavePath], labelTxt[0])
 
-        self.emit(SIGNAL("result(PyQt_PyObject)"), [self.outputLoc,
-                                                    self.resultStatus])
+        self.sig_result.emit([self.outputLoc, self.resultStatus])

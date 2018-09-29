@@ -75,7 +75,7 @@ if __name__ == "__main__":
         "-w", "--password", dest="password",
         help="Password for plugin site", metavar="******")
     parser.add_option(
-        "-u", "--username", dest="username",
+        "-", "--username", dest="username",
         help="Username of plugin site", metavar="user")
     parser.add_option(
         "-p", "--port", dest="port",

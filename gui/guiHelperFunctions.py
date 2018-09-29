@@ -19,16 +19,18 @@
  *                                                                         *
  ***************************************************************************/
 """
-
 import os
 import io
 
-from PyQt4 import QtCore, QtGui
-from PyQt4.QtCore import QObject, SIGNAL
+from qgis.PyQt.QtCore import QSize, Qt
+from qgis.PyQt.QtWidgets import QDialog, QWidget, QLabel, QDialogButtonBox, \
+    QLayout, QHBoxLayout, QComboBox, QSizePolicy, QPushButton, QCheckBox, \
+    QVBoxLayout, QFileDialog
+from qgis.PyQt.QtGui import QColor, QIcon, QPixmap
 from qgis.gui import QgsVertexMarker
 
 
-class Raster:
+class Raster(object):
     def __init__(self, ide, name, grid):
         self.id = ide
         self.name = name
@@ -36,22 +38,22 @@ class Raster:
         self.selected = False
 
 
-class DialogWithImage(QtGui.QDialog):
+class DialogWithImage(QDialog):
     def __init__(self, interface):
-        QtGui.QDialog.__init__(self, interface.mainWindow())
+        QDialog.__init__(self, interface.mainWindow())
         self.iface = interface
-        self.main_widget = QtGui.QWidget(self)
-        self.main_widget.setMinimumSize(QtCore.QSize(100, 100))
-        self.label = QtGui.QLabel()
-        self.buttonBox = QtGui.QDialogButtonBox(self.main_widget)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Ok)
-        QObject.connect(self.buttonBox, SIGNAL("accepted()"), self.Apply)
+        self.main_widget = QWidget(self)
+        self.main_widget.setMinimumSize(QSize(100, 100))
+        self.label = QLabel()
+        self.buttonBox = QDialogButtonBox(self.main_widget)
+        self.buttonBox.setStandardButtons(QDialogButtonBox.Ok)
+        self.buttonBox.accepted.connect(self.Apply)
         # Access the layout of the MessageBox to add the checkbox
-        self.container = QtGui.QVBoxLayout(self.main_widget)
+        self.container = QVBoxLayout(self.main_widget)
         self.container.addWidget(self.label)
         self.container.addWidget(self.buttonBox)
-        self.container.setAlignment(QtCore.Qt.AlignCenter)
-        self.container.setSizeConstraint(QtGui.QLayout.SetFixedSize)
+        self.container.setAlignment(Qt.AlignCenter)
+        self.container.setSizeConstraint(QLayout.SetFixedSize)
         self.setLayout(self.container)
 
     def Apply(self):
@@ -61,7 +63,7 @@ class DialogWithImage(QtGui.QDialog):
 class QgsStueMarker(QgsVertexMarker):
     def __init__(self, canvas):
         QgsVertexMarker.__init__(self, canvas)
-        self.setColor(QtGui.QColor(1, 1, 213))
+        self.setColor(QColor(1, 1, 213))
         self.setIconType(QgsVertexMarker.ICON_BOX)
         self.setIconSize(11)
         self.setPenWidth(3)
@@ -70,73 +72,73 @@ class QgsStueMarker(QgsVertexMarker):
 class QgsMovingCross(QgsVertexMarker):
     def __init__(self, canvas):
         QgsVertexMarker.__init__(self, canvas)
-        self.setColor(QtGui.QColor(27, 25, 255))
+        self.setColor(QColor(27, 25, 255))
         self.setIconType(QgsVertexMarker.ICON_CROSS)
         self.setIconSize(20)
         self.setPenWidth(3)
 
 
-class DialogOutputOptions(QtGui.QDialog):
+class DialogOutputOptions(QDialog):
     def __init__(self, interface, toolWindow):
-        QtGui.QDialog.__init__(self, interface.mainWindow())
+        QDialog.__init__(self, interface.mainWindow())
         self.iface = interface
         self.tool = toolWindow
-        self.setWindowTitle(u"Output Optionen")
-        self.main_widget = QtGui.QWidget(self)
+        self.setWindowTitle("Output Optionen")
+        self.main_widget = QWidget(self)
 
         # Build up gui
-        self.hbox = QtGui.QHBoxLayout()
-        self.saveLabel = QtGui.QLabel(u"Speicherpfad")
-        self.pathField = QtGui.QComboBox()
+        self.hbox = QHBoxLayout()
+        self.saveLabel = QLabel("Speicherpfad")
+        self.pathField = QComboBox()
         self.pathField.setMinimumWidth(400)
         self.pathField.setSizePolicy(
-            QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding,
-                              QtGui.QSizePolicy.Fixed))
-        self.openButton = QtGui.QPushButton()
-        self.openButton.setMaximumSize(QtCore.QSize(27, 27))
-        icon = QtGui.QIcon()
+            QSizePolicy(QSizePolicy.Expanding,
+                              QSizePolicy.Fixed))
+        self.openButton = QPushButton()
+        self.openButton.setMaximumSize(QSize(27, 27))
+        icon = QIcon()
         iconPath = os.path.join(os.path.dirname(os.path.dirname(__file__)),
                                 'icons', 'icon_open.png')
-        icon.addPixmap(QtGui.QPixmap(iconPath), QtGui.QIcon.Normal,
-                       QtGui.QIcon.Off)
+        icon.addPixmap(QPixmap(iconPath), QIcon.Normal,
+                       QIcon.Off)
         self.openButton.setIcon(icon)
-        self.openButton.setIconSize(QtCore.QSize(24, 24))
-        QObject.connect(self.openButton, SIGNAL("clicked()"), self.onOpenDialog)
+        self.openButton.setIconSize(QSize(24, 24))
+        self.openButton.clicked.connect(self.onOpenDialog)
 
         self.hbox.addWidget(self.saveLabel)
         self.hbox.addWidget(self.pathField)
         self.hbox.addWidget(self.openButton)
         # Create checkboxes
         self.questionLabel = \
-            QtGui.QLabel(u"Welche Produkte sollen erzeugt werden?")
-        self.checkBoxReport = QtGui.QCheckBox(u"Technischer Bericht")
-        self.checkBoxPlot = QtGui.QCheckBox(u"Diagramm")
+            QLabel(u"Welche Produkte sollen erzeugt werden?")
+        self.checkBoxReport = QCheckBox(u"Technischer Bericht")
+        self.checkBoxPlot = QCheckBox(u"Diagramm")
         self.checkBoxGeodata = \
-            QtGui.QCheckBox(u"Shape-Daten der Stützen und Seillinie")
+            QCheckBox(u"Shape-Daten der Stützen und Seillinie")
         self.checkBoxCoords = \
-            QtGui.QCheckBox(u"Koordinaten-Tabellen der Stützen und Seillinie")
+            QCheckBox(u"Koordinaten-Tabellen der Stützen und Seillinie")
         # Set tick correctly
         self.checkBoxReport.setChecked(self.tool.outputOpt['report'])
         self.checkBoxPlot.setChecked(self.tool.outputOpt['plot'])
         self.checkBoxGeodata.setChecked(self.tool.outputOpt['geodata'])
         self.checkBoxCoords.setChecked(self.tool.outputOpt['coords'])
         # Create Ok/Cancel Button and connect signal
-        self.buttonBox = QtGui.QDialogButtonBox(self.main_widget)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Ok|
-                                          QtGui.QDialogButtonBox.Cancel)
-        QObject.connect(self.buttonBox, SIGNAL("accepted()"), self.Apply)
-        QObject.connect(self.buttonBox, SIGNAL("rejected()"), self.Reject)
+        self.buttonBox = QDialogButtonBox(self.main_widget)
+        self.buttonBox.setStandardButtons(QDialogButtonBox.Ok|
+                                          QDialogButtonBox.Cancel)
+        self.buttonBox.accepted.connect(self.Apply)
+        self.buttonBox.rejected.connect(self.Reject)
         # Layout
-        self.container = QtGui.QVBoxLayout(self.main_widget)
+        self.container = QVBoxLayout(self.main_widget)
         self.container.addLayout(self.hbox)
-        self.container.addWidget(QtGui.QLabel(""))
+        self.container.addWidget(QLabel(""))
         self.container.addWidget(self.questionLabel)
         self.container.addWidget(self.checkBoxReport)
         self.container.addWidget(self.checkBoxPlot)
         self.container.addWidget(self.checkBoxGeodata)
         self.container.addWidget(self.checkBoxCoords)
         self.container.addWidget(self.buttonBox)
-        self.container.setAlignment(QtCore.Qt.AlignLeft)
+        self.container.setAlignment(Qt.AlignLeft)
         self.setLayout(self.container)
 
     def fillInDropDown(self, pathList):
@@ -147,7 +149,7 @@ class DialogOutputOptions(QtGui.QDialog):
 
     def onOpenDialog(self):
         title = u"Output Pfad auswählen"
-        directory = QtGui.QFileDialog.getExistingDirectory(self, title,
+        directory = QFileDialog.getExistingDirectory(self, title,
                                             self.tool.outputOpt['outputPath'])
         self.tool.updateCommonPathList(directory)
         self.fillInDropDown(self.tool.commonPaths)
@@ -176,14 +178,14 @@ def readFromTxt(path):
     if os.path.exists(path):
         with io.open(path, encoding='utf-8') as f:
             lines = f.read().splitlines()
-            header = lines[0].encode('ascii').split('\t')
+            header = lines[0].split('\t')
             for line in lines[1:]:
                 if line == '': break
                 line = line.split('\t')
                 row = {}
                 for i in range(1, len(header)):
                     row[header[i]] = line[i]
-                key = line[0].encode('ascii')
+                key = line[0]
                 fileData[key] = row
         return fileData, header
     else:
@@ -236,7 +238,7 @@ def castToNumber(val, dtype):
     errState = None
     try:
         if dtype == 'string':
-            cval = val.encode('utf-8')
+            cval = val
             # result = True
         elif dtype == 'float':
             cval = float(val)

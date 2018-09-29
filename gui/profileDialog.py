@@ -25,26 +25,29 @@
 """
 
 import numpy as np
-from PyQt4 import QtCore
-from PyQt4 import QtGui
-from PyQt4.QtCore import QObject, SIGNAL
-from qgis.core import QGis, QgsGeometry, QgsPoint
+from qgis.PyQt.QtCore import QSize, Qt
+from qgis.PyQt.QtWidgets import QDialog, QWidget, QLabel, QDialogButtonBox, \
+    QHBoxLayout, QSizePolicy, QPushButton, QVBoxLayout, QGridLayout, QFrame, \
+    QSpacerItem, QLineEdit, QApplication
+from qgis.PyQt.QtGui import QColor
+
+from qgis.core import QgsGeometry, QgsPoint
 from qgis.gui import QgsRubberBand
 
-from profilePlot import QtMplCanvas
-from guiHelperFunctions import QgsMovingCross
-from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg \
+from .profilePlot import QtMplCanvas
+from .guiHelperFunctions import QgsMovingCross
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT \
     as NavigationToolbar
 
 css = "QLineEdit {background-color: white;}"
 cssErr = "QLineEdit {background-color: red;}"
 
 
-class ProfileWindow(QtGui.QDialog):
+class ProfileWindow(QDialog):
     def __init__(self, toolWindow, interface, profile):
-        QtGui.QDialog.__init__(self, interface.mainWindow())
-        self.setWindowTitle(u"Höhenprofil")
-        self.main_widget = QtGui.QWidget(self)
+        QDialog.__init__(self, interface.mainWindow())
+        self.setWindowTitle("Höhenprofil")
+        self.main_widget = QWidget(self)
         self.iface = interface
         self.canvas = self.iface.mapCanvas()
         self.profile = profile
@@ -55,12 +58,12 @@ class ProfileWindow(QtGui.QDialog):
         self.mapLines = []
 
         self.sc = QtMplCanvas(self.iface, self.profile, self)
-        self.sc.setMinimumSize(QtCore.QSize(600, 400))
-        self.sc.setMaximumSize(QtCore.QSize(600, 400))
+        self.sc.setMinimumSize(QSize(600, 400))
+        self.sc.setMaximumSize(QSize(600, 400))
         bar = MyNavigationToolbar(self.sc, self)
 
-        self.gridM = QtGui.QGridLayout()
-        self.grid = QtGui.QGridLayout()
+        self.gridM = QGridLayout()
+        self.grid = QGridLayout()
         self.gridM.addLayout(self.grid, 0, 0, 1, 1)
 
         # Get fixed intermediate support data
@@ -69,14 +72,14 @@ class ProfileWindow(QtGui.QDialog):
         self.menu = False
 
         # GUI fields
-        self.stueTitle = QtGui.QLabel(u"<b>Stützenstandorte anpassen</b>")
-        self.hbox = QtGui.QHBoxLayout()
+        self.stueTitle = QLabel("<b>Stützenstandorte anpassen</b>")
+        self.hbox = QHBoxLayout()
         self.addGUIfields()
-        self.buttonBox = QtGui.QDialogButtonBox(self.main_widget)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|
-                                          QtGui.QDialogButtonBox.Ok)
+        self.buttonBox = QDialogButtonBox(self.main_widget)
+        self.buttonBox.setStandardButtons(QDialogButtonBox.Cancel|
+                                          QDialogButtonBox.Ok)
         # Build up GUI
-        self.container = QtGui.QVBoxLayout(self.main_widget)
+        self.container = QVBoxLayout(self.main_widget)
         self.container.addWidget(self.sc)
         self.container.addWidget(bar)
         self.container.addWidget(self.line1)
@@ -86,39 +89,37 @@ class ProfileWindow(QtGui.QDialog):
         self.container.addWidget(self.buttonBox)
 
         # Connect signals
-        QObject.connect(self.fixStueAdd, SIGNAL("clicked()"),
-                        self.sc.acitvateFadenkreuz)
-        QObject.connect(self.noStueAdd, SIGNAL("clicked()"),
-                        self.sc.acitvateFadenkreuz2)
-        QObject.connect(self.buttonBox, SIGNAL("rejected()"), self.Reject)
-        QObject.connect(self.buttonBox, SIGNAL("accepted()"), self.Apply)
+        self.fixStueAdd.clicked.connect(self.sc.acitvateFadenkreuz)
+        self.noStueAdd.clicked.connect(self.sc.acitvateFadenkreuz2)
+        self.buttonBox.rejected.connect(self.Reject)
+        self.buttonBox.accepted.connect(self.Apply)
         self.setLayout(self.container)
 
         # If fixed intermediate supports where already defined, redraw them
         if len(self.fixStueOld) > 0:
-            for key, values in self.fixStueOld.iteritems():
+            for key, values in self.fixStueOld.items():
                 order = key-1
                 [pointX, pointY, pointH] = values
                 drawnPoint = self.sc.CreatePoint(int(pointX), int(pointY))
                 self.CreateFixStue(pointX, pointY, drawnPoint, pointH, order)
 
     def addGUIfields(self):
-        self.line1 = QtGui.QFrame()
-        self.line1.setFrameShape(QtGui.QFrame.HLine)
-        self.line1.setFrameShadow(QtGui.QFrame.Sunken)
-        self.line2 = QtGui.QFrame()
-        self.line2.setFrameShape(QtGui.QFrame.HLine)
-        self.line2.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line1 = QFrame()
+        self.line1.setFrameShape(QFrame.HLine)
+        self.line1.setFrameShadow(QFrame.Sunken)
+        self.line2 = QFrame()
+        self.line2.setFrameShape(QFrame.HLine)
+        self.line2.setFrameShadow(QFrame.Sunken)
 
         # Create lables and buttons
-        self.fixStueAdd = QtGui.QPushButton(u"Fixe Stütze definieren")
-        self.noStueAdd = QtGui.QPushButton(u"Abschnitte ohne Stützen definieren")
-        spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding,
-                                        QtGui.QSizePolicy.Minimum)
+        self.fixStueAdd = QPushButton("Fixe Stütze definieren")
+        self.noStueAdd = QPushButton("Abschnitte ohne Stützen definieren")
+        spacerItem1 = QSpacerItem(40, 20, QSizePolicy.Expanding,
+                                        QSizePolicy.Minimum)
         self.hbox.addWidget(self.fixStueAdd)
         self.hbox.addItem(spacerItem1)
         self.hbox.addWidget(self.noStueAdd)
-        self.hbox.setAlignment(self.noStueAdd, QtCore.Qt.AlignRight)
+        self.hbox.setAlignment(self.noStueAdd, Qt.AlignRight)
 
     def CreateFixStue(self, pointX, pointY, drawnPoint, pointH = u'', order=None):
         if not self.menu:       # If there is no fixed intermediate support yet
@@ -140,21 +141,21 @@ class ProfileWindow(QtGui.QDialog):
                            drawnPoint)
 
     def initMenu(self):
-        spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding,
-                                        QtGui.QSizePolicy.Minimum)
-        spacerItem2 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum,
-                                        QtGui.QSizePolicy.Expanding)
-        headerLabel1 = QtGui.QLabel()
-        headerLabel1.setText(u"<html><head/><body><p>Position [m]"
-                             u"<br/><span style=\" font-size:8pt;\""
-                             u">Horizontaldist. ab Anfangsstütze</span>"
-                             u"</p></body></html>")
-        headerLabel1.setAlignment(QtCore.Qt.AlignCenter)
-        headerLabel2 = QtGui.QLabel()
-        headerLabel2.setText(u"<html><head/><body><p>Stützenhöhe [m]<br/>"
-                             u"<span style=\" font-size:8pt;\""
-                             u">Angabe optional</span></p></body></html>")
-        headerLabel2.setAlignment(QtCore.Qt.AlignCenter)
+        spacerItem1 = QSpacerItem(40, 20, QSizePolicy.Expanding,
+                                        QSizePolicy.Minimum)
+        spacerItem2 = QSpacerItem(20, 40, QSizePolicy.Minimum,
+                                        QSizePolicy.Expanding)
+        headerLabel1 = QLabel()
+        headerLabel1.setText("<html><head/><body><p>Position [m]"
+                             "<br/><span style=\" font-size:8pt;\""
+                             ">Horizontaldist. ab Anfangsstütze</span>"
+                             "</p></body></html>")
+        headerLabel1.setAlignment(Qt.AlignCenter)
+        headerLabel2 = QLabel()
+        headerLabel2.setText("<html><head/><body><p>Stützenhöhe [m]<br/>"
+                             "<span style=\" font-size:8pt;\""
+                             ">Angabe optional</span></p></body></html>")
+        headerLabel2.setAlignment(Qt.AlignCenter)
 
         self.grid.addWidget(headerLabel1, 0, 1, 1, 1)
         self.grid.addWidget(headerLabel2, 0, 2, 1, 1)
@@ -165,53 +166,50 @@ class ProfileWindow(QtGui.QDialog):
 
     def addRow2Grid(self, row):
         # label
-        stueLabel = QtGui.QLabel(u"Fixe Stütze {}".format(row+1))
-        stueLabel.setAlignment(QtCore.Qt.AlignRight)
-        stueLabel.setMinimumSize(QtCore.QSize(120, 0))
-        stueLabel.setAlignment(QtCore.Qt.AlignRight|
-                               QtCore.Qt.AlignTrailing|
-                               QtCore.Qt.AlignVCenter)
+        stueLabel = QLabel("Fixe Stütze {}".format(row+1))
+        stueLabel.setAlignment(Qt.AlignRight)
+        stueLabel.setMinimumSize(QSize(120, 0))
+        stueLabel.setAlignment(Qt.AlignRight|
+                               Qt.AlignTrailing|
+                               Qt.AlignVCenter)
 
         # Field for horizontal position in profile
-        guiPos = QtGui.QLineEdit()
-        guiH = QtGui.QLineEdit()
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred,
-                                       QtGui.QSizePolicy.Fixed)
+        guiPos = QLineEdit()
+        guiH = QLineEdit()
+        sizePolicy = QSizePolicy(QSizePolicy.Preferred,
+                                       QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         guiPos.setSizePolicy(sizePolicy)
-        guiPos.setMaximumSize(QtCore.QSize(70, 16777215))
-        guiPos.setLayoutDirection(QtCore.Qt.RightToLeft)
-        guiPos.setAlignment(QtCore.Qt.AlignRight)
+        guiPos.setMaximumSize(QSize(70, 16777215))
+        guiPos.setLayoutDirection(Qt.RightToLeft)
+        guiPos.setAlignment(Qt.AlignRight)
         guiPos.setObjectName(u'{:0>2}_guiPos'.format(row))
 
         # Field for support height
         guiH.setSizePolicy(sizePolicy)
-        guiH.setMaximumSize(QtCore.QSize(70, 16777215))
-        guiH.setLayoutDirection(QtCore.Qt.RightToLeft)
-        guiH.setAlignment(QtCore.Qt.AlignRight)
+        guiH.setMaximumSize(QSize(70, 16777215))
+        guiH.setLayoutDirection(Qt.RightToLeft)
+        guiH.setAlignment(Qt.AlignRight)
         guiH.setObjectName(u'{:0>2}_guiH'.format(row))
 
         # Button to remove row and support
-        guiRemove = QtGui.QPushButton(u"x")
-        guiRemove.setMaximumSize(QtCore.QSize(20, 20))
+        guiRemove = QPushButton("x")
+        guiRemove.setMaximumSize(QSize(20, 20))
         guiRemove.setObjectName(u'{:0>2}_guiRemove'.format(row))
 
         # Connect signals
-        QObject.connect(guiPos,
-            SIGNAL("editingFinished()"), self.fixStueChanged)
-        QObject.connect(guiH,
-            SIGNAL("editingFinished()"), self.fixStueChanged)
-        QObject.connect(guiRemove,
-            SIGNAL("clicked()"), self.removeStue)
+        guiPos.editingFinished.connect(self.fixStueChanged)
+        guiH.editingFinished.connect(self.fixStueChanged)
+        guiRemove.clicked.connect(self.removeStue)
 
         # Place fields in GUI
-        hbox1 = QtGui.QHBoxLayout()
+        hbox1 = QHBoxLayout()
         hbox1.addWidget(guiPos)
-        hbox1.setAlignment(QtCore.Qt.AlignCenter)
-        hbox2 = QtGui.QHBoxLayout()
+        hbox1.setAlignment(Qt.AlignCenter)
+        hbox2 = QHBoxLayout()
         hbox2.addWidget(guiH)
-        hbox2.setAlignment(QtCore.Qt.AlignCenter)
+        hbox2.setAlignment(Qt.AlignCenter)
 
         self.grid.addWidget(stueLabel, row+1, 0, 1, 1)
         self.grid.addLayout(hbox1, row+1, 1, 1, 1)
@@ -259,7 +257,7 @@ class ProfileWindow(QtGui.QDialog):
     def removeStue(self):
         senderName = self.sender().objectName()
         order = int(senderName[:2])
-        print order
+        print(order)
         # Remove point from plot and from canvas
         self.sc.DeletePoint(self.fixStueProp[order]['drawnPnt'])
         self.toolWin.removeStueMarker(2+order)
@@ -322,12 +320,12 @@ class ProfileWindow(QtGui.QDialog):
         self.deactivateMapMarker()
         [x, y] = self.toolWin.transform2MapCoords(horiDist)
         self.mapMarker = QgsMovingCross(self.canvas)
-        self.mapMarker.setColor(QtGui.QColor(249, 236, 0))
+        self.mapMarker.setColor(QColor(249, 236, 0))
 
     def activateMapLine(self, horiDist):
         mapLine = QgsRubberBand(self.canvas, False)
         mapLine.setWidth(3)
-        mapLine.setColor(QtGui.QColor(255, 250, 90))
+        mapLine.setColor(QColor(255, 250, 90))
         self.mapLines.append(mapLine)
         self.pointsToDraw = []
         # Create first point
@@ -388,10 +386,10 @@ class ProfileWindow(QtGui.QDialog):
         self.close()
 
     def mousePressEvent(self, event):
-        focused_widget = QtGui.QApplication.focusWidget()
-        if isinstance(focused_widget, QtGui.QLineEdit):
+        focused_widget = QApplication.focusWidget()
+        if isinstance(focused_widget, QLineEdit):
             focused_widget.clearFocus()
-        QtGui.QDialog.mousePressEvent(self, event)
+        QDialog.mousePressEvent(self, event)
 
 
 
