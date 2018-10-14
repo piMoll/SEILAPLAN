@@ -52,11 +52,24 @@ class SeilaplanPlugin(object):
             if qVersion() > '4.3.3':
                 QCoreApplication.installTranslator(self.translator)
 
+        self.action = None
+        self.threadControl = None
+        self.dlg = None
+        
+        try:
+            import pydevd
+            pydevd.settrace('localhost', port=53100,
+                        stdoutToServer=True, stderrToServer=True)
+        except ConnectionRefusedError:
+            pass
+
+
     def initGui(self):
         # Create action that will start plugin configuration
         self.action = QAction(
             QIcon(":/plugins/SeilaplanPlugin/icons/icon_app.png"),
             "SEILAPLAN", self.iface.mainWindow())
+        self.action.setWhatsThis("SEILAPLAN")
         # Connect the action to the run method
         self.action.triggered.connect(self.run)
 
@@ -72,13 +85,6 @@ class SeilaplanPlugin(object):
 
     def run(self):
         """Run method that performs all the real work"""
-        
-        try:
-            import pydevd
-            pydevd.settrace('localhost', port=53100,
-                        stdoutToServer=True, stderrToServer=True)
-        except ConnectionRefusedError:
-            pass
 
         # Control variables for possible rerun of algorithm
         reRun = True

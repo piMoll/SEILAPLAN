@@ -68,22 +68,7 @@ class MultithreadingControl(QDialog):
         self.reRun = False
         self.savedProj = None
         self.workerThread = None
-        self.initGui()
 
-    def setValue(self, toolData, projInfo):
-        self.projInfo = projInfo
-        self.input = [toolData, projInfo]
-
-    def getValue(self):
-        return self.input
-
-    def setState(self, st):
-        self.state = st
-
-    def getState(self):
-        return self.state
-
-    def initGui(self):
         self.setWindowTitle("SEILAPLAN wird ausgeführt")
         self.resize(500, 100)
         self.container = QVBoxLayout()
@@ -116,6 +101,19 @@ class MultithreadingControl(QDialog):
         self.container.addLayout(self.hbox)
         self.container.setSizeConstraint(QLayout.SetFixedSize)
         self.setLayout(self.container)
+
+    def setValue(self, toolData, projInfo):
+        self.projInfo = projInfo
+        self.input = [toolData, projInfo]
+
+    def getValue(self):
+        return self.input
+
+    def setState(self, st):
+        self.state = st
+
+    def getState(self):
+        return self.state
 
     def run(self):
         self.runThread()
@@ -167,6 +165,7 @@ class MultithreadingControl(QDialog):
         [self.outputLoc, self.resultStatus] = result
 
     def setFinalMessage(self):
+        # TODO: resultLabel can not be connected
         self.resultLabel.clicked.connect(self.onResultClicked)
         self.resultLabel.blockSignals(True)
         linkToFolder = ('<html><head/><body><p></p><p><a href='

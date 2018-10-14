@@ -24,22 +24,21 @@ import os
 import io
 import re
 from operator import itemgetter
-import unicodedata
-from math import atan, pi
+from math import cos, sin, atan, pi
 
 # GUI and QGIS libraries
-from qgis.PyQt.QtCore import QSettings, QFileInfo, pyqtSlot
-from qgis.PyQt.QtWidgets import QDialog, QAction, QMessageBox, QFileDialog
-from qgis.PyQt.QtGui import QIcon, QColor, QPixmap
-from qgis.core import QgsRasterLayer, QgsVectorLayer, QgsGeometry, QgsPoint, \
-    QgsPointXY, QgsFeature, QgsProject
-from qgis.gui import QgsRubberBand
-from processing import run
+from qgis.PyQt.QtCore import QFileInfo
+from qgis.PyQt.QtWidgets import QDialog, QMessageBox, QFileDialog
+from qgis.PyQt.QtGui import QPixmap
+from qgis.core import QgsApplication, QgsRasterLayer, QgsPointXY, QgsProject
+from qgis.analysis import QgsNativeAlgorithms
+from processing.core.Processing import Processing
+
 
 # Further GUI modules for functionality
-from .gui.guiHelperFunctions import Raster, valueToIdx, QgsStueMarker, \
-    strToNum, DialogOutputOptions, generateName, DialogWithImage, formatNum, \
-    readFromTxt, castToNumber
+from .gui.guiHelperFunctions import Raster, valueToIdx, strToNum, \
+    DialogOutputOptions, generateName, DialogWithImage, formatNum, \
+    readFromTxt, castToNumber, createContours, loadOsmLayer
 from .bo.ptmaptool import ProfiletoolMapTool
 from .bo.createProfile import CreateProfile
 # GUI elements
@@ -69,10 +68,10 @@ yellowTxt = 'zu definieren'
 redTxt = 'ausserhalb Raster'
 
 # Titles of info images
-infImg = {'Bodenabstand': u'Erklärungen zum Bodenabstand',
-          'VerankerungA': u'Erklärungen zur Verankerung am Anfangspunkt',
-          'VerankerungE': u'Erklärungen zur Verankerung am Anfangspunkt',
-          'Stuetzen': u'Erklärungen zu den Zwischenstützen'}
+infImg = {'Bodenabstand': 'Erklärungen zum Bodenabstand',
+          'VerankerungA': 'Erklärungen zur Verankerung am Anfangspunkt',
+          'VerankerungE': 'Erklärungen zur Verankerung am Anfangspunkt',
+          'Stuetzen': 'Erklärungen zu den Zwischenstützen'}
 
 # Info button text
 infoTxt = ("SEILAPLAN - Seilkran-Layoutplaner\n\n"
@@ -93,25 +92,23 @@ infoTxt = ("SEILAPLAN - Seilkran-Layoutplaner\n\n"
 class SeilaplanPluginDialog(QDialog, Ui_Dialog):
     def __init__(self, interface, helper):
         QDialog.__init__(self, interface.mainWindow())
-        # import pydevd
-        # pydevd.settrace('localhost', port=53100,
-        #             stdoutToServer=True, stderrToServer=True)
 
         # QGIS interface
         self.iface = interface
         # QGIS map canvas
         self.canvas = self.iface.mapCanvas()
-        self.action = QAction(
-            QIcon(":/plugins/SeilaplanPlugin/icons/icon_app.png"),
-            "SEILAPLAN", self.iface.mainWindow())
-        self.action.setWhatsThis("SEILAPLAN")
-        # Separate class to start algorithm
+        # Threading
         self.threadingControl = helper
-        # Interaction with canvas, is used to draw onto map canvas
-        self.tool = ProfiletoolMapTool(self.canvas, self.action)
-        self.savedTool = self.canvas.mapTool()
+        
         # Setup GUI of SEILAPLAN (import from ui_seilaplanDialog.py)
         self.setupUi(self)
+        
+        # Interaction with canvas, is used to draw onto map canvas
+        self.drawTool = ProfiletoolMapTool(self.canvas, self.draw, self.buttonShowProf)
+        # Connect emited signals
+        self.drawTool.sig_clearMap.connect(self.clearMap)
+        self.drawTool.sig_createProfile.connect(self.createProfile)
+        self.drawTool.sig_changeCoord.connect(self.changeLineCoordinates)
 
         # Define some important paths and locations
         self.userHomePath = os.path.join(os.path.expanduser('~'))
@@ -128,21 +125,25 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
                           'plot': outputOpt[1],
                           'geodata': outputOpt[2],
                           'coords': outputOpt[3]}
+        self.projName = None
 
         # Initialize cable parameters
         self.param = None               # All parameters of a certain cable type
         self.paramOrder = None          # Order of parameters
-        self.header = None
         self.paramSet = None            # Name of cable type
         self.settingFields = {}         # Dictionary of all GUI setting fields
 
         # GUI fields and variables handling coordinate information
         self.coordFields = {}
-        self.pointA = [-100, -100]
-        self.pointE = [-100, -100]
+        self.linePoints = {
+            'A': QgsPointXY(-100, -100),
+            'E': QgsPointXY(-100, -100)
+        }
         self.azimut = 0
         self.coordStateA = 'yellow'
         self.coordStateE = 'yellow'
+        
+        # Organize parameter GUI fields in dictionary
         self.groupFields()
 
         # Dictionary containing information about selected elevation model
@@ -153,43 +154,34 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         # Dialog with explanatory images
         self.imgBox = DialogWithImage(self.iface)
 
-        # Variables handling additional GIS-Layers
-        self.osmLayer = None            # OpenStreetMap Layer (TileMapService)
-        self.osmLyrOn = False
+        # Additional GIS-Layers
         self.osmLyrButton.setEnabled(False)
-        self.contourLyrButton.setEnabled(False)     # Contour Layer
-        self.contourLyr = None
-        self.contourLyrOn = False
-
-        # Connect signals and slots
-        self.connectFields()
+        self.contourLyrButton.setEnabled(False)
+        
+        # Connect GUI elements from dialog window with functions
+        self.connectGuiElements()
+        
+        # Set initial sate of some buttons
+        # Button to show profile
         self.buttonShowProf.setEnabled(False)
-
-        # Initialize variables handling drawing on map
+        # Button that activates drawing on map
         self.draw.setEnabled(False)
-        self.polygon = False
-        # Drawn line
-        self.rubberband = QgsRubberBand(self.canvas, self.polygon)
-        self.rubberband.setWidth(3)
-        self.rubberband.setColor(QColor(231, 28, 35))
-        self.markers = []           # Point markers on each end of the line
-        self.pointsToDraw = []
-        self.dblclktemp = None
-        self.drawnLine = None
-        self.line = False
-        self.lineLyr = None
-        self.vl = None
-        self.lineID = None
-
+        # Button stays down when pressed
+        self.draw.setCheckable(True)
+        
         # Dialog window with height profile
         self.profileWin = None
+
         # Dialog windows with output options
-        self.optionWin = DialogOutputOptions(self.iface, self)
+        self.optionWin = DialogOutputOptions(self.iface, self, self.outputOpt)
         self.optionWin.fillInDropDown(self.commonPaths)
 
+        Processing.initialize()
+        QgsApplication.processingRegistry().addProvider(QgsNativeAlgorithms())
 
-    def connectFields(self):
-        """Connect GUI fields.
+
+    def connectGuiElements(self):
+        """Connect GUI elements with functions.
         """
         self.buttonOkCancel.rejected.connect(self.Reject)
         self.buttonOkCancel.accepted.connect(self.apply)
@@ -210,9 +202,13 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         self.osmLyrButton.clicked.connect(self.onClickOsmButton)
         self.contourLyrButton.clicked.connect(self.onClickContourButton)
 
+        # Filed that contains project names
         self.fieldProjName.textChanged.connect(self.setProjName)
-        self.draw.clicked.connect(self.drawLine)
+        # Button starts map drawing
+        self.draw.clicked.connect(self.drawTool.drawLine)
+        # Button shows profile window
         self.buttonShowProf.clicked.connect(self.onShowProfile)
+        # Drop down field for parameter set choices
         self.fieldParamSet.currentIndexChanged.connect(self.setParamSet)
 
         # Action for changed Coordinates (when coordinate is changed by hand)
@@ -220,8 +216,6 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         self.coordAy.editingFinished.connect(self.changedPointAField)
         self.coordEx.editingFinished.connect(self.changedPointEField)
         self.coordEy.editingFinished.connect(self.changedPointEField)
-
-
 
     def groupFields(self):
         """Combine all GUI fields in dictionary for faster access.
@@ -261,9 +255,9 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         """Some initial values are filled into the GUI fields.
         """
         # Load existing parameter sets of cable types
-        [self.param, self.header] = readFromTxt(self.paramPath)
+        [self.param, header] = readFromTxt(self.paramPath)
         avaSets = []
-        for item in self.header:
+        for item in header:
             if item[:4] == 'set_':
                 avaSets.append(item.replace('set_', '', 1))
         self.fieldParamSet.blockSignals(True)
@@ -309,17 +303,14 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         rasterlist = self.getAvailableRaster()
         self.addRastersToGui(rasterlist)
 
-    def getAvailableRaster(self):
+    @staticmethod
+    def getAvailableRaster():
         """Go trough table of content and collect all raster layers.
         """
-        availLayers = QgsProject.instance().mapLayers().values()
         rColl = []
-
-        for lyr in availLayers:
-            # TODO: Nur auswählen, falls im TOC aktiviert / sichtbar
-            # if legend.isLayerVisible(lyr):
-            lyrType = lyr.type()
-            if lyrType == 1:        # = raster
+        for l in QgsProject.instance().layerTreeRoot().findLayers():
+            lyr = l.layer()
+            if lyr.type() == 1 and lyr.name() != 'OSM_Karte':  # = raster
                 lyrName = lyr.name()
                 r = Raster(lyr.id(), lyrName, lyr)
                 rColl.append(r)
@@ -468,7 +459,7 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         if os.path.exists(newPath):
             self.commonPaths.append(newPath)
         # If a duplicate is present, it gets removed
-        if dublicateIdx+1:
+        if dublicateIdx:
             del self.commonPaths[dublicateIdx]
         if len(self.commonPaths) > 12:
             # Firs (=oldest) entry is removed
@@ -497,133 +488,12 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
     #     QtGui.QDialog.mousePressEvent(self, event)
 
 
-    ###########################################################################
-    ### Methods for drawing line on map canvas
-    ###########################################################################
-
-    def drawLine(self):
-        self.dblclktemp = None
-        self.clearMap()
-        self.rubberband.reset(self.polygon)
-        self.cleanDigi()
-        self.activateDigiTool()
-        self.canvas.setMapTool(self.tool)
-
     def clearMap(self):
         if self.profileWin:
             self.profileWin.deactivateMapMarker()
             self.profileWin.removeLines()
             del self.profileWin
             self.profileWin = None
-        self.removeStueMarker()
-
-    def createDigiFeature(self, pnts):
-        line = QgsGeometry.fromPolyline(pnts)
-        qgFeat = QgsFeature()
-        qgFeat.setGeometry(line)
-        return qgFeat
-
-    def lineFinished(self):
-        lastPoint = self.pointsToDraw[-1]
-        if len(self.pointsToDraw) < 2:
-            self.removeStueMarker()
-            self.cleanDigi()
-            self.pointsToDraw = []
-            self.dblclktemp = lastPoint
-            self.drawnLine = None
-            self.buttonShowProf.setEnabled(False)
-        self.drawnLine = self.createDigiFeature(self.pointsToDraw)
-        self.changeCoordA(self.pointsToDraw[0])
-        self.changeCoordE(self.pointsToDraw[1])
-        self.createProfile()
-        self.cleanDigi()
-        self.dblclktemp = lastPoint
-
-    def lineFromFields(self):
-        self.dblclktemp = None
-        self.rubberband.reset(self.polygon)
-        lastPoint = self.pointsToDraw[-1]
-        if self.coordStateA == self.coordStateE == 'green':
-            self.buttonShowProf.setEnabled(True)
-        else:
-            self.buttonShowProf.setEnabled(False)
-        self.pointsToDraw = []
-        self.dblclktemp = lastPoint
-
-    def drawStueMarker(self, point):
-        marker = QgsStueMarker(self.canvas)
-        marker.setCenter(QgsPointXY(point))
-        self.markers.append(marker)
-        self.canvas.refresh()
-
-    def removeStueMarker(self, position=None):
-        if position:
-            marker = self.markers[position]
-            self.canvas.scene().removeItem(marker)
-            self.markers.pop(position)
-        else:
-            for marker in self.markers:
-                self.canvas.scene().removeItem(marker)
-            self.markers = []
-        self.canvas.refresh()
-
-    def cleanDigi(self):
-        self.pointsToDraw = []
-        self.canvas.unsetMapTool(self.tool)     # Signal DEACTIVATE is sent
-        self.canvas.setMapTool(self.savedTool)
-
-    def activateDigiTool(self):
-        # self.tool.canvasMoveEvent.connect(self.moved)
-        # self.tool.rightClicked.connect(self.rightClicked)
-        # self.tool.leftClicked.connect(self.leftClicked)
-        # self.tool.doubleClicked.connect(self.doubleClicked)
-        # self.tool.deactivate.connect(self.deactivateDigiTool)
-        return
-
-    def deactivateDigiTool(self):
-        # self.tool.moved.disconnect(self.moved)
-        # self.tool.leftClicked.disconnect(self.leftClicked)
-        # self.tool.rightClicked.disconnect(self.rightClicked)
-        # self.tool.doubleClicked.disconnect(self.doubleClicked)
-        return
-
-    def moved(self, position):
-        if len(self.pointsToDraw) > 0:
-            mapPos = self.canvas.getCoordinateTransform().\
-                toMapCoordinates(position["x"], position["y"])
-            self.rubberband.reset(self.polygon)
-            newPnt = QgsPoint(mapPos.x(), mapPos.y())
-            # if QGis.QGIS_VERSION_INT < 10900:
-            #     for i in range(0, len(self.pointsToDraw)):
-            #         self.rubberband.addPoint(self.pointsToDraw[i])
-            #     self.rubberband.addPoint(newPnt)
-            # else:
-            pnts = self.pointsToDraw + [newPnt]
-            self.rubberband.setToGeometry(QgsGeometry.fromPolyline(pnts), None)
-
-    def rightClicked(self, position):
-        # Reroute signal, it doesn't matter which mouse button is clicked
-        self.leftClicked(position)
-
-    def leftClicked(self, position):
-        mapPos = self.canvas.getCoordinateTransform().\
-            toMapCoordinates(position["x"], position["y"])
-        newPoint = QgsPoint(mapPos.x(), mapPos.y())
-        if newPoint == self.dblclktemp:
-            self.dblclktemp = None
-            return
-        else:
-            # Mark point with marker symbol
-            self.drawStueMarker(newPoint)
-            if len(self.pointsToDraw) == 0:
-                self.rubberband.reset(self.polygon)
-                self.pointsToDraw.append(newPoint)
-            else:
-                self.pointsToDraw.append(newPoint)
-                self.lineFinished()
-
-    def doubleClicked(self, position):
-        pass
 
     ###########################################################################
     ### Methods handling start and end point coordinates
@@ -633,57 +503,47 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         x = strToNum(self.coordFields['Ax'].text())
         y = strToNum(self.coordFields['Ay'].text())
         # Only do something if coordinates have changed
-        if not (x == self.pointA[0] and y == self.pointA[1]):
-            self.changeCoordA([x, y])
+        if not (x == self.linePoints['A'].x() and y == self.linePoints['A'].y()):
+            self.changeLineCoordinates([x, y], 'A')
             self.updateLineFromGui()
 
     def changedPointEField(self):
         x = strToNum(self.coordFields['Ex'].text())
         y = strToNum(self.coordFields['Ey'].text())
         # Only do something if coordinates have changed
-        if not (x == self.pointE[0] and y == self.pointE[1]):
-            self.changeCoordE([x, y])
+        if not (x == self.linePoints['E'].x() and y == self.linePoints['E'].y()):
+            self.changeLineCoordinates([x, y], 'E')
             self.updateLineFromGui()
 
-    def changeCoordA(self, newpoint):
+    def changeLineCoordinates(self, newpoint, pointType):
         # Delete fixed intermediate support from previous cable line
         self.fixStue = {}
         # Check if point is inside elevation model
-        state = self.checkPoint(newpoint)
-        self.coordStateA = state
+        state, point = self.checkPoint(newpoint)
+        
+        if pointType == 'A':
+            self.coordStateA = state
+        elif pointType == 'E':
+            self.coordStateE = state
+        else:
+            raise TypeError("Parameter pointType has to be (string) 'A' or 'E'")
+        
         # Update coordinate state icon
-        self.changePointSym(state, 'A')
+        self.changePointSym(state, pointType)
         if state != 'yellow':
             # Update coordinate field
-            self.coordFields['Ax'].setText(formatNum(newpoint[0]))
-            self.coordFields['Ay'].setText(formatNum(newpoint[1]))
-            self.pointA = newpoint
+            self.coordFields[pointType+'x'].setText(formatNum(point.x()))
+            self.coordFields[pointType+'y'].setText(formatNum(point.y()))
+            self.linePoints[pointType] = point
             self.setAzimut()
         # Update profile and length fields
         self.checkProfileStatus()
         self.checkLenghtStatus()
 
-    def changeCoordE(self, newpoint):
-        # Delete fixed intermediate support from previous cable line
-        self.fixStue = {}
-        # Check if point is inside elevation model
-        state = self.checkPoint(newpoint)
-        self.coordStateE = state
-        # Update coordinate state icon
-        self.changePointSym(state, 'E')
-        if state != 'yellow':
-            # Update coordinate field
-            self.coordFields['Ex'].setText(formatNum(newpoint[0]))
-            self.coordFields['Ey'].setText(formatNum(newpoint[1]))
-            self.pointE = newpoint
-            self.setAzimut()
-        # Update profile and length fields
-        self.checkProfileStatus()
-        self.checkLenghtStatus()
 
     def setAzimut(self):
-        dx = (self.pointE[0] - self.pointA[0]) * 1.0
-        dy = (self.pointE[1] - self.pointA[1]) * 1.0
+        dx = (self.linePoints['E'].x() - self.linePoints['A'].x()) * 1.0
+        dy = (self.linePoints['E'].y() - self.linePoints['A'].y()) * 1.0
         if dx == 0:
             dx = 0.0001
         azimut = atan(dy/dx)
@@ -693,11 +553,15 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
             azimut += pi
         self.azimut = azimut
 
+
     def checkLenghtStatus(self):
         if self.coordStateA != 'yellow' and self.coordStateE != 'yellow':
-            self.updateLenghtField(self.pointA, self.pointE)
+            l = ((self.linePoints['E'].x() - self.linePoints['A'].x()) ** 2
+                 + (self.linePoints['E'].y() - self.linePoints['A'].y()) ** 2) ** 0.5
+            self.laenge.setText(formatNum(l))
         else:
             self.laenge.setText('')
+
 
     def checkProfileStatus(self):
         if self.coordStateA == self.coordStateE == 'green':
@@ -705,41 +569,38 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         else:
             self.buttonShowProf.setEnabled(False)
 
-    def updateLenghtField(self, pointA, pointE):
-        [Ax, Ay] = pointA
-        [Ex, Ey] = pointE
-        l = ((Ex - Ax)**2 + (Ey - Ay)**2)**0.5
-        self.laenge.setText(formatNum(l))
 
     def updateLineFromGui(self):
-        self.rubberband.reset(self.polygon)
+        self.drawTool.reset()
+        self.clearMap()
         if self.coordStateA != 'yellow' and self.coordStateE != 'yellow':
-            points = [QgsPoint(self.pointA[0], self.pointA[1]),
-                      QgsPoint(self.pointE[0], self.pointE[1])]
-            self.rubberband.setToGeometry(QgsGeometry.fromPolyline(points), None)
-            self.drawnLine = self.createDigiFeature(points)
-            self.clearMap()
-            self.drawStueMarker(points[0])
-            self.drawStueMarker(points[1])
-            # TODO: Pofileerstellung funktioniert nicht wegen fehlendem package shapely
-            # self.createProfile()
-        else:
-            self.clearMap()
+            self.drawTool.updateLine(list(self.linePoints.values()))
+            self.createProfile()
+            
 
     def checkPoint(self, point):
         state = 'yellow'
+
+        if type(point) != QgsPointXY:
+            try:
+                if type(point) == list and len(point) == 2:
+                    point = QgsPointXY(point[0], point[1])
+                else:
+                    point = QgsPointXY(point)
+            except TypeError:
+                return state, None
+            
         if self.dhm != {}:
             extent = self.dhm['extent']
             [extLx, extHy, extHx, extLy] = extent
-            try:
-                [x, y] = point
-                if extLx <= float(x) <= extHx and extLy <= float(y) <= extHy:
-                    state = 'green'
-                else:
-                    state = 'red'
-            except ValueError:
-                state = 'yellow'
-        return state
+            
+            if extLx <= float(point.x()) <= extHx \
+                    and extLy <= float(point.y()) <= extHy:
+                state = 'green'
+            else:
+                state = 'red'
+
+        return state, point
 
     def changePointSym(self, state, point):
         if point == 'A':
@@ -768,10 +629,9 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
             field.setText('')
 
     def transform2MapCoords(self, dist):
-        import math
-        x = self.pointA[0] + dist * math.cos(self.azimut)
-        y = self.pointA[1] + dist * math.sin(self.azimut)
-        return [x, y]
+        x = self.linePoints['A'].x() + dist * cos(self.azimut)
+        y = self.linePoints['A'].y() + dist * sin(self.azimut)
+        return QgsPointXY(x, y)
 
 
     ###########################################################################
@@ -779,68 +639,29 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
     ###########################################################################
 
     def onClickOsmButton(self):
-        """ Load OpenStreetMap Layer to canvas.
         """
-        self.osmLyrOn = False
-        # Check if there is already an OSM layer
-        legend = self.iface.legendInterface()
-        availLayers = legend.layers()
-        for lyr in availLayers:
-            if lyr.name() == 'OSM_Karte':
-                self.osmLayer = lyr
-                self.osmLyrOn = True
-                break
-
-        if self.osmLyrOn:
-            # Remove OSM layer
-            QgsProject.instance().removeMapLayer(self.osmLayer.id())
-            self.osmLyrOn = False
-        else:
-            # Add OSM layer
-            xmlPath = os.path.join(self.homePath, 'config', 'OSM_Karte.xml')
-            baseName = QFileInfo(xmlPath).baseName()
-            self.osmLayer = QgsRasterLayer(xmlPath, baseName)
-            QgsProject.instance().addMapLayer(self.osmLayer)
-            self.osmLyrOn = True
+        Add a OpenStreetMap layer.
+        """
+        loadOsmLayer(self.homePath)
+        self.canvas.refresh()
+        
 
     def onClickContourButton(self):
-        # Get current CRS of qgis project
-        s = QSettings()
-        oldValidation = s.value("/Projections/defaultBehaviour")
-        crs = self.canvas.mapSettings().destinationCrs()
-        crsEPSG = crs.authid()
-        # If project and raster CRS are equal and set correctly
-        if crsEPSG == self.dhm['spatialRef'] and "USER" not in crsEPSG:
-            s.setValue("/Projections/defaultBehaviour", "useProject")
-        else:
-            crs = self.dhm['layer'].crs()
-
-        contourLyr = self.dhm['contour']
-        if contourLyr:
-            QgsProject.instance().removeMapLayer(contourLyr.id())
-        else:
-            algOutput = run("gdalogr:contour", self.dhm['layer'],
-                                          20.0, "Hoehe", None, None)
-            contourPath = algOutput['OUTPUT_VECTOR']
-            contourName = "Hoehenlinien_" + self.dhm['name']
-            contour = QgsVectorLayer(contourPath, contourName, "ogr")
-            # Set the same CRS as qgis project
-            contour.setCrs(crs)
-            QgsProject.instance().addMapLayer(contour)
-            self.dhm['contour'] = contour
-            s.setValue("/Projections/defaultBehaviour", oldValidation)
-
-        # More useful stuff
-        # uri = "linestring?crs=epsg:{}".format(crsNum)
-        # contourName = "Hoehenlinien_" + self.dhm['name']
-        # contour = QgsVectorLayer(uri, contourName,  "memory")
+        """
+        Calcluate contour lines from currently selected dhm and add them to
+        as a layer.
+        """
+        self.dhm['contour'] = createContours(self.canvas, self.dhm)
+        self.canvas.refresh()
+        
 
     ###########################################################################
     ### Methods for loading and saving projects
     ###########################################################################
 
     def createProfile(self):
-        createProf = CreateProfile(self.iface, self.drawnLine, self.dhm['layer'])
+        createProf = CreateProfile(self.iface, self.drawTool.drawnLine,
+                                   self.dhm['layer'])
         profile = createProf.create()
         self.profileWin = ProfileWindow(self, self.iface, profile[0])
 
@@ -868,8 +689,8 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         # Update coordinates
         pointA = projHeader['Anfangspunkt'].split('/')
         pointE = projHeader['Endpunkt'].split('/')
-        self.changeCoordA([strToNum(pointA[0]), strToNum(pointA[1])])
-        self.changeCoordE([strToNum(pointE[0]), strToNum(pointE[1])])
+        self.changeLineCoordinates([strToNum(pointA[0]), strToNum(pointA[1])], 'A')
+        self.changeLineCoordinates([strToNum(pointE[0]), strToNum(pointE[1])], 'E')
         self.updateLineFromGui()
         # Set the correct parameter set name in drop down menu
         self.fieldParamSet.blockSignals(True)
@@ -891,16 +712,16 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
     def onSaveProjects(self):
         title = 'Projekt speichern'
         fFilter = 'TXT (*.txt)'
-        dialog = QFileDialog(self, title, self.outputOpt['outputPath'])
-        dialog.setAcceptMode(QFileDialog.AcceptSave)
-        dialog.setNameFilter(fFilter)
-        dialog.setDefaultSuffix('txt')
+        defaultFilename = ''
         if self.projName != '':
-            defaultFilename = u'{}.txt'.format(self.projName)
-            dialog.selectFile(defaultFilename)
-        if dialog.exec_():
-            filename = dialog.selectedFiles()[0]
-            fileExtention = u'.txt'
+            defaultFilename = '{}.txt'.format(self.projName)
+            
+        filename, _ = QFileDialog.getSaveFileName(self, title,
+            os.path.join(self.outputOpt['outputPath'], defaultFilename),
+            fFilter)
+        
+        if filename:
+            fileExtention = '.txt'
             if filename[-4:] != fileExtention:
                 filename += fileExtention
             self.saveProjToTxt(filename)
@@ -934,7 +755,8 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
                 line = '{0: <17}{1: <12}{2: <45}{3: <9}{4}'.format(name, d, p['label'], p['unit'], '\n')
                 f.writelines(line)
 
-    def openProjFromTxt(self, path):
+    @staticmethod
+    def openProjFromTxt(path):
         """Opens a saved project and saves it to a dictionary.
         """
         fileData = {}
@@ -1101,11 +923,15 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         Ay = strToNum(self.coordAy.text())
         Ex = strToNum(self.coordEx.text())
         Ey = strToNum(self.coordEy.text())
+        if not Ax or not Ay or not Ex or not Ey:
+            QMessageBox.information(self, 'Fehler',
+                'Bitte fehlende Anfangs- oder Endkoordinaten definieren.', QMessageBox.Ok)
+            return
         # Checks if predefine parameter data has been changed by the user or not
         parameterSet = self.checkParamSet(userData)
         noStue = []
         if self.profileWin:
-            noStue = self.profileWin.sc.getNoStue()
+            noStue = self.profileWin.sc.noStue
         projInfo = {'Projektname': self.projName,
                     'Hoehenmodell': self.dhm,
                     'Anfangspunkt': [Ax, Ay],
@@ -1173,7 +999,7 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
                 userData['HM_fix_d'].append(int(pointX))
                 userData['HM_fix_h'].append(int(pointH))
         if self.profileWin:
-            userData['noStue'] = self.profileWin.sc.getNoStue()
+            userData['noStue'] = self.profileWin.sc.noStue
         return userData
 
     def checkParamSet(self, userData):
@@ -1211,24 +1037,24 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
     def apply(self):
         # ERSETZEN mit PICKLE
 
-        # # Extract values from GUI fields
-        # noError, userData, projInfo = self.verifyFieldData()
-        # if noError:
-        #     self.threadingControl.setState(True)
-        # else:
-        #     # If there was an error extracting the values, return to GUI
-        #     return False
-        #
-        # # Project data gets layout for report generation
-        # projInfo['Params'] = self.layoutToolParams(userData)
-        # projInfo['outputOpt'] = self.outputOpt
-        # # Project data is saved to reload it later
-        # projInfo['projFile'] = os.path.join(projInfo['outputOpt']['outputPath'],
-        #                                     self.projName + '_Projekt.txt')
-        # self.saveProjToTxt(projInfo['projFile'])
-        # # Save fixed intermediate supports
-        # userData = self.getStueInfo(userData)
-        #
+        # Extract values from GUI fields
+        noError, userData, projInfo = self.verifyFieldData()
+        if noError:
+            self.threadingControl.setState(True)
+        else:
+            # If there was an error extracting the values, return to GUI
+            return False
+
+        # Project data gets layout for report generation
+        projInfo['Params'] = self.layoutToolParams(userData)
+        projInfo['outputOpt'] = self.outputOpt
+        # Project data is saved to reload it later
+        projInfo['projFile'] = os.path.join(projInfo['outputOpt']['outputPath'],
+                                            self.projName + '_Projekt.txt')
+        self.saveProjToTxt(projInfo['projFile'])
+        # Save fixed intermediate supports
+        userData = self.getStueInfo(userData)
+
 
 
         picklefile = '20180923_1145.pckl'
@@ -1241,15 +1067,14 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         # pickle.dump([userData, projInfo], f)
         # f.close()
 
-        import pickle
-        homePath = os.path.dirname(__file__)
-        storefile = os.path.join(homePath, 'backups+testFiles',
-                                 '{}'.format(picklefile))
-        f = open(storefile, 'rb')
-        dump = pickle.load(f)
-        f.close()
-        [userData, projInfo] = dump
-        self.threadingControl.setState(True)
+        # import pickle
+        # homePath = os.path.dirname(__file__)
+        # storefile = os.path.join(homePath, 'backups+testFiles', '{}'.format(picklefile))
+        # f = open(storefile, 'rb')
+        # dump = pickle.load(f)
+        # f.close()
+        # [userData, projInfo] = dump
+        # self.threadingControl.setState(True)
         
         
         
@@ -1261,9 +1086,8 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         self.removeCoords()
         # Clean markers and lines from map canvas
         self.clearMap()
-        self.rubberband.reset(self.polygon)
-        self.drawnLine = None
-        self.cleanDigi()
+        self.drawTool.reset()
+        
         # Close additional dialogs
         self.imgBox.close()
         if self.profileWin:

@@ -56,7 +56,7 @@ def generateGeodata(projInfo, HM, seilDaten, stueLabel, savePath):
     seilLastGeo = np.swapaxes(np.array([seilX, seilY, seilLastZ]), 1, 0)
 
     # Stützenpunkte abspeichern
-    stueName = u'{}_Stuetzen'.format(projName.replace("'", "."))
+    stueName = '{}_Stuetzen'.format(projName.replace("'", "."))
     stuePath = os.path.join(savePath, stueName + '.shp')
     checkShpPath(stuePath)
     save2PointShape(stuePath, 'Stuetzen', stueGeo, 'StuetzenH',
@@ -239,8 +239,8 @@ def generateCoordTable(seil, zi, HM, savePath, labelTxt):
 
 def unicode2acii(text):
     # Tabelle mit HEX Codes der Umlaute
-    translation = {0xe4: u'ae',
-                   0xf6: u'oe',
-                   0xfc: u'ue'}
+    translation = {0xe4: 'ae',
+                   0xf6: 'oe',
+                   0xfc: 'ue'}
     return text.translate(translation).encode('ascii', 'ignore')
 

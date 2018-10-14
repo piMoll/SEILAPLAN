@@ -7,8 +7,6 @@ try:
     import shapely.geos
 except ImportError:
     pass
-except:
-    pass
 from .settings import enumVertexType
 #from bo.line import Line
 from .profile import Profile
@@ -50,7 +48,7 @@ class CreateProfile:
         vtxId = 1
 
         qgLineVertices = qgGeom.asPolyline()
-        shplyGeom = loads(qgGeom.asWkb())
+        shplyGeom = loads(bytes(qgGeom.asWkb()))
         shplyVertices = []
         #for shplyV in shplyGeom.coords:
         for idxV in range(1, len(shplyGeom.coords) - 1):
