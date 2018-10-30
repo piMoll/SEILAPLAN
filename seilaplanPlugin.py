@@ -30,7 +30,7 @@ from . import resources_rc
 # GUI
 from .seilaplanPluginDialog import SeilaplanPluginDialog
 # Algorithm
-from gui.progressDialog import ProgressDialog
+from .gui.progressDialog import ProgressDialog
 
 
 class SeilaplanPlugin(object):
@@ -80,7 +80,7 @@ class SeilaplanPlugin(object):
 
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
-        self.iface.removePluginMenu(u'&SEILAPLAN', self.action)
+        self.iface.removePluginMenu('&SEILAPLAN', self.action)
         self.iface.removeToolBarIcon(self.action)
 
     def run(self):

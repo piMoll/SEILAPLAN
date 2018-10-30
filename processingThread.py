@@ -129,7 +129,7 @@ class ProcessingTask(QgsTask):
         if self.projInfo['outputOpt']['geodata']:
             geodata = generateGeodata(self.projInfo, HM, seilDaten,
                                       labelTxt[0], outputLoc)
-            addToMap(self.iface, geodata, outputName)
+            addToMap(geodata, outputName)
         
         # Generate coordinate tables
         if self.projInfo['outputOpt']['coords']:

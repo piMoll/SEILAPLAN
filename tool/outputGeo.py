@@ -16,23 +16,19 @@ import numpy as np
 from math import cos, sin, atan, pi
 import os
 import csv
-import osgeo.ogr as ogr
-import osgeo.osr as osr
 
+from qgis.PyQt.QtCore import QVariant
+from qgis.core import QgsWkbTypes, QgsFields, QgsField, QgsVectorFileWriter, \
+    QgsFeature, QgsGeometry, QgsPoint, QgsCoordinateReferenceSystem, QgsPointXY
 
 
 def generateGeodata(projInfo, HM, seilDaten, stueLabel, savePath):
     projName = projInfo['Projektname']
     [Ax, Ay] = projInfo['Anfangspunkt']
     [Ex, Ey] = projInfo['Endpunkt']
-    epsg = projInfo['Hoehenmodell']['spatialRef'][5:]
-    # spatialRef = projInfo['spatialRef']
-    spatialRef = osr.SpatialReference()
-    spatialRef.ImportFromEPSG(int(epsg))
-    # spatialReference.ImportFromProj4("""
-    #     +proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1
-    #     +x_0=600000 +y_0=200000 +ellps=bessel +towgs84=674.4,15.1,405.3,0,0,0,0
-    #     +units=m +no_defs""")
+    epsg = projInfo['Hoehenmodell']['spatialRef']
+    spatialRef = QgsCoordinateReferenceSystem(epsg)
+
     # Seilverlauf
     seilHoriDist = seilDaten['l_coord']
     seilLeerZ = seilDaten['z_Leer']
@@ -59,19 +55,19 @@ def generateGeodata(projInfo, HM, seilDaten, stueLabel, savePath):
     stueName = '{}_Stuetzen'.format(projName.replace("'", "."))
     stuePath = os.path.join(savePath, stueName + '.shp')
     checkShpPath(stuePath)
-    save2PointShape(stuePath, 'Stuetzen', stueGeo, 'StuetzenH',
+    save2PointShape(stuePath, stueGeo, 'StuetzenH',
                     HM['h'], stueLabel, spatialRef)
     # Leerseil abspeichern
     seilLeerName = '{}_Leerseil'.format(projName.replace("'", "."))
     seilLeerPath = os.path.join(savePath, seilLeerName + '.shp')
     checkShpPath(seilLeerPath)
-    save2LineShape(seilLeerPath, seilLeerName, seilLeerGeo, spatialRef)
+    save2LineShape(seilLeerPath, seilLeerGeo, spatialRef)
 
     # Lastseil abspeichern
     seilLastName = '{}_Lastseil'.format(projName)
     seilLastPath = os.path.join(savePath, seilLastName + '.shp')
     checkShpPath(seilLastPath)
-    save2LineShape(seilLastPath,seilLastName, seilLastGeo, spatialRef)
+    save2LineShape(seilLastPath, seilLastGeo, spatialRef)
 
     geoOutput = {'stuetzen': stuePath,
                  'leerseil': seilLeerPath,
@@ -79,9 +75,10 @@ def generateGeodata(projInfo, HM, seilDaten, stueLabel, savePath):
     return geoOutput
 
 
-def save2PointShape(shapePath, layerName, geodata, attribName,
+def save2PointShape(shapePath, geodata, attribName,
                     attribData, label, spatialRef):
     """
+    :param label:
     :param shapePath: Pfad wo Shapefile agespeichert wird
     :param layerName: Name des Layers
     :param geodata: Koordinaten der Punkte
@@ -89,54 +86,54 @@ def save2PointShape(shapePath, layerName, geodata, attribName,
     :param attribData: Werte für Attribute
     :param spatialRef: Räumliche Referenz
     """
-    # ALS ERKLÄRUNG: osgeo Vektor Hirarchie
-    #   Driver-->Datasource-->Layer-->Feature-->Geometry-->Point
-    driver = ogr.GetDriverByName('ESRI Shapefile')
-    shapeDriver = driver.CreateDataSource(shapePath)
-    layer = shapeDriver.CreateLayer(layerName, spatialRef, ogr.wkbPoint)
-    # Erzeuge Attributfelder
-    layer.CreateField(ogr.FieldDefn('StuetzenNr', ogr.OFTString))
-    layer.CreateField(ogr.FieldDefn(attribName, ogr.OFTInteger))
-    for idx, (coords, attrib) in enumerate(zip(geodata, attribData)):
-        # Erzeuge Punkt
-        geometry = ogr.Geometry(ogr.wkbPoint)
-        # TODO alles sollte 3D sein!!!
-        geometry.SetPoint(0, coords[0], coords[1], coords[2])
-        # Erzeuge Feature
-        feature = ogr.Feature(layer.GetLayerDefn())
-        feature.SetGeometry(geometry)
-        feature.SetFID(idx)
-        feature.SetField('StuetzenNr', unicode2acii(label[idx]))
-        feature.SetField(attribName, attrib)
-        # Speichere Feature
-        layer.CreateFeature(feature)
-        # Cleanup
-        geometry.Destroy()
-        feature.Destroy()
-    # Cleanup
-    shapeDriver.Destroy()
 
-def save2LineShape(shapePath, layerName, geodata, spatialRef):
-    driver = ogr.GetDriverByName('ESRI Shapefile')
-    shapeDriver = driver.CreateDataSource(shapePath)
-    layer = shapeDriver.CreateLayer(layerName, spatialRef, ogr.wkbLineString)
-    layerDefinition = layer.GetLayerDefn()
-    # Erzeuge Linie
-    geometry = ogr.Geometry(ogr.wkbLineString)
+    # define fields for feature attributes. A QgsFields object is needed
+    fields = QgsFields()
+    fields.append(QgsField("StuetzenNr", QVariant.String))
+    fields.append(QgsField(attribName, QVariant.Int))
+    writer = QgsVectorFileWriter(shapePath, "UTF8", fields, QgsWkbTypes.PointZ,
+                                 spatialRef, "ESRI Shapefile")
+
+    if writer.hasError() != QgsVectorFileWriter.NoError:
+        # TODO
+        raise Exception("Vector Writer")
+
+    for idx, (coords, attrib) in enumerate(zip(geodata, attribData)):
+        feature = QgsFeature()
+        feature.setFields(fields)
+        # TODO: Nicht 3D weil Methode fromPoint() nicht existiert
+        feature.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(coords[0], coords[1])))
+        feature.setId(idx)
+        feature.setAttribute("StuetzenNr", label[idx])
+        feature.setAttribute(attribName, attrib)
+        writer.addFeature(feature)
+        del feature
+
+    # delete the writer to flush features to disk
+    del writer
+
+def save2LineShape(shapePath, geodata, spatialRef):
+    
+    # define fields for feature attributes. A QgsFields object is needed
+    fields = QgsFields()
+    writer = QgsVectorFileWriter(shapePath, "UTF8", fields, QgsWkbTypes.LineStringZ,
+                                 spatialRef, "ESRI Shapefile")
+
+    if writer.hasError() != QgsVectorFileWriter.NoError:
+        # TODO
+        raise Exception("Vector Writer")
+
+    lineVertices = []
     for idx, coords in enumerate(geodata):
-        # Füge Punkt Eckpunkt hinzu
-        geometry.AddPoint(coords[0], coords[1], coords[2])
-    # Erzeuge Feature
-    feature = ogr.Feature(layerDefinition)
-    feature.SetGeometry(geometry)
-    feature.SetFID(1)
-    # Speichere Feature
-    layer.CreateFeature(feature)
-    # Cleanup
-    geometry.Destroy()
-    feature.Destroy()
-    # Cleanup
-    shapeDriver.Destroy()
+        lineVertices.append(QgsPoint(coords[0], coords[1], coords[2]))
+        
+    feature = QgsFeature()
+    feature.setGeometry(QgsGeometry.fromPolyline(lineVertices))
+    feature.setId(1)
+    writer.addFeature(feature)
+    del feature
+    # delete the writer to flush features to disk
+    del writer
 
 def checkShpPath(path):
     fileEndings = ['.shp', '.dbf', '.prj', '.shx']
@@ -145,7 +142,7 @@ def checkShpPath(path):
         if os.path.exists(path+ending):
             os.remove(path+ending)
 
-def addToMap(iface, geodata, projName):
+def addToMap(geodata, projName):
     from qgis.core import QgsVectorLayer, QgsProject
     stue = QgsVectorLayer(geodata['stuetzen'], u"Stützen", "ogr")
     leerseil = QgsVectorLayer(geodata['leerseil'], u"Leerseil", "ogr")
