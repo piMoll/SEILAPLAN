@@ -10,7 +10,7 @@
 name=SEILAPLAN
 qgisMinimumVersion=3.0
 description=Seilkran-Layoutplaner
-version=1.1
+version=2.0
 author=Patricia Moll, Leo Bont
 email=patricia.edith.moll@gmail.com;leo.bont@gmail.com
 
