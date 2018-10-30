@@ -57,11 +57,11 @@ def main(progress, IS, projInfo):
 
     # Rasterdaten laden
     rasterdata = generateDhm(projInfo['Hoehenmodell'], inputPoints)
-    if not progress.running:
+    if progress.isCanceled():
             return False
     # Höhenprofil erstellen
     gp_old, zi_disp, diIdx = calcProfile(inputPoints, rasterdata, IS, DeltaH, coeff)
-    if not progress.running:
+    if progress.isCanceled():
             return False
     # Mögliche Stützenpositionen finden
     gp, StuetzenPos, peakLoc, diIdx, R_R = stuePos(IS, gp_old)

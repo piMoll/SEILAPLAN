@@ -269,6 +269,7 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         # Generate project name
         self.fieldProjName.setText(generateName())
         self.enableToolTips()
+        self.setParamSet(0)
 
     def enableToolTips(self):
         for [name, field] in list(self.settingFields.items()):
@@ -1078,8 +1079,9 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         
         
         
-        # All user data is handed over to class that handles calculation
-        self.threadingControl.setValue(userData, projInfo)
+        # All user data is handed over to class that handles the calculations
+        # in a seperate thread
+        self.threadingControl.setUserInput(userData, projInfo)
         self.close()
 
     def cleanUp(self):

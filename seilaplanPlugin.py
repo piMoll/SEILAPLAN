@@ -30,7 +30,7 @@ from . import resources_rc
 # GUI
 from .seilaplanPluginDialog import SeilaplanPluginDialog
 # Algorithm
-from .processingThread import MultithreadingControl, WorkerThread
+from .processingThread import progressDialog
 
 
 class SeilaplanPlugin(object):
@@ -92,7 +92,7 @@ class SeilaplanPlugin(object):
 
         while reRun:
             # Initialize helper GUI that later will start algorithm
-            self.threadControl = MultithreadingControl(self.iface)
+            self.threadControl = progressDialog(self.iface)
             # Initialize dialog window
             self.dlg = SeilaplanPluginDialog(self.iface, self.threadControl)
             # Get available raster from table of content in QGIS
@@ -112,20 +112,16 @@ class SeilaplanPlugin(object):
             reRun = False
             reRunProj = None
 
-            # Algorithm is executed in a separate class with two Threads. The
-            #   first thread (MultithreadingControl, self.threadControl)
+            # The algorithm is executed in a separate thread. To see pgrogress,
+            #
+            #   first thread (progressDialog, self.threadControl)
             #   controls the small dialog window with a progressbar, the
             #   second thread executes the algorithm.
 
             # If user clicked 'Ok'
             if self.threadControl.getState() is True:
-                self.threadControl.workerThread = WorkerThread(
-                                                qgis.utils.iface.mainWindow())
-                # Get user input
-                self.threadControl.workerThread.userInput = \
-                                                self.threadControl.getValue()
-                self.threadControl.workerThread.iface = self.iface
-                self.threadControl.run()
+
+                self.threadControl.runProcessing()
 
                 # Check if user wants a rerun after the algorithm has run and
                 #   the progress dialog is closed

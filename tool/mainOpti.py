@@ -165,7 +165,7 @@ def optimization(IS, gp, StuetzenPos, progress):
     progress.sig_text.emit("Berechnung der optimalen Stützenpositionen...")
 
     for i in range(optiLen):
-        if not progress.running:
+        if progress.isCanceled():
         #     # Überprüfen ob vom Benutzer ein Abbruch durchgeführt wurde
             return False
         progress.sig_value.emit(i)

@@ -140,8 +140,8 @@ class ProfiletoolMapTool(QgsMapTool):
         self.canvas.refresh()
 
 
-    def removeStueMarker(self, position=None):
-        if position:
+    def removeStueMarker(self, position=-1):
+        if position >= 0:
             marker = self.markers[position]
             self.canvas.scene().removeItem(marker)
             self.markers.pop(position)
