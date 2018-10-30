@@ -30,7 +30,7 @@ from . import resources_rc
 # GUI
 from .seilaplanPluginDialog import SeilaplanPluginDialog
 # Algorithm
-from .processingThread import progressDialog
+from gui.progressDialog import ProgressDialog
 
 
 class SeilaplanPlugin(object):
@@ -53,7 +53,7 @@ class SeilaplanPlugin(object):
                 QCoreApplication.installTranslator(self.translator)
 
         self.action = None
-        self.threadControl = None
+        self.progressDialog = None
         self.dlg = None
         
         try:
@@ -92,9 +92,9 @@ class SeilaplanPlugin(object):
 
         while reRun:
             # Initialize helper GUI that later will start algorithm
-            self.threadControl = progressDialog(self.iface)
+            self.progressDialog = ProgressDialog(self.iface)
             # Initialize dialog window
-            self.dlg = SeilaplanPluginDialog(self.iface, self.threadControl)
+            self.dlg = SeilaplanPluginDialog(self.iface, self.progressDialog)
             # Get available raster from table of content in QGIS
             self.dlg.updateRasterList()
             # Load initial values of dialog
@@ -119,16 +119,16 @@ class SeilaplanPlugin(object):
             #   second thread executes the algorithm.
 
             # If user clicked 'Ok'
-            if self.threadControl.getState() is True:
+            if self.progressDialog.getState() is True:
 
-                self.threadControl.runProcessing()
+                self.progressDialog.runProcessing()
 
                 # Check if user wants a rerun after the algorithm has run and
                 #   the progress dialog is closed
-                if self.threadControl.reRun:
+                if self.progressDialog.reRun:
                     reRun = True
-                    reRunProj = self.threadControl.savedProj
-            del self.threadControl
+                    reRunProj = self.progressDialog.savedProj
+            del self.progressDialog
             del self.dlg
 
         return

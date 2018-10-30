@@ -90,7 +90,7 @@ infoTxt = ("SEILAPLAN - Seilkran-Layoutplaner\n\n"
 
 
 class SeilaplanPluginDialog(QDialog, Ui_Dialog):
-    def __init__(self, interface, helper):
+    def __init__(self, interface, progressDialog):
         QDialog.__init__(self, interface.mainWindow())
 
         # QGIS interface
@@ -98,7 +98,7 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         # QGIS map canvas
         self.canvas = self.iface.mapCanvas()
         # Threading
-        self.threadingControl = helper
+        self.progressDialog = progressDialog
         
         # Setup GUI of SEILAPLAN (import from ui_seilaplanDialog.py)
         self.setupUi(self)
@@ -1041,7 +1041,7 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         # Extract values from GUI fields
         noError, userData, projInfo = self.verifyFieldData()
         if noError:
-            self.threadingControl.setState(True)
+            self.progressDialog.setState(True)
         else:
             # If there was an error extracting the values, return to GUI
             return False
@@ -1081,7 +1081,7 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         
         # All user data is handed over to class that handles the calculations
         # in a seperate thread
-        self.threadingControl.setUserInput(userData, projInfo)
+        self.progressDialog.setUserInput(userData, projInfo)
         self.close()
 
     def cleanUp(self):
