@@ -341,6 +341,8 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         """Get the current selected Raster in self.rasterField and collect
         useful information about it.
         """
+        if isinstance(rastername, int):
+            rastername = self.rasterField.currentText()
         rasterlist = self.getAvailableRaster()
         for rlyr in rasterlist:
             if rlyr.name == rastername:
@@ -363,6 +365,10 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         # If a raster was selected, OSM and Contour Layers can be generated
         self.osmLyrButton.setEnabled(True)
         self.contourLyrButton.setEnabled(True)
+
+        # If there are already coordinates, check them again
+        self.changedPointAField()
+        self.changedPointEField()
 
     def searchForRaster(self, path):
         """ Checks if a raster from a saved project is present in the table
