@@ -149,8 +149,8 @@ def plotData(disp_data, di, seilDaten, HM, IS, projInfo, resultStatus, locPlot):
         axes.plot(xAnkerseil[2:], zAnkerseil[2:], color='#FF4D44', linewidth=1.8)
     # TODO: Funktioniert nicht, fehler
     # Stützen
-    # axes.vlines(idxStue.astype(float), y_data[idxStue+p].astype(float), zStue.astype(float), colors='#484A4C',
-    #            linewidth='3')
+    axes.vlines(idxStue.astype(float), y_data[idxStue+p].astype(float),
+                zStue.astype(float), colors='black', linewidth=3)
 
     # Beschriftungen setzten
     porjTitle = projInfo['Projektname']
