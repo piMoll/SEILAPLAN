@@ -59,6 +59,16 @@ class ProcessingTask(QgsTask):
     
     def run(self):
         
+        try:
+            import pydevd
+            pydevd.settrace('localhost', port=53100,
+                        stdoutToServer=True, stderrToServer=True)
+        except ConnectionRefusedError:
+            pass
+        except ImportError:
+            pass
+
+
         output = main(self, self.inputData, self.projInfo)
         
         if not output:  # If abort by user or error in code

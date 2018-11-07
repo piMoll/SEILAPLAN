@@ -145,8 +145,6 @@ def calcCable(IS, zi, di, sc, befGSK, z_null, STA, b, h, feld):
 
     # Berechnung der Sehne
     c = (bquad + h**2)**0.5
-    # OPTI Neue Summen-Funktion
-    # c_sum = getattr(vSumInstance, calcSum)(c)
     c_sum = np.sum(c, axis=0)
     c_feld = c[feld]
 
@@ -157,7 +155,6 @@ def calcCable(IS, zi, di, sc, befGSK, z_null, STA, b, h, feld):
         ZulSK_erfuellt = False
     else:
         # Höhenangaben der Stützen bzw. der Feldmitte
-        # OPTI: keine for Schleife um z, zfm zu füllen
         z = np.zeros(sizeB+1)
         z[1:] = np.cumsum(h)
         zfm = z[:-1] + h*0.5
@@ -177,7 +174,6 @@ def calcCable(IS, zi, di, sc, befGSK, z_null, STA, b, h, feld):
         delta_s = ((bquad**2 * qT**2) / (24 * c * HT**2)) * \
                   (1 + (3*bquad + 8 * h**2) / (240 * c**2) *
                    (b * qT / HT)**2)
-        # OPTI neue Summen-Funktion
         UeberLaenge_Leerseil = np.sum(delta_s, axis=0)
         # UeberLaenge_Leerseil = getattr(vSumInstance, calcSum)(delta_s)
         Laenge_Leerseil = c_sum + UeberLaenge_Leerseil
@@ -211,7 +207,6 @@ def calcCable(IS, zi, di, sc, befGSK, z_null, STA, b, h, feld):
             delta_s = (bquad * c * qT**2) / (24 * STfm_neu**2)
             # delta s für die Belastung im betrachteten Abschnitt
             delta_s[feld] *= 0.25
-            # OPTI Neue Summen-Funktion
             delta_s_sum = np.sum(delta_s, axis=0)
             # delta_s_sum = vectorSum(delta_s, sizeB)
             # delta_s_sum = getattr(vSumInstance, calcSum)(delta_s)
@@ -243,13 +238,10 @@ def calcCable(IS, zi, di, sc, befGSK, z_null, STA, b, h, feld):
                 za = 0
         # Maximalwert im Seilsystem aufgrund der Belastung im
         # betrachteten Feld
-        # OPTI Aus der else schleife genommen um nicht nutzbare durchgänge schneller abzufangen
         ST_max_betr_Feld = max([np.max(ST), np.max(STfm)]) + d_ST_out
         if CableImpossible:
             Cable_Possible = False
             ym_z = 0
-        # OPTI ebenfalls aus der else schleife genommen
-        # OPTI Alle Prüfungen fallen dadurch weg
         elif zul_SK < ST_max_betr_Feld:
             ZulSK_erfuellt = False
             ym_z = 0

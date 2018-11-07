@@ -134,7 +134,7 @@ class QtMplCanvas(FigureCanvas):
         self.draw()
         self.win.deactivateMapMarker()
 
-    # TODO: Alternative zu searchsorted, evtl. schneller?
+    # TODO: Dies könnte eine Alternative zu searchsorted sein, evtl. schneller?
     @staticmethod
     def find_nearest(array, value):
         idx = (np.abs(array - value)).argmin()

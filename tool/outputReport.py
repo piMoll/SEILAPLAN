@@ -147,7 +147,6 @@ def plotData(disp_data, di, seilDaten, HM, IS, projInfo, resultStatus, locPlot):
     if xAnkerseil[2] != xAnkerseil[3] and resultStatus != 3:
         # Falls Anker vom Benutzer definiert wurden
         axes.plot(xAnkerseil[2:], zAnkerseil[2:], color='#FF4D44', linewidth=1.8)
-    # TODO: Funktioniert nicht, fehler
     # Stützen
     axes.vlines(idxStue.astype(float), y_data[idxStue+p].astype(float),
                 zStue.astype(float), colors='black', linewidth=3)
@@ -286,7 +285,7 @@ def generateReportText(IS, projInfo, HM, kraft, OptSTA, duration,
     import math
 
     # Report zusammenstellen
-    # TODO: Länge des Seils oder Höhenunterschied auffschreiben?
+    # TODO: Länge des Seils oder Höhenunterschied aufschreiben?
     projname = projInfo['Projektname']
     hmodell = projInfo['Hoehenmodell']['path']
     laenge = projInfo['Laenge']

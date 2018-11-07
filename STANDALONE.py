@@ -200,7 +200,6 @@ def main(storeDump):
                                       outputName + '_KoordStuetzen.csv')
         table2SavePath = os.path.join(outputLoc,
                                       outputName + '_KoordSeil.csv')
-        # TODO: Keine Ahnung ob richtige Parameter (die ersten zwei)
         generateCoordTable(seilDaten, gp["zi"], HM,
                            [table1SavePath, table2SavePath], labelTxt[0])
 

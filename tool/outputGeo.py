@@ -80,7 +80,6 @@ def save2PointShape(shapePath, geodata, attribName,
     """
     :param label:
     :param shapePath: Pfad wo Shapefile agespeichert wird
-    :param layerName: Name des Layers
     :param geodata: Koordinaten der Punkte
     :param attribName: Attributname (Feldname) von zusätzlichen Werten
     :param attribData: Werte für Attribute
@@ -101,7 +100,7 @@ def save2PointShape(shapePath, geodata, attribName,
     for idx, (coords, attrib) in enumerate(zip(geodata, attribData)):
         feature = QgsFeature()
         feature.setFields(fields)
-        # TODO: Nicht 3D weil Methode fromPoint() nicht existiert
+        # TODO: Nicht 3D weil Methode fromPoint() nicht existiert. Wird evtl. in der Zukunft implementiert
         feature.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(coords[0], coords[1])))
         feature.setId(idx)
         feature.setAttribute("StuetzenNr", label[idx])

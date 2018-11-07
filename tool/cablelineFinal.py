@@ -197,9 +197,6 @@ def preciseCable(zi, di, HM, LP, IS):
     l_coord = np.copy(b1)
 
     start = 0
-    # OPTI 1) wenig for schleifen
-    # OPTI 2) gesamtes Array vorher inizialisieren
-    # OPTI 3) möglichst grösse mengen auf einmal miteinander in array verrechnen
     for n in range(anzFelder):
         bn = b[n]
         Hmn = Hm[n]
@@ -253,7 +250,6 @@ def preciseCable(zi, di, HM, LP, IS):
     # Suche der Indizes zur Berechnung der Seilwinkel
     idxStuetze = np.zeros(anzStue).astype('int')
 
-    # OPTI Gesamte Indexfindung vereinfacht
     idxStuetze[1:] = b_cum * multipl
     idxNachher = idxStuetze[:-1] + 1
     idxVorher = idxStuetze[1:] - 1
@@ -374,7 +370,7 @@ def preciseCable(zi, di, HM, LP, IS):
     Vi_nbS_L = sv * (np.sin(phi_ob) - np.sin(phi_u))
     Hi_nbS_L = sv * (np.cos(phi_ob) - np.cos(phi_u))
 
-    # TODO: Wird das benötigt?
+    # Wird das benötigt?
     # kraft['Sattelkraft_beiStuetze_L'] = np.concatenate((
     #     (Vi_nbS_L**2 + Hi_nbS_L**2)**0.5, Vi_nbS_L, Hi_nbS_L))
 
@@ -382,7 +378,7 @@ def preciseCable(zi, di, HM, LP, IS):
     Vi_nbS_R = sn * (np.sin(phi_o) - np.sin(phi_un))
     Hi_nbS_R = sn * (np.cos(phi_o) - np.cos(phi_un))
 
-    # TODO: Wird das benötigt?
+    # Wird das benötigt?
     # kraft['Sattelkraft_beiStuetze_R'] = np.concatenate((
     #     (Vi_nbS_R**2 + Hi_nbS_R**2)**0.5, Vi_nbS_R, Hi_nbS_R))
 
@@ -396,9 +392,7 @@ def preciseCable(zi, di, HM, LP, IS):
     # sSt[2][:anzSt] = Hi_nbS_L
     # sSt[2][anzSt:] = Hi_nbS_R
 
-    # import pydevd
-    # pydevd.settrace('localhost', port=53100,
-    #                  stdoutToServer=True, stderrToServer=True)
+
     sSt = np.array([np.array([(Vi_nbS_L**2 + Hi_nbS_L**2)**0.5,
                               (Vi_nbS_R**2 + Hi_nbS_R**2)**0.5]),
                     np.array([Vi_nbS_L, Vi_nbS_R]),

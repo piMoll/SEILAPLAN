@@ -959,8 +959,7 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
                 ['Anfangspunkt', '{0: >7} / {1: >7}'.format(*tuple(coord[:2]))],
                 ['Endpunkt', '{0: >7} / {1: >7}'.format(*tuple(coord[2:]))],
                 ['Parameterset', parameterSet]]
-                # TODO: save cable line sections that shouldn't contain
-                # TODO:     intermediate support
+                # TODO: save cable line sections that shouldn't contain intermediate support
         fixStueString = ''
         for key, values in list(self.fixStue.items()):
                 fixStueString += '{0:0>2}: {1: >7}, {2: >7}, ' \

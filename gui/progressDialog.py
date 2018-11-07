@@ -162,7 +162,6 @@ class ProgressDialog(QDialog):
         [self.outputLoc, self.resultStatus] = result
     
     def setFinalMessage(self):
-        # TODO: resultLabel can not be connected
         self.resultLabel.clicked.connect(self.onResultClicked)
         self.resultLabel.blockSignals(True)
         linkToFolder = ('<html><head/><body><p></p><p><a href='

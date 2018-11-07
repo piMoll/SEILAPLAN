@@ -46,10 +46,7 @@ def optimization(IS, gp, StuetzenPos, progress):
     Value: Zielfunktionswert der Lösung
     OptSTA: Optimale Werte der Anfangszugkraft STA
     """
-    # import pydevd
-    # pydevd.settrace('localhost', port=53100,
-    #                  stdoutToServer=True, stderrToServer=True)
-
+    
     # TODO: Matrix  Grossbuchstaben, Array = Kleinbuchstaben
 
     # Vektoren in neuen Variabeln abspeichern

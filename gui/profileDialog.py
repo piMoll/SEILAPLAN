@@ -267,7 +267,6 @@ class ProfileWindow(QDialog):
         order = int(senderName[:2])
         # Remove point from plot and from canvas
         self.sc.DeletePoint(self.fixStueProp[order]['drawnPnt'])
-        # TODO: Warum order + 2 ? Funktioniert nicht
         self.toolWin.drawTool.removeStueMarker(order)
         # Delete intermediate support data
         del self.fixStueProp[order]

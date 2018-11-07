@@ -19,11 +19,6 @@ from osgeo import gdal
 
 from .peakdetect import peakdetect
 
-# Spezieller Import, noetig für Operation 'scipy interpolate'
-# frozen == Programm wird in EXE verwandelt
-# if getattr(sys, 'frozen', None):
-#     from scipy.sparse.csgraph import _validation
-
 p = 21
 nl = os.linesep
 
@@ -69,34 +64,12 @@ def generateDhm(rasterdata, coords):
 
     rasterdata['extent'] = extent
     rasterdata['subraster'] = subraster
-
-    # ALS ERKLÄRUNG: Gdal Hirarchie
-    # Driver
-    #   Datasource
-    #     Layer
-    #         Feature
-    #             Geometry
-    #                 Point
-
-    # Exportieren nach txt -> Zur Kontrolle des ausgeschnittenen Subraster
-    # path2 = os.path.join(os.path.dirname(__file__), "test.txt")
-    # rasterheader = "ncols {1}{0}nrows {2}{0}xllcorner {3}{0}yllcorner {4}{0}" \
-    #                "cellsize {5}{0}NODATA_value {6}".format(nl,
-    #                     subraster.shape[1], subraster.shape[0], extent[0],
-    #                     extent[4], cellsize, -9999)
-    # np.savetxt(path2, np.round(subraster, 3), header=rasterheader, comments='')
     return rasterdata
 
 def calcProfile(inputPoints, rasterdata, IS, Delta, coeff):
     """ Infotext.
     """
     dhm = rasterdata['subraster']
-    # path2 = os.path.join(os.path.dirname(__file__), "test.txt")
-    # rasterheader = "ncols {1}{0}nrows {2}{0}xllcorner {3}{0}yllcorner {4}{0}" \
-    #                "cellsize {5}{0}NODATA_value {6}".format(nl,
-    #                     dhm.shape[1], dhm.shape[0], rasterdata['extent'][0],
-    #                     rasterdata['extent'][4], cellsize, -9999)
-    # np.savetxt(path2, dhm, header=rasterheader, comments='')
 
     [xMin, xMax, yMin, yMax] = rasterdata['extent']
     cellsize = rasterdata['cellsize']
@@ -141,9 +114,6 @@ def calcProfile(inputPoints, rasterdata, IS, Delta, coeff):
             # yi = np.linspace(Ya, Ye-zwischendistY, anzTeilstuecke)
             yi = np.arange(Ya, Ye, zwischendistY)
 
-    # TODO: Beeinflusst dieser Hack die Berechnung?????
-    # xi[-1] = float(Xe)
-    # yi[-1] = float(Ye)
 
     # Zusätzliche Daten für Anzeige
     ###############################
@@ -164,10 +134,6 @@ def calcProfile(inputPoints, rasterdata, IS, Delta, coeff):
     # kx, ky bezeichnen grad der interpolation, 1=linear
     spline = interpolate.RectBivariateSpline(-coordY, coordX, dhm, kx=1, ky=1)
     zi = spline.ev(-yi, xi)
-
-    # import pydevd
-    # pydevd.settrace('localhost', port=53100,
-    #                      stdoutToServer=True, stderrToServer=True)
 
     # Distanz in der Horizontalen
     di = np.arange(len(zi)) * 1.0
@@ -234,11 +200,6 @@ def stuePos(IS, gp):
     z_dir (i)     Z Unterschied bei i+1 für eine Gerade von i zu i+2
     v (i)         Unterscheidungsvariable ob konkav oder konvex bei Pkt i
     """
-    # TODO: Besser schreiben
-
-    # import pydevd
-    # pydevd.settrace('localhost', port=53100,
-    #                  stdoutToServer=True, stderrToServer=True)
 
     # Analyse des Geländes um konkave Stellen zu finden
     ###################################################

@@ -131,33 +131,7 @@ class CreateProfile:
     def __getValsAtPoint(self, pnt):
         vals = []
         raster = self.raster
-        #TODO!!!! QGIS BUG: QGIS 2.0.1: raster.noDataValue() = > AttributeError: 'QgsRasterLayer' object has no attribute 'noDataValue'
-        # if QGis.QGIS_VERSION_INT < 10900:
-        #     noDataVal, validNoData = raster.noDataValue()
-        #     if validNoData:
-        #         rasterVal = noDataVal
-        #     else:
-        #         #rasterVal = float('nan')
-        #         rasterVal = -9999
-        # else:
-        #     rasterVal = -9999
-
         rasterVal = -9999
-
-        # if QGis.QGIS_VERSION_INT < 10900:
-        #     result, identifyDic = raster.identify(pnt)
-        #     if result:
-        #         for bandName, pixelValue in identifyDic.iteritems():
-        #             #QgsMessageLog.logMessage('bandName:' + str(bandName), 'VoGis')
-        #             if str(bandName) == raster.bandName(1):
-        #                 try:
-        #                     #QgsMessageLog.logMessage('pixelValue:' + str(pixelValue), 'VoGis')
-        #                     rasterVal = float(pixelValue)
-        #                 except ValueError:
-        #                     #float('nan') #0
-        #                     rasterVal = -9999
-        #                     pass
-        # else:
         identifyResult = raster.dataProvider().identify(pnt, 1)
         for bndNr, pixVal in identifyResult.results().items():
             if 1 == bndNr:

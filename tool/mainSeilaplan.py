@@ -32,10 +32,7 @@ def checkInputParams(IS):
 
 
 def main(progress, IS, projInfo):
-    # import pydevd
-    # pydevd.settrace('localhost', port=53100,
-    #                  stdoutToServer=True, stderrToServer=True)
-
+    
     IS = checkInputParams(IS)
     # STARTE BERECHNUNGEN
     # -------------------

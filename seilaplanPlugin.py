@@ -62,6 +62,8 @@ class SeilaplanPlugin(object):
                         stdoutToServer=True, stderrToServer=True)
         except ConnectionRefusedError:
             pass
+        except ImportError:
+            pass
 
 
     def initGui(self):
