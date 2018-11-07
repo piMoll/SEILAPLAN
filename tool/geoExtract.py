@@ -14,7 +14,6 @@
 import numpy as np
 import os
 import math
-# TODO: Veraltete scipy bibliothek? Siehe warnung in QGIS
 from scipy import interpolate
 from osgeo import gdal
 
@@ -39,11 +38,15 @@ def generateDhm(rasterdata, coords):
     [Ax, Ay, Ex, Ey] = coords
 
     # Minimum und Maximum der benötigten Koordinaten
-    # TODO: Gewährleisten, dass 2*p nicht aus raster rausragt!
     pointXmin = min(Ax, Ex) - 2*p
     pointXmax = max(Ax, Ex) + 2*p
     pointYmin = min(Ay, Ey) - 2*p
     pointYmax = max(Ay, Ey) + 2*p
+    
+    pointXmin = pointXmin if pointXmin >= xMin else xMin
+    pointXmax = pointXmax if pointXmax <= xMax else xMax
+    pointYmin = pointYmin if pointYmin >= yMin else yMin
+    pointYmax = pointYmax if pointYmax <= yMax else yMax
 
     # Offset in Anz. Zellen von der oberen linken Ecke des suraster berechnen
     xOff = int((pointXmin - xMin)/cellsize)
