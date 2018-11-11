@@ -243,8 +243,9 @@ def plotData(disp_data, di, seilDaten, HM, IS, projInfo, resultStatus, locPlot):
                      textcoords='offset points', size=12,
                      path_effects=[PathEffects.withStroke(linewidth=3, foreground="w")])
     # Bezeichnung der fixen Stützen
-
-    fig.tight_layout()
+    
+    # TODO: Funktioniert unter Windows nicht
+    # fig.tight_layout()
 
     # Plot als PNG exportieren
     # outPlotPNG = os.path.join(outputLoc, '{}_Plot.png'.format(outputName))
