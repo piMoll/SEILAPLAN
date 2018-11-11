@@ -33,25 +33,29 @@ from .tool.outputGeo import generateGeodata, addToMap, generateCoordTable
 
 
 class ProcessingTask(QgsTask):
-    """This shows how to subclass QgsTask"""
+    """ Seperate Thread to run calculations without blocking QGIS. This class
+    runs the algorithm, sends progress information to the progress gui and
+    generates the results (diagram, pdf, geodata...).
+    """
     
     # Signals
     sig_jobEnded = pyqtSignal(bool)
+    sig_jobError = pyqtSignal(str)
     sig_value = pyqtSignal(float)
     sig_range = pyqtSignal(list)
-    # sig_max = pyqtSignal()
     sig_text = pyqtSignal(str)
     sig_result = pyqtSignal(list)
     
-    def __init__(self, progressbar, description='SEILAPLAN'):
+    def __init__(self, description='SEILAPLAN'):
         super().__init__(description, QgsTask.CanCancel)
-        self.bar = progressbar
-        self.total = 0
-        self.iterations = 0
+        self.state = False
         self.exception = None
         self.inputData = None
         self.projInfo = None
         self.result = None
+    
+    def setState(self, state):
+        self.state = state
     
     def setProcessingInput(self, inputData, projInfo):
         self.inputData = inputData
@@ -59,14 +63,15 @@ class ProcessingTask(QgsTask):
     
     def run(self):
         
-        try:
-            import pydevd
-            pydevd.settrace('localhost', port=53100,
-                        stdoutToServer=True, stderrToServer=True)
-        except ConnectionRefusedError:
-            pass
-        except ImportError:
-            pass
+        # Remove comment to debug algorithm
+        # try:
+        #     import pydevd
+        #     pydevd.settrace('localhost', port=53100,
+        #                 stdoutToServer=True, stderrToServer=True)
+        # except ConnectionRefusedError:
+        #     pass
+        # except ImportError:
+        #     pass
 
 
         output = main(self, self.inputData, self.projInfo)
@@ -87,14 +92,6 @@ class ProcessingTask(QgsTask):
         # Unpack results
         [t_start, disp_data, seilDaten, gp, HM,
          IS, kraft, optSTA, optiLen] = result
-        
-        # import pickle
-        # projInfo['Hoehenmodell'].pop('layer')
-        # homePath = os.path.dirname(__file__)
-        # storefile = os.path.join(homePath, 'backups+testFiles', 'ohneHoeheimPlot.pckl')
-        # f = open(storefile, 'w')
-        # pickle.dump([output, self.userInput], f)
-        # f.close()
         
         self.sig_value.emit(optiLen * 1.01)
         self.sig_text.emit("Outputdaten werden generiert...")
@@ -157,22 +154,16 @@ class ProcessingTask(QgsTask):
     def finished(self, result):
         """This method is automatically called when self.run returns. result
         is the return value from self.run.
-
         This function is automatically called when the task has completed (
-        successfully or otherwise). You just implement finished() to do whatever
-        follow up stuff should happen after the task is complete. finished is
-        always called from the main thread, so it's safe to do GUI
-        operations and raise Python exceptions here.
+        successfully or otherwise).
         """
-        
+
         if self.exception:
-            # QgsMessageLog.logMessage(
-            #     'Task "{name}" Exception: {exception}'.format(
-            #         name=self.description(), exception=self.exception),
-            #     'test', Qgis.Critical)
-            raise self.exception
+            self.sig_jobError.emit(self.exception)
         
-        self.bar.jobEnded(result)
+        else:
+            # Show successful run or user abort on progress gui
+            self.sig_jobEnded.emit(result)
     
     def cancel(self):
         super().cancel()

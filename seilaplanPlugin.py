@@ -24,6 +24,7 @@ import os
 from qgis.PyQt.QtCore import QSettings, QTranslator, qVersion, QCoreApplication
 from qgis.PyQt.QtWidgets import QAction
 from qgis.PyQt.QtGui import QIcon
+from qgis.core import QgsApplication
 import qgis.utils
 # Initialize Qt resources from file resources.py
 from . import resources_rc
@@ -31,6 +32,7 @@ from . import resources_rc
 from .seilaplanPluginDialog import SeilaplanPluginDialog
 # Algorithm
 from .gui.progressDialog import ProgressDialog
+from .processingThread import ProcessingTask
 
 
 class SeilaplanPlugin(object):
@@ -93,10 +95,15 @@ class SeilaplanPlugin(object):
         reRunProj = None
 
         while reRun:
-            # Initialize helper GUI that later will start algorithm
-            self.progressDialog = ProgressDialog(self.iface)
+    
+            
+            
+            # Create seperate threa for calculations so that QGIS stays
+            # responsive
+            workerThread = ProcessingTask()
+            
             # Initialize dialog window
-            self.dlg = SeilaplanPluginDialog(self.iface, self.progressDialog)
+            self.dlg = SeilaplanPluginDialog(self.iface, workerThread)
             # Get available raster from table of content in QGIS
             self.dlg.updateRasterList()
             # Load initial values of dialog
@@ -114,22 +121,30 @@ class SeilaplanPlugin(object):
             reRun = False
             reRunProj = None
 
-            # The algorithm is executed in a separate thread. To see pgrogress,
-            #
-            #   first thread (progressDialog, self.threadControl)
-            #   controls the small dialog window with a progressbar, the
-            #   second thread executes the algorithm.
+            
+            # The algorithm is executed in a separate thread. To see progress,
+            # a new gui shows a progress bar.
+            
+            # If all needed data has been input in the gui and the user has
+            # clicked 'ok'
+            if workerThread.state is True:
+                # Initialize gui to show progress
+                self.progressDialog = ProgressDialog(self.iface)
+                self.progressDialog.setThread(workerThread)
 
-            # If user clicked 'Ok'
-            if self.progressDialog.getState() is True:
+                # Add task to taskmanager of QGIS and start the calculations
+                QgsApplication.taskManager().addTask(workerThread)
 
-                self.progressDialog.runProcessing()
+                # Show progress bar
+                self.progressDialog.run()
 
-                # Check if user wants a rerun after the algorithm has run and
-                #   the progress dialog is closed
+                # After calculations have finished and progress gui has been
+                # closed: Check if user wants a rerun
                 if self.progressDialog.reRun:
                     reRun = True
-                    reRunProj = self.progressDialog.savedProj
+                    reRunProj = workerThread.projInfo['projFile']
+            
+            del workerThread
             del self.progressDialog
             del self.dlg
 

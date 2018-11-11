@@ -23,13 +23,10 @@
 import sys
 import subprocess
 
-from qgis.core import QgsApplication
 from qgis.PyQt.QtCore import Qt, pyqtSignal
 from qgis.PyQt.QtWidgets import QDialog, QVBoxLayout, QProgressBar, QLabel, \
     QHBoxLayout, QDialogButtonBox, QSizePolicy, QPushButton, QSpacerItem, \
     QLayout
-
-from ..processingThread import ProcessingTask
 
 
 textOK = (
@@ -49,23 +46,18 @@ textBad = (
 
 
 class ProgressDialog(QDialog):
-    """ Progress dialog window is handled in separate thread
-    so that QGIS is still responsive. User parameters are send to method
-    setValue.
+    """ Progress dialog shows progress bar for algorithm.
     """
     
     def __init__(self, iface):
         QDialog.__init__(self, iface.mainWindow())
         
+        self.workerThread = None
         self.state = False
         self.outputLoc = None
         self.resultStatus = None
         self.reRun = False
         self.savedProj = None
-        
-        # Calculations are done in a seperate thread so that QGIS
-        # stays responsive
-        self.workerThread = ProcessingTask(self)
         
         # Build GUI Elements
         self.setWindowTitle("SEILAPLAN wird ausgeführt")
@@ -104,37 +96,29 @@ class ProgressDialog(QDialog):
         self.container.addLayout(self.hbox)
         self.container.setSizeConstraint(QLayout.SetFixedSize)
         self.setLayout(self.container)
+        
+    def setThread(self, workerThread):
+        self.workerThread = workerThread
+        self.connectProgressSignals()
     
-    def setUserInput(self, toolData, projInfo):
-        self.savedProj = projInfo['projFile']
-        # Set user input in worker thread
-        self.workerThread.setProcessingInput(toolData, projInfo)
-    
-    def setState(self, st):
-        self.state = st
-    
-    def getState(self):
-        return self.state
-    
-    def runProcessing(self):
+    def connectProgressSignals(self):
         # Connet signals of thread
         self.workerThread.sig_jobEnded.connect(self.jobEnded)
+        self.workerThread.sig_jobError.connect(self.onError)
         self.workerThread.sig_value.connect(self.valueFromThread)
         self.workerThread.sig_range.connect(self.rangeFromThread)
-        # self.workerThread.sig_max.connect(self.maxFromThread)
         self.workerThread.sig_text.connect(self.textFromThread)
         self.workerThread.sig_result.connect(self.resultFromThread)
         self.rerunButton.clicked.connect(self.onRerun)
         
-        # Add task to task manager of QGIS
-        QgsApplication.taskManager().addTask(self.workerThread)
-        
+    def run(self):
         # Show modal dialog window (QGIS is still responsive)
         self.show()
         # start event loop
         self.exec_()
     
     def jobEnded(self, success):
+        self.setWindowTitle("SEILAPLAN")
         if success:
             self.statusLabel.setText("Berechnungen abgeschlossen.")
             self.progressBar.setValue(self.progressBar.maximum())
@@ -199,11 +183,13 @@ class ProgressDialog(QDialog):
                 pass
     
     def onAbort(self):
+        self.setWindowTitle("SEILAPLAN")
         self.statusLabel.setText("Laufender Prozess wird abgebrochen...")
         self.workerThread.cancel()  # Terminates process cleanly
     
     def onError(self, exception_string):
-        self.statusLabel.setText("Ein unerwarteter Fehler ist aufgetreten.")
+        self.setWindowTitle("SEILAPLAN: Berechnung fehlgeschlagen")
+        self.statusLabel.setText("Ein Fehler ist aufgetreten:\n{}".format(exception_string))
         self.progressBar.setValue(self.progressBar.minimum())
         self.finallyDo()
     
