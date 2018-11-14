@@ -14,7 +14,7 @@
 import numpy as np
 import os
 import math
-from scipy import interpolate
+from scipy.interpolate import RectBivariateSpline
 from osgeo import gdal
 
 from .peakdetect import peakdetect
@@ -132,7 +132,7 @@ def calcProfile(inputPoints, rasterdata, IS, Delta, coeff):
 
     # Linear Interpolation
     # kx, ky bezeichnen grad der interpolation, 1=linear
-    spline = interpolate.RectBivariateSpline(-coordY, coordX, dhm, kx=1, ky=1)
+    spline = RectBivariateSpline(-coordY, coordX, dhm, kx=1, ky=1)
     zi = spline.ev(-yi, xi)
 
     # Distanz in der Horizontalen
@@ -356,7 +356,7 @@ def calcAnker(IS, inputPoints, rasterdata, gp):
     coordX = gp['linspaces'][0]
     coordY = gp['linspaces'][1]
     # kx, ky bezeichnen grad der interpolation, 1=linear
-    spline = interpolate.RectBivariateSpline(-coordY, coordX, dhm, kx=1, ky=1)
+    spline = RectBivariateSpline(-coordY, coordX, dhm, kx=1, ky=1)
     xi = np.array([AnkXa, Xa, Xe_, AnkXe])
     yi = np.array([AnkYa, Ya, Ye_, AnkYe])
     # Z-Koordinate der Anker für Anfangs- und Endpunkte

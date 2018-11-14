@@ -58,14 +58,14 @@ class SeilaplanPlugin(object):
         self.progressDialog = None
         self.dlg = None
         
-        try:
-            import pydevd
-            pydevd.settrace('localhost', port=53100,
-                        stdoutToServer=True, stderrToServer=True)
-        except ConnectionRefusedError:
-            pass
-        except ImportError:
-            pass
+        # try:
+        #     import pydevd
+        #     pydevd.settrace('localhost', port=53100,
+        #                 stdoutToServer=True, stderrToServer=True)
+        # except ConnectionRefusedError:
+        #     pass
+        # except ImportError:
+        #     pass
 
 
     def initGui(self):
