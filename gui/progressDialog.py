@@ -39,10 +39,6 @@ textHalf = ("Die Seillinie konnte <b>nicht komplett berechnet</b> werden, es "
             "sind nicht genügend Stützenstandorte bestimmbar. Die "
             "unvollständigen Resultate sind in folgendem Ordner "
             "abgespeichert:")
-textBad = (
-    "Aufgrund der Geländeform oder der Eingabeparameter konnten <b>keine "
-    "Stützenstandorte bestimmt</b> werden. Es wurden keine Output-Daten "
-    "erzeugt.")
 
 
 class ProgressDialog(QDialog):
@@ -189,7 +185,8 @@ class ProgressDialog(QDialog):
     
     def onError(self, exception_string):
         self.setWindowTitle("SEILAPLAN: Berechnung fehlgeschlagen")
-        self.statusLabel.setText("Ein Fehler ist aufgetreten:\n{}".format(exception_string))
+        self.statusLabel.setText("Ein Fehler ist aufgetreten:")
+        self.resultLabel.setText(exception_string)
         self.progressBar.setValue(self.progressBar.minimum())
         self.finallyDo()
     

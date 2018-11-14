@@ -76,7 +76,7 @@ class ProcessingTask(QgsTask):
 
         output = main(self, self.inputData, self.projInfo)
         
-        if not output:  # If abort by user or error in code
+        if not output:  # If error in code
             return False
         else:
             [result, resultStatus] = output
@@ -85,10 +85,7 @@ class ProcessingTask(QgsTask):
         #   1 = Optimization successful
         #   2 = Cable takes off from support
         #   3 = Optimization partially successful
-        #   4 = Optimization not successful
-        if resultStatus == 4:
-            self.sig_result.emit([None, resultStatus])
-            return
+        
         # Unpack results
         [t_start, disp_data, seilDaten, gp, HM,
          IS, kraft, optSTA, optiLen] = result

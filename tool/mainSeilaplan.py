@@ -71,6 +71,7 @@ def main(progress, IS, projInfo):
     #Optimierungsprozedur
     out = optimization(IS, gp, StuetzenPos, progress)
     if not out:
+        progress.exception = "Fehler in Optimierungsalgorithmus."
         return False
     progress.sig_text.emit("Berechnung der optimale Seillinie...")
     [HM, HMidx, optValue, optSTA, optiLen] = out
@@ -87,8 +88,11 @@ def main(progress, IS, projInfo):
         if HMidx == [0]:
             # Berechnungen nicht erfolgreich, keine einzige Stütze konnte
             #   berechnet werden
-            resultStatus.append(4)
-            return None, max(resultStatus)
+            progress.exception = (
+                "Aufgrund der Geländeform oder der Eingabeparameter konnten <b>keine "
+                "Stützenstandorte bestimmt</b> werden. Es wurden keine Output-Daten "
+                "erzeugt.")
+            return False
 
     # Informationen für die Darstellung der fixen Stützen
     IS['HM_fix_marker'] = markFixStue(stuetzIdx, IS)
