@@ -143,9 +143,10 @@ class SeilaplanPlugin(object):
                 if self.progressDialog.reRun:
                     reRun = True
                     reRunProj = workerThread.projInfo['projFile']
+
+                del self.progressDialog
             
             del workerThread
-            del self.progressDialog
             del self.dlg
 
         return
