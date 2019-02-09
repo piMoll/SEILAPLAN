@@ -39,7 +39,10 @@ textHalf = ("Die Seillinie konnte <b>nicht komplett berechnet</b> werden, es "
             "sind nicht genügend Stützenstandorte bestimmbar. Die "
             "unvollständigen Resultate sind in folgendem Ordner "
             "abgespeichert:")
-
+textBad = (
+    "Aufgrund der Geländeform oder der Eingabeparameter konnten <b>keine "
+    "Stützenstandorte bestimmt</b> werden. Es wurden keine Output-Daten "
+    "erzeugt.")
 
 class ProgressDialog(QDialog):
     """ Progress dialog shows progress bar for algorithm.
