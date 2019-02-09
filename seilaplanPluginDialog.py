@@ -7,7 +7,7 @@
                              -------------------
         begin                : 2013
         copyright            : (C) 2015 by ETH Zürich
-        email                : pi1402@gmail.com
+        email                : seilaplanplugin@gmail.com
  ***************************************************************************/
 
 /***************************************************************************
@@ -79,10 +79,14 @@ infoTxt = ("SEILAPLAN - Seilkran-Layoutplaner\n\n"
     "definierten Anfangs- und Endkoordinaten sowie technischen Parametern das "
     "optimale Seillinienlayout. Es werden Position und Höhe der Stütze,"
     "sowie die wichtigsten Kennwerte der Seillinie bestimmt.\n\n"
-    "Realisierung:\nProfessur für forstliches Ingenieurwesen\n"
-    "ETH Zürich\n8092 Zürich\n\nBeteiligte Personen:\n"
-    "Leo Bont (Konzept, Mechanik)\nPatricia Moll "
-    "(Implementation in Python / QGIS)\n\n"
+    "Realisierung:\n\nProfessur für forstliches Ingenieurwesen\n"
+    "ETH Zürich\n8092 Zürich\n(Konzept, Realisierung Version 1.x für QGIS 2)\n\n"
+    "Gruppe Forstliche Produktionssysteme FPS\n"
+    "Eidgenössische Forschungsanstalt WSL\n"
+    "8903 Birmensdorf\n(Realisierung Version 2.x für QGIS 3)\n\n"
+    "\nBeteiligte Personen:\n\n"
+    "Leo Bont, Hans Rudolf Heinimann (Konzept, Mechanik)\nPatricia Moll "
+    "(Implementation in Python / QGIS)\n\n\n"
     "SEILAPLAN ist freie Software: Sie können sie unter den Bedingungen "
     "der GNU General Public License, wie von der Free Software Foundation, "
     "Version 2 der Lizenz oder (nach Ihrer Wahl) jeder neueren "
