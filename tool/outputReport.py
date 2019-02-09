@@ -510,9 +510,9 @@ def generateReportText(IS, projInfo, HM, kraft, OptSTA, duration,
 
 
 def generateReport(reportText, savePath, projname):
-    from reportlab.lib.pagesizes import A4, inch, cm, landscape
-    from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
-    from reportlab.graphics.shapes import colors
+    from ..packages.reportlab.lib.pagesizes import A4, cm, landscape
+    from ..packages.reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+    from ..packages.reportlab.graphics.shapes import colors
 
     # from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, \
     #     PageBreak
