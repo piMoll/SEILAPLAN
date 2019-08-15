@@ -307,6 +307,7 @@ def generateReportText(IS, projInfo, HM, kraft, OptSTA, duration,
         az = ri + 360
     else:
         az = ri
+    az_gon = az * 1.111111
     for i in range(len(HM['z'])-1):
         dX = HM['x'][i+1] - HM['x'][i]
         dY = HM['y'][i+1] - HM['y'][i]
@@ -343,7 +344,7 @@ def generateReportText(IS, projInfo, HM, kraft, OptSTA, duration,
     sHeader = [label.strip("°*") for label in sHeader] # Markierungen entfernen
 
     # Abschnitt Absteckung im Feld
-    str_abst = [["Azimut: {:.1f} gon".format(az)],
+    str_abst = [["Azimut: {:.1f} gon".format(az_gon)],
                 ["", "Horizontaldistanz", "Schrägdistanz"]]
     for f in range(anzFe):
         tex = ("von {} zu {},{: >3.0f} m,"
