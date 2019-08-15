@@ -1,0 +1,10 @@
+name	value
+label	"3t SF 20.5mm, Seil (F30 TB)"
+Q	33.94
+qT	0.0189
+A	329.9
+E	100
+zul_SK	181
+min_SK	50
+qz1	0.0059
+qz2	0

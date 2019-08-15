@@ -25,7 +25,7 @@ import io
 from qgis.PyQt.QtCore import QSize, Qt, QFileInfo, QSettings
 from qgis.PyQt.QtWidgets import QDialog, QWidget, QLabel, QDialogButtonBox, \
     QLayout, QHBoxLayout, QComboBox, QSizePolicy, QPushButton, QCheckBox, \
-    QVBoxLayout, QFileDialog
+    QVBoxLayout, QFileDialog, QLineEdit
 from qgis.PyQt.QtGui import QColor, QIcon, QPixmap
 from qgis.gui import QgsVertexMarker
 from qgis.core import QgsRasterLayer, QgsVectorLayer, QgsProject
@@ -174,6 +174,75 @@ class DialogOutputOptions(QDialog):
         self.close()
 
 
+class DialogSaveParamset(QDialog):
+    def __init__(self, interface, toolWindow):
+        """Small window to define the name of the saved parmeter set."""
+        QDialog.__init__(self, interface.mainWindow())
+        self.iface = interface
+        self.tool = toolWindow
+        self.paramData = None
+        self.availableParams = None
+        self.savePath = None
+        self.field = None
+        self.setWindowTitle("Name definieren")
+        main_widget = QWidget(self)
+        
+        # Build gui
+        hbox = QHBoxLayout()
+        setnameLabel = QLabel("Setname definieren")
+        self.setnameField = QLineEdit()
+        self.setnameField.setMinimumWidth(400)
+        self.setnameField.setSizePolicy(
+            QSizePolicy(QSizePolicy.Expanding,
+                        QSizePolicy.Fixed))
+        
+        hbox.addWidget(setnameLabel)
+        hbox.addWidget(self.setnameField)
+        
+        # Create Ok/Cancel Button and connect signal
+        buttonBox = QDialogButtonBox(main_widget)
+        buttonBox.setStandardButtons(QDialogButtonBox.Ok |
+                                     QDialogButtonBox.Cancel)
+        buttonBox.accepted.connect(self.Apply)
+        buttonBox.rejected.connect(self.Reject)
+        
+        # Layout
+        container = QVBoxLayout(main_widget)
+        container.addLayout(hbox)
+        container.addWidget(QLabel(""))
+        container.addWidget(buttonBox)
+        container.setAlignment(Qt.AlignLeft)
+        self.setLayout(container)
+    
+    def setData(self, newparams, availableParams, savePath, field):
+        self.paramData = newparams
+        self.availableParams = availableParams
+        self.savePath = savePath
+        self.field = field
+    
+    def saveParams(self, setname):
+        self.savePath = os.path.join(self.savePath, f'{setname}.txt')
+        self.paramData['label'] = setname
+        
+        with io.open(self.savePath, encoding='utf-8', mode='w+') as f:
+            # Write header
+            f.writelines('name\tvalue\n')
+            # Write parameter values
+            for key, val in self.paramData.items():
+                f.writelines(f'{key}\t{val}\n')
+        
+        self.availableParams[setname] = self.paramData
+        self.field.addItem(setname)
+        self.field.setCurrentIndex(self.field.count()-1)
+
+    def Apply(self):
+        setname = self.setnameField.text()
+        self.saveParams(setname)
+        self.close()
+    
+    def Reject(self):
+        self.close()
+
 
 def readFromTxt(path):
     """Generic Method to read a txt file with header information and save it
@@ -188,9 +257,14 @@ def readFromTxt(path):
                 if line == '': break
                 line = line.split('\t')
                 row = {}
-                for i in range(1, len(header)):
-                    row[header[i]] = line[i]
                 key = line[0]
+                # if txtfile has structure key, value
+                if len(header) == 2:
+                    row = line[1]
+                # if txtfile has structure key, value1, value2, value3 ...
+                else:
+                    for i in range(1, len(header)):
+                        row[header[i]] = line[i]
                 fileData[key] = row
         return fileData, header
     else:
