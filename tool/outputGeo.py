@@ -1,16 +1,23 @@
-#!/usr/bin/env python
-#  -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
-#------------------------------------------------------------------------------
-# Name:        Seiloptimierungstool
-# Purpose:
-#
-# Author:      Patricia Moll
-#
-# Created:     14.05.2013
-# Copyright:   (c) mollpa 2012
-# Licence:     <your licence>
-#------------------------------------------------------------------------------
+/***************************************************************************
+ SeilaplanPlugin
+                                 A QGIS plugin
+ Seilkran-Layoutplaner
+                              -------------------
+        begin                : 2013
+        copyright            : (C) 2015 by ETH Zürich
+        email                : seilaplanplugin@gmail.com
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 """
 import numpy as np
 from math import cos, sin, atan, pi
@@ -19,22 +26,24 @@ import csv
 
 from qgis.PyQt.QtCore import QVariant
 from qgis.core import QgsWkbTypes, QgsFields, QgsField, QgsVectorFileWriter, \
-    QgsFeature, QgsGeometry, QgsPoint, QgsCoordinateReferenceSystem, QgsPointXY
+    QgsFeature, QgsGeometry, QgsPoint, QgsCoordinateReferenceSystem
 
 
 def generateGeodata(projInfo, HM, seilDaten, stueLabel, savePath):
+    """Creates 3D shapefiles containing the pole positions, the empty cable
+    line and the cable line under load."""
     projName = projInfo['Projektname']
     [Ax, Ay] = projInfo['Anfangspunkt']
     [Ex, Ey] = projInfo['Endpunkt']
     epsg = projInfo['Hoehenmodell']['spatialRef']
     spatialRef = QgsCoordinateReferenceSystem(epsg)
 
-    # Seilverlauf
+    # Cable line
     seilHoriDist = seilDaten['l_coord']
     seilLeerZ = seilDaten['z_Leer']
     seilLastZ = seilDaten['z_Zweifel']
 
-    # X- und Y-Koordinate der Geodaten im Projektionssystem berechnen
+    # Calculate x and y coordinate in reference system
     dx = float(Ex - Ax)
     dy = float(Ey - Ay)
     if dx == 0:
@@ -51,19 +60,19 @@ def generateGeodata(projInfo, HM, seilDaten, stueLabel, savePath):
     seilLeerGeo = np.swapaxes(np.array([seilX, seilY, seilLeerZ]), 1, 0)
     seilLastGeo = np.swapaxes(np.array([seilX, seilY, seilLastZ]), 1, 0)
 
-    # Stützenpunkte abspeichern
+    # Save pole positions
     stueName = '{}_Stuetzen'.format(projName.replace("'", "."))
     stuePath = os.path.join(savePath, stueName + '.shp')
     checkShpPath(stuePath)
-    save2PointShape(stuePath, stueGeo, 'StuetzenH',
-                    HM['h'], stueLabel, spatialRef)
-    # Leerseil abspeichern
+    save2PointShape(stuePath, stueGeo, stueLabel, spatialRef)
+    
+    # Save empty cable line
     seilLeerName = '{}_Leerseil'.format(projName.replace("'", "."))
     seilLeerPath = os.path.join(savePath, seilLeerName + '.shp')
     checkShpPath(seilLeerPath)
     save2LineShape(seilLeerPath, seilLeerGeo, spatialRef)
 
-    # Lastseil abspeichern
+    # Save cable line under load
     seilLastName = '{}_Lastseil'.format(projName)
     seilLastPath = os.path.join(savePath, seilLastName + '.shp')
     checkShpPath(seilLastPath)
@@ -74,48 +83,52 @@ def generateGeodata(projInfo, HM, seilDaten, stueLabel, savePath):
                  'lastseil': seilLastPath}
     return geoOutput
 
-
-def save2PointShape(shapePath, geodata, attribName,
-                    attribData, label, spatialRef):
+def save2PointShape(shapePath, geodata, label, spatialRef):
     """
     :param label:
-    :param shapePath: Pfad wo Shapefile agespeichert wird
-    :param geodata: Koordinaten der Punkte
-    :param attribName: Attributname (Feldname) von zusätzlichen Werten
-    :param attribData: Werte für Attribute
-    :param spatialRef: Räumliche Referenz
+    :param shapePath: Location of shape file
+    :param geodata: x, y and z coordinate of poles
+    :param spatialRef: current spatial reference of qgis project
     """
 
-    # define fields for feature attributes. A QgsFields object is needed
+    # Define fields for feature attributes. A QgsFields object is needed
     fields = QgsFields()
-    fields.append(QgsField("StuetzenNr", QVariant.String))
-    fields.append(QgsField(attribName, QVariant.Int))
-    writer = QgsVectorFileWriter(shapePath, "UTF8", fields, QgsWkbTypes.PointZ,
+    fields.append(QgsField("StuetzenNr", QVariant.String, 'text', 254))
+    fields.append(QgsField("x", QVariant.Double))
+    fields.append(QgsField("y", QVariant.Double))
+    fields.append(QgsField("h", QVariant.Double))
+    writer = QgsVectorFileWriter(shapePath, "UTF-8", fields, QgsWkbTypes.PointZ,
                                  spatialRef, "ESRI Shapefile")
 
     if writer.hasError() != QgsVectorFileWriter.NoError:
         # TODO
         raise Exception("Vector Writer")
-
-    for idx, (coords, attrib) in enumerate(zip(geodata, attribData)):
+    
+    features = []
+    for idx, coords in enumerate(geodata):
         feature = QgsFeature()
         feature.setFields(fields)
-        # TODO: Nicht 3D weil Methode fromPoint() nicht existiert. Wird evtl. in der Zukunft implementiert
-        feature.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(coords[0], coords[1])))
+        feature.setGeometry(QgsPoint(coords[0], coords[1], coords[2]))
         feature.setId(idx)
         feature.setAttribute("StuetzenNr", label[idx])
-        feature.setAttribute(attribName, attrib)
-        writer.addFeature(feature)
-        del feature
+        feature.setAttribute("x", float(coords[0]))
+        feature.setAttribute("y", float(coords[1]))
+        feature.setAttribute("h", float(coords[2]))
+        features.append(feature)
 
-    # delete the writer to flush features to disk
+    writer.addFeatures(features)
+    # Delete the writer to flush features to disk
     del writer
 
 def save2LineShape(shapePath, geodata, spatialRef):
-    
-    # define fields for feature attributes. A QgsFields object is needed
+    """
+    :param shapePath: Location of shape file
+    :param geodata: x, y and z coordinate of line
+    :param spatialRef: current spatial reference of qgis project
+    """
+    # Define fields for feature attributes. A QgsFields object is needed
     fields = QgsFields()
-    writer = QgsVectorFileWriter(shapePath, "UTF8", fields, QgsWkbTypes.LineStringZ,
+    writer = QgsVectorFileWriter(shapePath, "UTF-8", fields, QgsWkbTypes.LineStringZ,
                                  spatialRef, "ESRI Shapefile")
 
     if writer.hasError() != QgsVectorFileWriter.NoError:
@@ -123,18 +136,20 @@ def save2LineShape(shapePath, geodata, spatialRef):
         raise Exception("Vector Writer")
 
     lineVertices = []
-    for idx, coords in enumerate(geodata):
+    for coords in geodata:
         lineVertices.append(QgsPoint(coords[0], coords[1], coords[2]))
         
     feature = QgsFeature()
     feature.setGeometry(QgsGeometry.fromPolyline(lineVertices))
     feature.setId(1)
-    writer.addFeature(feature)
+    writer.addFeatures([feature])
     del feature
-    # delete the writer to flush features to disk
+    # Delete the writer to flush features to disk
     del writer
 
 def checkShpPath(path):
+    """Deletes remains of earlier shapefiles. Otherwise these files can
+    interact with new shapefiles (e.g. old indexes)."""
     fileEndings = ['.shp', '.dbf', '.prj', '.shx']
     path = path.replace('.shp', '')
     for ending in fileEndings:
@@ -142,86 +157,55 @@ def checkShpPath(path):
             os.remove(path+ending)
 
 def addToMap(geodata, projName):
+    """ Adds the shape file to the qgis project."""
     from qgis.core import QgsVectorLayer, QgsProject
-    stue = QgsVectorLayer(geodata['stuetzen'], u"Stützen", "ogr")
-    leerseil = QgsVectorLayer(geodata['leerseil'], u"Leerseil", "ogr")
-    lastseil = QgsVectorLayer(geodata['lastseil'], u"Lastseil", "ogr")
 
-    # Map Layer erstellen
-    QgsProject.instance().addMapLayer(stue, False)
-    QgsProject.instance().addMapLayer(leerseil, False)
-    QgsProject.instance().addMapLayer(lastseil, False)
-
-    # Neue Layer-Gruppe im TOC erstellen und Layer hinzufügen
+    # Create new layer group in table of content
     root = QgsProject.instance().layerTreeRoot()
     projGroup = root.insertGroup(0, projName)
-    projGroup.addLayer(stue)
-    projGroup.addLayer(leerseil)
-    projGroup.addLayer(lastseil)
+    
+    stue = QgsVectorLayer(geodata['stuetzen'], "Stützen", "ogr")
+    leerseil = QgsVectorLayer(geodata['leerseil'], "Leerseil", "ogr")
+    lastseil = QgsVectorLayer(geodata['lastseil'], "Lastseil", "ogr")
+    
+    for layer in [stue, leerseil, lastseil]:
+        layer.setProviderEncoding('UTF-8')
+        layer.dataProvider().setEncoding('UTF-8')
 
-    # Symbolisierung anpassen
-    # Use the currently selected layer
-
-    # from qgis.core import QgsSymbolLayerV2Registry
-    # registry = QgsSymbolLayerV2Registry.instance()
-    # pointMeta = registry.symbolLayerMetadata("SimpleMarker")
-    # lineMeta = registry.symbolLayerMetadata("SimpleLine")
-    #
-    # # pntSymbol = QgsSymbolV2.defaultSymbol(stue.geometryType())
-    #
-    # # Line layer
-    # lineLayer = lineMeta.createSymbolLayer({'width': '0.26',
-    #                                         'color': '255,0,0',
-    #                                         'offset': '-1.0',
-    #                                         'penstyle': 'solid',
-    #                                         'use_custom_dash': '0',
-    #                                         'joinstyle': 'bevel',
-    #                                         'capstyle': 'square'})
-    #
-    #
-    # # Replace the default layer with our own SimpleMarker
-    # # subSymbol.deleteSymbolLayer(0)
-    #
-    #
-    # # Replace the default layer with our two custom layers
-    # symbol.deleteSymbolLayer(0)
-    # symbol.appendSymbolLayer(lineLayer)
-    # symbol.appendSymbolLayer(markerLayer)
-    #
-    # # Replace the renderer of the current layer
-    # # renderer = QgsSingleSymbolRendererV2(symbol)
-    # lastseil.setRendererV2(QgsSingleSymbolRendererV2(pntSymbol))
+        # Map Layer erstellen
+        QgsProject.instance().addMapLayer(layer, False)
+        
+        # Add to group
+        projGroup.addLayer(layer)
 
 def generateCoordTable(seil, zi, HM, savePath, labelTxt):
+    """Creates csv files with the corse of the cable line."""
     savePathStue = savePath[0]
     savePathSeil = savePath[1]
 
-    # Seildaten (in Meter-Auflösung)
-    # -----------------------------
-    count = seil["l_coord"].shape[0]        # Grösse des Datensatzes
-    # Verwendete Datenreihen
     horiDist = seil['Laengsprofil_di']
     x = seil['x']
     y = seil['y']*-1
     z_last = seil['z_Zweifel'][::10]
     z_leer = seil['z_Leer'][::10]
     gelaende = zi / 10
-    # Seildaten zu Matrix zusammenfassen
+    
+    # Combine cable data into matrix
     seilDataMatrix = np.array([horiDist, x, y, z_last, z_leer, gelaende])
     seilDataMatrix = seilDataMatrix.transpose()
 
-    # Header für txt File schreiben
+    # Txt header
     header = ["Horizontaldistanz", "X", "Y", "Z Lastseil", "Z Leerseil",
               "Z Gelaende"]
-    # Schreibe Seildaten in txt File
+    
+    # Write out data to file
     with open(savePathSeil, 'w') as f:
         fi = csv.writer(f, delimiter=';', dialect='excel', lineterminator='\n')
         fi.writerow(header)
         for row in seilDataMatrix:
             fi.writerow(np.round(row, 1))
 
-    # Stützendaten
-    # ------------
+    # Pole data
     with open(savePathStue, 'w') as f:
         fi = csv.writer(f, delimiter=';', dialect='excel', lineterminator='\n')
         fi.writerow(["Stuetze", "X", "Y", "Z Boden", "Z Stuetze", "Stuetzenhoehe"])
