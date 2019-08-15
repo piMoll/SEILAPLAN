@@ -24,7 +24,7 @@ from qgis.PyQt.QtGui import QCursor, QColor
 from qgis.gui import QgsMapTool, QgsRubberBand
 from qgis.core import QgsGeometry, QgsFeature, QgsPointXY
 # GUI helper modules for functionality
-from ..gui.guiHelperFunctions import QgsStueMarker
+from .guiHelperFunctions import QgsStueMarker
 
 class ProfiletoolMapTool(QgsMapTool):
     

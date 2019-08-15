@@ -31,7 +31,6 @@ from math import floor
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.collections import LineCollection
-from ..bo.plotExtent import PlotExtent
 
 
 class QtMplCanvas(FigureCanvas):
@@ -50,7 +49,7 @@ class QtMplCanvas(FigureCanvas):
         self.line_exists = False
         self.noStue = []
 
-        self.pltExt = PlotExtent()
+        self.profileObj = None
         # Mouse position
         self.x_data = None
         self.y_data = None
@@ -83,37 +82,42 @@ class QtMplCanvas(FigureCanvas):
         
         
     def plotData(self, plotData):
+        self.profileObj = plotData
         # Set plot extent
-        self.pltExt.union(plotData.getExtent())
-        self.pltExt.expand()
-        self.axes.set_xlim(self.pltExt.xmin, self.pltExt.xmax)
-        self.axes.set_ylim(self.pltExt.ymin, self.pltExt.ymax)
+        # self.pltExt.union(plotData.getExtent())
+        self.profileObj.expand(max([(self.profileObj.xmax * 0.02), 5]))
+        self.axes.set_xlim(self.profileObj.xmin, self.profileObj.xmax)
+        self.axes.set_ylim(self.profileObj.ymin, self.profileObj.ymax)
     
         # Add plot data
-        pltSegs = plotData.getPlotSegments()
-        lineColl = LineCollection(pltSegs, linewidths=2, linestyles='solid',
+        # pltSegs = plotData.getPlotSegments()
+        pltSegs = self.profileObj.profile
+        lineColl = LineCollection([pltSegs], linewidths=2, linestyles='solid',
                                   colors='#E71C23', picker=True, label='LBL')
         self.axes.add_collection(lineColl)
         
         # Data points
-        [x_data, y_data] = np.array(pltSegs[0]).T
-        self.x_data = x_data
-        self.y_data = y_data
+        # [x_data, y_data] = np.array(pltSegs[0]).T
+        self.x_data = self.profileObj.xaxis
+        self.y_data = self.profileObj.yaxis
     
         # Calculate length of markers
-        yRange = np.max(y_data) - np.min(y_data)
+        yRange = np.max(self.y_data) - np.min(self.y_data)
         self.yT = yRange * 0.1
         stueH = yRange * 0.2
 
         # Draw start and end point
-        self.axes.vlines(x_data[[0, -1]], y_data[[0, -1]],
-                         y_data[[0, -1]] + stueH) #, colors='k', linewidth='2')
+        self.axes.vlines(self.x_data[[0, -1]], self.y_data[[0, -1]],
+                         self.y_data[[0, -1]] + stueH) #, colors='k', linewidth='2')
 
         # Init cursor cross position
         self.xcursor = self.x_data[floor(len(self.x_data) / 2)]
         self.ycursor = self.y_data[floor(len(self.x_data) / 2)]
         
         self.draw()
+
+        # TODO: Funktioniert unter Windows nicht
+        self.fig.tight_layout()
         
 
     def acitvateFadenkreuz(self):

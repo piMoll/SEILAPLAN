@@ -39,12 +39,11 @@ from processing.core.Processing import Processing
 from .gui.guiHelperFunctions import Raster, valueToIdx, strToNum, \
     DialogOutputOptions, generateName, DialogWithImage, formatNum, \
     readFromTxt, castToNumber, createContours, loadOsmLayer, DialogSaveParamset
-from .bo.ptmaptool import ProfiletoolMapTool
-from .bo.createProfile import CreateProfile
 # GUI elements
+from .gui.ptmaptool import ProfiletoolMapTool
 from .gui.ui_seilaplanDialog import Ui_Dialog
 from .gui.profileDialog import ProfileWindow
-
+from .gui.createProfile import Profile
 
 # UTF-8 coding
 # try:
@@ -152,6 +151,7 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
             'E': QgsPointXY(-100, -100)
         }
         self.azimut = 0
+        self.profilLen = None
         self.coordStateA = 'yellow'
         self.coordStateE = 'yellow'
         
@@ -639,9 +639,9 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
 
     def checkLenghtStatus(self):
         if self.coordStateA != 'yellow' and self.coordStateE != 'yellow':
-            l = ((self.linePoints['E'].x() - self.linePoints['A'].x()) ** 2
-                 + (self.linePoints['E'].y() - self.linePoints['A'].y()) ** 2) ** 0.5
-            self.laenge.setText(formatNum(l))
+            self.profilLen = ((self.linePoints['E'].x() - self.linePoints['A'].x()) ** 2
+                              + (self.linePoints['E'].y() - self.linePoints['A'].y()) ** 2) ** 0.5
+            self.laenge.setText(formatNum(self.profilLen))
         else:
             self.laenge.setText('')
 
@@ -743,10 +743,10 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
     ###########################################################################
 
     def createProfile(self):
-        createProf = CreateProfile(self.iface, self.drawTool.drawnLine,
-                                   self.dhm['layer'])
-        profile = createProf.create()
-        self.profileWin = ProfileWindow(self, self.iface, profile[0])
+        profile = Profile(self.linePoints['A'], self.linePoints['E'],
+                             self.profilLen, self.azimut, self.dhm['layer'])
+        profile.create()
+        self.profileWin = ProfileWindow(self, self.iface, profile)
 
     def onShowProfile(self):
         if not self.profileWin:
