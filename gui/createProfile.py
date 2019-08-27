@@ -20,16 +20,17 @@
  ***************************************************************************/
 """
 
-from math import cos, sin, ceil, floor
+from math import cos, sin, ceil
 import numpy as np
 from qgis.core import QgsPointXY
 
 class Profile(object):
-    def __init__(self, pointA, pointE, length, azimut, raster):
+    def __init__(self, pointA, pointE, length, res, azimut, raster):
         """Creates a profile from a given start and end point on a raster."""
         self.pointA = pointA
         self.pointE = pointE
         self.length = length
+        self.res = res
         self.azimut = azimut
         self.raster = raster
         self.rasterlyr = self.raster.dataProvider()
@@ -44,15 +45,13 @@ class Profile(object):
     
     def create(self):
         """Extracts the raster values and saves them to a collection."""
-        for step in range(floor(self.length)+1):
+        stepsAlongLine = np.linspace(0, self.length, num=ceil(self.length/self.res))
+
+        for step in stepsAlongLine:
             newx = self.pointA.x() + step * cos(self.azimut)
             newy = self.pointA.y() + step * sin(self.azimut)
             newPoint = QgsPointXY(newx, newy)
             self.profile.append((step, self.extractRasterVal(newPoint)))
-
-        # Last point
-        if floor(self.length) != ceil(self.length):
-            self.profile.append((self.length, self.extractRasterVal(self.pointE)))
         
         # Axis data
         nparr = np.asarray(self.profile)

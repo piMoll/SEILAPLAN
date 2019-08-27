@@ -711,7 +711,8 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
 
     def createProfile(self):
         profile = Profile(self.linePoints['A'], self.linePoints['E'],
-                             self.profilLen, self.azimut, self.dhm['layer'])
+                          self.profilLen, self.dhm['cellsize'], self.azimut,
+                          self.dhm['layer'])
         profile.create()
         self.profileWin = ProfileWindow(self, self.iface, profile)
 
