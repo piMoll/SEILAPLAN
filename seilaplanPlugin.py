@@ -58,14 +58,13 @@ class SeilaplanPlugin(object):
         self.progressDialog = None
         self.dlg = None
         
-        # try:
-        #     import pydevd
-        #     pydevd.settrace('localhost', port=53100,
-        #                 stdoutToServer=True, stderrToServer=True)
-        # except ConnectionRefusedError:
-        #     pass
-        # except ImportError:
-        #     pass
+        try:
+            import pydevd
+            pydevd.settrace('localhost', port=53100, stdoutToServer=True, stderrToServer=True)
+        except ConnectionRefusedError:
+            pass
+        except ImportError:
+            pass
 
 
     def initGui(self):
@@ -108,6 +107,8 @@ class SeilaplanPlugin(object):
             self.dlg.updateRasterList()
             # Load initial values of dialog
             self.dlg.loadInitialVals()
+            # self.dlg.showResultWindow()
+            
 
             # If this is a rerun of the algorithm the previous user values are
             #   loaded into the GUI

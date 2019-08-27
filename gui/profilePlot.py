@@ -150,8 +150,10 @@ class QtMplCanvas(FigureCanvas):
         x, y = event.xdata, event.ydata
 
         indx = np.searchsorted(self.x_data, [x])[0]
-        xa = self.x_data[indx-1]
-        ya = self.y_data[indx-1]
+        if indx != 0:
+           indx = indx-1
+        xa = self.x_data[indx]
+        ya = self.y_data[indx]
         # update the line positions
         self.lx.set_ydata(ya)
         self.ly.set_xdata(xa)

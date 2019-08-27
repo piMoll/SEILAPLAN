@@ -64,14 +64,14 @@ class ProcessingTask(QgsTask):
     def run(self):
         
         # Remove comment to debug algorithm
-        # try:
-        #     import pydevd
-        #     pydevd.settrace('localhost', port=53100,
-        #                 stdoutToServer=True, stderrToServer=True)
-        # except ConnectionRefusedError:
-        #     pass
-        # except ImportError:
-        #     pass
+        try:
+            import pydevd
+            pydevd.settrace('localhost', port=53100,
+                        stdoutToServer=True, stderrToServer=True)
+        except ConnectionRefusedError:
+            pass
+        except ImportError:
+            pass
 
 
         output = main(self, self.inputData, self.projInfo)

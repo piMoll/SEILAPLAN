@@ -81,6 +81,20 @@ def getTimestamp(tStart):
 def plotData(disp_data, di, seilDaten, HM, IS, projInfo, resultStatus, locPlot):
     # import matplotlib
     # matplotlib.use('Cairo')
+
+    import pickle
+    storeDump = 'plotData_ergebnisfenster_20190816_L-24m'
+    homePath = '/home/pi/Projects/seilaplan/pickle_dumps'
+    storefile = os.path.join(homePath, '{}.pckl'.format(storeDump))
+    projInfo['Hoehenmodell'].pop('layer')
+    f = open(storefile, 'wb')
+    pickle.dump([disp_data, di, seilDaten, HM, IS, projInfo, resultStatus, locPlot], f)
+    f.close()
+  
+    
+    
+    
+    
     from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
     from matplotlib.figure import Figure
     import matplotlib.patheffects as PathEffects
@@ -151,7 +165,7 @@ def plotData(disp_data, di, seilDaten, HM, IS, projInfo, resultStatus, locPlot):
     axes.vlines(idxStue.astype(float), y_data[idxStue+p].astype(float),
                 zStue.astype(float), colors='black', linewidth=3)
 
-    # Beschriftungen setzten
+    # Beschriftungen setzen
     porjTitle = projInfo['Projektname']
     horiLabel = "Horizontaldistanz [m] von der Anfangsstütze aus"
     vertiLabel = "Höhe [m.ü.M]"
