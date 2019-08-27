@@ -14,6 +14,7 @@
 import numpy as np
 import os
 import math
+from scipy.interpolate import RectBivariateSpline
 from osgeo import gdal
 
 from .peakdetect import peakdetect
@@ -27,30 +28,10 @@ def generateDhm(rasterdata, coords):
     exportiert. Extent der Zuschnittmaske ist Anfangs- und Endpunkt + Buffer
     """
     path = rasterdata['path']
+    cellsize = rasterdata['cellsize']
+    [xMin, yMax, xMax, yMin] = rasterdata['extent']
     [Ax, Ay, Ex, Ey] = coords
-    
-    # Load raster with gdal
-    ds = gdal.Open(path)
-    band = ds.GetRasterBand(1)
-    upx, xres, xskew, upy, yskew, yres = ds.GetGeoTransform()
-    cols = ds.RasterXSize
-    rows = ds.RasterYSize
-    
-    if 'cellsize' in rasterdata:
-        cellsize = rasterdata['cellsize']
-    else:
-        cellsize = xres
-        rasterdata['cellsize'] = xres
-        
-    if 'extent' in rasterdata:
-        [xMin, yMax, xMax, yMin] = rasterdata['extent']
-    else :
-        xMin = upx + 0 * xres + 0 * xskew
-        yMax = upy + 0 * yskew + 0 * yres
-        xMax = upx + cols * xres + rows * xskew
-        yMin = upy + cols * yskew + rows * yres
-    
-        
+
     # Minimum und Maximum der benötigten Koordinaten
     pointXmin = min(Ax, Ex) - 2*p
     pointXmax = max(Ax, Ex) + 2*p
@@ -68,7 +49,8 @@ def generateDhm(rasterdata, coords):
     xLen = int((pointXmax-pointXmin)/cellsize)
     yLen = int((pointYmax-pointYmin)/cellsize)
 
-    
+    ds = gdal.Open(path)
+    band = ds.GetRasterBand(1)
     # ACHTUNG: xoff und yoff von oberer linken Ecke!
     subraster = band.ReadAsArray(xoff=int(xOff), yoff=int(yOff),
                                  win_xsize=xLen, win_ysize=yLen)
@@ -132,7 +114,6 @@ def calcProfile(inputPoints, rasterdata, IS, Delta, coeff):
             # yi = np.linspace(Ya, Ye-zwischendistY, anzTeilstuecke)
             yi = np.arange(Ya, Ye, zwischendistY)
 
-    # TODO: vergleichen mit processing.run('qgis:createpointsalonglines', line, 1, startpoint, endpoint, output)
 
     # Zusätzliche Daten für Anzeige
     ###############################
@@ -150,12 +131,9 @@ def calcProfile(inputPoints, rasterdata, IS, Delta, coeff):
     yiE_disp = np.linspace(yi[-1]+zwischendistY, yi[-1]+b*zwischendistY, b)
 
     # Linear Interpolation
-    
-    # alg = QgsApplication.processingRegistry().createAlgorithmById(
-    #     'grass7:v.sample')
-    # canExecute, errorMessage = alg.canExecute()
-    
-    spline, zi = interpolateProfilePointsScipy(coordX, coordY, dhm, xi, yi)
+    # kx, ky bezeichnen grad der interpolation, 1=linear
+    spline = RectBivariateSpline(-coordY, coordX, dhm, kx=1, ky=1)
+    zi = spline.ev(-yi, xi)
 
     # Distanz in der Horizontalen
     di = np.arange(len(zi)) * 1.0
@@ -194,59 +172,6 @@ def calcProfile(inputPoints, rasterdata, IS, Delta, coeff):
            'linspaces' : [coordX, coordY]}
 
     return gp, zi_disp, di_ind
-
-def interpolateProfilePointsScipy(coordX, coordY, dhm, xi, yi):
-    # Linear Interpolation mit scipy
-    from scipy.interpolate import RectBivariateSpline
-    # kx, ky bezeichnen grad der interpolation, 1=linear
-    spline = RectBivariateSpline(-coordY, coordX, dhm, kx=1, ky=1)
-    zi = spline.ev(-yi, xi)
-    return spline, zi
-
-def interpolateProfilePointsGRASS(coordX, coordY, dhm, xi, yi):
-    import processing
-    from qgis.core import (
-        QgsVectorLayer, QgsGeometry, QgsFeature, QgsPointXY, QgsProcessingFeedback)
-
-    # Specify the geometry type
-    pointsAlongLine = QgsVectorLayer("point?crs=epsg:21781&field=id:integer", "points", "memory")
-
-    # Set the provider to accept the data source
-    prov = pointsAlongLine.dataProvider()
-
-    # feature.setFields(fields)
-    idx = 1
-    for x, y in zip(coordX, coordY):
-        feature = QgsFeature()
-        feature.setId(idx)
-        point = QgsPointXY(x, y)
-        feature.setGeometry(QgsGeometry.fromPointXY(point))
-        prov.addFeatures([feature])
-        idx = idx + 1
-
-
-    params = {
-        'INPUT': pointsAlongLine,
-        'COLUMN': 'id',
-        'RASTER': '/home/pi/Projects/seilaplan/geodata/dhm_foersterschule_wartau.txt',
-        'ZSCALE': 1,
-        'METHOD': 2,  # bicubic
-        'OUTPUT': "/home/pi/tmp/tmp.shp",
-        'GRASS_MIN_AREA_PARAMETER': 0.0001,
-        'GRASS_OUTPUT_TYPE_PARAMETER': 0,
-        'GRASS_REGION_CELLSIZE_PARAMETER': 0,
-        'GRASS_REGION_PARAMETER': None,
-        'GRASS_SNAP_TOLERANCE_PARAMETER': -1,
-        'GRASS_VECTOR_DSCO': '',
-        'GRASS_VECTOR_EXPORT_NOCAT': False,
-        'GRASS_VECTOR_LCO': ''
-    }
-
-    # TODO: Funktioniert nicht - Could not load source layer for input: no value specified for parameter
-    result = processing.run('grass7:v.sample', params,  feedback=QgsProcessingFeedback())
-    
-    
-    return result, result
 
 def ismember(a, b):
     bind = {}
@@ -431,7 +356,6 @@ def calcAnker(IS, inputPoints, rasterdata, gp):
     coordX = gp['linspaces'][0]
     coordY = gp['linspaces'][1]
     # kx, ky bezeichnen grad der interpolation, 1=linear
-    from scipy.interpolate import RectBivariateSpline
     spline = RectBivariateSpline(-coordY, coordX, dhm, kx=1, ky=1)
     xi = np.array([AnkXa, Xa, Xe_, AnkXe])
     yi = np.array([AnkYa, Ya, Ye_, AnkYe])

@@ -18,6 +18,7 @@ import numpy as np
 from .geoExtract import ismember
 from .optiSTA import calcSTA
 import scipy.sparse as sps
+# from optiSolutionPath import findOptiSolution
 
 
 
@@ -60,7 +61,7 @@ def optimization(IS, gp, StuetzenPos, progress):
     min_HM_end = IS['HM_Ende_min'][0]       # int
     max_HM_end =  IS['HM_Ende_max'][0]      # int
     Abstufung_HM = IS["HM_Delta"][0]        # int
-    Min_Dist_Mast = int(IS["Min_Dist_Mast"][0])  # int
+    Min_Dist_Mast = IS["Min_Dist_Mast"][0]  # int
     dfix = np.array(IS['HM_fix_d'])
     hfix = np.array(IS['HM_fix_h'])
     sfix = dfix.size
@@ -139,6 +140,8 @@ def optimization(IS, gp, StuetzenPos, progress):
         aa = aa[newIdx]
         ee = ee[newIdx]
         optiLen = aa.size     # Anzahl Optimierungsdurchläufe aktualisieren
+        a = Pos[aa]
+        e = Pos[ee]
         HeightA = HM[aa]
         HeightE = HM[ee]
     Pos_gp_A = Pos_gp[aa]

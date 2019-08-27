@@ -21,12 +21,8 @@ import pickle
 import time
 from math import inf
 
-
-# sys.path.append('/home/pi/.local/share/QGIS/QGIS3/profiles/default/python')
-# sys.path.append('/home/pi/.local/share/QGIS/QGIS3/profiles/default/python/plugins')
-
 from osgeo import gdal
-from qgis.core import QgsTask, QgsApplication
+from qgis.core import QgsTask
 from qgis.PyQt.QtCore import pyqtSignal
 from .tool.outputReport import getTimestamp, plotData, generateReportText, \
                                 generateReport, createOutputFolder
@@ -73,29 +69,7 @@ def main(storeDump):
     and create output files."""
     
     timestamp = time.strftime("%d.%m_%H'%M", time.localtime(time.time()))
-
-    # Initialize QGIS environment and processing
-    QgsApplication.setPrefixPath('/usr', True)
-    qgs = QgsApplication([], False)
-    qgs.initQgis()
     
-    import processing
-    from processing.core.Processing import Processing
-    Processing.initialize()
-
-    # Check if algorithms are available
-    allAlgs = []
-    for alg in QgsApplication.processingRegistry().algorithms():
-        allAlgs.append(alg.id())
-    for ualg in ['grass7:v.sample', 'gdal:contour']:
-        if ualg not in allAlgs:
-            raise ImportError(f'Algorithm {ualg} is not available')
-    
-    # Alternative
-    for algName in ['grass7:v.sample', 'gdal:contour']:
-        alg = QgsApplication.processingRegistry().createAlgorithmById(algName)
-        if alg is None:
-            raise ImportError(f'Algorithm {algName} is not available')
     
     
     
@@ -125,7 +99,7 @@ def main(storeDump):
         outputFolder = '/home/pi/Seilaplan'
         
         # DHM path
-        dhm_path = '/home/pi/Projects/seilaplan/geodata/dhm_foersterschule_mels.txt'
+        dhm_path = '/home/pi/Dropbox/Seiloptimierung/geodata/dhm_foersterschule_mels.txt'
         dhm_spatialRef = 'EPSG:21781'       # or: 'EPSG:2056' for LV95
         
         
@@ -180,6 +154,14 @@ def main(storeDump):
     
         # Analyse dhm
         ds = gdal.Open(dhm_path)
+        cols = ds.RasterXSize
+        rows = ds.RasterYSize
+        upx, xres, xskew, upy, yskew, yres = ds.GetGeoTransform()
+        ulx = upx + 0 * xres + 0 * xskew
+        uly = upy + 0 * yskew + 0 * yres
+        lrx = upx + cols * xres + rows * xskew
+        lry = upy + cols * yskew + rows * yres
+        dhm_extent = [ulx, uly, lrx, lry]
     
         projInfo = {
             'Anfangspunkt': startpoint,
@@ -187,7 +169,9 @@ def main(storeDump):
             'Projektname': outputName,
             'Hoehenmodell': {
                 'path': dhm_path,
+                'cellsize': xres,
                 'spatialRef': dhm_spatialRef,
+                'extent': dhm_extent
             },
             'Laenge': '?',
             'fixeStuetzen': [],
@@ -271,7 +255,8 @@ def main(storeDump):
     generateCoordTable(seilDaten, gp["zi"], HM,
                        [table1SavePath, table2SavePath], labelTxt[0])
 
-    qgs.exitQgis()
+
+
 
 
 
