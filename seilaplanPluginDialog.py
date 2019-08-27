@@ -36,20 +36,16 @@ from processing.core.Processing import Processing
 
 
 # Further GUI modules for functionality
-from .gui.guiHelperFunctions import Raster, valueToIdx, strToNum, \
-    DialogOutputOptions, generateName, DialogWithImage, formatNum, \
-    readFromTxt, castToNumber, createContours, loadOsmLayer, DialogSaveParamset
+from .gui.guiHelperFunctions import (Raster, valueToIdx, strToNum,
+    DialogOutputOptions, generateName, DialogWithImage, formatNum,
+    readParamsFromTxt, castToNumber, createContours, loadOsmLayer,
+    DialogSaveParamset)
 # GUI elements
 from .gui.ptmaptool import ProfiletoolMapTool
 from .gui.ui_seilaplanDialog import Ui_Dialog
 from .gui.profileDialog import ProfileWindow
 from .gui.createProfile import Profile
 
-# UTF-8 coding
-# try:
-#     utf8 = QString.fromUtf8
-# except AttributeError:
-#     utf8 = lambda s: s
 
 # OS dependent line break
 nl = os.linesep
@@ -116,9 +112,8 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         # Define some important paths and locations
         self.userHomePath = os.path.join(os.path.expanduser('~'))
         self.homePath = os.path.dirname(__file__)
-        # Config file 'params.txt' stores parameters of cable types
-        self.paramPath = os.path.join(self.homePath, 'config')
-        self.cablesysPath = os.path.join(self.paramPath, 'cablesystem')
+        # Config location
+        self.paramPath = os.path.join(self.homePath, 'config', 'parametersets')
         # Config file 'commonPaths.txt' stores previous output folders
         self.commonPathsFile = os.path.join(self.homePath, 'config',
                                             'commonPaths.txt')
@@ -135,13 +130,11 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         self.param = None               # All parameters of a certain cable type
         self.paramOrder = None          # Order of parameters
         self.paramSet = None            # Name of cable type
-        self.availableParamsets = {}    # Predefined or userdefined full parametersets
-        self.availableCablesys = {}  # Predefined or userdefined systems
+        self.availableParamsets = {}    # Predefined or userdefined parametersets
         self.settingFields = {}         # Dictionary of all GUI setting fields
         
-        # Load all predefined and userdefined cable properties and parameter
-        # sets from the config folder
-        self.loadCablesys()
+        # Load all predefined and userdefined parameter sets from the
+        # config folder
         self.loadParamsets()
 
         # GUI fields and variables handling coordinate information
@@ -185,7 +178,7 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         self.profileWin = None
 
         # Dialog windows for saving parameter and cable sets
-        self.saveSetWin = DialogSaveParamset(self.iface, self)
+        self.paramSetWindow = DialogSaveParamset(self.iface, self)
         
         # Dialog windows with output options
         self.optionWin = DialogOutputOptions(self.iface, self, self.outputOpt)
@@ -225,9 +218,7 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         self.buttonShowProf.clicked.connect(self.onShowProfile)
         # Drop down field for parameter set choices
         self.fieldParamSet.currentIndexChanged.connect(self.setParamSet)
-        # TODO: self.buttonSaveParamset.clicked.connect(self.onSaveParamset)
-        self.fieldCablesys.currentIndexChanged.connect(self.setCablesys)
-        self.buttonSaveCablesys.clicked.connect(self.onSaveCablesys)
+        self.buttonSaveParamset.clicked.connect(self.onSaveParamset)
 
         # Action for changed Coordinates (when coordinate is changed by hand)
         self.coordAx.editingFinished.connect(self.changedPointAField)
@@ -275,49 +266,34 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         idx = self.fieldParamSet.findText('Standardwerte')
         self.fieldParamSet.setCurrentIndex(idx)
         self.setParamSet()
-        
-        idx = self.fieldCablesys.findText('Standardwerte')
-        self.fieldCablesys.setCurrentIndex(idx)
 
         # Generate project name
         self.fieldProjName.setText(generateName())
         self.enableToolTips()
 
     def loadParamsets(self):
-        """ Load predefined and userdefined parameter sets from config folder.
+        """ Loads predefined and userdefined parameter sets from config folder.
         """
         # Load parameter definitions
-        [self.param, _] = readFromTxt(
-            os.path.join(self.paramPath, 'params.txt'))
-    
+        self.param = readParamsFromTxt(
+            os.path.join(self.homePath, 'config', 'params.txt'))
+
         # Load standard parameter set and user defined sets
-        txtfile = os.path.join(self.paramPath, 'paramset_standard.txt')
-        if os.path.isfile(txtfile):
-            [params, _] = readFromTxt(txtfile)
-            setname = params['label'].replace('"', '')
-            self.availableParamsets[setname] = params
-            
+        for f in os.listdir(self.paramPath):
+            txtfile = os.path.join(self.paramPath, f)
+            if os.path.isfile(txtfile) and txtfile.lower().endswith('.txt'):
+                params = readParamsFromTxt(txtfile)
+                if not params:
+                    # TODO: QGIS Error Message
+                    break
+                setname = params['label']
+                self.availableParamsets[setname] = params
+                del self.availableParamsets[setname]['label']
+        
         # Add set names to drop down
         self.fieldParamSet.blockSignals(True)
-        self.fieldParamSet.addItems(self.availableParamsets)
+        self.fieldParamSet.addItems(self.availableParamsets.keys())
         self.fieldParamSet.blockSignals(False)
-    
-    def loadCablesys(self):
-        """Loads predefined parameters for different carring systems.
-        Defined are the parameters Q, qT, A, E, zul_SK, min_SK, qz1 and qz2.
-        """
-        for f in os.listdir(self.cablesysPath):
-            txtfile = os.path.join(self.cablesysPath, f)
-            if os.path.isfile(txtfile) and txtfile.lower().endswith('.txt'):
-        
-                [params, _] = readFromTxt(txtfile)
-                sysname = params['label'].replace('"', '')
-                self.availableCablesys[sysname] = params
-         
-        # Add system names to drop down
-        self.fieldCablesys.blockSignals(True)
-        self.fieldCablesys.addItems(self.availableCablesys.keys())
-        self.fieldCablesys.blockSignals(False)
 
     def enableToolTips(self):
         for [name, field] in list(self.settingFields.items()):
@@ -331,50 +307,43 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         name = self.fieldParamSet.currentText()
         # Fill in values of parameter set
         self.fillInValues(self.availableParamsets[name])
-    
-    def setCablesys(self):
-        name = self.fieldCablesys.currentText()
-        self.fillInValues(self.availableCablesys[name])
 
     def fillInValues(self, data):
         """Fills in GUI fields with parameters of a certain cable type."""
         for key, val in data.items():
             try:
+                paramConfig = self.param[key]
+            except KeyError:
+                # TODO: QGIS Error Message
+                continue
+            try:
                 field = self.settingFields[key]
             except KeyError:
+                # Not all parameters are shown in GUI
                 continue
             
-            if self.param[key]['ftype'] == 'drop_field':
+            if paramConfig['ftype'] == 'drop_field':
                 field.setCurrentIndex(valueToIdx(val))
                 continue
             # Float values without decimal places are converted: 10.0 --> 10
             if val[-2:] == '.0':
                 val = val[:-2]
-            if val == '-':
-                val = ''
             field.setText(val)
     
-    def onSaveCablesys(self):
-        cableparams = {}
-        
-        for key in ['Q', 'qT', 'A', 'E', 'zul_SK', 'min_SK', 'qz1', 'qz2']:
-            field = self.settingFields[key]
+    def onSaveParamset(self):
+        newparamset = {}
+    
+        for key, field in self.settingFields.items():
             d = self.param[key]
             if d['ftype'] == 'drop_field':
                 val = field.currentText()
             else:
                 val = field.text()
-            if val == '':
-                val = '-'
-            cableparams[key] = val
-            
-        self.saveSetWin.setData(cableparams, self.availableCablesys,
-                                self.cablesysPath, self.fieldCablesys)
-        self.saveSetWin.show()
+            newparamset[key] = val
     
-    def onSaveParamset(self):
-        # TODO
-        pass
+        self.paramSetWindow.setData(newparamset, self.availableParamsets,
+                                    self.paramPath, self.fieldParamSet)
+        self.paramSetWindow.show()
 
     def updateRasterList(self):
         rasterlist = self.getAvailableRaster()
@@ -506,14 +475,12 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
                     pass
                 # Go through paths from most recent to oldest
                 for path in lines[1:]:
-                    try:
-                        if path == '': continue
-                        if os.path.exists(path):   # If path still exists
-                            if path == userPath:
-                                homePathPresent = True
-                            commonPaths.append(path)
-                    except:
+                    if path == '':
                         continue
+                    if os.path.exists(path):   # If path still exists
+                        if path == userPath:
+                            homePathPresent = True
+                        commonPaths.append(path)
 
         if not homePathPresent:  # If current user path is not present
             if not os.path.exists(userPath):
@@ -854,7 +821,9 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
                     projInfo[name] = hLine[17:]
                 for line in lines[11:]:
                     if line == '': break
+                    # TODO: nur noch mit \t trennen --> evtl. kann Funktion readParamsFromTxt in guiHelperFunctions.py benutzt werden
                     line = re.split(r'\s{2,}', line)
+                    # TODO: Weg damit
                     if line[1] == '-':
                         line[1] = ''
                     key = line[0]
@@ -958,6 +927,7 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         try:
             projInfo, projHeader = self.getProjectInfo(userData)
         except:
+            # TODO: Besser umsetzen
             return False, False, False
         projInfo['header'] = projHeader
 
@@ -974,6 +944,7 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
                 val = field.currentText()
             else:
                 val = field.text()
+            # TODO: Weg damit
             if val == '':
                 val = '-'
             fieldData[name] = val

@@ -25,7 +25,7 @@ import io
 from qgis.PyQt.QtCore import QSize, Qt, QFileInfo, QSettings
 from qgis.PyQt.QtWidgets import QDialog, QWidget, QLabel, QDialogButtonBox, \
     QLayout, QHBoxLayout, QComboBox, QSizePolicy, QPushButton, QCheckBox, \
-    QVBoxLayout, QFileDialog, QLineEdit
+    QVBoxLayout, QFileDialog, QLineEdit, QMessageBox
 from qgis.PyQt.QtGui import QColor, QIcon, QPixmap
 from qgis.gui import QgsVertexMarker
 from qgis.core import QgsRasterLayer, QgsVectorLayer, QgsProject
@@ -184,12 +184,12 @@ class DialogSaveParamset(QDialog):
         self.availableParams = None
         self.savePath = None
         self.field = None
-        self.setWindowTitle("Name definieren")
+        self.setWindowTitle("Name Parameterset")
         main_widget = QWidget(self)
         
         # Build gui
         hbox = QHBoxLayout()
-        setnameLabel = QLabel("Setname definieren")
+        setnameLabel = QLabel("Dateiname des Parametersets")
         self.setnameField = QLineEdit()
         self.setnameField.setMinimumWidth(400)
         self.setnameField.setSizePolicy(
@@ -209,7 +209,9 @@ class DialogSaveParamset(QDialog):
         # Layout
         container = QVBoxLayout(main_widget)
         container.addLayout(hbox)
-        container.addWidget(QLabel(""))
+        container.addWidget(QLabel(f"Parametersets werden in einer Textdatei "
+                                   f"im QGIS-Pluginverzeichnis gespeichert:\n"
+                                   f"{toolWindow.paramPath}"))
         container.addWidget(buttonBox)
         container.setAlignment(Qt.AlignLeft)
         self.setLayout(container)
@@ -234,41 +236,59 @@ class DialogSaveParamset(QDialog):
         self.availableParams[setname] = self.paramData
         self.field.addItem(setname)
         self.field.setCurrentIndex(self.field.count()-1)
+    
+    def checkName(self, setname):
+        savePath = os.path.join(self.savePath, f'{setname}.txt')
+        try:
+            open(savePath, 'w')
+            return True
+        except IOError:
+            return False
 
     def Apply(self):
         setname = self.setnameField.text()
+        valid = self.checkName(setname)
+        if not valid:
+            QMessageBox.information(self, 'Fehler', "Bitte geben Sie einen "
+                "gültigen Dateinamen für das Parameterset an", QMessageBox.Ok)
+            return
         self.saveParams(setname)
         self.close()
     
     def Reject(self):
+        self.setnameField.setText('')
         self.close()
 
 
-def readFromTxt(path):
-    """Generic Method to read a txt file with header information and save it
-    to a dictionary. The keys of the dictionary are the header items.
+def readParamsFromTxt(path):
+    """Read txt files of parameter sets and save the key - value pairs to a
+    dictionary.
     """
     fileData = {}
-    if os.path.exists(path):
-        with io.open(path, encoding='utf-8') as f:
-            lines = f.read().splitlines()
-            header = lines[0].split('\t')
-            for line in lines[1:]:
-                if line == '': break
-                line = line.split('\t')
-                row = {}
-                key = line[0]
-                # if txtfile has structure key, value
-                if len(header) == 2:
-                    row = line[1]
-                # if txtfile has structure key, value1, value2, value3 ...
-                else:
-                    for i in range(1, len(header)):
-                        row[header[i]] = line[i]
-                fileData[key] = row
-        return fileData, header
-    else:
-        return False, False
+    if not os.path.exists(path) and os.path.isfile(path) \
+            and path.lower().endswith('.txt'):
+        return False
+
+    with io.open(path, encoding='utf-8') as f:
+        lines = f.read().splitlines()
+        header = lines[0].split('\t')
+        for line in lines[1:]:
+            if line == '':
+                break
+            line = line.split('\t')
+            row = {}
+            key = line[0]
+            # if txtfile has structure key, value (= parameter set)
+            if len(header) == 2:
+                row = line[1]
+            # if txtfile has structure key, value1, value2, value3
+            # (= params.txt)
+            else:
+                for i in range(1, len(header)):
+                    row[header[i]] = line[i]
+            fileData[key] = row
+    
+    return fileData
 
 
 def strToNum(coord):

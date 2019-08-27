@@ -1,5 +1,5 @@
 name	value
-label	"Standardwerte"
+label	Standardwerte
 Q	25
 qT	0.0228
 A	380
