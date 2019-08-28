@@ -143,14 +143,13 @@ class AdjustmentPlot(FigureCanvas):
         self.draw()
         
         # TODO: Funktioniert unter Windows nicht
-        # self.fig.tight_layout()
+        self.fig.tight_layout(pad=0, w_pad=0.1, h_pad=0.1)
 
     @staticmethod
     def __setupAxes(axe):
-        # axe1.set_xlabel("Horizontaldistanz von Startpunkt aus", fontsize=12)
-        axe.set_ylabel("Höhe", verticalalignment='top', fontsize=12,
-                       horizontalalignment='center', labelpad=20)
-        # axe.grid()
+        # axe.set_xlabel("Horizontaldistanz von Startpunkt aus", fontsize=10)
+        # axe.set_ylabel("Höhe", verticalalignment='top', fontsize=10,
+        #                horizontalalignment='right', labelpad=20)
         axe.set_aspect('equal', 'datalim')
         axe.ticklabel_format(style='plain', useOffset=False)
         axe.tick_params(axis="both", which="major", direction="out",

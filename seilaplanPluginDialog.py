@@ -1164,3 +1164,4 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
     def showResultWindow(self):
         self.adjustmentWindow.plotData()
         self.adjustmentWindow.show()
+        self.adjustmentWindow.activateWindow()

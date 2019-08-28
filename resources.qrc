@@ -9,5 +9,7 @@
         <file>icons/icon_red.png</file>
         <file>icons/icon_map.png</file>
         <file>icons/icon_contour.png</file>
+        <file>icons/icon_bin.png</file>
+        <file>icons/icon_plus.png</file>
     </qresource>
 </RCC>
