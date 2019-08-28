@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 /***************************************************************************
  SeilaplanPlugin
@@ -33,7 +32,7 @@ from matplotlib.figure import Figure
 from matplotlib.collections import LineCollection
 
 
-class QtMplCanvas(FigureCanvas):
+class ProfilePlot(FigureCanvas):
     def __init__(self, parent=None, width=5, height=4, dpi=72):
         # self.iface = interface
         self.win = parent

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 /***************************************************************************
  SeilaplanPlugin
@@ -21,20 +20,17 @@
 """
 from qgis.PyQt.QtCore import Qt, pyqtSignal
 from qgis.PyQt.QtGui import QCursor, QColor
-from qgis.gui import QgsMapTool, QgsRubberBand
+from qgis.gui import QgsMapTool, QgsRubberBand, QgsVertexMarker
 from qgis.core import QgsGeometry, QgsFeature, QgsPointXY
-# GUI helper modules for functionality
-from .guiHelperFunctions import QgsStueMarker
 
-class ProfiletoolMapTool(QgsMapTool):
-    
+
+class MapMarkerTool(QgsMapTool):
     # Signals
     sig_clearMap = pyqtSignal()
     sig_createProfile = pyqtSignal()
     sig_changeCoord = pyqtSignal(QgsPointXY, str)
 
-
-    def __init__(self, canvas, drawLineButton, showProfileButton): #buttonShowProf
+    def __init__(self, canvas, drawLineButton, showProfileButton):
         QgsMapTool.__init__(self, canvas)
         self.canvas = canvas
         
@@ -61,24 +57,20 @@ class ProfiletoolMapTool(QgsMapTool):
         # Backup the last active Tool before the pofile tool became active
         self.savedTool = self.canvas.mapTool()
 
-
     def drawLine(self):
         # Emit signal that clears map and deletes profile
         self.sig_clearMap.emit()
         self.reset()
         self.canvas.setMapTool(self)        # runs function self.activate()
 
-
     def activate(self):
         self.canvas.setCursor(self.cursor)
-
 
     def deactivate(self):
         self.canvas.setCursor(QCursor(Qt.OpenHandCursor))
         self.pointsToDraw = []
         # Stop pressing down button
         self.drawLineButton.setChecked(False)
-
 
     def reset(self):
         self.removeStueMarker()
@@ -87,14 +79,12 @@ class ProfiletoolMapTool(QgsMapTool):
         self.pointsToDraw = []
         self.dblclktemp = None
         self.drawnLine = None
-        
-        
+
     def canvasMoveEvent(self, event):
         if len(self.pointsToDraw) > 0:
             self.rubberband.reset()
             line = [self.pointsToDraw[0], event.mapPoint()]
             self.rubberband.setToGeometry(QgsGeometry.fromPolylineXY(line), None)
- 
 
     def canvasReleaseEvent(self, event):
         mapPos = event.mapPoint()
@@ -121,10 +111,8 @@ class ProfiletoolMapTool(QgsMapTool):
                 self.sig_changeCoord.emit(self.pointsToDraw[1], 'E')
                 self.canvas.setMapTool(self.savedTool)      # self.deactivate()
 
-
     def setCursor(self, cursor):
         self.cursor = cursor
-
 
     def updateLine(self, points):
         self.rubberband.setToGeometry(QgsGeometry.fromPolylineXY(points), None)
@@ -132,13 +120,11 @@ class ProfiletoolMapTool(QgsMapTool):
         self.drawStueMarker(points[0])
         self.drawStueMarker(points[1])
 
-
     def drawStueMarker(self, point):
         marker = QgsStueMarker(self.canvas)
         marker.setCenter(point)
         self.markers.append(marker)
         self.canvas.refresh()
-
 
     def removeStueMarker(self, position=-1):
         if position >= 0:
@@ -151,10 +137,27 @@ class ProfiletoolMapTool(QgsMapTool):
             self.markers = []
         self.canvas.refresh()
 
-
     @staticmethod
     def createDigiFeature(pnts):
         line = QgsGeometry.fromPolylineXY(pnts)
         qgFeat = QgsFeature()
         qgFeat.setGeometry(line)
         return qgFeat
+
+
+class QgsStueMarker(QgsVertexMarker):
+    def __init__(self, canvas):
+        QgsVertexMarker.__init__(self, canvas)
+        self.setColor(QColor(1, 1, 213))
+        self.setIconType(QgsVertexMarker.ICON_BOX)
+        self.setIconSize(11)
+        self.setPenWidth(3)
+
+
+class QgsMovingCross(QgsVertexMarker):
+    def __init__(self, canvas):
+        QgsVertexMarker.__init__(self, canvas)
+        self.setColor(QColor(27, 25, 255))
+        self.setIconType(QgsVertexMarker.ICON_CROSS)
+        self.setIconSize(20)
+        self.setPenWidth(3)

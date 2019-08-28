@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 /***************************************************************************
  SeilaplanPlugin
@@ -34,16 +33,15 @@ from qgis.PyQt.QtGui import QColor
 from qgis.core import QgsGeometry
 from qgis.gui import QgsRubberBand
 
-from .profilePlot import QtMplCanvas
-from .guiHelperFunctions import QgsMovingCross
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT \
-    as NavigationToolbar
+from .profilePlot import ProfilePlot
+from .guiHelperFunctions import MyNavigationToolbar
+from .mapMarker import QgsMovingCross
 
 css = "QLineEdit {background-color: white;}"
 cssErr = "QLineEdit {background-color: red;}"
 
 
-class ProfileWindow(QDialog):
+class ProfileDialog(QDialog):
     def __init__(self, toolWindow, interface, profile):
         QDialog.__init__(self, interface.mainWindow())
         # super().__init__()
@@ -60,7 +58,7 @@ class ProfileWindow(QDialog):
         self.mapLines = []
 
         # Matplotlib diagrm
-        self.sc = QtMplCanvas(self)
+        self.sc = ProfilePlot(self)
         self.sc.setMinimumSize(QSize(600, 400))
         self.sc.setMaximumSize(QSize(600, 400))
         self.sc.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
@@ -395,13 +393,5 @@ class ProfileWindow(QDialog):
 
 
 
-class MyNavigationToolbar(NavigationToolbar):
-    # Only display the buttons we need
-    toolitems = [t for t in NavigationToolbar.toolitems if
-                 t[0] in ('Home', 'Pan', 'Zoom')]
-
-    def __init__(self, *args, **kwargs):
-        super(MyNavigationToolbar, self).__init__(*args, **kwargs)
-        self.layout().takeAt(3)  # 3 = Amount of tools we need
 
 

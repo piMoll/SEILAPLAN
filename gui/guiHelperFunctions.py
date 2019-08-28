@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 /***************************************************************************
  SeilaplanPlugin
@@ -26,10 +25,12 @@ from qgis.PyQt.QtCore import QSize, Qt, QFileInfo, QSettings
 from qgis.PyQt.QtWidgets import QDialog, QWidget, QLabel, QDialogButtonBox, \
     QLayout, QHBoxLayout, QComboBox, QSizePolicy, QPushButton, QCheckBox, \
     QVBoxLayout, QFileDialog, QLineEdit, QMessageBox
-from qgis.PyQt.QtGui import QColor, QIcon, QPixmap
-from qgis.gui import QgsVertexMarker
+from qgis.PyQt.QtGui import QIcon, QPixmap
 from qgis.core import QgsRasterLayer, QgsVectorLayer, QgsProject
 from processing import run
+
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT \
+    as NavigationToolbar
 
 
 class Raster(object):
@@ -60,24 +61,6 @@ class DialogWithImage(QDialog):
 
     def Apply(self):
         self.close()
-
-
-class QgsStueMarker(QgsVertexMarker):
-    def __init__(self, canvas):
-        QgsVertexMarker.__init__(self, canvas)
-        self.setColor(QColor(1, 1, 213))
-        self.setIconType(QgsVertexMarker.ICON_BOX)
-        self.setIconSize(11)
-        self.setPenWidth(3)
-
-
-class QgsMovingCross(QgsVertexMarker):
-    def __init__(self, canvas):
-        QgsVertexMarker.__init__(self, canvas)
-        self.setColor(QColor(27, 25, 255))
-        self.setIconType(QgsVertexMarker.ICON_CROSS)
-        self.setIconSize(20)
-        self.setPenWidth(3)
 
 
 class DialogOutputOptions(QDialog):
@@ -260,6 +243,16 @@ class DialogSaveParamset(QDialog):
         self.close()
 
 
+class MyNavigationToolbar(NavigationToolbar):
+    # Only display the buttons we need
+    toolitems = [t for t in NavigationToolbar.toolitems if
+                 t[0] in ('Home', 'Pan', 'Zoom')]
+
+    def __init__(self, *args, **kwargs):
+        super(MyNavigationToolbar, self).__init__(*args, **kwargs)
+        self.layout().takeAt(3)  # 3 = Amount of tools we need
+
+
 def readParamsFromTxt(path):
     """Read txt files of parameter sets and save the key - value pairs to a
     dictionary.
@@ -412,4 +405,3 @@ def loadOsmLayer(homePath):
         baseName = QFileInfo(xmlPath).baseName()
         osmLayer = QgsRasterLayer(xmlPath, baseName)
         QgsProject.instance().addMapLayer(osmLayer)
-        

@@ -41,10 +41,12 @@ from .gui.guiHelperFunctions import (Raster, valueToIdx, strToNum,
     readParamsFromTxt, castToNumber, createContours, loadOsmLayer,
     DialogSaveParamset)
 # GUI elements
-from .gui.ptmaptool import ProfiletoolMapTool
+from .gui.mapMarker import MapMarkerTool
 from .gui.ui_seilaplanDialog import Ui_Dialog
-from .gui.profileDialog import ProfileWindow
-from .gui.createProfile import Profile
+from .gui.profileDialog import ProfileDialog
+from .gui.profileCreation import Profile
+
+from .gui.adjustmentDialog import AdjustmentDialog
 
 
 # OS dependent line break
@@ -103,7 +105,7 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
         self.setupUi(self)
         
         # Interaction with canvas, is used to draw onto map canvas
-        self.drawTool = ProfiletoolMapTool(self.canvas, self.draw, self.buttonShowProf)
+        self.drawTool = MapMarkerTool(self.canvas, self.draw, self.buttonShowProf)
         # Connect emited signals
         self.drawTool.sig_clearMap.connect(self.clearMap)
         self.drawTool.sig_createProfile.connect(self.createProfile)
@@ -186,6 +188,8 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
 
         Processing.initialize()
         QgsApplication.processingRegistry().addProvider(QgsNativeAlgorithms())
+
+        self.adjustmentWindow = AdjustmentDialog(self, self.iface)
 
 
     def connectGuiElements(self):
@@ -714,7 +718,7 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
                           self.profilLen, self.dhm['cellsize'], self.azimut,
                           self.dhm['layer'])
         profile.create()
-        self.profileWin = ProfileWindow(self, self.iface, profile)
+        self.profileWin = ProfileDialog(self, self.iface, profile)
 
     def onShowProfile(self):
         if not self.profileWin:
@@ -1157,3 +1161,6 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
     def closeEvent(self, QCloseEvent):
         self.cleanUp()
 
+    def showResultWindow(self):
+        self.adjustmentWindow.plotData()
+        self.adjustmentWindow.show()

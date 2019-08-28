@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 /***************************************************************************
  SeilaplanPlugin
@@ -19,10 +18,10 @@
  *                                                                         *
  ***************************************************************************/
 """
-
 from math import cos, sin, ceil
 import numpy as np
 from qgis.core import QgsPointXY
+
 
 class Profile(object):
     def __init__(self, pointA, pointE, length, res, azimut, raster):
