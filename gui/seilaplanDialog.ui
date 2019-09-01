@@ -72,8 +72,8 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../resources.qrc">
-          <normaloff>:/plugins/SeilaplanPlugin/icons/icon_reload.png</normaloff>:/plugins/SeilaplanPlugin/icons/icon_reload.png</iconset>
+         <iconset resource="resources.qrc">
+          <normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_reload.png</normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_reload.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -138,8 +138,8 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../resources.qrc">
-          <normaloff>:/plugins/SeilaplanPlugin/icons/icon_save.png</normaloff>:/plugins/SeilaplanPlugin/icons/icon_save.png</iconset>
+         <iconset resource="resources.qrc">
+          <normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_save.png</normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_save.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -167,8 +167,8 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../resources.qrc">
-          <normaloff>:/plugins/SeilaplanPlugin/icons/icon_open.png</normaloff>:/plugins/SeilaplanPlugin/icons/icon_open.png</iconset>
+         <iconset resource="resources.qrc">
+          <normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_open.png</normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_open.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -236,8 +236,8 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset resource="../resources.qrc">
-            <normaloff>:/plugins/SeilaplanPlugin/icons/icon_map.png</normaloff>:/plugins/SeilaplanPlugin/icons/icon_map.png</iconset>
+           <iconset resource="resources.qrc">
+            <normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_map.png</normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_map.png</iconset>
           </property>
          </widget>
         </item>
@@ -256,8 +256,8 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset resource="../resources.qrc">
-            <normaloff>:/plugins/SeilaplanPlugin/icons/icon_contour.png</normaloff>:/plugins/SeilaplanPlugin/icons/icon_contour.png</iconset>
+           <iconset resource="resources.qrc">
+            <normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_contour.png</normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_contour.png</iconset>
           </property>
          </widget>
         </item>
@@ -268,7 +268,7 @@
         <item row="1" column="4">
          <widget class="QLabel" name="symA">
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/plugins/SeilaplanPlugin/icons/icon_yellow.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/plugins/SeilaplanPlugin/gui/icons/icon_yellow.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </item>
@@ -397,7 +397,7 @@
         <item row="2" column="4">
          <widget class="QLabel" name="symE">
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/plugins/SeilaplanPlugin/icons/icon_yellow.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/plugins/SeilaplanPlugin/gui/icons/icon_yellow.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </item>
@@ -617,8 +617,8 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset resource="../resources.qrc">
-            <normaloff>:/plugins/SeilaplanPlugin/icons/icon_save.png</normaloff>:/plugins/SeilaplanPlugin/icons/icon_save.png</iconset>
+           <iconset resource="resources.qrc">
+            <normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_save.png</normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_save.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -2578,7 +2578,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../resources.qrc"/>
+  <include location="resources.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -27,7 +27,7 @@ from qgis.PyQt.QtGui import QIcon
 from qgis.core import QgsApplication
 import qgis.utils
 # Initialize Qt resources from file resources.py
-from . import resources_rc
+from .gui import resources_rc
 # GUI
 from .seilaplanPluginDialog import SeilaplanPluginDialog
 # Algorithm
@@ -71,7 +71,7 @@ class SeilaplanPlugin(object):
     def initGui(self):
         # Create action that will start plugin configuration
         self.action = QAction(
-            QIcon(":/plugins/SeilaplanPlugin/icons/icon_app.png"),
+            QIcon(":/plugins/SeilaplanPlugin/gui/icons/icon_app.png"),
             "SEILAPLAN", self.iface.mainWindow())
         self.action.setWhatsThis("SEILAPLAN")
         # Connect the action to the run method

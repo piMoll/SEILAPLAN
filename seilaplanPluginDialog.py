@@ -54,11 +54,11 @@ nl = os.linesep
 
 # Source of icons in GUI
 greenIcon = '<html><head/><body><p><img src=":/plugins/SeilaplanPlugin/' \
-            'icons/icon_green.png"/></p></body></html>'
+            'gui/icons/icon_green.png"/></p></body></html>'
 yellowIcon = '<html><head/><body><p><img src=":/plugins/SeilaplanPlugin/' \
-             'icons/icon_yellow.png"/></p></body></html>'
+             'gui/icons/icon_yellow.png"/></p></body></html>'
 redIcon = '<html><head/><body><p><img src=":/plugins/SeilaplanPlugin/' \
-          'icons/icon_red.png"/></p></body></html>'
+          'gui/icons/icon_red.png"/></p></body></html>'
 # Text next to coord status
 greenTxt = ''
 yellowTxt = 'zu definieren'

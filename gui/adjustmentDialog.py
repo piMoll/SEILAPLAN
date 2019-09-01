@@ -167,7 +167,7 @@ class AdjustmentDialog(QDialog, Ui_Dialog):
         field.setMaximumSize(QSize(27, 27))
         icon1 = QIcon()
         icon1.addPixmap(
-            QPixmap(":/plugins/SeilaplanPlugin/icons/icon_bin.png"),
+            QPixmap(":/plugins/SeilaplanPlugin/gui/icons/icon_bin.png"),
             QIcon.Normal, QIcon.Off)
         field.setIcon(icon1)
         field.setIconSize(QSize(16, 16))

@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/plugins/SeilaplanPlugin" >
+    <qresource prefix="/plugins/SeilaplanPlugin/gui" >
         <file>icons/icon_app.png</file>
         <file>icons/icon_save.png</file>
         <file>icons/icon_open.png</file>

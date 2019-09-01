@@ -30,7 +30,7 @@ homepage=
 tracker=
 repository=https://github.com/piMoll/SEILAPLAN
 category=Plugins
-icon=icons/icon_app.png
+icon=gui/icons/icon_app.png
 # experimental flag
 experimental=False
 
