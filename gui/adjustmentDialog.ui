@@ -132,32 +132,25 @@
          <item>
           <layout class="QHBoxLayout" name="poleGrid">
            <item>
-            <layout class="QVBoxLayout" name="addBtnVGrid">
-             <item>
-              <widget class="QLabel" name="label_28">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>18</width>
-                 <height>30</height>
-                </size>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
             <layout class="QVBoxLayout" name="poleVGrid">
              <item>
               <layout class="QHBoxLayout" name="poleHgridHeader">
+               <item>
+                <spacer name="horizontalSpacer_5">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Fixed</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>35</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
                <item>
                 <widget class="QLabel" name="label_31">
                  <property name="sizePolicy">
@@ -453,7 +446,7 @@
             </spacer>
            </item>
            <item row="1" column="1">
-            <widget class="QLineEdit" name="fieldQt">
+            <widget class="QLineEdit" name="fieldqT">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                <horstretch>0</horstretch>

@@ -11,5 +11,6 @@
         <file>icons/icon_contour.png</file>
         <file>icons/icon_bin.png</file>
         <file>icons/icon_plus.png</file>
+        <file>icons/icon_addrow.png</file>
     </qresource>
 </RCC>

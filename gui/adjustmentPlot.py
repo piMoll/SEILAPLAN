@@ -30,6 +30,8 @@ from matplotlib.font_manager import FontProperties
 p = 21
 
 class AdjustmentPlot(FigureCanvas):
+    ZOOM_TO_DISTANCE = 10
+    
     def __init__(self, parent=None, width=5, height=4, dpi=72):
         # self.iface = interface
         self.win = parent
@@ -161,19 +163,16 @@ class AdjustmentPlot(FigureCanvas):
                         right=False)
         # TODO: Legend
 
-    def zoomTo(self, event):
-        if self.isZoomed:
-            self.zoomOut()
-            return
-        
-        x = 50
-        y_low = 633.2
-        y_heigh = 641.2
+    def zoomTo(self, x, y, poleHeight):
+        y_low = y
+        y_heigh = y + poleHeight
         buffer = 10
         self.isZoomed = True
 
-        self.axes.set_xlim(x - buffer, x + buffer)
-        self.axes.set_ylim(y_low - buffer/2, y_heigh + buffer/2)
+        self.axes.set_xlim(x - AdjustmentPlot.ZOOM_TO_DISTANCE,
+                           x + AdjustmentPlot.ZOOM_TO_DISTANCE)
+        self.axes.set_ylim((y + 0.5 * poleHeight) - AdjustmentPlot.ZOOM_TO_DISTANCE,
+                           (y + 0.5 * poleHeight) + AdjustmentPlot.ZOOM_TO_DISTANCE)
 
         self.zoom_vline.set_xdata(x)
         self.zoom_hline_low.set_ydata(y_low)
@@ -201,3 +200,12 @@ class AdjustmentPlot(FigureCanvas):
             txt.set_visible(False)
 
         self.draw()
+    
+    def changePole(self, dist, height, angle):
+        pass
+    
+    def addPole(self, dist, height, angle):
+        pass
+    
+    def deletePole(self, dist):
+        pass

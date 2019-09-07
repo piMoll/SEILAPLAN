@@ -1,159 +1,282 @@
+"""
+/***************************************************************************
+ SeilaplanPlugin
+                                 A QGIS plugin
+ Seilkran-Layoutplaner
+                              -------------------
+        begin                : 2013
+        copyright            : (C) 2015 by ETH Zürich
+        email                : seilaplanplugin@gmail.com
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+"""
 from qgis.PyQt.QtCore import QSize, Qt
-from qgis.PyQt.QtWidgets import ( QSizePolicy, QDoubleSpinBox,
-                                 QSpinBox, QPushButton, QLineEdit, QHBoxLayout,
-                                 QSpacerItem)
+from qgis.PyQt.QtWidgets import (QDoubleSpinBox, QSpinBox, QPushButton,
+                                 QLineEdit, QHBoxLayout)
 from qgis.PyQt.QtGui import QIcon, QPixmap
 
 
-
 class AdjustmentDialogPoles(object):
+    """
+    Organizes all functionality in the first tab "poles" of the tab widgets.
+    """
     
     def __init__(self, dialog):
-        # AdjustmentDialog.__init__(self, toolWindow, interface)
-
         self.dialog = dialog
-        self.poleDist = dialog.data['poleDist']
-        self.poleHeight = dialog.data['poleHeight']
+        self.poleRows = []
 
-        # Pole Input fields
-        self.poleListing = {}
-        self.dialog.addBtnVGrid.setAlignment(Qt.AlignTop)
+        # Create layout rows for pole input fields
         self.addPolesToGui()
-
     
     def addPolesToGui(self):
-        rangeBuffer = 10
-        poleCount = len(self.poleDist)
-        
-        # Ankerfeld start
-        self.addAnker(0, -7.0, [-1 * rangeBuffer, 0])
-        
-        # Poles
-        for idx in range(poleCount):
+        initCount = len(self.dialog.poles)
+        self.dialog.poleVGrid.setAlignment(Qt.AlignTop)
+
+        for idx in range(initCount):
             delBtn = False
             addBtn = False
-            lowerRange = self.poleDist[idx - 1] if idx > 0 else 0
-            upperRange = self.poleDist[idx + 1] if idx < poleCount - 1 \
-                            else self.poleDist[idx] + rangeBuffer
             
-            # Delete Buttons vor all but the first and last pole
-            if idx != 0 and idx != poleCount - 1:
+            # Distance input field: ranges are defined by neighbouring poles
+            if idx > 0:
+                lowerRange = self.dialog.poles[idx - 1]['dist'] \
+                             + self.dialog.POLE_DIST_STEP
+            else:
+                lowerRange = self.dialog.HORIZONTAL_BUFFER * -1
+            
+            if idx < initCount - 1:
+                upperRange = self.dialog.poles[idx + 1]['dist'] \
+                             - self.dialog.POLE_DIST_STEP
+            else:
+                upperRange = self.dialog.poles[idx]['dist'] \
+                             + self.dialog.HORIZONTAL_BUFFER
+                
+            # Pole type
+            poleType = 'pole'
+            if idx == 0 or idx == initCount - 1:
+                poleType = 'anchor'
+                
+            # Delete button: anchor and first and last pole cannot be deleted
+            if 1 < idx < initCount - 2:
                 delBtn = True
-            # Add Button for all but the last pole
-            if idx != poleCount - 1:
+            # Add Bbtton: Pole can only be added between first and last pole
+            if 0 < idx < initCount - 2:
                 addBtn = True
-            
-            self.addPole(idx + 1, self.poleDist[idx], [lowerRange, upperRange],
-                         self.poleHeight[idx], delBtn, addBtn)
-        
-        # Ankerfeld end
-        self.addAnker(poleCount + 1, 327.0, [327.0, 327.0 + rangeBuffer])
-    
-    def addAnker(self, idx, dist, distRange):
-        row = self.addRow(idx)
-        self.addPoleAddBtn(False)
-        self.addPoleName(row, idx, 'Verankerung')
-        self.addPoleHDist(row, idx, dist, distRange)  # TODO: Wert aus IS auslesen
-    
-    
-    def addPole(self, poleNr, dist, distRange, height, delBtn, addBtn):
-        row = self.addRow(poleNr)
-        self.addPoleName(row, poleNr, f'{poleNr}. Stütze')
-        self.addPoleHDist(row, poleNr, dist, distRange)
-        self.addPoleHeight(row, poleNr, height)
-        self.addPoleAngle(row, poleNr, 0)
-        
-        if delBtn:
-            self.addPoleDel(row, poleNr)
-        if addBtn:
-            self.addPoleAddBtn(poleNr)
 
-    def addRow(self, idx):
-        rowLayout = QHBoxLayout()
-        rowLayout.setAlignment(Qt.AlignLeft)
-        # if last position in grid addLayout, else insertLayout
-        if self.dialog.poleVGrid.count() == idx + 1:
-            self.dialog.poleVGrid.addLayout(rowLayout)
-        else:
-            self.dialog.poleVGrid.insertLayout(idx, rowLayout)
-    
-        self.poleListing[idx] = {}
-        return rowLayout
-    
-    def addPoleAddBtn(self, idx):
-        # Placeholder for add Button
-        if not idx:
-            placeholder = QSpacerItem(5, 31 + 20, QSizePolicy.Fixed,
-                                      QSizePolicy.Fixed)
-            self.dialog.addBtnVGrid.addItem(placeholder)
-            return
+            # Create layout
+            self.poleRows.append(
+                PoleRow(self, self.dialog, idx, poleType,
+                        self.dialog.poles[idx]['dist'],
+                        [lowerRange, upperRange],
+                        self.dialog.poles[idx]['height'],
+                        self.dialog.poles[idx]['angle'], delBtn, addBtn))
+
+    def onRowChange(self, newVal=False, idx=False, fieldType=False):
+        # Change data
+        self.dialog.poles[idx][fieldType] = newVal
         
-        btn = QPushButton(self.dialog.tabPoles)
-        btn.setMaximumSize(QSize(19, 19))
-        btn.setText("")
+        # Adjust distance ranges of neighbours
+        if fieldType == 'dist':
+            if idx > 0:
+                self.poleRows[idx - 1].updateUpperDistRange(
+                    newVal - self.dialog.POLE_DIST_STEP)
+            if idx < PoleRow.poleCount - 1:
+                self.poleRows[idx + 1].updateLowerDistRange(
+                    newVal + self.dialog.POLE_DIST_STEP)
+        
+        # Change pole in plot
+        self.dialog.changePoleInPlot(idx)
+    
+    def onRowAdd(self, idx=False):
+        # Update data in dialog
+        newPoleIdx, dist, \
+        lowerRange, upperRange, height, angle = self.dialog.addPoleData(idx)
+        
+        # Change index of right side neighbours
+        for pole in self.poleRows[newPoleIdx:-1]:
+            pole.index += 1
+        
+        # Add pole row layout
+        newRow = PoleRow(self, self.dialog, newPoleIdx, 'pole', dist,
+                          [lowerRange, upperRange], height, angle, True, True)
+        self.poleRows.insert(newPoleIdx, newRow)
+        
+        # Add pole to plot
+        self.dialog.addPoleToPlot(newPoleIdx)
+    
+    def onRowDel(self, idx=False):
+        # Update data in dialog
+        self.dialog.deletePoleData(idx)
+
+        # Remove pole row layout
+        self.poleRows[idx].remove()
+        del self.poleRows[idx]
+
+        # Change index of right side neighbours
+        for pole in self.poleRows[idx+1:-1]:
+            pole.index -= 1
+        
+        # Remove pole from plot
+        self.dialog.removePoleFromPlot(idx)
+
+
+
+
+
+class PoleRow(object):
+    """
+    Creates all input fields necessary to change the properties of a pole in
+    the cable layout. The layout is identified by the position (index) it has
+    in the vertical layout.
+    """
+    ICON_ADD_ROW = ":/plugins/SeilaplanPlugin/gui/icons/icon_addrow.png"
+    ICON_DEL_ROW = ":/plugins/SeilaplanPlugin/gui/icons/icon_bin.png"
+    poleCount = 0
+    
+    def __init__(self, tab, dialog, idx, rowType, dist, distRange,
+                 height=False, angle=False, delBtn=False, addBtn=False):
+        self.tab = tab
+        self.dialog = dialog
+        self.index = idx
+        self.rowRype = rowType
+        PoleRow.poleCount += 1
+        
+        self.row = QHBoxLayout()
+        self.row.setAlignment(Qt.AlignLeft)
+        
+        self.fieldName = None
+        self.fieldDist = None
+        self.fieldHeight = None
+        self.fieldAngle = None
+        self.addBtn = None
+        self.delBtn = None
+        
+        if self.rowRype == 'anchor':
+            name = 'Verankerung'
+        else:
+            name = f'{self.index}. Stütze'
+
+        self.addRowToLayout()
+        self.addBtnPlus(addBtn)
+        self.addFieldName(name)
+        self.addFieldDist(dist, distRange)
+        self.addFieldHeight(height)
+        self.addFieldAngle(angle)
+        self.addBtnDel(delBtn)
+
+    def addRowToLayout(self):
+        if self.index == PoleRow.poleCount:
+            # Add layout at the end
+            self.dialog.poleVGrid.addLayout(self.row)
+        else:
+            # Insert new row between existing ones
+            self.dialog.poleVGrid.insertLayout(self.index + 1, self.row)
+    
+    def addFieldName(self, value):
+        self.fieldName = QLineEdit(self.dialog.tabPoles)
+        self.fieldName.setFixedWidth(180)
+        self.fieldName.setText(value)
+        self.row.addWidget(self.fieldName)
+        
+        self.fieldName.textChanged.connect(
+            lambda newVal: self.tab.onRowChange(newVal, self.index, 'name'))
+    
+    def addFieldDist(self, value, distRange):
+        self.fieldDist = QDoubleSpinBox(self.dialog.tabPoles)
+        self.fieldDist.setDecimals(1)
+        self.fieldDist.setSingleStep(self.dialog.POLE_DIST_STEP)
+        self.fieldDist.setSuffix(" m")
+        self.fieldDist.setFixedWidth(95)
+        self.fieldDist.setRange(float(distRange[0]), float(distRange[1]))
+        self.fieldDist.setValue(float(value))
+        self.row.addWidget(self.fieldDist)
+        
+        # field.focusInEvent.connect(self.actionSelectPole)
+        self.fieldDist.valueChanged.connect(
+            lambda newVal: self.tab.onRowChange(newVal, self.index, 'dist'))
+    
+    def addFieldHeight(self, value):
+        if value is False:
+            return
+        self.fieldHeight = QDoubleSpinBox(self.dialog.tabPoles)
+        self.fieldHeight.setDecimals(1)
+        self.fieldHeight.setSingleStep(self.dialog.POLE_HEIGHT_STEP)
+        self.fieldHeight.setSuffix(" m")
+        self.fieldHeight.setFixedWidth(85)
+        self.fieldHeight.setRange(0.0, 50.0)
+        self.fieldHeight.setValue(float(value))
+        self.row.addWidget(self.fieldHeight)
+        
+        self.fieldHeight.valueChanged.connect(
+            lambda newVal: self.tab.onRowChange(newVal, self.index, 'height'))
+    
+    def addFieldAngle(self, value):
+        if value is False:
+            return
+        self.fieldAngle = QSpinBox(self.dialog.tabPoles)
+        self.fieldAngle.setSuffix(" °")
+        self.fieldAngle.setFixedWidth(60)
+        self.fieldAngle.setRange(-180, 180)
+        self.fieldAngle.setValue(value)
+        self.row.addWidget(self.fieldAngle)
+
+        self.fieldAngle.valueChanged.connect(
+            lambda newVal: self.tab.onRowChange(newVal, self.index, 'angle'))
+
+    def addBtnPlus(self, createButton):
+        if createButton is False:
+            self.row.addSpacing(33)
+            return
+        self.addBtn = QPushButton(self.dialog.tabPoles)
+        self.addBtn.setMaximumSize(QSize(27, 27))
         icon = QIcon()
         icon.addPixmap(
-            QPixmap(":/plugins/SeilaplanPlugin/gui/icons/icon_plus.png"),
-            QIcon.Normal, QIcon.Off)
-        btn.setIcon(icon)
-        btn.setIconSize(QSize(16, 16))
-        self.dialog.addBtnVGrid.addWidget(btn)
-        margin = QSpacerItem(5, 6, QSizePolicy.Fixed, QSizePolicy.Fixed)
-        self.dialog.addBtnVGrid.addItem(margin)
-        self.poleListing[idx]['add'] = btn
+            QPixmap(PoleRow.ICON_ADD_ROW), QIcon.Normal, QIcon.Off)
+        self.addBtn.setIcon(icon)
+        self.addBtn.setIconSize(QSize(16, 16))
+        self.row.addWidget(self.addBtn)
+        
+        self.addBtn.clicked.connect(
+            lambda x: self.tab.onRowAdd(self.index))
     
-    
-    def addPoleName(self, row, idx, value):
-        field = QLineEdit(self.dialog.tabPoles)
-        field.setFixedWidth(180)  # TODO: Soltle wachsen können
-        field.setText(value)
-        self.poleListing[idx]['name'] = field
-        row.addWidget(field)
-    
-    
-    def addPoleHDist(self, row, idx, value, valRange):
-        field = QDoubleSpinBox(self.dialog.tabPoles)
-        field.setDecimals(1)
-        field.setSingleStep(0.5)
-        field.setSuffix(" m")
-        field.setFixedWidth(95)
-        field.setRange(float(valRange[0]), float(valRange[
-                                                     1]))  # TODO Range ist von der vorherigen und nachherigen Stütze abhängig
-        field.setValue(float(value))
-        row.addWidget(field)
-        self.poleListing[idx]['dist'] = field
-    
-    
-    def addPoleHeight(self, row, idx, value):
-        field = QDoubleSpinBox(self.dialog.tabPoles)
-        field.setDecimals(1)
-        field.setSingleStep(0.1)
-        field.setSuffix(" m")
-        field.setFixedWidth(85)
-        field.setRange(0.0, 50.0)
-        field.setValue(float(value))
-        row.addWidget(field)
-        self.poleListing[idx]['height'] = field
-    
-    
-    def addPoleAngle(self, row, idx, value):
-        field = QSpinBox(self.dialog.tabPoles)
-        field.setSuffix(" °")
-        field.setFixedWidth(60)
-        field.setRange(-180, 180)
-        field.setValue(value)
-        row.addWidget(field)
-        self.poleListing[idx]['angle'] = field
-    
-    
-    def addPoleDel(self, row, idx):
-        btn = QPushButton(self.dialog.tabPoles)
-        btn.setMaximumSize(QSize(27, 27))
+    def addBtnDel(self, createButton):
+        if createButton is False:
+            self.row.addSpacing(33)
+            return
+        self.delBtn = QPushButton(self.dialog.tabPoles)
+        self.delBtn.setMaximumSize(QSize(27, 27))
         icon = QIcon()
         icon.addPixmap(
-            QPixmap(":/plugins/SeilaplanPlugin/gui/icons/icon_bin.png"),
-            QIcon.Normal, QIcon.Off)
-        btn.setIcon(icon)
-        btn.setIconSize(QSize(16, 16))
-        row.addWidget(btn)
-        self.poleListing[idx]['del'] = btn
+            QPixmap(PoleRow.ICON_DEL_ROW), QIcon.Normal, QIcon.Off)
+        self.delBtn.setIcon(icon)
+        self.delBtn.setIconSize(QSize(16, 16))
+        self.row.addWidget(self.delBtn)
+
+        self.delBtn.clicked.connect(
+            lambda x: self.tab.onRowDel(self.index))
+ 
+    def updateLowerDistRange(self, minimum):
+        self.fieldDist.setMinimum(minimum)
+    
+    def updateUpperDistRange(self, maximum):
+        self.fieldDist.setMaximum(maximum)
+    
+    def remove(self):
+        for i in reversed(range(self.row.count())):
+            item = self.row.takeAt(i)
+            widget = item.widget()
+            if widget is not None:
+                widget.deleteLater()
+            else:
+                # For spacers
+                self.row.removeItem(item)
+            
+        self.dialog.poleVGrid.removeItem(self.row)
+        PoleRow.poleCount -= 1
