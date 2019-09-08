@@ -46,7 +46,7 @@ class AdjustmentDialog(QDialog, Ui_Dialog):
     INIT_POLE_HEIGHT = 10
     INIT_POLE_ANGLE = 0
     HORIZONTAL_BUFFER = 10
-    POLE_DIST_STEP = 0.5
+    POLE_DIST_STEP = 1
     POLE_HEIGHT_STEP = 0.1
     
     def __init__(self, toolWindow, interface):
@@ -59,8 +59,11 @@ class AdjustmentDialog(QDialog, Ui_Dialog):
         # Load data
         self.originalData = {}
         self.poles = []
+        self.xdata = []
         self.terrain = []
+        self.cableLine = {}
         self.cableParams = {}
+        self.terrainSpacing = 0
         self.loadData()
 
         # Setup GUI from UI-file
@@ -76,6 +79,9 @@ class AdjustmentDialog(QDialog, Ui_Dialog):
         self.plot.setMinimumSize(QSize(600, 400))
         self.plot.setMaximumSize(QSize(600, 400))
         self.plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        # Draw profile in diagram
+        self.plot.initData(self.xdata, self.terrain)
+        self.plot.updatePlot(self.poles, self.cableLine)
         
         # Pan/Zoom tools for diagram
         bar = MyNavigationToolbar(self.plot, self)
@@ -87,11 +93,6 @@ class AdjustmentDialog(QDialog, Ui_Dialog):
         self.poleLayout = AdjustmentDialogPoles(self, self.poles)
         self.paramLayout = AdjustmentDialogParams(self, self.cableParams)
         self.thresholdLayout = AdjustmentDialogThresholds(self)
-    
-    def plotData(self):
-        # Draw profile in diagram
-        self.plot.plotData(self.originalData['data'])
-        self.plot.updateGeometry()
     
     def loadData(self):
         # Test data
@@ -113,6 +114,10 @@ class AdjustmentDialog(QDialog, Ui_Dialog):
             'IS': IS,
             'data': dump
         }
+        self.terrainSpacing = int(abs(disp_data[0][0]))
+        self.xdata = disp_data[0]
+        self.terrain = disp_data[1]
+        
         poles = []
 
         for idx in range(len(data['poleDist'])):
@@ -122,29 +127,38 @@ class AdjustmentDialog(QDialog, Ui_Dialog):
             poles.append({
                 'dist': data['poleDist'][idx],
                 'height': data['poleHeight'][idx],
-                'angle': angle
+                'angle': angle,
+                'terrain': self.getTerrainAtDist(data['poleDist'][idx])
             })
         
         data['poles'] = poles
-
         self.cableParams = data['IS']
         self.poles = poles
-        self.terrain = disp_data[1]
+        self.cableLine = {
+            'xaxis': seilDaten['l_coord'],
+            'empty': seilDaten['z_Leer'],
+            'load': seilDaten['z_Zweifel']
+        }
         self.originalData = data
     
+    def getTerrainAtDist(self, pos):
+        # TODO: Was machen wenn Terrain genauer als 1m aufgenommen werden soll?
+        return self.terrain[int(np.argmax(self.xdata>=pos))]
+    
     def zoomToPole(self, idx):
-        terrainPoint = self.terrain[idx]
-        x = self.poles[idx]['dist']
-        self.plot.zoomTo(x, terrainPoint, self.poles[idx]['height'])
+        self.plot.zoomTo(self.poles[idx])
+        self.plot.updatePlot(self.poles, self.cableLine)
     
     def zoomOut(self):
         self.plot.zoomOut()
+        self.plot.updatePlot(self.poles, self.cableLine)
 
     def updatePole(self, idx, fieldType, newVal):
         self.poles[idx][fieldType] = newVal
-        self.plot.changePole(self.poles[idx]['dist'],
-                             self.poles[idx]['height'],
-                             self.poles[idx]['angle'])
+        if fieldType == 'dist':
+            self.poles[idx]['terrain'] = self.getTerrainAtDist(newVal)
+        self.plot.zoomTo(self.poles[idx])
+        self.plot.updatePlot(self.poles, self.cableLine)
         self.activateRecalcBtn()
     
     def addPole(self, idx):
@@ -159,11 +173,11 @@ class AdjustmentDialog(QDialog, Ui_Dialog):
         self.poles.insert(newPoleIdx, {
             'dist': dist,
             'height': self.INIT_POLE_HEIGHT,
-            'angle': self.INIT_POLE_ANGLE
+            'angle': self.INIT_POLE_ANGLE,
+            'terrain': self.getTerrainAtDist(dist)
         })
-        self.plot.addPole(self.poles[newPoleIdx]['dist'],
-                          self.poles[newPoleIdx]['height'],
-                          self.poles[newPoleIdx]['angle'])
+        self.plot.zoomOut()
+        self.plot.updatePlot(self.poles, self.cableLine)
         self.activateRecalcBtn()
         
         return newPoleIdx, dist, lowerRange, upperRange, \
@@ -171,7 +185,8 @@ class AdjustmentDialog(QDialog, Ui_Dialog):
 
     def deletePole(self, idx):
         self.poles.pop(idx)
-        self.plot.removePole(idx)
+        self.plot.zoomOut()
+        self.plot.updatePlot(self.poles, self.cableLine)
         self.activateRecalcBtn()
     
     def updateCableParam(self, param, newVal):

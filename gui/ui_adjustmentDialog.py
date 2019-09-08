@@ -46,6 +46,7 @@ class Ui_Dialog(object):
         self.tabWidget = QtWidgets.QTabWidget(Dialog)
         self.tabWidget.setObjectName("tabWidget")
         self.tabPoles = QtWidgets.QWidget()
+        self.tabPoles.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.tabPoles.setObjectName("tabPoles")
         self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.tabPoles)
         self.verticalLayout_6.setObjectName("verticalLayout_6")

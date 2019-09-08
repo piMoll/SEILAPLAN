@@ -102,6 +102,9 @@
         <number>0</number>
        </property>
        <widget class="QWidget" name="tabPoles">
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
+        </property>
         <attribute name="title">
          <string>Stützen</string>
         </attribute>

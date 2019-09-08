@@ -18,7 +18,7 @@
  *                                                                         *
  ***************************************************************************/
 """
-from qgis.PyQt.QtCore import QSize, Qt
+from qgis.PyQt.QtCore import QSize, Qt, pyqtSignal
 from qgis.PyQt.QtWidgets import (QDoubleSpinBox, QSpinBox, QPushButton,
                                  QLineEdit, QHBoxLayout)
 from qgis.PyQt.QtGui import QIcon, QPixmap
@@ -171,16 +171,22 @@ class PoleRow(object):
             self.dialog.poleVGrid.insertLayout(self.index + 1, self.row)
     
     def addFieldName(self, value):
-        self.fieldName = QLineEdit(self.dialog.tabPoles)
+        self.fieldName = QLineEditWithFocus(self.dialog.tabPoles)
+        self.fieldName.setFocusPolicy(Qt.ClickFocus)
         self.fieldName.setFixedWidth(180)
         self.fieldName.setText(value)
         self.row.addWidget(self.fieldName)
-        
+
+        # Connect events
+        self.fieldName.inFocus.connect(
+            lambda x: self.dialog.zoomToPole(self.index))
+        self.fieldName.outFocus.connect(self.dialog.zoomOut)
         self.fieldName.textChanged.connect(
             lambda newVal: self.tab.onRowChange(newVal, self.index, 'name'))
     
     def addFieldDist(self, value, distRange):
-        self.fieldDist = QDoubleSpinBox(self.dialog.tabPoles)
+        self.fieldDist = QDoubleSpinBoxWithFocus(self.dialog.tabPoles)
+        self.fieldDist.setFocusPolicy(Qt.ClickFocus)
         self.fieldDist.setDecimals(1)
         self.fieldDist.setSingleStep(self.dialog.POLE_DIST_STEP)
         self.fieldDist.setSuffix(" m")
@@ -188,15 +194,19 @@ class PoleRow(object):
         self.fieldDist.setRange(float(distRange[0]), float(distRange[1]))
         self.fieldDist.setValue(float(value))
         self.row.addWidget(self.fieldDist)
-        
-        # field.focusInEvent.connect(self.actionSelectPole)
+
+        # Connect events
+        self.fieldDist.inFocus.connect(
+            lambda x: self.dialog.zoomToPole(self.index))
+        self.fieldDist.outFocus.connect(self.dialog.zoomOut)
         self.fieldDist.valueChanged.connect(
             lambda newVal: self.tab.onRowChange(newVal, self.index, 'dist'))
     
     def addFieldHeight(self, value):
         if value is False:
             return
-        self.fieldHeight = QDoubleSpinBox(self.dialog.tabPoles)
+        self.fieldHeight = QDoubleSpinBoxWithFocus(self.dialog.tabPoles)
+        self.fieldHeight.setFocusPolicy(Qt.ClickFocus)
         self.fieldHeight.setDecimals(1)
         self.fieldHeight.setSingleStep(self.dialog.POLE_HEIGHT_STEP)
         self.fieldHeight.setSuffix(" m")
@@ -204,20 +214,29 @@ class PoleRow(object):
         self.fieldHeight.setRange(0.0, 50.0)
         self.fieldHeight.setValue(float(value))
         self.row.addWidget(self.fieldHeight)
-        
+
+        # Connect events
+        self.fieldHeight.inFocus.connect(
+            lambda x: self.dialog.zoomToPole(self.index))
+        self.fieldHeight.outFocus.connect(self.dialog.zoomOut)
         self.fieldHeight.valueChanged.connect(
             lambda newVal: self.tab.onRowChange(newVal, self.index, 'height'))
     
     def addFieldAngle(self, value):
         if value is False:
             return
-        self.fieldAngle = QSpinBox(self.dialog.tabPoles)
+        self.fieldAngle = QSpinBoxWithFocus(self.dialog.tabPoles)
+        self.fieldAngle.setFocusPolicy(Qt.ClickFocus)
         self.fieldAngle.setSuffix(" °")
         self.fieldAngle.setFixedWidth(60)
         self.fieldAngle.setRange(-180, 180)
         self.fieldAngle.setValue(value)
         self.row.addWidget(self.fieldAngle)
 
+        # Connect events
+        self.fieldAngle.inFocus.connect(
+            lambda x: self.dialog.zoomToPole(self.index))
+        self.fieldAngle.outFocus.connect(self.dialog.zoomOut)
         self.fieldAngle.valueChanged.connect(
             lambda newVal: self.tab.onRowChange(newVal, self.index, 'angle'))
 
@@ -271,3 +290,42 @@ class PoleRow(object):
             
         self.dialog.poleVGrid.removeItem(self.row)
         PoleRow.poleCount -= 1
+
+
+class QLineEditWithFocus(QLineEdit):
+    inFocus = pyqtSignal(bool)
+    outFocus = pyqtSignal(bool)
+    
+    def focusInEvent(self, event):
+        super(QLineEditWithFocus, self).focusInEvent(event)
+        self.inFocus.emit(True)
+    
+    def focusOutEvent(self, event):
+        super(QLineEditWithFocus, self).focusOutEvent(event)
+        self.inFocus.emit(True)
+        
+
+class QDoubleSpinBoxWithFocus(QDoubleSpinBox):
+    inFocus = pyqtSignal(bool)
+    outFocus = pyqtSignal(bool)
+    
+    def focusInEvent(self, event):
+        super(QDoubleSpinBoxWithFocus, self).focusInEvent(event)
+        self.inFocus.emit(True)
+        
+    def focusOutEvent(self, event):
+        super(QDoubleSpinBoxWithFocus, self).focusOutEvent(event)
+        self.outFocus.emit(True)
+
+
+class QSpinBoxWithFocus(QSpinBox):
+    inFocus = pyqtSignal(bool)
+    outFocus = pyqtSignal(bool)
+    
+    def focusInEvent(self, event):
+        super(QSpinBoxWithFocus, self).focusInEvent(event)
+        self.inFocus.emit(True)
+    
+    def focusOutEvent(self, event):
+        super(QSpinBoxWithFocus, self).focusOutEvent(event)
+        self.outFocus.emit(True)
