@@ -41,6 +41,12 @@ class AdjustmentPlot(FigureCanvas):
         FigureCanvas.__init__(self, self.fig)
         self.setParent(parent)
         # self.fig.set_facecolor([.89, .89, .89])
+        
+        # Plot objects
+        self.cableline_empty = None
+        self.cableline_load = None
+        self.terrain = None
+        self.poles = None
 
         # Mouse position
         self.x_data = None
@@ -207,5 +213,5 @@ class AdjustmentPlot(FigureCanvas):
     def addPole(self, dist, height, angle):
         pass
     
-    def deletePole(self, dist):
+    def removePole(self, dist):
         pass

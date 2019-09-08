@@ -29,15 +29,15 @@ class AdjustmentDialogPoles(object):
     Organizes all functionality in the first tab "poles" of the tab widgets.
     """
     
-    def __init__(self, dialog):
+    def __init__(self, dialog, poleData):
         self.dialog = dialog
         self.poleRows = []
 
         # Create layout rows for pole input fields
-        self.addPolesToGui()
+        self.addPolesToGui(poleData)
     
-    def addPolesToGui(self):
-        initCount = len(self.dialog.poles)
+    def addPolesToGui(self, poleData):
+        initCount = len(poleData)
         self.dialog.poleVGrid.setAlignment(Qt.AlignTop)
 
         for idx in range(initCount):
@@ -46,16 +46,16 @@ class AdjustmentDialogPoles(object):
             
             # Distance input field: ranges are defined by neighbouring poles
             if idx > 0:
-                lowerRange = self.dialog.poles[idx - 1]['dist'] \
+                lowerRange = poleData[idx - 1]['dist'] \
                              + self.dialog.POLE_DIST_STEP
             else:
                 lowerRange = self.dialog.HORIZONTAL_BUFFER * -1
             
             if idx < initCount - 1:
-                upperRange = self.dialog.poles[idx + 1]['dist'] \
+                upperRange = poleData[idx + 1]['dist'] \
                              - self.dialog.POLE_DIST_STEP
             else:
-                upperRange = self.dialog.poles[idx]['dist'] \
+                upperRange = poleData[idx]['dist'] \
                              + self.dialog.HORIZONTAL_BUFFER
                 
             # Pole type
@@ -73,14 +73,14 @@ class AdjustmentDialogPoles(object):
             # Create layout
             self.poleRows.append(
                 PoleRow(self, self.dialog, idx, poleType,
-                        self.dialog.poles[idx]['dist'],
+                        poleData[idx]['dist'],
                         [lowerRange, upperRange],
-                        self.dialog.poles[idx]['height'],
-                        self.dialog.poles[idx]['angle'], delBtn, addBtn))
+                        poleData[idx]['height'],
+                        poleData[idx]['angle'], delBtn, addBtn))
 
     def onRowChange(self, newVal=False, idx=False, fieldType=False):
-        # Change data
-        self.dialog.poles[idx][fieldType] = newVal
+        # Update data in dialog
+        self.dialog.updatePole(idx, fieldType, newVal)
         
         # Adjust distance ranges of neighbours
         if fieldType == 'dist':
@@ -90,14 +90,11 @@ class AdjustmentDialogPoles(object):
             if idx < PoleRow.poleCount - 1:
                 self.poleRows[idx + 1].updateLowerDistRange(
                     newVal + self.dialog.POLE_DIST_STEP)
-        
-        # Change pole in plot
-        self.dialog.changePoleInPlot(idx)
     
     def onRowAdd(self, idx=False):
         # Update data in dialog
         newPoleIdx, dist, \
-        lowerRange, upperRange, height, angle = self.dialog.addPoleData(idx)
+        lowerRange, upperRange, height, angle = self.dialog.addPole(idx)
         
         # Change index of right side neighbours
         for pole in self.poleRows[newPoleIdx:-1]:
@@ -107,13 +104,10 @@ class AdjustmentDialogPoles(object):
         newRow = PoleRow(self, self.dialog, newPoleIdx, 'pole', dist,
                           [lowerRange, upperRange], height, angle, True, True)
         self.poleRows.insert(newPoleIdx, newRow)
-        
-        # Add pole to plot
-        self.dialog.addPoleToPlot(newPoleIdx)
     
     def onRowDel(self, idx=False):
         # Update data in dialog
-        self.dialog.deletePoleData(idx)
+        self.dialog.deletePole(idx)
 
         # Remove pole row layout
         self.poleRows[idx].remove()
@@ -122,9 +116,6 @@ class AdjustmentDialogPoles(object):
         # Change index of right side neighbours
         for pole in self.poleRows[idx+1:-1]:
             pole.index -= 1
-        
-        # Remove pole from plot
-        self.dialog.removePoleFromPlot(idx)
 
 
 

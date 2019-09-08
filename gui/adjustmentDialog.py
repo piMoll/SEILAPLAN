@@ -84,8 +84,8 @@ class AdjustmentDialog(QDialog, Ui_Dialog):
         self.plotLayout.addWidget(bar)
 
         # Fill tab widget with data
-        self.poleLayout = AdjustmentDialogPoles(self)
-        self.paramLayout = AdjustmentDialogParams(self)
+        self.poleLayout = AdjustmentDialogPoles(self, self.poles)
+        self.paramLayout = AdjustmentDialogParams(self, self.cableParams)
         self.thresholdLayout = AdjustmentDialogThresholds(self)
     
     def plotData(self):
@@ -139,13 +139,15 @@ class AdjustmentDialog(QDialog, Ui_Dialog):
     
     def zoomOut(self):
         self.plot.zoomOut()
-    
-    def changePoleInPlot(self, idx):
+
+    def updatePole(self, idx, fieldType, newVal):
+        self.poles[idx][fieldType] = newVal
         self.plot.changePole(self.poles[idx]['dist'],
                              self.poles[idx]['height'],
                              self.poles[idx]['angle'])
+        self.activateRecalcBtn()
     
-    def addPoleData(self, idx):
+    def addPole(self, idx):
         newPoleIdx = idx + 1
         oldLeftIdx = idx
         oldRightIdx = idx + 1
@@ -159,21 +161,24 @@ class AdjustmentDialog(QDialog, Ui_Dialog):
             'height': self.INIT_POLE_HEIGHT,
             'angle': self.INIT_POLE_ANGLE
         })
+        self.plot.addPole(self.poles[newPoleIdx]['dist'],
+                          self.poles[newPoleIdx]['height'],
+                          self.poles[newPoleIdx]['angle'])
+        self.activateRecalcBtn()
         
         return newPoleIdx, dist, lowerRange, upperRange, \
                self.INIT_POLE_HEIGHT, self.INIT_POLE_ANGLE
-    
-    def addPoleToPlot(self, idx):
-        self.plot.addPole(self.poles[idx]['dist'], self.poles[idx]['height'],
-                          self.poles[idx]['angle'])
 
-    def removePoleFromPlot(self, idx):
-        pass
-    
-    def deletePoleData(self, idx):
+    def deletePole(self, idx):
         self.poles.pop(idx)
+        self.plot.removePole(idx)
+        self.activateRecalcBtn()
+    
+    def updateCableParam(self, param, newVal):
+        self.cableParams[param] = newVal
+        self.activateRecalcBtn()
 
-    def enableRecalculation(self):
+    def activateRecalcBtn(self):
         self.configurationHasChanged = True
         # Activate recalculation button
     

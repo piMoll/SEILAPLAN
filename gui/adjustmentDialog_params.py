@@ -23,45 +23,56 @@ from qgis.PyQt.QtWidgets import QMessageBox
 
 
 class AdjustmentDialogParams(object):
+    """
+    Organizes all functionality in the second tab "cable parameters" of the
+    tab widgets.
+    """
     
-    def __init__(self, dialog):
+    def __init__(self, dialog, cableparams):
         self.dialog = dialog
         self.params = {
-            'Q': str(round(dialog.cableParams['Q'][0], 4)),
-            'qT': str(round(dialog.cableParams['qT'][0], 4)),
+            'Q': str(round(cableparams['Q'][0], 4)),
+            'qT': str(round(cableparams['qT'][0], 4)),
+            'A': str(round(cableparams['A'][0], 4)),
+            'E': str(round(cableparams['E'][0], 4)),
+            'qz1': str(round(cableparams['qz1'][0], 4)),
+            'qz2': str(round(cableparams['qz2'][0], 4)),
+            # 'Vorsp': str(round(cableparams['Vorsp'][0], 4)),
+        }
+        self.fields = {
+            'Q': self.dialog.fieldQ,
+            'qT': self.dialog.fieldqT,
+            'A': self.dialog.fieldA,
+            'E': self.dialog.fieldE,
+            'qz1': self.dialog.fieldqz1,
+            'qz2': self.dialog.fieldqz2,
+            # 'Vorsp': self.dialog.fieldVorsp,
         }
         self.fillInParams()
         self.connectFields()
     
     def fillInParams(self):
-        self.dialog.fieldQ.setText(self.params['Q'])
-        self.dialog.fieldqT.setText(self.params['qT'])
-        # self.dialog.fieldA.setText(f"{self.params['A']}")
-        # self.dialog.fieldE.setText(f"{self.params['E']}")
-        # self.dialog.fieldqz1.setText(f"{self.params['qz1']}")
-        # self.dialog.fieldqz2.setText(f"{self.params['qz2']}")
-        # self.dialog.fieldVorsp.setText(f"{self.params['Vorsp']}")
+        for key, field in self.fields.items():
+            field.setText(self.params[key])
         
     def connectFields(self):
-        self.dialog.fieldQ.textChanged.connect(lambda newVal: self.paramHasChanged(newVal, 'Q'))
-        self.dialog.fieldqT.textChanged.connect(lambda newVal: self.paramHasChanged(newVal, 'qT'))
-        # self.dialog.fieldA.editingFinished.connect(self.paramHasChanged)
-        # self.dialog.fieldE.editingFinished.connect(self.paramHasChanged)
-        # self.dialog.fieldqz1.editingFinished.connect(self.paramHasChanged)
-        # self.dialog.fieldqz2.editingFinished.connect(self.paramHasChanged)
-        # self.dialog.fieldVorsp.editingFinished.connect(self.paramHasChanged)
+        for key, field in self.fields.items():
+            field.textChanged.connect(
+                lambda newVal: self.paramHasChanged(newVal, key))
 
     def paramHasChanged(self, newVal, fieldName=''):
-        valid, error = self.validate(newVal)
+        valid = self.validate(newVal)
         if valid:
             self.params[fieldName] = newVal
-            self.dialog.enableRecalculation()
-        else:
-            QMessageBox.information(self.dialog, 'Ungültiger Wert', error)
-            
-    
+            self.dialog.updateCableParam(fieldName, newVal)
+
     def validate(self, newVal):
         # TODO: Validate funktion vom Hauptfenster verwenden
+        
+        # if False:
+        #     QMessageBox.information(self.dialog, 'Ungültiger Wert', error)
+        #     # Restore old value
+        #     self.fields[fieldName].setText(self.params[fieldname])
         return True, ''
         
 
