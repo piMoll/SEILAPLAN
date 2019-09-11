@@ -22,7 +22,7 @@ def xfrange(start, stop, step):
         start += step
 
 
-def preciseCable(zi, di, HM, LP, IS):
+def preciseCable(b, h, IS):
     """Berechnet die exakte Seilmechanik für ein vorgegebenes Seilsystem:
     Seilstatik (gemäss dem Paper von Zweifel 1960)
     Fall: Stützen unbeweglich, Seile auf Zwischenstützen gleitend
@@ -60,10 +60,6 @@ def preciseCable(zi, di, HM, LP, IS):
     qz1 = IS["qz1"][0]     # [kN/m] Zugseilgewicht links
     qz2 = IS["qz2"][0]     # [kN/m] Zugseilgewicht rechts
     Laenge_Ankerseil = IS['Ank'][1]
-
-    # Seilfeld berechnen, b = Breite, h = Höhe
-    b = di[LP[1:]] - di[LP[:-1]]
-    h = zi[LP[1:]] * 0.1 + HM[1:] - zi[LP[:-1]] * 0.1 - HM[:-1]
 
     anzFelder = b.size
     anzStue = anzFelder+1

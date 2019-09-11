@@ -64,14 +64,14 @@ class ProcessingTask(QgsTask):
     def run(self):
         
         # Remove comment to debug algorithm
-        # try:
-        #     import pydevd
-        #     pydevd.settrace('localhost', port=53100,
-        #                 stdoutToServer=True, stderrToServer=True)
-        # except ConnectionRefusedError:
-        #     pass
-        # except ImportError:
-        #     pass
+        try:
+            import pydevd_pycharm
+            pydevd_pycharm.settrace('localhost', port=53100,
+                        stdoutToServer=True, stderrToServer=True)
+        except ConnectionRefusedError:
+            pass
+        except ImportError:
+            pass
 
 
         output = main(self, self.inputData, self.projInfo)
@@ -144,7 +144,24 @@ class ProcessingTask(QgsTask):
             generateCoordTable(seilDaten, gp["zi"], HM,
                                [table1SavePath, table2SavePath], labelTxt[0])
         
-        self.sig_result.emit([outputLoc, resultStatus])
+        
+        resultData = [
+            disp_data,
+            gp,
+            HM,
+            IS,
+            seilDaten
+        ]
+
+        # import pickle
+        # storeDump = 'plotData_ergebnisfenster_20190911'
+        # homePath = '/home/pi/Projects/seilaplan/pickle_dumps'
+        # storefile = os.path.join(homePath, '{}.pckl'.format(storeDump))
+        # f = open(storefile, 'wb')
+        # pickle.dump(allData, f)
+        # f.close()
+        
+        self.sig_result.emit([outputLoc, resultStatus, resultData])
         
         return True
     

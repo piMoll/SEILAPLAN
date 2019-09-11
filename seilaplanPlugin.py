@@ -33,6 +33,7 @@ from .seilaplanPluginDialog import SeilaplanPluginDialog
 # Algorithm
 from .gui.progressDialog import ProgressDialog
 from .processingThread import ProcessingTask
+from .gui.adjustmentDialog import AdjustmentDialog
 
 
 class SeilaplanPlugin(object):
@@ -57,6 +58,7 @@ class SeilaplanPlugin(object):
         self.action = None
         self.progressDialog = None
         self.dlg = None
+        self.adjustmentWindow = None
         
         # try:
         #     import pydevd
@@ -138,14 +140,19 @@ class SeilaplanPlugin(object):
                 # Show progress bar
                 self.progressDialog.run()
 
-                # After calculations have finished and progress gui has been
-                # closed: Check if user wants a rerun
-                if self.progressDialog.reRun:
-                    reRun = True
-                    reRunProj = workerThread.projInfo['projFile']
+                self.adjustmentWindow.initData(self.progressDialog.result)
+                self.adjustmentWindow.show()
+                self.adjustmentWindow.exec_()
 
+                # # After calculations have finished and progress gui has been
+                # # closed: Check if user wants a rerun
+                # if self.progressDialog.reRun:
+                #     reRun = True
+                #     reRunProj = workerThread.projInfo['projFile']
+
+                
                 del self.progressDialog
-            
+            del self.adjustmentWindow
             del workerThread
             del self.dlg
 

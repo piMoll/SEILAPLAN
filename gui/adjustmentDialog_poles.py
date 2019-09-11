@@ -29,12 +29,9 @@ class AdjustmentDialogPoles(object):
     Organizes all functionality in the first tab "poles" of the tab widgets.
     """
     
-    def __init__(self, dialog, poleData):
+    def __init__(self, dialog):
         self.dialog = dialog
         self.poleRows = []
-
-        # Create layout rows for pole input fields
-        self.addPolesToGui(poleData)
     
     def addPolesToGui(self, poleData):
         initCount = len(poleData)
@@ -114,7 +111,7 @@ class AdjustmentDialogPoles(object):
         del self.poleRows[idx]
 
         # Change index of right side neighbours
-        for pole in self.poleRows[idx+1:-1]:
+        for pole in self.poleRows[idx+1:]:
             pole.index -= 1
 
 

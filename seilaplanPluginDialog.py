@@ -46,8 +46,6 @@ from .gui.ui_seilaplanDialog import Ui_Dialog
 from .gui.profileDialog import ProfileDialog
 from .gui.profileCreation import Profile
 
-from .gui.adjustmentDialog import AdjustmentDialog
-
 
 # OS dependent line break
 nl = os.linesep
@@ -188,9 +186,6 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
 
         Processing.initialize()
         QgsApplication.processingRegistry().addProvider(QgsNativeAlgorithms())
-
-        self.adjustmentWindow = AdjustmentDialog(self, self.iface)
-
 
     def connectGuiElements(self):
         """Connect GUI elements with functions.
@@ -1160,8 +1155,3 @@ class SeilaplanPluginDialog(QDialog, Ui_Dialog):
 
     def closeEvent(self, QCloseEvent):
         self.cleanUp()
-
-    def showResultWindow(self):
-        self.adjustmentWindow.plotData()
-        self.adjustmentWindow.show()
-        self.adjustmentWindow.activateWindow()

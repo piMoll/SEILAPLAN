@@ -56,6 +56,7 @@ class ProgressDialog(QDialog):
         self.resultStatus = None
         self.reRun = False
         self.savedProj = None
+        self.result = None
         
         # Build GUI Elements
         self.setWindowTitle("SEILAPLAN wird ausgeführt")
@@ -141,7 +142,7 @@ class ProgressDialog(QDialog):
         self.statusLabel.setText(value)
     
     def resultFromThread(self, result):
-        [self.outputLoc, self.resultStatus] = result
+        [self.outputLoc, self.resultStatus, self.result] = result
     
     def setFinalMessage(self):
         self.resultLabel.clicked.connect(self.onResultClicked)

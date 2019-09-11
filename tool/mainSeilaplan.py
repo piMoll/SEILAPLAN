@@ -98,7 +98,10 @@ def main(progress, IS, projInfo):
     IS['HM_fix_marker'] = markFixStue(stuetzIdx, IS)
 
     # Präzise Seilfelddaten
-    seil, kraft, seil_possible = preciseCable(gp['zi_s'], gp['di_s'], HM, HMidx, IS)
+    # Seilfeld berechnen, b = Breite, h = Höhe
+    b = gp['di_s'][HMidx[1:]] - gp['di_s'][HMidx[:-1]]
+    h = gp['zi_s'][HMidx[1:]] * 0.1 + HM[1:] - gp['zi_s'][HMidx[:-1]] * 0.1 - HM[:-1]
+    seil, kraft, seil_possible = preciseCable(b, h, IS)
     if not seil_possible:       # Falls Seil von Stütze abhebt
         resultStatus.append(2)
 

@@ -28,17 +28,9 @@ class AdjustmentDialogParams(object):
     tab widgets.
     """
     
-    def __init__(self, dialog, cableparams):
+    def __init__(self, dialog):
         self.dialog = dialog
-        self.params = {
-            'Q': str(round(cableparams['Q'][0], 4)),
-            'qT': str(round(cableparams['qT'][0], 4)),
-            'A': str(round(cableparams['A'][0], 4)),
-            'E': str(round(cableparams['E'][0], 4)),
-            'qz1': str(round(cableparams['qz1'][0], 4)),
-            'qz2': str(round(cableparams['qz2'][0], 4)),
-            # 'Vorsp': str(round(cableparams['Vorsp'][0], 4)),
-        }
+        self.params = {}
         self.fields = {
             'Q': self.dialog.fieldQ,
             'qT': self.dialog.fieldqT,
@@ -48,17 +40,36 @@ class AdjustmentDialogParams(object):
             'qz2': self.dialog.fieldqz2,
             # 'Vorsp': self.dialog.fieldVorsp,
         }
-        self.fillInParams()
         self.connectFields()
-    
-    def fillInParams(self):
+
+    def fillInParams(self, cableparams):
+        self.params = {
+            'Q': cableparams['Q'][0],
+            'qT': cableparams['qT'][0],
+            'A': cableparams['A'][0],
+            'E': cableparams['E'][0],
+            'qz1': cableparams['qz1'][0],
+            'qz2': cableparams['qz2'][0],
+            # 'Vorsp': cableparams['Vorsp'][0],
+        }
         for key, field in self.fields.items():
-            field.setText(self.params[key])
+            field.blockSignals(True)
+            field.setText(str(self.params[key]))
+            field.blockSignals(False)
         
     def connectFields(self):
-        for key, field in self.fields.items():
-            field.textChanged.connect(
-                lambda newVal: self.paramHasChanged(newVal, key))
+        self.dialog.fieldQ.textChanged.connect(
+            lambda newVal: self.paramHasChanged(newVal, 'Q'))
+        self.dialog.fieldqT.textChanged.connect(
+            lambda newVal: self.paramHasChanged(newVal, 'qT'))
+        self.dialog.fieldA.textChanged.connect(
+            lambda newVal: self.paramHasChanged(newVal, 'A'))
+        self.dialog.fieldE.textChanged.connect(
+            lambda newVal: self.paramHasChanged(newVal, 'E'))
+        self.dialog.fieldqz1.textChanged.connect(
+            lambda newVal: self.paramHasChanged(newVal, 'qz1'))
+        self.dialog.fieldqz2.textChanged.connect(
+            lambda newVal: self.paramHasChanged(newVal, 'qz2'))
 
     def paramHasChanged(self, newVal, fieldName=''):
         valid = self.validate(newVal)
