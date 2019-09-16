@@ -107,33 +107,29 @@ class AdjustmentPlot(FigureCanvas):
         self.axes.plot(cable['xaxis'], cable['load'], color='#FF4D44',
                        linewidth=1.5, label="Lastwegkurve nach Zweifel")
         # Poles
-        [pole_x, pole_y, _, pole_yh] = poles
-        self.axes.vlines(pole_x, pole_y, pole_yh,
-                         colors='#363432', linewidth=3.0)
+        [pole_x, pole_y, pole_h, pole_xtop, pole_ytop] = poles
+        for i,x in enumerate(pole_x):
+            self.axes.plot([pole_x[i], pole_xtop[i]], [pole_y[i], pole_ytop[i]],
+                           color='#363432', linewidth=3.0)
         # Vertical guide lines
         if self.isZoomed:
             x = self.currentPole['x']
             y = self.currentPole['y']
-            yh = self.currentPole['yh']
+            ytop = self.currentPole['ytop']
             self.axes.axvline(lw=1, ls='dotted', color='black', x=x)
             self.axes.axhline(lw=1, ls='dotted', color='black', y=y)
-            self.axes.axhline(lw=1, ls='dotted', color='black', y=yh)
+            self.axes.axhline(lw=1, ls='dotted', color='black', y=ytop)
         
         # Data limit of axis
         self.setPlotLimits()
         # Add labels
-        self.placeLabels(pole_x, pole_yh)
+        self.placeLabels(pole_x, pole_ytop)
 
         self.draw()
 
     def zoomTo(self, pole):
         self.isZoomed = True
-        self.currentPole = {
-            'x': pole['dist'],
-            'y': pole['terrain'],
-            'h': pole['height'],
-            'yh': pole['terrain'] + pole['height']
-        }
+        self.currentPole = pole
         self.setPlotLimits()
     
     def zoomOut(self):
@@ -146,15 +142,15 @@ class AdjustmentPlot(FigureCanvas):
             x = self.currentPole['x']
             y = self.currentPole['y']
             h = self.currentPole['h']
-            yh = self.currentPole['yh']
+            ytop = self.currentPole['ytop']
             pos_t_x = self.axes.get_xlim()[0]
             pos_t_y = y + self.labelBuffer
-            pox_yp_y = yh + self.labelBuffer
+            pox_yp_y = ytop + self.labelBuffer
             pos_h_x = x
-            pos_h_y = yh + self.labelBuffer * 3
+            pos_h_y = ytop + self.labelBuffer * 3
     
             self.axes.text(pos_t_x, pos_t_y, f'{round(y, 1)} m', ha='left')
-            self.axes.text(pos_t_x, pox_yp_y, f'{round(yh, 1)} m', ha='left')
+            self.axes.text(pos_t_x, pox_yp_y, f'{round(ytop, 1)} m', ha='left')
             self.axes.text(pos_h_x, pos_h_y, f'{round(h, 1)} m', ha='center')
         else:
             for i in range(len(xdata)):

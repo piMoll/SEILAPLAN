@@ -43,16 +43,16 @@ class AdjustmentDialogPoles(object):
             
             # Distance input field: ranges are defined by neighbouring poles
             if idx > 0:
-                lowerRange = poleData[idx - 1]['dist'] \
+                lowerRange = poleData[idx - 1]['x'] \
                              + self.dialog.POLE_DIST_STEP
             else:
                 lowerRange = self.dialog.HORIZONTAL_BUFFER * -1
             
             if idx < initCount - 1:
-                upperRange = poleData[idx + 1]['dist'] \
+                upperRange = poleData[idx + 1]['x'] \
                              - self.dialog.POLE_DIST_STEP
             else:
-                upperRange = poleData[idx]['dist'] \
+                upperRange = poleData[idx]['x'] \
                              + self.dialog.HORIZONTAL_BUFFER
                 
             # Pole type
@@ -70,9 +70,9 @@ class AdjustmentDialogPoles(object):
             # Create layout
             self.poleRows.append(
                 PoleRow(self, self.dialog, idx, poleType,
-                        poleData[idx]['dist'],
+                        poleData[idx]['x'],
                         [lowerRange, upperRange],
-                        poleData[idx]['height'],
+                        poleData[idx]['h'],
                         poleData[idx]['angle'], delBtn, addBtn))
 
     def onRowChange(self, newVal=False, idx=False, fieldType=False):
@@ -80,7 +80,7 @@ class AdjustmentDialogPoles(object):
         self.dialog.updatePole(idx, fieldType, newVal)
         
         # Adjust distance ranges of neighbours
-        if fieldType == 'dist':
+        if fieldType == 'x':
             if idx > 0:
                 self.poleRows[idx - 1].updateUpperDistRange(
                     newVal - self.dialog.POLE_DIST_STEP)
@@ -197,7 +197,7 @@ class PoleRow(object):
             lambda x: self.dialog.zoomToPole(self.index))
         self.fieldDist.outFocus.connect(self.dialog.zoomOut)
         self.fieldDist.valueChanged.connect(
-            lambda newVal: self.tab.onRowChange(newVal, self.index, 'dist'))
+            lambda newVal: self.tab.onRowChange(newVal, self.index, 'x'))
     
     def addFieldHeight(self, value):
         if value is False:
@@ -217,7 +217,7 @@ class PoleRow(object):
             lambda x: self.dialog.zoomToPole(self.index))
         self.fieldHeight.outFocus.connect(self.dialog.zoomOut)
         self.fieldHeight.valueChanged.connect(
-            lambda newVal: self.tab.onRowChange(newVal, self.index, 'height'))
+            lambda newVal: self.tab.onRowChange(newVal, self.index, 'h'))
     
     def addFieldAngle(self, value):
         if value is False:

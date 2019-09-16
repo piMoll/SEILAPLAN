@@ -21,7 +21,7 @@
 import pickle
 import os
 import numpy as np
-from math import floor
+from math import floor, sin, cos, radians
 
 from .adjustmentPlot import AdjustmentPlot
 from .guiHelperFunctions import MyNavigationToolbar
@@ -91,10 +91,6 @@ class AdjustmentDialog(QDialog, Ui_Dialog):
         self.poleLayout = AdjustmentDialogPoles(self)
         self.paramLayout = AdjustmentDialogParams(self)
         self.thresholdLayout = AdjustmentDialogThresholds(self)
-        
-        # Disable button for recalculating cable line
-        self.btnRunCalc.setEnabled(False)
-        self.btnRunCalc.clicked.connect(self.recalculate)
 
         # Thread for instant recalculation when poles or parameters are changed
         self.timer = QTimer()
@@ -134,10 +130,12 @@ class AdjustmentDialog(QDialog, Ui_Dialog):
             if idx == 0 or idx == len(poleDist) - 1:
                 angle = False
             self.poles.append({
-                'dist': poleDist[idx],
-                'height': poleHeight[idx],
+                'x': poleDist[idx],
+                'y': self.getTerrainAtDist(poleDist[idx]),
+                'h': poleHeight[idx],
                 'angle': angle,
-                'terrain': self.getTerrainAtDist(poleDist[idx])
+                'xtop': poleDist[idx],
+                'ytop': self.getTerrainAtDist(poleDist[idx]) + poleHeight[idx],
             })
 
         # Draw profile in diagram
@@ -168,77 +166,83 @@ class AdjustmentDialog(QDialog, Ui_Dialog):
 
     def updatePole(self, idx, fieldType, newVal):
         self.poles[idx][fieldType] = newVal
-        if fieldType == 'dist':
-            self.poles[idx]['terrain'] = self.getTerrainAtDist(newVal)
+        if fieldType != 'name':
+            self.poles[idx]['y'] = self.getTerrainAtDist(self.poles[idx]['x'])
+            self.calculateTopPoint(idx)
+        
         self.plot.zoomTo(self.poles[idx])
         self.plot.updatePlot(self.poleDataToArray(False), self.cableLine)
-        self.activateRecalcBtn()
+        self.configurationHasChanged = True
     
     def addPole(self, idx):
         newPoleIdx = idx + 1
         oldLeftIdx = idx
         oldRightIdx = idx + 1
-        lowerRange = self.poles[oldLeftIdx]['dist'] + self.POLE_DIST_STEP
-        upperRange = self.poles[oldRightIdx]['dist'] - self.POLE_DIST_STEP
+        lowerRange = self.poles[oldLeftIdx]['x'] + self.POLE_DIST_STEP
+        upperRange = self.poles[oldRightIdx]['x'] - self.POLE_DIST_STEP
         rangeDist = upperRange - lowerRange
-        dist = floor(lowerRange + 0.5 * rangeDist)
+        x = floor(lowerRange + 0.5 * rangeDist)
+        y = self.getTerrainAtDist(x)
         
         self.poles.insert(newPoleIdx, {
-            'dist': dist,
-            'height': self.INIT_POLE_HEIGHT,
-            'angle': self.INIT_POLE_ANGLE,
-            'terrain': self.getTerrainAtDist(dist)
+            'x': x,
+            'y': y,
+            'h': self.INIT_POLE_HEIGHT,
+            'angle': self.INIT_POLE_ANGLE
         })
+        self.calculateTopPoint(newPoleIdx)
+        
         self.plot.zoomOut()
         self.plot.updatePlot(self.poleDataToArray(False), self.cableLine)
-        self.activateRecalcBtn()
+        self.configurationHasChanged = True
         
-        return newPoleIdx, dist, lowerRange, upperRange, \
+        return newPoleIdx, x, lowerRange, upperRange, \
                self.INIT_POLE_HEIGHT, self.INIT_POLE_ANGLE
 
     def deletePole(self, idx):
         self.poles.pop(idx)
         self.plot.zoomOut()
         self.plot.updatePlot(self.poleDataToArray(False), self.cableLine)
-        self.activateRecalcBtn()
+        self.configurationHasChanged = True
     
     def updateCableParam(self, param, newVal):
         self.cableParams[param] = newVal
-        self.activateRecalcBtn()
-
-    def activateRecalcBtn(self):
         self.configurationHasChanged = True
-        self.btnRunCalc.setEnabled(True)
     
     def recalculate(self):
         if not self.configurationHasChanged or self.isRecalculating:
             return
         self.isRecalculating = True
-        [pole_x, pole_y, pole_h, pole_yh] = self.poleDataToArray(False)
+        [pole_x, pole_y, pole_h, pole_xtop, pole_ytop] = self.poleDataToArray(False)
 
         pole_x = np.array(pole_x)
         pole_y = np.array(pole_y)
         pole_h = np.array(pole_h)
-        pole_yh = np.array(pole_yh)
+        pole_xtop = np.array(pole_xtop)
+        pole_ytop = np.array(pole_ytop)
         
-        b = pole_x[1:] - pole_x[:-1]
-        h = pole_yh[1:] - pole_yh[:-1]
+        b = pole_xtop[1:] - pole_xtop[:-1]
+        h = pole_ytop[1:] - pole_ytop[:-1]
         
-        seil, kraft, seil_possible = preciseCable(b, h, self.cableParams)
+        try:
+            seil, kraft, seil_possible = preciseCable(b, h, self.cableParams)
+        except Exception:
+            # TODO: Index Errors for certain angles still there
+            self.isRecalculating = False
+            return
         
         self.cableLine = {
             'xaxis': seil[2] + pole_x[0],   # X-data starts at first pole
-            'empty': seil[0] + pole_yh[0],  # Y-data is calculated relative
-            'load': seil[1] + pole_yh[0]
+            'empty': seil[0] + pole_ytop[0],  # Y-data is calculated relative
+            'load': seil[1] + pole_ytop[0]
         }
         # TODO: Recaluclate anchor data
         # pole_anchor = 0
         # anchorCable = updateAnker(pole_anchor, pole_h, pole_x)
         
-        self.plot.updatePlot([pole_x, pole_y, pole_h, pole_yh], self.cableLine)
+        self.plot.updatePlot([pole_x, pole_y, pole_h, pole_xtop, pole_ytop], self.cableLine)
 
         # Deactivate button
-        self.btnRunCalc.setEnabled(False)
         self.configurationHasChanged = False
         self.isRecalculating = False
     
@@ -246,15 +250,26 @@ class AdjustmentDialog(QDialog, Ui_Dialog):
         x = []
         y = []
         h = []
-        yh = []
+        xtop = []
+        ytop = []
         # TODO: Berücksichtigen wenn keine Anker vorhanden
         for pole in self.poles:
-            if withAnchor or pole['height']:
-                x.append(int(pole['dist']))
-                y.append(pole['terrain'])
-                h.append(pole['height'])
-                yh.append(pole['terrain'] + pole['height'])
-        return [x, y, h, yh]
+            if withAnchor or pole['h']:
+                x.append(int(pole['x']))
+                y.append(pole['y'])
+                h.append(pole['h'])
+                xtop.append(pole['xtop'])
+                ytop.append(pole['ytop'])
+        return [x, y, h, xtop, ytop]
+    
+    def calculateTopPoint(self, idx):
+        x = float(self.poles[idx]['x'])
+        y = self.poles[idx]['y']
+        h = float(self.poles[idx]['h'])
+        angle = -1 * radians(self.poles[idx]['angle'])
+
+        self.poles[idx]['xtop'] = x - round(h * sin(angle), 1)
+        self.poles[idx]['ytop'] = y + round(h * cos(angle), 1)
     
     def Apply(self):
         self.close()
