@@ -29,16 +29,17 @@ from .guiHelperFunctions import MyNavigationToolbar
 from qgis.PyQt.QtCore import QSize, QTimer
 from qgis.PyQt.QtWidgets import QDialog, QSizePolicy
 
-from .ui_adjustmentDialog import Ui_Dialog
+from .ui_adjustmentDialog import Ui_AdjustmenDialog
 from .adjustmentDialog_poles import AdjustmentDialogPoles
 from .adjustmentDialog_params import AdjustmentDialogParams
 from .adjustmentDialog_thresholds import AdjustmentDialogThresholds
+from .saveDialog import DialogOutputOptions
 
 from ..tool.cablelineFinal import preciseCable
 from ..tool.geoExtract import updateAnker
 
 
-class AdjustmentDialog(QDialog, Ui_Dialog):
+class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
     """
     Dialog window that is shown after the optimization has successfully run
     through. Users can change the calculated cable layout by changing pole
@@ -51,12 +52,18 @@ class AdjustmentDialog(QDialog, Ui_Dialog):
     POLE_DIST_STEP = 1
     POLE_HEIGHT_STEP = 0.1
     
-    def __init__(self, toolWindow, interface):
+    def __init__(self, interface, confHandler):
+        """
+        :type confHandler: configHandler.ConfigHandler
+        """
         QDialog.__init__(self, interface.mainWindow())
 
         self.iface = interface
         self.canvas = self.iface.mapCanvas()
-        self.toolWin = toolWindow
+        
+        # Management of Parameters and settings
+        self.confHandler = confHandler
+        self.confHandler.setDialog(self)
 
         # Load data
         self.originalData = {}
@@ -64,9 +71,11 @@ class AdjustmentDialog(QDialog, Ui_Dialog):
         self.xdata = []
         self.terrain = []
         self.cableLine = {}
+        self.anchor = []
         self.cableParams = {}
         self.gp = {}
         self.terrainSpacing = 0
+        self.doReRun = False
 
         # Setup GUI from UI-file
         self.setupUi(self)
@@ -89,13 +98,20 @@ class AdjustmentDialog(QDialog, Ui_Dialog):
 
         # Fill tab widget with data
         self.poleLayout = AdjustmentDialogPoles(self)
-        self.paramLayout = AdjustmentDialogParams(self)
+        self.paramLayout = AdjustmentDialogParams(self, self.confHandler.params)
         self.thresholdLayout = AdjustmentDialogThresholds(self)
 
         # Thread for instant recalculation when poles or parameters are changed
         self.timer = QTimer()
         self.configurationHasChanged = False
         self.isRecalculating = False
+
+        # Save dialog
+        self.saveDialog = DialogOutputOptions(self.iface, self, self.confHandler)
+        
+        self.btnCancel.clicked.connect(self.Reject)
+        self.btnSave.clicked.connect(self.save)
+        self.btnBackToStart.clicked.connect(self.goBackToStart)
 
     def loadData(self):
         # Test data
@@ -108,12 +124,15 @@ class AdjustmentDialog(QDialog, Ui_Dialog):
         self.initData(dump)
         
     def initData(self, result):
+        if not result:
+            self.close()
         [disp_data, gp, HM, IS, cableline] = result
         self.xdata = disp_data[0]
         self.terrain = disp_data[1]
         self.gp = gp
         self.terrainSpacing = int(abs(disp_data[0][0]))
         self.cableParams = IS
+        self.anchor = IS['Ank']
         self.cableLine = {
             'xaxis': cableline['l_coord'],
             'empty': cableline['z_Leer'],
@@ -146,7 +165,7 @@ class AdjustmentDialog(QDialog, Ui_Dialog):
         self.poleLayout.addPolesToGui(self.poles)
 
         # Fill in cable parameters
-        self.paramLayout.fillInParams(self.cableParams)
+        self.paramLayout.fillInParams()
 
         # Start Thread to recalculate cable line every 300 milliseconds
         self.timer.timeout.connect(self.recalculate)
@@ -205,8 +224,7 @@ class AdjustmentDialog(QDialog, Ui_Dialog):
         self.plot.updatePlot(self.poleDataToArray(False), self.cableLine)
         self.configurationHasChanged = True
     
-    def updateCableParam(self, param, newVal):
-        self.cableParams[param] = newVal
+    def updateCableParam(self):
         self.configurationHasChanged = True
     
     def recalculate(self):
@@ -225,7 +243,8 @@ class AdjustmentDialog(QDialog, Ui_Dialog):
         h = pole_ytop[1:] - pole_ytop[:-1]
         
         try:
-            seil, kraft, seil_possible = preciseCable(b, h, self.cableParams)
+            # TODO anchor data will change when start and end point are changed
+            seil, kraft, seil_possible = preciseCable(b, h, self.cableParams, self.anchor)
         except Exception:
             # TODO: Index Errors for certain angles still there
             self.isRecalculating = False
@@ -274,6 +293,75 @@ class AdjustmentDialog(QDialog, Ui_Dialog):
     def Apply(self):
         self.close()
     
+    def goBackToStart(self):
+        self.doReRun = True
+        self.Reject()
+    
+    def save(self):
+        self.saveDialog.exec()
+        self.confHandler.updateUserSettings()
+        self.createOutput()
+    
+    def createOutput(self):
+        pass
+        # from .tool.outputReport import getTimestamp, plotData, \
+        #     generateReportText, \
+        #     generateReport, createOutputFolder
+        # from .tool.outputGeo import generateGeodata, addToMap, \
+        #     generateCoordTable
+        #
+
+        # outputFolder = self.projInfo['outputOpt']['outputPath']
+        # outputName = self.projInfo['Projektname']
+        # outputLoc = createOutputFolder(outputFolder, outputName)
+        # # Move saved project file to output folder
+        # if os.path.exists(self.projInfo['projFile']):
+        #     newpath = os.path.join(outputLoc,
+        #                            os.path.basename(self.projInfo['projFile']))
+        #     os.rename(self.projInfo['projFile'], newpath)
+        #     self.projInfo['projFile'] = newpath
+        # # Generate plot
+        # plotSavePath = os.path.join(outputLoc,
+        #                             "{}_Diagramm.pdf".format(outputName))
+        # plotImage, labelTxt = plotData(disp_data, gp["di"], seilDaten, HM,
+        #                                self.confHandler.params.params,
+        #                                self.projInfo,
+        #                                resultStatus, plotSavePath)
+        # self.sig_value.emit(optiLen * 1.015)
+        # # Calculate duration and generate time stamp
+        # duration, timestamp1, timestamp2 = getTimestamp(t_start)
+        #
+        # # Create report
+        # if self.projInfo['outputOpt']['report']:
+        #     reportSavePath = os.path.join(outputLoc,
+        #                                   "{}_Bericht.pdf".format(outputName))
+        #     reportText = generateReportText(IS, self.projInfo, HM,
+        #                                     kraft, optSTA, duration,
+        #                                     timestamp2, labelTxt)
+        #     generateReport(reportText, reportSavePath, outputName)
+        #
+        # # Create plot
+        # if not self.projInfo['outputOpt']['plot']:
+        #     # was already created before and gets deleted if not used
+        #     if os.path.exists(plotImage):
+        #         os.remove(plotImage)
+        #
+        # # Generate geo data
+        # if self.projInfo['outputOpt']['geodata']:
+        #     geodata = generateGeodata(self.projInfo, HM, seilDaten,
+        #                               labelTxt[0], outputLoc)
+        #     addToMap(geodata, outputName)
+        #
+        # # Generate coordinate tables
+        # if self.projInfo['outputOpt']['coords']:
+        #     table1SavePath = os.path.join(outputLoc,
+        #                                   outputName + '_KoordStuetzen.csv')
+        #     table2SavePath = os.path.join(outputLoc,
+        #                                   outputName + '_KoordSeil.csv')
+        #     generateCoordTable(seilDaten, gp["zi"], HM,
+        #                        [table1SavePath, table2SavePath], labelTxt[0])
+
     def Reject(self):
+        # TODO: Nachfrage
         self.close()
 

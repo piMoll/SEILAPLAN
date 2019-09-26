@@ -1,4 +1,4 @@
-﻿#  -*- coding: utf-8 -*-
+#  -*- coding: utf-8 -*-
 """
 #------------------------------------------------------------------------------
 # Name:        Seiloptimierungstool
@@ -151,7 +151,7 @@ def plotData(disp_data, di, seilDaten, HM, IS, projInfo, resultStatus, locPlot):
     axes.vlines(idxStue.astype(float), y_data[idxStue+p].astype(float),
                 zStue.astype(float), colors='black', linewidth=3)
 
-    # Beschriftungen setzten
+    # Beschriftungen setzen
     porjTitle = projInfo['Projektname']
     horiLabel = "Horizontaldistanz [m] von der Anfangsstütze aus"
     vertiLabel = "Höhe [m.ü.M]"

@@ -40,8 +40,8 @@ def calcSTA(IS, zi, di, sc, befGSK, H_Anfangsmast, H_Endmast, z_null,
     sc        Soil Clearance, gibt den minimalen Bodenabstand an
     """
     # Input Variablen
-    zul_SK = IS["zul_SK"][0]                    # [kN] zulaessige Seilkraft!
-    min_Anfangszugkraft = IS["min_SK"][0]       # [kN]
+    zul_SK = IS["zul_SK"]                    # [kN] zulaessige Seilkraft!
+    min_Anfangszugkraft = IS["min_SK"]       # [kN]
     CableLineImpossible = False
     # ACHTUNG: Ist nicht immer 1. Main File beachten!!
     Detail = 1.0

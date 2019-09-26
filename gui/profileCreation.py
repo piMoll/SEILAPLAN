@@ -21,18 +21,24 @@
 from math import cos, sin, ceil
 import numpy as np
 from qgis.core import QgsPointXY
+from ..configHandler import ProjectConfHandler
 
 
 class Profile(object):
-    def __init__(self, pointA, pointE, length, res, azimut, raster):
-        """Creates a profile from a given start and end point on a raster."""
-        self.pointA = pointA
-        self.pointE = pointE
-        self.length = length
-        self.res = res
-        self.azimut = azimut
-        self.raster = raster
-        self.rasterlyr = self.raster.dataProvider()
+    """Creates a profile from a given start and end point on a raster."""
+    
+    def __init__(self, projectHandler):
+        """
+        :type projectHandler: ProjectConfHandler
+        """
+        coordsA, _ = projectHandler.getPoint('A')
+        coordsE, _ = projectHandler.getPoint('E')
+        self.pointA = QgsPointXY(*tuple(coordsA))
+        self.pointE = QgsPointXY(*tuple(coordsE))
+        self.length = projectHandler.getProfileLen()
+        self.res = projectHandler.dhm['cellsize']
+        self.azimut = projectHandler.getAzimut()
+        self.rasterlyr = projectHandler.dhm['layer'].dataProvider()
         
         self.profile = []
         self.xaxis = None
@@ -44,6 +50,8 @@ class Profile(object):
     
     def create(self):
         """Extracts the raster values and saves them to a collection."""
+        if self.length == 0:
+            return False
         stepsAlongLine = np.linspace(0, self.length, num=ceil(self.length/self.res))
 
         for step in stepsAlongLine:
@@ -57,7 +65,7 @@ class Profile(object):
         self.xaxis = nparr[:, 0]
         self.yaxis = nparr[:, 1]
 
-        # Min and max values for diagramm extent
+        # Min and max values for diagram extent
         self.xmin = np.min(self.xaxis)
         self.ymin = np.min(self.yaxis)
         self.xmax = np.max(self.xaxis)
@@ -86,4 +94,3 @@ class Profile(object):
         self.ymin -= distance
         self.xmax += distance
         self.ymax += distance
-        

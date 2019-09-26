@@ -79,8 +79,8 @@ class ProfilePlot(FigureCanvas):
         self.setFocusPolicy(Qt.ClickFocus)
         # self.setFocus()
         
-        
     def plotData(self, plotData):
+        self.axes.clear()
         self.profileObj = plotData
         # Set plot extent
         # self.pltExt.union(plotData.getExtent())
@@ -113,11 +113,15 @@ class ProfilePlot(FigureCanvas):
         self.xcursor = self.x_data[floor(len(self.x_data) / 2)]
         self.ycursor = self.y_data[floor(len(self.x_data) / 2)]
         
+        self.lx = self.axes.axhline(lw=2, ls='dashed', y=self.ycursor)
+        self.ly = self.axes.axvline(lw=2, ls='dashed', x=self.xcursor)
+        self.ly.set_visible(False)
+        self.lx.set_visible(False)
+        
         self.draw()
 
         # TODO: Funktioniert unter Windows nicht
         self.fig.tight_layout()
-        
 
     def acitvateFadenkreuz(self):
         self.cidMove = self.mpl_connect('motion_notify_event',self.mouse_move)

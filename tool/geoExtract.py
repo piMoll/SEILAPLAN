@@ -44,7 +44,7 @@ def generateDhm(rasterdata, coords):
         
     if 'extent' in rasterdata:
         [xMin, yMax, xMax, yMin] = rasterdata['extent']
-    else :
+    else:
         xMin = upx + 0 * xres + 0 * xskew
         yMax = upy + 0 * yskew + 0 * yres
         xMax = upx + cols * xres + rows * xskew
@@ -80,16 +80,18 @@ def generateDhm(rasterdata, coords):
               yMax - (yOff+yLen)*cellsize,  # yMin
               yMax - yOff*cellsize]         # yMax
 
-    rasterdata['extent'] = extent
-    rasterdata['subraster'] = subraster
+    rasterdata['clip'] = {}
+    rasterdata['clip']['extent'] = extent
+    rasterdata['clip']['raster'] = subraster
     return rasterdata
+
 
 def calcProfile(inputPoints, rasterdata, IS, Delta, coeff):
     """ Infotext.
     """
-    dhm = rasterdata['subraster']
+    dhm = rasterdata['clip']['raster']
 
-    [xMin, xMax, yMin, yMax] = rasterdata['extent']
+    [xMin, xMax, yMin, yMax] = rasterdata['clip']['extent']
     cellsize = rasterdata['cellsize']
     [Xa, Ya, Xe, Ye] = inputPoints
 
@@ -140,8 +142,8 @@ def calcProfile(inputPoints, rasterdata, IS, Delta, coeff):
     #   Ankerfelder übersichtlich darstellen zu können.
 
     # Anker-Informationen
-    d_Anker_A = IS['d_Anker_A'][0]
-    d_Anker_E = IS['d_Anker_E'][0]
+    d_Anker_A = IS['d_Anker_A']
+    d_Anker_E = IS['d_Anker_E']
     b = max([d_Anker_A, d_Anker_E, p])        # p= Standartwert = 21m
 
     xiA_disp = np.linspace(Xa-zwischendistX, Xa-b*zwischendistX, b)
@@ -195,6 +197,7 @@ def calcProfile(inputPoints, rasterdata, IS, Delta, coeff):
 
     return gp, zi_disp, di_ind
 
+
 def interpolateProfilePointsScipy(coordX, coordY, dhm, xi, yi):
     # Linear Interpolation mit scipy
     from scipy.interpolate import RectBivariateSpline
@@ -202,6 +205,7 @@ def interpolateProfilePointsScipy(coordX, coordY, dhm, xi, yi):
     spline = RectBivariateSpline(-coordY, coordX, dhm, kx=1, ky=1)
     zi = spline.ev(-yi, xi)
     return spline, zi
+
 
 def interpolateProfilePointsGRASS(coordX, coordY, dhm, xi, yi):
     import processing
@@ -245,8 +249,8 @@ def interpolateProfilePointsGRASS(coordX, coordY, dhm, xi, yi):
     # TODO: Funktioniert nicht - Could not load source layer for input: no value specified for parameter
     result = processing.run('grass7:v.sample', params,  feedback=QgsProcessingFeedback())
     
-    
     return result, result
+
 
 def ismember(a, b):
     bind = {}
@@ -255,7 +259,8 @@ def ismember(a, b):
             bind[elt] = i
     return [bind.get(itm, None) for itm in a]  # None can be replaced by any other "not in b" value
 
-def stuePos(IS, gp):
+
+def stuePos(IS, gp, projInfo):
     """Evaluation der konkaven Standorte
 
     Output:
@@ -300,13 +305,14 @@ def stuePos(IS, gp):
 
     # Bereiche ohne Stützen (benutzerdefiniert) aufbereiten
     noStue = np.zeros(gp['di_s'].size, dtype=int)
-    for profileRange in IS['noStue']:
+    for profileRange in projInfo.noPoleSection:
         anf = min(profileRange)
         end = max(profileRange)
         noStue += (gp['di_s']>anf) * (gp['di_s']<end)
     # Stützenpositionen sind definiert durch Peaks, fixe Stützenpositionen
     #   und benutzerdefinierte Bereiche ohne Stützen
-    possiblePos = np.hstack([gp['di_s'][noStue==0], peakLoc, IS['HM_fix_d']])
+    possiblePos = np.hstack([gp['di_s'][noStue==0], peakLoc,
+                             projInfo.fixedPoles['HM_fix_d']])
     possiblePos = np.sort(possiblePos).astype('int')
 
     locb = np.unique(ismember(possiblePos, di))
@@ -318,9 +324,9 @@ def stuePos(IS, gp):
     # Bodenfreiheit
     ###############
     # Hier muss der minimale Bodenabstand nicht eingehalten werden
-    bodenabst = IS['Bodenabst_min'][0]  # float
-    clearA = IS['Bodenabst_A'][0]       # int
-    clearE = IS['Bodenabst_E'][0]       # int
+    bodenabst = IS['Bodenabst_min']  # float
+    clearA = IS['Bodenabst_A']       # int
+    clearE = IS['Bodenabst_E']       # int
 
     groundClear = np.ones(profilLen) * bodenabst
     groundClear[di<clearA+1] = 0
@@ -330,8 +336,8 @@ def stuePos(IS, gp):
 
     # Befahrbarkeit
     ###############
-    befGSK_A = IS['Befahr_A'][0]        # int
-    befGSK_E = IS['Befahr_E'][0]        # int
+    befGSK_A = IS['Befahr_A']        # int
+    befGSK_E = IS['Befahr_E']        # int
 
     befahrbar = np.ones(profilLen)
     befahrbar[di<befGSK_A+1] = 0
@@ -373,7 +379,7 @@ def stuePos(IS, gp):
             # Ungeeignete Standorte erhalten den Wert 0
             Maststandort[element[0]] = 0
     # Zusätzliche Maststandorte dort wo der Benutzer sie angegeben hat
-    idxFix = ismember(IS['HM_fix_d'], gp['di_s'])
+    idxFix = ismember(projInfo.fixedPoles['HM_fix_d'], gp['di_s'])
     Maststandort[idxFix] = 1
     # Idee an zweiter und zweitletzter Stelle soll immer eine Stütze möglich
     # sein, wegen zum Teil tiefen Anfangs- und Endstützenhoehen (0m)
@@ -381,7 +387,7 @@ def stuePos(IS, gp):
 
     # Rückerichtung bestimmen
     #########################
-    if IS['GravSK'][0] == 'nein':
+    if IS['GravSK'] == 'nein':
         R_R = 0
     else:
         try:
@@ -399,16 +405,16 @@ def stuePos(IS, gp):
 def calcAnker(IS, inputPoints, rasterdata, gp):
     """
     """
-    dhm = rasterdata['subraster']
+    dhm = rasterdata['clip']['raster']
     [Xa, Ya, Xe, Ye] = inputPoints
     # Letzte Koordinate in xi/yi entspricht nicht exakt den Endkoordinaten
     Xe_ = gp['xi'][-1]
     Ye_ = gp['yi'][-1]
 
-    AnkA_dist = IS['d_Anker_A'][0]
-    AnkE_dist = IS['d_Anker_E'][0]
-    stueA_H = IS['HM_Anfang'][0]
-    stueE_H = IS['HM_Ende_max'][0]
+    AnkA_dist = IS['d_Anker_A']
+    AnkE_dist = IS['d_Anker_E']
+    stueA_H = IS['HM_Anfang']
+    stueE_H = IS['HM_Ende_max']
 
     # X- und Y-Koordinate der Geodaten im Projektionssystem berechnen
     dx = float(Xe - Xa)
@@ -449,14 +455,15 @@ def calcAnker(IS, inputPoints, rasterdata, gp):
     Ank = [AnkA_dist, AnkA_z, AnkE_dist, AnkE_z]
 
     # Ausdehnungen der Anker Felder, alles in [m]
-    #Ank = [d_Anker_A, z_Anker_A * 0.1, d_Anker_E, z_Anker_E * 0.1]
+    # Ank = [d_Anker_A, z_Anker_A * 0.1, d_Anker_E, z_Anker_E * 0.1]
     Laenge_Ankerseil = (AnkA_dist**2 + AnkA_z**2)**0.5 + \
                        (AnkE_dist**2 + AnkE_z**2)**0.5
 
     # Eventuell nicht nötig
-    #IS['z_Anker_A'][0] = z_Anker_A
-    #IS['z_Anker_E'][0] = z_Anker_E
+    # IS['z_Anker_A'] = z_Anker_A
+    # IS['z_Anker_E'] = z_Anker_E
     return [Ank, Laenge_Ankerseil, zAnker]
+
 
 def updateAnker(Anker, HM, HMidx):
     """
@@ -492,10 +499,11 @@ def updateAnker(Anker, HM, HMidx):
 
     return [Ank, Laenge_Ankerseil, zAnker, Ankerseil]
 
-def markFixStue(stuetzIdx, IS):
+
+def markFixStue(stuetzIdx, fixedPoles):
     # Fixe Stützen
-    fixStueX = IS['HM_fix_d']
-    fixStueZ = IS['HM_fix_h']
+    fixStueX = fixedPoles['HM_fix_d']
+    fixStueZ = fixedPoles['HM_fix_h']
 
     if not fixStueX:
         return [np.zeros([len(stuetzIdx)])]*2       # Zwei leere Arrays

@@ -20,16 +20,11 @@
  ***************************************************************************/
 """
 
-import os
 from qgis.core import QgsTask
 from qgis.PyQt.QtCore import pyqtSignal
 
 # Import Tool Scripts
 from .tool.mainSeilaplan import main
-from .tool.outputReport import getTimestamp, plotData, generateReportText, \
-    generateReport, createOutputFolder
-from .tool.outputGeo import generateGeodata, addToMap, generateCoordTable
-
 
 
 class ProcessingTask(QgsTask):
@@ -46,40 +41,37 @@ class ProcessingTask(QgsTask):
     sig_text = pyqtSignal(str)
     sig_result = pyqtSignal(list)
     
-    def __init__(self, description='SEILAPLAN'):
+    def __init__(self, confHandler, description='SEILAPLAN'):
+        """
+        :type confHandler: configHandler.ConfigHandler
+        """
         super().__init__(description, QgsTask.CanCancel)
         self.state = False
         self.exception = None
-        self.inputData = None
-        self.projInfo = None
+        self.confHandler = confHandler
+        self.projInfo = confHandler.project
+        self.resultStatus = None
         self.result = None
-    
-    def setState(self, state):
-        self.state = state
-    
-    def setProcessingInput(self, inputData, projInfo):
-        self.inputData = inputData
-        self.projInfo = projInfo
     
     def run(self):
         
-        # Remove comment to debug algorithm
-        try:
-            import pydevd_pycharm
-            pydevd_pycharm.settrace('localhost', port=53100,
-                        stdoutToServer=True, stderrToServer=True)
-        except ConnectionRefusedError:
-            pass
-        except ImportError:
-            pass
+        # try:
+        #     import pydevd_pycharm
+        #     pydevd_pycharm.settrace('localhost', port=53100,
+        #                             stdoutToServer=True, stderrToServer=True)
+        # except ConnectionRefusedError:
+        #     pass
+        # except ImportError:
+        #     pass
 
-
-        output = main(self, self.inputData, self.projInfo)
+    
+        p = self.confHandler.params.getTruncatedParameters()
+        output = main(self, p, self.projInfo)
         
         if not output:  # If error in code
             return False
         else:
-            [result, resultStatus] = output
+            [resultStatus, result] = output
         
         # Output resultStatus
         #   1 = Optimization successful
@@ -91,61 +83,9 @@ class ProcessingTask(QgsTask):
          IS, kraft, optSTA, optiLen] = result
         
         self.sig_value.emit(optiLen * 1.01)
-        self.sig_text.emit("Outputdaten werden generiert...")
-        
-        # Generate output
-        ###################
-        outputFolder = self.projInfo['outputOpt']['outputPath']
-        outputName = self.projInfo['Projektname']
-        outputLoc = createOutputFolder(outputFolder, outputName)
-        # Move saved project file to output folder
-        if os.path.exists(self.projInfo['projFile']):
-            newpath = os.path.join(outputLoc,
-                                   os.path.basename(self.projInfo['projFile']))
-            os.rename(self.projInfo['projFile'], newpath)
-            self.projInfo['projFile'] = newpath
-        # Generate plot
-        plotSavePath = os.path.join(outputLoc,
-                                    "{}_Diagramm.pdf".format(outputName))
-        plotImage, labelTxt = plotData(disp_data, gp["di"], seilDaten, HM,
-                                       self.inputData, self.projInfo,
-                                       resultStatus, plotSavePath)
-        self.sig_value.emit(optiLen * 1.015)
-        # Calculate duration and generate time stamp
-        duration, timestamp1, timestamp2 = getTimestamp(t_start)
-        
-        # Create report
-        if self.projInfo['outputOpt']['report']:
-            reportSavePath = os.path.join(outputLoc,
-                                          "{}_Bericht.pdf".format(outputName))
-            reportText = generateReportText(IS, self.projInfo, HM,
-                                            kraft, optSTA, duration,
-                                            timestamp2, labelTxt)
-            generateReport(reportText, reportSavePath, outputName)
-        
-        # Create plot
-        if not self.projInfo['outputOpt']['plot']:
-            # was already created before and gets deleted if not used
-            if os.path.exists(plotImage):
-                os.remove(plotImage)
-        
-        # Generate geo data
-        if self.projInfo['outputOpt']['geodata']:
-            geodata = generateGeodata(self.projInfo, HM, seilDaten,
-                                      labelTxt[0], outputLoc)
-            addToMap(geodata, outputName)
-        
-        # Generate coordinate tables
-        if self.projInfo['outputOpt']['coords']:
-            table1SavePath = os.path.join(outputLoc,
-                                          outputName + '_KoordStuetzen.csv')
-            table2SavePath = os.path.join(outputLoc,
-                                          outputName + '_KoordSeil.csv')
-            generateCoordTable(seilDaten, gp["zi"], HM,
-                               [table1SavePath, table2SavePath], labelTxt[0])
-        
-        
-        resultData = [
+
+        self.resultStatus = resultStatus
+        self.result = [
             disp_data,
             gp,
             HM,
@@ -161,9 +101,12 @@ class ProcessingTask(QgsTask):
         # pickle.dump(allData, f)
         # f.close()
         
-        self.sig_result.emit([outputLoc, resultStatus, resultData])
+        # self.sig_result.emit(resultStatus)
         
         return True
+        
+    def getResult(self):
+        return self.result
     
     def finished(self, result):
         """This method is automatically called when self.run returns. result
@@ -174,7 +117,7 @@ class ProcessingTask(QgsTask):
 
         if self.exception:
             self.sig_jobError.emit(self.exception)
-        
+
         else:
             # Show successful run or user abort on progress gui
             self.sig_jobEnded.emit(result)

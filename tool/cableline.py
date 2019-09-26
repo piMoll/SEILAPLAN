@@ -119,16 +119,16 @@ def calcCable(IS, zi, di, sc, befGSK, z_null, STA, b, h, feld):
     könnte und dann das entsprechende Resultat ausgegeben wird [-1 oder 1]
     """
     # Input values
-    Q = IS["Q"][0]          # [kN]
-    qT = IS["qT"][0]      # [kN/m]
-    F = IS["A"][0]        # [mm^2]
-    E = IS["E"][0]        # [kN/mm^2]
+    Q = IS["Q"]        # [kN]
+    qT = IS["qT"]      # [kN/m]
+    F = IS["A"]        # [mm^2]
+    E = IS["E"]        # [kN/mm^2]
     #beta = IS["beta"]     # [1/°C] Ausdehnungskoeffizient von Stahl
-    Federkonstante = IS["Federkonstante"][0]  # [kN/m] Anker
-    qz1 = IS["qz1"][0]     # [kN/m] Zugseilgewicht links
-    qz2 = IS["qz2"][0]     # [kN/m] Zugseilgewicht rechts
-    # min_Bodenabstand = IS["Bodenabst_min"][0]*10     # [dm] (10*[m])
-    zul_SK = IS["zul_SK"][0]  # [kN] zulaessige Seilkraft!
+    Federkonstante = IS["Federkonstante"]  # [kN/m] Anker
+    qz1 = IS["qz1"]     # [kN/m] Zugseilgewicht links
+    qz2 = IS["qz2"]     # [kN/m] Zugseilgewicht rechts
+    # min_Bodenabstand = IS["Bodenabst_min"]*10     # [dm] (10*[m])
+    zul_SK = IS["zul_SK"]  # [kN] zulaessige Seilkraft!
     ZulSK_erfuellt = True
     # Ankerseillaenge
     Laenge_Ankerseil = IS['Ank'][1]
@@ -271,7 +271,7 @@ def calcCable(IS, zi, di, sc, befGSK, z_null, STA, b, h, feld):
 
             ym_z = ym       # Ausgabegrösse: dient zur Kontrolle
             si = 10 * (x_coord_last_zweifel + z_null)
-            Cable_Possible = checkCable(zi, si, sc, befGSK, IS['GravSK'][0],
+            Cable_Possible = checkCable(zi, si, sc, befGSK, IS['GravSK'],
                                         IS['R_R'][0])
             # add_values = [ym, HT, Hs, Hm, STfm_Last]
 

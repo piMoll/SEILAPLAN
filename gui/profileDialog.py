@@ -42,14 +42,15 @@ cssErr = "QLineEdit {background-color: red;}"
 
 
 class ProfileDialog(QDialog):
-    def __init__(self, toolWindow, interface, profile):
+    def __init__(self, toolWindow, interface, projectHandler):
         QDialog.__init__(self, interface.mainWindow())
         # super().__init__()
         self.setWindowTitle("Höhenprofil")
         self.iface = interface
         self.canvas = self.iface.mapCanvas()
-        self.profile = profile
+        self.profile = None
         self.toolWin = toolWindow
+        self.projectHandler = projectHandler
 
         main_widget = QWidget(self)
 
@@ -100,9 +101,6 @@ class ProfileDialog(QDialog):
         self.container.addLayout(self.gridM)
         self.container.addWidget(self.buttonBox)
 
-        # Draw plofile in diagram
-        self.sc.plotData(self.profile)
-
         # Connect signals
         self.fixStueAdd.clicked.connect(self.sc.acitvateFadenkreuz)
         self.noStueAdd.clicked.connect(self.sc.acitvateFadenkreuz2)
@@ -111,7 +109,22 @@ class ProfileDialog(QDialog):
         self.setLayout(self.container)
 
         # Get fixed intermediate support data
-        self.fixStueOld = self.toolWin.fixStue
+        self.fixStueOld = {}
+        self.fixStueProp = []
+        self.menu = False
+        
+        self.initMenu()
+
+    def setProfile(self, profile):
+        self.profile = profile
+        # Draw plofile in diagram
+        self.sc.plotData(self.profile)
+    
+    def setFixedPoles(self):
+        # TODO: GUI Felder löschen
+        self.removeOldStue()
+        # Get fixed intermediate support data
+        self.fixStueOld = self.projectHandler.getFixedPoles()
         self.fixStueProp = []
         self.menu = False
 
@@ -125,8 +138,6 @@ class ProfileDialog(QDialog):
 
 
     def CreateFixStue(self, pointX, pointY, drawnPoint, pointH = '', order=None):
-        if not self.menu:       # If there is no fixed intermediate support yet
-            self.initMenu()
         if not order:           # Position of field in list
             order = len(self.fixStueProp)
 
@@ -137,7 +148,7 @@ class ProfileDialog(QDialog):
         guiH.setText(pointH)
 
         # Draw marker on canvas
-        point = self.toolWin.transform2MapCoords(float(pointX))
+        point = self.projectHandler.transform2MapCoords(float(pointX))
         self.toolWin.drawTool.drawStueMarker(point)
         # Save data of intermediate support
         self.addStueToDict(order, pointX, pointY, pointH, guiPos, guiH,
@@ -207,7 +218,7 @@ class ProfileDialog(QDialog):
         # Connect signals
         guiPos.editingFinished.connect(self.fixStueChanged)
         guiH.editingFinished.connect(self.fixStueChanged)
-        guiRemove.clicked.connect(self.removeStue)
+        guiRemove.clicked.connect(lambda: self.removeStue(row))
 
         # Place fields in GUI
         hbox1 = QHBoxLayout()
@@ -253,35 +264,34 @@ class ProfileDialog(QDialog):
                 self.fixStueProp[order]['y'] = str(int(yPos))
                 # Remove old point and draw new point on canvas
                 self.toolWin.drawTool.removeStueMarker(2+order)
-                point = self.toolWin.transform2MapCoords(float(newval))
+                point = self.projectHandler.transform2MapCoords(float(newval))
                 self.toolWin.drawTool.drawStueMarker(point)
             self.fixStueProp[order]['x'] = str(int(float(newval)))
         # If height has changed
         if fieldType == 'guiH':
             self.fixStueProp[order]['h'] = newval
 
-    def removeStue(self):
-        senderName = self.sender().objectName()
-        order = int(senderName[:2])
+    def removeStue(self, row):
+        order = row
         # Remove point from plot and from canvas
-        self.sc.DeletePoint(self.fixStueProp[order]['drawnPnt'])
-        self.toolWin.drawTool.removeStueMarker(order)
+        self.sc.DeletePoint(self.fixStueProp[row]['drawnPnt'])
+        self.toolWin.drawTool.removeStueMarker(row)
         # Delete intermediate support data
-        del self.fixStueProp[order]
+        del self.fixStueProp[row]
         rowCount = len(self.fixStueProp)
         # Adjust GUI
         # Remove row of deleted support and all subsequent rows
-        for row in reversed(range(order+1, rowCount+2)):
-            self.removeStueField(row)
+        for elem in reversed(range(row+1, rowCount+2)):
+            self.removeStueField(elem)
         # Subsequent rows move up
-        for row in range(order, rowCount):
-            guiPos, guiH, guiRemove = self.addRow2Grid(row)
-            guiPos.setText(self.fixStueProp[row]['x'])
-            if self.fixStueProp[row]['h']:
-                guiH.setText(self.fixStueProp[row]['h'])
-            self.fixStueProp[row]['guiPos'] = guiPos
-            self.fixStueProp[row]['guiH'] = guiH
-            self.fixStueProp[row]['guiRemove'] = guiRemove
+        for rowElem in range(order, rowCount):
+            guiPos, guiH, guiRemove = self.addRow2Grid(rowElem)
+            guiPos.setText(self.fixStueProp[rowElem]['x'])
+            if self.fixStueProp[rowElem]['h']:
+                guiH.setText(self.fixStueProp[rowElem]['h'])
+            self.fixStueProp[rowElem]['guiPos'] = guiPos
+            self.fixStueProp[rowElem]['guiH'] = guiH
+            self.fixStueProp[rowElem]['guiRemove'] = guiRemove
         self.setLayout(self.container)
         # If only remaining row was deleted also delete header
         if rowCount == 0:
@@ -289,6 +299,10 @@ class ProfileDialog(QDialog):
             self.grid.takeAt(0).widget().deleteLater()
             self.menu = False
         self.setLayout(self.container)
+    
+    def removeOldStue(self):
+        for row in reversed(range(len(self.fixStueProp))):
+            self.removeStueField(row+1)
 
     def removeStueField(self, row):
         pos = row*4 + 1     # Header is in field 0 and 1
@@ -305,23 +319,24 @@ class ProfileDialog(QDialog):
 
     def activateMapMarker(self, horiDist):
         self.mapMarker = QgsMovingCross(self.canvas)
-        initPoint = self.toolWin.transform2MapCoords(horiDist)
+        initPoint = self.projectHandler.transform2MapCoords(horiDist)
         self.mapMarker.setCenter(initPoint)
 
     def deactivateMapMarker(self):
-        self.canvas.scene().removeItem(self.mapMarker)
+        if self.mapMarker:
+            self.canvas.scene().removeItem(self.mapMarker)
         self.mapMarker = None
 
     def updateMapMarker(self, horiDist):
         if not self.mapMarker:
             self.activateMapMarker(horiDist)
-        newpnt = self.toolWin.transform2MapCoords(horiDist)
+        newpnt = self.projectHandler.transform2MapCoords(horiDist)
         self.mapMarker.setCenter(newpnt)
         self.canvas.refresh()
 
     def activateMapMarkerLine(self, horiDist):
         self.deactivateMapMarker()
-        [x, y] = self.toolWin.transform2MapCoords(horiDist)
+        # [x, y] = self.projectHandler.transform2MapCoords(horiDist)
         self.mapMarker = QgsMovingCross(self.canvas)
         self.mapMarker.setColor(QColor(249, 236, 0))
 
@@ -332,16 +347,16 @@ class ProfileDialog(QDialog):
         self.mapLines.append(mapLine)
         self.pointsToDraw = []
         # Create first point
-        initPoint = self.toolWin.transform2MapCoords(horiDist)
+        initPoint = self.projectHandler.transform2MapCoords(horiDist)
         self.pointsToDraw.append(initPoint)
 
     def lineMoved(self, horiDist):
-        newPnt = self.toolWin.transform2MapCoords(horiDist)
+        newPnt = self.projectHandler.transform2MapCoords(horiDist)
         points = self.pointsToDraw + [newPnt]
         self.mapLines[-1].setToGeometry(QgsGeometry.fromPolylineXY(points), None)
 
     def finishLine(self, horiDist):
-        endPoint = self.toolWin.transform2MapCoords(horiDist)
+        endPoint = self.projectHandler.transform2MapCoords(horiDist)
         self.pointsToDraw.append(endPoint)
         self.mapLines[-1].setToGeometry(QgsGeometry.fromPolylineXY(
             self.pointsToDraw), None)
@@ -353,7 +368,6 @@ class ProfileDialog(QDialog):
 
     def clearUnfinishedLines(self):
         if len(self.pointsToDraw) == 1:
-            self.sc.vLine.remove()
             self.mapLines[-1].reset(False)
             self.mapLines.pop(-1)
             self.pointsToDraw = []
@@ -364,21 +378,14 @@ class ProfileDialog(QDialog):
         return [self.dist, self.height]
 
     def Apply(self):
-        self.toolWin.fixStue = {}
-        for i, fixStue in enumerate(self.fixStueProp):
-            x = fixStue['x']
-            y = fixStue['y']
-            h = fixStue['h']
-            if x == '' or x.isalpha():
-                continue
-            if h == '':
-                h = '-1'
-            self.toolWin.fixStue[i+1] = [x, y, h]
+        self.projectHandler.setFixedPoles(self.fixStueProp)
+        self.projectHandler.setNoPoleSection(self.sc.noStue)
         self.deactivateMapMarker()
         self.clearUnfinishedLines()
         self.close()
 
     def Reject(self):
+        # TODO: Cancel: keine Änderungen speichern. D.h beim Öffnen jedes Mal Poles neu erstellen?
         self.deactivateMapMarker()
         self.clearUnfinishedLines()
         self.fixStueProp = []

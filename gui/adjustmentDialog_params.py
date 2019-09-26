@@ -19,8 +19,6 @@
  ***************************************************************************/
 """
 
-from qgis.PyQt.QtWidgets import QMessageBox
-
 
 class AdjustmentDialogParams(object):
     """
@@ -28,8 +26,12 @@ class AdjustmentDialogParams(object):
     tab widgets.
     """
     
-    def __init__(self, dialog):
+    def __init__(self, dialog, paramHandler):
+        """
+        :type paramHandler: configHandler.ParamConfHandler
+        """
         self.dialog = dialog
+        self.paramHandler = paramHandler
         self.params = {}
         self.fields = {
             'Q': self.dialog.fieldQ,
@@ -42,19 +44,19 @@ class AdjustmentDialogParams(object):
         }
         self.connectFields()
 
-    def fillInParams(self, cableparams):
+    def fillInParams(self):
         self.params = {
-            'Q': cableparams['Q'][0],
-            'qT': cableparams['qT'][0],
-            'A': cableparams['A'][0],
-            'E': cableparams['E'][0],
-            'qz1': cableparams['qz1'][0],
-            'qz2': cableparams['qz2'][0],
+            'Q': self.paramHandler.getParameter('Q'),
+            'qT': self.paramHandler.getParameter('qT'),
+            'A': self.paramHandler.getParameter('A'),
+            'E': self.paramHandler.getParameter('E'),
+            'qz1': self.paramHandler.getParameter('qz1'),
+            'qz2': self.paramHandler.getParameter('qz2'),
             # 'Vorsp': cableparams['Vorsp'][0],
         }
         for key, field in self.fields.items():
             field.blockSignals(True)
-            field.setText(str(self.params[key]))
+            field.setText(self.params[key])
             field.blockSignals(False)
         
     def connectFields(self):
@@ -72,18 +74,9 @@ class AdjustmentDialogParams(object):
             lambda newVal: self.paramHasChanged(newVal, 'qz2'))
 
     def paramHasChanged(self, newVal, fieldName=''):
-        valid = self.validate(newVal)
-        if valid:
-            self.params[fieldName] = newVal
-            self.dialog.updateCableParam(fieldName, newVal)
-
-    def validate(self, newVal):
-        # TODO: Validate funktion vom Hauptfenster verwenden
-        
-        # if False:
-        #     QMessageBox.information(self.dialog, 'Ungültiger Wert', error)
-        #     # Restore old value
-        #     self.fields[fieldName].setText(self.params[fieldname])
-        return True, ''
-        
-
+        newVal = self.paramHandler.setParameter(fieldName, newVal)
+        if newVal:
+            self.fields[fieldName].blockSignals(True)
+            self.fields[fieldName].setText(newVal)
+            self.fields[fieldName].blockSignals(False)
+            self.dialog.updateCableParam()

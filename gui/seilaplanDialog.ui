@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+<ui version="4.0" idbasedtr="true">
+ <class>SeilaplanDialog</class>
+ <widget class="QDialog" name="SeilaplanDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>567</width>
-    <height>890</height>
+    <height>889</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>SEILAPLAN   --   Seilkran-Layoutplaner</string>
+   <string>SEILAPLAN - Seilkran-Layoutplaner</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_4">
    <item row="1" column="0">
@@ -194,10 +194,23 @@
      <layout class="QGridLayout" name="gridLayout_5">
       <item row="0" column="0">
        <layout class="QGridLayout" name="gridLayout_17">
-        <item row="0" column="1">
-         <widget class="QPushButton" name="draw">
+        <item row="0" column="4">
+         <widget class="QPushButton" name="contourLyrButton">
+          <property name="maximumSize">
+           <size>
+            <width>27</width>
+            <height>27</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Höhenlinien berechnen</string>
+          </property>
           <property name="text">
-           <string>zeichnen</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_contour.png</normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_contour.png</iconset>
           </property>
          </widget>
         </item>
@@ -208,20 +221,7 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="4">
-         <spacer name="horizontalSpacer_16">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="0" column="2">
+        <item row="0" column="3">
          <widget class="QPushButton" name="osmLyrButton">
           <property name="maximumSize">
            <size>
@@ -241,25 +241,25 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="3">
-         <widget class="QPushButton" name="contourLyrButton">
-          <property name="maximumSize">
-           <size>
-            <width>27</width>
-            <height>27</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Höhenlinien berechnen</string>
-          </property>
+        <item row="0" column="1">
+         <widget class="QPushButton" name="draw">
           <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset resource="resources.qrc">
-            <normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_contour.png</normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_contour.png</iconset>
+           <string>zeichnen</string>
           </property>
          </widget>
+        </item>
+        <item row="0" column="2">
+         <spacer name="horizontalSpacer_16">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </item>
@@ -2541,13 +2541,6 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="buttonOptionen">
-       <property name="text">
-        <string>Output Optionen</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <spacer name="horizontalSpacer_13">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -2561,15 +2554,16 @@
       </spacer>
      </item>
      <item>
-      <widget class="QDialogButtonBox" name="buttonOkCancel">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
+      <widget class="QPushButton" name="buttonCancel">
+       <property name="text">
+        <string>Abbrechen</string>
        </property>
-       <property name="standardButtons">
-        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonRun">
+       <property name="text">
+        <string>Berechnung starten</string>
        </property>
       </widget>
      </item>
@@ -2577,6 +2571,58 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>fieldProjName</tabstop>
+  <tabstop>buttonSavePr</tabstop>
+  <tabstop>buttonOpenPr</tabstop>
+  <tabstop>rasterField</tabstop>
+  <tabstop>buttonRefreshRa</tabstop>
+  <tabstop>draw</tabstop>
+  <tabstop>osmLyrButton</tabstop>
+  <tabstop>contourLyrButton</tabstop>
+  <tabstop>coordAx</tabstop>
+  <tabstop>coordAy</tabstop>
+  <tabstop>coordEx</tabstop>
+  <tabstop>coordEy</tabstop>
+  <tabstop>laenge</tabstop>
+  <tabstop>buttonShowProf</tabstop>
+  <tabstop>fieldParamSet</tabstop>
+  <tabstop>buttonSaveParamset</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>fieldQ</tabstop>
+  <tabstop>fieldQt</tabstop>
+  <tabstop>fieldA</tabstop>
+  <tabstop>fieldE</tabstop>
+  <tabstop>fieldzulSK</tabstop>
+  <tabstop>fieldminSK</tabstop>
+  <tabstop>fieldqz1</tabstop>
+  <tabstop>fieldqz2</tabstop>
+  <tabstop>fieldBabstMin</tabstop>
+  <tabstop>fieldBabstA</tabstop>
+  <tabstop>fieldBabstE</tabstop>
+  <tabstop>fieldGravSK</tabstop>
+  <tabstop>fieldBefA</tabstop>
+  <tabstop>fieldBefE</tabstop>
+  <tabstop>fieldHManf</tabstop>
+  <tabstop>fieldDAnkA</tabstop>
+  <tabstop>fieldHMeMin</tabstop>
+  <tabstop>fieldHMeMax</tabstop>
+  <tabstop>fieldDAnkE</tabstop>
+  <tabstop>fieldMinDist</tabstop>
+  <tabstop>fieldLdelta</tabstop>
+  <tabstop>fieldNzwSt</tabstop>
+  <tabstop>fieldHMmin</tabstop>
+  <tabstop>fieldHMmax</tabstop>
+  <tabstop>fieldHMdelta</tabstop>
+  <tabstop>fieldHMnat</tabstop>
+  <tabstop>buttonInfo</tabstop>
+  <tabstop>buttonCancel</tabstop>
+  <tabstop>buttonRun</tabstop>
+  <tabstop>infoBodenabstand</tabstop>
+  <tabstop>infoStuetzen</tabstop>
+  <tabstop>infoVerankerungA</tabstop>
+  <tabstop>infoVerankerungE</tabstop>
+ </tabstops>
  <resources>
   <include location="resources.qrc"/>
  </resources>

@@ -18,22 +18,15 @@ from .cablelineFinal import preciseCable
 from .outputReport import vectorData
 
 
-def checkInputParams(IS):
-    # Ankerpunkten den Anfangs-/Endstützen anpassen
-    if IS['HM_Anfang'][0] < 1:
-        IS['d_Anker_A'][0] = 0.0
-    if IS['HM_Ende_max'][0] < 1:
-        IS['d_Anker_E'][0] = 0.0
-
-    # Seilzugkräfte müssen ganzzahlig sein, aber in float-Form
-    IS['zul_SK'][0] = round(IS['zul_SK'][0], 0)
-    IS['min_SK'][0] = round(IS['min_SK'][0], 0)
-    return IS
-
 
 def main(progress, IS, projInfo):
+    """
     
-    IS = checkInputParams(IS)
+    :type progress: processingThread.ProcessingTask
+    :type IS: dict
+    :type projInfo: configHandler.ProjectConfHandler
+    """
+
     # STARTE BERECHNUNGEN
     # -------------------
     # resultStatus:
@@ -46,22 +39,20 @@ def main(progress, IS, projInfo):
     # Abtastrate des Längenprofils
     # wird verwendet um Abstand Lastwegkurve - Terrain genau zu bestimmen
     DeltaH = 1      # DEFAULT 1m Genauigkeit, nicht änderbar!
-    # Mindestdistanz zwischen Masten
-    DeltaL = IS["L_Delta"][0]       # int
-    coeff = int(DeltaL/DeltaH)
-    inputPoints = projInfo['Anfangspunkt'][:]
-    inputPoints += projInfo['Endpunkt'][:]
+    # Horiz. Auflösung mögl. Stützenstandorte
+    coeff = int(IS['L_Delta']/DeltaH)  # int
+    inputPoints = projInfo.points['A'] + projInfo.points['E']
 
     # Rasterdaten laden
-    rasterdata = generateDhm(projInfo['Hoehenmodell'], inputPoints)
+    rasterdata = generateDhm(projInfo.dhm, inputPoints)
     if progress.isCanceled():
-            return False
+        return False
     # Höhenprofil erstellen
     gp_old, zi_disp, diIdx = calcProfile(inputPoints, rasterdata, IS, DeltaH, coeff)
     if progress.isCanceled():
-            return False
+        return False
     # Mögliche Stützenpositionen finden
-    gp, StuetzenPos, peakLoc, diIdx, R_R = stuePos(IS, gp_old)
+    gp, StuetzenPos, peakLoc, diIdx, R_R = stuePos(IS, gp_old, projInfo)
     possStue = gp['di_s'][StuetzenPos==1]
     IS['R_R'] = [R_R]
 
@@ -69,15 +60,16 @@ def main(progress, IS, projInfo):
     IS['Ank'] = calcAnker(IS, inputPoints, rasterdata, gp)
 
     #Optimierungsprozedur
-    out = optimization(IS, gp, StuetzenPos, progress)
+    out = optimization(IS, gp, StuetzenPos, progress, projInfo.fixedPoles)
     if not out:
-        progress.exception = "Fehler in Optimierungsalgorithmus."
+        if not progress.isCanceled():
+            progress.exception = "Fehler in Optimierungsalgorithmus."
         return False
     progress.sig_text.emit("Berechnung der optimale Seillinie...")
     [HM, HMidx, optValue, optSTA, optiLen] = out
     stuetzIdx = np.int32(diIdx[HMidx])
     IS['Ank'] = updateAnker(IS['Ank'], HM, stuetzIdx)
-    IS['A_SK'][0] = optSTA[0]
+    IS['A_SK'] = optSTA[0]
 
     # Überprüfen ob Seil die gesamte Länge überspannt
     if int(HMidx[-1])+1 != gp['zi_s'].size:
@@ -95,13 +87,13 @@ def main(progress, IS, projInfo):
             return False
 
     # Informationen für die Darstellung der fixen Stützen
-    IS['HM_fix_marker'] = markFixStue(stuetzIdx, IS)
+    IS['HM_fix_marker'] = markFixStue(stuetzIdx, projInfo.fixedPoles)
 
     # Präzise Seilfelddaten
     # Seilfeld berechnen, b = Breite, h = Höhe
     b = gp['di_s'][HMidx[1:]] - gp['di_s'][HMidx[:-1]]
     h = gp['zi_s'][HMidx[1:]] * 0.1 + HM[1:] - gp['zi_s'][HMidx[:-1]] * 0.1 - HM[:-1]
-    seil, kraft, seil_possible = preciseCable(b, h, IS)
+    seil, kraft, seil_possible = preciseCable(b, h, IS, IS['Ank'])
     if not seil_possible:       # Falls Seil von Stütze abhebt
         resultStatus.append(2)
 
@@ -112,8 +104,8 @@ def main(progress, IS, projInfo):
                                         zi_disp, seil, stuetzIdx, HM, possStue)
 
     # IS.pop('Ank', None)
-    return [t_start, disp_data, seilDaten, gp, HM, IS, kraft,
-            optSTA, optiLen], max(resultStatus)
+    return max(resultStatus), [t_start, disp_data, seilDaten, gp, HM, IS, kraft,
+            optSTA, optiLen]
     # except:
     #     sys.exit()
 

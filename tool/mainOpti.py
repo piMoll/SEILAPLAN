@@ -18,11 +18,9 @@ import numpy as np
 from .geoExtract import ismember
 from .optiSTA import calcSTA
 import scipy.sparse as sps
-# from optiSolutionPath import findOptiSolution
 
 
-
-def optimization(IS, gp, StuetzenPos, progress):
+def optimization(IS, gp, StuetzenPos, progress, fixedPoles):
     """Berechnung der optimalen Anordnung der Stützen im Laengenprofil
 
     Diese Funktion berechnet aufgrund der zulässigen maximalen Seilzugkraft
@@ -56,14 +54,14 @@ def optimization(IS, gp, StuetzenPos, progress):
     di_n = gp['di_n']
     sc = gp['sc']
     befGSK = gp['befGSK']
-    min_HM = IS["HM_min"][0]                # int
-    max_HM = IS["HM_max"][0]                # int
-    min_HM_end = IS['HM_Ende_min'][0]       # int
-    max_HM_end =  IS['HM_Ende_max'][0]      # int
-    Abstufung_HM = IS["HM_Delta"][0]        # int
-    Min_Dist_Mast = IS["Min_Dist_Mast"][0]  # int
-    dfix = np.array(IS['HM_fix_d'])
-    hfix = np.array(IS['HM_fix_h'])
+    min_HM = IS["HM_min"]                # int
+    max_HM = IS["HM_max"]                # int
+    min_HM_end = IS['HM_Ende_min']       # int
+    max_HM_end = IS['HM_Ende_max']      # int
+    Abstufung_HM = IS["HM_Delta"]        # int
+    Min_Dist_Mast = int(IS["Min_Dist_Mast"])  # int
+    dfix = np.array(fixedPoles['HM_fix_d'])
+    hfix = np.array(fixedPoles['HM_fix_h'])
     sfix = dfix.size
     # treeSupp = gp['tree']
 
@@ -87,7 +85,7 @@ def optimization(IS, gp, StuetzenPos, progress):
 
      # HM = Höhe der Stütze des Knoten i
     HM = np.empty(arraySize)
-    HM[0] = IS["HM_Anfang"][0]
+    HM[0] = IS["HM_Anfang"]
     HM[1:-stufenAnzEnd] = np.tile(hStufung, posAnz-2)
     HM[-stufenAnzEnd:] = hStufungEnd
 
@@ -140,8 +138,6 @@ def optimization(IS, gp, StuetzenPos, progress):
         aa = aa[newIdx]
         ee = ee[newIdx]
         optiLen = aa.size     # Anzahl Optimierungsdurchläufe aktualisieren
-        a = Pos[aa]
-        e = Pos[ee]
         HeightA = HM[aa]
         HeightE = HM[ee]
     Pos_gp_A = Pos_gp[aa]
@@ -163,7 +159,7 @@ def optimization(IS, gp, StuetzenPos, progress):
 
     for i in range(optiLen):
         if progress.isCanceled():
-        #     # Überprüfen ob vom Benutzer ein Abbruch durchgeführt wurde
+            # Überprüfen ob vom Benutzer ein Abbruch durchgeführt wurde
             return False
         progress.sig_value.emit(i)
         zi_part = zi_n[Pos_gp_A[i]:Pos_gp_E[i]+1]
@@ -186,14 +182,14 @@ def optimization(IS, gp, StuetzenPos, progress):
     # [Loesung_HM, stueIdx,
     #     Value, OptSTA] = findOptiSolution(zi, di, HeightE, Pos, HM, MinSTA,
     #                                    MaxSTA, aa, ee, arraySize, IS)
-    natStuetze = IS['HM_nat'][0]
+    natStuetze = IS['HM_nat']
     kStuetz = HeightE > natStuetze
     KostStue = (HeightE + 100)**2 * (1 + (4*(kStuetz + 0)))
     indexMax = np.where(Pos==np.max(Pos))[0]
     emptyMatrix = np.zeros((arraySize+1, arraySize+1))      # Entspricht N+2
 
-    min_SK = int(IS['min_SK'][0])
-    zul_SK = int(IS['zul_SK'][0])
+    min_SK = int(IS['min_SK'])
+    zul_SK = int(IS['zul_SK'])
     mem = np.array([np.inf] * (zul_SK+1))
     memLength = np.zeros(zul_SK+1)
     min_path = ''

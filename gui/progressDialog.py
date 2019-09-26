@@ -27,7 +27,7 @@ from qgis.PyQt.QtWidgets import QDialog, QVBoxLayout, QProgressBar, QLabel, \
     QHBoxLayout, QDialogButtonBox, QSizePolicy, QPushButton, QSpacerItem, \
     QLayout
 
-
+# TODO: Texte anpassen
 textOK = (
     "Die Berechnungen wurden <b>erfolgreich</b> abgeschlossen! Die Ergebnisse "
     "sind in folgendem Ordner abgespeichert:")
@@ -43,18 +43,20 @@ textBad = (
     "Stützenstandorte bestimmt</b> werden. Es wurden keine Output-Daten "
     "erzeugt.")
 
+
 class ProgressDialog(QDialog):
     """ Progress dialog shows progress bar for algorithm.
     """
-    
+
     def __init__(self, iface):
         QDialog.__init__(self, iface.mainWindow())
-        
+        self.iface = iface
         self.workerThread = None
         self.state = False
-        self.outputLoc = None
         self.resultStatus = None
-        self.reRun = False
+        self.doReRun = False
+        self.wasCanceled = False
+        self.wasSuccessful = False
         self.savedProj = None
         self.result = None
         
@@ -98,10 +100,10 @@ class ProgressDialog(QDialog):
         
     def setThread(self, workerThread):
         self.workerThread = workerThread
-        self.connectProgressSignals()
+        self.connectThreadSignals()
     
-    def connectProgressSignals(self):
-        # Connet signals of thread
+    def connectThreadSignals(self):
+        # Connect signals of thread
         self.workerThread.sig_jobEnded.connect(self.jobEnded)
         self.workerThread.sig_jobError.connect(self.onError)
         self.workerThread.sig_value.connect(self.valueFromThread)
@@ -110,24 +112,36 @@ class ProgressDialog(QDialog):
         self.workerThread.sig_result.connect(self.resultFromThread)
         self.rerunButton.clicked.connect(self.onRerun)
         
+        # self.workerThread.progressChanged.connect(self.valueFromThread)
+        # self.workerThread.taskTerminated.connect(self.taskTerminated)
+        # self.workerThread.taskCompleted.connect(self.taskCompleted)
+    
+    # def taskCompleted(self):
+    #     self.jobEnded()
+    #
+    # def taskTerminated(self):
+    #     self.jobEnded()
+        
     def run(self):
         # Show modal dialog window (QGIS is still responsive)
         self.show()
         # start event loop
-        self.exec_()
+        self.exec()
     
     def jobEnded(self, success):
+        # self.resultStatus = self.workerThread.resultStatus
         self.setWindowTitle("SEILAPLAN")
         if success:
-            self.statusLabel.setText("Berechnungen abgeschlossen.")
-            self.progressBar.setValue(self.progressBar.maximum())
-            self.setFinalMessage()
+            # self.statusLabel.setText("Berechnungen abgeschlossen.")
+            # self.progressBar.setValue(self.progressBar.maximum())
+            # self.setFinalMessage()
+            self.wasSuccessful = True
+            self.close()
         
         else:  # If there was an abort by the user
             self.statusLabel.setText("Berechnungen abgebrochen.")
             self.progressBar.setValue(self.progressBar.minimum())
         self.finallyDo()
-        self.rerunButton.setVisible(True)
     
     def valueFromThread(self, value):
         self.progressBar.setValue(value)
@@ -142,26 +156,26 @@ class ProgressDialog(QDialog):
         self.statusLabel.setText(value)
     
     def resultFromThread(self, result):
-        [self.outputLoc, self.resultStatus, self.result] = result
+        self.resultStatus = result
     
     def setFinalMessage(self):
         self.resultLabel.clicked.connect(self.onResultClicked)
         self.resultLabel.blockSignals(True)
-        linkToFolder = ('<html><head/><body><p></p><p><a href='
-                        '"file:////{0}"><span style="text-decoration: '
-                        'underline; color:#0000ff;">{0}</span></a></p>'
-                        '</body></html>'.format(self.outputLoc))
+        # linkToFolder = ('<html><head/><body><p></p><p><a href='
+        #                 '"file:////{0}"><span style="text-decoration: '
+        #                 'underline; color:#0000ff;">{0}</span></a></p>'
+        #                 '</body></html>'.format(self.outputLoc))
         # Optimization successful
         if self.resultStatus == 1:
-            self.resultLabel.setText(textOK + linkToFolder)
+            self.resultLabel.setText(textOK)
             self.resultLabel.blockSignals(False)
         # Cable takes off of support
         elif self.resultStatus == 2:
-            self.resultLabel.setText(textSeil + linkToFolder)
+            self.resultLabel.setText(textSeil)
             self.resultLabel.blockSignals(False)
         # Optimization partially successful
         elif self.resultStatus == 3:
-            self.resultLabel.setText(textHalf + linkToFolder)
+            self.resultLabel.setText(textHalf)
             self.resultLabel.blockSignals(False)
         # Optimization not successful
         elif self.resultStatus == 4:
@@ -169,6 +183,7 @@ class ProgressDialog(QDialog):
         self.setLayout(self.container)
     
     def onResultClicked(self):
+        pass
         # Open a folder window
         if sys.platform == 'darwin':  # MAC
             subprocess.call(["open", "-R", self.outputLoc])
@@ -185,6 +200,8 @@ class ProgressDialog(QDialog):
         self.setWindowTitle("SEILAPLAN")
         self.statusLabel.setText("Laufender Prozess wird abgebrochen...")
         self.workerThread.cancel()  # Terminates process cleanly
+        # self.close()
+        self.wasCanceled = True
     
     def onError(self, exception_string):
         self.setWindowTitle("SEILAPLAN: Berechnung fehlgeschlagen")
@@ -194,10 +211,11 @@ class ProgressDialog(QDialog):
         self.finallyDo()
     
     def onRerun(self):
-        self.reRun = True
+        self.doReRun = True
         self.onClose()
     
     def finallyDo(self):
+        self.rerunButton.setVisible(True)
         self.cancelButton.hide()
         self.closeButton.show()
     
