@@ -1,0 +1,9 @@
+# PROJECT_FILE = '/home/pi/Seilaplan/TestcaseProfileGen.txt'
+# PROJECT_FILE = '/home/pi/Seilaplan/test/test_sihlwald_200m_steil_vonObenNachUnten.txt' # Funktioniert :)
+# PROJECT_FILE = '/home/pi/Seilaplan/test/test_sihlwald_350m_DeltaHM.txt'
+PROJECT_FILE = '/home/pi/Seilaplan/test/test_sihlwald_simpleRas_390m.txt'
+# PROJECT_FILE = '/home/pi/Seilaplan/test/test_wartau_620m_NO-NW.txt'
+# PROJECT_FILE = '/home/pi/Seilaplan/test/test_wartau_NO-SW_100m_3t.txt'
+# PROJECT_FILE = '/home/pi/Seilaplan/test/test_wartau_NO-SW_425m_fixSt_startHoch.txt'
+# PROJECT_FILE = '/home/pi/Seilaplan/test/test_wartau_NO-SW_450m_DeltaP.txt'      # Hier Fehler: HM alt : stütze bei 85m, neu stütze bei 75 m
+# PROJECT_FILE = '/home/pi/Seilaplan/test/test_wartau_SO-NW_460m_3t_fixSt.txt'
