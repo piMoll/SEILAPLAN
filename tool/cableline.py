@@ -14,7 +14,6 @@
 import numpy as np
 
 
-
 def calcBandH(zi, di, H_Anfangsmast, H_Endmast, z_null, z_ende, d_null, d_ende):
     # Definition der Seilfelder
     hilfh = [z_null, zi[0] * 0.1 + H_Anfangsmast,
@@ -52,11 +51,12 @@ def checkCable(zi, si, sc, befGSK, GravSK, R_R):
     if GravSK == 'nein':    # Kein Gravitationsbetrieb
         Cable_Possible = bodenabst
     else:                   # Gravitationsbetrieb
-        if R_R == -1:       #runter
+        if R_R == -1:       # runter
             Cable_Possible = bodenabst and (si[1] > si[0] or befGSK[0]==0)
         else:               # für Gravitationslift (rauf rücken)
             Cable_Possible = bodenabst and (si[-2] > si[-1] or befGSK[-1]==0)
     return Cable_Possible
+
 
 class vectorSum:
     """ Ersetzt Pythons numpy.sum, da es bei kurzen Arrays performanter ist,
@@ -65,12 +65,16 @@ class vectorSum:
     def __init__(self, sizeB):
         self.sizeB = sizeB
         self.functionToCall = 'calcSum{}'.format(sizeB)
+        
     def calcSum1(self, vector):
         return vector
+    
     def calcSum2(self, vector):
         return vector[0] + vector[1]
+    
     def calcSum3(self, vector):
         return vector[0] + vector[1] + vector[2]
+
 
 def calcCable(IS, zi, di, sc, befGSK, z_null, STA, b, h, feld):
     """ Berechnung der Seillinie basierend auf der Methode von Zweifel
@@ -123,7 +127,7 @@ def calcCable(IS, zi, di, sc, befGSK, z_null, STA, b, h, feld):
     qT = IS["qT"]      # [kN/m]
     F = IS["A"]        # [mm^2]
     E = IS["E"]        # [kN/mm^2]
-    #beta = IS["beta"]     # [1/°C] Ausdehnungskoeffizient von Stahl
+    # beta = IS["beta"]     # [1/°C] Ausdehnungskoeffizient von Stahl
     Federkonstante = IS["Federkonstante"]  # [kN/m] Anker
     qz1 = IS["qz1"]     # [kN/m] Zugseilgewicht links
     qz2 = IS["qz2"]     # [kN/m] Zugseilgewicht rechts
@@ -131,7 +135,7 @@ def calcCable(IS, zi, di, sc, befGSK, z_null, STA, b, h, feld):
     zul_SK = IS["zul_SK"]  # [kN] zulaessige Seilkraft!
     ZulSK_erfuellt = True
     # Ankerseillaenge
-    Laenge_Ankerseil = IS['Ank'][1]
+    Laenge_Ankerseil = IS['Ank']['len']
     Cable_Possible = True
 
     sizeB = b.size
@@ -189,11 +193,11 @@ def calcCable(IS, zi, di, sc, befGSK, z_null, STA, b, h, feld):
         basis = 2.0       # Hilfsgrösse für die Iteration
         genauig = basis**-gen
         expon = -5.0        # -5 ist Standard
-        d_ST = 0.0	        # Änderung der Zugkraft
-        d_Laenge = 1.0	    # Startgrösse
-        change_dir = False	# Hilfsgrösse für die Iteration
-        za = 0.0	        # Hilfsgrösse für die Iteration
-        d_ST_alt = 0.0	    # Startgrösse
+        d_ST = 0.0          # Änderung der Zugkraft
+        d_Laenge = 1.0      # Startgrösse
+        change_dir = False  # Hilfsgrösse für die Iteration
+        za = 0.0            # Hilfsgrösse für die Iteration
+        d_ST_alt = 0.0      # Startgrösse
         # Diese Prüfung führt in wenigen Einzelfällen zu anderen Resultaten
         # als das Matlab-Programm weil die Berechnung von d_Laenge nach
         # einigen Iterationen zu Abweichungen im Submilimeter-Bereich führen
@@ -201,7 +205,7 @@ def calcCable(IS, zi, di, sc, befGSK, z_null, STA, b, h, feld):
             STfm_neu = STfm + d_ST
             ym = c_feld / (4 * STfm_neu[feld]) * (Q + c_feld * qT/2)    # 8a
             # Funktion mit Berücksichtigung des Zugseilgewichtes:
-            #ym = c / (4 * STfm_neu) * (Q + c * q_strich/2) #(8)
+            # ym = c / (4 * STfm_neu) * (Q + c * q_strich/2) #(8)
             d_c = 2 * bquad_feld / c_feld**3 * ym**2   # 10a
             # 11a Leerseil
             delta_s = (bquad * c * qT**2) / (24 * STfm_neu**2)
@@ -214,9 +218,9 @@ def calcCable(IS, zi, di, sc, befGSK, z_null, STA, b, h, feld):
             UeberLaenge_Vollseil = d_c + delta_s_sum
 
             d_Laenge = UeberLaenge_Vollseil - UeberLaenge_Leerseil \
-                            - d_ST/(F*E) * Laenge_Leerseil \
-                            - d_ST/(F*E) * Laenge_Ankerseil \
-                            - d_ST/Federkonstante
+                       - d_ST/(F*E) * Laenge_Leerseil \
+                       - d_ST/(F*E) * Laenge_Ankerseil \
+                       - d_ST/Federkonstante
             d_ST_out = d_ST
 
             # Abfangen von falschen Berechnungen
@@ -252,7 +256,7 @@ def calcCable(IS, zi, di, sc, befGSK, z_null, STA, b, h, feld):
             STfm_Last = STfm_feld + d_ST_out
 
             # Durchbiegung in Feldmitte unter Last [m]
-            ym = c_feld /(4 * STfm_Last) * (Q + c_feld * q_strich/2)        # 8
+            ym = c_feld / (4 * STfm_Last) * (Q + c_feld * q_strich/2)        # 8
             # Horizontalkräfte an den Stützen (Leerseilverhältnisse) [kN]
             Hs = b_feld / c_feld * STfm_feld
             bi = di - di[0]
@@ -272,7 +276,7 @@ def calcCable(IS, zi, di, sc, befGSK, z_null, STA, b, h, feld):
             ym_z = ym       # Ausgabegrösse: dient zur Kontrolle
             si = 10 * (x_coord_last_zweifel + z_null)
             Cable_Possible = checkCable(zi, si, sc, befGSK, IS['GravSK'],
-                                        IS['R_R'][0])
+                                        IS['R_R'])
             # add_values = [ym, HT, Hs, Hm, STfm_Last]
 
-    return Cable_Possible, ZulSK_erfuellt, ym_z #,  si , add_values
+    return Cable_Possible, ZulSK_erfuellt, ym_z # ,  si , add_values

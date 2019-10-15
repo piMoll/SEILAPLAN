@@ -21,22 +21,20 @@
 import pickle
 import os
 import numpy as np
-from math import floor, sin, cos, radians
-
-from .adjustmentPlot import AdjustmentPlot
-from .guiHelperFunctions import MyNavigationToolbar
+from math import floor
 
 from qgis.PyQt.QtCore import QSize, QTimer
 from qgis.PyQt.QtWidgets import QDialog, QSizePolicy
+from qgis.PyQt.QtGui import QPixmap
 
 from .ui_adjustmentDialog import Ui_AdjustmenDialog
+from .adjustmentPlot import AdjustmentPlot
+from .guiHelperFunctions import MyNavigationToolbar
 from .adjustmentDialog_poles import AdjustmentDialogPoles
 from .adjustmentDialog_params import AdjustmentDialogParams
 from .adjustmentDialog_thresholds import AdjustmentDialogThresholds
 from .saveDialog import DialogOutputOptions
-
 from ..tool.cablelineFinal import preciseCable
-from ..tool.geoExtract import updateAnker
 
 
 class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
@@ -46,12 +44,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
     position, height, angle and the properties of the cable line. The cable
     line is then recalculated and the new layout is shown in a plot.
     """
-    INIT_POLE_HEIGHT = 10
-    INIT_POLE_ANGLE = 0
-    HORIZONTAL_BUFFER = 10
-    POLE_DIST_STEP = 1
-    POLE_HEIGHT_STEP = 0.1
-    
+
     def __init__(self, interface, confHandler):
         """
         :type confHandler: configHandler.ConfigHandler
@@ -64,17 +57,17 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         # Management of Parameters and settings
         self.confHandler = confHandler
         self.confHandler.setDialog(self)
+        self.profile = self.confHandler.project.profile
+        self.poles = self.confHandler.project.poles
+        # Max distance the anchors can move away from initial position
+        self.anchorBuffer = self.confHandler.project.dhm.rasterBuffer
 
         # Load data
         self.originalData = {}
-        self.poles = []
-        self.xdata = []
-        self.terrain = []
-        self.cableLine = {}
-        self.anchor = []
-        self.cableParams = {}
-        self.gp = {}
-        self.terrainSpacing = 0
+        self.result = {}
+        self.cableline = {}
+        self.thSize = [5, 5]
+        self.thData = {}
         self.doReRun = False
 
         # Setup GUI from UI-file
@@ -92,7 +85,6 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         
         # Pan/Zoom tools for diagram
         bar = MyNavigationToolbar(self.plot, self)
-        
         self.plotLayout.addWidget(self.plot)
         self.plotLayout.addWidget(bar)
 
@@ -112,57 +104,44 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         self.btnCancel.clicked.connect(self.Reject)
         self.btnSave.clicked.connect(self.save)
         self.btnBackToStart.clicked.connect(self.goBackToStart)
+        self.updateRecalcStatus('ready')
 
-    def loadData(self):
+    def loadData(self, pickleFile):
         # Test data
-        storeDump = 'plotData_ergebnisfenster_20190911'
-        homePath = '/home/pi/Projects/seilaplan/pickle_dumps'
-        storefile = os.path.join(homePath, '{}.pckl'.format(storeDump))
-        f = open(storefile, 'rb')
+        f = open(pickleFile, 'rb')
         dump = pickle.load(f)
         f.close()
+
+        self.poles.poles = dump['poles']
+        self.poles.calculateAnchor()
+
         self.initData(dump)
         
     def initData(self, result):
         if not result:
             self.close()
-        [disp_data, gp, HM, IS, cableline] = result
-        self.xdata = disp_data[0]
-        self.terrain = disp_data[1]
-        self.gp = gp
-        self.terrainSpacing = int(abs(disp_data[0][0]))
-        self.cableParams = IS
-        self.anchor = IS['Ank']
-        self.cableLine = {
-            'xaxis': cableline['l_coord'],
-            'empty': cableline['z_Leer'],
-            'load': cableline['z_Zweifel']
-        }
-        # TODO Anchor data
 
-        poleDist = [IS['Ank'][3][1][0]] + list(HM['idx']) + [
-            IS['Ank'][3][1][3]]
-        poleHeight = [False] + list(HM['h']) + [False]
-
-        for idx in range(len(poleDist)):
-            angle = self.INIT_POLE_ANGLE
-            if idx == 0 or idx == len(poleDist) - 1:
-                angle = False
-            self.poles.append({
-                'x': poleDist[idx],
-                'y': self.getTerrainAtDist(poleDist[idx]),
-                'h': poleHeight[idx],
-                'angle': angle,
-                'xtop': poleDist[idx],
-                'ytop': self.getTerrainAtDist(poleDist[idx]) + poleHeight[idx],
-            })
+        # Save original data from optimization
+        self.originalData = result
+        
+        self.result = result
+        # Structure:
+        # cableline
+        # optSTA
+        # force
+        # optLen
+        # duration
+        self.result['optSTA_arr'] = self.result['optSTA']
+        self.result['optSTA'] = self.result['optSTA_arr'][0]
+        self.cableline = self.result['cableline']
+        self.profile.updateProfileAnalysis(self.cableline, self.poles.poles)
 
         # Draw profile in diagram
-        self.plot.initData(self.xdata, self.terrain)
-        self.plot.updatePlot(self.poleDataToArray(False), self.cableLine)
+        self.plot.initData(self.profile.di_disp, self.profile.zi_disp)
+        self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
     
         # Create layout to modify poles
-        self.poleLayout.addPolesToGui(self.poles)
+        self.poleLayout.addPolesToGui(self.poles.poles)
 
         # Fill in cable parameters
         self.paramLayout.fillInParams()
@@ -170,98 +149,110 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         # Start Thread to recalculate cable line every 300 milliseconds
         self.timer.timeout.connect(self.recalculate)
         self.timer.start(300)
-        
-    def getTerrainAtDist(self, pos):
-        # TODO: Was machen wenn Terrain genauer als 1m aufgenommen werden soll?
-        return self.terrain[int(np.argmax(self.xdata>=pos))]
     
     def zoomToPole(self, idx):
-        self.plot.zoomTo(self.poles[idx])
-        self.plot.updatePlot(self.poleDataToArray(False), self.cableLine)
+        self.plot.zoomTo(self.poles.poles[idx])
+        self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
     
     def zoomOut(self):
         self.plot.zoomOut()
-        self.plot.updatePlot(self.poleDataToArray(False), self.cableLine)
+        self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
 
-    def updatePole(self, idx, fieldType, newVal):
-        self.poles[idx][fieldType] = newVal
-        if fieldType != 'name':
-            self.poles[idx]['y'] = self.getTerrainAtDist(self.poles[idx]['x'])
-            self.calculateTopPoint(idx)
-        
-        self.plot.zoomTo(self.poles[idx])
-        self.plot.updatePlot(self.poleDataToArray(False), self.cableLine)
+    def updatePole(self, idx, property_name, newVal):
+        self.poles.update(idx, property_name, newVal)
+        self.plot.zoomTo(self.poles.poles[idx])
+        self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         self.configurationHasChanged = True
     
     def addPole(self, idx):
         newPoleIdx = idx + 1
         oldLeftIdx = idx
         oldRightIdx = idx + 1
-        lowerRange = self.poles[oldLeftIdx]['x'] + self.POLE_DIST_STEP
-        upperRange = self.poles[oldRightIdx]['x'] - self.POLE_DIST_STEP
+        lowerRange = self.poles.poles[oldLeftIdx]['d'] + self.poles.POLE_DIST_STEP
+        upperRange = self.poles.poles[oldRightIdx]['d'] - self.poles.POLE_DIST_STEP
         rangeDist = upperRange - lowerRange
-        x = floor(lowerRange + 0.5 * rangeDist)
-        y = self.getTerrainAtDist(x)
+        d = floor(lowerRange + 0.5 * rangeDist)
         
-        self.poles.insert(newPoleIdx, {
-            'x': x,
-            'y': y,
-            'h': self.INIT_POLE_HEIGHT,
-            'angle': self.INIT_POLE_ANGLE
-        })
-        self.calculateTopPoint(newPoleIdx)
+        self.poles.add(newPoleIdx, d)
         
         self.plot.zoomOut()
-        self.plot.updatePlot(self.poleDataToArray(False), self.cableLine)
+        self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         self.configurationHasChanged = True
         
-        return newPoleIdx, x, lowerRange, upperRange, \
-               self.INIT_POLE_HEIGHT, self.INIT_POLE_ANGLE
+        return newPoleIdx, self.poles.poles[newPoleIdx]['name'], d, \
+               lowerRange, upperRange, self.poles.poles[newPoleIdx]['h'], \
+               self.poles.poles[newPoleIdx]['angle']
 
     def deletePole(self, idx):
-        self.poles.pop(idx)
+        self.poles.delete(idx)
         self.plot.zoomOut()
-        self.plot.updatePlot(self.poleDataToArray(False), self.cableLine)
+        self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         self.configurationHasChanged = True
     
     def updateCableParam(self):
         self.configurationHasChanged = True
     
+    def updateRecalcStatus(self, status):
+        ico_path = os.path.join(__file__, 'icons')
+        # if self.recalcStatus_ico.isHidden():
+        #     self.recalcStatus_ico.show()
+        #     self.recalcStatus_txt.show()
+        # if status == 'start':
+        #     self.recalcStatus_txt.setText('Neuberechnung...')
+        #     self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
+        #         ico_path, 'icon_reload.png')))
+        if status == 'ready':
+            self.recalcStatus_ico.show()
+            self.recalcStatus_txt.show()
+            self.recalcStatus_txt.setText('Optimierung erfolgreich abgeschlossen.')
+            self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
+                ico_path, 'icon_green.png')))
+        if status == 'success':
+            self.recalcStatus_ico.show()
+            self.recalcStatus_txt.show()
+            self.recalcStatus_txt.setText('Seillinie neu berechnet')
+            self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
+                ico_path, 'icon_green.png')))
+        elif status == 'error':
+            self.recalcStatus_ico.show()
+            self.recalcStatus_txt.show()
+            self.recalcStatus_txt.setText('Es ist ein Fehler aufgetreten')
+            self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
+                ico_path, 'icon_yellow.png')))
+    
     def recalculate(self):
         if not self.configurationHasChanged or self.isRecalculating:
             return
         self.isRecalculating = True
-        [pole_x, pole_y, pole_h, pole_xtop, pole_ytop] = self.poleDataToArray(False)
-
-        pole_x = np.array(pole_x)
-        pole_y = np.array(pole_y)
-        pole_h = np.array(pole_h)
-        pole_xtop = np.array(pole_xtop)
-        pole_ytop = np.array(pole_ytop)
-        
-        b = pole_xtop[1:] - pole_xtop[:-1]
-        h = pole_ytop[1:] - pole_ytop[:-1]
         
         try:
-            # TODO anchor data will change when start and end point are changed
-            seil, kraft, seil_possible = preciseCable(b, h, self.cableParams, self.anchor)
-        except Exception:
+            params = self.confHandler.params.getSimpleParameterDict()
+            cableline, kraft, seil_possible = preciseCable(params,
+                                                           self.poles,
+                                                           self.result['optSTA'])
+        except Exception as e:
             # TODO: Index Errors for certain angles still there
+            self.updateRecalcStatus('error')
             self.isRecalculating = False
+            self.configurationHasChanged = False
+            # TODO: Message
             return
-        
-        self.cableLine = {
-            'xaxis': seil[2] + pole_x[0],   # X-data starts at first pole
-            'empty': seil[0] + pole_ytop[0],  # Y-data is calculated relative
-            'load': seil[1] + pole_ytop[0]
-        }
-        # TODO: Recaluclate anchor data
-        # pole_anchor = 0
-        # anchorCable = updateAnker(pole_anchor, pole_h, pole_x)
-        
-        self.plot.updatePlot([pole_x, pole_y, pole_h, pole_xtop, pole_ytop], self.cableLine)
 
-        # Deactivate button
+        self.cableline = cableline
+        self.result['force'] = kraft
+        
+        # Ground clearance
+        self.profile.updateProfileAnalysis(self.cableline, self.poles.poles)
+        
+        # Update Plot
+        [pole_d, pole_z, pole_h, pole_dtop, pole_ztop] = self.poles.getAsArray()
+        self.plot.updatePlot([pole_d, pole_z, pole_h, pole_dtop, pole_ztop],
+                             self.cableline)
+        
+        # Update Threshold data
+        self.updateThresholds()
+        
+        self.updateRecalcStatus('success')
         self.configurationHasChanged = False
         self.isRecalculating = False
     
@@ -298,9 +289,11 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         self.Reject()
     
     def save(self):
+        self.saveDialog.doSave = False
         self.saveDialog.exec()
-        self.confHandler.updateUserSettings()
-        self.createOutput()
+        if self.saveDialog.doSave:
+            self.confHandler.updateUserSettings()
+            self.createOutput()
     
     def createOutput(self):
         pass

@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>SEILAPLAN - Seilkran-Layoutplaner</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_app.png</normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_app.png</iconset>
+  </property>
   <layout class="QGridLayout" name="gridLayout_4">
    <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox_2">
@@ -436,7 +440,7 @@
         <item row="4" column="1">
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Schrägdistanz</string>
+           <string>Horizontaldistanz</string>
           </property>
          </widget>
         </item>

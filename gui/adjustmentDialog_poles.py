@@ -30,10 +30,17 @@ class AdjustmentDialogPoles(object):
     """
     
     def __init__(self, dialog):
+        """
+        :type dialog: gui.adjustmentDialog.AdjustmentDialog
+        """
         self.dialog = dialog
         self.poleRows = []
     
     def addPolesToGui(self, poleData):
+        """
+
+        :type poleData: list
+        """
         initCount = len(poleData)
         self.dialog.poleVGrid.setAlignment(Qt.AlignTop)
 
@@ -43,22 +50,17 @@ class AdjustmentDialogPoles(object):
             
             # Distance input field: ranges are defined by neighbouring poles
             if idx > 0:
-                lowerRange = poleData[idx - 1]['x'] \
-                             + self.dialog.POLE_DIST_STEP
+                lowerRange = poleData[idx - 1]['d'] \
+                             + self.dialog.poles.POLE_DIST_STEP
             else:
-                lowerRange = self.dialog.HORIZONTAL_BUFFER * -1
+                lowerRange = self.dialog.anchorBuffer * -1
             
             if idx < initCount - 1:
-                upperRange = poleData[idx + 1]['x'] \
-                             - self.dialog.POLE_DIST_STEP
+                upperRange = poleData[idx + 1]['d'] \
+                             - self.dialog.poles.POLE_DIST_STEP
             else:
-                upperRange = poleData[idx]['x'] \
-                             + self.dialog.HORIZONTAL_BUFFER
-                
-            # Pole type
-            poleType = 'pole'
-            if idx == 0 or idx == initCount - 1:
-                poleType = 'anchor'
+                upperRange = poleData[idx]['d'] \
+                             + self.dialog.anchorBuffer
                 
             # Delete button: anchor and first and last pole cannot be deleted
             if 1 < idx < initCount - 2:
@@ -69,8 +71,10 @@ class AdjustmentDialogPoles(object):
 
             # Create layout
             self.poleRows.append(
-                PoleRow(self, self.dialog, idx, poleType,
-                        poleData[idx]['x'],
+                PoleRow(self, self.dialog, idx,
+                        poleData[idx]['name'],
+                        poleData[idx]['poleType'],
+                        poleData[idx]['d'],
                         [lowerRange, upperRange],
                         poleData[idx]['h'],
                         poleData[idx]['angle'], delBtn, addBtn))
@@ -80,17 +84,17 @@ class AdjustmentDialogPoles(object):
         self.dialog.updatePole(idx, fieldType, newVal)
         
         # Adjust distance ranges of neighbours
-        if fieldType == 'x':
+        if fieldType == 'd':
             if idx > 0:
                 self.poleRows[idx - 1].updateUpperDistRange(
-                    newVal - self.dialog.POLE_DIST_STEP)
+                    newVal - self.dialog.poles.POLE_DIST_STEP)
             if idx < PoleRow.poleCount - 1:
                 self.poleRows[idx + 1].updateLowerDistRange(
-                    newVal + self.dialog.POLE_DIST_STEP)
+                    newVal + self.dialog.poles.POLE_DIST_STEP)
     
     def onRowAdd(self, idx=False):
         # Update data in dialog
-        newPoleIdx, dist, \
+        newPoleIdx, name, dist, \
         lowerRange, upperRange, height, angle = self.dialog.addPole(idx)
         
         # Change index of right side neighbours
@@ -98,8 +102,8 @@ class AdjustmentDialogPoles(object):
             pole.index += 1
         
         # Add pole row layout
-        newRow = PoleRow(self, self.dialog, newPoleIdx, 'pole', dist,
-                          [lowerRange, upperRange], height, angle, True, True)
+        newRow = PoleRow(self, self.dialog, newPoleIdx, name, 'pole', dist,
+                         [lowerRange, upperRange], height, angle, True, True)
         self.poleRows.insert(newPoleIdx, newRow)
     
     def onRowDel(self, idx=False):
@@ -115,9 +119,6 @@ class AdjustmentDialogPoles(object):
             pole.index -= 1
 
 
-
-
-
 class PoleRow(object):
     """
     Creates all input fields necessary to change the properties of a pole in
@@ -128,14 +129,14 @@ class PoleRow(object):
     ICON_DEL_ROW = ":/plugins/SeilaplanPlugin/gui/icons/icon_bin.png"
     poleCount = 0
     
-    def __init__(self, tab, dialog, idx, rowType, dist, distRange,
+    def __init__(self, tab, dialog, idx, name, rowType, dist, distRange,
                  height=False, angle=False, delBtn=False, addBtn=False):
         self.tab = tab
         self.dialog = dialog
         self.index = idx
-        self.rowRype = rowType
+        self.rowType = rowType
         PoleRow.poleCount += 1
-        
+
         self.row = QHBoxLayout()
         self.row.setAlignment(Qt.AlignLeft)
         
@@ -145,19 +146,15 @@ class PoleRow(object):
         self.fieldAngle = None
         self.addBtn = None
         self.delBtn = None
-        
-        if self.rowRype == 'anchor':
-            name = 'Verankerung'
-        else:
-            name = f'{self.index}. Stütze'
 
         self.addRowToLayout()
         self.addBtnPlus(addBtn)
         self.addFieldName(name)
         self.addFieldDist(dist, distRange)
-        self.addFieldHeight(height)
-        self.addFieldAngle(angle)
-        self.addBtnDel(delBtn)
+        if self.rowType == 'pole':
+            self.addFieldHeight(height)
+            self.addFieldAngle(angle)
+            self.addBtnDel(delBtn)
 
     def addRowToLayout(self):
         if self.index == PoleRow.poleCount:
@@ -185,7 +182,7 @@ class PoleRow(object):
         self.fieldDist = QDoubleSpinBoxWithFocus(self.dialog.tabPoles)
         self.fieldDist.setFocusPolicy(Qt.ClickFocus)
         self.fieldDist.setDecimals(1)
-        self.fieldDist.setSingleStep(self.dialog.POLE_DIST_STEP)
+        self.fieldDist.setSingleStep(self.dialog.poles.POLE_DIST_STEP)
         self.fieldDist.setSuffix(" m")
         self.fieldDist.setFixedWidth(95)
         self.fieldDist.setRange(float(distRange[0]), float(distRange[1]))
@@ -197,7 +194,7 @@ class PoleRow(object):
             lambda x: self.dialog.zoomToPole(self.index))
         self.fieldDist.outFocus.connect(self.dialog.zoomOut)
         self.fieldDist.valueChanged.connect(
-            lambda newVal: self.tab.onRowChange(newVal, self.index, 'x'))
+            lambda newVal: self.tab.onRowChange(newVal, self.index, 'd'))
     
     def addFieldHeight(self, value):
         if value is False:
@@ -205,7 +202,7 @@ class PoleRow(object):
         self.fieldHeight = QDoubleSpinBoxWithFocus(self.dialog.tabPoles)
         self.fieldHeight.setFocusPolicy(Qt.ClickFocus)
         self.fieldHeight.setDecimals(1)
-        self.fieldHeight.setSingleStep(self.dialog.POLE_HEIGHT_STEP)
+        self.fieldHeight.setSingleStep(self.dialog.poles.POLE_HEIGHT_STEP)
         self.fieldHeight.setSuffix(" m")
         self.fieldHeight.setFixedWidth(85)
         self.fieldHeight.setRange(0.0, 50.0)

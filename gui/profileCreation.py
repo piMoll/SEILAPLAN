@@ -36,9 +36,9 @@ class Profile(object):
         self.pointA = QgsPointXY(*tuple(coordsA))
         self.pointE = QgsPointXY(*tuple(coordsE))
         self.length = projectHandler.getProfileLen()
-        self.res = projectHandler.dhm['cellsize']
+        self.res = projectHandler.dhm.cellsize
         self.azimut = projectHandler.getAzimut()
-        self.rasterlyr = projectHandler.dhm['layer'].dataProvider()
+        self.rasterlyr = projectHandler.dhm.layer.dataProvider()
         
         self.profile = []
         self.xaxis = None

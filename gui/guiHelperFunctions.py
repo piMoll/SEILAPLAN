@@ -30,14 +30,6 @@ from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT \
     as NavigationToolbar
 
 
-class Raster(object):
-    def __init__(self, ide, name, grid):
-        self.id = ide
-        self.name = name
-        self.grid = grid
-        self.selected = False
-
-
 class DialogWithImage(QDialog):
     def __init__(self, interface):
         QDialog.__init__(self, interface.mainWindow())
@@ -71,8 +63,8 @@ class MyNavigationToolbar(NavigationToolbar):
 
 
 def createContours(canvas, dhm):
-    contourLyr = dhm['contour']
-    contourName = "Hoehenlinien_" + dhm['name']
+    contourLyr = dhm.contour
+    contourName = "Hoehenlinien_" + dhm.name
     
     # Get current CRS of qgis project
     s = QSettings()
@@ -80,10 +72,10 @@ def createContours(canvas, dhm):
     crs = canvas.mapSettings().destinationCrs()
     crsEPSG = crs.authid()
     # If project and raster CRS are equal and set correctly
-    if crsEPSG == dhm['spatialRef'] and "USER" not in crsEPSG:
+    if crsEPSG == dhm.spatialRef and "USER" not in crsEPSG:
         s.setValue("/Projections/defaultBehaviour", "useProject")
     else:
-        crs = dhm['layer'].crs()
+        crs = dhm.layer.crs()
     
     # If contours exist, remove them
     if contourLyr:
@@ -93,12 +85,12 @@ def createContours(canvas, dhm):
     # If no contours exist, create them
     else:
         # TODO: IN MEMORY LAYER
-        outputPath = os.path.join(os.path.dirname(dhm['path']), contourName + '.shp')
+        outputPath = os.path.join(os.path.dirname(dhm.path), contourName + '.shp')
         if os.path.exists(outputPath):
             contourLyr = QgsVectorLayer(outputPath, contourName, "ogr")
         else:
             processingParams = {
-                'INPUT': dhm['layer'],
+                'INPUT': dhm.layer,
                 'BAND': 1,
                 'INTERVAL': 20,
                 'FIELD_NAME': "Hoehe",

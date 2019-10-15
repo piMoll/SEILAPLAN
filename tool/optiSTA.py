@@ -50,7 +50,7 @@ def calcSTA(IS, zi, di, sc, befGSK, H_Anfangsmast, H_Endmast, z_null,
     Speicher = []
     STA = zul_SK
     [b, h, feld] = calcBandH(zi, di, H_Anfangsmast, H_Endmast, z_null,
-                                    z_ende, d_null, d_ende)
+                             z_ende, d_null, d_ende)
 
     out = calcCable(IS, zi, di, sc, befGSK, z_null, STA, b, h, feld)
     Cable_Possible, Seilkraft = out[0], out[1]

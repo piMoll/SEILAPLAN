@@ -153,12 +153,16 @@ class ProfileDialog(QDialog):
         # Save data of intermediate support
         self.addStueToDict(order, pointX, pointY, pointH, guiPos, guiH,
                            drawnPoint)
+    
+    def setNoPoleSections(self, sections):
+        self.sc.noStue = sections
+        # TODO: in Plot zeichnen
 
     def initMenu(self):
         spacerItem1 = QSpacerItem(40, 20, QSizePolicy.Expanding,
-                                        QSizePolicy.Minimum)
+                                  QSizePolicy.Minimum)
         spacerItem2 = QSpacerItem(20, 40, QSizePolicy.Minimum,
-                                        QSizePolicy.Expanding)
+                                  QSizePolicy.Expanding)
         line = QFrame()
         line.setFrameShape(QFrame.HLine)
         line.setFrameShadow(QFrame.Sunken)

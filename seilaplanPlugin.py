@@ -175,7 +175,7 @@ class SeilaplanPlugin(object):
         """Run method that performs all the real work"""
         
         # Configuration handler
-        conf = ConfigHandler(self.iface)
+        conf = ConfigHandler()
 
         # Initialize dialog window
         self.dlg = SeilaplanPluginDialog(self.iface, conf)
@@ -189,6 +189,7 @@ class SeilaplanPlugin(object):
             reRun = False
             if not firstRun:
                 self.dlg.setupContent()
+            firstRun = False
             
             # Start event loop
             self.dlg.show()
@@ -228,6 +229,7 @@ class SeilaplanPlugin(object):
                 # Show adjustment window to modify calculated cable line
                 self.adjustmentWindow = AdjustmentDialog(self.iface, conf)
                 self.adjustmentWindow.initData(workerThread.getResult())
+                self.adjustmentWindow.show()
                 self.adjustmentWindow.exec()
                 
                 if self.adjustmentWindow.doReRun:
@@ -236,8 +238,6 @@ class SeilaplanPlugin(object):
                 del workerThread
                 del self.progressDialog
                 del self.adjustmentWindow
-
-            firstRun = False
 
         self.dlg.cleanUp()
         del self.dlg

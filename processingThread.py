@@ -25,6 +25,7 @@ from qgis.PyQt.QtCore import pyqtSignal
 
 # Import Tool Scripts
 from .tool.mainSeilaplan import main
+from .tool.outputReport import getTimestamp
 
 
 class ProcessingTask(QgsTask):
@@ -64,9 +65,8 @@ class ProcessingTask(QgsTask):
         # except ImportError:
         #     pass
 
-    
-        p = self.confHandler.params.getTruncatedParameters()
-        output = main(self, p, self.projInfo)
+        self.confHandler.prepareForCalculation()
+        output = main(self, self.projInfo)
         
         if not output:  # If error in code
             return False
@@ -79,26 +79,37 @@ class ProcessingTask(QgsTask):
         #   3 = Optimization partially successful
         
         # Unpack results
-        [t_start, disp_data, seilDaten, gp, HM,
-         IS, kraft, optSTA, optiLen] = result
+        [t_start, cableline, kraft, optSTA, optiLen] = result
         
         self.sig_value.emit(optiLen * 1.01)
 
+
+        # Calculate duration and generate time stamp
+        duration, timestamp1, timestamp2 = getTimestamp(t_start)
         self.resultStatus = resultStatus
-        self.result = [
-            disp_data,
-            gp,
-            HM,
-            IS,
-            seilDaten
-        ]
+        self.result = {
+            'cableline': cableline,
+            'optSTA': optSTA,
+            'force': kraft,
+            'optLen': optiLen,
+            'duration': [duration, timestamp1, timestamp2]
+        }
 
         # import pickle
-        # storeDump = 'plotData_ergebnisfenster_20190911'
+        # import os
+        # storeDump = 'project_to_pickl_20191009'
         # homePath = '/home/pi/Projects/seilaplan/pickle_dumps'
         # storefile = os.path.join(homePath, '{}.pckl'.format(storeDump))
         # f = open(storefile, 'wb')
-        # pickle.dump(allData, f)
+        # poles = self.projInfo.poles.poles
+        # pickle.dump({
+        #     'cableline': cableline,
+        #     'optSTA': optSTA,
+        #     'force': kraft,
+        #     'optLen': optiLen,
+        #     'poles': poles,
+        #     'duration': [duration, timestamp1, timestamp2]
+        # }, f)
         # f.close()
         
         # self.sig_result.emit(resultStatus)
@@ -114,7 +125,6 @@ class ProcessingTask(QgsTask):
         This function is automatically called when the task has completed (
         successfully or otherwise).
         """
-
         if self.exception:
             self.sig_jobError.emit(self.exception)
 

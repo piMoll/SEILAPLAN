@@ -78,23 +78,34 @@ def getTimestamp(tStart):
     return tdFormated, tsFormated1, tsFormated2
 
 
-def plotData(disp_data, di, seilDaten, HM, IS, projInfo, resultStatus, locPlot):
+def plotData(profile, cableline, poles, IS, projInfo, locPlot):
     # import matplotlib
     # matplotlib.use('Cairo')
+
+    # import pickle
+    # storeDump = 'plotData_ergebnisfenster_20190816_L-24m'
+    # homePath = '/home/pi/Projects/seilaplan/pickle_dumps'
+    # storefile = os.path.join(homePath, '{}.pckl'.format(storeDump))
+    # projInfo['Hoehenmodell'].pop('layer')
+    # f = open(storefile, 'wb')
+    # pickle.dump([disp_data, di, seilDaten, HM, IS, projInfo, resultStatus, locPlot], f)
+    # f.close()
+
+    
     from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
     from matplotlib.figure import Figure
     import matplotlib.patheffects as PathEffects
     from matplotlib.font_manager import FontProperties
 
-    x_data = disp_data[0]
-    y_data = disp_data[1]
-    seillinieLeer = seilDaten['z_Leer']
-    seillinieZweifel = seilDaten['z_Zweifel']
-    seil_di = seilDaten['l_coord']
-    di = np.int32(di)
-    hoeheStue = HM['h']
-    zStue = HM['z']
-    idxStue = HM['idx']
+    x_data = profile.xi_disp
+    y_data = profile.yi_disp
+    seillinieLeer = cableline['empty']
+    seillinieZweifel = cableline['load']
+    seil_di = cableline['xaxis']
+    di = np.int32(profile.di_disp)
+    hoeheStue = poles['h']
+    zStue = poles['z']
+    idxStue = poles['idx']
 
     # Erstelle Figure
     # Höhe der Figur angepasst an Höhendistanz der Seillinie (verzerrungsfrei)
@@ -137,14 +148,14 @@ def plotData(disp_data, di, seilDaten, HM, IS, projInfo, resultStatus, locPlot):
     axes.fill_between(x_data, min(y_data), y_data, facecolor='#A4C9AC')
 
     axes.plot(x_data, y_data, color='#6F9679', linewidth=3)
-    axes.plot(HM['poss_x'], HM['poss_y'], 'o', markersize=6, color='#F3FF3E',
-             label="Mögliche Stützenstandorte")
+    axes.plot(poles['poss_x'], poles['poss_y'], 'o', markersize=6, color='#F3FF3E',
+              label="Mögliche Stützenstandorte")
     
     
     # Ankerfelder
     if xAnkerseil[0] != xAnkerseil[1]:      # Falls Anker vom Benutzer definiert wurden
         axes.plot(xAnkerseil[:2], zAnkerseil[:2], color='#FF4D44', linewidth=1.8)
-    if xAnkerseil[2] != xAnkerseil[3] and resultStatus != 3:
+    if xAnkerseil[2] != xAnkerseil[3]:
         # Falls Anker vom Benutzer definiert wurden
         axes.plot(xAnkerseil[2:], zAnkerseil[2:], color='#FF4D44', linewidth=1.8)
     # Stützen
@@ -259,12 +270,7 @@ def plotData(disp_data, di, seilDaten, HM, IS, projInfo, resultStatus, locPlot):
 
 
 def formatNum(numbr):
-    strNum = str(round(numbr, 1))
-    intPart, floatPart = strNum.split('.')
-    splits = [intPart[::-1][x:x+3] for x in range(0, len(intPart), 3)][::-1]
-    intRevers = [splits[x][::-1] for x in range(len(splits))]
-    layoutNumbr = "'".join(intRevers) + "." + floatPart
-    return layoutNumbr
+    return f"{numbr:,.1f}".replace(',', "'")
 
 
 def removeTxtElements(text, key):
@@ -281,132 +287,117 @@ def removeTxtElements(text, key):
         return text
 
 
-def generateReportText(IS, projInfo, HM, kraft, OptSTA, duration,
-                       timestamp, labelTxt):
+def generateReportText(confHandler, result):
+    """
+    :type confHandler: configHandler.ConfigHandler
+    """
     import math
-
-    # Report zusammenstellen
-    # TODO: Länge des Seils oder Höhenunterschied aufschreiben?
-    projname = projInfo['Projektname']
-    hmodell = projInfo['Hoehenmodell']['path']
-    laenge = projInfo['Laenge']
-    Hdiff = int(abs(HM['z'][-1]-HM['z'][0]))
-
+    poles = confHandler.project.poles
+    poleslist = poles.poles
+    [pole_d, pole_z, pole_h, pole_dtop, pole_ztop] = poles.getAsArray()
+    hmodell = confHandler.project.getDhmAsStr()
+    kraft = result['force']
+    
     # TODO: Fixe Stützen auf irgend eine Weise markieren. Sind hier gespeichert:
-    fixeStue = projInfo['fixeStuetzen']
+    # fixeStue = projInfo['fixeStuetzen']
 
     # Berechnungen für Absteckung
     hDist = []
     sDist = []
-    dY = HM['y'][-1] - HM['y'][0]
-    dX = HM['x'][-1] - HM['x'][0]
-    ri = math.atan(dX/dY) * 180/math.pi
-    if dY < 0:
-        az = ri + 180
-    elif dX < 0:
-        az = ri + 360
-    else:
-        az = ri
-    az_gon = az * 1.111111
-    for i in range(len(HM['z'])-1):
-        dX = HM['x'][i+1] - HM['x'][i]
-        dY = HM['y'][i+1] - HM['y'][i]
-        dZ = HM['z'][i+1] - HM['z'][i]
-        hDist.append((dX**2 + dY**2)**0.5)
-        sDist.append((hDist[i]**2 + dZ**2)**0.5)
+    az_gon = poles.azimut * 1.11111       # TODO: Mit alter Methode vergleichen!
+    for i in range(len(pole_d)-1):
+        dist_h = pole_d[i+1] - pole_d[i]
+        dist_z = pole_z[i + 1] - pole_z[i]
+        hDist.append(dist_h)
+        sDist.append((dist_h**2 + dist_z**2)**0.5)
 
-    anzSt = len(HM['z'])
-    anzFe = anzSt - 1
-    sHeader = labelTxt[0]
-    fHeader = labelTxt[1]
-    # for f in range(1, anzSt):
-    #     fHeader.append("{}. Feld".format(f))
-    #     if f < anzSt-1:
-    #         sHeader.append("{}. Stütze".format(f+1))
-    # sHeader.append("Endstütze")
+    poleCount = len(pole_d)
+    fieldCount = poleCount - 1
+    sHeader = [i['name'] for i in poleslist[1:-1]]
+    fHeader = [f"{i+1}. Feld" for i in range(poleCount)]
 
     # Abschnitt Zeit und Höhenmodell
-    str_time = [[], ["Zeitpunkt", "{}, Berechnungsdauer: {}".format(timestamp, duration)],
-                ["Höhenmodell", hmodell], [],
-                ["Erklärungen und Diagramme zu den technischen Werten sind "
-                 "in der Dokumentation zu finden."],
-                [("Markierung für fixe Stützen: ° = fixe Position, "
-                    "°* = fixe Position und Höhe")]]
-
+    str_time = [
+        [],
+        ["Zeitpunkt", f"{result['duration'][2]}, Berechnungsdauer: {result['duration'][0]}"],
+        ["Höhenmodell", hmodell], [],
+        ["Erklärungen und Diagramme zu den technischen Werten sind in der "
+         "Dokumentation zu finden."],
+        ["Markierung für fixe Stützen: ° = fixe Position, °* = fixe Position und Höhe"]]
 
     # Abschnitt Stützenpositionen
     str_posi = [["", "Höhe", "X-Koordinate", "Y-Koordinate", "Z-Koordinate", "(M.ü.M)"]]
-    for s in range(anzSt):
-        tex = "{};{:.0f} m;{};{};{};".format(sHeader[s], HM['h'][s],
-            formatNum(HM['x'][s]), formatNum(HM['y'][s]), formatNum(HM['z'][s])).split(';')
-        str_posi.append(tex)
-
-    sHeader = [label.strip("°*") for label in sHeader] # Markierungen entfernen
+    for s in range(poleCount):
+        pole = poles.poles[s]
+        str_posi.append([
+            f"{pole['name']}", f"{pole['h']:.1f} m",
+            f"{formatNum(pole['coordx'])}",
+            f"{formatNum(pole['coordy'])}",
+            f"{formatNum(pole['z'])}"])
 
     # Abschnitt Absteckung im Feld
-    str_abst = [["Azimut: {:.1f} gon".format(az_gon)],
+    str_abst = [[f"Azimut: {az_gon:.1f} gon"],
                 ["", "Horizontaldistanz", "Schrägdistanz"]]
-    for f in range(anzFe):
-        tex = ("von {} zu {},{: >3.0f} m,"
-               "{: >3.0f} m").format(sHeader[f], sHeader[f+1], hDist[f], sDist[f]).split(',')
-        str_abst.append(tex)
+    for f in range(fieldCount):
+        str_abst.append([f"von {sHeader[f]} zu {sHeader[f+1]}",
+                         f"{hDist[f]:.1f} m", f"{sDist[f]:.1f} m"])
 
     # Abschnitt Vorspannung der Seilzugkraft
     str_opti = [["optimaler Wertebeich",
-                 "{} - {} kN".format(np.min(OptSTA), np.max(OptSTA))],
+                 f"{np.min(result['optSTA_arr']):.0f} - {np.max(result['optSTA_arr']):.0f} kN"],      # TODO: Was machen mit manuell definiertem OptSTA? Leo fragen
                 ["gewählte Seilzugkraft bei der Anfangsstütze",
-                 "{:.0f} kN".format(np.round(kraft['Spannkraft'][0]))]]
+                 f"{kraft['Spannkraft'][0]:.0f} kN"]]
 
     # Abschnitt Seillänge
     str_laen = [[""]*2 + fHeader,
                 ["Länge Leerseil bei Anfangszugkraft",
-                 "{:.0f} m".format(kraft['LaengeSeil'][0])] + [""]*anzFe,
+                 f"{kraft['LaengeSeil'][0]:.0f} m"] + [""]*fieldCount,
                 ["Länge Leerseil bei 0 kN Seilzugkraft",
-                 "{:.0f} m".format(kraft['LaengeSeil'][1])] + [""]*anzFe,
-                ["Länge der Spannfelder"] + (",{:.0f} m"*anzFe).format(
-                    *tuple(kraft['LaengeSeil'][2])).split(',', anzFe)]
+                 f"{kraft['LaengeSeil'][1]:.0f} m"] + [""]*fieldCount,
+                ["Länge der Spannfelder"] + (",{:.0f} m"*fieldCount).format(
+                    *tuple(kraft['LaengeSeil'][2])).split(',', fieldCount)]
 
     # Abschnitt Durchhang
     str_durc = [["Abk.", ""] + fHeader,
-                ["yLE", "Leerseil"] + ("{:.2f} m,"*anzFe).format(
-                    *tuple(kraft['Durchhang'][0])).rstrip(',').split(',', anzFe),
-                ["yLA", "Lastseil"] + ("{:.2f} m,"*anzFe).format(
-                    *tuple(kraft['Durchhang'][1])).rstrip(',').split(',', anzFe)]
+                ["yLE", "Leerseil"] + ("{:.2f} m,"*fieldCount).format(
+                    *tuple(kraft['Durchhang'][0])).rstrip(',').split(',', fieldCount),
+                ["yLA", "Lastseil"] + ("{:.2f} m,"*fieldCount).format(
+                    *tuple(kraft['Durchhang'][1])).rstrip(',').split(',', fieldCount)]
 
     str_seil1 = [
-        ["Abk.", "am Leerseil"] + [""]*(anzSt+1),
-        ["T0,A","Seilzugkraft an der Anfangsstütze"] +
-            ["{:.0f} kN".format(kraft['Spannkraft'][0])] + [""]*anzSt,
-        ["T0,E","Seilzugkraft an der Endstütze"] +
-            ["{:.0f} kN".format(kraft['Spannkraft'][1])] + [""]*anzSt,
+        ["Abk.", "am Leerseil"] + [""]*(poleCount+1),
+        ["T0,A", "Seilzugkraft an der Anfangsstütze"] +
+        [f"{kraft['Spannkraft'][0]:.0f} kN"] + [""]*poleCount,
+        ["T0,E", "Seilzugkraft an der Endstütze"] +
+        [f"{kraft['Spannkraft'][1]:.0f} kN"] + [""]*poleCount,
         [""]*3 + sHeader,
-        ["T0","Seilzugkraft des Leerseils an den Stützen", ""] +
-            ("{:.0f} kN,"*anzSt).format(*tuple(
-                np.round(kraft['Seilzugkraft'][0]))).rstrip(',').split(',', anzSt)]
+        ["T0", "Seilzugkraft des Leerseils an den Stützen", ""] +
+        ("{:.0f} kN,"*poleCount).format(*tuple(
+            np.round(kraft['Seilzugkraft'][0]))).rstrip(',').split(',', poleCount)]
     str_seil2 = [
-        ["HS","Leerseilverhältnis: Horizontalkomponente"] + fHeader,
+        ["HS", "Leerseilverhältnis: Horizontalkomponente"] + fHeader,
         ["", "     der Seilzugkraft an den Stützen"] +
-            ("{:.0f} kN,"*anzFe).format(*tuple(
-                kraft['Seilzugkraft'][1])).rstrip(',').split(',', anzFe)]
+        ("{:.0f} kN,"*fieldCount).format(*tuple(
+                kraft['Seilzugkraft'][1])).rstrip(',').split(',', fieldCount)]
     str_seil3 = [
-        ["", "am Lastseil"] + [""]*anzFe,
+        ["", "am Lastseil"] + [""]*fieldCount,
         ["", "Max. auftretende Seilzugkraft"],
         ["Tmax", "     am höchsten Punkt im Seilsystem",
-         "{:.0f} kN".format(kraft['MaxSeilzugkraft_L'][0])],
+         f"{kraft['MaxSeilzugkraft_L'][0]:.0f} kN"],
         ["Tmax,A", "     am Anfangsanker",
-         "{:.0f} kN".format(kraft['MaxSeilzugkraft_L'][1])],
+         f"{kraft['MaxSeilzugkraft_L'][1]:.0f} kN"],
         ["Tmax,E", "     am Endanker",
-         "{:.0f} kN".format(kraft['MaxSeilzugkraft_L'][2])]]
+         f"{kraft['MaxSeilzugkraft_L'][2]:.0f} kN"]]
     str_seil4 = [
         ["", "am Lastseil mit Last in Feldmitte"] + fHeader,
         ["Tm", "Max. auftretende Seilzugkraft gemessen in Feldmitte"] +
-            ("{:.0f} kN,"*anzFe).format(*tuple(kraft['MaxSeilzugkraft'][0])
+            ("{:.0f} kN,"*fieldCount).format(*tuple(kraft['MaxSeilzugkraft'][0])
             ).rstrip(',').split(','),
         ["Hm", "     davon horizontale Komponente"] +
-            ("{:.0f} kN,"*anzFe).format(*tuple(kraft['MaxSeilzugkraft'][1])
+            ("{:.0f} kN,"*fieldCount).format(*tuple(kraft['MaxSeilzugkraft'][1])
             ).rstrip(',').split(','),
         ["Tm,max", "     gemessen am höchsten Punkt im Seilsystem"] +
-            ("{:.0f} kN,"*anzFe).format(*tuple(kraft['MaxSeilzugkraft'][2])
+            ("{:.0f} kN,"*fieldCount).format(*tuple(kraft['MaxSeilzugkraft'][2])
             ).rstrip(',').split(','),
         ]
     str_seil = [str_seil1, str_seil2, str_seil3, str_seil4]
@@ -415,47 +406,47 @@ def generateReportText(IS, projInfo, HM, kraft, OptSTA, duration,
     str_stue1 = [
         ["", "an befahrbarer Stütze, Laufwagen auf Stütze"] + sHeader,
         ["F_Sa_BefRes", "Sattelkraft, resultierend"] +
-            ("{:.0f} kN,"*anzSt).format(*tuple(
+            ("{:.0f} kN,"*poleCount).format(*tuple(
                 kraft['Sattelkraft_Total'][0])).rstrip(',').split(','),
         ["F_Sa_BefV", "Sattelkraft, vertikale Komponente"] +
-            ("{:.0f} kN,"*anzSt).format(*tuple(
+            ("{:.0f} kN,"*poleCount).format(*tuple(
                 kraft['Sattelkraft_Total'][1])).rstrip(',').split(','),
         ["F_Sa_BefH", "Sattelkraft, horizontale Komponente"] +
-            ("{:.0f} kN,"*anzSt).format(*tuple(
+            ("{:.0f} kN,"*poleCount).format(*tuple(
                 kraft['Sattelkraft_Total'][2])).rstrip(',').split(','),
         ["FSR", "Sattelkraft (Anteil von Tragseil), resultierend"] +
-            ("{:.0f} kN,"*anzSt).format(*tuple(
+            ("{:.0f} kN,"*poleCount).format(*tuple(
                 kraft['Sattelkraft_ausSeil'][0])).rstrip(',').split(','),
         ["FSV", "Sattelkraft (Anteil von Tragseil), vertikale Komponente"] +
-            ("{:.0f} kN,"*anzSt).format(*tuple(
+            ("{:.0f} kN,"*poleCount).format(*tuple(
                 kraft['Sattelkraft_ausSeil'][1])).rstrip(',').split(','),
         ["FSH", "Sattelkraft (Anteil von Tragseil), horizontale Komponente"] +
-            ("{:.0f} kN,"*anzSt).format(*tuple(
+            ("{:.0f} kN,"*poleCount).format(*tuple(
                 kraft['Sattelkraft_ausSeil'][2])).rstrip(',').split(','),
         ["FU", "Einwirkung auf Stütze aus Last, Gewicht Zug- & Tragseil"] +
-            ("{:.0f} kN,"*anzSt).format(*tuple(
+            ("{:.0f} kN,"*poleCount).format(*tuple(
                 kraft['UebrigeKraft_befStuetze'])).rstrip(',').split(','),
         ]
-    newHeader = [""]*(anzSt*2)
+    newHeader = [""]*(poleCount*2)
     a = 0
-    for i in range(0, anzSt*2, 2):
+    for i in range(0, poleCount*2, 2):
         newHeader[i+1] = sHeader[a]
         a += 1
     str_stue2 = [
         ["", "an nicht befahrbarer Stütze,"] + newHeader,
         ["", "     Laufwagen unmittelbar links/rechts bei Stütze"] +
-            ["links", "rechts"]*anzSt,
+            ["links", "rechts"]*poleCount,
         ["TCS", "Seilzugkraft"] +
-            ("{:.0f} kN,"*(anzSt*2)).format(*tuple(
+            ("{:.0f} kN,"*(poleCount*2)).format(*tuple(
                 kraft['Seilzugkraft_beiStuetze'])).rstrip(',').split(','),
         ["F_Sa_NBefRes", "Sattelkraft, resultierend"] +
-            ("{:.0f} kN,"*(anzSt*2)).format(*tuple(
+            ("{:.0f} kN,"*(poleCount*2)).format(*tuple(
                 kraft['Sattelkraft_beiStuetze'][0])).rstrip(',').split(','),
         ["F_Sa_NBefV", "Sattelkraft, vertikale Komponente"] +
-            ("{:.0f} kN,"*(anzSt*2)).format(*tuple(
+            ("{:.0f} kN,"*(poleCount*2)).format(*tuple(
                 kraft['Sattelkraft_beiStuetze'][1])).rstrip(',').split(','),
         ["F_Sa_NBefH", "Sattelkraft, horizontale Komponente"] +
-            ("{:.0f} kN,"*(anzSt*2)).format(*tuple(
+            ("{:.0f} kN,"*(poleCount*2)).format(*tuple(
                 kraft['Sattelkraft_beiStuetze'][2])).rstrip(',').split(','),
     ]
     str_stue = [str_stue1, str_stue2]
@@ -464,18 +455,18 @@ def generateReportText(IS, projInfo, HM, kraft, OptSTA, duration,
     str_wink = [
         ["", "am Leerseil"] + sHeader,
         ["alpha LA", "eingehender Winkel"] +
-            ("{:.0f}°,"*anzSt).format(*tuple(
+            ("{:.0f}°,"*poleCount).format(*tuple(
                 kraft['Anlegewinkel_Leerseil'][0])).rstrip(',').split(','),
         ["alpha LE", "ausgehender Winkel"] +
-            ("{:.0f}°,"*anzSt).format(*tuple(
+            ("{:.0f}°,"*poleCount).format(*tuple(
                 kraft['Anlegewinkel_Leerseil'][1])).rstrip(',').split(','),
         [""],
         ["", "am Lastseil"] + sHeader,
         ["alpha LA", "eingehender Winkel", ""] +
-            ("{:.0f}°,"*anzFe).format(*tuple(
+            ("{:.0f}°,"*fieldCount).format(*tuple(
                 kraft['Anlegewinkel_Lastseil'][0][1:])).rstrip(',').split(','),
         ["alpha LE", "ausgehender Winkel"] +
-            ("{:.0f}°,"*anzFe).format(*tuple(
+            ("{:.0f}°,"*fieldCount).format(*tuple(
                 kraft['Anlegewinkel_Lastseil'][1][:-1])).rstrip(',').split(',')
         ]
 
@@ -483,25 +474,24 @@ def generateReportText(IS, projInfo, HM, kraft, OptSTA, duration,
     str_nach = [
         ["", ""] + sHeader,
         ["beta", "Leerseilknickwinkel"] +
-            ("{:.0f}°,"*anzSt).format(*tuple(
+            ("{:.0f}°,"*poleCount).format(*tuple(
                 kraft['Leerseilknickwinkel'])).rstrip(',').split(','),
         ["", "Nachweis erfüllt"] +
-            ("{},"*anzSt).format(*tuple(
+            ("{},"*poleCount).format(*tuple(
                 kraft['Nachweis'])).rstrip(',').split(',')
     ]
 
     # Abschnitt Annahmen
     str_anna = []
-    annahmen = projInfo['Params']
-    lenAnn= int(math.ceil(len(annahmen)/2))
+    annahmen = confHandler.params.getParametersAsStr()
+    lastelem = annahmen.pop(-1)
+    annahmen.insert(0, lastelem)
+    lenAnn = int(math.ceil(len(annahmen) / 2))
     for i in range(lenAnn):
-        part1 = annahmen[i]
+        part1 = [annahmen[i]]
         part2 = ['']
-        part3 = annahmen[i+lenAnn]
-        str_anna.append(part1+part2+part3)
-    # Add information about used parameter set
-    str_anna = [['Parameterset:', projInfo['Parameterset'], '', ''],
-                ['']*4] + str_anna
+        part3 = [annahmen[i + lenAnn]]
+        str_anna.append(part1 + part2 + part3)
 
     text = [str_time, str_posi, str_abst, str_opti, str_laen, str_durc,
             str_seil, str_stue, str_wink, str_nach, str_anna]

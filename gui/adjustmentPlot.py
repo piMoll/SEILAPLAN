@@ -27,9 +27,8 @@ import matplotlib.patheffects as PathEffects
 from matplotlib.font_manager import FontProperties
 
 
-p = 21
-
 class AdjustmentPlot(FigureCanvas):
+    
     ZOOM_TO_DISTANCE = 20
     
     def __init__(self, parent=None, width=5, height=4, dpi=72):
@@ -70,7 +69,6 @@ class AdjustmentPlot(FigureCanvas):
         axe.tick_params(axis="both", which="minor", direction="out", length=5,
                         width=1, bottom=True, top=False, left=True,
                         right=False)
-        # TODO: Legend
         
     def initData(self, xdata, terrain):
         self.xdata = xdata
@@ -82,14 +80,14 @@ class AdjustmentPlot(FigureCanvas):
     
     def setPlotLimits(self):
         if self.isZoomed:
-            x = self.currentPole['x']
-            y = self.currentPole['y']
+            d = self.currentPole['d']
+            z = self.currentPole['z']
             h = self.currentPole['h']
-            self.axes.set_xlim(x - AdjustmentPlot.ZOOM_TO_DISTANCE,
-                               x + AdjustmentPlot.ZOOM_TO_DISTANCE)
+            self.axes.set_xlim(d - AdjustmentPlot.ZOOM_TO_DISTANCE,
+                               d + AdjustmentPlot.ZOOM_TO_DISTANCE)
             self.axes.set_ylim(
-                (y + 0.5 * h) - AdjustmentPlot.ZOOM_TO_DISTANCE,
-                (y + 0.5 * h) + AdjustmentPlot.ZOOM_TO_DISTANCE)
+                (z + 0.5 * h) - AdjustmentPlot.ZOOM_TO_DISTANCE,
+                (z + 0.5 * h) + AdjustmentPlot.ZOOM_TO_DISTANCE)
             self.labelBuffer = 0.2
 
         else:
@@ -106,25 +104,38 @@ class AdjustmentPlot(FigureCanvas):
                        linewidth=1.5, label="Leerseil")
         self.axes.plot(cable['xaxis'], cable['load'], color='#FF4D44',
                        linewidth=1.5, label="Lastwegkurve nach Zweifel")
+        # Anchors
+        self.axes.plot(cable['anchor']['d'][:2], cable['anchor']['z'][:2],
+                       color='#FF4D44', linewidth=1.5)
+        self.axes.plot(cable['anchor']['d'][2:], cable['anchor']['z'][2:],
+                       color='#FF4D44', linewidth=1.5)
+        # Ground clearance
+        self.axes.plot(cable['groundclear_di'], cable['groundclear'],
+                       color='#910000', linewidth=1, linestyle=':',
+                       label="")
+        self.axes.plot(cable['groundclear_di'], cable['groundclear_under'],
+                       color='#910000', linewidth=1, label="Min. Bodenabstand unterschritten")
+            
         # Poles
-        [pole_x, pole_y, pole_h, pole_xtop, pole_ytop] = poles
-        for i,x in enumerate(pole_x):
-            self.axes.plot([pole_x[i], pole_xtop[i]], [pole_y[i], pole_ytop[i]],
+        [pole_d, pole_z, pole_h, pole_dtop, pole_ztop] = poles
+        for i, d in enumerate(pole_d):
+            self.axes.plot([pole_d[i], pole_dtop[i]], [pole_z[i], pole_ztop[i]],
                            color='#363432', linewidth=3.0)
         # Vertical guide lines
         if self.isZoomed:
-            x = self.currentPole['x']
-            y = self.currentPole['y']
-            ytop = self.currentPole['ytop']
-            self.axes.axvline(lw=1, ls='dotted', color='black', x=x)
-            self.axes.axhline(lw=1, ls='dotted', color='black', y=y)
-            self.axes.axhline(lw=1, ls='dotted', color='black', y=ytop)
+            d = self.currentPole['d']
+            z = self.currentPole['z']
+            ztop = self.currentPole['ztop']
+            self.axes.axvline(lw=1, ls='dotted', color='black', x=d)
+            self.axes.axhline(lw=1, ls='dotted', color='black', y=z)
+            self.axes.axhline(lw=1, ls='dotted', color='black', y=ztop)
         
         # Data limit of axis
         self.setPlotLimits()
         # Add labels
-        self.placeLabels(pole_x, pole_ytop)
-
+        self.placeLabels(pole_d, pole_ztop)
+        # Legend
+        self.axes.legend(loc='lower center', bbox_to_anchor=(0.5, 0), ncol=3)
         self.draw()
 
     def zoomTo(self, pole):
@@ -139,19 +150,19 @@ class AdjustmentPlot(FigureCanvas):
     
     def placeLabels(self, xdata, ydata):
         if self.isZoomed:
-            x = self.currentPole['x']
-            y = self.currentPole['y']
+            d = self.currentPole['d']
+            z = self.currentPole['z']
             h = self.currentPole['h']
-            ytop = self.currentPole['ytop']
-            pos_t_x = self.axes.get_xlim()[0]
-            pos_t_y = y + self.labelBuffer
-            pox_yp_y = ytop + self.labelBuffer
-            pos_h_x = x
-            pos_h_y = ytop + self.labelBuffer * 3
+            ztop = self.currentPole['ztop']
+            pos_t_d = self.axes.get_xlim()[0]
+            pos_t_z = z + self.labelBuffer
+            pox_yp_z = ztop + self.labelBuffer
+            pos_h_d = d
+            pos_h_z = ztop + self.labelBuffer * 3
     
-            self.axes.text(pos_t_x, pos_t_y, f'{round(y, 1)} m', ha='left')
-            self.axes.text(pos_t_x, pox_yp_y, f'{round(ytop, 1)} m', ha='left')
-            self.axes.text(pos_h_x, pos_h_y, f'{round(h, 1)} m', ha='center')
+            self.axes.text(pos_t_d, pos_t_z, f'{round(z, 1)} m', ha='left')
+            self.axes.text(pos_t_d, pox_yp_z, f'{round(ztop, 1)} m', ha='left')
+            self.axes.text(pos_h_d, pos_h_z, f'{round(h, 1)} m', ha='center')
         else:
             for i in range(len(xdata)):
                 self.axes.text(xdata[i], ydata[i] + self.labelBuffer, f'{i + 1}',

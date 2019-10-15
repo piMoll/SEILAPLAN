@@ -35,7 +35,7 @@ class DialogSaveParamset(QDialog):
         self.iface = interface
         self.tool = toolWindow
         self.paramData = None
-        self.availableParams = None
+        self.availableSets = None
         self.savePath = None
         self.setname = None
         self.setWindowTitle("Name Parameterset")
@@ -43,7 +43,7 @@ class DialogSaveParamset(QDialog):
         
         # Build gui
         hbox = QHBoxLayout()
-        setnameLabel = QLabel("Dateiname des Parametersets")
+        setnameLabel = QLabel("Bezeichnung Parameterset")
         self.setnameField = QLineEdit()
         self.setnameField.setMinimumWidth(400)
         self.setnameField.setSizePolicy(
@@ -67,23 +67,24 @@ class DialogSaveParamset(QDialog):
         container.setAlignment(Qt.AlignLeft)
         self.setLayout(container)
     
-    def setData(self, availableParams, savePath):
-        self.availableParams = availableParams
+    def setData(self, availableSets, savePath):
+        self.availableSets = availableSets
         self.savePath = savePath
     
     def getNewSetname(self):
-        return
+        return self.setname
     
     def checkName(self, setname):
-        if setname in self.availableParams:
+        if setname in self.availableSets:
             return False
-        
         savePath = os.path.join(self.savePath, f'{setname}.txt')
-        try:
-            open(savePath, 'w')
-            return True
-        except IOError:
-            return False
+        if not os.access(savePath, os.W_OK):
+            try:
+                open(savePath, 'w').close()
+                os.unlink(savePath)
+            except IOError:
+                return False
+        return True
     
     def Apply(self):
         setname = self.setnameField.text()
@@ -110,6 +111,7 @@ class DialogOutputOptions(QDialog):
         self.iface = interface
         self.tool = toolWindow
         self.confHandler = confHandler
+        self.doSave = False
         
         self.setWindowTitle("Output Optionen")
         main_widget = QWidget(self)
@@ -122,6 +124,8 @@ class DialogOutputOptions(QDialog):
         self.pathField.setSizePolicy(
             QSizePolicy(QSizePolicy.Expanding,
                         QSizePolicy.Fixed))
+        self.fillInDropDown(self.confHandler.commonPaths)
+        
         openButton = QPushButton()
         openButton.setMaximumSize(QSize(27, 27))
         icon = QIcon()
@@ -179,7 +183,6 @@ class DialogOutputOptions(QDialog):
         title = u"Output Pfad auswählen"
         QFileDialog.getExistingDirectory(self, title,
                                          self.confHandler.outputOptions['outputPath'])
-        self.fillInDropDown(self.confHandler.commonPaths)
     
     def Apply(self):
         # Save checkbox status
@@ -194,10 +197,9 @@ class DialogOutputOptions(QDialog):
         self.confHandler.setOutputOptions(options)
         # Update output location with currently selected path
         self.confHandler.addPath(self.pathField.currentText())
+        self.doSave = True
         self.close()
     
     def Reject(self):
+        self.doSave = False
         self.close()
-
-
-

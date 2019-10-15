@@ -20,7 +20,7 @@ from .optiSTA import calcSTA
 import scipy.sparse as sps
 
 
-def optimization(IS, gp, StuetzenPos, progress, fixedPoles):
+def optimization(IS, profile, StuetzenPos, progress, fixedPoles):
     """Berechnung der optimalen Anordnung der Stützen im Laengenprofil
 
     Diese Funktion berechnet aufgrund der zulässigen maximalen Seilzugkraft
@@ -48,12 +48,12 @@ def optimization(IS, gp, StuetzenPos, progress, fixedPoles):
     # TODO: Matrix  Grossbuchstaben, Array = Kleinbuchstaben
 
     # Vektoren in neuen Variabeln abspeichern
-    di = gp['di_s']
-    zi = gp['zi_s']
-    zi_n = gp['zi_n']
-    di_n = gp['di_n']
-    sc = gp['sc']
-    befGSK = gp['befGSK']
+    di = profile.di_s
+    zi = profile.zi_s
+    zi_n = profile.zi_n
+    di_n = profile.di_n
+    sc = profile.sc
+    befGSK = profile.befGSK
     min_HM = IS["HM_min"]                # int
     max_HM = IS["HM_max"]                # int
     min_HM_end = IS['HM_Ende_min']       # int
@@ -63,7 +63,7 @@ def optimization(IS, gp, StuetzenPos, progress, fixedPoles):
     dfix = np.array(fixedPoles['HM_fix_d'])
     hfix = np.array(fixedPoles['HM_fix_h'])
     sfix = dfix.size
-    # treeSupp = gp['tree']
+    # treeSupp = gp.tree
 
     # Initialisierung der Matrizen mit Knoten für Optimierungsproblem
     # -------------------------------------------------------------------------
@@ -83,14 +83,14 @@ def optimization(IS, gp, StuetzenPos, progress, fixedPoles):
     Pos[1:-stufenAnzEnd] = np.ravel(np.array([posIdx]*len(hStufung)), order = 'F')
     Pos[-stufenAnzEnd:] = [posIdxEnd] * stufenAnzEnd
 
-     # HM = Höhe der Stütze des Knoten i
+    # HM = Höhe der Stütze des Knoten i
     HM = np.empty(arraySize)
     HM[0] = IS["HM_Anfang"]
     HM[1:-stufenAnzEnd] = np.tile(hStufung, posAnz-2)
     HM[-stufenAnzEnd:] = hStufungEnd
 
     # Position der Stützen in hochaufgelöstem Horizontaldistanz-Vektor gp[di]
-    locb = np.array(ismember(di, gp['di']))
+    locb = np.array(ismember(di, profile.di))
     Pos_gp = locb[Pos]
 
     # Aufbau der Optimierungs-Matrix
@@ -170,8 +170,8 @@ def optimization(IS, gp, StuetzenPos, progress, fixedPoles):
         # Zweifel-Methode
         [CableLineImpossible,
         Min, Max] = calcSTA(IS, zi_part, di_part, sc_part,
-                             befGSK_part, HeightA[i], HeightE[i],
-                             z_null, z_ende, d_null, d_ende)
+                            befGSK_part, HeightA[i], HeightE[i],
+                            z_null, z_ende, d_null, d_ende)
         if not CableLineImpossible:
             MinSTA[i] = Min
             MaxSTA[i] = Max
@@ -185,7 +185,7 @@ def optimization(IS, gp, StuetzenPos, progress, fixedPoles):
     natStuetze = IS['HM_nat']
     kStuetz = HeightE > natStuetze
     KostStue = (HeightE + 100)**2 * (1 + (4*(kStuetz + 0)))
-    indexMax = np.where(Pos==np.max(Pos))[0]
+    indexMax = np.where(Pos == np.max(Pos))[0]
     emptyMatrix = np.zeros((arraySize+1, arraySize+1))      # Entspricht N+2
 
     min_SK = int(IS['min_SK'])

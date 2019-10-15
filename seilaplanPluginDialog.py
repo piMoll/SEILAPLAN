@@ -30,10 +30,11 @@ from qgis.core import QgsRasterLayer, QgsPointXY, QgsProject
 from processing.core.Processing import Processing
 
 # Further GUI modules for functionality
-from .gui.guiHelperFunctions import (Raster, DialogWithImage, createContours,
+from .gui.guiHelperFunctions import (DialogWithImage, createContours,
                                      loadOsmLayer)
 from .configHandler import ConfigHandler, formatNum
 # GUI elements
+from .gui.saveDialog import DialogSaveParamset
 from .gui.mapMarker import MapMarkerTool
 from .gui.ui_seilaplanDialog import Ui_SeilaplanDialog
 from .gui.profileDialog import ProfileDialog
@@ -145,6 +146,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         
         # Dialog window with height profile
         self.profileWin = ProfileDialog(self, self.iface, self.projectHandler)
+
+        # Dialog windows for saving parameter and cable sets
+        self.paramSetWindow = DialogSaveParamset(self.iface, self)
         
         Processing.initialize()
     
@@ -247,12 +251,13 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
     
     def parameterChangedLineEdit(self, property_name):
         newVal = self.parameterFields[property_name].text()
-        newValFormatted = self.paramHandler.setParameter(property_name, newVal)
-        if self.paramHandler.currentSetName:
-            self.fieldParamSet.setCurrentText(self.paramHandler.currentSetName)
-        else:
-            self.fieldParamSet.setCurrentIndex(-1)
-        self.parameterFields[property_name].setText(newValFormatted)
+        newValAsStr = self.paramHandler.setParameter(property_name, newVal)
+        if newValAsStr is not False:
+            if self.paramHandler.currentSetName:
+                self.fieldParamSet.setCurrentText(self.paramHandler.currentSetName)
+            else:
+                self.fieldParamSet.setCurrentIndex(-1)
+            self.parameterFields[property_name].setText(newValAsStr)
     
     def setupContentForFirstRun(self):
         # Generate project name
@@ -272,6 +277,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         # Add set names to drop down
         self.fieldParamSet.addItems(parameterSetNames)
         # Set standard parameter set and associated parameters
+        self.paramHandler.setParameterSet('Standardwerte')
         self.fieldParamSet.setCurrentText('Standardwerte')
     
     def setupContent(self):
@@ -305,7 +311,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
     def fillInValues(self):
         """Fills parameter values into GUI fields."""
         for field_name, field in self.parameterFields.items():
-            val = self.paramHandler.getParameter(field_name)
+            val = self.paramHandler.getParameterAsStr(field_name)
             if val:
                 if isinstance(field, QComboBox):
                     field.setCurrentText(val)
@@ -314,7 +320,14 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
                 field.setText(val)
     
     def onSaveParameterSet(self):
-        self.paramHandler.saveParameterSet()
+        self.paramSetWindow.setData(self.paramHandler.getParametersetNames(),
+                                    self.paramHandler.SETS_PATH)
+        self.paramSetWindow.exec()
+        setname = self.paramSetWindow.getNewSetname()
+        if setname:
+            self.paramHandler.saveParameterSet(setname)
+            self.fieldParamSet.addItem(setname)
+            self.fieldParamSet.setCurrentText(setname)
     
     def updateRasterList(self):
         rasterlist = self.getAvailableRaster()
@@ -330,7 +343,10 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
             lyr = l.layer()
             if lyr.type() == 1 and lyr.name() != 'OSM_Karte':  # = raster
                 lyrName = lyr.name()
-                r = Raster(lyr.id(), lyrName, lyr)
+                r = {
+                    'lyr': lyr,
+                    'name': lyrName
+                }
                 rColl.append(r)
         return rColl
     
@@ -341,8 +357,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         selectedRaster = self.rasterField.currentText()
         for i in reversed(list(range(self.rasterField.count()))):
             self.rasterField.removeItem(i)
-        for i, rLyr in enumerate(rasterList):
-            self.rasterField.addItem(rLyr.name)
+        for rLyr in rasterList:
+            self.rasterField.addItem(rLyr['name'])
         if selectedRaster != '':
             self.rasterField.setCurrentText(selectedRaster)
     
@@ -352,8 +368,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         dhmName = ''
         searchStr = ['dhm', 'Dhm', 'DHM', 'dtm', 'DTM', 'Dtm']
         for rLyr in rasterlist:
-            if sum([item in rLyr.name for item in searchStr]) > 0:
-                dhmName = rLyr.name
+            if sum([item in rLyr['name'] for item in searchStr]) > 0:
+                dhmName = rLyr['name']
                 self.rasterField.setCurrentText(dhmName)
                 break
         return dhmName
@@ -372,8 +388,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
             rastername = self.rasterField.currentText()
         rasterlist = self.getAvailableRaster()
         for rlyr in rasterlist:
-            if rlyr.name == rastername:
-                self.projectHandler.setDhm(rlyr)
+            if rlyr['name'] == rastername:
+                self.projectHandler.setDhm(rlyr['lyr'])
                 rasterFound = True
                 break
         if not rasterFound:
@@ -391,10 +407,10 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         rasterFound = False
         availRaster = self.getAvailableRaster()
         for rlyr in availRaster:
-            lyrPath = rlyr.grid.dataProvider().dataSourceUri()
+            lyrPath = rlyr['lyr'].dataProvider().dataSourceUri()
             if lyrPath == path:
-                self.rasterField.setCurrentText(rlyr.name)
-                self.setRaster(rlyr.name)
+                self.rasterField.setCurrentText(rlyr['name'])
+                self.setRaster(rlyr['name'])
                 rasterFound = True
                 break
         if not rasterFound:
@@ -510,8 +526,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
     def onClickContourButton(self):
         """Calcluate contour lines from currently selected dhm and add them to
         as a layer."""
-        self.projectHandler.dhm['contour'] = createContours(self.canvas,
-                                                            self.projectHandler.dhm)
+        self.projectHandler.dhm.contour = createContours(self.canvas,
+                                                         self.projectHandler.dhm)
         self.canvas.refresh()
     
     def createProfile(self):
@@ -571,7 +587,6 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
     
     def apply(self):
         if self.confHandler.checkValidState():
-            self.paramHandler.prepareForCalculation()
             self.startAlgorithm = True
         else:
             # If project info or parameter are missing or wrong, algorithm

@@ -22,7 +22,7 @@ def xfrange(start, stop, step):
         start += step
 
 
-def preciseCable(b, h, IS, anchor):
+def preciseCable(IS, poles, STA):
     """Berechnet die exakte Seilmechanik für ein vorgegebenes Seilsystem:
     Seilstatik (gemäss dem Paper von Zweifel 1960)
     Fall: Stützen unbeweglich, Seile auf Zwischenstützen gleitend
@@ -50,7 +50,6 @@ def preciseCable(b, h, IS, anchor):
     .Hs   Horizontalkomp. d. Seilzugkraft an den Stützen (Leerseilverhältn.)
     .ym   Durchhang in Feldmitte unter Last (Zw)"""
 
-    STA = IS["A_SK"]
     Q = IS["Q"]        # [kN]
     qT = IS["qT"]      # [kN/m]
     F = IS["A"]        # [mm^2]
@@ -59,7 +58,9 @@ def preciseCable(b, h, IS, anchor):
     Federkonstante = IS["Federkonstante"]  # [kN/m] Anker
     qz1 = IS["qz1"]     # [kN/m] Zugseilgewicht links
     qz2 = IS["qz2"]     # [kN/m] Zugseilgewicht rechts
-    Laenge_Ankerseil = anchor[1]
+
+    # Field dimension
+    b, h = poles.getCableFieldDimension()
 
     anzFelder = b.size
     anzStue = anzFelder+1
@@ -136,7 +137,7 @@ def preciseCable(b, h, IS, anchor):
 
             d_Laenge = UeberLaenge_Vollseil - UeberLaenge_Leerseil \
                             - d_ST/(F*E) * Laenge_Leerseil \
-                            - d_ST/(F*E) * Laenge_Ankerseil \
+                            - d_ST/(F*E) * poles.anchor['len'] \
                             - d_ST/Federkonstante
             #print "Laenge ={}".format(d_Laenge)
             d_ST_out[n] = d_ST
@@ -180,7 +181,6 @@ def preciseCable(b, h, IS, anchor):
     Q_Null = 0
     step = 0.1
     multipl = int(1/step)       # default = 10
-    # TODO Hier Fehler
     lenSeil = int(b_cum[-1] * multipl) + 1
 
     b1 = np.zeros(lenSeil)      # 1 cm Schritte zwischen den Stützen
@@ -302,10 +302,10 @@ def preciseCable(b, h, IS, anchor):
     phi_o[1:] = np.arctan(tg_phi_o)
     phi_u[:-1] = np.arctan(tg_phi_u)
 
-    dAnkerA = anchor[0][0]
-    zAnkerA = anchor[0][1]
-    dAnkerE = anchor[0][2]
-    zAnkerE = anchor[0][3]
+    dAnkerA = poles.anchor['field'][0]
+    zAnkerA = poles.anchor['field'][1]
+    dAnkerE = poles.anchor['field'][2]
+    zAnkerE = poles.anchor['field'][3]
     try:
         phi_oA = np.arctan(zAnkerA/dAnkerA)
     except ZeroDivisionError:
@@ -438,9 +438,15 @@ def preciseCable(b, h, IS, anchor):
     kraft['Spannkraft'] = [ST[0], ST[-1]]
     kraft['Seilzugkraft'] = [ST, Hs]
 
+    firstPole = poles.poles[1]
+    cableline = {
+        'xaxis': l_coord + firstPole['dtop'],    # X-data starts at first pole
+        'empty': z_coord_leer + firstPole['ztop'],   # Y-data is calculated relative
+        'load': z_coord_zweifel + firstPole['ztop'],
+        'anchor': poles.getAnchorCable()
+    }
 
-    # return seil, seilparam: [Max. auftretende Seilzugkraft, Durchhang]
-    return [z_coord_leer, z_coord_zweifel, l_coord], kraft, seil_possible
+    return cableline, kraft, seil_possible
 
 
 def preciseCableLight(zi, di, IS, STA, HM, LP):
