@@ -91,7 +91,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         # Fill tab widget with data
         self.poleLayout = AdjustmentDialogPoles(self)
         self.paramLayout = AdjustmentDialogParams(self, self.confHandler.params)
-        self.thresholdLayout = AdjustmentDialogThresholds(self)
+        self.thresholdLayout = AdjustmentDialogThresholds(self, self.thSize)
 
         # Thread for instant recalculation when poles or parameters are changed
         self.timer = QTimer()
@@ -145,6 +145,9 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
 
         # Fill in cable parameters
         self.paramLayout.fillInParams()
+        
+        # Fill in Threshold data
+        self.updateThresholds()
 
         # Start Thread to recalculate cable line every 300 milliseconds
         self.timer.timeout.connect(self.recalculate)
@@ -188,6 +191,10 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         self.plot.zoomOut()
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         self.configurationHasChanged = True
+    
+    def updateOptSTA(self, newVal):
+        self.result['optSTA'] = float(newVal)
+        return str(newVal)
     
     def updateCableParam(self):
         self.configurationHasChanged = True
@@ -256,30 +263,108 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         self.configurationHasChanged = False
         self.isRecalculating = False
     
-    def poleDataToArray(self, withAnchor=True):
-        x = []
-        y = []
-        h = []
-        xtop = []
-        ytop = []
-        # TODO: Berücksichtigen wenn keine Anker vorhanden
-        for pole in self.poles:
-            if withAnchor or pole['h']:
-                x.append(int(pole['x']))
-                y.append(pole['y'])
-                h.append(pole['h'])
-                xtop.append(pole['xtop'])
-                ytop.append(pole['ytop'])
-        return [x, y, h, xtop, ytop]
-    
-    def calculateTopPoint(self, idx):
-        x = float(self.poles[idx]['x'])
-        y = self.poles[idx]['y']
-        h = float(self.poles[idx]['h'])
-        angle = -1 * radians(self.poles[idx]['angle'])
+    def updateThresholds(self):
+        params = self.confHandler.params
+        
+        if not self.thData:
+            rows = [['' for cell in range(self.thSize[0])] for row in range(self.thSize[1])]
+            header = [
+                'Kennwert',
+                'Definierter\nGrenzwert',
+                'Optimierte\nLösung',
+                'Aktuelle\nLösung',
+                'Wo?'
+            ]
+            units = [
+                params.params['Bodenabst_min']['unit'],
+                params.params['zul_SK']['unit'],
+                params.params['zul_SK']['unit'],
+                '°',
+                ''
+            ]
+            thresholds = [
+                params.getParameter('Bodenabst_min'),
+                params.getParameter('zul_SK'),
+                params.getParameter('zul_SK'),
+                None,
+                None
+            ]
+            self.thData = {
+                'header': header,
+                'rows': rows,
+                'units': units,
+                'thresholds': thresholds
+            }
+            label = [
+                'Minimaler Bodenabstand',
+                'Max. auftretende Seilzugkraft (am Lastseil, Last in Feldmitte des längsten Seilfeldes)',
+                'Max. resultierende Sattelkraft (an befahrbarer Stütze, Last auf Stütze)',
+                'Seilwinkel am Lastseil',
+                'Nachweis erbracht, dass Seil nicht vom Sattel abhebt',
+            ]
+            thresholdStr = [
+                f"{params.getParameterAsStr('Bodenabst_min')} {units[0]}",
+                f"{params.getParameterAsStr('zul_SK')} {units[1]}",
+                f"{params.getParameterAsStr('zul_SK')} {units[2]}",
+                '0 ° - 30 °',
+                '-'
+            ]
+            for i in range(self.thSize[0]):
+                val, location = self.getThresholdFromResult(i)
+                self.thData['rows'][i][0] = label[i]
+                self.thData['rows'][i][1] = thresholdStr[i]
+                self.thData['rows'][i][2] = val
+                self.thData['rows'][i][3] = ''
+                self.thData['rows'][i][4] = None
 
-        self.poles[idx]['xtop'] = x - round(h * sin(angle), 1)
-        self.poles[idx]['ytop'] = y + round(h * cos(angle), 1)
+            self.thresholdLayout.populate(header, self.thData['rows'])
+        
+        else:
+            for i in range(len(self.thData['rows'])):
+                val, location = self.getThresholdFromResult(i)
+                self.thData['rows'][i][3] = val
+                self.thData['rows'][i][4] = location
+
+        self.thresholdLayout.updateData(self.thData['rows'])
+    
+    def getThresholdFromResult(self, idx):
+        arr = [
+            self.profile.gclear_rel,                        # Ground clearance
+            self.result['force']['MaxSeilzugkraft'][0],     # Max force on cable
+            self.result['force']['Sattelkraft_Total'][0],   # Max force on pole
+            self.result['force']['Anlegewinkel_Lastseil'],  # Cable angle
+            self.result['force']['Nachweis'],               # Prove
+        ]
+        val = None
+        valStr = ""
+        location = []
+
+        if idx == 0:
+            # Ground clearance
+            val = np.nanmin(arr[idx])
+            location = np.ravel(
+                np.argwhere(arr[idx] < self.thData['thresholds'][idx]))
+        elif idx in [1, 2]:
+            # Max force on cable and on pole
+            val = np.nanmax(arr[idx])
+            location = np.ravel(
+                np.argwhere(arr[idx] > self.thData['thresholds'][idx]))
+        elif idx == 3:
+            # Cable angle
+            val = np.nanmax(arr[idx])
+            location = np.unique(np.concatenate((
+                np.rollaxis(np.argwhere(arr[idx] > 30), 1)[1],
+                np.rollaxis(np.argwhere(arr[idx] < 0), 1)[1])
+            ))
+        elif idx == 4:
+            # Prove
+            valStr = 'nein' if 'nein' in arr[idx] else 'ja'
+            location = [i for i, m in enumerate(arr[idx]) if m == 'nein']
+        
+        if isinstance(val, float) and val is not np.nan:
+            valStr = f"{round(val, 1)} {self.thData['units'][idx]}"
+
+        return valStr, location
     
     def Apply(self):
         self.close()

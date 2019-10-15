@@ -28,6 +28,7 @@ class AdjustmentDialogParams(object):
     
     def __init__(self, dialog, paramHandler):
         """
+        :type dialog: gui.adjustmentDialog.AdjustmentDialog
         :type paramHandler: configHandler.ParamConfHandler
         """
         self.dialog = dialog
@@ -40,19 +41,19 @@ class AdjustmentDialogParams(object):
             'E': self.dialog.fieldE,
             'qz1': self.dialog.fieldqz1,
             'qz2': self.dialog.fieldqz2,
-            # 'Vorsp': self.dialog.fieldVorsp,
+            'Vorsp': self.dialog.fieldVorsp,
         }
         self.connectFields()
 
     def fillInParams(self):
         self.params = {
-            'Q': self.paramHandler.getParameter('Q'),
-            'qT': self.paramHandler.getParameter('qT'),
-            'A': self.paramHandler.getParameter('A'),
-            'E': self.paramHandler.getParameter('E'),
-            'qz1': self.paramHandler.getParameter('qz1'),
-            'qz2': self.paramHandler.getParameter('qz2'),
-            # 'Vorsp': cableparams['Vorsp'][0],
+            'Q': self.paramHandler.getParameterAsStr('Q'),
+            'qT': self.paramHandler.getParameterAsStr('qT'),
+            'A': self.paramHandler.getParameterAsStr('A'),
+            'E': self.paramHandler.getParameterAsStr('E'),
+            'qz1': self.paramHandler.getParameterAsStr('qz1'),
+            'qz2': self.paramHandler.getParameterAsStr('qz2'),
+            'Vorsp': str(self.dialog.result['optSTA']),
         }
         for key, field in self.fields.items():
             field.blockSignals(True)
@@ -60,22 +61,29 @@ class AdjustmentDialogParams(object):
             field.blockSignals(False)
         
     def connectFields(self):
-        self.dialog.fieldQ.textChanged.connect(
-            lambda newVal: self.paramHasChanged(newVal, 'Q'))
-        self.dialog.fieldqT.textChanged.connect(
-            lambda newVal: self.paramHasChanged(newVal, 'qT'))
-        self.dialog.fieldA.textChanged.connect(
-            lambda newVal: self.paramHasChanged(newVal, 'A'))
-        self.dialog.fieldE.textChanged.connect(
-            lambda newVal: self.paramHasChanged(newVal, 'E'))
-        self.dialog.fieldqz1.textChanged.connect(
-            lambda newVal: self.paramHasChanged(newVal, 'qz1'))
-        self.dialog.fieldqz2.textChanged.connect(
-            lambda newVal: self.paramHasChanged(newVal, 'qz2'))
+        self.dialog.fieldQ.editingFinished.connect(
+            lambda: self.paramHasChanged('Q'))
+        self.dialog.fieldqT.editingFinished.connect(
+            lambda: self.paramHasChanged('qT'))
+        self.dialog.fieldA.editingFinished.connect(
+            lambda: self.paramHasChanged('A'))
+        self.dialog.fieldE.editingFinished.connect(
+            lambda: self.paramHasChanged('E'))
+        self.dialog.fieldqz1.editingFinished.connect(
+            lambda: self.paramHasChanged('qz1'))
+        self.dialog.fieldqz2.editingFinished.connect(
+            lambda: self.paramHasChanged('qz2'))
+        self.dialog.fieldVorsp.editingFinished.connect(
+            lambda: self.paramHasChanged('Vorsp'))
 
-    def paramHasChanged(self, newVal, fieldName=''):
-        newVal = self.paramHandler.setParameter(fieldName, newVal)
-        if newVal:
+    def paramHasChanged(self, fieldName=''):
+        newVal = self.fields[fieldName].text()
+        if fieldName == 'Vorsp':
+            newVal = self.dialog.updateOptSTA(newVal)
+        else:
+            newVal = self.paramHandler.setParameter(fieldName, newVal)
+        if newVal is not False:
+            # Set correctly formatted Value
             self.fields[fieldName].blockSignals(True)
             self.fields[fieldName].setText(newVal)
             self.fields[fieldName].blockSignals(False)
