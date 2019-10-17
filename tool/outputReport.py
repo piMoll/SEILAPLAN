@@ -1,72 +1,39 @@
-#  -*- coding: utf-8 -*-
 """
-#------------------------------------------------------------------------------
-# Name:        Seiloptimierungstool
-# Purpose:
-#
-# Author:      Patricia Moll
-#
-# Created:     14.05.2013
-# Copyright:   (c) mollpa 2012
-# Licence:     <your licence>
-#------------------------------------------------------------------------------
+/***************************************************************************
+ SeilaplanPlugin
+                                 A QGIS plugin
+ Seilkran-Layoutplaner
+                              -------------------
+        begin                : 2013
+        copyright            : (C) 2015 by ETH Zürich
+        email                : seilaplanplugin@gmail.com
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 """
 import numpy as np
 
 import os
 import math
 import time
+import textwrap
 
 p = 21
 nl = os.linesep
 
 
-def vectorData(xi, yi, di, zi_disp, seil, stuetzIdx, HM, possStue):
-    """ Kombination und Trasformation der Resultate
-    Packt wichtige Resultate zusammen, abspeichern in Arrays/Dictionarys"""
-    # Horizontaldistanz von float nach int umwandeln
-    di = np.int32(di)
-    # Längenprofil (Horizontaldistanz) am Anfang und Ende um 20m erweitern -->
-    # besser für Darstellung
-    di_start = np.arange(di[0]-p, di[0], 1)
-    di_end = np.arange(di[-1]+1, di[-1]+p+1, 1)
-    x_data = np.hstack((di_start, di, di_end))
-    # Höhenwerte runden und von dm in m umrechnen
-    y_data = np.round(zi_disp, 2)/10
-    # Datenpunkte des Seilverlaufs reduzieren
-    # redIdx = np.where(np.remainder(np.round(seil[2], 2), 1)==0)[0]
-    z_Leer = seil[0]
-    z_Zweifel = seil[1]
-    # Normierte Höhen der Resultate in Höhe über Meer umwandeln
-    z_Leer = z_Leer + y_data[p] + HM[0]
-    z_Zweifel = z_Zweifel + y_data[p] + HM[0]
-    stuetzeH = y_data[stuetzIdx+p] + np.array(HM)
-
-    # CH-Koordinaten der Seillinien
-    Seillinien_data = {'x': xi,
-                       'y': yi * -1,
-                       'z_Leer': z_Leer,
-                       'z_Zweifel': z_Zweifel,
-                       'l_coord': seil[2],
-                       'Laengsprofil_di': di}
-
-    # Koordinaten der Stuetzen
-    HM_data = {'x': xi[stuetzIdx],
-               'y': yi[stuetzIdx],
-               'z': stuetzeH,
-               'h': np.array([int(i) for i in HM]),
-               'idx': stuetzIdx,
-               'poss_x': possStue,
-               'poss_y': y_data[possStue.astype(int)+p]}
-
-    return [x_data, y_data], Seillinien_data, HM_data
-
-
 def getTimestamp(tStart):
-    # Dauer der Berechnung bestimmen
+    """Calculate duration of algorithm run"""
     tEnd = time.time()
     tDuration = tEnd - tStart
-    # Zeitwert formatieren
+    # Format time
     tsFormated1 = time.strftime("%Y-%m-%d_%H'%M", time.localtime(tStart))
     tsFormated2 = time.strftime("%d.%m.%Y, %H:%M Uhr", time.localtime(tStart))
     mini = int(math.floor(tDuration/60))
@@ -78,202 +45,13 @@ def getTimestamp(tStart):
     return tdFormated, tsFormated1, tsFormated2
 
 
-def plotData(profile, cableline, poles, IS, projInfo, locPlot):
-    # import matplotlib
-    # matplotlib.use('Cairo')
-
-    # import pickle
-    # storeDump = 'plotData_ergebnisfenster_20190816_L-24m'
-    # homePath = '/home/pi/Projects/seilaplan/pickle_dumps'
-    # storefile = os.path.join(homePath, '{}.pckl'.format(storeDump))
-    # projInfo['Hoehenmodell'].pop('layer')
-    # f = open(storefile, 'wb')
-    # pickle.dump([disp_data, di, seilDaten, HM, IS, projInfo, resultStatus, locPlot], f)
-    # f.close()
-
-    
-    from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-    from matplotlib.figure import Figure
-    import matplotlib.patheffects as PathEffects
-    from matplotlib.font_manager import FontProperties
-
-    x_data = profile.xi_disp
-    y_data = profile.yi_disp
-    seillinieLeer = cableline['empty']
-    seillinieZweifel = cableline['load']
-    seil_di = cableline['xaxis']
-    di = np.int32(profile.di_disp)
-    hoeheStue = poles['h']
-    zStue = poles['z']
-    idxStue = poles['idx']
-
-    # Erstelle Figure
-    # Höhe der Figur angepasst an Höhendistanz der Seillinie (verzerrungsfrei)
-    data_xlow = np.min(x_data)
-    data_xhi = np.max(x_data)
-    data_ylow = np.min(y_data)
-    data_yhi = max([np.max(y_data), np.max(zStue)+18])
-    data_xlen = x_data.size
-    data_ylen = data_yhi - data_ylow
-    # Anker
-    [zAnkerseil, xAnkerseil] = IS['Ank'][3]
-    # Markierungen für fixe Stützen
-    [findFixStueX, findFixStueZ] = IS['HM_fix_marker']
-
-    # Grösse des Plots definieren
-    # cm2inch = 0.3937
-    # lenA4 = 29.7 * cm2inch    #cm --> inch
-    # border = 1.5 * cm2inch    #cm --> inch
-    # fig_xlen = lenA4 *cm2inch * skalierung
-    # fig_ylen = fig_xlen/(data_xlen*1.0) * data_ylen
-
-    scaleFactor = 1.5       # Um Liniendicke und Schrift zu skalieren
-    dpi = 100 / scaleFactor           # Ausgabequalität
-    max_xlen = 10.10        # 11.69 inch = A4 Breite
-    max_ylen = 7.07         # 8.27 inch = A4 Höhe
-    fig_xlen = max_xlen * scaleFactor
-    fig_ylen = max_ylen * scaleFactor
-
-    fig = Figure(figsize=(fig_xlen, fig_ylen), dpi=dpi, facecolor='white')
-    canvas = FigureCanvas(fig)
-    axes = fig.add_subplot(111)
-
-    #Daten plotten
-
-    axes.plot(seil_di, seillinieLeer, color='#4D83B2', linewidth=1.8,
-             label="Leerseil")
-    axes.plot(seil_di, seillinieZweifel, color='#FF4D44', linewidth=1.8,
-             label="Lastwegkurve nach Zweifel")
-    # Gelände
-    axes.fill_between(x_data, min(y_data), y_data, facecolor='#A4C9AC')
-
-    axes.plot(x_data, y_data, color='#6F9679', linewidth=3)
-    axes.plot(poles['poss_x'], poles['poss_y'], 'o', markersize=6, color='#F3FF3E',
-              label="Mögliche Stützenstandorte")
-    
-    
-    # Ankerfelder
-    if xAnkerseil[0] != xAnkerseil[1]:      # Falls Anker vom Benutzer definiert wurden
-        axes.plot(xAnkerseil[:2], zAnkerseil[:2], color='#FF4D44', linewidth=1.8)
-    if xAnkerseil[2] != xAnkerseil[3]:
-        # Falls Anker vom Benutzer definiert wurden
-        axes.plot(xAnkerseil[2:], zAnkerseil[2:], color='#FF4D44', linewidth=1.8)
-    # Stützen
-    axes.vlines(idxStue.astype(float), y_data[idxStue+p].astype(float),
-                zStue.astype(float), colors='black', linewidth=3)
-
-    # Beschriftungen setzen
-    porjTitle = projInfo['Projektname']
-    horiLabel = "Horizontaldistanz [m] von der Anfangsstütze aus"
-    vertiLabel = "Höhe [m.ü.M]"
-    titelLabel = "SEILAPLAN Diagramm\n{}".format(porjTitle)
-    axes.set_xlabel(horiLabel, fontsize=12)
-    axes.set_ylabel(vertiLabel, verticalalignment='top', fontsize=12,
-                    horizontalalignment='center', labelpad=20)
-    axes.set_title(titelLabel, fontsize=13, multialignment='center', y=1.05)
-    # Achsen anpassen
-    axes.set_ylim([data_ylow, data_yhi])
-    axes.set_xlim([data_xlow, data_xhi])
-    axes.set_aspect('equal')
-    stepx = 10
-    stepy = 10
-    if data_xhi >= 300:
-        stepx = 20
-    if data_xhi >= 500:
-        stepy = 20      # sieht besser aus
-    if data_xhi >= 700:
-        stepx = 25
-    if data_ylen >= 400:
-        stepy = 20
-    axes.set_yticks([i for i in range(int(data_ylow), int(data_yhi))
-                     if i % stepy == 0])
-    axes.set_xticks([i for i in range(int(data_xlow), int(data_xhi))
-                     if i % stepx == 0])
-    axes.grid()
-
-    # Legende erzeugen
-    fontP = FontProperties()
-    fontP.set_size('medium')
-    # Zusätzliche Beschreibung für fixe Stützen Beschriftung
-    ncol = 3
-    if np.sum(findFixStueX) > 0:
-        ncol = 4
-        axes.plot([data_xlow], [data_ylow], linewidth=0,
-                  label=("Fixe Stützen: ° = fixe Position, "
-                         "°* = fixe Position und Höhe"))
-    axes.legend(loc='lower center', prop=fontP, bbox_to_anchor=(0.5, 0),
-                ncol=ncol)
-
-    # Annotiations (Beschriftungen im Graph) und Text für Report vorbereiten
-    # ----------------------------------------------------------------------
-    # Stützenbeschriftungen
-    stueLabel = ["Anfangsstütze",  "Endstütze"]
-    # Feldbeschriftungen
-    feldLabel = []
-    # Zwischenstützen hinzufügen
-    i = 0
-    for i in range(1, len(idxStue)-1):
-        marker = ''
-        if findFixStueX[i] > 0:
-            marker = '°'
-            if findFixStueZ[i] > 0:
-                marker = '°*'
-        stueLabel.insert(i, "{}. Stütze{}".format(i+1, marker))
-        feldLabel.insert(i-1, "{}. Feld".format(i))
-    # Letztes Feld hinzufügen
-    feldLabel.insert(i, "{}. Feld".format(i+1))
-
-    # Formatierung der Angaben für Stützenhöhen
-    stueLabelH = []
-    for i in range(len(hoeheStue)):
-        if hoeheStue[i] == 0:        # Keine Höhenangabe falls Stütze == Anker
-            stueLabelH.append("")
-        else:
-            # Formatierung je nach Zahlentyp mit oder ohne Nachkommastellen
-            if hoeheStue[i]%1 == 0.0:
-                stueLabelH.append("{:.0f} m".format(hoeheStue[i]))
-            else:
-                stueLabelH.append("{:.1f} m".format(hoeheStue[i]))
-
-    for i in range(len(idxStue)):
-        axes.annotate(stueLabel[i], xy=(idxStue[i], zStue[i]),
-                     xycoords='data', xytext=(-25, 20),
-                     textcoords='offset points', size=12,
-                     path_effects=[PathEffects.withStroke(linewidth=3, foreground="w")])
-        axes.annotate(stueLabelH[i], xy=(idxStue[i], zStue[i]-zStue[i]/2),
-                     xycoords='data', xytext=(5, -5),
-                     textcoords='offset points', size=12,
-                     path_effects=[PathEffects.withStroke(linewidth=3, foreground="w")])
-
-    # Abschnittsbeschriftungen
-    for i in range(len(idxStue)-1):
-        coordX = idxStue[i] + 0.5*(idxStue[i+1] - idxStue[i])
-        coordY = zStue[i] + 0.5*(zStue[i+1] - zStue[i])
-        axes.annotate(feldLabel[i], xy=(coordX, coordY),
-                     xycoords='data', xytext=(-30, 25), style='italic',
-                     textcoords='offset points', size=12,
-                     path_effects=[PathEffects.withStroke(linewidth=3, foreground="w")])
-    # Bezeichnung der fixen Stützen
-    
-    # TODO: Funktioniert unter Windows nicht
-    # fig.tight_layout()
-
-    # Plot als PNG exportieren
-    # outPlotPNG = os.path.join(outputLoc, '{}_Plot.png'.format(outputName))
-    outPlotPDF = os.path.join(locPlot)
-    # canvas.print_png(outPlotPNG, dpi=dpi)
-    canvas.print_figure(outPlotPDF)
-    del canvas
-    del fig
-
-    return outPlotPDF, [stueLabel, feldLabel]
-
-
 def formatNum(numbr):
+    """Format big numbers with thousand separator"""
     return f"{numbr:,.1f}".replace(',', "'")
 
 
 def removeTxtElements(text, key):
+    """Prepare Text for report by removing 'nan' values"""
     if type(text) is str:
         if key in text:
             return "-"
@@ -287,24 +65,21 @@ def removeTxtElements(text, key):
         return text
 
 
-def generateReportText(confHandler, result):
-    """
+def generateReportText(confHandler, result, comment):
+    """ Arrange texts and values for report generation.
+    
     :type confHandler: configHandler.ConfigHandler
     """
-    import math
     poles = confHandler.project.poles
     poleslist = poles.poles
     [pole_d, pole_z, pole_h, pole_dtop, pole_ztop] = poles.getAsArray()
     hmodell = confHandler.project.getDhmAsStr()
     kraft = result['force']
-    
-    # TODO: Fixe Stützen auf irgend eine Weise markieren. Sind hier gespeichert:
-    # fixeStue = projInfo['fixeStuetzen']
 
-    # Berechnungen für Absteckung
+    # Values for survey work
     hDist = []
     sDist = []
-    az_gon = poles.azimut * 1.11111       # TODO: Mit alter Methode vergleichen!
+    az_gon = poles.azimut * 1.11111
     for i in range(len(pole_d)-1):
         dist_h = pole_d[i+1] - pole_d[i]
         dist_z = pole_z[i + 1] - pole_z[i]
@@ -316,16 +91,26 @@ def generateReportText(confHandler, result):
     sHeader = [i['name'] for i in poleslist[1:-1]]
     fHeader = [f"{i+1}. Feld" for i in range(poleCount)]
 
-    # Abschnitt Zeit und Höhenmodell
+    # First section with duration, dhm and several comments
     str_time = [
         [],
         ["Zeitpunkt", f"{result['duration'][2]}, Berechnungsdauer: {result['duration'][0]}"],
-        ["Höhenmodell", hmodell], [],
-        ["Erklärungen und Diagramme zu den technischen Werten sind in der "
-         "Dokumentation zu finden."],
-        ["Markierung für fixe Stützen: ° = fixe Position, °* = fixe Position und Höhe"]]
+        ["Höhenmodell", hmodell], []]
+    if comment:
+        commentWraped = textwrap.fill(comment, 150).split('\n')
+        # First line
+        str_time.append(['Bemerkung', commentWraped[0]])
+        # Consecutive lines
+        for line in commentWraped[1:]:
+            str_time.append(['', line])
+        str_time.append([])
 
-    # Abschnitt Stützenpositionen
+    str_time.append(["Erklärungen und Diagramme zu den technischen Werten sind in der "
+         "Dokumentation zu finden."])
+    if True:
+        str_time.append(["Markierung für fixe Stützen: ° = fixe Position, °* = fixe Position und Höhe"])
+    
+    # Section poles
     str_posi = [["", "Höhe", "X-Koordinate", "Y-Koordinate", "Z-Koordinate", "(M.ü.M)"]]
     for s in range(poleCount):
         pole = poles.poles[s]
@@ -335,20 +120,20 @@ def generateReportText(confHandler, result):
             f"{formatNum(pole['coordy'])}",
             f"{formatNum(pole['z'])}"])
 
-    # Abschnitt Absteckung im Feld
+    # Section field survey
     str_abst = [[f"Azimut: {az_gon:.1f} gon"],
                 ["", "Horizontaldistanz", "Schrägdistanz"]]
     for f in range(fieldCount):
         str_abst.append([f"von {sHeader[f]} zu {sHeader[f+1]}",
                          f"{hDist[f]:.1f} m", f"{sDist[f]:.1f} m"])
 
-    # Abschnitt Vorspannung der Seilzugkraft
+    # Section cable pull strength
     str_opti = [["optimaler Wertebeich",
                  f"{np.min(result['optSTA_arr']):.0f} - {np.max(result['optSTA_arr']):.0f} kN"],      # TODO: Was machen mit manuell definiertem OptSTA? Leo fragen
                 ["gewählte Seilzugkraft bei der Anfangsstütze",
                  f"{kraft['Spannkraft'][0]:.0f} kN"]]
 
-    # Abschnitt Seillänge
+    # Section cable length
     str_laen = [[""]*2 + fHeader,
                 ["Länge Leerseil bei Anfangszugkraft",
                  f"{kraft['LaengeSeil'][0]:.0f} m"] + [""]*fieldCount,
@@ -357,7 +142,7 @@ def generateReportText(confHandler, result):
                 ["Länge der Spannfelder"] + (",{:.0f} m"*fieldCount).format(
                     *tuple(kraft['LaengeSeil'][2])).split(',', fieldCount)]
 
-    # Abschnitt Durchhang
+    # Section cable slack
     str_durc = [["Abk.", ""] + fHeader,
                 ["yLE", "Leerseil"] + ("{:.2f} m,"*fieldCount).format(
                     *tuple(kraft['Durchhang'][0])).rstrip(',').split(',', fieldCount),
@@ -402,7 +187,7 @@ def generateReportText(confHandler, result):
         ]
     str_seil = [str_seil1, str_seil2, str_seil3, str_seil4]
 
-    # Abschnitt Auftretende Kräfte an den Stützen
+    # Section cable forces
     str_stue1 = [
         ["", "an befahrbarer Stütze, Laufwagen auf Stütze"] + sHeader,
         ["F_Sa_BefRes", "Sattelkraft, resultierend"] +
@@ -451,7 +236,7 @@ def generateReportText(confHandler, result):
     ]
     str_stue = [str_stue1, str_stue2]
 
-    # Abschnitt Seilwinkel
+    # Section cable angles
     str_wink = [
         ["", "am Leerseil"] + sHeader,
         ["alpha LA", "eingehender Winkel"] +
@@ -470,7 +255,7 @@ def generateReportText(confHandler, result):
                 kraft['Anlegewinkel_Lastseil'][1][:-1])).rstrip(',').split(',')
         ]
 
-    # Abschnitt Nachweis
+    # Section verification
     str_nach = [
         ["", ""] + sHeader,
         ["beta", "Leerseilknickwinkel"] +
@@ -480,18 +265,23 @@ def generateReportText(confHandler, result):
             ("{},"*poleCount).format(*tuple(
                 kraft['Nachweis'])).rstrip(',').split(',')
     ]
-
-    # Abschnitt Annahmen
-    str_anna = []
-    annahmen = confHandler.params.getParametersAsStr()
-    lastelem = annahmen.pop(-1)
-    annahmen.insert(0, lastelem)
-    lenAnn = int(math.ceil(len(annahmen) / 2))
-    for i in range(lenAnn):
-        part1 = [annahmen[i]]
-        part2 = ['']
-        part3 = [annahmen[i + lenAnn]]
-        str_anna.append(part1 + part2 + part3)
+    
+    orderedParams = confHandler.params.paramOrder
+    # Parameter set name
+    str_anna = [['Parameterset:', confHandler.params.currentSetName, '', ''],
+                ['']*4]     # empty row
+    lenParam = math.ceil(len(orderedParams) / 2)
+    for i in range(lenParam):
+        paramFirstRow = confHandler.params.params[orderedParams[i]]
+        paramSecondRow = confHandler.params.params[orderedParams[i + lenParam]]
+        firstColum = [paramFirstRow['label'],
+                      f"{confHandler.params.getParameterAsStr(orderedParams[i])} "
+                      f"{paramFirstRow['unit']}"]
+        spacer = ['']
+        secondColumn = [paramSecondRow['label'],
+                        f"{confHandler.params.getParameterAsStr(orderedParams[i + lenParam])} "
+                        f"{paramSecondRow['unit']}"]
+        str_anna.append(firstColum + spacer + secondColumn)
 
     text = [str_time, str_posi, str_abst, str_opti, str_laen, str_durc,
             str_seil, str_stue, str_wink, str_nach, str_anna]
@@ -501,17 +291,12 @@ def generateReportText(confHandler, result):
 
 
 def generateReport(reportText, savePath, projname):
+    """Generate PDF report with reprotlab"""
     from ..packages.reportlab.lib.pagesizes import A4, cm, landscape
     from ..packages.reportlab.platypus import SimpleDocTemplate, Table, TableStyle
     from ..packages.reportlab.graphics.shapes import colors
 
-    # from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, \
-    #     PageBreak
-    # from reportlab.graphics.shapes import Drawing, Image, colors
-
-    breite, hoehe = landscape(A4)
-    # plotBreite = plotSize[0] * inch
-    # plotHoehe = plotSize[1] * inch
+    width, height = landscape(A4)
     margin = 1.5*cm
     if os.path.exists(savePath):
         os.remove(savePath)
@@ -525,37 +310,24 @@ def generateReport(reportText, savePath, projname):
      str_durc, [str_seil1, str_seil2, str_seil3, str_seil4],
      [str_stue1, str_stue2], str_wink, str_nach, str_anna] = reportText
 
-    breiteT, hoeheT = [breite-2*margin, hoehe-2*margin]
-    breiteI = breite-1.5*cm
-
-    Bdoc = [breiteT]
-    Bspalte = [2.7 * cm]
-    Babk = [1.7*cm]
-    Hzeile = [0.40 * cm]
-    HzeileT = [0.45 * cm]
-    anzSt = len(str_posi)-1
-    anzFe = anzSt - 1
+    widthT, heightT = [width-2*margin, height-2*margin]
+    wi_doc = [widthT]
+    wi_clo = [2.7 * cm]
+    wi_abk = [1.7*cm]
+    he_row = [0.40 * cm]
+    he_rowT = [0.45 * cm]
+    len_pole = len(str_posi)-1
+    len_field = len_pole - 1
     lPadd = 6
     fontSize = 8
     smallfontSize = 6
-
-    # Plot auf erste Seite platzieren
-    # img = Image(0, 0, plotBreite, plotHoehe, plot)
-    # d = Drawing(plotBreite, plotHoehe)
-    # d.add(img)
-    # table_img = Table([[d]], breite-5*margin, hoehe-3*margin)
-    # table_img.setStyle(TableStyle([('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-    #                                #('LEFTPADDING', (0, 0), (0, -1), -breiteI),
-    #                                ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-    #                                #('BOTTOMPADDING', (0, 0), (0, -1), -hoeheI/2),
-    #                                #('GRID', (0, 0), (-1,-1), 1, colors.black)
-    #                                 ]))
-    # Titeldefinition
+    
+    # Title definition
     h_tite = [["Seilbahnprojekt        "+projname]]
     h_posi = [["Stützenpositionen"]]
     h_abst = [["Daten für Absteckung im Feld"]]
     h_opti = [["Vorspannung der Seilzugkraft"]]
-    h_laen = [["Seillänge"]]
+    h_leng = [["Seillänge"]]
     h_durc = [["Durchhang"]]
     h_seil = [["Auftretende Kräfte am Seil"]]
     h_stue = [["Auftretende Kräfte an den Stützen"]]
@@ -563,7 +335,7 @@ def generateReport(reportText, savePath, projname):
     h_nach = [["Nachweis, dass Tragseil nicht vom Sattel abhebt"]]
     h_anna = [["Annahmen"]]
 
-    # Tablestyles
+    # Table styles
     font = 'Helvetica'
     fontBold = 'Helvetica-Bold'
     fontHeader = 'Helvetica-Oblique'
@@ -572,124 +344,117 @@ def generateReport(reportText, savePath, projname):
                               ('BACKGROUND', (0, 0), (-1, -1), colors.lightgrey),
                               ('FONT', (0, 0), (-1, -1), font, 8),
                               ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-                              #('GRID', (0, 0), (-1,-1), 1, colors.black)
                               ])
-    stdStyleA = [('LEFTPADDING', (0, 0), (0, -1), lPadd),    # Alles einrücken
-                ('ALIGN', (1, 0), (-1, -1), 'RIGHT'), # nach erster Spalte rechtsbündig
-                # ('GRID', (0, 0), (-1,-1), 1, colors.black),
+    stdStyleA = [('LEFTPADDING', (0, 0), (0, -1), lPadd),  # Align everything left
+                ('ALIGN', (1, 0), (-1, -1), 'RIGHT'),  # after first column aling right
                 ('FONT', (0, 0), (-1, -1), font, fontSize)]
-    stdStyleB = [('LEFTPADDING', (0, 0), (0, -1), lPadd),    # Alles einrücken
+    stdStyleB = [('LEFTPADDING', (0, 0), (0, -1), lPadd),
                  ('FONT', (1, 0), (-1, -1), font, fontSize),
-                 # ('GRID', (0, 0), (-1,-1), 1, colors.black),
-                 ('ALIGN', (2, 0), (-1, -1), 'RIGHT')]   # nach zweiter Spalte rechtsbündig
+                 ('ALIGN', (2, 0), (-1, -1), 'RIGHT')]
 
-    t_tite1 = Table(h_tite, Bdoc, [0.8*cm])
-    t_tite2 = Table(str_time, [2.6*cm, 15.2*cm], len(str_time) * Hzeile)
+    t_tite1 = Table(h_tite, wi_doc, [0.8*cm])
+    t_tite2 = Table(str_time, [2.6*cm, 15.2*cm], len(str_time) * he_row)
     t_tite1.setStyle(TableStyle([
         ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
         ('FONT', (0, 0), (-1, -1), fontBold, 13),
         ('BACKGROUND', (0, 0), (-1, -1), colors.lightgrey),
         ('LINEBELOW', (0,0), (-1,-1), 1, colors.black),
-        #('GRID', (0, 0), (-1,-1), 1, colors.black)
         ]))
     t_tite2.setStyle(TableStyle([('FONT', (0, 0), (-1, -1), font, fontSize),
                                  ('LEFTPADDING', (0, 0), (0, -1), lPadd)]))
 
-    t_posi1 = Table(h_posi, Bdoc, HzeileT)
-    t_posi2 = Table(str_posi, [1.7*cm] + 5*[2.5*cm], len(str_posi) * Hzeile)
+    t_posi1 = Table(h_posi, wi_doc, he_rowT)
+    t_posi2 = Table(str_posi, [1.7*cm] + 5*[2.5*cm], len(str_posi) * he_row)
     t_posi1.setStyle(title_style)
     t_posi2.setStyle(TableStyle(stdStyleA + [
         ('ALIGN', (5, 0), (5, -0), 'LEFT'),
         ('FONT', (0, 0), (-2, 0), fontHeader, smallfontSize)]))
 
-    t_abst1 = Table(h_abst, Bdoc, HzeileT)
-    t_abst2 = Table(str_abst, [5*cm] + 2*Bspalte, len(str_abst) * Hzeile)
+    t_abst1 = Table(h_abst, wi_doc, he_rowT)
+    t_abst2 = Table(str_abst, [5*cm] + 2*wi_clo, len(str_abst) * he_row)
     t_abst1.setStyle(title_style)
     t_abst2.setStyle(TableStyle(stdStyleA + [
         ('FONT', (0, 1), (-1, 1), fontHeader, smallfontSize)]))
 
-    t_opti1 = Table(h_opti, Bdoc, HzeileT)
-    t_opti2 = Table(str_opti, [5*cm] + Bspalte, 2*Hzeile)
+    t_opti1 = Table(h_opti, wi_doc, he_rowT)
+    t_opti2 = Table(str_opti, [5*cm] + wi_clo, 2*he_row)
     t_opti1.setStyle(title_style)
     t_opti2.setStyle(TableStyle(stdStyleA))
 
-    t_laen1 = Table(h_laen, Bdoc, HzeileT)
-    t_laen2 = Table(str_laen, [5.8*cm] + [2*cm] + [1.5*cm]*anzFe, 4*Hzeile)
+    t_laen1 = Table(h_leng, wi_doc, he_rowT)
+    t_laen2 = Table(str_laen, [5.8*cm] + [2*cm] + [1.5*cm]*len_field, 4*he_row)
     t_laen1.setStyle(title_style)
     t_laen2.setStyle(TableStyle(stdStyleA + [
-        ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize)]))  # Feld-Header
+        ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize)]))  # field headers
 
-    t_durc1 = Table(h_durc, Bdoc, HzeileT)
-    t_durc2 = Table(str_durc, Babk + [3*cm] + [1.7*cm]*anzFe, 3*Hzeile)
+    t_durc1 = Table(h_durc, wi_doc, he_rowT)
+    t_durc2 = Table(str_durc, wi_abk + [3*cm] + [1.7*cm]*len_field, 3*he_row)
     t_durc1.setStyle(title_style)
     t_durc2.setStyle(TableStyle(stdStyleB + [
-        ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),   # Feld-Header
-        ('FONT', (0, 0), (0, -1), font, smallfontSize)]))       # Abkürzungen in der 1. Spalte
+        ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),  # field headers
+        ('FONT', (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
 
-    t_seil1 = Table(h_seil, Bdoc, HzeileT)
-    t_seil2 = Table(str_seil1, Babk + [6*cm] + [1*cm] + [1.5*cm]*anzFe, len(str_seil1)*Hzeile)
-    t_seil3 = Table(str_seil2, Babk + [7.7*cm] + [1.5*cm]*anzSt, len(str_seil2)*Hzeile)
-    t_seil4 = Table(str_seil3, Babk + [6*cm] + [1*cm], len(str_seil3)*Hzeile)
-    t_seil5 = Table(str_seil4, Babk + [7.7*cm] + [1.5*cm]*anzFe, len(str_seil4)*Hzeile)
+    t_seil1 = Table(h_seil, wi_doc, he_rowT)
+    t_seil2 = Table(str_seil1, wi_abk + [6*cm] + [1*cm] + [1.5*cm]*len_field, len(str_seil1)*he_row)
+    t_seil3 = Table(str_seil2, wi_abk + [7.7*cm] + [1.5*cm]*len_pole, len(str_seil2)*he_row)
+    t_seil4 = Table(str_seil3, wi_abk + [6*cm] + [1*cm], len(str_seil3)*he_row)
+    t_seil5 = Table(str_seil4, wi_abk + [7.7*cm] + [1.5*cm]*len_field, len(str_seil4)*he_row)
     t_seil1.setStyle(title_style)
     t_seil2.setStyle(TableStyle(stdStyleB + [
-        ('FONT', (0, 0), (-1, 0), fontHeader, fontSize),   # erste Zeile = Unterkapitel
-        ('FONT', (3, 3), (-1, 3), fontHeader, smallfontSize),   # Stützen-Header
-        ('FONT', (0, 0), (0, -1), font, smallfontSize),     # Abkürzungen in der 1. Spalte
+        ('FONT', (0, 0), (-1, 0), fontHeader, fontSize),  # first row = subsection
+        ('FONT', (3, 3), (-1, 3), fontHeader, smallfontSize),  # pole header
+        ('FONT', (0, 0), (0, -1), font, smallfontSize),  # abbreviation in first column
         ('BOTTOMPADDING', (0, -1), (-1, -1), 0)]))
     t_seil3.setStyle(TableStyle(stdStyleB + [
-        ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),   # Stützen-Header
-        ('FONT', (0, 0), (0, -1), font, smallfontSize),         # Abkürzungen in der 1. Spalte
+        ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),  # pole header
+        ('FONT', (0, 0), (0, -1), font, smallfontSize),  # abbreviation in first column
         ('TOPPADDING', (0, 0), (-1, 0), 0)]))
     t_seil4.setStyle(TableStyle(stdStyleB + [
-        ('FONT', (0, 0), (-1, 0), fontHeader, fontSize),   # erste Zeile = Unterkapitel
-        ('FONT', (0, 0), (0, -1), font, smallfontSize)]))       # Abkürzungen in der 1. Spalte
+        ('FONT', (0, 0), (-1, 0), fontHeader, fontSize),  # first row = subsection
+        ('FONT', (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
     t_seil5.setStyle(TableStyle(stdStyleB + [
-        ('FONT', (0, 0), (1, 0), fontHeader, fontSize),    # erste Zeile = Unterkapitel
-        ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),   # Feld-Header
-        ('FONT', (0, 0), (0, -1), font, smallfontSize)]))       # Abkürzungen in der 1. Spalte
+        ('FONT', (0, 0), (1, 0), fontHeader, fontSize),  # first row = subsection
+        ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),  # field header
+        ('FONT', (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
 
-    t_stue1 = Table(h_stue, Bdoc, HzeileT)
-    t_stue2 = Table(str_stue1, Babk + [6.8*cm] + [2.2*cm]*anzSt, len(str_stue1)*Hzeile)
-    t_stue3 = Table(str_stue2, Babk + [6.8*cm] + [1.1*cm]*anzSt,len(str_stue2)*Hzeile)
-    # t_stue4 = Table(str_stue3, Babk + [6.8*cm] + [1.1*cm]*(anzSt*2), len(str_stue3)*Hzeile)
+    t_stue1 = Table(h_stue, wi_doc, he_rowT)
+    t_stue2 = Table(str_stue1, wi_abk + [6.8*cm] + [2.2*cm]*len_pole, len(str_stue1)*he_row)
+    t_stue3 = Table(str_stue2, wi_abk + [6.8*cm] + [1.1*cm]*len_pole,len(str_stue2)*he_row)
     t_stue1.setStyle(title_style)
     t_stue2.setStyle(TableStyle(stdStyleB + [
-        ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),   # Feld-Header
-        ('FONT', (1, 0), (1, 0), fontHeader, fontSize),    # Überschrift
-        ('FONT', (0, 0), (0, -1), font, smallfontSize)]))    # Abkürzungen in der 1. Spalte
+        ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),  # field header
+        ('FONT', (1, 0), (1, 0), fontHeader, fontSize),  # subsection
+        ('FONT', (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
     stdStyleStue = stdStyleB + [
-        ('FONT', (2, 0), (-1, 1), fontHeader, smallfontSize),   # Feld-Header
-        ('FONT', (1, 0), (1, 1), fontHeader, fontSize),    # Überschrift
-        # ('TOPPADDING', (0, -1), (-1, -1), 0),
-        ('FONT', (0, 0), (0, -1), font, smallfontSize),    # Abkürzungen in der 1. Spalte
-        # ('ALIGN', (2, 0), (-1, 0), 'CENTER'),
+        ('FONT', (2, 0), (-1, 1), fontHeader, smallfontSize),   # field header
+        ('FONT', (1, 0), (1, 1), fontHeader, fontSize),  # subsection
+        ('FONT', (0, 0), (0, -1), font, smallfontSize),  # abbreviation in first column
         ('ALIGN', (2, 1), (2, -1), 'CENTER'),
         ('ALIGN', (-2, 1), (-2, -1), 'CENTER')]
-    for i in range(2, anzSt*2+2, 2):
+    for i in range(2, len_pole*2+2, 2):
         stdStyleStue += [
                          ('RIGHTPADDING', (i, 1), (i, -1), 1)]
     t_stue3.setStyle(TableStyle(stdStyleStue))
 
-    t_wink1 = Table(h_wink, Bdoc, HzeileT)
-    t_wink2 = Table(str_wink, Babk + [4*cm] + [1.7*cm]*anzFe, 7*Hzeile)
+    t_wink1 = Table(h_wink, wi_doc, he_rowT)
+    t_wink2 = Table(str_wink, wi_abk + [4*cm] + [1.7*cm]*len_field, 7*he_row)
     t_wink1.setStyle(title_style)
     t_wink2.setStyle(TableStyle(stdStyleB + [
-        ('FONT', (1, 0), (1, 0), fontHeader, fontSize),    # Leerseil Überschrift
-        ('FONT', (1, 4), (1, 4), fontHeader, fontSize),    # Lastseil Überschrift
-        ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),   # Feld-Header
-        ('FONT', (2, 4), (-1, 4), fontHeader, smallfontSize),   # Feld-Header
-        ('FONT', (0, 0), (0, -1), font, smallfontSize)]))       # Abkürzungen in der 1. Spalte
+        ('FONT', (1, 0), (1, 0), fontHeader, fontSize),  # heading empty cable
+        ('FONT', (1, 4), (1, 4), fontHeader, fontSize),  # heading load cable
+        ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),  # field header
+        ('FONT', (2, 4), (-1, 4), fontHeader, smallfontSize),  # field header
+        ('FONT', (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
 
-    t_nach1 = Table(h_nach, Bdoc, HzeileT)
-    t_nach2 = Table(str_nach, Babk + [4*cm] + [1.7*cm]*anzFe, 3*Hzeile)
+    t_nach1 = Table(h_nach, wi_doc, he_rowT)
+    t_nach2 = Table(str_nach, wi_abk + [4*cm] + [1.7*cm]*len_field, 3*he_row)
     t_nach1.setStyle(title_style)
     t_nach2.setStyle(TableStyle(stdStyleB + [
-        ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),   # Feld-Header
-        ('FONT', (0, 0), (0, -1), font, smallfontSize)]))       # Abkürzungen in der 1. Spalte
+        ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),  # field header
+        ('FONT', (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
 
-    t_anna1 = Table(h_anna, Bdoc, HzeileT)
+    t_anna1 = Table(h_anna, wi_doc, he_rowT)
     t_anna2 = Table(str_anna, [5*cm, 3*cm, 1*cm, 5*cm, 3*cm], len(str_anna) * [0.35*cm])
     t_anna1.setStyle(title_style)
     t_anna2.setStyle(TableStyle([
@@ -700,12 +465,6 @@ def generateReport(reportText, savePath, projname):
         ('ALIGN', (4, 0), (4, -1), 'RIGHT'),
         ('FONT', (0, 0), (-1, -1), font, fontSize)]))
 
-    # notiz = [["Erklärungen und Diagramme zu den Seildaten sind in der Dokumentation zu finden."]]
-    # t_notiz = Table(notiz, Bdoc, Hzeile)
-    # t_notiz.setStyle(TableStyle(stdStyleB + [
-    #     ('FONT', (0, 0), (-1, -1), font, fontSize)
-    #                                         ]))
-
     data = [ [Table([[t_tite1], [t_tite2]])], [Table([[t_posi1], [t_posi2]])],
              [Table([[t_abst1], [t_abst2]])],
              [Table([[t_opti1], [t_opti2]])], [Table([[t_laen1], [t_laen2]])],
@@ -715,13 +474,9 @@ def generateReport(reportText, savePath, projname):
              [Table([[t_wink1], [t_wink2]])],
              [Table([[t_nach1], [t_nach2]])], [Table([[t_anna1], [t_anna2]])]]
 
-    # elements.append(table_img)
-    # elements.append(PageBreak())
     elements.append(Table(data))
-
     doc1.build(elements)
     del elements
-    # os.remove(plot)
 
 
 def createOutputFolder(folder, name):

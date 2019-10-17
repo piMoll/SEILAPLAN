@@ -13,7 +13,7 @@
 """
 
 import numpy as np
-from math import pi
+from math import pi, cos, sin
 
 
 def xfrange(start, stop, step):
@@ -518,3 +518,8 @@ def preciseCableLight(zi, di, IS, STA, HM, LP):
     seilHebtAb = np.prod(Vi[1:-1] >= 0.01) == 0
 
     return leerseilknickwinkel, seilHebtAb
+
+
+def updateWithCableCoordinates(cableline, pointA, azimut):
+    cableline['coordx'] = pointA[0] + cableline['xaxis'] * cos(azimut)
+    cableline['coordy'] = pointA[1] + cableline['xaxis'] * sin(azimut)

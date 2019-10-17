@@ -24,7 +24,7 @@ import numpy as np
 from math import floor
 
 from qgis.PyQt.QtCore import QSize, QTimer
-from qgis.PyQt.QtWidgets import QDialog, QSizePolicy
+from qgis.PyQt.QtWidgets import QDialog, QSizePolicy, QMessageBox
 from qgis.PyQt.QtGui import QPixmap
 
 from .ui_adjustmentDialog import Ui_AdjustmenDialog
@@ -34,7 +34,9 @@ from .adjustmentDialog_poles import AdjustmentDialogPoles
 from .adjustmentDialog_params import AdjustmentDialogParams
 from .adjustmentDialog_thresholds import AdjustmentDialogThresholds
 from .saveDialog import DialogOutputOptions
-from ..tool.cablelineFinal import preciseCable
+from ..tool.cablelineFinal import preciseCable, updateWithCableCoordinates
+from ..tool.outputReport import generateReportText, generateReport, createOutputFolder
+from ..tool.outputGeo import generateGeodata, addToMap, generateCoordTable
 
 
 class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
@@ -97,13 +99,16 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         self.timer = QTimer()
         self.configurationHasChanged = False
         self.isRecalculating = False
+        self.unsavedChanges = True
 
         # Save dialog
         self.saveDialog = DialogOutputOptions(self.iface, self, self.confHandler)
         
-        self.btnCancel.clicked.connect(self.Reject)
-        self.btnSave.clicked.connect(self.save)
-        self.btnBackToStart.clicked.connect(self.goBackToStart)
+        # Connect signals
+        self.btnClose.clicked.connect(self.onClose)
+        self.btnSave.clicked.connect(self.onSave)
+        self.btnBackToStart.clicked.connect(self.onReturnToStart)
+        self.fieldComment.textChanged.connect(self.onCommentChanged)
         self.updateRecalcStatus('ready')
 
     def loadData(self, pickleFile):
@@ -120,17 +125,10 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
     def initData(self, result):
         if not result:
             self.close()
-
         # Save original data from optimization
         self.originalData = result
-        
+        # Dictionary properties: cableline, optSTA, force, optLen, duration
         self.result = result
-        # Structure:
-        # cableline
-        # optSTA
-        # force
-        # optLen
-        # duration
         self.result['optSTA_arr'] = self.result['optSTA']
         self.result['optSTA'] = self.result['optSTA_arr'][0]
         self.cableline = self.result['cableline']
@@ -199,33 +197,31 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
     def updateCableParam(self):
         self.configurationHasChanged = True
     
+    def onCommentChanged(self):
+        self.unsavedChanges = True
+    
     def updateRecalcStatus(self, status):
-        ico_path = os.path.join(__file__, 'icons')
-        # if self.recalcStatus_ico.isHidden():
-        #     self.recalcStatus_ico.show()
-        #     self.recalcStatus_txt.show()
-        # if status == 'start':
-        #     self.recalcStatus_txt.setText('Neuberechnung...')
-        #     self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
-        #         ico_path, 'icon_reload.png')))
+        ico_path = os.path.join(os.path.dirname(__file__), 'icons')
+        if status == 'start':
+            self.recalcStatus_txt.setText('Neuberechnung...')
+            self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
+                ico_path, 'icon_reload.png')))
         if status == 'ready':
-            self.recalcStatus_ico.show()
-            self.recalcStatus_txt.show()
             self.recalcStatus_txt.setText('Optimierung erfolgreich abgeschlossen.')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_green.png')))
-        if status == 'success':
-            self.recalcStatus_ico.show()
-            self.recalcStatus_txt.show()
+        elif status == 'success':
             self.recalcStatus_txt.setText('Seillinie neu berechnet')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_green.png')))
         elif status == 'error':
-            self.recalcStatus_ico.show()
-            self.recalcStatus_txt.show()
             self.recalcStatus_txt.setText('Es ist ein Fehler aufgetreten')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_yellow.png')))
+        elif status == 'saveDone':
+            self.recalcStatus_txt.setText('Ergebnisse gespeichert')
+            self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
+                ico_path, 'icon_save.png')))
     
     def recalculate(self):
         if not self.configurationHasChanged or self.isRecalculating:
@@ -234,8 +230,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         
         try:
             params = self.confHandler.params.getSimpleParameterDict()
-            cableline, kraft, seil_possible = preciseCable(params,
-                                                           self.poles,
+            cableline, kraft, seil_possible = preciseCable(params, self.poles,
                                                            self.result['optSTA'])
         except Exception as e:
             # TODO: Index Errors for certain angles still there
@@ -262,6 +257,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         self.updateRecalcStatus('success')
         self.configurationHasChanged = False
         self.isRecalculating = False
+        self.unsavedChanges = True
     
     def updateThresholds(self):
         params = self.confHandler.params
@@ -366,80 +362,66 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
 
         return valStr, location
     
-    def Apply(self):
+    def onClose(self):
         self.close()
     
-    def goBackToStart(self):
+    def onReturnToStart(self):
         self.doReRun = True
         self.Reject()
     
-    def save(self):
+    def onSave(self):
         self.saveDialog.doSave = False
         self.saveDialog.exec()
         if self.saveDialog.doSave:
             self.confHandler.updateUserSettings()
             self.createOutput()
+            self.unsavedChanges = False
     
     def createOutput(self):
-        pass
-        # from .tool.outputReport import getTimestamp, plotData, \
-        #     generateReportText, \
-        #     generateReport, createOutputFolder
-        # from .tool.outputGeo import generateGeodata, addToMap, \
-        #     generateCoordTable
-        #
+        outputFolder = self.confHandler.getCurrentPath()
+        project = self.confHandler.project
+        projName = project.getProjectName()
+        outputLoc = createOutputFolder(outputFolder, projName)
+        updateWithCableCoordinates(self.cableline, project.points['A'],
+                                   project.azimut)
+        # Save project file
+        self.confHandler.saveToFile(os.path.join(outputLoc,  outputLoc + '_projectfile.txt'))
 
-        # outputFolder = self.projInfo['outputOpt']['outputPath']
-        # outputName = self.projInfo['Projektname']
-        # outputLoc = createOutputFolder(outputFolder, outputName)
-        # # Move saved project file to output folder
-        # if os.path.exists(self.projInfo['projFile']):
-        #     newpath = os.path.join(outputLoc,
-        #                            os.path.basename(self.projInfo['projFile']))
-        #     os.rename(self.projInfo['projFile'], newpath)
-        #     self.projInfo['projFile'] = newpath
-        # # Generate plot
-        # plotSavePath = os.path.join(outputLoc,
-        #                             "{}_Diagramm.pdf".format(outputName))
-        # plotImage, labelTxt = plotData(disp_data, gp["di"], seilDaten, HM,
-        #                                self.confHandler.params.params,
-        #                                self.projInfo,
-        #                                resultStatus, plotSavePath)
-        # self.sig_value.emit(optiLen * 1.015)
-        # # Calculate duration and generate time stamp
-        # duration, timestamp1, timestamp2 = getTimestamp(t_start)
-        #
-        # # Create report
-        # if self.projInfo['outputOpt']['report']:
-        #     reportSavePath = os.path.join(outputLoc,
-        #                                   "{}_Bericht.pdf".format(outputName))
-        #     reportText = generateReportText(IS, self.projInfo, HM,
-        #                                     kraft, optSTA, duration,
-        #                                     timestamp2, labelTxt)
-        #     generateReport(reportText, reportSavePath, outputName)
-        #
-        # # Create plot
-        # if not self.projInfo['outputOpt']['plot']:
-        #     # was already created before and gets deleted if not used
-        #     if os.path.exists(plotImage):
-        #         os.remove(plotImage)
-        #
-        # # Generate geo data
-        # if self.projInfo['outputOpt']['geodata']:
-        #     geodata = generateGeodata(self.projInfo, HM, seilDaten,
-        #                               labelTxt[0], outputLoc)
-        #     addToMap(geodata, outputName)
-        #
-        # # Generate coordinate tables
-        # if self.projInfo['outputOpt']['coords']:
-        #     table1SavePath = os.path.join(outputLoc,
-        #                                   outputName + '_KoordStuetzen.csv')
-        #     table2SavePath = os.path.join(outputLoc,
-        #                                   outputName + '_KoordSeil.csv')
-        #     generateCoordTable(seilDaten, gp["zi"], HM,
-        #                        [table1SavePath, table2SavePath], labelTxt[0])
+        # Create report
+        if self.confHandler.getOutputOption('report'):
+            reportSavePath = os.path.join(outputLoc, f"{projName}_Bericht.pdf")
+            reportText = generateReportText(self.confHandler, self.result,
+                                            self.fieldComment.toPlainText())
+            generateReport(reportText, reportSavePath, projName)
 
-    def Reject(self):
-        # TODO: Nachfrage
-        self.close()
+        # Create plot
+        if self.confHandler.getOutputOption('plot'):
+            plotSavePath = os.path.join(outputLoc, f'{projName}_Diagramm.pdf')
+            printPlot = AdjustmentPlot(self)
+            printPlot.initData(self.profile.di_disp, self.profile.zi_disp)
+            printPlot.updatePlot(self.poles.getAsArray(), self.cableline, True)
+            printPlot.printToPdf(plotSavePath, projName, self.poles.poles)
 
+        # Generate geo data
+        if self.confHandler.getOutputOption('geodata'):
+            geodata = generateGeodata(project, self.poles.poles,
+                                      self.cableline, outputLoc)
+            addToMap(geodata, projName)
+
+        # Generate coordinate tables
+        if self.confHandler.getOutputOption('coords'):
+            table1SavePath = os.path.join(outputLoc, f'{projName}_KoordStuetzen.csv')
+            table2SavePath = os.path.join(outputLoc, f'{projName}_KoordSeil.csv')
+            generateCoordTable(self.cableline, self.profile, self.poles.poles,
+                               [table1SavePath, table2SavePath])
+        
+        self.updateRecalcStatus('saveDone')
+
+    def closeEvent(self, event):
+        if self.isRecalculating or self.configurationHasChanged:
+            return
+        if self.unsavedChanges:
+            reply = QMessageBox.information(self, 'Nicht gespeicherte Änderungen',
+                'Möchten Sie die Ergebnisse speichern?', QMessageBox.No | QMessageBox.Yes)
+            if reply == QMessageBox.Yes:
+                self.onSave()

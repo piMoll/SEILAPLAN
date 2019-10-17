@@ -20,11 +20,10 @@
 """
 import numpy as np
 from qgis.PyQt.QtCore import Qt
+from qgis.PyQt.QtWidgets import QSizePolicy
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-import matplotlib.patheffects as PathEffects
-from matplotlib.font_manager import FontProperties
 
 
 class AdjustmentPlot(FigureCanvas):
@@ -33,7 +32,7 @@ class AdjustmentPlot(FigureCanvas):
     
     def __init__(self, parent=None, width=5, height=4, dpi=72):
         self.win = parent
-        self.fig = Figure(figsize=(width, height), dpi=dpi)
+        self.fig = Figure(figsize=(width, height), dpi=dpi, facecolor='#efefef')
         self.axes = self.fig.add_subplot(111)
     
         FigureCanvas.__init__(self, self.fig)
@@ -50,25 +49,21 @@ class AdjustmentPlot(FigureCanvas):
         self.currentPole = None
         self.isZoomed = False
 
-        self.axes.set_aspect(2, None, 'SW')
-        self.__setupAxes(self.axes)
+        self.axes.set_aspect('equal', 'datalim')
+        self.__setupAxes()
         self.setFocusPolicy(Qt.ClickFocus)
-        self.fig.tight_layout(pad=0, w_pad=0.1, h_pad=0.1)
+        FigureCanvas.setSizePolicy(self, QSizePolicy.Expanding,
+                                   QSizePolicy.Expanding)
+        FigureCanvas.updateGeometry(self)
+        self.fig.tight_layout(pad=0, w_pad=0.1, h_pad=0.1)      # TODO: alternative constraint_layout()
 
-    @staticmethod
-    def __setupAxes(axe):
-        # axe.set_xlabel("Horizontaldistanz von Startpunkt aus", fontsize=10)
-        # axe.set_ylabel("Höhe", verticalalignment='top', fontsize=10,
-        #                horizontalalignment='right', labelpad=20)
-        axe.set_aspect('equal', 'datalim')
-        axe.ticklabel_format(style='plain', useOffset=False)
-        axe.tick_params(axis="both", which="major", direction="out",
-                        length=5, width=1, bottom=True, top=False,
-                        left=True, right=False)
-        axe.minorticks_on()
-        axe.tick_params(axis="both", which="minor", direction="out", length=5,
-                        width=1, bottom=True, top=False, left=True,
-                        right=False)
+    def __setupAxes(self):
+        self.axes.ticklabel_format(style='plain', useOffset=False)
+        self.axes.tick_params(axis="both", which="major", direction="in",
+                              length=5, width=1, bottom=True, top=False,
+                              left=True, right=False)
+        self.axes.minorticks_on()
+        self.axes.tick_params(which="minor", direction="in")
         
     def initData(self, xdata, terrain):
         self.xdata = xdata
@@ -95,32 +90,38 @@ class AdjustmentPlot(FigureCanvas):
             self.axes.set_ylim(self.data_ylow, self.data_yhi)
             self.labelBuffer = (self.data_yhi - self.data_ylow) / 40
         
-    def updatePlot(self, poles, cable):
+    def updatePlot(self, poles, cable, printPdf=False):
+        scale = 1
+        if printPdf:
+            scale = 0.5
         self.axes.clear()
+        self.__setupAxes()
         # Terrain
-        self.axes.plot(self.xdata, self.terrain, color='#a1d1ab', linewidth=3.5)
+        self.axes.plot(self.xdata, self.terrain, color='#a1d1ab',
+                       linewidth=3.5*scale)
         # Cable lines
         self.axes.plot(cable['xaxis'], cable['empty'], color='#4D83B2',
-                       linewidth=1.5, label="Leerseil")
+                       linewidth=1.5*scale, label="Leerseil")
         self.axes.plot(cable['xaxis'], cable['load'], color='#FF4D44',
-                       linewidth=1.5, label="Lastwegkurve nach Zweifel")
+                       linewidth=1.5*scale, label="Lastwegkurve\nnach Zweifel")
         # Anchors
         self.axes.plot(cable['anchor']['d'][:2], cable['anchor']['z'][:2],
-                       color='#FF4D44', linewidth=1.5)
+                       color='#FF4D44', linewidth=1.5*scale)
         self.axes.plot(cable['anchor']['d'][2:], cable['anchor']['z'][2:],
-                       color='#FF4D44', linewidth=1.5)
+                       color='#FF4D44', linewidth=1.5*scale)
         # Ground clearance
         self.axes.plot(cable['groundclear_di'], cable['groundclear'],
-                       color='#910000', linewidth=1, linestyle=':',
+                       color='#910000', linewidth=1*scale, linestyle=':',
                        label="")
         self.axes.plot(cable['groundclear_di'], cable['groundclear_under'],
-                       color='#910000', linewidth=1, label="Min. Bodenabstand unterschritten")
+                       color='#910000', linewidth=1*scale,
+                       label="Min. Bodenabstand\nunterschritten")
             
         # Poles
         [pole_d, pole_z, pole_h, pole_dtop, pole_ztop] = poles
         for i, d in enumerate(pole_d):
             self.axes.plot([pole_d[i], pole_dtop[i]], [pole_z[i], pole_ztop[i]],
-                           color='#363432', linewidth=3.0)
+                           color='#363432', linewidth=3.0*scale)
         # Vertical guide lines
         if self.isZoomed:
             d = self.currentPole['d']
@@ -133,9 +134,11 @@ class AdjustmentPlot(FigureCanvas):
         # Data limit of axis
         self.setPlotLimits()
         # Add labels
-        self.placeLabels(pole_d, pole_ztop)
+        if not printPdf:
+            self.placeLabels(pole_d, pole_ztop)
         # Legend
-        self.axes.legend(loc='lower center', bbox_to_anchor=(0.5, 0), ncol=3)
+        self.axes.legend(loc='lower center', fontsize=12,
+                         bbox_to_anchor=(0.5, 0), ncol=3)
         self.draw()
 
     def zoomTo(self, pole):
@@ -165,5 +168,28 @@ class AdjustmentPlot(FigureCanvas):
             self.axes.text(pos_h_d, pos_h_z, f'{round(h, 1)} m', ha='center')
         else:
             for i in range(len(xdata)):
-                self.axes.text(xdata[i], ydata[i] + self.labelBuffer, f'{i + 1}',
-                               fontsize=12, ha='center')
+                self.axes.text(xdata[i], ydata[i] + self.labelBuffer*2,
+                               f'{i + 1}', fontsize=12, ha='center')
+    
+    def printToPdf(self, filelocation, title, poles, dpi=300):
+        xlen = 11.69  # 11.69 inch = A4 width
+        ylen = 8.27  # 8.27 inch = A4 height
+        self.fig.set_size_inches([xlen, ylen])
+        self.fig.tight_layout(pad=4, w_pad=1, h_pad=3)
+        self.zoomOut()
+        # Layout plot
+        self.axes.set_title(f'Seilaplan Plot  -  {title}', fontsize=10,
+                            multialignment='center', y=1.05)
+        self.axes.set_xlabel("Horizontaldistanz [m]", fontsize=9)
+        self.axes.set_ylabel("Höhe [M.ü.M]", fontsize=9)
+        self.axes.tick_params(labelsize=8)
+        self.axes.grid(which='major', lw=0.5)
+        self.axes.grid(which='minor', lw=0.5, linestyle=':')
+        self.axes.legend(loc='lower center', fontsize=8,
+                         bbox_to_anchor=(0.5, 0), ncol=3)
+        # Label poles
+        for pole in poles:
+            if pole['poleType'] == 'pole':
+                self.axes.text(pole['dtop'], pole['ztop'] + self.labelBuffer*2,
+                               pole['name'], ha='center', fontsize=8)
+        self.print_figure(filelocation, dpi)

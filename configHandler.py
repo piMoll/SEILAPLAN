@@ -376,7 +376,7 @@ class ParameterConfHandler(AbstractConfHandler):
         
         # Parameters
         self.params = {}
-        self.paramOrder = {}
+        self.paramOrder = []
         # Short-hand dictionary for use in algorithm
         self.p = {}
         
@@ -408,7 +408,7 @@ class ParameterConfHandler(AbstractConfHandler):
         orderedParams = sorted(orderedKeyList, key=itemgetter(1))
         
         self.params = parameterDef
-        self.paramOrder = orderedParams
+        self.paramOrder = [elem[0] for elem in orderedParams]
     
     def _getParameterInfo(self, property_name):
         try:
@@ -575,7 +575,7 @@ class ParameterConfHandler(AbstractConfHandler):
         txt = [
             '{5}{5}{0}{5}{1: <17}{2: <12}{3: <45}{4: <9} {5:-<84}{5}'.format(
                 'Parameter:', 'Name', 'Wert', 'Label', 'Einheit', os.linesep)]
-        for property_name, sortNr in self.paramOrder:
+        for property_name in self.paramOrder:
             p = self.params[property_name]
             # Get correctly formatted string of value
             value = self.getParameterAsStr(property_name)

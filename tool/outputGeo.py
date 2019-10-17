@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 /***************************************************************************
  SeilaplanPlugin
@@ -29,63 +28,59 @@ from qgis.core import QgsWkbTypes, QgsFields, QgsField, QgsVectorFileWriter, \
     QgsFeature, QgsGeometry, QgsPoint, QgsCoordinateReferenceSystem
 
 
-def generateGeodata(projInfo, HM, seilDaten, stueLabel, savePath):
+def generateGeodata(project, poles, cableline, savePath):
     """Creates 3D shapefiles containing the pole positions, the empty cable
-    line and the cable line under load."""
-    projName = projInfo['Projektname']
-    [Ax, Ay] = projInfo['Anfangspunkt']
-    [Ex, Ey] = projInfo['Endpunkt']
-    epsg = projInfo['Hoehenmodell']['spatialRef']
+    line and the cable line under load.
+    :type project: configHandler.ProjectConfHandler
+    """
+    projName = project.getProjectName()
+    [Ax, Ay] = project.points['A']
+    epsg = project.dhm.spatialRef
     spatialRef = QgsCoordinateReferenceSystem(epsg)
 
-    # Cable line
-    seilHoriDist = seilDaten['l_coord']
-    seilLeerZ = seilDaten['z_Leer']
-    seilLastZ = seilDaten['z_Zweifel']
-
     # Calculate x and y coordinate in reference system
-    dx = float(Ex - Ax)
-    dy = float(Ey - Ay)
-    if dx == 0:
-        dx = 0.0001
-    azimut = atan(dy/dx)
-    if dx > 0:
-        azimut += 2 * pi
-    else:
-        azimut += pi
-    seilX = Ax + seilHoriDist * cos(azimut)
-    seilY = Ay + seilHoriDist * sin(azimut)
-
-    stueGeo = np.swapaxes(np.array([HM['x'], HM['y'], HM['z']]), 1, 0)
-    seilLeerGeo = np.swapaxes(np.array([seilX, seilY, seilLeerZ]), 1, 0)
-    seilLastGeo = np.swapaxes(np.array([seilX, seilY, seilLastZ]), 1, 0)
+    lineEmptyGeo = np.swapaxes(np.array([cableline['coordx'],
+                                         cableline['coordy'],
+                                         cableline['empty']]), 1, 0)
+    lineLoadGeo = np.swapaxes(np.array([cableline['coordx'],
+                                        cableline['coordy'],
+                                        cableline['load']]), 1, 0)
+    
+    # Pole coordinates
+    poleGeo = []
+    poleName = []
+    for pole in poles:
+        if pole['poleType'] == 'pole':
+            poleGeo.append([pole['coordx'], pole['coordy'], pole['z']])
+            poleName.append(pole['name'])
 
     # Save pole positions
     stueName = '{}_Stuetzen'.format(projName.replace("'", "."))
     stuePath = os.path.join(savePath, stueName + '.shp')
     checkShpPath(stuePath)
-    save2PointShape(stuePath, stueGeo, stueLabel, spatialRef)
+    save2PointShape(stuePath, poleGeo, poleName, spatialRef)
     
     # Save empty cable line
     seilLeerName = '{}_Leerseil'.format(projName.replace("'", "."))
     seilLeerPath = os.path.join(savePath, seilLeerName + '.shp')
     checkShpPath(seilLeerPath)
-    save2LineShape(seilLeerPath, seilLeerGeo, spatialRef)
+    save2LineShape(seilLeerPath, lineEmptyGeo, spatialRef)
 
     # Save cable line under load
     seilLastName = '{}_Lastseil'.format(projName)
     seilLastPath = os.path.join(savePath, seilLastName + '.shp')
     checkShpPath(seilLastPath)
-    save2LineShape(seilLastPath, seilLastGeo, spatialRef)
+    save2LineShape(seilLastPath, lineLoadGeo, spatialRef)
 
     geoOutput = {'stuetzen': stuePath,
                  'leerseil': seilLeerPath,
                  'lastseil': seilLastPath}
     return geoOutput
 
+
 def save2PointShape(shapePath, geodata, label, spatialRef):
     """
-    :param label:
+    :param label: Name of poles
     :param shapePath: Location of shape file
     :param geodata: x, y and z coordinate of poles
     :param spatialRef: current spatial reference of qgis project
@@ -120,6 +115,7 @@ def save2PointShape(shapePath, geodata, label, spatialRef):
     # Delete the writer to flush features to disk
     del writer
 
+
 def save2LineShape(shapePath, geodata, spatialRef):
     """
     :param shapePath: Location of shape file
@@ -147,6 +143,7 @@ def save2LineShape(shapePath, geodata, spatialRef):
     # Delete the writer to flush features to disk
     del writer
 
+
 def checkShpPath(path):
     """Deletes remains of earlier shapefiles. Otherwise these files can
     interact with new shapefiles (e.g. old indexes)."""
@@ -156,6 +153,7 @@ def checkShpPath(path):
         if os.path.exists(path+ending):
             os.remove(path+ending)
 
+
 def addToMap(geodata, projName):
     """ Adds the shape file to the qgis project."""
     from qgis.core import QgsVectorLayer, QgsProject
@@ -164,41 +162,39 @@ def addToMap(geodata, projName):
     root = QgsProject.instance().layerTreeRoot()
     projGroup = root.insertGroup(0, projName)
     
-    stue = QgsVectorLayer(geodata['stuetzen'], "Stützen", "ogr")
-    leerseil = QgsVectorLayer(geodata['leerseil'], "Leerseil", "ogr")
-    lastseil = QgsVectorLayer(geodata['lastseil'], "Lastseil", "ogr")
+    polesLyr = QgsVectorLayer(geodata['stuetzen'], "Stützen", "ogr")
+    emptyLineLyr = QgsVectorLayer(geodata['leerseil'], "Leerseil", "ogr")
+    loadLineLyar = QgsVectorLayer(geodata['lastseil'], "Lastseil", "ogr")
     
-    for layer in [stue, leerseil, lastseil]:
+    for layer in [polesLyr, emptyLineLyr, loadLineLyar]:
         layer.setProviderEncoding('UTF-8')
         layer.dataProvider().setEncoding('UTF-8')
 
-        # Map Layer erstellen
+        # Add layer to map
         QgsProject.instance().addMapLayer(layer, False)
         
         # Add to group
         projGroup.addLayer(layer)
 
-def generateCoordTable(seil, zi, HM, savePath, labelTxt):
+
+def generateCoordTable(cableline, profile, poles, savePath):
     """Creates csv files with the corse of the cable line."""
     savePathStue = savePath[0]
     savePathSeil = savePath[1]
 
-    horiDist = seil['Laengsprofil_di']
-    x = seil['x']
-    y = seil['y']*-1
-    z_last = seil['z_Zweifel'][::10]
-    z_leer = seil['z_Leer'][::10]
-    gelaende = zi / 10
-    
     # Combine cable data into matrix
-    seilDataMatrix = np.array([horiDist, x, y, z_last, z_leer, gelaende])
+    seilDataMatrix = np.array(
+        [cableline['xaxis'][::10], cableline['coordx'][::10],
+         cableline['coordy'][::10], cableline['load'][::10],
+         cableline['empty'][::10], profile.zi,
+         cableline['load'][::10] - profile.zi])
     seilDataMatrix = seilDataMatrix.transpose()
 
     # Txt header
     header = ["Horizontaldistanz", "X", "Y", "Z Lastseil", "Z Leerseil",
-              "Z Gelaende"]
+              "Z Gelaende", "Abstand Lastseil-Boden"]
     
-    # Write out data to file
+    # Write to file
     with open(savePathSeil, 'w') as f:
         fi = csv.writer(f, delimiter=';', dialect='excel', lineterminator='\n')
         fi.writerow(header)
@@ -208,19 +204,22 @@ def generateCoordTable(seil, zi, HM, savePath, labelTxt):
     # Pole data
     with open(savePathStue, 'w') as f:
         fi = csv.writer(f, delimiter=';', dialect='excel', lineterminator='\n')
-        fi.writerow(["Stuetze", "X", "Y", "Z Boden", "Z Stuetze", "Stuetzenhoehe"])
-        for i in range(len(HM['h'])):
-            name = [unicode2acii(labelTxt[i])]
-            coords = ([round(e, 1) for e in [HM['x'][i], HM['y'][i],
-                                             HM['z'][i] - HM['h'][i], HM['z'][i],
-                                             HM['h'][i]]])
+        fi.writerow(["Stuetze", "X", "Y", "Z Stuetze Boden",
+                     "Z Stuetze Spitze", "Stuetzenhoehe", "Neigung"])
+        for pole in poles:
+            name = [unicode2acii(pole['name'])]
+            coords = ([round(e, 3) for e in [pole['coordx'], pole['coordy'],
+                                             pole['z'], pole['ztop'],
+                                             pole['h'], pole['angle']]])
             row = name + coords
             fi.writerow(row)
 
+
 def unicode2acii(text):
-    # Tabelle mit HEX Codes der Umlaute
+    """Csv write can not handle utf-8, so most common utf-8 strings are
+    converted. This should be fixed in the future."""
     translation = {0xe4: 'ae',
                    0xf6: 'oe',
                    0xfc: 'ue'}
-    return text.translate(translation).encode('ascii', 'ignore')
+    return text.translate(translation)
 

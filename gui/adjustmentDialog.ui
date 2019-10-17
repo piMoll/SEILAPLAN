@@ -18,10 +18,7 @@
     <normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_app.png</normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_app.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="0">
-    <layout class="QVBoxLayout" name="plotLayout"/>
-   </item>
-   <item row="2" column="0">
+   <item row="7" column="0">
     <layout class="QVBoxLayout" name="tabLayout">
      <item>
       <widget class="QTabWidget" name="tabWidget">
@@ -667,8 +664,21 @@
      </item>
     </layout>
    </item>
-   <item row="4" column="0">
-    <layout class="QHBoxLayout" name="buttonLayout">
+   <item row="6" column="0">
+    <widget class="QLabel" name="label_18">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Manuelle Anpassung der Seillinie</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QPushButton" name="btnBackToStart">
        <property name="text">
@@ -680,7 +690,7 @@
       </widget>
      </item>
      <item>
-      <spacer name="horizontalSpacer_3">
+      <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -693,9 +703,9 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="btnSave">
+      <widget class="QPushButton" name="btnClose">
        <property name="text">
-        <string>Ergebnisse speichern</string>
+        <string>Schliessen</string>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
@@ -703,9 +713,9 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btnCancel">
+      <widget class="QPushButton" name="btnSave">
        <property name="text">
-        <string>Abbrechen</string>
+        <string>Speichern</string>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
@@ -714,21 +724,8 @@
      </item>
     </layout>
    </item>
-   <item row="3" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
+   <item row="1" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
       <widget class="QLabel" name="recalcStatus_ico">
        <property name="text">
@@ -747,32 +744,22 @@
       </widget>
      </item>
      <item>
-      <spacer name="horizontalSpacer">
+      <spacer name="horizontalSpacer_7">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
          <width>40</width>
-         <height>40</height>
+         <height>20</height>
         </size>
        </property>
       </spacer>
      </item>
     </layout>
    </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="label_18">
-     <property name="font">
-      <font>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Manuelle Anpassung der Seillinie</string>
-     </property>
-    </widget>
+   <item row="4" column="0">
+    <layout class="QVBoxLayout" name="plotLayout"/>
    </item>
   </layout>
  </widget>
