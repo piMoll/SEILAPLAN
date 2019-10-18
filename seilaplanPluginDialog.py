@@ -550,9 +550,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
     def onLoadProjects(self):
         title = 'Projekt laden'
         fFilter = 'Txt Dateien (*.txt)'
-        filename, __ = QFileDialog.getOpenFileName(self, title,
-                                                   self.confHandler.getCurrentPath(),
-                                                   fFilter)
+        filename, _ = QFileDialog.getOpenFileName(self, title,
+                                                  self.confHandler.getCurrentPath(),
+                                                  fFilter)
         if filename:
             self.confHandler.loadFromFile(filename)
             self.setupContent()
@@ -562,9 +562,10 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
     def onSaveProject(self):
         title = 'Projekt speichern'
         fFilter = 'TXT (*.txt)'
-        defaultFilename = '{}.txt'.format(
-            self.projectHandler.generateProjectName())
-        
+        if not self.confHandler.checkValidState():
+            return
+        projname = self.projectHandler.getProjectName()
+        defaultFilename = f'{projname}.txt'
         filename, _ = QFileDialog.getSaveFileName(self, title,
                         os.path.join(self.confHandler.getCurrentPath(),
                                      defaultFilename), fFilter)
