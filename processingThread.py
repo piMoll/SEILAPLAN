@@ -87,19 +87,12 @@ class ProcessingTask(QgsTask):
 
         # import pickle
         # import os
-        # storeDump = 'project_to_pickl_20191015'
+        # storeDump = 'pickl_20191018'
         # homePath = '/home/pi/Projects/seilaplan/pickle_dumps'
         # storefile = os.path.join(homePath, '{}.pckl'.format(storeDump))
         # f = open(storefile, 'wb')
-        # poles = self.projInfo.poles.poles
-        # pickle.dump({
-        #     'cableline': cableline,
-        #     'optSTA': optSTA,
-        #     'force': kraft,
-        #     'optLen': optiLen,
-        #     'poles': poles,
-        #     'duration': [duration, timestamp1, timestamp2]
-        # }, f)
+        # result['poles'] = self.projInfo.poles.poles
+        # pickle.dump(result, f)
         # f.close()
         
         return True

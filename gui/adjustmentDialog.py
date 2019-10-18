@@ -111,7 +111,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         self.fieldComment.textChanged.connect(self.onCommentChanged)
 
     def loadData(self, pickleFile):
-        # Test data
+        """ Is used to load testdata from pickl object in debug mode """
         f = open(pickleFile, 'rb')
         dump = pickle.load(f)
         f.close()
@@ -242,7 +242,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         
         try:
             params = self.confHandler.params.getSimpleParameterDict()
-            cableline, kraft, seil_possible = preciseCable(params, self.poles,
+            cableline, force, seil_possible = preciseCable(params, self.poles,
                                                            self.result['optSTA'])
         except Exception as e:
             # TODO: Index Errors for certain angles still there
@@ -253,7 +253,10 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
             return
 
         self.cableline = cableline
-        self.result['force'] = kraft
+        self.result['force'] = force
+        
+        if not seil_possible:
+            self.updateRecalcStatus('2')
         
         # Ground clearance
         self.profile.updateProfileAnalysis(self.cableline, self.poles.poles)
