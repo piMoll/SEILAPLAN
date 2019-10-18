@@ -75,6 +75,9 @@
           <height>27</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Liste der in QGIS geladenen Raster aktualisieren&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -144,6 +147,9 @@
           <height>27</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Einstellungen in Textdatei abspeichern</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -175,6 +181,9 @@
           <width>27</width>
           <height>27</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Projekteinstellungen aus Textdatei laden&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string/>
@@ -265,6 +274,9 @@
         </item>
         <item row="0" column="1">
          <widget class="QPushButton" name="draw">
+          <property name="toolTip">
+           <string>Profil in Karte zeichnen</string>
+          </property>
           <property name="text">
            <string>zeichnen</string>
           </property>
@@ -510,6 +522,9 @@
             <height>0</height>
            </size>
           </property>
+          <property name="toolTip">
+           <string/>
+          </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
@@ -568,6 +583,9 @@
         </item>
         <item row="4" column="3">
          <widget class="QPushButton" name="buttonShowProf">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Höhenprofil darstellen und fixe Stützen definieren&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="text">
            <string>Höhenprofil</string>
           </property>
@@ -639,7 +657,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Aktuelle Parameter als Set abspeichern</string>
+           <string>Eigenschaften der Seillinie in neuem Parameterset abspeichern</string>
           </property>
           <property name="text">
            <string/>
@@ -2611,6 +2629,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="buttonRun">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optimierungsalgorithmus zur Bestimmung der Stützenstandorte ausführen&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
         <string>Berechnung starten</string>
        </property>
