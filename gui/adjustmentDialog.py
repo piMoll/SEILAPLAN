@@ -173,7 +173,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         rangeDist = upperRange - lowerRange
         d = floor(lowerRange + 0.5 * rangeDist)
         
-        self.poles.add(newPoleIdx, d)
+        self.poles.add(newPoleIdx, d, manually=True)
         
         self.plot.zoomOut()
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)

@@ -41,9 +41,9 @@ class Poles(object):
         self.update(3, 'poleType', 'anchor')
         self.calculateAnchor()
     
-    def add(self, idx, d, h=INIT_POLE_HEIGHT, angle=INIT_POLE_ANGLE):
+    def add(self, idx, d, h=INIT_POLE_HEIGHT, angle=INIT_POLE_ANGLE, manually=False):
         x, y, z, dtop, ztop = self.derivePoleProperties(d, h, angle)
-        name = f"{idx}. Stütze"
+        name = f"{idx}. Stütze" + ('*' if manually else '')
         poleType = 'pole'
         
         self.poles.insert(idx, {
@@ -56,7 +56,8 @@ class Poles(object):
             'dtop': dtop,
             'ztop': ztop,
             'coordx': x,
-            'coordy': y
+            'coordy': y,
+            'manually': manually
         })
 
     def update(self, idx, property_name, newVal):
@@ -122,7 +123,6 @@ class Poles(object):
 
     def delete(self, idx):
         self.poles.pop(idx)
-        # TODO: Jetzt könnte man noch die Bezeichnungen "name" anpassen
     
     def calculateAnchor(self):
         """ Calculate anchor cable line and interpolate ground points.

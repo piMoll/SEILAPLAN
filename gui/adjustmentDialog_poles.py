@@ -35,6 +35,7 @@ class AdjustmentDialogPoles(object):
         """
         self.dialog = dialog
         self.poleRows = []
+        self.editActive = False
     
     def addPolesToGui(self, poleData):
         """
@@ -80,6 +81,9 @@ class AdjustmentDialogPoles(object):
                         poleData[idx]['angle'], delBtn, addBtn))
 
     def onRowChange(self, newVal=False, idx=False, fieldType=False):
+        if self.editActive:
+            return
+        self.editActive = True
         # Update data in dialog
         self.dialog.updatePole(idx, fieldType, newVal)
         
@@ -91,22 +95,32 @@ class AdjustmentDialogPoles(object):
             if idx < PoleRow.poleCount - 1:
                 self.poleRows[idx + 1].updateLowerDistRange(
                     newVal + self.dialog.poles.POLE_DIST_STEP)
+        self.editActive = False
     
     def onRowAdd(self, idx=False):
+        if self.editActive:
+            return
+        self.editActive = True
         # Update data in dialog
         newPoleIdx, name, dist, \
         lowerRange, upperRange, height, angle = self.dialog.addPole(idx)
         
-        # Change index of right side neighbours
-        for pole in self.poleRows[newPoleIdx:-1]:
-            pole.index += 1
+        # # Change index of right side neighbours
+        # for pole in self.poleRows[newPoleIdx:-1]:
+        #     pole.index += 1
         
         # Add pole row layout
         newRow = PoleRow(self, self.dialog, newPoleIdx, name, 'pole', dist,
                          [lowerRange, upperRange], height, angle, True, True)
         self.poleRows.insert(newPoleIdx, newRow)
+        
+        self.updatePoleRowIdx()
+        self.editActive = False
     
     def onRowDel(self, idx=False):
+        if self.editActive:
+            return
+        self.editActive = True
         # Update data in dialog
         self.dialog.deletePole(idx)
 
@@ -114,9 +128,14 @@ class AdjustmentDialogPoles(object):
         self.poleRows[idx].remove()
         del self.poleRows[idx]
 
-        # Change index of right side neighbours
-        for pole in self.poleRows[idx+1:]:
-            pole.index -= 1
+        self.updatePoleRowIdx()
+        self.editActive = False
+        
+    def updatePoleRowIdx(self):
+        pole: PoleRow
+        for i, pole in enumerate(self.poleRows):
+            # Update index
+            pole.index = i
 
 
 class PoleRow(object):
