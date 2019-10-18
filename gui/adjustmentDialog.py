@@ -109,7 +109,6 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         self.btnSave.clicked.connect(self.onSave)
         self.btnBackToStart.clicked.connect(self.onReturnToStart)
         self.fieldComment.textChanged.connect(self.onCommentChanged)
-        self.updateRecalcStatus('ready')
 
     def loadData(self, pickleFile):
         # Test data
@@ -127,12 +126,12 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
             self.close()
         # Save original data from optimization
         self.originalData = result
-        # Dictionary properties: cableline, optSTA, force, optLen, duration
+        # Dictionary properties: resultStatus, cableline, optSTA, force, optLen, optLen_arr, duration
         self.result = result
-        self.result['optSTA_arr'] = self.result['optSTA']
-        self.result['optSTA'] = self.result['optSTA_arr'][0]
         self.cableline = self.result['cableline']
         self.profile.updateProfileAnalysis(self.cableline, self.poles.poles)
+
+        self.updateRecalcStatus(self.result['resultStatus'])
 
         # Draw profile in diagram
         self.plot.initData(self.profile.di_disp, self.profile.zi_disp)
@@ -202,14 +201,27 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
     
     def updateRecalcStatus(self, status):
         ico_path = os.path.join(os.path.dirname(__file__), 'icons')
-        if status == 'start':
+        if status == '1':
+            self.recalcStatus_txt.setText(
+                'Optimierung erfolgreich abgeschlossen.')
+            self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
+                ico_path, 'icon_green.png')))
+        elif status == '2':
+            self.recalcStatus_txt.setText(
+                'Die Seillinie wurde berechnet, das Tragseil hebt jedoch '
+                'bei mindestens einer Stütze ab.')
+            self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
+                ico_path, 'icon_yellow.png')))
+        elif status == '3':
+            self.recalcStatus_txt.setText(
+                'Die Seillinie konnte nicht komplett berechnet werden, '
+                'es sind nicht genügend\nStützenstandorte bestimmbar.')
+            self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
+                ico_path, 'icon_yellow.png')))
+        elif status == 'start':
             self.recalcStatus_txt.setText('Neuberechnung...')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_reload.png')))
-        if status == 'ready':
-            self.recalcStatus_txt.setText('Optimierung erfolgreich abgeschlossen.')
-            self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
-                ico_path, 'icon_green.png')))
         elif status == 'success':
             self.recalcStatus_txt.setText('Seillinie neu berechnet')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
@@ -367,7 +379,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
     
     def onReturnToStart(self):
         self.doReRun = True
-        self.Reject()
+        self.close()
     
     def onSave(self):
         self.saveDialog.doSave = False

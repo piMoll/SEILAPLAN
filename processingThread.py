@@ -20,6 +20,8 @@
  ***************************************************************************/
 """
 
+import time
+import traceback
 from qgis.core import QgsTask
 from qgis.PyQt.QtCore import pyqtSignal
 
@@ -40,7 +42,7 @@ class ProcessingTask(QgsTask):
     sig_value = pyqtSignal(float)
     sig_range = pyqtSignal(list)
     sig_text = pyqtSignal(str)
-    sig_result = pyqtSignal(list)
+    sig_result = pyqtSignal(str)
     
     def __init__(self, confHandler, description='SEILAPLAN'):
         """
@@ -51,7 +53,6 @@ class ProcessingTask(QgsTask):
         self.exception = None
         self.confHandler = confHandler
         self.projInfo = confHandler.project
-        self.resultStatus = None
         self.result = None
     
     def run(self):
@@ -65,39 +66,28 @@ class ProcessingTask(QgsTask):
         # except ImportError:
         #     pass
 
+        t_start = time.time()
         self.confHandler.prepareForCalculation()
-        output = main(self, self.projInfo)
-        
-        if not output:  # If error in code
+        try:
+            result = main(self, self.projInfo)
+        except Exception as e:
+            self.exception = traceback.format_exc()
             return False
-        else:
-            [resultStatus, result] = output
-        
-        # Output resultStatus
-        #   1 = Optimization successful
-        #   2 = Cable takes off from support
-        #   3 = Optimization partially successful
-        
-        # Unpack results
-        [t_start, cableline, kraft, optSTA, optiLen] = result
-        
-        self.sig_value.emit(optiLen * 1.01)
 
+        # Check if there was an error
+        if not result:
+            return False
+        self.sig_value.emit(result['optLen'] * 1.01)
 
         # Calculate duration and generate time stamp
-        duration, timestamp1, timestamp2 = getTimestamp(t_start)
-        self.resultStatus = resultStatus
-        self.result = {
-            'cableline': cableline,
-            'optSTA': optSTA,
-            'force': kraft,
-            'optLen': optiLen,
-            'duration': [duration, timestamp1, timestamp2]
-        }
+        result['duration'] = getTimestamp(t_start)
+
+        self.result = result
+        self.sig_result.emit(result['resultStatus'])
 
         # import pickle
         # import os
-        # storeDump = 'project_to_pickl_20191009'
+        # storeDump = 'project_to_pickl_20191015'
         # homePath = '/home/pi/Projects/seilaplan/pickle_dumps'
         # storefile = os.path.join(homePath, '{}.pckl'.format(storeDump))
         # f = open(storefile, 'wb')
@@ -112,8 +102,6 @@ class ProcessingTask(QgsTask):
         # }, f)
         # f.close()
         
-        # self.sig_result.emit(resultStatus)
-        
         return True
         
     def getResult(self):
@@ -127,11 +115,9 @@ class ProcessingTask(QgsTask):
         """
         if self.exception:
             self.sig_jobError.emit(self.exception)
-
         else:
             # Show successful run or user abort on progress gui
             self.sig_jobEnded.emit(result)
     
     def cancel(self):
         super().cancel()
-

@@ -19,7 +19,6 @@
  ***************************************************************************/
 """
 
-import time
 import numpy as np
 from .geoExtract import stuePos
 from .mainOpti import optimization
@@ -32,7 +31,6 @@ def main(progress, project):
     :type project: configHandler.ProjectConfHandler
     """
     resultStatus = [1]
-    t_start = time.time()
     if progress.isCanceled():
         return False
     
@@ -60,8 +58,7 @@ def main(progress, project):
     [HM, HMidx, optValue, optSTA, optiLen] = out
 
     if HMidx == [0]:
-        # Berechnungen nicht erfolgreich, keine einzige Stütze konnte
-        #   berechnet werden
+        # Not a single pole location was calculated, no cable line possible
         progress.exception = (
             "Aufgrund der Geländeform oder der Eingabeparameter konnten <b>keine "
             "Stützenstandorte bestimmt</b> werden. Es wurden keine Output-Daten "
@@ -72,16 +69,23 @@ def main(progress, project):
     stuetzIdx = np.int32(diIdx[HMidx])
     poles.addPolesFromOptimization(stuetzIdx, HM)
 
-    lastPole_dist = int(poles.poles[-2]['d'])
-    if lastPole_dist + 1 != np.size(profile.zi_s):
-        # Nicht alle Stützen konnten berechnet werden
+    if int(poles.poles[-2]['d']) != int(profile.di[-1]):
+        # It was not possible to calculate poles along the entire profile
         resultStatus.append(3)
 
     # Calculate precise cable line data
-    cableline, kraft, seil_possible = preciseCable(params, poles, optSTA[0])
-    if not seil_possible:  # Falls Seil von Stütze abhebt
+    cableline, force, seil_possible = preciseCable(params, poles, optSTA[0])
+    if not seil_possible:
+        # Cable is lifting off the poles
         resultStatus.append(2)
 
     progress.sig_value.emit(optiLen * 1.005)
     
-    return max(resultStatus), [t_start, cableline, kraft, optSTA, optiLen]
+    return {
+        'resultStatus': str(max(resultStatus)),
+        'cableline': cableline,
+        'optSTA': optSTA[0],
+        'optSTA_arr': optSTA,
+        'force': force,
+        'optLen': optiLen
+    }

@@ -42,7 +42,7 @@ def getTimestamp(tStart):
         tdFormated = str(sek) + " s"
     else:
         tdFormated = str(mini) + " min " + str(sek) + " s"
-    return tdFormated, tsFormated1, tsFormated2
+    return [tdFormated, tsFormated1, tsFormated2]
 
 
 def formatNum(numbr):

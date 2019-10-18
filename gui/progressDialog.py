@@ -19,29 +19,10 @@
  ***************************************************************************/
 """
 
-import sys
-import subprocess
-
-from qgis.PyQt.QtCore import Qt, pyqtSignal
-from qgis.PyQt.QtWidgets import QDialog, QVBoxLayout, QProgressBar, QLabel, \
-    QHBoxLayout, QDialogButtonBox, QSizePolicy, QPushButton, QSpacerItem, \
-    QLayout
-
-# TODO: Texte anpassen
-textOK = (
-    "Die Berechnungen wurden <b>erfolgreich</b> abgeschlossen! Die Ergebnisse "
-    "sind in folgendem Ordner abgespeichert:")
-textSeil = ("Die Seillinie wurde berechnet, das <b>Tragseil hebt jedoch "
-            "bei mindestens einer Stütze ab</b>."
-            "Die Resultate sind in folgendem Ordner abgespeichert:")
-textHalf = ("Die Seillinie konnte <b>nicht komplett berechnet</b> werden, es "
-            "sind nicht genügend Stützenstandorte bestimmbar. Die "
-            "unvollständigen Resultate sind in folgendem Ordner "
-            "abgespeichert:")
-textBad = (
-    "Aufgrund der Geländeform oder der Eingabeparameter konnten <b>keine "
-    "Stützenstandorte bestimmt</b> werden. Es wurden keine Output-Daten "
-    "erzeugt.")
+from qgis.PyQt.QtCore import Qt
+from qgis.PyQt.QtWidgets import (QDialog, QVBoxLayout, QProgressBar, QLabel,
+    QHBoxLayout, QDialogButtonBox, QSizePolicy, QPushButton, QSpacerItem,
+    QLayout)
 
 
 class ProgressDialog(QDialog):
@@ -70,12 +51,7 @@ class ProgressDialog(QDialog):
         self.hbox = QHBoxLayout()
         self.cancelButton = QDialogButtonBox()
         self.closeButton = QDialogButtonBox()
-        self.resultLabel = ClickLabel(self)
-        self.resultLabel.setMaximumWidth(500)
-        self.resultLabel.setSizePolicy(
-            QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding))
-        self.resultLabel.setWordWrap(True)
-        self.rerunButton = QPushButton("Berechnungen wiederholen")
+        self.rerunButton = QPushButton("zurück zum Startfenster")
         self.rerunButton.setVisible(False)
         spacer = QSpacerItem(40, 20, QSizePolicy.Expanding,
                              QSizePolicy.Minimum)
@@ -93,7 +69,6 @@ class ProgressDialog(QDialog):
         
         self.container.addWidget(self.progressBar)
         self.container.addWidget(self.statusLabel)
-        self.container.addWidget(self.resultLabel)
         self.container.addLayout(self.hbox)
         self.container.setSizeConstraint(QLayout.SetFixedSize)
         self.setLayout(self.container)
@@ -129,19 +104,25 @@ class ProgressDialog(QDialog):
         self.exec()
     
     def jobEnded(self, success):
-        # self.resultStatus = self.workerThread.resultStatus
         self.setWindowTitle("SEILAPLAN")
         if success:
-            # self.statusLabel.setText("Berechnungen abgeschlossen.")
-            # self.progressBar.setValue(self.progressBar.maximum())
-            # self.setFinalMessage()
+            self.progressBar.setValue(self.progressBar.maximum())
             self.wasSuccessful = True
-            self.close()
-        
+            # Optimization not successful
+            if self.resultStatus == '4':
+                self.statusLabel.setText("Berechnungen abgeschlossen.")
+                self.resultLabel.setText(
+                    "Aufgrund der Geländeform oder der Eingabeparameter "
+                    "konnten <b>keine Stützenstandorte bestimmt</b> werden.")
+                self.finallyDo()
+            # Optimization successful
+            else:
+                # Close progress dialog so that adjustment window can be opened
+                self.close()
         else:  # If there was an abort by the user
             self.statusLabel.setText("Berechnungen abgebrochen.")
             self.progressBar.setValue(self.progressBar.minimum())
-        self.finallyDo()
+            self.finallyDo()
     
     def valueFromThread(self, value):
         self.progressBar.setValue(value)
@@ -155,52 +136,17 @@ class ProgressDialog(QDialog):
     def textFromThread(self, value):
         self.statusLabel.setText(value)
     
-    def resultFromThread(self, result):
-        self.resultStatus = result
-    
-    def setFinalMessage(self):
-        self.resultLabel.clicked.connect(self.onResultClicked)
-        self.resultLabel.blockSignals(True)
-        # linkToFolder = ('<html><head/><body><p></p><p><a href='
-        #                 '"file:////{0}"><span style="text-decoration: '
-        #                 'underline; color:#0000ff;">{0}</span></a></p>'
-        #                 '</body></html>'.format(self.outputLoc))
-        # Optimization successful
-        if self.resultStatus == 1:
-            self.resultLabel.setText(textOK)
-            self.resultLabel.blockSignals(False)
-        # Cable takes off of support
-        elif self.resultStatus == 2:
-            self.resultLabel.setText(textSeil)
-            self.resultLabel.blockSignals(False)
-        # Optimization partially successful
-        elif self.resultStatus == 3:
-            self.resultLabel.setText(textHalf)
-            self.resultLabel.blockSignals(False)
-        # Optimization not successful
-        elif self.resultStatus == 4:
-            self.resultLabel.setText(textBad)
-        self.setLayout(self.container)
-    
-    def onResultClicked(self):
-        pass
-        # Open a folder window
-        if sys.platform == 'darwin':  # MAC
-            subprocess.call(["open", "-R", self.outputLoc])
-        elif sys.platform.startswith('linux'):  # LINUX
-            subprocess.Popen(["xdg-open", self.outputLoc])
-        elif 'win32' in sys.platform:  # WINDOWS
-            from subprocess import CalledProcessError
-            try:
-                subprocess.check_call(['explorer', self.outputLoc])
-            except CalledProcessError:
-                pass
+    def resultFromThread(self, resultStatus):
+        self.resultStatus = resultStatus
+        # resultStatus:
+        #   1 = Optimization successful
+        #   2 = Cable takes off from support
+        #   3 = Optimization partially successful
     
     def onAbort(self):
         self.setWindowTitle("SEILAPLAN")
         self.statusLabel.setText("Laufender Prozess wird abgebrochen...")
         self.workerThread.cancel()  # Terminates process cleanly
-        # self.close()
         self.wasCanceled = True
     
     def onError(self, exception_string):
@@ -221,11 +167,3 @@ class ProgressDialog(QDialog):
     
     def onClose(self):
         self.close()
-
-
-class ClickLabel(QLabel):
-    clicked = pyqtSignal()
-    
-    def mousePressEvent(self, event):
-        self.clicked.emit()
-        QLabel.mousePressEvent(self, event)
