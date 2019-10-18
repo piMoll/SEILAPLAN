@@ -19,7 +19,6 @@
  ***************************************************************************/
 """
 import numpy as np
-from math import cos, sin, atan, pi
 import os
 import csv
 
@@ -33,8 +32,9 @@ def generateGeodata(project, poles, cableline, savePath):
     line and the cable line under load.
     :type project: configHandler.ProjectConfHandler
     """
-    projName = project.getProjectName()
-    [Ax, Ay] = project.points['A']
+    # Put geodata in separate sub folder
+    savePath = os.path.join(savePath, 'geodata')
+    os.makedirs(savePath)
     epsg = project.dhm.spatialRef
     spatialRef = QgsCoordinateReferenceSystem(epsg)
 
@@ -55,20 +55,17 @@ def generateGeodata(project, poles, cableline, savePath):
             poleName.append(pole['name'])
 
     # Save pole positions
-    stueName = '{}_Stuetzen'.format(projName.replace("'", "."))
-    stuePath = os.path.join(savePath, stueName + '.shp')
+    stuePath = os.path.join(savePath, 'stuetzen.shp')
     checkShpPath(stuePath)
     save2PointShape(stuePath, poleGeo, poleName, spatialRef)
     
     # Save empty cable line
-    seilLeerName = '{}_Leerseil'.format(projName.replace("'", "."))
-    seilLeerPath = os.path.join(savePath, seilLeerName + '.shp')
+    seilLeerPath = os.path.join(savePath, 'leerseil.shp')
     checkShpPath(seilLeerPath)
     save2LineShape(seilLeerPath, lineEmptyGeo, spatialRef)
 
     # Save cable line under load
-    seilLastName = '{}_Lastseil'.format(projName)
-    seilLastPath = os.path.join(savePath, seilLastName + '.shp')
+    seilLastPath = os.path.join(savePath, 'lastseil.shp')
     checkShpPath(seilLastPath)
     save2LineShape(seilLastPath, lineLoadGeo, spatialRef)
 
@@ -177,17 +174,17 @@ def addToMap(geodata, projName):
         projGroup.addLayer(layer)
 
 
-def generateCoordTable(cableline, profile, poles, savePath):
+def generateCoordTable(cableline, profile, poles, outputLoc):
     """Creates csv files with the corse of the cable line."""
-    savePathStue = savePath[0]
-    savePathSeil = savePath[1]
+    savePathStue = os.path.join(outputLoc, 'Koordinaten Stuetzen.csv')
+    savePathSeil = os.path.join(outputLoc, 'Koordinaten Seil.csv')
 
     # Combine cable data into matrix
     seilDataMatrix = np.array(
         [cableline['xaxis'][::10], cableline['coordx'][::10],
          cableline['coordy'][::10], cableline['load'][::10],
          cableline['empty'][::10], profile.zi,
-         cableline['load'][::10] - profile.zi])
+         cableline['groundclear_rel']])
     seilDataMatrix = seilDataMatrix.transpose()
 
     # Txt header

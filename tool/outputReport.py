@@ -290,16 +290,18 @@ def generateReportText(confHandler, result, comment):
     return str_report
 
 
-def generateReport(reportText, savePath, projname):
+def generateReport(reportText, outputLoc, projname):
     """Generate PDF report with reprotlab"""
     from ..packages.reportlab.lib.pagesizes import A4, cm, landscape
     from ..packages.reportlab.platypus import SimpleDocTemplate, Table, TableStyle
     from ..packages.reportlab.graphics.shapes import colors
 
-    width, height = landscape(A4)
-    margin = 1.5*cm
+    savePath = os.path.join(outputLoc, 'Bericht.pdf')
     if os.path.exists(savePath):
         os.remove(savePath)
+
+    width, height = landscape(A4)
+    margin = 1.5 * cm
     doc1 = SimpleDocTemplate(savePath, encoding='utf8', topMargin=margin,
                              bottomMargin=margin, leftMargin=margin,
                              rightMargin=margin, pageBreakQuick=1,
@@ -479,8 +481,7 @@ def generateReport(reportText, savePath, projname):
     del elements
 
 
-def createOutputFolder(folder, name):
-    location = os.path.join(folder, name)
+def createOutputFolder(location):
     i = 1
     while os.path.exists(location):
         if i == 1:

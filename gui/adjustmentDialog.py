@@ -396,22 +396,22 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         outputFolder = self.confHandler.getCurrentPath()
         project = self.confHandler.project
         projName = project.getProjectName()
-        outputLoc = createOutputFolder(outputFolder, projName)
+        outputLoc = createOutputFolder(os.path.join(outputFolder, projName))
         updateWithCableCoordinates(self.cableline, project.points['A'],
                                    project.azimut)
         # Save project file
-        self.confHandler.saveToFile(os.path.join(outputLoc,  outputLoc + '_projectfile.txt'))
+        self.confHandler.saveToFile(os.path.join(outputLoc,
+                                                 'Projekteinstellungen.txt'))
 
         # Create report
         if self.confHandler.getOutputOption('report'):
-            reportSavePath = os.path.join(outputLoc, f"{projName}_Bericht.pdf")
             reportText = generateReportText(self.confHandler, self.result,
                                             self.fieldComment.toPlainText())
-            generateReport(reportText, reportSavePath, projName)
+            generateReport(reportText, outputLoc, projName)
 
         # Create plot
         if self.confHandler.getOutputOption('plot'):
-            plotSavePath = os.path.join(outputLoc, f'{projName}_Diagramm.pdf')
+            plotSavePath = os.path.join(outputLoc, 'Diagramm.pdf')
             printPlot = AdjustmentPlot(self)
             printPlot.initData(self.profile.di_disp, self.profile.zi_disp)
             printPlot.updatePlot(self.poles.getAsArray(), self.cableline, True)
@@ -425,10 +425,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
 
         # Generate coordinate tables
         if self.confHandler.getOutputOption('coords'):
-            table1SavePath = os.path.join(outputLoc, f'{projName}_KoordStuetzen.csv')
-            table2SavePath = os.path.join(outputLoc, f'{projName}_KoordSeil.csv')
             generateCoordTable(self.cableline, self.profile, self.poles.poles,
-                               [table1SavePath, table2SavePath])
+                               outputLoc)
         
         self.updateRecalcStatus('saveDone')
 
