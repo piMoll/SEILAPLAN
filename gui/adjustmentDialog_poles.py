@@ -20,7 +20,7 @@
 """
 from qgis.PyQt.QtCore import QSize, Qt, pyqtSignal
 from qgis.PyQt.QtWidgets import (QDoubleSpinBox, QSpinBox, QPushButton,
-                                 QLineEdit, QHBoxLayout)
+                                 QLineEdit, QHBoxLayout, QLabel)
 from qgis.PyQt.QtGui import QIcon, QPixmap
 
 
@@ -135,7 +135,7 @@ class AdjustmentDialogPoles(object):
         pole: PoleRow
         for i, pole in enumerate(self.poleRows):
             # Update index
-            pole.index = i
+            pole.updateIndex(i)
 
 
 class PoleRow(object):
@@ -159,6 +159,7 @@ class PoleRow(object):
         self.row = QHBoxLayout()
         self.row.setAlignment(Qt.AlignLeft)
         
+        self.labelIndex = None
         self.fieldName = None
         self.fieldDist = None
         self.fieldHeight = None
@@ -168,6 +169,7 @@ class PoleRow(object):
 
         self.addRowToLayout()
         self.addBtnPlus(addBtn)
+        self.addLabelIndex()
         self.addFieldName(name)
         self.addFieldDist(dist, distRange)
         if self.rowType == 'pole':
@@ -183,6 +185,19 @@ class PoleRow(object):
             # Insert new row between existing ones
             self.dialog.poleVGrid.insertLayout(self.index + 1, self.row)
     
+    def addLabelIndex(self):
+        self.labelIndex = QLabel(self.dialog.tabPoles)
+        self.labelIndex.setFixedWidth(20)
+        self.labelIndex.setAlignment(Qt.AlignVCenter | Qt.AlignRight)
+        self.row.addWidget(self.labelIndex)
+        if self.rowType == 'pole':
+            self.labelIndex.setText(f"{self.index}:")
+    
+    def updateIndex(self, idx):
+        self.index = idx
+        if self.rowType == 'pole':
+            self.labelIndex.setText(f"{self.index}:")
+            
     def addFieldName(self, value):
         self.fieldName = QLineEditWithFocus(self.dialog.tabPoles)
         self.fieldName.setFocusPolicy(Qt.ClickFocus)
@@ -264,6 +279,7 @@ class PoleRow(object):
             QPixmap(PoleRow.ICON_ADD_ROW), QIcon.Normal, QIcon.Off)
         self.addBtn.setIcon(icon)
         self.addBtn.setIconSize(QSize(16, 16))
+        self.addBtn.setToolTip('Fügt eine neue Stütze nach dieser hinzu')
         self.row.addWidget(self.addBtn)
         
         self.addBtn.clicked.connect(
@@ -280,6 +296,7 @@ class PoleRow(object):
             QPixmap(PoleRow.ICON_DEL_ROW), QIcon.Normal, QIcon.Off)
         self.delBtn.setIcon(icon)
         self.delBtn.setIconSize(QSize(16, 16))
+        self.delBtn.setToolTip('Löscht die Stütze')
         self.row.addWidget(self.delBtn)
 
         self.delBtn.clicked.connect(
@@ -315,7 +332,7 @@ class QLineEditWithFocus(QLineEdit):
     
     def focusOutEvent(self, event):
         super(QLineEditWithFocus, self).focusOutEvent(event)
-        self.inFocus.emit(True)
+        self.outFocus.emit(True)
         
 
 class QDoubleSpinBoxWithFocus(QDoubleSpinBox):

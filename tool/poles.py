@@ -43,7 +43,9 @@ class Poles(object):
     
     def add(self, idx, d, h=INIT_POLE_HEIGHT, angle=INIT_POLE_ANGLE, manually=False):
         x, y, z, dtop, ztop = self.derivePoleProperties(d, h, angle)
-        name = f"{idx}. Stütze" + ('*' if manually else '')
+        name = f"{idx}. Stütze"
+        if manually:
+            name = 'neue Stütze'
         poleType = 'pole'
         
         self.poles.insert(idx, {
@@ -132,7 +134,7 @@ class Poles(object):
     
         # Height of first and last pole (not anchor) seen from point of anchor
         poleA_hz = self.poles[1]['h'] + (self.poles[1]['z'] - self.poles[0]['z'])
-        poleE_hz = self.poles[-2]['h'] + (self.poles[-2]['z'] - self.poles[-1]['z'])  # TODO: z in dm
+        poleE_hz = self.poles[-2]['h'] + (self.poles[-2]['z'] - self.poles[-1]['z'])
     
         # If anchor field has length 0, the first/last pole becomes the anchor
         if self.poles[0]['d'] == 0:
