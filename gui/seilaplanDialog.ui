@@ -6,9 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>567</width>
+    <width>575</width>
     <height>889</height>
    </rect>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::ClickFocus</enum>
   </property>
   <property name="windowTitle">
    <string>SEILAPLAN - Seilkran-Layoutplaner</string>
@@ -85,6 +88,9 @@
           <height>24</height>
          </size>
         </property>
+        <property name="autoDefault">
+         <bool>false</bool>
+        </property>
        </widget>
       </item>
      </layout>
@@ -151,6 +157,9 @@
           <height>24</height>
          </size>
         </property>
+        <property name="autoDefault">
+         <bool>false</bool>
+        </property>
        </widget>
       </item>
       <item row="0" column="5">
@@ -179,6 +188,9 @@
           <width>24</width>
           <height>24</height>
          </size>
+        </property>
+        <property name="autoDefault">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -216,6 +228,9 @@
            <iconset resource="resources.qrc">
             <normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_contour.png</normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_contour.png</iconset>
           </property>
+          <property name="autoDefault">
+           <bool>false</bool>
+          </property>
          </widget>
         </item>
         <item row="0" column="0">
@@ -243,12 +258,18 @@
            <iconset resource="resources.qrc">
             <normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_map.png</normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_map.png</iconset>
           </property>
+          <property name="autoDefault">
+           <bool>false</bool>
+          </property>
          </widget>
         </item>
         <item row="0" column="1">
          <widget class="QPushButton" name="draw">
           <property name="text">
            <string>zeichnen</string>
+          </property>
+          <property name="autoDefault">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -550,6 +571,9 @@
           <property name="text">
            <string>Höhenprofil</string>
           </property>
+          <property name="autoDefault">
+           <bool>false</bool>
+          </property>
          </widget>
         </item>
        </layout>
@@ -629,6 +653,9 @@
             <width>24</width>
             <height>24</height>
            </size>
+          </property>
+          <property name="autoDefault">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -1555,6 +1582,9 @@
               <property name="text">
                <string>?</string>
               </property>
+              <property name="autoDefault">
+               <bool>false</bool>
+              </property>
              </widget>
             </item>
             <item>
@@ -1610,6 +1640,9 @@
               </property>
               <property name="text">
                <string>?</string>
+              </property>
+              <property name="autoDefault">
+               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -1802,6 +1835,9 @@
               </property>
               <property name="text">
                <string>?</string>
+              </property>
+              <property name="autoDefault">
+               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -2514,6 +2550,9 @@
             <property name="text">
              <string>?</string>
             </property>
+            <property name="autoDefault">
+             <bool>false</bool>
+            </property>
            </widget>
           </item>
          </layout>
@@ -2542,6 +2581,9 @@
        <property name="text">
         <string>Info</string>
        </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
       </widget>
      </item>
      <item>
@@ -2562,12 +2604,18 @@
        <property name="text">
         <string>Abbrechen</string>
        </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="buttonRun">
        <property name="text">
         <string>Berechnung starten</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
        </property>
       </widget>
      </item>

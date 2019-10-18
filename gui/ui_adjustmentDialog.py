@@ -13,6 +13,7 @@ class Ui_AdjustmenDialog(object):
     def setupUi(self, AdjustmenDialog):
         AdjustmenDialog.setObjectName("AdjustmenDialog")
         AdjustmenDialog.resize(599, 461)
+        AdjustmenDialog.setFocusPolicy(QtCore.Qt.ClickFocus)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/plugins/SeilaplanPlugin/gui/icons/icon_app.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         AdjustmenDialog.setWindowIcon(icon)

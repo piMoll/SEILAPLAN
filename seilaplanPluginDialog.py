@@ -250,14 +250,20 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         return self.paramHandler.setParameter(property_name, newVal)
     
     def parameterChangedLineEdit(self, property_name):
+        # Deactivate editFinished signal so it is not fired twice when
+        # setParameter() shows a QMessageBox
+        self.parameterFields[property_name].blockSignals(True)
         newVal = self.parameterFields[property_name].text()
         newValAsStr = self.paramHandler.setParameter(property_name, newVal)
         if newValAsStr is not False:
+            # Change current parameter set name
             if self.paramHandler.currentSetName:
                 self.fieldParamSet.setCurrentText(self.paramHandler.currentSetName)
             else:
                 self.fieldParamSet.setCurrentIndex(-1)
+            # Insert correctly formatted value
             self.parameterFields[property_name].setText(newValAsStr)
+        self.parameterFields[property_name].blockSignals(False)
     
     def setupContentForFirstRun(self):
         # Generate project name
@@ -320,6 +326,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
                 field.setText(val)
     
     def onSaveParameterSet(self):
+        if not self.paramHandler.checkValidState():
+            return
         self.paramSetWindow.setData(self.paramHandler.getParametersetNames(),
                                     self.paramHandler.SETS_PATH)
         self.paramSetWindow.exec()
