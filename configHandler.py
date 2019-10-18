@@ -37,36 +37,6 @@ from .tool.poles import Poles
 HOMEPATH = os.path.join(os.path.dirname(__file__))
 
 
-def readParamsFromTxt(path):
-    """Read txt files of parameter sets and save the key - value pairs to a
-    dictionary."""
-    fileData = {}
-    if not os.path.exists(path) and os.path.isfile(path) \
-            and path.lower().endswith('.txt'):
-        return False
-    
-    with io.open(path, encoding='utf-8') as f:
-        lines = f.read().splitlines()
-        header = lines[0].split('\t')
-        for line in lines[1:]:
-            if line == '':
-                break
-            line = line.split('\t')
-            row = {}
-            key = line[0]
-            # if txtfile has structure key, value (= parameter set)
-            if len(header) == 2:
-                row = line[1]
-            # if txtfile has structure key, value1, value2, value3
-            # (= params.txt)
-            else:
-                for i in range(1, len(header)):
-                    row[header[i]] = line[i]
-            fileData[key] = row
-    
-    return fileData
-
-
 def formatNum(number):
     """Layout Coordinates with thousand markers."""
     if number is None:
@@ -101,10 +71,10 @@ class AbstractConfHandler(object):
     def setDialog(self, dialog):
         self.dialog = dialog
     
-    def onError(self, message=None):
+    def onError(self, message=None, title='Fehler'):
         if not message:
             message = traceback.format_exc()
-        QMessageBox.information(self.dialog, 'Fehler', message,
+        QMessageBox.information(self.dialog, title, message,
                                 QMessageBox.Ok)
 
 
@@ -190,7 +160,10 @@ class ProjectConfHandler(AbstractConfHandler):
         return '' if self.projectName is None else self.projectName
     
     def setProjectName(self, value):
-        self.projectName = value
+        if not value:
+            self.projectName = None
+        else:
+            self.projectName = value
     
     def generateProjectName(self):
         """ Generate a unique project name."""
@@ -351,6 +324,13 @@ class ProjectConfHandler(AbstractConfHandler):
         return formattedProjectInfo
     
     def checkValidState(self):
+        msg = ''
+        if not self.profileIsValid():
+            msg = 'Bitte definieren Sie gültige Start- und Endkoordinaten'
+        if not self.projectName:
+            msg = 'Bitte definieren Sie einen Projektnamen'
+        if msg:
+            self.onError(msg, 'Unglültige Daten')
         return self.profileIsValid() and self.projectName
     
     def prepareForCalculation(self):
@@ -386,7 +366,7 @@ class ParameterConfHandler(AbstractConfHandler):
     
     def initParameters(self):
         # Load parameter definitions and rules from text file
-        parameterDef = readParamsFromTxt(
+        parameterDef = self.readParamsFromTxt(
             os.path.join(HOMEPATH, 'config', 'params.txt'))
         
         for key, pDef in parameterDef.items():
@@ -409,12 +389,43 @@ class ParameterConfHandler(AbstractConfHandler):
         
         self.params = parameterDef
         self.paramOrder = [elem[0] for elem in orderedParams]
+
+    def readParamsFromTxt(self, path):
+        """Read txt files of parameter sets and save the key - value pairs to a
+        dictionary."""
+        fileData = {}
+        if not os.path.exists(path) and os.path.isfile(path) \
+                and path.lower().endswith('.txt'):
+            msg = f"Fehler in Parameterset '{path}' " \
+                  f"gefunden. Set kann nicht geladen werden."
+            self.onError(msg)
+            return False
+    
+        with io.open(path, encoding='utf-8') as f:
+            lines = f.read().splitlines()
+            header = lines[0].split('\t')
+            for line in lines[1:]:
+                if line == '':
+                    break
+                line = line.split('\t')
+                row = {}
+                key = line[0]
+                # if txtfile has structure key, value (= parameter set)
+                if len(header) == 2:
+                    row = line[1]
+                # if txtfile has structure key, value1, value2, value3
+                # (= params.txt)
+                else:
+                    for i in range(1, len(header)):
+                        row[header[i]] = line[i]
+                fileData[key] = row
+    
+        return fileData
     
     def _getParameterInfo(self, property_name):
         try:
             return self.params[property_name]
         except KeyError:
-            # TODO QgsMessage:
             self.onError()
             return {}
     
@@ -451,18 +462,11 @@ class ParameterConfHandler(AbstractConfHandler):
         cval = self.castToNumber(p['dtype'], value)
         
         # Check input value
-        if cval != self.params[property_name]['value']:
+        if cval is not None and cval != self.params[property_name]['value']:
             
             # Check value range
             if p['ftype'] not in ['drop_field', 'no_field']:
                 valid = self.checkRange(cval, p)
-                if not valid:
-                    return False
-            
-            # Check anchor parameters
-            if property_name in ['d_Anker_A', 'd_Anker_E', 'HM_Anfang',
-                                 'HM_Ende_max']:
-                valid = self.checkAnchorDependency(property_name, cval)
                 if not valid:
                     return False
             
@@ -508,67 +512,56 @@ class ParameterConfHandler(AbstractConfHandler):
         
         # Check if value is defined
         if value is None:
-            # TODO QgsMessage:
             errorMsg = (f"Bitte geben Sie im Feld {paramInfo['label']} einen "
                         f"Wert zwischen {rangeSet[0]} und {rangeSet[1]} "
                         f"{paramInfo['unit']} ein.")
-            self.onError(errorMsg)
+            self.onError(errorMsg, 'Ungültige Eingabe')
             return False
         
         # Finally check range
         if value is None or not rangeSet[0] <= value <= rangeSet[1]:
-            # TODO QgsMessage:
             errorMsg = (f"Der Wert {value} im Feld {paramInfo['label']} ist "
                         f"ungültig. Bitte wählen Sie einen Wert zwischen "
                         f"{rangeSet[0]} und {rangeSet[1]} {paramInfo['unit']}.")
-            self.onError(errorMsg)
+            self.onError(errorMsg, 'Ungültige Eingabe')
             return False
         return True
     
-    def checkAnchorDependency(self, property_name=None, value=None):
-        aParam = {
-            'HM_Anfang': self.params['HM_Anfang']['value'],
-            'd_Anker_A': self.params['d_Anker_A']['value'],
-            'd_Anker_E': self.params['d_Anker_E']['value'],
-            'HM_Ende_max': self.params['HM_Ende_max']['value'],
-        }
-        
-        if property_name:
-            aParam[property_name] = value
-        
-        if aParam['HM_Anfang'] == 0 and aParam['d_Anker_A'] != 0:
-            msg = (f"Der Wert {value} im Feld "
-                   f"'{self.params[property_name]['label']}' ist ungültig. "
-                   f"Die Länge des Ankerfeldes und die Höhe der "
-                   f"Anfangsstütze sind voneinander abhängig. Ein Ankerfeld "
-                   f"ist nur dann möglich, wenn die Anfangstütze grösser als 0 Meter ist.")
-            self.onError(msg)
+    def checkAnchorDependency(self):
+        if self.params['HM_Anfang']['value'] == 0 \
+                and self.params['d_Anker_A']['value'] != 0:
+            msg = (f"Der Wert {self.params['d_Anker_A']['value']} im Feld "
+                   f"'{self.params['d_Anker_A']['label']}' ist ungültig. "
+                   f"Ein Ankerfeld ist nur dann möglich, wenn die Anfangstütze"
+                   f"grösser als 0 Meter ist.")
+            self.onError(msg, 'Ungültige Eingabe')
             return False
         
-        if aParam['HM_Ende_max'] == 0 and aParam['d_Anker_E'] != 0:
-            msg = (f"Der Wert {value} im Feld "
-                   f"'{self.params[property_name]['label']}' ist ungültig. "
-                   f"Die Länge des Ankerfeldes und die maximale Höhe der Endstütze "
-                   f"sind voneinander abhängig. Ein Ankerfeld "
-                   f"ist nur dann möglich, wenn die Enstütze grösser als 0 Meter sein darf.")
-            self.onError(msg)
+        if self.params['HM_Ende_max']['value'] == 0 \
+                and self.params['d_Anker_E']['value'] != 0:
+            msg = (f"Der Wert {self.params['d_Anker_E']['value']} im Feld "
+                   f"'{self.params['d_Anker_E']['label']}' ist ungültig. "
+                   f"Ein Ankerfeld ist nur dann möglich, wenn die Endstütze "
+                   f"grösser als 0 Meter sein darf.")
+            self.onError(msg, 'Ungültige Eingabe')
             return False
         return True
     
     def checkValidState(self):
         """ Check whole parameterset for valid values."""
         # Check value range
+        success = True
         for property_name, paramInfo in self.params.items():
             
             if paramInfo['ftype'] not in ['drop_field', 'no_field']:
                 valid = self.checkRange(paramInfo['value'], paramInfo)
                 if not valid:
                     self.params[property_name]['value'] = None
+                    success = False
         
         # Check anchor parameter dependence
-        self.checkAnchorDependency()
-        
-        return True
+        success = False if not self.checkAnchorDependency() else success
+        return success
     
     def getParametersAsStr(self):
         """ """
@@ -590,9 +583,8 @@ class ParameterConfHandler(AbstractConfHandler):
         for f in os.listdir(self.SETS_PATH):
             txtfile = os.path.join(self.SETS_PATH, f)
             if os.path.isfile(txtfile) and txtfile.lower().endswith('.txt'):
-                params = readParamsFromTxt(txtfile)
+                params = self.readParamsFromTxt(txtfile)
                 if not params:
-                    # TODO: QGIS Error Message
                     break
                 setname = params['label']
                 self.parameterSets[setname] = params
@@ -605,8 +597,9 @@ class ParameterConfHandler(AbstractConfHandler):
         try:
             self.parameterSets[setname]
         except KeyError:
-            # TODO QgsMessage
-            self.onError()
+            msg = (f"Fehler in Parameterset '{setname}' gefunden. "
+                   f"Set kann nicht geladen werden.")
+            self.onError(msg)
             return
         
         for property_name, value in self.parameterSets[setname].items():
@@ -643,10 +636,9 @@ class ParameterConfHandler(AbstractConfHandler):
             elif dtype == 'float':
                 cval = float(value)
             else:  # int
-                cval = int(value)
+                cval = int(float(value))
         except ValueError:
-            # TODO QgsMessage
-            self.onError()
+            self.onError('Bitte geben Sie eine gültige Zahl ein.')
             return None
         return cval
     
