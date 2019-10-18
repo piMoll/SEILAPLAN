@@ -188,8 +188,8 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles):
     indexMax = np.where(Pos == np.max(Pos))[0]
     emptyMatrix = np.zeros((arraySize+1, arraySize+1))      # Entspricht N+2
 
-    min_SK = int(IS['min_SK'])
-    zul_SK = int(IS['zul_SK'])
+    min_SK = IS['min_SK']
+    zul_SK = IS['zul_SK']
     mem = np.array([np.inf] * (zul_SK+1))
     memLength = np.zeros(zul_SK+1)
     min_path = ''

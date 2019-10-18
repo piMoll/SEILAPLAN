@@ -132,7 +132,7 @@ def calcCable(IS, zi, di, sc, befGSK, z_null, STA, b, h, feld):
     qz1 = IS["qz1"]     # [kN/m] Zugseilgewicht links
     qz2 = IS["qz2"]     # [kN/m] Zugseilgewicht rechts
     # min_Bodenabstand = IS["Bodenabst_min"]*10     # [dm] (10*[m])
-    zul_SK = IS["zul_SK"]  # [kN] zulaessige Seilkraft!
+    zul_SK = float(IS["zul_SK"])  # [kN] zulaessige Seilkraft!
     ZulSK_erfuellt = True
     # Ankerseillaenge
     Laenge_Ankerseil = IS['Ank']['len']

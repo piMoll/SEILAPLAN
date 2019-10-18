@@ -643,17 +643,7 @@ class ParameterConfHandler(AbstractConfHandler):
         return cval
     
     def prepareForCalculation(self):
-        # TODO: The Fuck did I do here?
-        # Ankerpunkten den Anfangs-/Endstützen anpassen
-        if self.params['HM_Anfang']['value'] < 1:
-            self.params['d_Anker_A']['value'] = 0.0
-        if self.params['HM_Ende_max']['value'] < 1:
-            self.params['d_Anker_E']['value'] = 0.0
-        
-        # Seilzugkräfte müssen ganzzahlig sein, aber in float-Form
-        # TODO: Warum nicht einfach Ganzzahlig definieren damit bereits bei der EIngabe klar ist, dass es nur Ganzzahlig geht?
-        self.params['zul_SK']['value'] = round(self.params['zul_SK']['value'], 0)
-        self.params['min_SK']['value'] = round(self.params['min_SK']['value'], 0)
+        pass
     
     def getSimpleParameterDict(self):
         # Short-hand dictionary for use in algorithm
@@ -722,8 +712,6 @@ class ConfigHandler(object):
             self.params.checkValidState()
         else:
             return False
-        
-        self.addPath(os.path.dirname(filename))
     
     def saveToFile(self, filename):
         projectStr = self.project.getConfigAsStr()
@@ -737,8 +725,6 @@ class ConfigHandler(object):
             f.writelines(os.linesep)
             # Write parameter values
             f.writelines(paramsStr)
-        
-        self.addPath(os.path.dirname(filename))
     
     def loadUserSettings(self):
         """Gets the output options and earlier used output paths and returns

@@ -3,8 +3,8 @@ Q		Gewicht der Last inkl. Laufwagen	kN	field	float	1	100	Gewicht der Last inkl. 
 qT		Gewicht Tragseil	kN/m	field	float	0.001	1	Gewicht des Tragseils	2
 A		Querschnittssfläche Tragseil	mm2	field	float	50	5000	Querschnittssfläche des Tragseils	3
 E		Elastizitätsmodul Tragseil	kN/mm2	field	float	10	1000	Elastizitätsmodul des Tragseils	4
-zul_SK		Maximal zulässige Seilzugkraft	kN	field	float	10	500	Maximal zulässige Seilzugkraft	5
-min_SK		Minimal zulässige Seilzugkraft	kN	field	float	10	zul_SK	Minimal zulässige Seilzugkraft	6
+zul_SK		Maximal zulässige Seilzugkraft	kN	field	int	10	500	Maximal zulässige Seilzugkraft	5
+min_SK		Minimal zulässige Seilzugkraft	kN	field	int	10	zul_SK	Minimal zulässige Seilzugkraft	6
 qz1		Gewicht des Zugseils links	kN/m	field	float	0	1	Gewicht des Zugseils links	7
 qz2		Gewicht des Zugseils rechts	kN/m	field	float	0	1	Gewicht des Zugseils rechts	8
 Bodenabst_min		Minimaler Abstand Tragseil - Boden	m	field	float	0	HM_min	Minimaler Abstand Seil - Boden, Achtung: kleiner oder gleich minimale Stützenhöhe	9

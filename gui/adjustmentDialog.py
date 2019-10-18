@@ -295,8 +295,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
             ]
             thresholds = [
                 params.getParameter('Bodenabst_min'),
-                params.getParameter('zul_SK'),
-                params.getParameter('zul_SK'),
+                float(params.getParameter('zul_SK')),
+                float(params.getParameter('zul_SK')),
                 None,
                 None
             ]
