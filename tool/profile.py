@@ -47,11 +47,6 @@ class Profile(object):
         self.sc_s = None
         self.befGSK = None
         self.befGSK_s = None
-
-        self.gclear_xaxis = None
-        self.gclear_cable = None
-        self.gclear_abs = None
-        self.gclear_rel = None
         
         self.generateProfile()
     
@@ -145,25 +140,27 @@ class Profile(object):
         self.zi = self.zi_disp[di_start:di_end + 1]
         
         # By moving the first or last pole, the cable line can become longer or
-        # shorter than the initial solution. Ground clearance have to be
+        # shorter than the initial solution. Ground clearance has to be
         # recalculated
-        cableline_meter = cableline['load'][::10]   # cable data in dm
+        cableline_meter = cableline['load'][::10]  # cable data from dm to m
         lenCable = np.size(cableline_meter)
         self.analyseProfile(lenCable)
         
-        self.gclear_xaxis = self.di_disp[di_start:di_end + 1]
-        # gclear_cable is a virtual cable line under the actual cable line
-        sc = self.sc
-        sc[sc == 0] = np.nan
-        self.gclear_cable = cableline_meter - sc
+        gclear_xaxis = self.di_disp[di_start:di_end + 1]
+        # gclear_cable is a virtual cable line under the actual cable line,
+        # used in plot
+        gclear_cable = cableline_meter - self.sc
+        gclear_cable[self.sc == 0] = np.nan
         # Same as gclear_cable but only shown when min ground clearance is not
-        # met, in absolute height values. Used for display in plot
-        self.gclear_abs = (self.gclear_cable < self.zi) * self.gclear_cable
-        self.gclear_abs[self.gclear_abs == 0] = np.nan
-        # Min ground clearance is not met; relative value. Is used to check
-        #  threshold in adjustment window
-        self.gclear_rel = sc - (self.zi - self.gclear_abs)
+        # met, in absolute height values, used in plot
+        gclear_abs = (gclear_cable < self.zi) * gclear_cable
+        gclear_abs[gclear_abs == 0] = np.nan
+        # Distance between cable and terrain where ground clearance has to be
+        # kept, is used to check threshold in adjustment window
+        gclear_rel = cableline_meter - self.zi
+        gclear_rel[self.sc == 0] = np.nan
 
-        cableline['groundclear_di'] = self.gclear_xaxis
-        cableline['groundclear'] = self.gclear_cable
-        cableline['groundclear_under'] = self.gclear_abs
+        cableline['groundclear_di'] = gclear_xaxis
+        cableline['groundclear'] = gclear_cable
+        cableline['groundclear_under'] = gclear_abs
+        cableline['groundclear_rel'] = gclear_rel

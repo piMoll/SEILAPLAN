@@ -337,7 +337,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
     
     def getThresholdFromResult(self, idx):
         arr = [
-            self.profile.gclear_rel,                        # Ground clearance
+            self.cableline['groundclear_rel'],              # Distance cable - terrain
             self.result['force']['MaxSeilzugkraft'][0],     # Max force on cable
             self.result['force']['Sattelkraft_Total'][0],   # Max force on pole
             self.result['force']['Anlegewinkel_Lastseil'],  # Cable angle
