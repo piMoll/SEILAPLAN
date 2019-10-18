@@ -201,14 +201,16 @@ class DialogOutputOptions(QDialog):
             self.pathField.addItem(path)
     
     def onOpenDialog(self):
-        title = u"Output Pfad auswählen"
-        QFileDialog.getExistingDirectory(self, title,
-                                         self.confHandler.outputOptions['outputPath'])
+        title = u"Output Ordner auswählen"
+        folder = QFileDialog.getExistingDirectory(self, title,
+            self.confHandler.getCurrentPath(), QFileDialog.ShowDirsOnly)
+        if folder:
+            self.pathField.insertItem(0, folder)
+            self.pathField.setCurrentIndex(0)
     
     def onSave(self):
         # Save checkbox status
         options = {
-            'outputPath': self.pathField.currentText(),
             'report': int(self.checkBoxReport.isChecked()),
             'plot': int(self.checkBoxPlot.isChecked()),
             'geodata': int(self.checkBoxGeodata.isChecked()),

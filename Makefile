@@ -39,7 +39,7 @@ EXTRAS = icon.png metadata.txt
 
 UI_FILES = ui_seilbahnplugin.py
 
-RESOURCE_FILES = resources_rc.py
+RESOURCE_FILES = gui/resources_rc.py
 
 HELP = help/build/html
 
