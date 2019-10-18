@@ -218,10 +218,6 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
                 'es sind nicht genügend\nStützenstandorte bestimmbar.')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_yellow.png')))
-        elif status == 'start':
-            self.recalcStatus_txt.setText('Neuberechnung...')
-            self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
-                ico_path, 'icon_reload.png')))
         elif status == 'success':
             self.recalcStatus_txt.setText('Seillinie neu berechnet')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
@@ -245,18 +241,15 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
             cableline, force, seil_possible = preciseCable(params, self.poles,
                                                            self.result['optSTA'])
         except Exception as e:
-            # TODO: Index Errors for certain angles still there
             self.updateRecalcStatus('error')
             self.isRecalculating = False
             self.configurationHasChanged = False
-            # TODO: Message
+            QMessageBox.critical(self, 'Unerwarteter Fehler bei Neuberechnung '
+                'der Seillinie', str(e), QMessageBox.Ok)
             return
 
         self.cableline = cableline
         self.result['force'] = force
-        
-        if not seil_possible:
-            self.updateRecalcStatus('2')
         
         # Ground clearance
         self.profile.updateProfileAnalysis(self.cableline, self.poles.poles)
@@ -268,8 +261,12 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         
         # Update Threshold data
         self.updateThresholds()
-        
-        self.updateRecalcStatus('success')
+
+        # cable line lifts off of pole
+        if not seil_possible:
+            self.updateRecalcStatus('2')
+        else:
+            self.updateRecalcStatus('success')
         self.configurationHasChanged = False
         self.isRecalculating = False
         self.unsavedChanges = True
@@ -278,7 +275,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         params = self.confHandler.params
         
         if not self.thData:
-            rows = [['' for cell in range(self.thSize[0])] for row in range(self.thSize[1])]
+            rows = [['' for cell in range(self.thSize[0])]
+                    for row in range(self.thSize[1])]
             header = [
                 'Kennwert',
                 'Definierter\nGrenzwert',
@@ -368,9 +366,9 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
                 np.rollaxis(np.argwhere(arr[idx] < 0), 1)[1])
             ))
         elif idx == 4:
-            # Prove
-            valStr = 'nein' if 'nein' in arr[idx] else 'ja'
-            location = [i for i, m in enumerate(arr[idx]) if m == 'nein']
+            # Proof: Only test for poles that are not first and last pole
+            valStr = 'Nein' if 'Nein' in arr[idx][1:-1] else 'Ja'
+            location = [i for i, m in enumerate(arr[idx][1:-1]) if m == 'Nein']
         
         if isinstance(val, float) and val is not np.nan:
             valStr = f"{round(val, 1)} {self.thData['units'][idx]}"
