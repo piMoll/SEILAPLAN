@@ -302,6 +302,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
             self.fieldParamSet.setCurrentIndex(-1)
         # Fill in parameter values
         self.fillInValues()
+        
+        # TODO: Set fixed poles and sections without poles in profile
     
     def enableToolTips(self):
         for field_name, field in list(self.parameterFields.items()):
@@ -524,6 +526,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
                 self.symTxtE.setText(redTxt)
     
     def updateFixedPoles(self, poleData):
+        pass
+        # TODO
         self.projectHandler.setFixedPoles(poleData)
     
     def onClickOsmButton(self):
@@ -543,6 +547,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         profile.create()
         self.profileWin.setProfile(profile)
         self.profileWin.setFixedPoles()
+        # TODO
+        # self.profileWin.setNoPoleSections(self.projectHandler.noPoleSection)
     
     def onShowProfile(self):
         self.profileWin.exec()

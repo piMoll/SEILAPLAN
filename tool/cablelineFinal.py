@@ -197,7 +197,7 @@ def preciseCable(IS, poles, STA):
     for n in range(anzFelder):
         bn = b[n]
         Hmn = Hm[n]
-        s_small = int(bn * multipl)
+        s_small = int(round(bn * multipl, 0))
         end = start+s_small+1
         b1 = np.arange(0, bn+step, step)
         b2 = bn - b1
