@@ -134,7 +134,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         self.updateRecalcStatus(self.result['resultStatus'])
 
         # Draw profile in diagram
-        self.plot.initData(self.profile.di_disp, self.profile.zi_disp)
+        self.plot.initData(self.profile.di_disp, self.profile.zi_disp,
+                           self.profile.peakLoc_x, self.profile.peakLoc_z)
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
     
         # Create layout to modify poles

@@ -40,6 +40,8 @@ class AdjustmentPlot(FigureCanvas):
         
         self.xdata = None
         self.terrain = None
+        self.peakLoc_x = None
+        self.peakLoc_y = None
         self.data_xlow = 0
         self.data_xhi = 0
         self.data_ylow = 0
@@ -65,9 +67,11 @@ class AdjustmentPlot(FigureCanvas):
         self.axes.minorticks_on()
         self.axes.tick_params(which="minor", direction="in")
         
-    def initData(self, xdata, terrain):
+    def initData(self, xdata, terrain, peakLocation_x, peakLocation_y):
         self.xdata = xdata
         self.terrain = terrain
+        self.peakLoc_x = peakLocation_x
+        self.peakLoc_y = peakLocation_y
         self.data_xlow = np.min(self.xdata)
         self.data_xhi = np.max(self.xdata)
         self.data_ylow = np.min(self.terrain)
@@ -92,13 +96,19 @@ class AdjustmentPlot(FigureCanvas):
         
     def updatePlot(self, poles, cable, printPdf=False):
         scale = 1
+        legendCol = 4
         if printPdf:
+            legendCol = 3
             scale = 0.5
         self.axes.clear()
         self.__setupAxes()
         # Terrain
         self.axes.plot(self.xdata, self.terrain, color='#a1d1ab',
-                       linewidth=3.5*scale)
+                       linewidth=3.5*scale, zorder=1)
+        if not printPdf:
+            self.axes.scatter(self.peakLoc_x, self.peakLoc_y, marker='^',
+                              color='#ffaa00', edgecolors='#496b48',
+                              label='Günstige\nGeländeform', zorder=2)
         # Cable lines
         self.axes.plot(cable['xaxis'], cable['empty'], color='#4D83B2',
                        linewidth=1.5*scale, label="Leerseil")
@@ -138,7 +148,7 @@ class AdjustmentPlot(FigureCanvas):
             self.placeLabels(pole_d, pole_ztop)
         # Legend
         self.axes.legend(loc='lower center', fontsize=12,
-                         bbox_to_anchor=(0.5, 0), ncol=3)
+                         bbox_to_anchor=(0.5, 0), ncol=legendCol)
         self.draw()
 
     def zoomTo(self, pole):

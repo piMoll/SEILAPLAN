@@ -40,7 +40,7 @@ def main(progress, project):
 
     # Search suitable pole positions along profile
     # TODO: Refactor into profile Class
-    gp, StuetzenPos, peakLoc, diIdx, R_R = stuePos(
+    gp, StuetzenPos, diIdx, R_R = stuePos(
         params, profile, project.noPoleSection, project.fixedPoles)
     
     # Extend params dictionary TODO: better solution?

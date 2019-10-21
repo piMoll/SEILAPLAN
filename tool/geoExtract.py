@@ -13,8 +13,6 @@
 """
 import numpy as np
 import os
-import math
-from osgeo import gdal
 
 from .peakdetect import peakdetect
 
@@ -71,6 +69,7 @@ def stuePos(IS, gp, noPoleSection, fixedPoles):
     ld = np.where(np.array(diff)>10)[0]
     # Verschneiden
     peakLoc = np.intersect1d(peakIdx, ld)
+    gp.setPeakLocations(peakLoc)
 
     # Bereiche ohne Stützen (benutzerdefiniert) aufbereiten
     noStue = np.zeros(gp.di_s.size, dtype=int)
@@ -124,7 +123,7 @@ def stuePos(IS, gp, noPoleSection, fixedPoles):
         gp.zi_s = np.append(gp.zi_s, gp.zi_n[-1])
         gp.sc_s = np.append(gp.sc_s, gp.sc[-1])
         gp.befGSK_s = np.append(gp.befGSK_s, gp.befGSK[-1])
-        di_ind = np.append(locb, gp.di[-1])
+        locb = np.append(locb, gp.di[-1])
         # gp['last_element_add'] = True
 
     # Inhalt von EvalKonkav.m
@@ -143,16 +142,16 @@ def stuePos(IS, gp, noPoleSection, fixedPoles):
     # Stützenstandorte bestimmen
     ############################
     Maststandort = np.ones(v.size)
-    for element in enumerate(v):
-        if element[1] <= 0:
+    for idx, elem in enumerate(v):
+        if elem <= 0:
             # Ungeeignete Standorte erhalten den Wert 0
-            Maststandort[element[0]] = 0
+            Maststandort[idx] = 0
     # Zusätzliche Maststandorte dort wo der Benutzer sie angegeben hat
     idxFix = ismember(fixedPoles['HM_fix_d'], gp.di_s)
     Maststandort[idxFix] = 1
     # Idee an zweiter und zweitletzter Stelle soll immer eine Stütze möglich
     # sein, wegen zum Teil tiefen Anfangs- und Endstützenhoehen (0m)
-    Maststandort[[1,-2]] = 1
+    Maststandort[[1, -2]] = 1
 
     # Rückerichtung bestimmen
     #########################
@@ -168,19 +167,4 @@ def stuePos(IS, gp, noPoleSection, fixedPoles):
         else:
             R_R = 1     # rauf
 
-    return gp, Maststandort, peakLoc, di_ind, R_R
-
-
-def markFixStue(stuetzIdx, fixedPoles):
-    # Fixe Stützen
-    fixStueX = fixedPoles['HM_fix_d']
-    fixStueZ = fixedPoles['HM_fix_h']
-
-    if not fixStueX:
-        return [np.zeros([len(stuetzIdx)])]*2       # Zwei leere Arrays
-
-    findX = [stuetzIdx == idx for idx in fixStueX]
-    findFixStueX = np.sum(findX, axis=0)
-    findFixStueZ = np.copy(findFixStueX)
-    findFixStueZ[np.where(findFixStueZ > 0)] = fixStueZ
-    return [findFixStueX, findFixStueZ]
+    return gp, Maststandort, locb, R_R

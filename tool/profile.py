@@ -40,13 +40,14 @@ class Profile(object):
         self.di_s_idx = None
         self.zi_n = None
         self.di_n = None
-
-        self.di_cable = None
         
         self.sc = None
         self.sc_s = None
         self.befGSK = None
         self.befGSK_s = None
+        
+        self.peakLoc_x = None
+        self.peakLoc_z = None
         
         self.generateProfile()
     
@@ -113,6 +114,7 @@ class Profile(object):
     
     def analyseProfile(self, lenCableline):  # locb
         # Ground clearance (Bodenabstand)
+        # TODO: Refactoring of old function in geoExtract.py
         groundclearance = self.params.getParameter('Bodenabst_min')
         clearA = self.params.getParameter('Bodenabst_A')
         clearE = self.params.getParameter('Bodenabst_E')
@@ -164,3 +166,7 @@ class Profile(object):
         cableline['groundclear'] = gclear_cable
         cableline['groundclear_under'] = gclear_abs
         cableline['groundclear_rel'] = gclear_rel
+    
+    def setPeakLocations(self, peakLoc):
+        self.peakLoc_x = peakLoc
+        self.peakLoc_z = self.zi[self.peakLoc_x]
