@@ -447,6 +447,11 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
             return
         if self.unsavedChanges:
             reply = QMessageBox.information(self, 'Nicht gespeicherte Änderungen',
-                'Möchten Sie die Ergebnisse speichern?', QMessageBox.No | QMessageBox.Yes)
+                'Möchten Sie die Ergebnisse speichern?', QMessageBox.Cancel |
+                                            QMessageBox.No | QMessageBox.Yes)
             if reply == QMessageBox.Yes:
                 self.onSave()
+            elif reply == QMessageBox.Cancel:
+                event.ignore()
+            else:
+                event.accept()
