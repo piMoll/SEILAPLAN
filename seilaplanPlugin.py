@@ -66,15 +66,6 @@ class SeilaplanPlugin(object):
         # Check if plugin was started the first time in current QGIS session
         # Must be set in initGui() to survive plugin reloads
         self.first_start = None
-        
-        # try:
-        #     import pydevd_pycharm
-        #     pydevd_pycharm.settrace('localhost', port=53100,
-        #                             stdoutToServer=True, stderrToServer=True)
-        # except ConnectionRefusedError:
-        #     pass
-        # except ImportError:
-        #     pass
 
     # noinspection PyMethodMayBeStati
     def tr(self, message):
