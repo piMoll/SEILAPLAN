@@ -19,6 +19,7 @@
  ***************************************************************************/
 """
 
+import textwrap
 from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtWidgets import (QDialog, QVBoxLayout, QProgressBar, QLabel,
     QHBoxLayout, QDialogButtonBox, QSizePolicy, QPushButton, QSpacerItem,
@@ -51,16 +52,23 @@ class ProgressDialog(QDialog):
         self.hbox = QHBoxLayout()
         self.cancelButton = QDialogButtonBox()
         self.closeButton = QDialogButtonBox()
+        self.resultLabel = QLabel(self)
+        self.resultLabel.setMaximumWidth(500)
+        self.resultLabel.setSizePolicy(
+            QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding))
+        self.resultLabel.setWordWrap(True)
+        spacer1 = QSpacerItem(20, 20, QSizePolicy.Fixed,
+                              QSizePolicy.Fixed)
         self.rerunButton = QPushButton("zurück zum Startfenster")
         self.rerunButton.setVisible(False)
-        spacer = QSpacerItem(40, 20, QSizePolicy.Expanding,
+        spacer2 = QSpacerItem(40, 20, QSizePolicy.Expanding,
                              QSizePolicy.Minimum)
         self.cancelButton.setStandardButtons(QDialogButtonBox.Cancel)
         self.cancelButton.clicked.connect(self.onAbort)
         self.closeButton.setStandardButtons(QDialogButtonBox.Close)
         self.closeButton.clicked.connect(self.onClose)
         self.hbox.addWidget(self.rerunButton)
-        self.hbox.addItem(spacer)
+        self.hbox.addItem(spacer2)
         self.hbox.addWidget(self.cancelButton)
         self.hbox.setAlignment(self.cancelButton, Qt.AlignHCenter)
         self.hbox.addWidget(self.closeButton)
@@ -69,6 +77,8 @@ class ProgressDialog(QDialog):
         
         self.container.addWidget(self.progressBar)
         self.container.addWidget(self.statusLabel)
+        self.container.addWidget(self.resultLabel)
+        self.container.addItem(spacer1)
         self.container.addLayout(self.hbox)
         self.container.setSizeConstraint(QLayout.SetFixedSize)
         self.setLayout(self.container)
@@ -108,17 +118,8 @@ class ProgressDialog(QDialog):
         if success:
             self.progressBar.setValue(self.progressBar.maximum())
             self.wasSuccessful = True
-            # Optimization not successful
-            if self.resultStatus == '4':
-                self.statusLabel.setText("Berechnungen abgeschlossen.")
-                self.resultLabel.setText(
-                    "Aufgrund der Geländeform oder der Eingabeparameter "
-                    "konnten <b>keine Stützenstandorte bestimmt</b> werden.")
-                self.finallyDo()
-            # Optimization successful
-            else:
-                # Close progress dialog so that adjustment window can be opened
-                self.close()
+            # Close progress dialog so that adjustment window can be opened
+            self.close()
         else:  # If there was an abort by the user
             self.statusLabel.setText("Berechnungen abgebrochen.")
             self.progressBar.setValue(self.progressBar.minimum())
@@ -152,8 +153,11 @@ class ProgressDialog(QDialog):
     def onError(self, exception_string):
         self.setWindowTitle("SEILAPLAN: Berechnung fehlgeschlagen")
         self.statusLabel.setText("Ein Fehler ist aufgetreten:")
-        self.resultLabel.setText(exception_string)
+        self.resultLabel.setText(textwrap.fill(exception_string, 60)
+                                 .replace('\n', '<br>'))
+        self.resultLabel.setHidden(False)
         self.progressBar.setValue(self.progressBar.minimum())
+        self.setLayout(self.container)
         self.finallyDo()
     
     def onRerun(self):

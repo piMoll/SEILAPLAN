@@ -60,9 +60,8 @@ def main(progress, project):
     if HMidx == [0]:
         # Not a single pole location was calculated, no cable line possible
         progress.exception = (
-            "Aufgrund der Geländeform oder der Eingabeparameter konnten <b>keine "
-            "Stützenstandorte bestimmt</b> werden. Es wurden keine Output-Daten "
-            "erzeugt.")
+            "Aufgrund der Geländeform oder der Eingabeparameter konnten keine "
+            "Stützenstandorte bestimmt werden.")
         return False
     
     # Save optimized pole locations
