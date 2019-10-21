@@ -292,9 +292,10 @@ def generateReportText(confHandler, result, comment):
 
 def generateReport(reportText, outputLoc, projname):
     """Generate PDF report with reprotlab"""
-    from ..packages.reportlab.lib.pagesizes import A4, cm, landscape
-    from ..packages.reportlab.platypus import SimpleDocTemplate, Table, TableStyle
-    from ..packages.reportlab.graphics.shapes import colors
+    from reportlab.lib.pagesizes import A4, landscape
+    from reportlab.lib.units import cm
+    from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+    from reportlab.graphics.shapes import colors
 
     savePath = os.path.join(outputLoc, 'Bericht.pdf')
     if os.path.exists(savePath):
