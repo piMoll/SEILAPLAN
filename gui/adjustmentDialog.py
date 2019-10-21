@@ -351,21 +351,34 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
 
         if idx == 0:
             # Ground clearance
-            val = np.nanmin(arr[idx])
+            try:
+                val = np.nanmin(arr[idx])
+            except RuntimeWarning:
+                # Array contains all np.nan
+                val = np.nan
             location = np.ravel(
                 np.argwhere(arr[idx] < self.thData['thresholds'][idx]))
         elif idx in [1, 2]:
             # Max force on cable and on pole
-            val = np.nanmax(arr[idx])
+            try:
+                val = np.nanmax(arr[idx])
+            except RuntimeWarning:
+                # Array contains all np.nan
+                val = np.nan
             location = np.ravel(
                 np.argwhere(arr[idx] > self.thData['thresholds'][idx]))
         elif idx == 3:
             # Cable angle
-            val = np.nanmax(arr[idx])
-            location = np.unique(np.concatenate((
-                np.rollaxis(np.argwhere(arr[idx] > 30), 1)[1],
-                np.rollaxis(np.argwhere(arr[idx] < 0), 1)[1])
-            ))
+            transformedArr = arr[idx]
+            transformedArr[transformedArr < 0] -= 30
+            transformedArr[transformedArr < 0] *= -1
+            try:
+                val = np.nanmax(arr[idx])
+            except RuntimeWarning:
+                # Array contains all np.nan
+                val = np.nan
+            location = np.unique(np.rollaxis(
+                np.argwhere(transformedArr > 30), 1)[1])
         elif idx == 4:
             # Proof: Only test for poles that are not first and last pole
             valStr = 'Nein' if 'Nein' in arr[idx][1:-1] else 'Ja'
