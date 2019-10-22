@@ -170,6 +170,15 @@ class SeilaplanPlugin(object):
     def run(self):
         """Run method that performs all the real work"""
         
+        try:
+            import pydevd_pycharm
+            pydevd_pycharm.settrace('localhost', port=53100,
+                                    stdoutToServer=True, stderrToServer=True)
+        except ConnectionRefusedError:
+            pass
+        except ImportError:
+            pass
+        
         # Configuration handler
         conf = ConfigHandler()
 
@@ -188,9 +197,18 @@ class SeilaplanPlugin(object):
             firstRun = False
             
             # Start event loop
-            self.dlg.show()
-            self.dlg.exec()
-            
+            # self.dlg.show()
+            # self.dlg.exec()
+
+            # Show adjustment window to modify calculated cable line
+            conf.loadFromFile("/home/pi/Seilaplan/project_to_pickl_20191022.txt")
+            pickleFile = '/home/pi/Projects/seilaplan/pickle_dumps/pickl_20191022.pckl'
+            conf.prepareForCalculation()
+            self.adjustmentWindow = AdjustmentDialog(self.iface, conf)
+            self.adjustmentWindow.loadData(pickleFile)
+            self.adjustmentWindow.show()
+            self.adjustmentWindow.exec()
+
             # Begin with computation when user clicked on "Start calculations"
             # and parameters are valid
             if self.dlg.startAlgorithm:

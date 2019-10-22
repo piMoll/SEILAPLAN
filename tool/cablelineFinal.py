@@ -61,6 +61,10 @@ def preciseCable(IS, poles, STA):
 
     # Field dimension
     b, h = poles.getCableFieldDimension()
+    # Round the field dimensions do dm because this is going to be the
+    # the resolution of the cable calculation
+    b = np.round(b, 1)
+    h = np.round(h, 1)
 
     anzFelder = b.size
     anzStue = anzFelder+1
@@ -180,9 +184,10 @@ def preciseCable(IS, poles, STA):
     # Submeter reduziert werden. Siehe matlab: DP = 0.01 m
     Q_Null = 0
     step = 0.1
-    multipl = int(1/step)       # default = 10
-    lenSeil = int(b_cum[-1] * multipl) + 1
-
+    multipl = 10
+    # Round the decimeter values and then convert to int to use as index
+    lenSeil = int(round(b_cum[-1] * multipl, 0)) + 1
+    
     b1 = np.zeros(lenSeil)      # 1 cm Schritte zwischen den Stützen
     # Leere Koordinaten Arrays initialisieren
     y_leer = np.copy(b1)
@@ -191,7 +196,6 @@ def preciseCable(IS, poles, STA):
     z_coord_leer = np.copy(b1)
     z_coord_zweifel = np.copy(b1)
     l_coord = np.copy(b1)
-    # Alternative: l_coord_neu = np.arange(0, b_cum[-1]+step, step)
 
     start = 0
     for n in range(anzFelder):
@@ -443,7 +447,11 @@ def preciseCable(IS, poles, STA):
         'xaxis': l_coord + firstPole['dtop'],    # X-data starts at first pole
         'empty': z_coord_leer + firstPole['ztop'],   # Y-data is calculated relative
         'load': z_coord_zweifel + firstPole['ztop'],
-        'anchor': poles.getAnchorCable()
+        'anchor': poles.getAnchorCable(),
+        'groundclear_di': [],
+        'groundclear': [],
+        'groundclear_under': [],
+        'groundclear_rel': [],
     }
 
     return cableline, kraft, seil_possible

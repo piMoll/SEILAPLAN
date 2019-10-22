@@ -4,9 +4,9 @@ import numpy as np
 
 class Poles(object):
     
-    INIT_POLE_HEIGHT = 10
-    INIT_POLE_ANGLE = 0
-    POLE_DIST_STEP = 1
+    INIT_POLE_HEIGHT = 10.0
+    INIT_POLE_ANGLE = 0.0
+    POLE_DIST_STEP = 1.0
     POLE_HEIGHT_STEP = 0.1
     
     def __init__(self, project):
@@ -42,6 +42,8 @@ class Poles(object):
         self.calculateAnchor()
     
     def add(self, idx, d, h=INIT_POLE_HEIGHT, angle=INIT_POLE_ANGLE, manually=False):
+        d = float(d)
+        h = float(h)
         x, y, z, dtop, ztop = self.derivePoleProperties(d, h, angle)
         name = f"{idx}. Stütze"
         if manually:
@@ -83,8 +85,8 @@ class Poles(object):
         ztop = z + h
         if angle != 0:
             rad_angle = -1 * radians(angle)
-            dtop = d - round(h * sin(rad_angle), 1)
-            ztop = z + round(h * cos(rad_angle), 1)
+            dtop = d - h * sin(rad_angle)
+            ztop = z + h * cos(rad_angle)
         return x, y, z, dtop, ztop
 
     def addPolesFromOptimization(self, pole_dist, pole_h):
