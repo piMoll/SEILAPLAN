@@ -757,11 +757,14 @@ class ConfigHandler(object):
         # If there are no paths defined by user (for example at first run),
         # try to create standard folder
         if not self.commonPaths:
-            try:
-                os.mkdir(self.DEFAULT_SAVE_PATH)
+            if os.path.exists(self.DEFAULT_SAVE_PATH):
                 self.commonPaths.append(self.DEFAULT_SAVE_PATH)
-            except OSError:
-                pass
+            else:
+                try:
+                    os.mkdir(self.DEFAULT_SAVE_PATH)
+                    self.commonPaths.append(self.DEFAULT_SAVE_PATH)
+                except OSError:
+                    self.commonPaths.append(os.path.expanduser('~'))
     
     def updateUserSettings(self):
         """ Update the user defined settings. """
@@ -785,7 +788,10 @@ class ConfigHandler(object):
                 f.writelines(path + os.linesep)
     
     def getCurrentPath(self):
-        return self.commonPaths[-1]
+        try:
+            return self.commonPaths[-1]
+        except IndexError:
+            return ''
     
     def addPath(self, path):
         if path != self.commonPaths[-1]:
