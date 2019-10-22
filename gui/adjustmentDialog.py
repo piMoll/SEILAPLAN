@@ -355,38 +355,40 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         valStr = ""
         location = []
 
+        # Ground clearance
         if idx == 0:
-            # Ground clearance
-            try:
-                val = np.nanmin(arr[idx])
-            except RuntimeWarning:
-                # Array contains all np.nan
-                val = np.nan
-            location = np.ravel(
-                np.argwhere(arr[idx] < self.thData['thresholds'][idx]))
+            if np.isnan(arr[idx]).all():
+                return valStr, location
+            val = np.nanmin(arr[idx])
+            # Replace nan so there is no Runtime Warning in np.argwhere()
+            arrayData = np.copy(arr[idx])
+            arrayData[np.isnan(arrayData)] = 100.0
+            # Check for values smaller than ground clearance
+            location = np.ravel(np.argwhere(arrayData < self.thData['thresholds'][idx]))
+        
+        # Max force on cable and on pole
         elif idx in [1, 2]:
-            # Max force on cable and on pole
-            try:
-                val = np.nanmax(arr[idx])
-            except RuntimeWarning:
-                # Array contains all np.nan
-                val = np.nan
+            # Replace nan with 0 so that no Runtime Warning is thrown in
+            # np.argwhere()
+            arrayData = np.nan_to_num(arr[idx])
+            val = np.max(arrayData)
             location = np.ravel(
-                np.argwhere(arr[idx] > self.thData['thresholds'][idx]))
+                np.argwhere(arrayData > self.thData['thresholds'][idx]))
+        
+        # Cable angle
         elif idx == 3:
-            # Cable angle
-            transformedArr = arr[idx]
-            transformedArr[transformedArr < 0] -= 30
-            transformedArr[transformedArr < 0] *= -1
-            try:
-                val = np.nanmax(arr[idx])
-            except RuntimeWarning:
-                # Array contains all np.nan
-                val = np.nan
+            # Replace nan with 0 so that no Runtime Warning is thrown
+            arrayData = np.nan_to_num(arr[idx])
+            # Transform negative values to values over 30, so we have to do
+            # only one check
+            arrayData[arrayData < 0] -= 30
+            arrayData[arrayData < 0] *= -1
+            val = np.nanmax(arrayData)
             location = np.unique(np.rollaxis(
-                np.argwhere(transformedArr > 30), 1)[1])
+                np.argwhere(arrayData > 30), 1)[1])
+        
+        # Proof: Only test for poles that are not first and last pole
         elif idx == 4:
-            # Proof: Only test for poles that are not first and last pole
             valStr = 'Nein' if 'Nein' in arr[idx][1:-1] else 'Ja'
             location = [i for i, m in enumerate(arr[idx][1:-1]) if m == 'Nein']
         
@@ -431,7 +433,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         if self.confHandler.getOutputOption('plot'):
             plotSavePath = os.path.join(outputLoc, 'Diagramm.pdf')
             printPlot = AdjustmentPlot(self)
-            printPlot.initData(self.profile.di_disp, self.profile.zi_disp)
+            printPlot.initData(self.profile.di_disp, self.profile.zi_disp,
+                               self.profile.peakLoc_x, self.profile.peakLoc_z)
             printPlot.updatePlot(self.poles.getAsArray(), self.cableline, True)
             printPlot.printToPdf(plotSavePath, projName, self.poles.poles)
 

@@ -184,7 +184,7 @@ def generateCoordTable(cableline, profile, poles, outputLoc):
         [cableline['xaxis'][::10], cableline['coordx'][::10],
          cableline['coordy'][::10], cableline['load'][::10],
          cableline['empty'][::10], profile.zi,
-         cableline['groundclear_rel']])
+         cableline['load'][::10] - profile.zi])
     seilDataMatrix = seilDataMatrix.transpose()
 
     # Txt header

@@ -152,14 +152,20 @@ class Profile(object):
         # gclear_cable is a virtual cable line under the actual cable line,
         # used in plot
         gclear_cable = cableline_meter - self.sc
-        gclear_cable[self.sc == 0] = np.nan
         # Same as gclear_cable but only shown when min ground clearance is not
         # met, in absolute height values, used in plot
         gclear_abs = (gclear_cable < self.zi) * gclear_cable
-        gclear_abs[gclear_abs == 0] = np.nan
         # Distance between cable and terrain where ground clearance has to be
         # kept, is used to check threshold in adjustment window
         gclear_rel = cableline_meter - self.zi
+        
+        # Make sections where ground clearance is not checked to nan
+        gclear_cable[self.sc == 0] = np.nan
+        gclear_abs[gclear_abs == 0] = np.nan
+        try:
+            gclear_abs[self.sc == 0] = np.nan
+        except RuntimeWarning:
+            pass
         gclear_rel[self.sc == 0] = np.nan
 
         cableline['groundclear_di'] = gclear_xaxis
