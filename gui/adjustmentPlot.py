@@ -57,7 +57,7 @@ class AdjustmentPlot(FigureCanvas):
         FigureCanvas.setSizePolicy(self, QSizePolicy.Expanding,
                                    QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)
-        self.fig.tight_layout(pad=0, w_pad=0.1, h_pad=0.1)      # TODO: alternative constraint_layout()
+        self.fig.tight_layout(pad=0, w_pad=0.1, h_pad=0.1)
 
     def __setupAxes(self):
         self.axes.ticklabel_format(style='plain', useOffset=False)
@@ -100,6 +100,11 @@ class AdjustmentPlot(FigureCanvas):
         if printPdf:
             legendCol = 3
             scale = 0.5
+        
+        # current Zoom
+        xlim = self.axes.get_xlim()
+        ylim = self.axes.get_ylim()
+        
         self.axes.clear()
         self.__setupAxes()
         # Terrain
@@ -142,13 +147,16 @@ class AdjustmentPlot(FigureCanvas):
             self.axes.axhline(lw=1, ls='dotted', color='black', y=ztop)
         
         # Data limit of axis
-        self.setPlotLimits()
+        # self.setPlotLimits()
         # Add labels
         if not printPdf:
             self.placeLabels(pole_d, pole_ztop)
         # Legend
-        self.axes.legend(loc='lower center', fontsize=12,
+        self.axes.legend(loc='lower center', fontsize=11,
                          bbox_to_anchor=(0.5, 0), ncol=legendCol)
+        
+        self.axes.set_xlim(xlim)
+        self.axes.set_ylim(ylim)
         self.draw()
 
     def zoomTo(self, pole):

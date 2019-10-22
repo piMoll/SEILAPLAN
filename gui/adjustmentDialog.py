@@ -152,16 +152,18 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         self.timer.start(300)
     
     def zoomToPole(self, idx):
-        self.plot.zoomTo(self.poles.poles[idx])
-        self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
+        # self.plot.zoomTo(self.poles.poles[idx])
+        # self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
+        pass
     
     def zoomOut(self):
-        self.plot.zoomOut()
-        self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
+        # self.plot.zoomOut()
+        # self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
+        pass
 
     def updatePole(self, idx, property_name, newVal):
         self.poles.update(idx, property_name, newVal)
-        self.plot.zoomTo(self.poles.poles[idx])
+        # self.plot.zoomTo(self.poles.poles[idx])
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         self.configurationHasChanged = True
     
@@ -176,7 +178,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         
         self.poles.add(newPoleIdx, d, manually=True)
         
-        self.plot.zoomOut()
+        # self.plot.zoomOut()
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         self.configurationHasChanged = True
         
@@ -186,7 +188,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
 
     def deletePole(self, idx):
         self.poles.delete(idx)
-        self.plot.zoomOut()
+        # self.plot.zoomOut()
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         self.configurationHasChanged = True
     
