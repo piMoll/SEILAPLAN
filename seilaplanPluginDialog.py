@@ -38,7 +38,7 @@ from .gui.saveDialog import DialogSaveParamset
 from .gui.mapMarker import MapMarkerTool
 from .gui.ui_seilaplanDialog import Ui_SeilaplanDialog
 from .gui.profileDialog import ProfileDialog
-from .gui.profileCreation import Profile
+from .gui.profileCreation import PreviewProfile
 
 # OS dependent line break
 nl = os.linesep
@@ -108,7 +108,6 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.drawTool = MapMarkerTool(self.canvas, self.draw,
                                       self.buttonShowProf)
         # Connect emitted signals
-        self.drawTool.sig_clearMap.connect(self.clearMap)
         self.drawTool.sig_createProfile.connect(self.createProfile)
         self.drawTool.sig_changeCoord.connect(self.updateLineByMapDraw)
         
@@ -145,7 +144,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.draw.setCheckable(True)
         
         # Dialog window with height profile
-        self.profileWin = ProfileDialog(self, self.iface, self.projectHandler)
+        self.profileWin = ProfileDialog(self, self.iface, self.drawTool,
+                                        self.projectHandler)
 
         # Dialog windows for saving parameter and cable sets
         self.paramSetWindow = DialogSaveParamset(self.iface, self)
@@ -447,11 +447,6 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
     #         focused_widget.clearFocus()
     #     QtGui.QDialog.mousePressEvent(self, event)
     
-    def clearMap(self):
-        if self.profileWin:
-            self.profileWin.deactivateMapMarker()
-            self.profileWin.removeLines()
-    
     def onCoordFieldChange(self, pointType):
         x = self.coordFields[pointType + 'x'].text()
         y = self.coordFields[pointType + 'y'].text()
@@ -491,7 +486,6 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
     
     def updateLineByCoordFields(self):
         self.drawTool.reset()
-        self.clearMap()
         if self.projectHandler.profileIsValid():
             self.drawTool.updateLine(list(self.linePoints.values()))
             self.createProfile()
@@ -543,7 +537,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.canvas.refresh()
     
     def createProfile(self):
-        profile = Profile(self.projectHandler)
+        profile = PreviewProfile(self.projectHandler)
         profile.create()
         self.profileWin.setProfile(profile)
         self.profileWin.setFixedPoles()
@@ -640,7 +634,6 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         # Save user settings
         self.confHandler.updateUserSettings()
         # Clean markers and lines from map canvas
-        self.clearMap()
         self.drawTool.reset()
     
     def closeEvent(self, QCloseEvent):

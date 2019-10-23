@@ -24,9 +24,16 @@ from qgis.gui import QgsMapTool, QgsRubberBand, QgsVertexMarker
 from qgis.core import QgsGeometry, QgsFeature, QgsPointXY
 
 
+# Colors
+CURSOR_COLOR = '#00000'
+PROFILE_COLOR = '#de0d15'
+POLE_COLOR = '#0055ff'
+SECTION_COLOR = '#ff9900'
+
+
 class MapMarkerTool(QgsMapTool):
+    
     # Signals
-    sig_clearMap = pyqtSignal()
     sig_createProfile = pyqtSignal()
     sig_changeCoord = pyqtSignal(QgsPointXY, str)
 
@@ -34,32 +41,38 @@ class MapMarkerTool(QgsMapTool):
         QgsMapTool.__init__(self, canvas)
         self.canvas = canvas
         
+        # Cross hair when drawing profile line
         self.cursor = QCursor(Qt.CrossCursor)
+        # Cross hair when creating new fixed poles in profile window
+        self.poleCursor = None
 
-        # Red line
+        # Red line for profile drawing
         self.rubberband = QgsRubberBand(self.canvas)
         self.rubberband.setWidth(3)
-        self.rubberband.setColor(QColor(231, 28, 35))
-    
+        self.rubberband.setColor(QColor(PROFILE_COLOR))
+        
         # Buttons from main dialog
         self.drawLineButton = drawLineButton
         self.buttonShowProf = showProfileButton
 
         # Coordinates of drawn line points
-        self.pointsToDraw = []
+        self.linePoints = []
+        # Drawn line geometry
+        self.lineFeature = None
+        # Point markers for poles
+        self.markers = []
+
+        # Line for section marking (sections without poles)
+        self.linePointsS = []
+        self.lineFeatureS = []
+
         # Temporary save double clicks
         self.dblclktemp = None
-        # Drawn line geometry
-        self.drawnLine = None
-        # Point markers on each end of the line
-        self.markers = []
         
-        # Backup the last active Tool before the pofile tool became active
+        # Backup the last active Tool before the profile tool became active
         self.savedTool = self.canvas.mapTool()
 
     def drawLine(self):
-        # Emit signal that clears map and deletes profile
-        self.sig_clearMap.emit()
         self.reset()
         self.canvas.setMapTool(self)        # runs function self.activate()
 
@@ -68,22 +81,27 @@ class MapMarkerTool(QgsMapTool):
 
     def deactivate(self):
         self.canvas.setCursor(QCursor(Qt.OpenHandCursor))
-        self.pointsToDraw = []
+        self.linePoints = []
         # Stop pressing down button
         self.drawLineButton.setChecked(False)
 
     def reset(self):
-        self.removeStueMarker()
+        self.removeMarker()
         self.canvas.setMapTool(self.savedTool)
         self.rubberband.reset()
-        self.pointsToDraw = []
+        self.linePoints = []
         self.dblclktemp = None
-        self.drawnLine = None
+        self.lineFeature = None
+        for line in self.lineFeatureS:
+            line.reset()
+            line.deleteLater()
+        self.lineFeatureS = []
+        self.deactivateCursor()
 
     def canvasMoveEvent(self, event):
-        if len(self.pointsToDraw) > 0:
+        if len(self.linePoints) > 0:
             self.rubberband.reset()
-            line = [self.pointsToDraw[0], event.mapPoint()]
+            line = [self.linePoints[0], event.mapPoint()]
             self.rubberband.setToGeometry(QgsGeometry.fromPolylineXY(line), None)
 
     def canvasReleaseEvent(self, event):
@@ -93,22 +111,21 @@ class MapMarkerTool(QgsMapTool):
             return
         else:
             # Mark point with marker symbol
-            self.drawStueMarker(mapPos)
+            self.drawMarker(mapPos)
             
-            # Klick ist first point of line
-            if len(self.pointsToDraw) == 0:
+            # Click ist first point of line
+            if len(self.linePoints) == 0:
                 self.rubberband.reset()
-                self.pointsToDraw.append(mapPos)
-                return
+                self.linePoints.append(mapPos)
             
-            # Klick is second point of line
-            elif len(self.pointsToDraw) == 1:
-                self.pointsToDraw.append(mapPos)
-                self.removeStueMarker()
+            # Click is second point of line
+            elif len(self.linePoints) == 1:
+                self.linePoints.append(mapPos)
+                # self.removePoleMarker()
                 self.dblclktemp = mapPos
-                self.drawnLine = self.createDigiFeature(self.pointsToDraw)
-                self.sig_changeCoord.emit(self.pointsToDraw[0], 'A')
-                self.sig_changeCoord.emit(self.pointsToDraw[1], 'E')
+                self.lineFeature = self.createLineFeature(self.linePoints)
+                self.sig_changeCoord.emit(self.linePoints[0], 'A')
+                self.sig_changeCoord.emit(self.linePoints[1], 'E')
                 self.canvas.setMapTool(self.savedTool)      # self.deactivate()
 
     def setCursor(self, cursor):
@@ -116,17 +133,36 @@ class MapMarkerTool(QgsMapTool):
 
     def updateLine(self, points):
         self.rubberband.setToGeometry(QgsGeometry.fromPolylineXY(points), None)
-        self.drawnLine = self.createDigiFeature(points)
-        self.drawStueMarker(points[0])
-        self.drawStueMarker(points[1])
+        self.lineFeature = self.createLineFeature(points)
+        self.drawMarker(points[0])
+        self.drawMarker(points[1])
+    
+    def activateSectionLine(self, initPoint):
+        rubberbandS = QgsRubberBand(self.canvas)
+        rubberbandS.setWidth(3)
+        rubberbandS.setColor(QColor(SECTION_COLOR))
+        self.lineFeatureS.append(rubberbandS)
+        self.linePointsS = [initPoint, None]
+    
+    def updateSectionLine(self, point):
+        self.linePointsS[1] = point
+        self.lineFeatureS[-1].setToGeometry(
+            QgsGeometry.fromPolylineXY(self.linePointsS), None)
+    
+    def clearUnfinishedLines(self):
+        if len(self.linePointsS) == 1:
+            self.lineFeatureS[-1].reset(False)
+            self.lineFeatureS[-1].deleteLater()
+            self.lineFeatureS.pop(-1)
+            self.linePointsS = []
 
-    def drawStueMarker(self, point):
-        marker = QgsStueMarker(self.canvas)
+    def drawMarker(self, point):
+        marker = QgsPoleMarker(self.canvas)
         marker.setCenter(point)
         self.markers.append(marker)
         self.canvas.refresh()
 
-    def removeStueMarker(self, position=-1):
+    def removeMarker(self, position=-1):
         if position >= 0:
             marker = self.markers[position]
             self.canvas.scene().removeItem(marker)
@@ -136,28 +172,39 @@ class MapMarkerTool(QgsMapTool):
                 self.canvas.scene().removeItem(marker)
             self.markers = []
         self.canvas.refresh()
+    
+    def deactivateCursor(self):
+        if self.poleCursor:
+            self.canvas.scene().removeItem(self.poleCursor)
+        self.poleCursor = None
+    
+    def updateCursor(self, point, color=POLE_COLOR):
+        if not self.poleCursor:
+            self.poleCursor = QgsMovingCross(self.canvas, color)
+        self.poleCursor.setCenter(point)
+        self.canvas.refresh()
 
     @staticmethod
-    def createDigiFeature(pnts):
+    def createLineFeature(pnts):
         line = QgsGeometry.fromPolylineXY(pnts)
         qgFeat = QgsFeature()
         qgFeat.setGeometry(line)
         return qgFeat
 
 
-class QgsStueMarker(QgsVertexMarker):
-    def __init__(self, canvas):
+class QgsPoleMarker(QgsVertexMarker):
+    def __init__(self, canvas, color=POLE_COLOR):
         QgsVertexMarker.__init__(self, canvas)
-        self.setColor(QColor(1, 1, 213))
+        self.setColor(QColor(color))
         self.setIconType(QgsVertexMarker.ICON_BOX)
         self.setIconSize(11)
         self.setPenWidth(3)
 
 
 class QgsMovingCross(QgsVertexMarker):
-    def __init__(self, canvas):
+    def __init__(self, canvas, color=CURSOR_COLOR):
         QgsVertexMarker.__init__(self, canvas)
-        self.setColor(QColor(27, 25, 255))
+        self.setColor(QColor(color))
         self.setIconType(QgsVertexMarker.ICON_CROSS)
         self.setIconSize(20)
         self.setPenWidth(3)

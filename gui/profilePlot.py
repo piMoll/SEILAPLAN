@@ -28,13 +28,12 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.collections import LineCollection
 
+from .mapMarker import PROFILE_COLOR, POLE_COLOR, SECTION_COLOR
+
 
 class ProfilePlot(FigureCanvas):
     
     POLE_H = 12.0
-    PROFILE_COLOR = '#4f963e'
-    POLE_COLOR = '#0055ff'
-    SECTION_COLOR = '#ff9900'
     
     def __init__(self, parent=None, width=5, height=4, dpi=72):
         self.win = parent
@@ -90,7 +89,7 @@ class ProfilePlot(FigureCanvas):
         # Add plot data
         pltSegs = self.profileObj.profile
         lineColl = LineCollection([pltSegs], linewidths=2.5, picker=True,
-                                  colors=self.PROFILE_COLOR, label='LBL')
+                                  colors=PROFILE_COLOR, label='LBL')
         self.axes.add_collection(lineColl)
         
         # Data point of profile
@@ -119,11 +118,11 @@ class ProfilePlot(FigureCanvas):
     def acitvateCrosshairPole(self):
         self.cidMove = self.mpl_connect('motion_notify_event', self.onMouseMoveP)
         self.cidPress = self.mpl_connect('button_press_event', self.onMousePressP)
-        self.ly.set_color(self.POLE_COLOR)
-        self.lx.set_color(self.POLE_COLOR)
+        self.ly.set_color(POLE_COLOR)
+        self.lx.set_color(POLE_COLOR)
         self.ly.set_visible(True)
         self.lx.set_visible(True)
-        self.win.activateMapMarker(self.xcursor)
+        self.win.activateMapCursor(self.xcursor, POLE_COLOR)
         self.draw()
 
     def deactivateCrosshairPole(self):
@@ -132,7 +131,6 @@ class ProfilePlot(FigureCanvas):
         self.ly.set_visible(False)
         self.lx.set_visible(False)
         self.draw()
-        self.win.deactivateMapMarker()
 
     def onMouseMoveP(self, event):
         if not event.inaxes:
@@ -151,19 +149,20 @@ class ProfilePlot(FigureCanvas):
         self.ycursor = ya
         self.draw()
         # Update cursor on map
-        self.win.updateMapMarker(xa)
+        self.win.updateMapMarker(xa, POLE_COLOR)
 
     def onMousePressP(self, event):
         if not event.inaxes:
             return
         self.deactivateCrosshairPole()
+        self.win.deactivateMapCursor()
         posX = str(int(self.xcursor))
         posY = str(int(self.ycursor))
         drawnPoint = self.CreatePoint(self.xcursor, self.ycursor)
         self.win.CreateFixStue(posX, posY, drawnPoint)
 
     def CreatePoint(self, posX, posY):
-        scat = self.axes.scatter(posX, posY, zorder=100, c=self.POLE_COLOR, s=40)
+        scat = self.axes.scatter(posX, posY, zorder=100, c=POLE_COLOR, s=40)
         self.draw()
         return scat
 
@@ -175,9 +174,9 @@ class ProfilePlot(FigureCanvas):
         """ Cursor cross for defining sections without supports."""
         self.cidMove2 = self.mpl_connect('motion_notify_event', self.onMouseMoveS)
         self.cidPress2 = self.mpl_connect('button_press_event', self.onMousePressS)
-        self.ly.set_color(self.SECTION_COLOR)
-        self.lx.set_color(self.SECTION_COLOR)
-        self.win.activateMapMarkerLine(1)
+        self.ly.set_color(SECTION_COLOR)
+        self.lx.set_color(SECTION_COLOR)
+        self.win.activateMapCursor(1, SECTION_COLOR)
         self.ly.set_visible(True)
         self.lx.set_visible(True)
         self.draw()
@@ -187,7 +186,6 @@ class ProfilePlot(FigureCanvas):
         self.mpl_disconnect(self.cidPress2)
         self.ly.set_visible(False)
         self.lx.set_visible(False)
-        self.win.deactivateMapMarker()
         self.line_exists = False
         self.linePoints = []
         self.draw()
@@ -208,7 +206,7 @@ class ProfilePlot(FigureCanvas):
         self.xcursor = xa
         self.ycursor = ya
         # Overdraw profile line
-        self.win.updateMapMarker(xa)
+        self.win.updateMapMarker(xa, SECTION_COLOR)
         if self.line_exists:
             self.win.lineMoved(xa)
         self.draw()
@@ -229,8 +227,8 @@ class ProfilePlot(FigureCanvas):
             self.win.activateMapLine(x)
         elif len(self.linePoints) == 1:
             # Set line
-            self.drawSectionPoint(x, y)
             self.linePoints.append(x)
+            self.drawSectionPoint(x, y)
             self.drawSectionLine()
             self.win.finishLine(x)
             self.noStue.append(self.linePoints)
@@ -238,14 +236,13 @@ class ProfilePlot(FigureCanvas):
         self.draw()
     
     def drawSectionPoint(self, x, y):
-        self.vLine = self.axes.vlines(x, y - 4, y + 4, lw=2,
-                                      color=self.SECTION_COLOR)
+        self.vLine = self.axes.vlines(x, y - 4, y + 4, lw=2, color=SECTION_COLOR)
     
     def drawSectionLine(self):
         idxA = np.argmax(self.x_data >= self.linePoints[0])
         idxE = np.argmax(self.x_data > self.linePoints[1])
         self.axes.plot(self.x_data[idxA:idxE], self.y_data[idxA:idxE],
-                       linewidth=2, color=self.SECTION_COLOR)
+                       linewidth=2, color=SECTION_COLOR)
 
     def __setupAxes(self):
         self.axes.set_xlabel("Horizontaldistanz [m]", fontsize=11)
