@@ -56,6 +56,7 @@ class ProfileDialog(QDialog):
         main_widget = QWidget(self)
         
         self.canvas = self.iface.mapCanvas()
+        self.doReset = True
         self.mapMarker = None
         self.pointsToDraw = []
         self.mapLines = []
@@ -120,7 +121,7 @@ class ProfileDialog(QDialog):
         # TODO: remove Poles
         # Draw profile in diagram
         self.sc.plotData(profile)
-    
+
     def setFixedPoles(self):
         # TODO: GUI Felder löschen
         self.removeOldStue()

@@ -18,10 +18,11 @@
  *                                                                         *
  ***************************************************************************/
 """
+
 from qgis.PyQt.QtCore import Qt, pyqtSignal
 from qgis.PyQt.QtGui import QCursor, QColor
 from qgis.gui import QgsMapTool, QgsRubberBand, QgsVertexMarker
-from qgis.core import QgsGeometry, QgsFeature, QgsPointXY
+from qgis.core import QgsGeometry, QgsFeature
 
 
 # Colors
@@ -34,10 +35,9 @@ SECTION_COLOR = '#ff9900'
 class MapMarkerTool(QgsMapTool):
     
     # Signals
-    sig_createProfile = pyqtSignal()
-    sig_changeCoord = pyqtSignal(QgsPointXY, str)
+    sig_lineFinished = pyqtSignal(list)
 
-    def __init__(self, canvas, drawLineButton, showProfileButton):
+    def __init__(self, canvas):
         QgsMapTool.__init__(self, canvas)
         self.canvas = canvas
         
@@ -50,10 +50,6 @@ class MapMarkerTool(QgsMapTool):
         self.rubberband = QgsRubberBand(self.canvas)
         self.rubberband.setWidth(3)
         self.rubberband.setColor(QColor(PROFILE_COLOR))
-        
-        # Buttons from main dialog
-        self.drawLineButton = drawLineButton
-        self.buttonShowProf = showProfileButton
 
         # Coordinates of drawn line points
         self.linePoints = []
@@ -82,8 +78,6 @@ class MapMarkerTool(QgsMapTool):
     def deactivate(self):
         self.canvas.setCursor(QCursor(Qt.OpenHandCursor))
         self.linePoints = []
-        # Stop pressing down button
-        self.drawLineButton.setChecked(False)
 
     def reset(self):
         self.removeMarker()
@@ -124,8 +118,7 @@ class MapMarkerTool(QgsMapTool):
                 # self.removePoleMarker()
                 self.dblclktemp = mapPos
                 self.lineFeature = self.createLineFeature(self.linePoints)
-                self.sig_changeCoord.emit(self.linePoints[0], 'A')
-                self.sig_changeCoord.emit(self.linePoints[1], 'E')
+                self.sig_lineFinished.emit(self.linePoints)
                 self.canvas.setMapTool(self.savedTool)      # self.deactivate()
 
     def setCursor(self, cursor):

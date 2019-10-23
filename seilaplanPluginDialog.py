@@ -105,11 +105,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.setupUi(self)
         
         # Interaction with canvas, is used to draw onto map canvas
-        self.drawTool = MapMarkerTool(self.canvas, self.draw,
-                                      self.buttonShowProf)
+        self.drawTool = MapMarkerTool(self.canvas)
         # Connect emitted signals
-        self.drawTool.sig_createProfile.connect(self.createProfile)
-        self.drawTool.sig_changeCoord.connect(self.updateLineByMapDraw)
+        self.drawTool.sig_lineFinished.connect(self.onFinishedLineDraw)
         
         # Dictionary of all GUI setting fields
         self.parameterFields = {}
@@ -488,14 +486,14 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.drawTool.reset()
         if self.projectHandler.profileIsValid():
             self.drawTool.updateLine(list(self.linePoints.values()))
-            self.createProfile()
+            self.profileWin.doReset = True
     
     def updateLineByMapDraw(self, newpoint, pointType):
         [x, y], coordState, hasChanged = self.projectHandler.setPoint(
             pointType, [newpoint.x(), newpoint.y()])
         self.changePoint(pointType, [x, y], coordState)
         if self.projectHandler.profileIsValid():
-            self.createProfile()
+            self.profileWin.doReset = True
     
     def changePointSym(self, state, point):
         if point == 'A':
@@ -536,15 +534,21 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
                                                          self.projectHandler.dhm)
         self.canvas.refresh()
     
-    def createProfile(self):
-        profile = PreviewProfile(self.projectHandler)
-        profile.create()
-        self.profileWin.setProfile(profile)
-        self.profileWin.setFixedPoles()
-        # TODO
-        # self.profileWin.setNoPoleSections(self.projectHandler.noPoleSection)
+    def onFinishedLineDraw(self, linecoord):
+        self.updateLineByMapDraw(linecoord[0], 'A')
+        self.updateLineByMapDraw(linecoord[1], 'E')
+        # Stop pressing down button
+        self.draw.setChecked(False)
+        # Reset profile window
+        self.profileWin.doReset = True
     
     def onShowProfile(self):
+        if self.profileWin.doReset:
+            profile = PreviewProfile(self.projectHandler)
+            profile.create()
+            self.profileWin.setProfile(profile)
+            self.profileWin.setFixedPoles()
+            # self.profileWin.setNoStueSection()    # TODO
         self.profileWin.exec()
     
     def onLoadProjects(self):
