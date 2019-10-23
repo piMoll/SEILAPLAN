@@ -17,15 +17,12 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
- Code is based on these two examples:
- https://github.com/eliben/code-for-blog/blob/master/2009/qt_mpl_bars.py
- http://www.technicaljar.com/?p=688
 """
 
 import numpy as np
-from qgis.PyQt.QtCore import Qt
 from math import floor
+from qgis.PyQt.QtCore import Qt
+from qgis.PyQt.QtWidgets import QSizePolicy
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -33,37 +30,34 @@ from matplotlib.collections import LineCollection
 
 
 class ProfilePlot(FigureCanvas):
+    
+    POLE_H = 12.0
+    PROFILE_COLOR = '#4f963e'
+    POLE_COLOR = '#0055ff'
+    SECTION_COLOR = '#ff9900'
+    
     def __init__(self, parent=None, width=5, height=4, dpi=72):
-        # self.iface = interface
         self.win = parent
-        self.fig = Figure(figsize=(width, height), dpi=dpi)
+        self.fig = Figure(figsize=(width, height), dpi=dpi, facecolor='#efefef')
         self.axes = self.fig.add_subplot(111)
         
         FigureCanvas.__init__(self, self.fig)
         self.setParent(parent)
         
-        self.fig.set_facecolor([.89,.89,.89])
-        
         self.linePoints = []
         self.line_exists = False
         self.noStue = []
-
         self.profileObj = None
+        
         # Mouse position
         self.x_data = None
         self.y_data = None
-        self.yT = None
         # Cursor cross position
         self.xcursor = 0
         self.ycursor = 0
         # Cursor cross
-        self.lx = 0
-        self.ly = 0
-        self.lx = self.axes.axhline(lw=2, ls='dashed', y=self.ycursor)
-        self.ly = self.axes.axvline(lw=2, ls='dashed', x=self.xcursor)
-        self.ly.set_visible(False)
-        self.lx.set_visible(False)
-
+        self.lx = None
+        self.ly = None
         # Listener for canvas events
         self.cidMove = None
         self.cidPress = None
@@ -73,67 +67,66 @@ class ProfilePlot(FigureCanvas):
 
         self.updateMarkerThread = None
         
-        self.axes.set_aspect(2, None, 'SW')
-        
-        self.__setupAxes(self.axes)
+        self.axes.set_aspect('equal', 'datalim')
         self.setFocusPolicy(Qt.ClickFocus)
-        # self.setFocus()
+        FigureCanvas.setSizePolicy(self, QSizePolicy.Expanding,
+                                   QSizePolicy.Expanding)
+        FigureCanvas.updateGeometry(self)
+        self.fig.tight_layout(pad=0.2, w_pad=0.1, h_pad=0.1)
         
     def plotData(self, plotData):
+        """
+        :type plotData: gui.profileCreation.PreviewProfile
+        """
         self.axes.clear()
+        self.__setupAxes()
         self.profileObj = plotData
+        
         # Set plot extent
-        # self.pltExt.union(plotData.getExtent())
-        self.profileObj.expand(max([(self.profileObj.xmax * 0.02), 5]))
         self.axes.set_xlim(self.profileObj.xmin, self.profileObj.xmax)
-        self.axes.set_ylim(self.profileObj.ymin, self.profileObj.ymax)
+        self.axes.set_ylim(self.profileObj.ymin,
+                           self.profileObj.ymax + self.POLE_H)
     
         # Add plot data
-        # pltSegs = plotData.getPlotSegments()
         pltSegs = self.profileObj.profile
-        lineColl = LineCollection([pltSegs], linewidths=2, linestyles='solid',
-                                  colors='#E71C23', picker=True, label='LBL')
+        lineColl = LineCollection([pltSegs], linewidths=2.5, picker=True,
+                                  colors=self.PROFILE_COLOR, label='LBL')
         self.axes.add_collection(lineColl)
         
-        # Data points
-        # [x_data, y_data] = np.array(pltSegs[0]).T
+        # Data point of profile
         self.x_data = self.profileObj.xaxis
         self.y_data = self.profileObj.yaxis
-    
-        # Calculate length of markers
-        yRange = np.max(self.y_data) - np.min(self.y_data)
-        self.yT = yRange * 0.1
-        stueH = yRange * 0.2
 
-        # Draw start and end point
+        # Draw start and end pole
         self.axes.vlines(self.x_data[[0, -1]], self.y_data[[0, -1]],
-                         self.y_data[[0, -1]] + stueH) #, colors='k', linewidth='2')
+                         self.y_data[[0, -1]] + self.POLE_H)
+        # Label
+        self.axes.text(self.x_data[0], self.y_data[0] + self.POLE_H + 4,
+                       'A', ha='center', fontsize=12)
+        self.axes.text(self.x_data[-1], self.y_data[-1] + self.POLE_H + 4,
+                       'E', ha='center', fontsize=12)
 
         # Init cursor cross position
         self.xcursor = self.x_data[floor(len(self.x_data) / 2)]
         self.ycursor = self.y_data[floor(len(self.x_data) / 2)]
-        
-        self.lx = self.axes.axhline(lw=2, ls='dashed', y=self.ycursor)
-        self.ly = self.axes.axvline(lw=2, ls='dashed', x=self.xcursor)
+        self.lx = self.axes.axhline(lw=1.5, ls='dashed', y=self.ycursor)
+        self.ly = self.axes.axvline(lw=1.5, ls='dashed', x=self.xcursor)
         self.ly.set_visible(False)
         self.lx.set_visible(False)
         
         self.draw()
 
-        # TODO: Funktioniert unter Windows nicht
-        self.fig.tight_layout()
-
-    def acitvateFadenkreuz(self):
-        self.cidMove = self.mpl_connect('motion_notify_event',self.mouse_move)
-        self.cidPress = self.mpl_connect('button_press_event',self.mouse_press)
-        self.ly.set_color('#4444FF')
-        self.lx.set_color('#4444FF')
+    def acitvateCrosshairPole(self):
+        self.cidMove = self.mpl_connect('motion_notify_event', self.onMouseMoveP)
+        self.cidPress = self.mpl_connect('button_press_event', self.onMousePressP)
+        self.ly.set_color(self.POLE_COLOR)
+        self.lx.set_color(self.POLE_COLOR)
         self.ly.set_visible(True)
         self.lx.set_visible(True)
         self.win.activateMapMarker(self.xcursor)
         self.draw()
 
-    def deactivateFadenkreuz(self):
+    def deactivateCrosshairPole(self):
         self.mpl_disconnect(self.cidMove)
         self.mpl_disconnect(self.cidPress)
         self.ly.set_visible(False)
@@ -141,23 +134,17 @@ class ProfilePlot(FigureCanvas):
         self.draw()
         self.win.deactivateMapMarker()
 
-    # TODO: Dies könnte eine Alternative zu searchsorted sein, evtl. schneller?
-    @staticmethod
-    def find_nearest(array, value):
-        idx = (np.abs(array - value)).argmin()
-        return array[idx]
-
-    def mouse_move(self, event):
+    def onMouseMoveP(self, event):
         if not event.inaxes:
             return
         x, y = event.xdata, event.ydata
-
-        indx = np.searchsorted(self.x_data, [x])[0]
-        if indx != 0:
-           indx = indx-1
+        indx = np.argmax(self.x_data >= x)
+        if indx == 0:
+            # Cursor outside of profile
+            return
         xa = self.x_data[indx]
         ya = self.y_data[indx]
-        # update the line positions
+        # Update the line positions
         self.lx.set_ydata(ya)
         self.ly.set_xdata(xa)
         self.xcursor = xa
@@ -166,37 +153,36 @@ class ProfilePlot(FigureCanvas):
         # Update cursor on map
         self.win.updateMapMarker(xa)
 
-    def mouse_press(self, event):
+    def onMousePressP(self, event):
         if not event.inaxes:
             return
-        self.deactivateFadenkreuz()
+        self.deactivateCrosshairPole()
         posX = str(int(self.xcursor))
         posY = str(int(self.ycursor))
         drawnPoint = self.CreatePoint(self.xcursor, self.ycursor)
         self.win.CreateFixStue(posX, posY, drawnPoint)
 
     def CreatePoint(self, posX, posY):
-        scat = self.axes.scatter(posX, posY, zorder=100, c='#0101D5', s=40)
+        scat = self.axes.scatter(posX, posY, zorder=100, c=self.POLE_COLOR, s=40)
         self.draw()
         return scat
 
-    def DeletePoint(self, scatterobjekt):
-        scatterobjekt.remove()
+    def DeletePoint(self, point):
+        point.remove()
         self.draw()
 
-    def acitvateFadenkreuz2(self):
-        """ Cursor cross for defining sections without supports.
-        """
-        self.cidMove2 = self.mpl_connect('motion_notify_event',self.mouse_move2)
-        self.cidPress2 = self.mpl_connect('button_press_event',self.mouse_press2)
-        self.ly.set_color('#F4CC13')
-        self.lx.set_color('#F4CC13')
+    def activateCrosshairSection(self):
+        """ Cursor cross for defining sections without supports."""
+        self.cidMove2 = self.mpl_connect('motion_notify_event', self.onMouseMoveS)
+        self.cidPress2 = self.mpl_connect('button_press_event', self.onMousePressS)
+        self.ly.set_color(self.SECTION_COLOR)
+        self.lx.set_color(self.SECTION_COLOR)
         self.win.activateMapMarkerLine(1)
         self.ly.set_visible(True)
         self.lx.set_visible(True)
         self.draw()
 
-    def deactivateFadenkreuz2(self):
+    def deactivateCrosshairSection(self):
         self.mpl_disconnect(self.cidMove2)
         self.mpl_disconnect(self.cidPress2)
         self.ly.set_visible(False)
@@ -206,14 +192,16 @@ class ProfilePlot(FigureCanvas):
         self.linePoints = []
         self.draw()
 
-    def mouse_move2(self, event):
+    def onMouseMoveS(self, event):
         if not event.inaxes:
             return
         x, y = event.xdata, event.ydata
-
-        indx = np.searchsorted(self.x_data, [x])[0]
-        xa = self.x_data[indx-1]
-        ya = self.y_data[indx-1]
+        indx = np.argmax(self.x_data >= x)
+        if indx == 0:
+            # Cursor outside of profile
+            return
+        xa = self.x_data[indx]
+        ya = self.y_data[indx]
         # Update the line positions
         self.lx.set_ydata(ya)
         self.ly.set_xdata(xa)
@@ -225,42 +213,47 @@ class ProfilePlot(FigureCanvas):
             self.win.lineMoved(xa)
         self.draw()
 
-    def mouse_press2(self, event):
+    def onMousePressS(self, event):
         if not event.inaxes:
             return
         x, y = event.xdata, event.ydata
-        indx = np.searchsorted(self.x_data, [x])[0]
-        xa = self.x_data[indx-1]
-        ya = self.y_data[indx-1]
+        indx = np.argmax(self.x_data >= x)
+        x = self.x_data[indx]
+        y = self.y_data[indx]
 
         if len(self.linePoints) == 0:
             # Initialize marker lines for sections without supports
-            self.vLine = self.axes.vlines(xa, ya-self.yT, ya+self.yT, lw=2,
-                             color='#F4CC13', label='Start')
-            self.linePoints.append(xa)
+            self.drawSectionPoint(x, y)
+            self.linePoints.append(x)
             self.line_exists = True
-            self.win.activateMapLine(xa)
+            self.win.activateMapLine(x)
         elif len(self.linePoints) == 1:
             # Set line
-            self.axes.vlines(xa, ya-self.yT, ya+self.yT, lw=2,
-                             color='#F4CC13', label='Ende')
-            self.linePoints.append(xa)
-            self.win.finishLine(xa)
+            self.drawSectionPoint(x, y)
+            self.linePoints.append(x)
+            self.drawSectionLine()
+            self.win.finishLine(x)
             self.noStue.append(self.linePoints)
-            self.deactivateFadenkreuz2()
+            self.deactivateCrosshairSection()
         self.draw()
+    
+    def drawSectionPoint(self, x, y):
+        self.vLine = self.axes.vlines(x, y - 4, y + 4, lw=2,
+                                      color=self.SECTION_COLOR)
+    
+    def drawSectionLine(self):
+        idxA = np.argmax(self.x_data >= self.linePoints[0])
+        idxE = np.argmax(self.x_data > self.linePoints[1])
+        self.axes.plot(self.x_data[idxA:idxE], self.y_data[idxA:idxE],
+                       linewidth=2, color=self.SECTION_COLOR)
 
-    @staticmethod
-    def __setupAxes(axe1):
-        axe1.set_xlabel("Horizontaldistanz von Startpunkt aus")
-        axe1.set_ylabel("Höhe")
-        axe1.grid()
-        axe1.set_aspect('equal', 'datalim')
-        axe1.ticklabel_format(style='plain', useOffset=False)
-        axe1.tick_params(axis="both", which="major", direction="out",
-                         length=5,  width=1, bottom=True, top=False,
-                         left=True, right=False )
-        axe1.minorticks_on()
-        axe1.tick_params(axis="both", which="minor", direction="out", length=5,
-                         width=1, bottom=True, top=False, left=True,
-                         right=False)
+    def __setupAxes(self):
+        self.axes.set_xlabel("Horizontaldistanz [m]", fontsize=11)
+        self.axes.set_ylabel("Höhe [M.ü.M]", fontsize=11)
+        self.axes.grid(which='major', lw=1)
+        self.axes.grid(which='minor', lw=1, linestyle=':')
+        self.axes.ticklabel_format(style='plain', useOffset=False)
+        self.axes.tick_params(axis="both", which="major", length=5, width=1,
+                              bottom=True, top=False, left=True, right=False)
+        self.axes.tick_params(axis="both", which="both", direction="in")
+        self.axes.minorticks_on()

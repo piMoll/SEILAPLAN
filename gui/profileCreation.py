@@ -21,15 +21,18 @@
 from math import cos, sin, ceil
 import numpy as np
 from qgis.core import QgsPointXY
-from ..configHandler import ProjectConfHandler
 
 
-class Profile(object):
-    """Creates a profile from a given start and end point on a raster."""
+class PreviewProfile(object):
+    """Creates a profile from a given start and end point on a raster using
+    the QGIS identify() tool. The profile resolution depends on the raster
+    resolution. This Profile is only used to be plotted in the profile window
+    and differs from the one created in tool -> profile.py (resolution,
+    interpolation method, etc.)."""
     
     def __init__(self, projectHandler):
         """
-        :type projectHandler: ProjectConfHandler
+        :type projectHandler: configHandler.ProjectConfHandler
         """
         coordsA, _ = projectHandler.getPoint('A')
         coordsE, _ = projectHandler.getPoint('E')

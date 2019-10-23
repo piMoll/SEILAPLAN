@@ -102,8 +102,8 @@ class ProfileDialog(QDialog):
         self.container.addWidget(self.buttonBox)
 
         # Connect signals
-        self.fixStueAdd.clicked.connect(self.sc.acitvateFadenkreuz)
-        self.noStueAdd.clicked.connect(self.sc.acitvateFadenkreuz2)
+        self.fixStueAdd.clicked.connect(self.sc.acitvateCrosshairPole)
+        self.noStueAdd.clicked.connect(self.sc.activateCrosshairSection)
         self.buttonBox.rejected.connect(self.Reject)
         self.buttonBox.accepted.connect(self.Apply)
         self.setLayout(self.container)
