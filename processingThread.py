@@ -57,6 +57,7 @@ class ProcessingTask(QgsTask):
     
     def run(self):
         
+        # # Uncomment when trying to debug the optimization algorithm
         # try:
         #     import pydevd_pycharm
         #     pydevd_pycharm.settrace('localhost', port=53100,
