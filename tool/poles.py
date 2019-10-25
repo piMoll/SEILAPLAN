@@ -24,7 +24,8 @@ class Poles(object):
         # Create anchors and start / end point
         self.poles = []
         # Anchor at start point
-        self.add(0, -1 * self.params.getParameter('d_Anker_A'), 0)
+        self.add(0, -1 * self.params.getParameter('d_Anker_A'), 0,
+                 poleType='anchor')
         # First pole at start point
         self.add(1, 0, self.params.getParameter('HM_Anfang'))
         # Last pole at end point
@@ -34,21 +35,20 @@ class Poles(object):
                  self.params.getParameter('HM_Ende_max'))
         # Anchor at end point
         self.add(3, floor(project.profileLength) +
-                 self.params.getParameter('d_Anker_E'), 0)
-        self.update(0, 'name', 'Verankerung')
-        self.update(0, 'poleType', 'anchor')
-        self.update(3, 'name', 'Verankerung')
-        self.update(3, 'poleType', 'anchor')
+                 self.params.getParameter('d_Anker_E'), 0, poleType='anchor')
         self.calculateAnchor()
     
-    def add(self, idx, d, h=INIT_POLE_HEIGHT, angle=INIT_POLE_ANGLE, manually=False):
+    def add(self, idx, d, h=INIT_POLE_HEIGHT, angle=INIT_POLE_ANGLE,
+            manually=False, poleType='pole'):
+       
         d = float(d)
         h = float(h)
         x, y, z, dtop, ztop = self.derivePoleProperties(d, h, angle)
         name = f"{idx}. Stütze"
         if manually:
             name = 'neue Stütze'
-        poleType = 'pole'
+        if poleType == 'anchor':
+            name = 'Verankerung'
         
         self.poles.insert(idx, {
             'name': name,

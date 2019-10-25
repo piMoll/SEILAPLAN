@@ -194,7 +194,7 @@ class AdjustmentPlot(FigureCanvas):
         ylen = 8.27  # 8.27 inch = A4 height
         self.fig.set_size_inches([xlen, ylen])
         self.fig.tight_layout(pad=4, w_pad=1, h_pad=3)
-        self.zoomOut()
+        self.setPlotLimits()
         # Layout plot
         self.axes.set_title(f'Seilaplan Plot  -  {title}', fontsize=10,
                             multialignment='center', y=1.05)

@@ -97,16 +97,6 @@ class ProgressDialog(QDialog):
         self.workerThread.sig_result.connect(self.resultFromThread)
         self.rerunButton.clicked.connect(self.onRerun)
         
-        # self.workerThread.progressChanged.connect(self.valueFromThread)
-        # self.workerThread.taskTerminated.connect(self.taskTerminated)
-        # self.workerThread.taskCompleted.connect(self.taskCompleted)
-    
-    # def taskCompleted(self):
-    #     self.jobEnded()
-    #
-    # def taskTerminated(self):
-    #     self.jobEnded()
-        
     def run(self):
         # Show modal dialog window (QGIS is still responsive)
         self.show()

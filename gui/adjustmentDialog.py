@@ -30,7 +30,7 @@ from qgis.PyQt.QtGui import QPixmap
 from .ui_adjustmentDialog import Ui_AdjustmenDialog
 from .adjustmentPlot import AdjustmentPlot
 from .guiHelperFunctions import MyNavigationToolbar
-from .adjustmentDialog_poles import AdjustmentDialogPoles
+from .adjustmentDialog_poles import CustomPoleWidget
 from .adjustmentDialog_params import AdjustmentDialogParams
 from .adjustmentDialog_thresholds import AdjustmentDialogThresholds
 from .saveDialog import DialogOutputOptions
@@ -91,7 +91,13 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         self.plotLayout.addWidget(bar)
 
         # Fill tab widget with data
-        self.poleLayout = AdjustmentDialogPoles(self)
+        self.poleLayout = CustomPoleWidget(self.tabPoles, self.poleVGrid)
+        # self.poleLayout.sig_zoomIn.connect(self.zoomToPole)
+        # self.poleLayout.sig_zoomOut.connect(self.zoomOut)
+        self.poleLayout.sig_createPole.connect(self.addPole)
+        self.poleLayout.sig_updatePole.connect(self.updatePole)
+        self.poleLayout.sig_deletePole.connect(self.deletePole)
+        
         self.paramLayout = AdjustmentDialogParams(self, self.confHandler.params)
         self.thresholdLayout = AdjustmentDialogThresholds(self, self.thSize)
 
@@ -139,7 +145,9 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
     
         # Create layout to modify poles
-        self.poleLayout.addPolesToGui(self.poles.poles)
+        lowerDistRange = -1*self.anchorBuffer
+        upperDistRange = self.poles.poles[-1]['d'] + self.anchorBuffer
+        self.poleLayout.setInitialGui(self.poles.poles, [lowerDistRange, upperDistRange])
 
         # Fill in cable parameters
         self.paramLayout.fillInParams()
@@ -150,20 +158,21 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         # Start Thread to recalculate cable line every 300 milliseconds
         self.timer.timeout.connect(self.recalculate)
         self.timer.start(300)
+        
+        self.plot.zoomOut()
     
     def zoomToPole(self, idx):
-        # self.plot.zoomTo(self.poles.poles[idx])
-        # self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
-        pass
+        self.plot.zoomTo(self.poles.poles[idx])
+        self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
     
     def zoomOut(self):
-        # self.plot.zoomOut()
-        # self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
-        pass
+        self.plot.zoomOut()
+        self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
 
     def updatePole(self, idx, property_name, newVal):
         self.poles.update(idx, property_name, newVal)
         # self.plot.zoomTo(self.poles.poles[idx])
+        self.poleLayout.changeRow(idx, property_name, newVal)
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         self.configurationHasChanged = True
     
@@ -171,23 +180,26 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         newPoleIdx = idx + 1
         oldLeftIdx = idx
         oldRightIdx = idx + 1
-        lowerRange = self.poles.poles[oldLeftIdx]['d'] + self.poles.POLE_DIST_STEP
-        upperRange = self.poles.poles[oldRightIdx]['d'] - self.poles.POLE_DIST_STEP
+        lowerRange = self.poles.poles[oldLeftIdx]['d']
+        upperRange = self.poles.poles[oldRightIdx]['d']
         rangeDist = upperRange - lowerRange
         d = floor(lowerRange + 0.5 * rangeDist)
         
         self.poles.add(newPoleIdx, d, manually=True)
+
+        self.poleLayout.addRow(
+            newPoleIdx, self.poles.poles[newPoleIdx]['name'], d, lowerRange,
+            upperRange, self.poles.poles[newPoleIdx]['h'],
+            self.poles.poles[newPoleIdx]['angle'])
         
         # self.plot.zoomOut()
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         self.configurationHasChanged = True
-        
-        return newPoleIdx, self.poles.poles[newPoleIdx]['name'], d, \
-               lowerRange, upperRange, self.poles.poles[newPoleIdx]['h'], \
-               self.poles.poles[newPoleIdx]['angle']
 
     def deletePole(self, idx):
         self.poles.delete(idx)
+        self.poleLayout.deleteRow(idx, self.poles.poles[idx-1]['d'],
+                                  self.poles.poles[idx+1]['d'])
         # self.plot.zoomOut()
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         self.configurationHasChanged = True
