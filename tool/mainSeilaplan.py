@@ -57,7 +57,7 @@ def main(progress, project):
     progress.sig_text.emit("Berechnung der optimale Seillinie...")
     [HM, HMidx, optValue, optSTA, optiLen] = out
 
-    if HMidx == [0]:
+    if not HMidx or HMidx == [0]:
         # Not a single pole location was calculated, no cable line possible
         progress.exception = (
             "Aufgrund der Geländeform oder der Eingabeparameter konnten keine "
