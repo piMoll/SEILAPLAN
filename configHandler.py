@@ -271,9 +271,10 @@ class ProjectConfHandler(AbstractConfHandler):
         self.profileLength = profileLen
     
     def getFixedPoles(self):
-        return self.fixedPoles['asStr']
+        return [self.fixedPoles['HM_fix_d'], self.fixedPoles['HM_fix_h']]
     
     def setFixedPoles(self, value):
+        # TODO: save name,
         self.fixedPoles = {
             'HM_fix_d': [],
             'HM_fix_h': [],
@@ -283,6 +284,7 @@ class ProjectConfHandler(AbstractConfHandler):
             return
         
         for i, pole in enumerate(value):
+            # TODO: Funktioniert nicht für fixe Stützen aus Dialog fenster
             x = pole['x']
             y = pole['y']
             h = pole['h']

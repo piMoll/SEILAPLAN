@@ -121,9 +121,6 @@ class MapMarkerTool(QgsMapTool):
                 self.sig_lineFinished.emit(self.linePoints)
                 self.canvas.setMapTool(self.savedTool)      # self.deactivate()
 
-    def setCursor(self, cursor):
-        self.cursor = cursor
-
     def updateLine(self, points):
         self.rubberband.setToGeometry(QgsGeometry.fromPolylineXY(points), None)
         self.lineFeature = self.createLineFeature(points)
@@ -149,17 +146,20 @@ class MapMarkerTool(QgsMapTool):
             self.lineFeatureS.pop(-1)
             self.linePointsS = []
 
-    def drawMarker(self, point):
+    def drawMarker(self, point, idx=None):
         marker = QgsPoleMarker(self.canvas)
         marker.setCenter(point)
-        self.markers.append(marker)
+        if not idx:
+            self.markers.append(marker)
+        else:
+            self.markers.insert(idx, marker)
         self.canvas.refresh()
 
-    def removeMarker(self, position=-1):
-        if position >= 0:
-            marker = self.markers[position]
+    def removeMarker(self, idx=-1):
+        if idx >= 0:
+            marker = self.markers[idx]
             self.canvas.scene().removeItem(marker)
-            self.markers.pop(position)
+            self.markers.pop(idx)
         else:
             for marker in self.markers:
                 self.canvas.scene().removeItem(marker)

@@ -82,9 +82,9 @@ class ProfilePlot(FigureCanvas):
         self.profileObj = plotData
         
         # Set plot extent
+        self.profileObj.expand(max([(self.profileObj.xmax * 0.02), 5]))
         self.axes.set_xlim(self.profileObj.xmin, self.profileObj.xmax)
-        self.axes.set_ylim(self.profileObj.ymin,
-                           self.profileObj.ymax + self.POLE_H)
+        self.axes.set_ylim(self.profileObj.ymin, self.profileObj.ymax)
     
         # Add plot data
         pltSegs = self.profileObj.profile
@@ -149,24 +149,23 @@ class ProfilePlot(FigureCanvas):
         self.ycursor = ya
         self.draw()
         # Update cursor on map
-        self.win.updateMapMarker(xa, POLE_COLOR)
+        self.win.updateMapCursor(xa, POLE_COLOR)
 
     def onMousePressP(self, event):
         if not event.inaxes:
             return
         self.deactivateCrosshairPole()
         self.win.deactivateMapCursor()
-        posX = str(int(self.xcursor))
-        posY = str(int(self.ycursor))
-        drawnPoint = self.CreatePoint(self.xcursor, self.ycursor)
-        self.win.CreateFixStue(posX, posY, drawnPoint)
+        posX = int(round(self.xcursor, 0))
+        posY = int(round(self.ycursor, 0))
+        self.win.addPole(posX, posY)
 
-    def CreatePoint(self, posX, posY):
+    def createPoint(self, posX, posY):
         scat = self.axes.scatter(posX, posY, zorder=100, c=POLE_COLOR, s=40)
         self.draw()
         return scat
 
-    def DeletePoint(self, point):
+    def deletePoint(self, point):
         point.remove()
         self.draw()
 
@@ -206,7 +205,7 @@ class ProfilePlot(FigureCanvas):
         self.xcursor = xa
         self.ycursor = ya
         # Overdraw profile line
-        self.win.updateMapMarker(xa, SECTION_COLOR)
+        self.win.updateMapCursor(xa, SECTION_COLOR)
         if self.line_exists:
             self.win.lineMoved(xa)
         self.draw()
