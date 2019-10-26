@@ -22,7 +22,7 @@
 from qgis.PyQt.QtCore import Qt, pyqtSignal
 from qgis.PyQt.QtGui import QCursor, QColor
 from qgis.gui import QgsMapTool, QgsRubberBand, QgsVertexMarker
-from qgis.core import QgsGeometry, QgsFeature
+from qgis.core import QgsGeometry, QgsFeature, QgsPointXY
 
 
 # Colors
@@ -121,21 +121,26 @@ class MapMarkerTool(QgsMapTool):
                 self.sig_lineFinished.emit(self.linePoints)
                 self.canvas.setMapTool(self.savedTool)      # self.deactivate()
 
-    def updateLine(self, points):
-        self.rubberband.setToGeometry(QgsGeometry.fromPolylineXY(points), None)
-        self.lineFeature = self.createLineFeature(points)
-        self.drawMarker(points[0])
-        self.drawMarker(points[1])
+    def updateLine(self, points, drawMarker=True):
+        qgsPoints = [self.convertToQgsPoint(p) for p in points]
+        self.rubberband.setToGeometry(QgsGeometry.fromPolylineXY(qgsPoints), None)
+        self.lineFeature = self.createLineFeature(qgsPoints)
+        if drawMarker:
+            self.drawMarker(qgsPoints[0])
+            self.drawMarker(qgsPoints[1])
     
     def activateSectionLine(self, initPoint):
+        qgsPoint = self.convertToQgsPoint(initPoint)
+        self.linePointsS[1] = qgsPoint
         rubberbandS = QgsRubberBand(self.canvas)
         rubberbandS.setWidth(3)
         rubberbandS.setColor(QColor(SECTION_COLOR))
         self.lineFeatureS.append(rubberbandS)
-        self.linePointsS = [initPoint, None]
+        self.linePointsS = [qgsPoint, None]
     
     def updateSectionLine(self, point):
-        self.linePointsS[1] = point
+        qgsPoint = self.convertToQgsPoint(point)
+        self.linePointsS[1] = qgsPoint
         self.lineFeatureS[-1].setToGeometry(
             QgsGeometry.fromPolylineXY(self.linePointsS), None)
     
@@ -146,13 +151,19 @@ class MapMarkerTool(QgsMapTool):
             self.lineFeatureS.pop(-1)
             self.linePointsS = []
 
-    def drawMarker(self, point, idx=None):
-        marker = QgsPoleMarker(self.canvas)
-        marker.setCenter(point)
+    def drawMarker(self, point, idx=None, color=POLE_COLOR):
+        qgsPoint = self.convertToQgsPoint(point)
+        marker = QgsPoleMarker(self.canvas, color)
+        marker.setCenter(qgsPoint)
         if not idx:
             self.markers.append(marker)
         else:
             self.markers.insert(idx, marker)
+        self.canvas.refresh()
+    
+    def updateMarker(self, point, idx):
+        qgsPoint = self.convertToQgsPoint(point)
+        self.markers[idx].setCenter(qgsPoint)
         self.canvas.refresh()
 
     def removeMarker(self, idx=-1):
@@ -172,9 +183,10 @@ class MapMarkerTool(QgsMapTool):
         self.poleCursor = None
     
     def updateCursor(self, point, color=POLE_COLOR):
+        qgsPoint = self.convertToQgsPoint(point)
         if not self.poleCursor:
             self.poleCursor = QgsMovingCross(self.canvas, color)
-        self.poleCursor.setCenter(point)
+        self.poleCursor.setCenter(qgsPoint)
         self.canvas.refresh()
 
     @staticmethod
@@ -183,10 +195,19 @@ class MapMarkerTool(QgsMapTool):
         qgFeat = QgsFeature()
         qgFeat.setGeometry(line)
         return qgFeat
+    
+    @staticmethod
+    def convertToQgsPoint(point):
+        qgsPoint = None
+        if isinstance(point, QgsPointXY):
+            qgsPoint = point
+        elif isinstance(point, list):
+            qgsPoint = QgsPointXY(point[0], point[1])
+        return qgsPoint
 
 
 class QgsPoleMarker(QgsVertexMarker):
-    def __init__(self, canvas, color=POLE_COLOR):
+    def __init__(self, canvas, color):
         QgsVertexMarker.__init__(self, canvas)
         self.setColor(QColor(color))
         self.setIconType(QgsVertexMarker.ICON_BOX)

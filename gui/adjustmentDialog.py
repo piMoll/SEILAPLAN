@@ -34,6 +34,7 @@ from .adjustmentDialog_poles import CustomPoleWidget
 from .adjustmentDialog_params import AdjustmentDialogParams
 from .adjustmentDialog_thresholds import AdjustmentDialogThresholds
 from .saveDialog import DialogOutputOptions
+from .mapMarker import MapMarkerTool
 from ..tool.cablelineFinal import preciseCable, updateWithCableCoordinates
 from ..tool.outputReport import generateReportText, generateReport, createOutputFolder
 from ..tool.outputGeo import generateGeodata, addToMap, generateCoordTable
@@ -75,9 +76,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         # Setup GUI from UI-file
         self.setupUi(self)
 
-        self.mapMarker = None
-        self.pointsToDraw = []
-        self.mapLines = []
+        self.drawTool = MapMarkerTool(self.canvas)
         
         # Create diagram
         self.plot = AdjustmentPlot(self)
@@ -154,6 +153,10 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         
         # Fill in Threshold data
         self.updateThresholds()
+        
+        # Mark profile line and poles on map
+        self.updateLineOnMap()
+        self.addMarkerToMap()
 
         # Start Thread to recalculate cable line every 300 milliseconds
         self.timer.timeout.connect(self.recalculate)
@@ -171,6 +174,14 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
 
     def updatePole(self, idx, property_name, newVal):
         self.poles.update(idx, property_name, newVal)
+       
+        # Update pole markers on map except if its an anchor
+        if property_name == 'd' and 0 < idx < len(self.poles.poles)-1:
+            self.updateMarkerOnMap(idx)
+            # If star or end pole have changed, the profile line is also updated
+            if idx in [1, len(self.poles.poles) - 2]:
+                self.updateLineOnMap()
+
         # self.plot.zoomTo(self.poles.poles[idx])
         self.poleLayout.changeRow(idx, property_name, newVal)
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
@@ -191,7 +202,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
             newPoleIdx, self.poles.poles[newPoleIdx]['name'], d, lowerRange,
             upperRange, self.poles.poles[newPoleIdx]['h'],
             self.poles.poles[newPoleIdx]['angle'])
-        
+        self.addMarkerToMap(newPoleIdx)
         # self.plot.zoomOut()
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         self.configurationHasChanged = True
@@ -200,9 +211,32 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         self.poles.delete(idx)
         self.poleLayout.deleteRow(idx, self.poles.poles[idx-1]['d'],
                                   self.poles.poles[idx+1]['d'])
+        self.drawTool.removeMarker(idx-1)
         # self.plot.zoomOut()
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         self.configurationHasChanged = True
+    
+    def updateLineOnMap(self):
+        startPole = self.poles.poles[1]
+        endPole = self.poles.poles[-2]
+        self.drawTool.updateLine([
+                [startPole['coordx'], startPole['coordy']],
+                [endPole['coordx'], endPole['coordy']]], False)
+    
+    def addMarkerToMap(self, idx=-1):
+        # Mark all poles except anchors on map
+        if idx == -1:
+            for pole in self.poles.poles[1:-1]:
+                self.drawTool.drawMarker([pole['coordx'], pole['coordy']])
+        else:
+            # Add a new pole to the map
+            pole = self.poles.poles[idx]
+            self.drawTool.drawMarker([pole['coordx'], pole['coordy']], idx-1)
+    
+    def updateMarkerOnMap(self, idx):
+        point = [self.poles.poles[idx]['coordx'],
+                 self.poles.poles[idx]['coordy']]
+        self.drawTool.updateMarker(point, idx-1)
     
     def updateOptSTA(self, newVal):
         self.result['optSTA'] = float(newVal)
@@ -474,7 +508,9 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
                                             QMessageBox.No | QMessageBox.Yes)
             if reply == QMessageBox.Yes:
                 self.onSave()
+                self.drawTool.reset()
             elif reply == QMessageBox.Cancel:
                 event.ignore()
             else:
+                self.drawTool.reset()
                 event.accept()

@@ -218,8 +218,7 @@ class ProfileDialog(QDialog):
                 self.sc.createPoint(val, self.poleData[idx]['z'])
             # Update on map
             marker = self.projectHandler.transform2MapCoords(float(val))
-            self.drawTool.removeMarker(idx+1)
-            self.drawTool.drawMarker(marker, idx+1)
+            self.drawTool.updateMarker(marker, idx+1)
         
         if property_name in ['d', 'h']:
             self.poleData[idx][property_name] = round(val, 0)
