@@ -18,7 +18,7 @@
  *                                                                         *
  ***************************************************************************/
 """
-from math import cos, sin, ceil
+from math import cos, sin
 import numpy as np
 from qgis.core import QgsPointXY
 
@@ -39,7 +39,7 @@ class PreviewProfile(object):
         self.pointA = QgsPointXY(*tuple(coordsA))
         self.pointE = QgsPointXY(*tuple(coordsE))
         self.length = projectHandler.getProfileLen()
-        self.res = projectHandler.dhm.cellsize
+        self.res = min(1, projectHandler.dhm.cellsize)
         self.azimut = projectHandler.getAzimut()
         self.rasterlyr = projectHandler.dhm.layer.dataProvider()
         
@@ -55,13 +55,18 @@ class PreviewProfile(object):
         """Extracts the raster values and saves them to a collection."""
         if self.length == 0:
             return False
-        stepsAlongLine = np.linspace(0, self.length, num=ceil(self.length/self.res))
+        stepsAlongLine = np.arange(0, self.length, self.res)
 
         for step in stepsAlongLine:
             newx = self.pointA.x() + step * cos(self.azimut)
             newy = self.pointA.y() + step * sin(self.azimut)
             newPoint = QgsPointXY(newx, newy)
             self.profile.append((step, self.extractRasterVal(newPoint)))
+        # Last Point
+        if self.length % self.res != 0:
+            lastPoint = QgsPointXY(self.pointE.x(), self.pointE.y())
+            step = float(len(stepsAlongLine))
+            self.profile.append((step, self.extractRasterVal(lastPoint)))
         
         # Axis data
         nparr = np.asarray(self.profile)
