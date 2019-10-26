@@ -133,8 +133,10 @@ class CustomPoleWidget(QObject):
     
     def deleteRow(self, idx, distLower, distUpper):
         # Update distance range of neighbours
-        self.poleRows[idx-1].updateUpperDistRange(distUpper - self.pole_dist_step)
-        self.poleRows[idx+1].updateLowerDistRange(distLower + self.pole_dist_step)
+        if idx > 0:
+            self.poleRows[idx-1].updateUpperDistRange(distUpper - self.pole_dist_step)
+        if idx < len(self.poleRows)-1:
+            self.poleRows[idx+1].updateLowerDistRange(distLower + self.pole_dist_step)
         # Remove pole row layout
         self.poleRows[idx].remove()
         del self.poleRows[idx]
