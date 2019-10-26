@@ -156,8 +156,8 @@ class ProfilePlot(FigureCanvas):
         self.deactivateCrosshairPole()
         self.win.deactivateMapCursor()
         posX = int(round(self.xcursor, 0))
-        posY = int(round(self.ycursor, 0))
-        self.win.addPole(posX, posY)
+        # z Value will be derived from x value
+        self.win.addPole(posX, None)
 
     def createPoint(self, posX, posY):
         scat = self.axes.scatter(posX, posY, zorder=100, c=POLE_COLOR, s=40)

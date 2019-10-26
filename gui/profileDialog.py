@@ -176,6 +176,8 @@ class ProfileDialog(QDialog):
             if pole['d'] <= d:
                 idx = len(self.poleData) - i
                 break
+        if not z:
+            z = self.getZValue(d)
         # Draw point on plot
         drawnPoint = self.sc.createPoint(d, z)
         # Draw marker in map
