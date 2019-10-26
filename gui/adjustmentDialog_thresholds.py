@@ -25,12 +25,12 @@ from qgis.PyQt.QtGui import QColor, QBrush, QStandardItem, QStandardItemModel
 
 class AdjustmentDialogThresholds(object):
     
-    def __init__(self, dialog, datasetSize):
+    def __init__(self, parent, datasetSize):
         """
-        :type dialog: gui.adjustmentDialog.AdjustmentDialog
+        :type parent: gui.adjustmentDialog.AdjustmentDialog
         """
-        self.dialog = dialog
-        self.tbl = self.dialog.tableThresholds
+        self.parent = parent
+        self.tbl = self.parent.tableThresholds
         self.model = QStandardItemModel(datasetSize[0], datasetSize[1], self.tbl)
         self.tbl.setModel(self.model)
         self.tbl.resizeColumnsToContents()

@@ -23,8 +23,8 @@ import os
 import numpy as np
 from math import floor
 
-from qgis.PyQt.QtCore import QSize, QTimer
-from qgis.PyQt.QtWidgets import QDialog, QSizePolicy, QMessageBox
+from qgis.PyQt.QtCore import QTimer
+from qgis.PyQt.QtWidgets import QDialog, QMessageBox
 from qgis.PyQt.QtGui import QPixmap
 
 from .ui_adjustmentDialog import Ui_AdjustmenDialog
@@ -53,9 +53,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         :type confHandler: configHandler.ConfigHandler
         """
         QDialog.__init__(self, interface.mainWindow())
-
         self.iface = interface
-        self.canvas = self.iface.mapCanvas()
         
         # Management of Parameters and settings
         self.confHandler = confHandler
@@ -76,15 +74,11 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         # Setup GUI from UI-file
         self.setupUi(self)
 
-        self.drawTool = MapMarkerTool(self.canvas)
+        self.drawTool = MapMarkerTool(self.iface.mapCanvas())
         
-        # Create diagram
+        # Create plot
         self.plot = AdjustmentPlot(self)
-        self.plot.setMinimumSize(QSize(600, 400))
-        self.plot.setMaximumSize(QSize(600, 400))
-        self.plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        
-        # Pan/Zoom tools for diagram
+        # Pan/Zoom tools for plot
         bar = MyNavigationToolbar(self.plot, self)
         self.plotLayout.addWidget(self.plot)
         self.plotLayout.addWidget(bar)
@@ -107,7 +101,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         self.unsavedChanges = True
 
         # Save dialog
-        self.saveDialog = DialogOutputOptions(self.iface, self, self.confHandler)
+        self.saveDialog = DialogOutputOptions(self, self.confHandler)
         
         # Connect signals
         self.btnClose.clicked.connect(self.onClose)

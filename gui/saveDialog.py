@@ -29,11 +29,9 @@ from qgis.PyQt.QtGui import QIcon, QPixmap
 
 
 class DialogSaveParamset(QDialog):
-    def __init__(self, interface, toolWindow):
+    def __init__(self, parent):
         """Small window to define the name of the saved parmeter set."""
-        QDialog.__init__(self, interface.mainWindow())
-        self.iface = interface
-        self.tool = toolWindow
+        QDialog.__init__(self, parent)
         self.paramData = None
         self.availableSets = None
         self.savePath = None
@@ -103,13 +101,11 @@ class DialogSaveParamset(QDialog):
 
 
 class DialogOutputOptions(QDialog):
-    def __init__(self, interface, toolWindow, confHandler):
+    def __init__(self, parent, confHandler):
         """
         :type confHandler: configHandler.ConfigHandler
         """
-        QDialog.__init__(self, interface.mainWindow())
-        self.iface = interface
-        self.tool = toolWindow
+        QDialog.__init__(self, parent)
         self.confHandler = confHandler
         self.doSave = False
         

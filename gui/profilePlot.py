@@ -21,7 +21,7 @@
 
 import numpy as np
 from math import floor
-from qgis.PyQt.QtCore import Qt
+from qgis.PyQt.QtCore import Qt, QSize
 from qgis.PyQt.QtWidgets import QSizePolicy
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -35,7 +35,7 @@ class ProfilePlot(FigureCanvas):
     
     POLE_H = 12.0
     
-    def __init__(self, parent=None, width=5, height=4, dpi=72):
+    def __init__(self, parent=None, width=10, height=4, dpi=72):
         self.win = parent
         self.fig = Figure(figsize=(width, height), dpi=dpi, facecolor='#efefef')
         self.axes = self.fig.add_subplot(111)
@@ -58,18 +58,17 @@ class ProfilePlot(FigureCanvas):
         self.lx = None
         self.ly = None
         # Listener for canvas events
-        self.cidMove = None
-        self.cidPress = None
-        self.cidMove2 = None
-        self.cidPress2 = None
+        self.evtMovePole = None
+        self.evtPressPole = None
+        self.evtMoveSection = None
+        self.evtPressSection = None
         self.vLine = None
-
-        self.updateMarkerThread = None
         
         self.axes.set_aspect('equal', 'datalim')
         self.setFocusPolicy(Qt.ClickFocus)
         FigureCanvas.setSizePolicy(self, QSizePolicy.Expanding,
                                    QSizePolicy.Expanding)
+        self.setMinimumSize(QSize(600, 400))
         FigureCanvas.updateGeometry(self)
         self.fig.tight_layout(pad=0.2, w_pad=0.1, h_pad=0.1)
         
@@ -116,8 +115,8 @@ class ProfilePlot(FigureCanvas):
         self.draw()
 
     def acitvateCrosshairPole(self):
-        self.cidMove = self.mpl_connect('motion_notify_event', self.onMouseMoveP)
-        self.cidPress = self.mpl_connect('button_press_event', self.onMousePressP)
+        self.evtMovePole = self.mpl_connect('motion_notify_event', self.onMouseMoveP)
+        self.evtPressPole = self.mpl_connect('button_press_event', self.onMousePressP)
         self.ly.set_color(POLE_COLOR)
         self.lx.set_color(POLE_COLOR)
         self.ly.set_visible(True)
@@ -126,8 +125,8 @@ class ProfilePlot(FigureCanvas):
         self.draw()
 
     def deactivateCrosshairPole(self):
-        self.mpl_disconnect(self.cidMove)
-        self.mpl_disconnect(self.cidPress)
+        self.mpl_disconnect(self.evtMovePole)
+        self.mpl_disconnect(self.evtPressPole)
         self.ly.set_visible(False)
         self.lx.set_visible(False)
         self.draw()
@@ -171,8 +170,8 @@ class ProfilePlot(FigureCanvas):
 
     def activateCrosshairSection(self):
         """ Cursor cross for defining sections without supports."""
-        self.cidMove2 = self.mpl_connect('motion_notify_event', self.onMouseMoveS)
-        self.cidPress2 = self.mpl_connect('button_press_event', self.onMousePressS)
+        self.evtMoveSection = self.mpl_connect('motion_notify_event', self.onMouseMoveS)
+        self.evtPressSection = self.mpl_connect('button_press_event', self.onMousePressS)
         self.ly.set_color(SECTION_COLOR)
         self.lx.set_color(SECTION_COLOR)
         self.win.activateMapCursor(1, SECTION_COLOR)
@@ -181,8 +180,8 @@ class ProfilePlot(FigureCanvas):
         self.draw()
 
     def deactivateCrosshairSection(self):
-        self.mpl_disconnect(self.cidMove2)
-        self.mpl_disconnect(self.cidPress2)
+        self.mpl_disconnect(self.evtMoveSection)
+        self.mpl_disconnect(self.evtPressSection)
         self.ly.set_visible(False)
         self.lx.set_visible(False)
         self.line_exists = False

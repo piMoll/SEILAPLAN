@@ -32,7 +32,6 @@ class ProgressDialog(QDialog):
 
     def __init__(self, iface):
         QDialog.__init__(self, iface.mainWindow())
-        self.iface = iface
         self.workerThread = None
         self.state = False
         self.resultStatus = None

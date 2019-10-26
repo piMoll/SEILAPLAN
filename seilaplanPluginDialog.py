@@ -124,7 +124,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.enableToolTips()
         
         # Dialog with explanatory images
-        self.imgBox = DialogWithImage(self.iface)
+        self.imgBox = DialogWithImage()
         
         # Additional GIS-Layers
         self.osmLyrButton.setEnabled(False)
@@ -142,11 +142,11 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.draw.setCheckable(True)
         
         # Dialog window with height profile
-        self.profileWin = ProfileDialog(self.iface, self.drawTool,
+        self.profileWin = ProfileDialog(self, self.iface, self.drawTool,
                                         self.projectHandler)
 
         # Dialog windows for saving parameter and cable sets
-        self.paramSetWindow = DialogSaveParamset(self.iface, self)
+        self.paramSetWindow = DialogSaveParamset(self)
         
         Processing.initialize()
     

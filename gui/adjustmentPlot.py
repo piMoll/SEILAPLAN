@@ -19,7 +19,7 @@
  ***************************************************************************/
 """
 import numpy as np
-from qgis.PyQt.QtCore import Qt
+from qgis.PyQt.QtCore import Qt, QSize
 from qgis.PyQt.QtWidgets import QSizePolicy
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -52,10 +52,10 @@ class AdjustmentPlot(FigureCanvas):
         self.isZoomed = False
 
         self.axes.set_aspect('equal', 'datalim')
-        self.__setupAxes()
         self.setFocusPolicy(Qt.ClickFocus)
         FigureCanvas.setSizePolicy(self, QSizePolicy.Expanding,
                                    QSizePolicy.Expanding)
+        self.setMinimumSize(QSize(600, 400))
         FigureCanvas.updateGeometry(self)
         self.fig.tight_layout(pad=0, w_pad=0.1, h_pad=0.1)
 

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>599</width>
-    <height>473</height>
+    <width>559</width>
+    <height>423</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -21,10 +21,128 @@
     <normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_app.png</normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_app.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="7" column="0">
+   <item row="1" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="recalcStatus_ico">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap resource="resources.qrc">:/plugins/SeilaplanPlugin/gui/icons/icon_reload.png</pixmap>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="recalcStatus_txt">
+       <property name="text">
+        <string>Neuberechnung...</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_7">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="label_18">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Manuelle Anpassung der Seillinie</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QPushButton" name="btnBackToStart">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Manuelle Anpassungen verwerfen und zurück zum Startfenster wechseln&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>zurück zum Startfenster</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnClose">
+       <property name="toolTip">
+        <string>Plugin beenden</string>
+       </property>
+       <property name="text">
+        <string>Schliessen</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnSave">
+       <property name="toolTip">
+        <string>Ergebnisse speichern</string>
+       </property>
+       <property name="text">
+        <string>Speichern</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="4" column="0">
+    <layout class="QVBoxLayout" name="plotLayout"/>
+   </item>
+   <item row="6" column="0">
     <layout class="QVBoxLayout" name="tabLayout">
      <item>
       <widget class="QTabWidget" name="tabWidget">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="baseSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="currentIndex">
         <number>0</number>
        </property>
@@ -251,23 +369,6 @@
          <string>Tragesystem</string>
         </attribute>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="0">
-          <layout class="QVBoxLayout" name="verticalLayout">
-           <item>
-            <widget class="QLabel" name="label">
-             <property name="font">
-              <font>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>Anpassung der mechanischen Eigenschaften des Tragesystems</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
          <item row="1" column="0">
           <layout class="QGridLayout" name="gridLayout_3">
            <item row="6" column="0">
@@ -537,6 +638,23 @@
            </item>
           </layout>
          </item>
+         <item row="0" column="0">
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Anpassung der mechanischen Eigenschaften des Tragesystems</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
          <item row="2" column="0">
           <spacer name="verticalSpacer_2">
            <property name="orientation">
@@ -571,6 +689,12 @@
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>240</height>
+                </size>
                </property>
                <property name="locale">
                 <locale language="German" country="Switzerland"/>
@@ -691,112 +815,6 @@
       </widget>
      </item>
     </layout>
-   </item>
-   <item row="6" column="0">
-    <widget class="QLabel" name="label_18">
-     <property name="font">
-      <font>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Manuelle Anpassung der Seillinie</string>
-     </property>
-    </widget>
-   </item>
-   <item row="9" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QPushButton" name="btnBackToStart">
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Manuelle Anpassungen verwerfen und zurück zum Startfenster wechseln&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>zurück zum Startfenster</string>
-       </property>
-       <property name="autoDefault">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btnClose">
-       <property name="toolTip">
-        <string>Plugin beenden</string>
-       </property>
-       <property name="text">
-        <string>Schliessen</string>
-       </property>
-       <property name="autoDefault">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btnSave">
-       <property name="toolTip">
-        <string>Ergebnisse speichern</string>
-       </property>
-       <property name="text">
-        <string>Speichern</string>
-       </property>
-       <property name="autoDefault">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="1" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <widget class="QLabel" name="recalcStatus_ico">
-       <property name="text">
-        <string/>
-       </property>
-       <property name="pixmap">
-        <pixmap resource="resources.qrc">:/plugins/SeilaplanPlugin/gui/icons/icon_reload.png</pixmap>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="recalcStatus_txt">
-       <property name="text">
-        <string>Neuberechnung...</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_7">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
-   </item>
-   <item row="4" column="0">
-    <layout class="QVBoxLayout" name="plotLayout"/>
    </item>
   </layout>
  </widget>

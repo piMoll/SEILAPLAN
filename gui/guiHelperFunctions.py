@@ -31,9 +31,8 @@ from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT \
 
 
 class DialogWithImage(QDialog):
-    def __init__(self, interface):
-        QDialog.__init__(self, interface.mainWindow())
-        self.iface = interface
+    def __init__(self):
+        QDialog.__init__(self)
         self.main_widget = QWidget(self)
         self.main_widget.setMinimumSize(QSize(100, 100))
         self.label = QLabel()

@@ -35,16 +35,17 @@ from .customWidgets import CustomPoleWidget
 
 
 class ProfileDialog(QDialog):
-    def __init__(self, interface, drawTool, projectHandler):
+    def __init__(self, parent, interface, drawTool, projectHandler):
         """
         :type drawTool: gui.mapMarker.MapMarkerTool
         :type projectHandler: configHandler.ProjectConfHandler
         """
-        QDialog.__init__(self, interface.mainWindow())
+        QDialog.__init__(self, parent)
         self.iface = interface
         self.projectHandler = projectHandler
         self.drawTool = drawTool
         self.setWindowTitle("Höhenprofil")
+        self.setWindowModality(Qt.WindowModal)
         
         # Array with properties fixed poles
         self.poleData = []
@@ -58,9 +59,6 @@ class ProfileDialog(QDialog):
 
         # Plot
         self.sc = ProfilePlot(self)
-        self.sc.setMinimumSize(QSize(600, 400))
-        self.sc.setMaximumSize(QSize(600, 400))
-        self.sc.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         # Pan/Zoom Tools for diagram
         bar = MyNavigationToolbar(self.sc, self)
 
