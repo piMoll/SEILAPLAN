@@ -31,7 +31,7 @@ from qgis.PyQt.QtWidgets import (QDialog, QWidget, QLabel, QDialogButtonBox,
 
 from .profilePlot import ProfilePlot
 from .guiHelperFunctions import MyNavigationToolbar
-from .adjustmentDialog_poles import CustomPoleWidget
+from .customWidgets import CustomPoleWidget
 
 
 class ProfileDialog(QDialog):
