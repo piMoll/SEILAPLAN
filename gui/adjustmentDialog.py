@@ -23,7 +23,7 @@ import os
 import numpy as np
 from math import floor
 
-from qgis.PyQt.QtCore import QTimer
+from qgis.PyQt.QtCore import QTimer, Qt
 from qgis.PyQt.QtWidgets import QDialog, QMessageBox
 from qgis.PyQt.QtGui import QPixmap
 
@@ -78,10 +78,11 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         
         # Create plot
         self.plot = AdjustmentPlot(self)
-        # Pan/Zoom tools for plot
+        # Pan/Zoom tools for plot, pan already active
         bar = MyNavigationToolbar(self.plot, self)
+        bar.pan()
         self.plotLayout.addWidget(self.plot)
-        self.plotLayout.addWidget(bar)
+        self.plotLayout.addWidget(bar, alignment=Qt.AlignHCenter | Qt.AlignTop)
 
         # Fill tab widget with data
         self.poleLayout = CustomPoleWidget(self.tabPoles, self.poleVGrid)

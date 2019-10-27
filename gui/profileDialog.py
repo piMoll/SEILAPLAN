@@ -61,6 +61,7 @@ class ProfileDialog(QDialog):
         self.sc = ProfilePlot(self)
         # Pan/Zoom Tools for diagram
         bar = MyNavigationToolbar(self.sc, self)
+        bar.pan()
 
         # Layout
         main_widget = QWidget(self)
@@ -90,7 +91,7 @@ class ProfileDialog(QDialog):
                                           QDialogButtonBox.Ok)
         # Build up Gui
         self.container.addWidget(self.sc)
-        self.container.addWidget(bar)
+        self.container.addWidget(bar, alignment=Qt.AlignHCenter | Qt.AlignTop)
         self.container.addWidget(line1)
         self.container.addWidget(stueTitle)
         self.container.addLayout(hbox)

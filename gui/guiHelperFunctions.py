@@ -59,6 +59,7 @@ class MyNavigationToolbar(NavigationToolbar):
     def __init__(self, *args, **kwargs):
         super(MyNavigationToolbar, self).__init__(*args, **kwargs)
         self.layout().takeAt(3)  # 3 = Amount of tools we need
+        self.layout().setSpacing(5)
 
 
 def createContours(canvas, dhm):
