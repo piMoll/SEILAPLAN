@@ -64,9 +64,8 @@ class PreviewProfile(object):
             self.profile.append((step, self.extractRasterVal(newPoint)))
         # Last Point
         if self.length % self.res != 0:
-            lastPoint = QgsPointXY(self.pointE.x(), self.pointE.y())
-            step = float(len(stepsAlongLine))
-            self.profile.append((step, self.extractRasterVal(lastPoint)))
+            lastStep = stepsAlongLine[-1] + self.res
+            self.profile.append((lastStep, self.extractRasterVal(self.pointE)))
         
         # Axis data
         nparr = np.asarray(self.profile)
