@@ -319,6 +319,7 @@ class PoleRow(object):
         self.addBtn.setIcon(icon)
         self.addBtn.setIconSize(QSize(16, 16))
         self.addBtn.setToolTip('Fügt eine neue Stütze nach dieser hinzu')
+        self.addBtn.setAutoDefault(False)
         self.row.addWidget(self.addBtn)
         
         self.addBtn.clicked.connect(
@@ -336,6 +337,7 @@ class PoleRow(object):
         self.delBtn.setIcon(icon)
         self.delBtn.setIconSize(QSize(16, 16))
         self.delBtn.setToolTip('Löscht die Stütze')
+        self.delBtn.setAutoDefault(False)
         self.row.addWidget(self.delBtn)
 
         self.delBtn.clicked.connect(
