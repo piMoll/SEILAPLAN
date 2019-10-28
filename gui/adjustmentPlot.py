@@ -47,6 +47,7 @@ class AdjustmentPlot(FigureCanvas):
         self.data_ylow = 0
         self.data_yhi = 0
         self.labelBuffer = 1
+        self.arrowMarker = None
         
         self.currentPole = None
         self.isZoomed = False
@@ -157,6 +158,13 @@ class AdjustmentPlot(FigureCanvas):
         
         self.axes.set_xlim(xlim)
         self.axes.set_ylim(ylim)
+        self.draw()
+    
+    def showArrow(self, x, y):
+        if self.arrowMarker:
+            self.arrowMarker.remove()
+        self.arrowMarker = self.axes.scatter(x, y, marker='^', zorder=100,
+                                             c='#e06767', s=100)
         self.draw()
 
     def zoomTo(self, pole):

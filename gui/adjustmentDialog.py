@@ -92,8 +92,10 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         self.poleLayout.sig_updatePole.connect(self.updatePole)
         self.poleLayout.sig_deletePole.connect(self.deletePole)
         
-        self.paramLayout = AdjustmentDialogParams(self, self.confHandler.params)
         self.thresholdLayout = AdjustmentDialogThresholds(self, self.thSize)
+        self.thresholdLayout.sig_clickedRow.connect(self.showThresholdInPlot)
+
+        self.paramLayout = AdjustmentDialogParams(self, self.confHandler.params)
 
         # Thread for instant recalculation when poles or parameters are changed
         self.timer = QTimer()
@@ -323,10 +325,17 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
     
     def updateThresholds(self):
         params = self.confHandler.params
+        resultData = [
+            self.cableline['groundclear_rel'],  # Distance cable - terrain
+            self.result['force']['MaxSeilzugkraft'][0],  # Max force on cable
+            self.result['force']['Sattelkraft_Total'][0],  # Max force on pole
+            self.result['force']['Anlegewinkel_Lastseil'],  # Cable angle
+            self.result['force']['Nachweis'],  # Prove
+        ]
         
         if not self.thData:
-            rows = [['' for cell in range(self.thSize[0])]
-                    for row in range(self.thSize[1])]
+            rows = [['' for cell in range(self.thSize[1])]
+                    for row in range(self.thSize[0])]
             header = [
                 'Kennwert',
                 'Definierter\nGrenzwert',
@@ -369,76 +378,83 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
                 '-'
             ]
             for i in range(self.thSize[0]):
-                val, location = self.getThresholdFromResult(i)
+                val, location = self.checkThresholdAndLocation(i, resultData[i])
                 self.thData['rows'][i][0] = label[i]
                 self.thData['rows'][i][1] = thresholdStr[i]
                 self.thData['rows'][i][2] = val
                 self.thData['rows'][i][3] = ''
-                self.thData['rows'][i][4] = None
-
+                self.thData['rows'][i][4] = location
+            
             self.thresholdLayout.populate(header, self.thData['rows'])
         
         else:
             for i in range(len(self.thData['rows'])):
-                val, location = self.getThresholdFromResult(i)
+                val, location = self.checkThresholdAndLocation(i, resultData[i])
                 self.thData['rows'][i][3] = val
                 self.thData['rows'][i][4] = location
 
-        self.thresholdLayout.updateData(self.thData['rows'])
+            self.thresholdLayout.updateData(self.thData['rows'])
     
-    def getThresholdFromResult(self, idx):
-        arr = [
-            self.cableline['groundclear_rel'],              # Distance cable - terrain
-            self.result['force']['MaxSeilzugkraft'][0],     # Max force on cable
-            self.result['force']['Sattelkraft_Total'][0],   # Max force on pole
-            self.result['force']['Anlegewinkel_Lastseil'],  # Cable angle
-            self.result['force']['Nachweis'],               # Prove
-        ]
+    def checkThresholdAndLocation(self, idx, data):
         val = None
         valStr = ""
         location = []
 
         # Ground clearance
         if idx == 0:
-            if np.isnan(arr[idx]).all():
+            if np.isnan(data).all():
                 return valStr, location
-            val = np.nanmin(arr[idx])
-            # Replace nan so there is no Runtime Warning in np.argwhere()
-            arrayData = np.copy(arr[idx])
-            arrayData[np.isnan(arrayData)] = 100.0
-            # Check for values smaller than ground clearance
-            location = np.ravel(np.argwhere(arrayData < self.thData['thresholds'][idx]))
+            val = np.nanmin(data)
+            # Check if min value is smaller than ground clearance
+            if val < self.thData['thresholds'][idx]:
+                # Replace nan so there is no Runtime Warning in np.argwhere()
+                localCopy = np.copy(data)
+                localCopy[np.isnan(localCopy)] = 100.0
+                location = np.ravel(np.argwhere(localCopy == val))
         
         # Max force on cable and on pole
         elif idx in [1, 2]:
             # Replace nan with 0 so that no Runtime Warning is thrown in
             # np.argwhere()
-            arrayData = np.nan_to_num(arr[idx])
-            val = np.max(arrayData)
-            location = np.ravel(
-                np.argwhere(arrayData > self.thData['thresholds'][idx]))
+            localCopy = np.nan_to_num(data)
+            val = np.max(localCopy)
+            location = np.argwhere(localCopy > self.thData['thresholds'][idx])
+            if len(location) != 0:
+                location = np.ravel(location)
         
         # Cable angle
         elif idx == 3:
             # Replace nan with 0 so that no Runtime Warning is thrown
-            arrayData = np.nan_to_num(arr[idx])
+            localCopy = np.nan_to_num(data)
             # Transform negative values to values over 30, so we have to do
             # only one check
-            arrayData[arrayData < 0] -= 30
-            arrayData[arrayData < 0] *= -1
-            val = np.nanmax(arrayData)
-            location = np.unique(np.rollaxis(
-                np.argwhere(arrayData > 30), 1)[1])
+            localCopy[localCopy < 0] -= 30
+            localCopy[localCopy < 0] *= -1
+            val = np.nanmax(localCopy)
+            locationPole = np.unique(np.rollaxis(
+                np.argwhere(localCopy > 30), 1)[1])
+            for loc in locationPole:
+                location.append(int(self.poles.poles[loc+1]['d']))
         
         # Proof: Only test for poles that are not first and last pole
         elif idx == 4:
-            valStr = 'Nein' if 'Nein' in arr[idx][1:-1] else 'Ja'
-            location = [i for i, m in enumerate(arr[idx][1:-1]) if m == 'Nein']
+            valStr = 'Nein' if 'Nein' in data[1:-1] else 'Ja'
+            locationPole = [i for i, m in enumerate(data[1:-1]) if m == 'Nein']
+            for loc in locationPole:
+                location.append(int(self.poles.poles[loc+1]['d']))
         
         if isinstance(val, float) and val is not np.nan:
             valStr = f"{round(val, 1)} {self.thData['units'][idx]}"
 
         return valStr, location
+
+    def showThresholdInPlot(self, row):
+        location = self.thData['rows'][row][4]
+        arrIdx = []
+        for l in location:
+            arrIdx.append(np.argwhere(self.profile.di_disp == l)[0][0])
+        z = self.profile.zi_disp[arrIdx] - 25
+        self.plot.showArrow(location, z)
     
     def onClose(self):
         self.close()
