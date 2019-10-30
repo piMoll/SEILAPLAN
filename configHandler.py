@@ -23,7 +23,7 @@ import io
 import re
 from operator import itemgetter
 import traceback
-from math import atan, pi, cos, sin
+from math import atan2, pi, cos, sin
 import numpy as np
 
 from qgis.PyQt.QtWidgets import QMessageBox
@@ -233,8 +233,8 @@ class ProjectConfHandler(AbstractConfHandler):
     
     # noinspection PyTypeChecker
     def transform2MapCoords(self, distance):
-        x = self.points['A'][0] + distance * cos(self.azimut)
-        y = self.points['A'][1] + distance * sin(self.azimut)
+        x = self.points['A'][0] + distance * sin(self.azimut)
+        y = self.points['A'][1] + distance * cos(self.azimut)
         return QgsPointXY(x, y)
     
     def profileIsValid(self):
@@ -250,11 +250,12 @@ class ProjectConfHandler(AbstractConfHandler):
             dy = (self.points['E'][1] - self.points['A'][1]) * 1.0
             if dx == 0:
                 dx = 0.0001
-            azimut = atan(dy / dx)
-            if dx > 0:
-                azimut += 2 * pi
-            else:
-                azimut += pi
+            if dy == 0:
+                dy = 0.0001
+            azimut = atan2(dx, dy)
+            if dx < 0:
+                azimut += 2*pi
+            
         self.azimut = azimut
     
     def getProfileLen(self):

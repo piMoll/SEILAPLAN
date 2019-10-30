@@ -78,8 +78,8 @@ class Poles(object):
             self.poles[idx]['ztop'] = ztop
     
     def derivePoleProperties(self, d, h, angle):
-        x = self.Ax + float(d) * cos(self.azimut)
-        y = self.Ay + float(d) * sin(self.azimut)
+        x = self.Ax + float(d) * sin(self.azimut)
+        y = self.Ay + float(d) * cos(self.azimut)
         z = self.dhm.getInterpolatedHeightAtPoints([y, x])[0]
         dtop = d
         ztop = z + h

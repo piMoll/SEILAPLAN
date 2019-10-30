@@ -58,8 +58,8 @@ class PreviewProfile(object):
         stepsAlongLine = np.arange(0, self.length, self.res)
 
         for step in stepsAlongLine:
-            newx = self.pointA.x() + step * cos(self.azimut)
-            newy = self.pointA.y() + step * sin(self.azimut)
+            newx = self.pointA.x() + step * sin(self.azimut)
+            newy = self.pointA.y() + step * cos(self.azimut)
             newPoint = QgsPointXY(newx, newy)
             self.profile.append((step, self.extractRasterVal(newPoint)))
         # Last Point

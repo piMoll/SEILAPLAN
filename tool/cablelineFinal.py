@@ -529,5 +529,5 @@ def preciseCableLight(zi, di, IS, STA, HM, LP):
 
 
 def updateWithCableCoordinates(cableline, pointA, azimut):
-    cableline['coordx'] = pointA[0] + cableline['xaxis'] * cos(azimut)
-    cableline['coordy'] = pointA[1] + cableline['xaxis'] * sin(azimut)
+    cableline['coordx'] = pointA[0] + cableline['xaxis'] * sin(azimut)
+    cableline['coordy'] = pointA[1] + cableline['xaxis'] * cos(azimut)

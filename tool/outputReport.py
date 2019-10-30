@@ -75,6 +75,7 @@ def generateReportText(confHandler, result, comment):
     [pole_d, pole_z, pole_h, pole_dtop, pole_ztop] = poles.getAsArray()
     hmodell = confHandler.project.getDhmAsStr()
     kraft = result['force']
+    az_gon = math.degrees(poles.azimut) * 1.11111
 
     # Values for survey work
     hDist = []
