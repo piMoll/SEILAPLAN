@@ -72,25 +72,14 @@ def generateReportText(confHandler, result, comment):
     """
     poles = confHandler.project.poles
     poleslist = poles.poles
-    [pole_d, pole_z, pole_h, pole_dtop, pole_ztop] = poles.getAsArray()
     hmodell = confHandler.project.getDhmAsStr()
     kraft = result['force']
     az_gon = math.degrees(poles.azimut) * 1.11111
 
-    # Values for survey work
-    hDist = []
-    sDist = []
-    az_gon = poles.azimut * 1.11111
-    for i in range(len(pole_d)-1):
-        dist_h = pole_d[i+1] - pole_d[i]
-        dist_z = pole_z[i + 1] - pole_z[i]
-        hDist.append(dist_h)
-        sDist.append((dist_h**2 + dist_z**2)**0.5)
-
-    poleCount = len(pole_d)
+    poleCount = len(poleslist) - 2      # Without anchors
     fieldCount = poleCount - 1
     sHeader = [i['name'] for i in poleslist[1:-1]]
-    fHeader = [f"{i+1}. Feld" for i in range(poleCount)]
+    fHeader = [f"{i+1}. Feld" for i in range(fieldCount)]
 
     # First section with duration, dhm and several comments
     str_time = [
@@ -112,11 +101,11 @@ def generateReportText(confHandler, result, comment):
         str_time.append(["Markierung für fixe Stützen: ° = fixe Position, °* = fixe Position und Höhe"])
     
     # Section poles
-    str_posi = [["", "Höhe", "X-Koordinate", "Y-Koordinate", "Z-Koordinate", "(M.ü.M)"]]
-    for s in range(poleCount):
+    str_posi = [["", "Höhe [m]", "X-Koordinate", "Y-Koordinate", "Z-Koordinate [M.ü.M.]"]]
+    for s in range(len(poleslist)):
         pole = poles.poles[s]
         str_posi.append([
-            f"{pole['name']}", f"{pole['h']:.1f} m",
+            f"{pole['name']}", f"{pole['h']:.1f}",
             f"{formatNum(pole['coordx'])}",
             f"{formatNum(pole['coordy'])}",
             f"{formatNum(pole['z'])}"])
@@ -124,9 +113,14 @@ def generateReportText(confHandler, result, comment):
     # Section field survey
     str_abst = [[f"Azimut: {az_gon:.1f} gon"],
                 ["", "Horizontaldistanz", "Schrägdistanz"]]
-    for f in range(fieldCount):
-        str_abst.append([f"von {sHeader[f]} zu {sHeader[f+1]}",
-                         f"{hDist[f]:.1f} m", f"{sDist[f]:.1f} m"])
+    for i in range(len(poleslist)-1):
+        pole = poleslist[i]
+        nextPole = poleslist[i+1]
+        dist_h = nextPole['d'] - pole['d']
+        dist_z = nextPole['z'] - pole['z']
+        dist_s = (dist_h**2 + dist_z**2)**0.5
+        str_abst.append([f"von {pole['name']} zu {nextPole['name']}",
+                         f"{dist_h:.1f} m", f"{dist_s:.1f} m"])
 
     # Section cable pull strength
     str_opti = [["optimaler Wertebeich",
@@ -320,7 +314,7 @@ def generateReport(reportText, outputLoc, projname):
     wi_abk = [1.7*cm]
     he_row = [0.40 * cm]
     he_rowT = [0.45 * cm]
-    len_pole = len(str_posi)-1
+    len_pole = len(str_posi)-3
     len_field = len_pole - 1
     lPadd = 6
     fontSize = 8
@@ -329,7 +323,7 @@ def generateReport(reportText, outputLoc, projname):
     # Title definition
     h_tite = [["Seilbahnprojekt        "+projname]]
     h_posi = [["Stützenpositionen"]]
-    h_abst = [["Daten für Absteckung im Feld"]]
+    h_abst = [["Daten für Absteckung im Feld (Bodenpunkt)"]]
     h_opti = [["Vorspannung der Seilzugkraft"]]
     h_leng = [["Seillänge"]]
     h_durc = [["Durchhang"]]
@@ -369,11 +363,11 @@ def generateReport(reportText, outputLoc, projname):
                                  ('LEFTPADDING', (0, 0), (0, -1), lPadd)]))
 
     t_posi1 = Table(h_posi, wi_doc, he_rowT)
-    t_posi2 = Table(str_posi, [1.7*cm] + 5*[2.5*cm], len(str_posi) * he_row)
+    t_posi2 = Table(str_posi, [1.7*cm] + 4*[2.5*cm], len(str_posi) * he_row)
     t_posi1.setStyle(title_style)
     t_posi2.setStyle(TableStyle(stdStyleA + [
-        ('ALIGN', (5, 0), (5, -0), 'LEFT'),
-        ('FONT', (0, 0), (-2, 0), fontHeader, smallfontSize)]))
+        # ('ALIGN', (5, 0), (5, -0), 'LEFT'),
+        ('FONT', (0, 0), (-1, 0), fontHeader, smallfontSize)]))
 
     t_abst1 = Table(h_abst, wi_doc, he_rowT)
     t_abst2 = Table(str_abst, [5*cm] + 2*wi_clo, len(str_abst) * he_row)
@@ -424,7 +418,7 @@ def generateReport(reportText, outputLoc, projname):
 
     t_stue1 = Table(h_stue, wi_doc, he_rowT)
     t_stue2 = Table(str_stue1, wi_abk + [6.8*cm] + [2.2*cm]*len_pole, len(str_stue1)*he_row)
-    t_stue3 = Table(str_stue2, wi_abk + [6.8*cm] + [1.1*cm]*len_pole,len(str_stue2)*he_row)
+    t_stue3 = Table(str_stue2, wi_abk + [6.8*cm] + [1.1*cm]*len_pole, len(str_stue2)*he_row)
     t_stue1.setStyle(title_style)
     t_stue2.setStyle(TableStyle(stdStyleB + [
         ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),  # field header
