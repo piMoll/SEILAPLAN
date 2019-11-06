@@ -193,6 +193,9 @@ class SeilaplanPlugin(object):
 
         while reRun:
             reRun = False
+            result = False
+            status = False
+            
             if not firstRun:
                 self.dlg.setupContent()
             firstRun = False
@@ -208,6 +211,7 @@ class SeilaplanPlugin(object):
             # conf.prepareForCalculation()
             # self.adjustmentWindow = AdjustmentDialog(self.iface, conf)
             # self.adjustmentWindow.loadData(pickleFile)
+            # self.adjustmentWindow.unsavedChanges = False
             # self.adjustmentWindow.show()
             # self.adjustmentWindow.exec()
 
@@ -225,34 +229,34 @@ class SeilaplanPlugin(object):
                 # Add task to task manager of QGIS and start the calculations
                 QgsApplication.taskManager().addTask(workerThread)
 
-                # Show progress bar
+                # Show progress bar and start event loop
                 self.progressDialog.show()
-                # start event loop
                 self.progressDialog.exec()
                 
-                # After calculation is finished and progress GUI has been
-                # closed: Check if user wants a rerun
+                # Check if user wants a rerun
                 if self.progressDialog.doReRun:
                     reRun = True
-                    del self.progressDialog
-                    continue
-                # Close application if there was an error or user canceled
-                if self.progressDialog.wasCanceled \
-                        or not self.progressDialog.wasSuccessful:
-                    del self.progressDialog
-                    break
-                
+                    
+                # Save result if calculation was successful and user didn't
+                # cancel
+                if self.progressDialog.wasSuccessful:
+                    result, status = workerThread.getResult()
+                    
+                del workerThread
+                del self.progressDialog
+            
+            elif self.dlg.goToAdjustment:
+                result, status = conf.loadResultFromProjectfile()
+            
+            if result:
                 # Show adjustment window to modify calculated cable line
                 self.adjustmentWindow = AdjustmentDialog(self.iface, conf)
-                self.adjustmentWindow.initData(workerThread.getResult())
+                self.adjustmentWindow.initData(result, status)
                 self.adjustmentWindow.show()
                 self.adjustmentWindow.exec()
                 
                 if self.adjustmentWindow.doReRun:
                     reRun = True
-                
-                del workerThread
-                del self.progressDialog
                 del self.adjustmentWindow
 
         self.dlg.cleanUp()

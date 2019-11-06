@@ -1060,9 +1060,14 @@ class Ui_SeilaplanDialog(object):
         spacerItem18 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_11.addItem(spacerItem18)
         self.buttonCancel = QtWidgets.QPushButton(SeilaplanDialog)
+        self.buttonCancel.setMinimumSize(QtCore.QSize(0, 0))
         self.buttonCancel.setAutoDefault(False)
         self.buttonCancel.setObjectName("buttonCancel")
         self.horizontalLayout_11.addWidget(self.buttonCancel)
+        self.btnAdjustment = QtWidgets.QPushButton(SeilaplanDialog)
+        self.btnAdjustment.setAutoDefault(False)
+        self.btnAdjustment.setObjectName("btnAdjustment")
+        self.horizontalLayout_11.addWidget(self.btnAdjustment)
         self.buttonRun = QtWidgets.QPushButton(SeilaplanDialog)
         self.buttonRun.setAutoDefault(False)
         self.buttonRun.setObjectName("buttonRun")
@@ -1222,8 +1227,10 @@ class Ui_SeilaplanDialog(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("SeilaplanDialog", "Zwischenstützen"))
         self.buttonInfo.setText(_translate("SeilaplanDialog", "Info"))
         self.buttonCancel.setText(_translate("SeilaplanDialog", "Abbrechen"))
-        self.buttonRun.setToolTip(_translate("SeilaplanDialog", "<html><head/><body><p>Optimierungsalgorithmus zur Bestimmung der Stützenstandorte ausführen</p></body></html>"))
-        self.buttonRun.setText(_translate("SeilaplanDialog", "Berechnung starten"))
+        self.btnAdjustment.setToolTip(_translate("SeilaplanDialog", "Stützenoptimierung überspringen und direkt zur manuellen Bearbeitung der Seillinie übergehen"))
+        self.btnAdjustment.setText(_translate("SeilaplanDialog", "Seillinie direkt bearbeiten"))
+        self.buttonRun.setToolTip(_translate("SeilaplanDialog", "Berechnung der optimalen Stützenstandorte ausführen"))
+        self.buttonRun.setText(_translate("SeilaplanDialog", "Stützen optimieren"))
 
 
 from . import resources_rc

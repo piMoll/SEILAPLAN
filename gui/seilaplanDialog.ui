@@ -2619,6 +2619,12 @@
      </item>
      <item>
       <widget class="QPushButton" name="buttonCancel">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="text">
         <string>Abbrechen</string>
        </property>
@@ -2628,12 +2634,25 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="buttonRun">
+      <widget class="QPushButton" name="btnAdjustment">
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optimierungsalgorithmus zur Bestimmung der Stützenstandorte ausführen&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Stützenoptimierung überspringen und direkt zur manuellen Bearbeitung der Seillinie übergehen</string>
        </property>
        <property name="text">
-        <string>Berechnung starten</string>
+        <string>Seillinie direkt bearbeiten</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonRun">
+       <property name="toolTip">
+        <string>Berechnung der optimalen Stützenstandorte ausführen</string>
+       </property>
+       <property name="text">
+        <string>Stützen optimieren</string>
        </property>
        <property name="autoDefault">
         <bool>false</bool>

@@ -54,6 +54,7 @@ class ProcessingTask(QgsTask):
         self.confHandler = confHandler
         self.projInfo = confHandler.project
         self.result = None
+        self.status = []
     
     def run(self):
         
@@ -84,7 +85,14 @@ class ProcessingTask(QgsTask):
         result['duration'] = getTimestamp(t_start)
 
         self.result = result
-        self.sig_result.emit(result['resultStatus'])
+
+        statusNames = {
+            1: 'optiSuccess',
+            2: 'liftsOff',
+            3: 'notComplete'
+        }
+        self.status = statusNames[max(self.status)]
+        self.sig_result.emit(self.status)
 
         # import pickle
         # import os
@@ -99,7 +107,7 @@ class ProcessingTask(QgsTask):
         return True
         
     def getResult(self):
-        return self.result
+        return self.result, self.status
     
     def finished(self, result):
         """This method is automatically called when self.run returns. result

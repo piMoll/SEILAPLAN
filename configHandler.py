@@ -25,6 +25,7 @@ from operator import itemgetter
 import traceback
 from math import atan2, pi, cos, sin
 import numpy as np
+import time
 
 from qgis.PyQt.QtWidgets import QMessageBox
 from qgis.core import QgsPointXY
@@ -32,6 +33,7 @@ from qgis.core import QgsPointXY
 from .tool.raster import Raster
 from .tool.profile import Profile
 from .tool.poles import Poles
+from .tool.outputReport import getTimestamp
 
 # Constants
 HOMEPATH = os.path.join(os.path.dirname(__file__))
@@ -827,3 +829,24 @@ class ConfigHandler(object):
         """
         self.params.prepareForCalculation()
         self.project.prepareForCalculation()
+    
+    def loadResultFromProjectfile(self):
+        self.prepareForCalculation()
+        status = 'jumpedOver'
+        
+        # TODO: Manuelle Stützen von letzter Bearbeitung
+        # if True:
+        #     status = 'savedFile'
+        
+        zulSK = self.params.params['zul_SK']['value']
+        minSK = self.params.params['min_SK']['value']
+        optSTA = int(minSK + (zulSK - minSK) / 2)
+        
+        return {
+            'cableline': None,
+            'optSTA': optSTA,
+            'optSTA_arr': [optSTA],
+            'force': None,
+            'optLen': None,
+            'duration': getTimestamp(time.time())
+        }, status

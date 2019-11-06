@@ -99,6 +99,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.paramHandler = confHandler.params
         self.projectHandler = confHandler.project
         self.startAlgorithm = False
+        self.goToAdjustment = False
         self.homePath = os.path.dirname(__file__)
         
         # Setup GUI of SEILAPLAN (import from ui_seilaplanDialog.py)
@@ -155,6 +156,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         """
         self.buttonCancel.clicked.connect(self.cancel)
         self.buttonRun.clicked.connect(self.apply)
+        self.btnAdjustment.clicked.connect(self.goToAdjustmentWindow)
         self.buttonOpenPr.clicked.connect(self.onLoadProjects)
         self.buttonSavePr.clicked.connect(self.onSaveProject)
         self.rasterField.currentTextChanged.connect(self.onChangeRaster)
@@ -598,6 +600,14 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.imgBox.setLayout(self.imgBox.container)
         self.imgBox.show()
     
+    def goToAdjustmentWindow(self):
+        if self.confHandler.checkValidState():
+            self.startAlgorithm = False
+            self.goToAdjustment = True
+            self.close()
+        else:
+            return False
+    
     def apply(self):
         if self.confHandler.checkValidState():
             self.startAlgorithm = True
@@ -605,29 +615,6 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
             # If project info or parameter are missing or wrong, algorithm
             # can not start
             return False
-        
-        picklefile = '20180923_1145.pckl'
-        # import pickle
-        # homePath = os.path.dirname(__file__)
-        # storefile = os.path.join(homePath, 'backups+testFiles', picklefile)
-        # projInfo['Hoehenmodell'].pop('layer')
-        # f = open(storefile, 'wb')
-        # pickle.dump([userData, projInfo], f)
-        # f.close()
-        
-        # import pickle
-        # homePath = os.path.dirname(__file__)
-        # storefile = os.path.join(homePath, 'backups+testFiles', '{}'.format(picklefile))
-        # f = open(storefile, 'rb')
-        # dump = pickle.load(f)
-        # f.close()
-        # [userData, projInfo] = dump
-        # self.threadingControl.setState(True)
-        
-        # TODO:
-        #  Gezeichnete Linie in Karte muss überleben um später in Adjustment
-        #  window weiterberarbeiten werden zu können. Am besten in ConfigHandler
-        #  auslagern.
         self.close()
     
     def cancel(self):
@@ -641,7 +628,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.drawTool.reset()
     
     def closeEvent(self, QCloseEvent):
-        """Last method that is called bevore main window is closed."""
+        """Last method that is called before main window is closed."""
         # Close additional dialogs
         self.imgBox.close()
         if self.profileWin:

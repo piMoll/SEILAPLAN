@@ -57,7 +57,7 @@ class AdjustmentDialogThresholds(QObject):
 
         self.tbl.clicked.connect(self.onClick)
     
-    def populate(self, header, dataset):
+    def populate(self, header, dataset, valueColumn):
         self.model.setHorizontalHeaderLabels(header)
         self.tbl.hideColumn(4)
         
@@ -67,7 +67,7 @@ class AdjustmentDialogThresholds(QObject):
                     item = QStandardItem(cell)
                     self.model.setItem(i, j, item)
                 if j == 4 and len(cell) != 0:
-                    self.colorBackground(i, 2, self.COLOR_ERROR)
+                    self.colorBackground(i, valueColumn, self.COLOR_ERROR)
                     self.thresholdExeeded = True
         
         # Adjust column widths

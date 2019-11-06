@@ -30,7 +30,7 @@ def main(progress, project):
     :type progress: processingThread.ProcessingTask
     :type project: configHandler.ProjectConfHandler
     """
-    resultStatus = [1]
+    progress.status.append(1)
     if progress.isCanceled():
         return False
     
@@ -70,18 +70,17 @@ def main(progress, project):
 
     if int(poles.poles[-2]['d']) != int(profile.di[-1]):
         # It was not possible to calculate poles along the entire profile
-        resultStatus.append(3)
+        progress.status.append(3)
 
     # Calculate precise cable line data
     cableline, force, seil_possible = preciseCable(params, poles, optSTA[0])
     if not seil_possible:
         # Cable is lifting off the poles
-        resultStatus.append(2)
+        progress.status.append(2)
 
     progress.sig_value.emit(optiLen * 1.005)
     
     return {
-        'resultStatus': str(max(resultStatus)),
         'cableline': cableline,
         'optSTA': optSTA[0],
         'optSTA_arr': optSTA,

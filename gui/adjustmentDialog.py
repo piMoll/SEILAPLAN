@@ -69,6 +69,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         self.cableline = {}
         self.thSize = [5, 5]
         self.thData = {}
+        self.status = None
         self.doReRun = False
 
         # Setup GUI from UI-file
@@ -121,19 +122,35 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         self.poles.poles = dump['poles']
         self.poles.calculateAnchor()
 
-        self.initData(dump)
+        self.initData(dump, 'optiSuccess')
         
-    def initData(self, result):
+    def initData(self, result, status):
         if not result:
             self.close()
         # Save original data from optimization
         self.originalData = result
-        # Dictionary properties: resultStatus, cableline, optSTA, force, optLen, optLen_arr, duration
+        # Dictionary properties: cableline, optSTA, force, optLen, optLen_arr, duration
         self.result = result
+        # Algorithm was skipped, no optimized solution
+        if status in ['jumpedOver', 'savedFile']:
+            try:
+                params = self.confHandler.params.getSimpleParameterDict()
+                cableline, force, \
+                    seil_possible = preciseCable(params, self.poles,
+                                                 self.result['optSTA'])
+                self.result['cableline'] = cableline
+                self.result['force'] = force
+
+            except Exception as e:
+                QMessageBox.critical(self,
+                    'Unerwarteter Fehler bei Berechnung der Seillinie',
+                                     str(e), QMessageBox.Ok)
+                return
+
         self.cableline = self.result['cableline']
         self.profile.updateProfileAnalysis(self.cableline, self.poles.poles)
 
-        self.updateRecalcStatus(self.result['resultStatus'])
+        self.updateRecalcStatus(status)
 
         # Draw profile in diagram
         self.plot.initData(self.profile.di_disp, self.profile.zi_disp,
@@ -246,30 +263,44 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         self.unsavedChanges = True
     
     def updateRecalcStatus(self, status):
+        self.status = status
         ico_path = os.path.join(os.path.dirname(__file__), 'icons')
-        if status == '1':
+        if status == 'optiSuccess':
             self.recalcStatus_txt.setText(
-                'Optimierung erfolgreich abgeschlossen.')
+                'Optimierung erfolgreich abgeschlossen')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_green.png')))
-        elif status == '2':
+        elif status == 'liftsOff':
             self.recalcStatus_txt.setText(
                 'Die Seillinie wurde berechnet, das Tragseil hebt jedoch '
-                'bei mindestens einer Stütze ab.')
+                'bei mindestens einer Stütze ab')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_yellow.png')))
-        elif status == '3':
+        elif status == 'notComplete':
             self.recalcStatus_txt.setText(
                 'Die Seillinie konnte nicht komplett berechnet werden, '
-                'es sind nicht genügend\nStützenstandorte bestimmbar.')
+                'es sind nicht genügend\nStützenstandorte bestimmbar')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_yellow.png')))
-        elif status == 'success':
+        elif status == 'jumpedOver':
+            self.recalcStatus_txt.setText(
+                'Die Optimierung wurde übersprungen, Stützen müssen manuell '
+                'platziert werden')
+            self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
+                ico_path, 'icon_green.png')))
+        elif status == 'savedFile':
+            self.recalcStatus_txt.setText(
+                'Die Optimierung wurde übersprungen, Stützen wurden aus den '
+                'gespeicherten Projekteinstellungen wiederherstellt')
+            self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
+                ico_path, 'icon_green.png')))
+        elif status == 'cableSuccess':
             self.recalcStatus_txt.setText('Seillinie neu berechnet')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_green.png')))
-        elif status == 'error':
-            self.recalcStatus_txt.setText('Es ist ein Fehler aufgetreten')
+        elif status == 'cableError':
+            self.recalcStatus_txt.setText('Bei der Berechnung der Seillinie '
+                'ist ein Fehler aufgetreten')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_yellow.png')))
         elif status == 'saveDone':
@@ -287,7 +318,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
             cableline, force, seil_possible = preciseCable(params, self.poles,
                                                            self.result['optSTA'])
         except Exception as e:
-            self.updateRecalcStatus('error')
+            self.updateRecalcStatus('cableError')
             self.isRecalculating = False
             self.configurationHasChanged = False
             QMessageBox.critical(self, 'Unerwarteter Fehler bei Neuberechnung '
@@ -316,9 +347,9 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
 
         # cable line lifts off of pole
         if not seil_possible:
-            self.updateRecalcStatus('2')
+            self.updateRecalcStatus('liftsOff')
         else:
-            self.updateRecalcStatus('success')
+            self.updateRecalcStatus('cableSuccess')
         self.configurationHasChanged = False
         self.isRecalculating = False
         self.unsavedChanges = True
@@ -377,15 +408,23 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
                 '0 ° - 30 °',
                 '-'
             ]
+            # Where to put the current threshold values
+            valColumn = 2
+            emptyColumn = 3
+            if self.status in ['jumpedOver', 'savedFile']:
+                # No optimization was run, so no optimal solution
+                valColumn = 3
+                emptyColumn = 2
+            
             for i in range(self.thSize[0]):
                 val, location = self.checkThresholdAndLocation(i, resultData[i])
                 self.thData['rows'][i][0] = label[i]
                 self.thData['rows'][i][1] = thresholdStr[i]
-                self.thData['rows'][i][2] = val
-                self.thData['rows'][i][3] = ''
+                self.thData['rows'][i][valColumn] = val
+                self.thData['rows'][i][emptyColumn] = ''
                 self.thData['rows'][i][4] = location
             
-            self.thresholdLayout.populate(header, self.thData['rows'])
+            self.thresholdLayout.populate(header, self.thData['rows'], valColumn)
         
         else:
             for i in range(len(self.thData['rows'])):
