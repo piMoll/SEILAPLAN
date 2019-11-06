@@ -163,6 +163,7 @@ class AdjustmentPlot(FigureCanvas):
     def showArrow(self, x, y):
         if self.arrowMarker:
             self.arrowMarker.remove()
+        y -= self.labelBuffer * 3
         self.arrowMarker = self.axes.scatter(x, y, marker='^', zorder=100,
                                              c='#e06767', s=100)
         self.draw()

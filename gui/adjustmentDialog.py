@@ -492,7 +492,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         arrIdx = []
         for l in location:
             arrIdx.append(np.argwhere(self.profile.di_disp == l)[0][0])
-        z = self.profile.zi_disp[arrIdx] - 25
+        z = self.profile.zi_disp[arrIdx]
         self.plot.showArrow(location, z)
     
     def onClose(self):
