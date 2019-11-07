@@ -246,7 +246,7 @@ class SeilaplanPlugin(object):
                 del self.progressDialog
             
             elif self.dlg.goToAdjustment:
-                result, status = conf.loadResultFromProjectfile()
+                result, status = conf.loadCableDataFromFile()
             
             if result:
                 # Show adjustment window to modify calculated cable line
