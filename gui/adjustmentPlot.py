@@ -151,7 +151,7 @@ class AdjustmentPlot(FigureCanvas):
         # self.setPlotLimits()
         # Add labels
         if not printPdf:
-            self.placeLabels(pole_d, pole_ztop)
+            self.placeLabels(pole_dtop, pole_ztop)
         # Legend
         self.axes.legend(loc='lower center', fontsize=11,
                          bbox_to_anchor=(0.5, 0), ncol=legendCol)

@@ -267,44 +267,44 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         ico_path = os.path.join(os.path.dirname(__file__), 'icons')
         if status == 'optiSuccess':
             self.recalcStatus_txt.setText(
-                'Optimierung erfolgreich abgeschlossen')
+                'Optimierung erfolgreich abgeschlossen.')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_green.png')))
         elif status == 'liftsOff':
             self.recalcStatus_txt.setText(
                 'Die Seillinie wurde berechnet, das Tragseil hebt jedoch '
-                'bei mindestens einer Stütze ab')
+                'bei mindestens einer Stütze ab.')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_yellow.png')))
         elif status == 'notComplete':
             self.recalcStatus_txt.setText(
                 'Die Seillinie konnte nicht komplett berechnet werden, '
-                'es sind nicht genügend\nStützenstandorte bestimmbar')
+                'es sind nicht genügend\nStützenstandorte bestimmbar.')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_yellow.png')))
         elif status == 'jumpedOver':
             self.recalcStatus_txt.setText(
-                'Die Optimierung wurde übersprungen, Stützen müssen manuell '
-                'platziert werden')
+                'Optimierung wurde übersprungen, Stützen müssen manuell '
+                'platziert werden.')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_green.png')))
         elif status == 'savedFile':
             self.recalcStatus_txt.setText(
-                'Die Optimierung wurde übersprungen, Stützen wurden aus den '
-                'gespeicherten Projekteinstellungen wiederherstellt')
+                'Optimierung wurde übersprungen, Stützen wurden aus '
+                'Projektdatei geladen.')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_green.png')))
         elif status == 'cableSuccess':
-            self.recalcStatus_txt.setText('Seillinie neu berechnet')
+            self.recalcStatus_txt.setText('Seillinie neu berechnet.')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_green.png')))
         elif status == 'cableError':
             self.recalcStatus_txt.setText('Bei der Berechnung der Seillinie '
-                'ist ein Fehler aufgetreten')
+                'ist ein Fehler aufgetreten.')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_yellow.png')))
         elif status == 'saveDone':
-            self.recalcStatus_txt.setText('Ergebnisse gespeichert')
+            self.recalcStatus_txt.setText('Ergebnisse gespeichert.')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_save.png')))
     
