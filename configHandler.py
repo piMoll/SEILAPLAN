@@ -679,6 +679,8 @@ class ConfigHandler(object):
         self.params = ParameterConfHandler()
         self.project = ProjectConfHandler(self.params)
         
+        self.polesFromTxt = []
+        
         # Load parameter definitions and predefined parameter sets
         self.loadUserSettings()
         self.params.initParameters()
@@ -689,31 +691,71 @@ class ConfigHandler(object):
         self.params.setDialog(dialog)
     
     def loadFromFile(self, filename):
+        
+        def readOutProjectData(lines, lineNr):
+            for line in lines[lineNr:]:
+                lineNr += 1
+                if line == '':
+                    return lineNr
+                property_name = line[:17].rstrip()
+                data = line[17:]
+                self.project.setConfigFromFile(property_name, data)
+        
+        def readOutParamData(lines, lineNr):
+            for line in lines[lineNr:]:
+                lineNr += 1
+                part = re.split(r'\s{2,}', line)
+                if len(part) <= 1:
+                    continue
+                if part[1] == '-':
+                    part[1] = ''
+                key = part[0]
+                if key == 'Parameterset:':
+                    self.params.currentSetName = part[1]
+                    return lineNr
+                self.params.batchSetParameter(key, part[1])
+        
+        def readOutPoleData(lines, lineNr):
+            for line in lines[lineNr:]:
+                lineNr += 1
+                if line == '':
+                    return lineNr
+                parts = line.split('\t')
+                self.polesFromTxt.append({
+                    'idx': int(parts[0]),
+                    'dist': int(parts[1]),
+                    'height': float(parts[2]),
+                    'angle': float(parts[3]),
+                    'manual': True if int(parts[4]) == 1 else False,
+                    'pType': parts[5],
+                    'name': parts[6]
+                })
+
+        lineCount = 0
         if os.path.exists(filename):
             with io.open(filename, encoding='utf-8') as f:
-                lines = f.read().splitlines()
+                allLines = f.read().splitlines()
                 
-                # Read out project data
-                for hLine in lines[:6]:
-                    # Dictionary keys cant be in unicode
-                    property_name = hLine[:17].rstrip()
-                    data = hLine[17:]
-                    self.project.setConfigFromFile(property_name, data)
-                
-                # Read out parameter data
-                for line in lines[11:]:
-                    if line == '':
-                        break
-                    line = re.split(r'\s{2,}', line)
-                    if len(line) <= 1:
-                        continue
-                    if line[1] == '-':
-                        line[1] = ''
-                    key = line[0]
-                    if key == 'Parameterset:':
-                        self.params.currentSetName = line[1]
-                        continue
-                    self.params.batchSetParameter(key, line[1])
+                try:
+                    for currLine in allLines:
+                        if currLine.startswith('Projektname'):
+                            lineCount = readOutProjectData(allLines, lineCount)
+                            break
+                        lineCount += 1
+                    for currLine in allLines[lineCount:]:
+                        if currLine.startswith('Parameter:'):
+                            lineCount = readOutParamData(allLines, lineCount+2)
+                            break
+                        lineCount += 1
+                    for currLine in allLines[lineCount:]:
+                        if currLine.startswith('Stützendaten:'):
+                            readOutPoleData(allLines, lineCount+2)
+                            break
+                        lineCount += 1
+                except Exception as e:
+                    print(e)
+                    return False
+
             self.params.checkValidState()
         else:
             return False
@@ -830,13 +872,20 @@ class ConfigHandler(object):
         self.params.prepareForCalculation()
         self.project.prepareForCalculation()
     
-    def loadResultFromProjectfile(self):
+    def loadCableDataFromFile(self):
         self.prepareForCalculation()
         status = 'jumpedOver'
         
-        # TODO: Manuelle Stützen von letzter Bearbeitung
-        # if True:
-        #     status = 'savedFile'
+        # If the project file already contains pole data from a earlier run,
+        # load this data into Poles()
+        if self.polesFromTxt:
+            status = 'savedFile'
+            self.project.poles.poles = []
+            for p in self.polesFromTxt:
+                self.project.poles.add(p['idx'], p['dist'], p['height'],
+                                       p['angle'], p['manual'], p['pType'])
+                self.project.poles.update(p['idx'], 'name', p['name'])
+            self.project.poles.calculateAnchor()
         
         zulSK = self.params.params['zul_SK']['value']
         minSK = self.params.params['min_SK']['value']
