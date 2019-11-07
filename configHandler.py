@@ -326,7 +326,26 @@ class ProjectConfHandler(AbstractConfHandler):
             line = '{0: <17}{1}'.format(title, info)
             formattedProjectInfo += line + os.linesep
         
-        return formattedProjectInfo
+        # Pole data
+        formattedPoleData = ''
+        if self.poles:
+            formattedPoleData = [
+                4 * os.linesep,
+                'Stützendaten:' + os.linesep,
+                '\t'.join(['Nr.', 'Dist.', 'Höhe', 'Neigung', 'man.', 'Typ',
+                           'Name']) + os.linesep,
+                '-'*50 + os.linesep
+            ]
+            idx = 0
+            for p in self.poles.poles:
+                poleData = [idx, p['d'], p['h'], p['angle'],
+                            1 if p['manually'] else 0,
+                           p['poleType'], p['name']]
+                poleStr = [str(m) for m in poleData]
+                formattedPoleData.append('\t'.join(poleStr) + os.linesep)
+                idx += 1
+        
+        return formattedProjectInfo, formattedPoleData
     
     def checkValidState(self):
         msg = ''
@@ -581,6 +600,7 @@ class ParameterConfHandler(AbstractConfHandler):
             line = '{0: <17}{1: <12}{2: <45}{3: <9}{4}'.format(property_name,
                                     value, p['label'], p['unit'], os.linesep)
             txt.append(line)
+        txt.append(os.linesep)
         txt.append('{0: <17}{1: <12}'.format('Parameterset:', self.currentSetName))
         return txt
     
@@ -721,6 +741,8 @@ class ConfigHandler(object):
                 if line == '':
                     return lineNr
                 parts = line.split('\t')
+                if len(parts) != 7:
+                    continue
                 self.polesFromTxt.append({
                     'idx': int(parts[0]),
                     'dist': int(parts[1]),
@@ -744,12 +766,12 @@ class ConfigHandler(object):
                         lineCount += 1
                     for currLine in allLines[lineCount:]:
                         if currLine.startswith('Parameter:'):
-                            lineCount = readOutParamData(allLines, lineCount+2)
+                            lineCount = readOutParamData(allLines, lineCount+3)
                             break
                         lineCount += 1
                     for currLine in allLines[lineCount:]:
                         if currLine.startswith('Stützendaten:'):
-                            readOutPoleData(allLines, lineCount+2)
+                            readOutPoleData(allLines, lineCount+3)
                             break
                         lineCount += 1
                 except Exception as e:
@@ -761,7 +783,7 @@ class ConfigHandler(object):
             return False
     
     def saveToFile(self, filename):
-        projectStr = self.project.getConfigAsStr()
+        projectStr, poleStr = self.project.getConfigAsStr()
         paramsStr = self.params.getParametersAsStr()
         
         if os.path.exists(filename):
@@ -772,6 +794,8 @@ class ConfigHandler(object):
             f.writelines(os.linesep)
             # Write parameter values
             f.writelines(paramsStr)
+            # Write pole info
+            f.writelines(poleStr)
     
     def loadUserSettings(self):
         """Gets the output options and earlier used output paths and returns
