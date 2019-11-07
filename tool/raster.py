@@ -1,7 +1,7 @@
 import os
 
 import numpy as np
-from osgeo import gdal
+from osgeo import gdal, osr
 from qgis.core import QgsRasterLayer
 from scipy import interpolate as ipol
 
@@ -40,6 +40,10 @@ class Raster(object):
         elif path and os.path.exists(path):
             self.path = path
             ds = gdal.Open(path)
+            prj = ds.GetProjection()
+            srs = osr.SpatialReference(wkt=prj)
+            self.spatialRef = srs.GetAttrValue("AUTHORITY", 0) + ':' \
+                              + srs.GetAttrValue("AUTHORITY", 1)
             self.cols = ds.RasterXSize
             self.rows = ds.RasterYSize
             upx, xres, xskew, upy, yskew, yres = ds.GetGeoTransform()
@@ -90,7 +94,7 @@ class Raster(object):
         subraster = gdal.Translate('/vsimem/in_memory_output.tif', ds,
                                    projWin=[pointXmin, pointYmax, pointXmax,
                                             pointYmin])
-        z = subraster.ReadAsArray() # TODO: z ist momentan in m, bisher dm
+        z = subraster.ReadAsArray()  # TODO: z ist momentan in m, bisher dm
     
         if np.ndim(z) > 2:
             # Assumption: Height information is in first raster band

@@ -364,6 +364,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         """Put list of raster layers into drop down menu of self.rasterField.
         If raster name contains some kind of "DHM", select it.
         """
+        self.rasterField.blockSignals(True)
         selectedRaster = self.rasterField.currentText()
         for i in reversed(list(range(self.rasterField.count()))):
             self.rasterField.removeItem(i)
@@ -371,10 +372,12 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
             self.rasterField.addItem(rLyr['name'])
         if selectedRaster != '':
             self.rasterField.setCurrentText(selectedRaster)
+        self.rasterField.blockSignals(False)
     
     def searchForDhm(self, rasterlist):
         """ Search for a dhm to set as initial raster when the plugin is
         opened."""
+        self.rasterField.blockSignals(True)
         dhmName = ''
         searchStr = ['dhm', 'Dhm', 'DHM', 'dtm', 'DTM', 'Dtm']
         for rLyr in rasterlist:
@@ -382,6 +385,10 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
                 dhmName = rLyr['name']
                 self.rasterField.setCurrentText(dhmName)
                 break
+        if not dhmName and len(rasterlist) > 0:
+            dhmName = rasterlist[0]['name']
+            self.rasterField.setCurrentText(dhmName)
+        self.rasterField.blockSignals(False)
         return dhmName
     
     def onChangeRaster(self, rastername):
@@ -400,6 +407,16 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         for rlyr in rasterlist:
             if rlyr['name'] == rastername:
                 self.projectHandler.setDhm(rlyr['lyr'])
+                # Check spatial reference of newly added raster
+                mapCrs = self.canvas.mapSettings().destinationCrs().authid()
+                lyrCrs = self.projectHandler.dhm.spatialRef
+                if mapCrs != lyrCrs:
+                    txt = (f'Das Raster in der Projektdatei liegt in KBS '
+                           f'{lyrCrs} vor, das aktuelle QGIS-Projekt jedoch '
+                           f'in {mapCrs}. Bitte passen Sie das QGIS-KBS an.')
+                    title = "Falsches Koordinatenbezugssystem (KBS)"
+                    QMessageBox.information(self, title, txt)
+
                 rasterFound = True
                 break
         if not rasterFound:
@@ -419,8 +436,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         for rlyr in availRaster:
             lyrPath = rlyr['lyr'].dataProvider().dataSourceUri()
             if lyrPath == path:
+                # Sets the dhm name in the drop down and triggers self.setRaster()
                 self.rasterField.setCurrentText(rlyr['name'])
-                self.setRaster(rlyr['name'])
                 rasterFound = True
                 break
         if not rasterFound:
@@ -429,8 +446,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
                 rlayer = QgsRasterLayer(path, baseName)
                 QgsProject.instance().addMapLayer(rlayer)
                 self.updateRasterList()
+                # Sets the dhm name in the drop down and triggers self.setRaster()
                 self.rasterField.setCurrentText(baseName)
-                self.setRaster(baseName)
             else:
                 txt = "Raster mit dem Pfad {} ist " \
                       "nicht vorhanden".format(path)

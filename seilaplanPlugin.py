@@ -38,7 +38,8 @@ from .gui.adjustmentDialog import AdjustmentDialog
 
 # Add shipped libraries to python path
 libPath = os.path.join(os.path.dirname(__file__), 'lib')
-sys.path.append(libPath)
+if libPath not in sys.path:
+    sys.path.append(libPath)
 
 
 class SeilaplanPlugin(object):
