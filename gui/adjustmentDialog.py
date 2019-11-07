@@ -561,6 +561,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
                 self.drawTool.reset()
             elif reply == QMessageBox.Cancel:
                 event.ignore()
-            else:
+            elif reply == QMessageBox.No:
                 self.drawTool.reset()
-                event.accept()
+        else:
+            self.drawTool.reset()
