@@ -291,7 +291,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         # Generate project name
         self.fieldProjName.setText(self.projectHandler.getProjectName())
         
-        self.searchForRaster(self.projectHandler.getDhmAsStr())
+        rasterLyr = self.searchForRaster(self.projectHandler.getDhmAsStr())
+        # Update raster object with qgs raster layer
+        self.projectHandler.setDhm(rasterLyr)
         # Update start and end point
         self.checkPoints()
         
@@ -411,7 +413,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
                 # Check spatial reference of newly added raster
                 mapCrs = self.canvas.mapSettings().destinationCrs().authid()
                 lyrCrs = self.projectHandler.dhm.spatialRef
-                if mapCrs != lyrCrs:
+                if lyrCrs and mapCrs != lyrCrs:
                     txt = (f'Das Raster in der Projektdatei liegt in KBS '
                            f'{lyrCrs} vor, das aktuelle QGIS-Projekt jedoch '
                            f'in {mapCrs}. Bitte passen Sie das QGIS-KBS an.')
@@ -432,28 +434,28 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         """ Checks if a raster from a saved project is present in the table
         of content or exists at the given location (path).
         """
-        rasterFound = False
         availRaster = self.getAvailableRaster()
+        rasterLyr = None
         for rlyr in availRaster:
             lyrPath = rlyr['lyr'].dataProvider().dataSourceUri()
             if lyrPath == path:
                 # Sets the dhm name in the drop down and triggers self.setRaster()
                 self.rasterField.setCurrentText(rlyr['name'])
-                rasterFound = True
+                rasterLyr = rlyr['lyr']
                 break
-        if not rasterFound:
+        if not rasterLyr:
             if os.path.exists(path):
                 baseName = QFileInfo(path).baseName()
-                rlayer = QgsRasterLayer(path, baseName)
-                QgsProject.instance().addMapLayer(rlayer)
+                rasterLyr = QgsRasterLayer(path, baseName)
+                QgsProject.instance().addMapLayer(rasterLyr)
                 self.updateRasterList()
                 # Sets the dhm name in the drop down and triggers self.setRaster()
                 self.rasterField.setCurrentText(baseName)
             else:
-                txt = "Raster mit dem Pfad {} ist " \
-                      "nicht vorhanden".format(path)
+                txt = f"Raster {path} nicht vorhanden"
                 title = "Fehler beim Laden des Rasters"
                 QMessageBox.information(self, title, txt)
+        return rasterLyr
     
     def setProjName(self, projname):
         self.projectHandler.setProjectName(projname)
@@ -574,8 +576,12 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
                                                   self.confHandler.getCurrentPath(),
                                                   fFilter)
         if filename:
-            self.confHandler.loadFromFile(filename)
-            self.setupContent()
+            success = self.confHandler.loadFromFile(filename)
+            if success:
+                self.setupContent()
+            else:
+                QMessageBox.critical(self, 'Fehler beim Laden',
+                                'Projektdatei konnte nicht geladen werden.')
         else:
             return False
     

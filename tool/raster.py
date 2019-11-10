@@ -41,9 +41,10 @@ class Raster(object):
             self.path = path
             ds = gdal.Open(path)
             prj = ds.GetProjection()
-            srs = osr.SpatialReference(wkt=prj)
-            self.spatialRef = srs.GetAttrValue("AUTHORITY", 0) + ':' \
-                              + srs.GetAttrValue("AUTHORITY", 1)
+            if prj:
+                srs = osr.SpatialReference(wkt=prj)
+                self.spatialRef = srs.GetAttrValue("AUTHORITY", 0) + ':' \
+                                  + srs.GetAttrValue("AUTHORITY", 1)
             self.cols = ds.RasterXSize
             self.rows = ds.RasterYSize
             upx, xres, xskew, upy, yskew, yres = ds.GetGeoTransform()
