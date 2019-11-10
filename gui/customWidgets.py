@@ -51,7 +51,7 @@ class CustomPoleWidget(QObject):
         self.pole_dist_step = Poles.POLE_DIST_STEP
         self.pole_height_step = Poles.POLE_HEIGHT_STEP
         self.distRange = []
-        PoleRow.poleCount = 0
+        self.poleCount = 0
     
     def setInitialGui(self, poleData, distRange):
         """
@@ -135,7 +135,7 @@ class CustomPoleWidget(QObject):
         # Update distance range of neighbours
         if idx > 0:
             self.poleRows[idx-1].updateUpperDistRange(distUpper - self.pole_dist_step)
-        if idx < len(self.poleRows)-1:
+        if idx < self.poleCount - 1:
             self.poleRows[idx+1].updateLowerDistRange(distLower + self.pole_dist_step)
         # Remove pole row layout
         self.poleRows[idx].remove()
@@ -154,7 +154,7 @@ class CustomPoleWidget(QObject):
             # Left neighbour
             self.poleRows[idx-1].updateUpperDistRange(
                 dist - self.pole_dist_step)
-        if idx < PoleRow.poleCount - 1:
+        if idx < self.poleCount - 1:
             # Right neighbour
             self.poleRows[idx+1].updateLowerDistRange(
                 dist + self.pole_dist_step)
@@ -180,7 +180,6 @@ class PoleRow(object):
     """
     ICON_ADD_ROW = ":/plugins/SeilaplanPlugin/gui/icons/icon_addrow.png"
     ICON_DEL_ROW = ":/plugins/SeilaplanPlugin/gui/icons/icon_bin.png"
-    poleCount = 0
     
     def __init__(self, parent, widget, layout, idx, name, rowType, dist, distRange,
                  height=False, angle=False, delBtn=False, addBtn=False):
@@ -189,7 +188,7 @@ class PoleRow(object):
         self.layout = layout
         self.index = idx
         self.rowType = rowType
-        PoleRow.poleCount += 1
+        self.parent.poleCount += 1
 
         self.row = QHBoxLayout()
         self.row.setAlignment(Qt.AlignLeft)
@@ -213,7 +212,7 @@ class PoleRow(object):
         self.addBtnDel(delBtn)
 
     def addRowToLayout(self):
-        if self.index == PoleRow.poleCount:
+        if self.index == self.parent.poleCount:
             # Add layout at the end
             self.layout.addLayout(self.row)
         else:
@@ -271,9 +270,10 @@ class PoleRow(object):
         self.fieldHeight = QDoubleSpinBoxWithFocus(self.widget)
         self.fieldHeight.setFocusPolicy(Qt.ClickFocus)
         self.fieldHeight.setDecimals(1)
+        self.fieldHeight.setSingleStep(self.parent.pole_height_step)
         if self.rowType == 'fixed':
             self.fieldHeight.setDecimals(0)
-        self.fieldHeight.setSingleStep(self.parent.pole_height_step)
+            self.fieldHeight.setSingleStep(1)
         self.fieldHeight.setSuffix(" m")
         self.fieldHeight.setFixedWidth(85)
         self.fieldHeight.setRange(0.0, 50.0)
@@ -360,7 +360,7 @@ class PoleRow(object):
                 self.row.removeItem(item)
             
         self.layout.removeItem(self.row)
-        PoleRow.poleCount -= 1
+        self.parent.poleCount -= 1
 
 
 class QLineEditWithFocus(QLineEdit):

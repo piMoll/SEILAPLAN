@@ -162,7 +162,6 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.rasterField.currentTextChanged.connect(self.onChangeRaster)
         self.buttonRefreshRa.clicked.connect(self.updateRasterList)
         self.buttonInfo.clicked.connect(self.onInfo)
-        # self.buttonOptionen.clicked.connect(self.onShowOutputOpt)
         
         # Info buttons
         self.infoBodenabstand.clicked.connect(self.onShowInfoImg)
@@ -288,12 +287,16 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
     
     def setupContent(self):
         self.startAlgorithm = False
+        self.goToAdjustment = False
         # Generate project name
         self.fieldProjName.setText(self.projectHandler.getProjectName())
         
         self.searchForRaster(self.projectHandler.getDhmAsStr())
         # Update start and end point
         self.checkPoints()
+        
+        # Tell profile window to update its content on next show
+        self.updateProfileWinContent()
         
         # Set parameter set
         if self.paramHandler.currentSetName:
@@ -302,8 +305,6 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
             self.fieldParamSet.setCurrentIndex(-1)
         # Fill in parameter values
         self.fillInValues()
-        
-        # TODO: Set fixed poles and sections without poles in profile
     
     def enableToolTips(self):
         for field_name, field in list(self.parameterFields.items()):
@@ -503,16 +504,14 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
     
     def updateLineByCoordFields(self):
         self.drawTool.reset()
+        self.profileWin.doReset = True
         if self.projectHandler.profileIsValid():
             self.drawTool.updateLine(list(self.linePoints.values()))
-            self.profileWin.doReset = True
     
     def updateLineByMapDraw(self, newpoint, pointType):
         [x, y], coordState, hasChanged = self.projectHandler.setPoint(
             pointType, [newpoint.x(), newpoint.y()])
         self.changePoint(pointType, [x, y], coordState)
-        if self.projectHandler.profileIsValid():
-            self.profileWin.doReset = True
     
     def changePointSym(self, state, point):
         if point == 'A':
@@ -536,11 +535,6 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
                 self.symE.setText(redIcon)
                 self.symTxtE.setText(redTxt)
     
-    def updateFixedPoles(self, poleData):
-        pass
-        # TODO
-        self.projectHandler.setFixedPoles(poleData)
-    
     def onClickOsmButton(self):
         """Add a OpenStreetMap layer."""
         loadOsmLayer(self.homePath)
@@ -561,13 +555,16 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         # Reset profile window
         self.profileWin.doReset = True
     
+    def updateProfileWinContent(self):
+        profile = PreviewProfile(self.projectHandler)
+        profile.create()
+        self.profileWin.setProfile(profile)
+        self.profileWin.setPoleData(self.projectHandler.fixedPoles['poles'],
+                                    self.projectHandler.noPoleSection)
+    
     def onShowProfile(self):
         if self.profileWin.doReset:
-            profile = PreviewProfile(self.projectHandler)
-            profile.create()
-            self.profileWin.setProfile(profile)
-            self.profileWin.setFixedPoles()
-            # self.profileWin.setNoStueSection()    # TODO
+            self.updateProfileWinContent()
         self.profileWin.exec()
     
     def onLoadProjects(self):

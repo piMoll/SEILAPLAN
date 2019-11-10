@@ -66,7 +66,7 @@ def main(progress, project):
     
     # Save optimized pole locations
     stuetzIdx = np.int32(diIdx[HMidx])
-    poles.addPolesFromOptimization(stuetzIdx, HM)
+    poles.addPolesFromOptimization(stuetzIdx, HM, project.fixedPoles)
 
     if int(poles.poles[-2]['d']) != int(profile.di[-1]):
         # It was not possible to calculate poles along the entire profile

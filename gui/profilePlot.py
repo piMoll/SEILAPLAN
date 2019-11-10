@@ -45,7 +45,6 @@ class ProfilePlot(FigureCanvas):
         
         self.linePoints = []
         self.line_exists = False
-        self.noStue = []
         self.profileObj = None
         
         # Mouse position
@@ -219,28 +218,25 @@ class ProfilePlot(FigureCanvas):
 
         if len(self.linePoints) == 0:
             # Initialize marker lines for sections without supports
-            self.drawSectionPoint(x, y)
-            self.linePoints.append(x)
+            self.drawSection(x, y)
             self.line_exists = True
             self.win.activateMapLine(x)
         elif len(self.linePoints) == 1:
             # Set line
-            self.linePoints.append(x)
-            self.drawSectionPoint(x, y)
-            self.drawSectionLine()
+            self.drawSection(x, y)
             self.win.finishLine(x)
-            self.noStue.append(self.linePoints)
             self.deactivateCrosshairSection()
         self.draw()
     
-    def drawSectionPoint(self, x, y):
-        self.vLine = self.axes.vlines(x, y - 4, y + 4, lw=2, color=SECTION_COLOR)
-    
-    def drawSectionLine(self):
-        idxA = np.argmax(self.x_data >= self.linePoints[0])
-        idxE = np.argmax(self.x_data > self.linePoints[1])
-        self.axes.plot(self.x_data[idxA:idxE], self.y_data[idxA:idxE],
-                       linewidth=2, color=SECTION_COLOR)
+    def drawSection(self, x, y):
+        self.linePoints.append([x, y])
+        self.axes.vlines(x, y - 4, y + 4, lw=2, color=SECTION_COLOR)
+        if len(self.linePoints) == 2:
+            idxA = np.argmax(self.x_data >= self.linePoints[0][0])
+            idxE = np.argmax(self.x_data > self.linePoints[1][0])
+            self.axes.plot(self.x_data[idxA:idxE], self.y_data[idxA:idxE],
+                           linewidth=2, color=SECTION_COLOR)
+            self.linePoints = []
 
     def __setupAxes(self):
         self.axes.set_xlabel("Horizontaldistanz [m]", fontsize=11)

@@ -49,6 +49,8 @@ class ProfileDialog(QDialog):
         
         # Array with properties fixed poles
         self.poleData = []
+        # Array with sections without poles
+        self.noPoleSection = []
         # Profile data
         self.xdata = None
         self.zdata = None
@@ -69,7 +71,7 @@ class ProfileDialog(QDialog):
         self.outerLayout = QVBoxLayout()
 
         # GUI fields
-        stueTitle = QLabel("<b>Stützenstandorte anpassen</b>")
+        stueTitle = QLabel("<b>Stützenoptimierung einschränken</b>")
         hbox = QHBoxLayout()
         line1 = QFrame()
         line1.setFrameShape(QFrame.HLine)
@@ -77,7 +79,12 @@ class ProfileDialog(QDialog):
 
         # Create labels and buttons
         self.fixStueAdd = QPushButton("Fixe Stütze definieren")
-        self.noStueAdd = QPushButton("Abschnitte ohne Stützen definieren")
+        self.noStueAdd = QPushButton("Abschnitt ohne Stützen definieren")
+        self.fixStueAdd.setToolTip('Fixe Stützen werden vom '
+            'Optimierungsalgorithmus als bereits vorhandene Stützen '
+            'berücksichtigt.')
+        self.noStueAdd.setToolTip('Abschnitte, in denen während der '
+            'Optimierung keine Stützen platziert werden.')
         spacerItem1 = QSpacerItem(40, 20, QSizePolicy.Expanding,
                                         QSizePolicy.Minimum)
         hbox.addWidget(self.fixStueAdd)
@@ -130,23 +137,24 @@ class ProfileDialog(QDialog):
             self.sc.deletePoint(self.poleData[idx]['plotPoint'])
             self.drawTool.removeMarker()
         self.poleData = []
+        self.noPoleSection = []
         self.profileMax = None
 
-    def setFixedPoles(self):
-        """Fills gui, plot and map with data of fixed poles that where saved
-        to a project file."""
-        predefinedPoles = self.projectHandler.getFixedPoles()
+    def setPoleData(self, poles, sections):
+        """Fills gui, plot and map with data of fixed poles and pole
+        sections."""
         self.poleLayout.setInitialGui(self.poleData,
                                       [self.profileMin, self.profileMax])
-        for i in range(len(predefinedPoles[0])):
-            d = predefinedPoles[0][i]
-            h = predefinedPoles[1][i]
-            z = self.getZValue(d)
-            self.addPole(d, z, h)
-            
-    def setNoPoleSections(self, sections):
-        self.sc.noStue = sections
-        # TODO: in Plot zeichnen
+        for pole in poles:
+            self.addPole(pole['d'], pole['z'], pole['h'], name=pole['name'])
+        for section in sections:
+            # Draw line onto map
+            self.activateMapLine(section[0])
+            self.finishLine(section[1])
+            # Plot section in plot
+            for x in section:
+                z = self.getZValue(x)
+                self.sc.drawSection(x, z)
 
     def buildPoleHeader(self):
         headerRow = QHBoxLayout()
@@ -168,7 +176,7 @@ class ProfileDialog(QDialog):
         headerRow.addItem(spacerItemE)
         self.outerLayout.addLayout(headerRow)
     
-    def addPole(self, d, z, h=None, angle=False):
+    def addPole(self, d, z, h=None, name='', angle=False):
         """Called when user clicks onto plot window to create fixed pole.
         Function creates a new row in gui with properties of pole, creates a
         point in the plot and a marker on the map."""
@@ -179,13 +187,15 @@ class ProfileDialog(QDialog):
                 break
         if not z:
             z = self.getZValue(d)
+        if not name:
+            name = 'fixe Stütze'
         # Draw point on plot
         drawnPoint = self.sc.createPoint(d, z)
         # Draw marker in map
         self.createMapMarker(d, idx+1)
         # Save new fixed pole in list
         self.poleData.insert(idx, {
-            'name': 'fixe Stütze',
+            'name': name,
             'poleType': 'fixed',
             'd': d,
             'z': z,
@@ -201,7 +211,7 @@ class ProfileDialog(QDialog):
         if idx < len(self.poleData)-1:
             upperRange = self.poleData[idx + 1]['d']
             
-        self.poleLayout.addRow(idx, 'fixe Stütze', d, lowerRange, upperRange,
+        self.poleLayout.addRow(idx, name, d, lowerRange, upperRange,
                                h, angle, poleType='fixed', delBtn=True,
                                addBtn=False)
         
@@ -225,7 +235,7 @@ class ProfileDialog(QDialog):
             self.poleData[idx][property_name] = round(val, 0)
         else:
             self.poleData[idx][property_name] = val
-        self.poleLayout.changeRow(idx, property_name, round(val, 0))
+        self.poleLayout.changeRow(idx, property_name, val)
     
     def deletePole(self, idx):
         """Called when user clicks on delete button on pole row. Function
@@ -259,6 +269,7 @@ class ProfileDialog(QDialog):
         self.drawTool.updateCursor(point, color)
 
     def activateMapLine(self, horiDist):
+        self.noPoleSection.append([horiDist, None])
         initPoint = self.projectHandler.transform2MapCoords(horiDist)
         self.drawTool.activateSectionLine(initPoint)
 
@@ -267,20 +278,26 @@ class ProfileDialog(QDialog):
         self.drawTool.updateSectionLine(point)
 
     def finishLine(self, horiDist):
+        self.noPoleSection[-1][1] = horiDist
         endPoint = self.projectHandler.transform2MapCoords(horiDist)
         self.drawTool.updateSectionLine(endPoint)
         self.drawTool.deactivateCursor()
-
-    def Apply(self):
-        self.projectHandler.setFixedPoles(self.poleData)    # TODO
-        self.projectHandler.setNoPoleSection(self.sc.noStue)
+    
+    def stopActiveEdits(self):
         self.deactivateMapCursor()
         self.drawTool.clearUnfinishedLines()
+        # Remove last section if its not finished
+        if self.noPoleSection and not self.noPoleSection[-1][1]:
+            self.noPoleSection.pop(-1)
+
+    def Apply(self):
+        self.stopActiveEdits()
+        self.projectHandler.setFixedPoles(self.poleData)
+        self.projectHandler.setNoPoleSection(self.noPoleSection)
         self.close()
 
     def Reject(self):
-        self.deactivateMapCursor()
-        self.drawTool.clearUnfinishedLines()
+        self.stopActiveEdits()
         self.reset()
         self.close()
 

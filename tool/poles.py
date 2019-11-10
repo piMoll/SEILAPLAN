@@ -89,7 +89,7 @@ class Poles(object):
             ztop = z + h * cos(rad_angle)
         return x, y, z, dtop, ztop
 
-    def addPolesFromOptimization(self, pole_dist, pole_h):
+    def addPolesFromOptimization(self, pole_dist, pole_h, fixedPoles):
         # Remove all poles except start anchor
         anchor_start = self.poles[0]
         anchor_end = self.poles[-1]
@@ -97,7 +97,13 @@ class Poles(object):
         
         # Add calculated poles
         for i in range(len(pole_dist)):
-            self.add(i + 1, pole_dist[i], pole_h[i])
+            idx = i+1
+            self.add(idx, pole_dist[i], pole_h[i])
+            # Rename fixed poles
+            for fPole in fixedPoles['poles']:
+                if pole_dist[i] == fPole['d']:
+                    self.update(idx, 'name', fPole['name'])
+                    break
         # Add anchor at end point
         self.poles.append(anchor_end)
 

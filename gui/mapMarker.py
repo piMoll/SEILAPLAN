@@ -131,7 +131,6 @@ class MapMarkerTool(QgsMapTool):
     
     def activateSectionLine(self, initPoint):
         qgsPoint = self.convertToQgsPoint(initPoint)
-        self.linePointsS[1] = qgsPoint
         rubberbandS = QgsRubberBand(self.canvas)
         rubberbandS.setWidth(3)
         rubberbandS.setColor(QColor(SECTION_COLOR))

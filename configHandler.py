@@ -109,9 +109,9 @@ class ProjectConfHandler(AbstractConfHandler):
         self.profileLength = None
         self.azimut = None
         self.fixedPoles = {
+            'poles': [],
             'HM_fix_d': [],
-            'HM_fix_h': [],
-            'asStr': {}
+            'HM_fix_h': []
         }
         self.noPoleSection = []
         
@@ -144,19 +144,25 @@ class ProjectConfHandler(AbstractConfHandler):
             poleArray = []
             for stue in polesStr:
                 [key, values] = stue.split(':')
-                [polex, poley, poleh] = [string.strip() for string in
+                [poled, polez, poleh] = [string.strip() for string in
                                          values.split(',')]
-                poleArray.append({'x': polex, 'y': poley, 'h': poleh})
+                poleArray.append({
+                    'd': int(poled),
+                    'z': float(polez),
+                    'h': float(poleh),
+                    'name': key
+                })
             
             self.setFixedPoles(poleArray)
         
         elif property_name == self.header['noPoleSection']:
-            sections = value.split('; ')
-            pairArray = np.array([])
+            sections = value.split(';')
+            sectionsArray = []
             for section in sections:
                 dist = section.split(' - ')
-                np.append(pairArray, [dist])
-            self.setNoPoleSection(pairArray)
+                if len(dist) == 2:
+                    sectionsArray.append([float(s) for s in dist])
+            self.setNoPoleSection(sectionsArray)
     
     def getProjectName(self):
         return '' if self.projectName is None else self.projectName
@@ -274,30 +280,33 @@ class ProjectConfHandler(AbstractConfHandler):
         self.profileLength = profileLen
     
     def getFixedPoles(self):
-        return [self.fixedPoles['HM_fix_d'], self.fixedPoles['HM_fix_h']]
+        return self.fixedPoles['poles']
     
     def setFixedPoles(self, value):
         # TODO: save name,
         self.fixedPoles = {
+            'poles': [],
             'HM_fix_d': [],
-            'HM_fix_h': [],
-            'asStr': {}
+            'HM_fix_h': []
         }
         if not value:
             return
         
-        for i, pole in enumerate(value):
-            # TODO: Funktioniert nicht für fixe Stützen aus Dialog fenster
-            x = pole['x']
-            y = pole['y']
+        for pole in value:
+            d = pole['d']
+            z = pole['z']
             h = pole['h']
-            if x == '' or x.isalpha():
-                continue
-            if h == '':
-                h = '-1'
-            self.fixedPoles['asStr'][i + 1] = [x, y, h]
-            self.fixedPoles['HM_fix_d'].append(int(x))
-            self.fixedPoles['HM_fix_h'].append(int(h))
+            name = pole['name']
+            if not h:
+                h = -1
+            self.fixedPoles['poles'].append({
+                'd': d,
+                'z': z,
+                'h': h,
+                'name': name
+            })
+            self.fixedPoles['HM_fix_d'].append(d)
+            self.fixedPoles['HM_fix_h'].append(h)
     
     def setNoPoleSection(self, noPoles):
         self.noPoleSection = noPoles
@@ -305,9 +314,9 @@ class ProjectConfHandler(AbstractConfHandler):
     def getConfigAsStr(self):
         # Reformat fixed poles
         fixPolesStr = ''
-        for key, values in list(self.fixedPoles['asStr'].items()):
-            fixPolesStr += '{0:0>2}: {1: >7}, {2: >7}, {3: >4}  /  '.format(
-                key, *tuple(values))
+        for pole in self.fixedPoles['poles']:
+            fixPolesStr += f"{pole['name']}: {pole['d']}, {pole['z']}, " \
+                           f"{pole['h']}  /  "
         # Reformat sections without poles
         noPoleSectionStr = ''
         for section in self.noPoleSection:
@@ -369,6 +378,9 @@ class ProjectConfHandler(AbstractConfHandler):
         
         # Initialize pole data (start/end point and anchors)
         self.poles = Poles(self)
+    
+    def reset(self):
+        self.poles = None
 
 
 class ParameterConfHandler(AbstractConfHandler):
@@ -600,7 +612,6 @@ class ParameterConfHandler(AbstractConfHandler):
             line = '{0: <17}{1: <12}{2: <45}{3: <9}{4}'.format(property_name,
                                     value, p['label'], p['unit'], os.linesep)
             txt.append(line)
-        txt.append(os.linesep)
         txt.append('{0: <17}{1: <12}'.format('Parameterset:', self.currentSetName))
         return txt
     
@@ -676,6 +687,9 @@ class ParameterConfHandler(AbstractConfHandler):
         for key, p in self.params.items():
             self.p[key] = p['value']
         return self.p
+    
+    def reset(self):
+        pass
 
 
 class ConfigHandler(object):
@@ -745,7 +759,7 @@ class ConfigHandler(object):
                     continue
                 self.polesFromTxt.append({
                     'idx': int(parts[0]),
-                    'dist': int(parts[1]),
+                    'dist': int(float(parts[1])),
                     'height': float(parts[2]),
                     'angle': float(parts[3]),
                     'manual': True if int(parts[4]) == 1 else False,
@@ -769,16 +783,18 @@ class ConfigHandler(object):
                             lineCount = readOutParamData(allLines, lineCount+3)
                             break
                         lineCount += 1
-                    for currLine in allLines[lineCount:]:
-                        if currLine.startswith('Stützendaten:'):
-                            readOutPoleData(allLines, lineCount+3)
-                            break
-                        lineCount += 1
+                    if lineCount < len(allLines):
+                        for currLine in allLines[lineCount:]:
+                            if currLine.startswith('Stützendaten:'):
+                                readOutPoleData(allLines, lineCount+3)
+                                break
+                            lineCount += 1
                 except Exception as e:
                     print(e)
                     return False
 
-            self.params.checkValidState()
+            success = self.params.checkValidState()
+            return success
         else:
             return False
     
@@ -923,3 +939,7 @@ class ConfigHandler(object):
             'optLen': None,
             'duration': getTimestamp(time.time())
         }, status
+    
+    def reset(self):
+        self.project.reset()
+        self.params.reset()

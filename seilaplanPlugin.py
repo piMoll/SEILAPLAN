@@ -198,6 +198,9 @@ class SeilaplanPlugin(object):
             status = False
             
             if not firstRun:
+                # Reset configuration from earlier optimization run
+                conf.reset()
+                # Setup start window
                 self.dlg.setupContent()
             firstRun = False
             
