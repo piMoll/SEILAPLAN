@@ -128,10 +128,9 @@ class AdjustmentPlot(FigureCanvas):
         # Ground clearance
         self.axes.plot(cable['groundclear_di'], cable['groundclear'],
                        color='#910000', linewidth=1*scale, linestyle=':',
-                       label="")
+                       label="Min. Bodenabstand")
         self.axes.plot(cable['groundclear_di'], cable['groundclear_under'],
-                       color='#910000', linewidth=1*scale,
-                       label="Min. Bodenabstand\nunterschritten")
+                       color='#910000', linewidth=1*scale)
             
         # Poles
         [pole_d, pole_z, pole_h, pole_dtop, pole_ztop] = poles
