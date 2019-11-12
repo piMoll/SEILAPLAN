@@ -916,16 +916,14 @@ class ConfigHandler(object):
         self.prepareForCalculation()
         status = 'jumpedOver'
         
-        # If the project file already contains pole data from a earlier run,
+        # If the project file already contains pole data from an earlier run,
         # load this data into Poles()
         if self.polesFromTxt:
             status = 'savedFile'
-            self.project.poles.poles = []
-            for p in self.polesFromTxt:
-                self.project.poles.add(p['idx'], p['dist'], p['height'],
-                                       p['angle'], p['manual'], p['pType'])
-                self.project.poles.update(p['idx'], 'name', p['name'])
-            self.project.poles.calculateAnchor()
+            self.project.poles.updateAllPoles(status, self.polesFromTxt)
+        # If instead user has defined some fixed poles, add these to Poles()
+        elif self.project.fixedPoles:
+            self.project.poles.updateAllPoles(status, self.project.fixedPoles['poles'])
         
         zulSK = self.params.params['zul_SK']['value']
         minSK = self.params.params['min_SK']['value']

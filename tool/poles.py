@@ -39,16 +39,19 @@ class Poles(object):
         self.calculateAnchor()
     
     def add(self, idx, d, h=INIT_POLE_HEIGHT, angle=INIT_POLE_ANGLE,
-            manually=False, poleType='pole'):
+            manually=False, poleType='pole', name=''):
        
         d = float(d)
+        if h == -1:
+            h = self.INIT_POLE_HEIGHT
         h = float(h)
         x, y, z, dtop, ztop = self.derivePoleProperties(d, h, angle)
-        name = f"{idx}. Stütze"
-        if manually:
-            name = 'neue Stütze'
-        if poleType == 'anchor':
-            name = 'Verankerung'
+        if not name:
+            name = f"{idx}. Stütze"
+            if manually:
+                name = 'neue Stütze'
+            if poleType == 'anchor':
+                name = 'Verankerung'
         
         self.poles.insert(idx, {
             'name': name,
@@ -89,25 +92,35 @@ class Poles(object):
             ztop = z + h * cos(rad_angle)
         return x, y, z, dtop, ztop
 
-    def addPolesFromOptimization(self, pole_dist, pole_h, fixedPoles):
-        # Remove all poles except start anchor
-        anchor_start = self.poles[0]
-        anchor_end = self.poles[-1]
-        self.poles = [anchor_start]
+    def updateAllPoles(self, status, poles):
+        if status == 'optimization':
+            # Optimization has run without an error, optimized poles are
+            # added to anchor points.
+            anchor_start = self.poles[0]
+            anchor_end = self.poles[-1]
+            self.poles = [anchor_start]
+            # Add calculated poles between start and end anchor
+            for idx, p in enumerate(poles):
+                self.add(idx + 1, p['d'], p['h'], name=p['name'])
+            # Add anchor at end point
+            self.poles.append(anchor_end)
         
-        # Add calculated poles
-        for i in range(len(pole_dist)):
-            idx = i+1
-            self.add(idx, pole_dist[i], pole_h[i])
-            # Rename fixed poles
-            for fPole in fixedPoles['poles']:
-                if pole_dist[i] == fPole['d']:
-                    self.update(idx, 'name', fPole['name'])
-                    break
-        # Add anchor at end point
-        self.poles.append(anchor_end)
+        elif status == 'savedFile':
+            # User wants to jump over the optimization and has loaded a save
+            # file with poles --> all poles are being replaced with new data
+            self.poles = []
+            for p in poles:
+                self.add(p['idx'], p['dist'], p['height'], p['angle'],
+                         p['manual'], p['pType'], name=p['name'])
+        
+        elif status == 'jumpedOver':
+            # User wants to jump over the optimization but has not loaded a
+            # save file with pole data. But since there are some fixed poles,
+            # these are added in between first and last pole.
+            for idx, p in enumerate(poles):
+                self.add(idx + 2, p['d'], p['h'], name=p['name'])
 
-        # Recalculate anchor data with new end point pole
+        # Recalculate anchor data with updated pole data
         self.calculateAnchor()
     
     def getAsArray(self, withAnchor=False):

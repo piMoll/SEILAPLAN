@@ -64,9 +64,21 @@ def main(progress, project):
             "Stützenstandorte bestimmt werden.")
         return False
     
-    # Save optimized pole locations
-    stuetzIdx = np.int32(diIdx[HMidx])
-    poles.addPolesFromOptimization(stuetzIdx, HM, project.fixedPoles)
+    # Save optimized poles to Pole() object
+    stuetzDist = np.int32(diIdx[HMidx])
+    optiPoles = []
+    for idx, d in enumerate(stuetzDist):
+        name = ''
+        # Check if this is a fixed pole
+        for fPole in project.fixedPoles['poles']:
+            if d == fPole['d']:
+                name = fPole['name']
+        optiPoles.append({
+            'd': d,
+            'h': HM[idx],
+            'name': name
+        })
+    poles.updateAllPoles('optimization', optiPoles)
 
     if int(poles.poles[-2]['d']) != int(profile.di[-1]):
         # It was not possible to calculate poles along the entire profile
