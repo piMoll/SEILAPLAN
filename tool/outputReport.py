@@ -97,8 +97,6 @@ def generateReportText(confHandler, result, comment):
 
     str_time.append(["Erklärungen und Diagramme zu den technischen Werten sind in der "
          "Dokumentation zu finden."])
-    if True:
-        str_time.append(["Markierung für fixe Stützen: ° = fixe Position, °* = fixe Position und Höhe"])
     
     # Section poles
     str_posi = [["", "Höhe [m]", "X-Koordinate", "Y-Koordinate", "Z-Koordinate [M.ü.M.]"]]

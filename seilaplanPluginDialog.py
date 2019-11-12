@@ -649,7 +649,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         """Last method that is called before main window is closed."""
         # Close additional dialogs
         self.imgBox.close()
-        if self.profileWin:
+        if self.profileWin.isVisible():
             self.profileWin.close()
         
         if not self.startAlgorithm:

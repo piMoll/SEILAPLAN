@@ -150,7 +150,7 @@ class ProjectConfHandler(AbstractConfHandler):
                     'd': int(poled),
                     'z': float(polez),
                     'h': float(poleh),
-                    'name': key
+                    'name': key.strip()
                 })
             
             self.setFixedPoles(poleArray)
@@ -343,11 +343,11 @@ class ProjectConfHandler(AbstractConfHandler):
                 'Stützendaten:' + os.linesep,
                 '\t'.join(['Nr.', 'Dist.', 'Höhe', 'Neigung', 'man.', 'Typ',
                            'Name']) + os.linesep,
-                '-'*50 + os.linesep
+                '-'*60 + os.linesep
             ]
             idx = 0
             for p in self.poles.poles:
-                poleData = [idx, p['d'], p['h'], p['angle'],
+                poleData = [idx, p['d'], round(p['h'], 1), round(p['angle'], 1),
                             1 if p['manually'] else 0,
                            p['poleType'], p['name']]
                 poleStr = [str(m) for m in poleData]

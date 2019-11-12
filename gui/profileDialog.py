@@ -94,7 +94,7 @@ class ProfileDialog(QDialog):
             'berücksichtigt.')
         self.noStueAdd.setToolTip('Abschnitte, in denen während der '
             'Optimierung keine Stützen platziert werden.')
-        self.noStueDel.setToolTip('Abschnitte löschen.')
+        self.noStueDel.setToolTip('Abschnitte löschen')
         spacerItem1 = QSpacerItem(40, 20, QSizePolicy.Expanding,
                                         QSizePolicy.Minimum)
         hbox.addWidget(self.fixStueAdd)
@@ -162,8 +162,8 @@ class ProfileDialog(QDialog):
                 z = self.getZValue(x)
                 self.sc.drawSection(x, z)
             self.sc.draw()
-            # Window is ready to show new data
-            self.dataSet = True
+        # Window is ready to show new data
+        self.dataSet = True
 
     def buildPoleHeader(self):
         headerRow = QHBoxLayout()
