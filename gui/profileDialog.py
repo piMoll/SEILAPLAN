@@ -28,6 +28,7 @@ from math import floor
 from qgis.PyQt.QtCore import QSize, Qt
 from qgis.PyQt.QtWidgets import (QDialog, QWidget, QLabel, QDialogButtonBox,
     QHBoxLayout, QPushButton, QVBoxLayout, QFrame, QSpacerItem, QSizePolicy)
+from qgis.PyQt.QtGui import QIcon, QPixmap
 
 from .profilePlot import ProfilePlot
 from .guiHelperFunctions import MyNavigationToolbar
@@ -47,6 +48,7 @@ class ProfileDialog(QDialog):
         self.setWindowTitle("Höhenprofil")
         self.setWindowModality(Qt.WindowModal)
         
+        self.profile = None
         # Array with properties fixed poles
         self.poleData = []
         # Array with sections without poles
@@ -56,8 +58,8 @@ class ProfileDialog(QDialog):
         self.zdata = None
         self.profileMin = 0
         self.profileMax = None
-        # Control variable to know when to reset gui and plot
-        self.doReset = True
+        # Control variable to know when data was set
+        self.dataSet = False
 
         # Plot
         self.sc = ProfilePlot(self)
@@ -80,22 +82,30 @@ class ProfileDialog(QDialog):
         # Create labels and buttons
         self.fixStueAdd = QPushButton("Fixe Stütze definieren")
         self.noStueAdd = QPushButton("Abschnitt ohne Stützen definieren")
+        self.noStueDel = QPushButton()
+        icon = QIcon()
+        icon.addPixmap(
+            QPixmap(":/plugins/SeilaplanPlugin/gui/icons/icon_bin.png"),
+            QIcon.Normal, QIcon.Off)
+        self.noStueDel.setIcon(icon)
+        self.noStueDel.setIconSize(QSize(16, 16))
         self.fixStueAdd.setToolTip('Fixe Stützen werden vom '
             'Optimierungsalgorithmus als bereits vorhandene Stützen '
             'berücksichtigt.')
         self.noStueAdd.setToolTip('Abschnitte, in denen während der '
             'Optimierung keine Stützen platziert werden.')
+        self.noStueDel.setToolTip('Abschnitte löschen.')
         spacerItem1 = QSpacerItem(40, 20, QSizePolicy.Expanding,
                                         QSizePolicy.Minimum)
         hbox.addWidget(self.fixStueAdd)
         hbox.addItem(spacerItem1)
         hbox.addWidget(self.noStueAdd)
+        hbox.addWidget(self.noStueDel)
         hbox.setAlignment(self.noStueAdd, Qt.AlignRight)
         btnBoxSpacer = QSpacerItem(40, 40, QSizePolicy.Fixed,
                                         QSizePolicy.Fixed)
         self.buttonBox = QDialogButtonBox(main_widget)
-        self.buttonBox.setStandardButtons(QDialogButtonBox.Cancel |
-                                          QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QDialogButtonBox.Ok)
         # Build up Gui
         self.container.addWidget(self.sc)
         self.container.addWidget(bar, alignment=Qt.AlignHCenter | Qt.AlignTop)
@@ -109,7 +119,7 @@ class ProfileDialog(QDialog):
         # Connect signals
         self.fixStueAdd.clicked.connect(self.sc.acitvateCrosshairPole)
         self.noStueAdd.clicked.connect(self.sc.activateCrosshairSection)
-        self.buttonBox.rejected.connect(self.Reject)
+        self.noStueDel.clicked.connect(self.deleteSections)
         self.buttonBox.accepted.connect(self.Apply)
         self.setLayout(self.container)
         
@@ -120,22 +130,19 @@ class ProfileDialog(QDialog):
         self.poleLayout.sig_deletePole.connect(self.deletePole)
 
     def setProfile(self, profile):
-        self.reset()
-        self.xdata = profile.xaxis
-        self.zdata = profile.yaxis
+        self.profile = profile
+        self.xdata = self.profile.xaxis
+        self.zdata = self.profile.yaxis
         self.profileMax = floor(self.xdata[-1])
         # Draw profile in diagram
-        self.sc.plotData(profile)
+        self.sc.plotData(self.profile)
     
     def reset(self):
-        """Resets the window, the plot and the map so that there are no poles
-        present anymore."""
+        """Resets the window and remove all pole layouts. Markers do not have
+        to be deleted, they are reset when new profile line is drawn. Plot
+        points are reset when plot is cleared at next setProfile()."""
         # Delete pole rows in gui
         self.poleLayout.removeAll()
-        # Remove marker in map and points in plot
-        for idx, pole in enumerate(self.poleData):
-            self.sc.deletePoint(self.poleData[idx]['plotPoint'])
-            self.drawTool.removeMarker()
         self.poleData = []
         self.noPoleSection = []
         self.profileMax = None
@@ -143,8 +150,7 @@ class ProfileDialog(QDialog):
     def setPoleData(self, poles, sections):
         """Fills gui, plot and map with data of fixed poles and pole
         sections."""
-        self.poleLayout.setInitialGui(self.poleData,
-                                      [self.profileMin, self.profileMax])
+        self.poleLayout.setInitialGui([], [self.profileMin, self.profileMax])
         for pole in poles:
             self.addPole(pole['d'], pole['z'], pole['h'], name=pole['name'])
         for section in sections:
@@ -155,6 +161,9 @@ class ProfileDialog(QDialog):
             for x in section:
                 z = self.getZValue(x)
                 self.sc.drawSection(x, z)
+            self.sc.draw()
+            # Window is ready to show new data
+            self.dataSet = True
 
     def buildPoleHeader(self):
         headerRow = QHBoxLayout()
@@ -191,7 +200,7 @@ class ProfileDialog(QDialog):
             name = 'fixe Stütze'
         # Draw point on plot
         drawnPoint = self.sc.createPoint(d, z)
-        # Draw marker in map
+        # Draw marker onto map
         self.createMapMarker(d, idx+1)
         # Save new fixed pole in list
         self.poleData.insert(idx, {
@@ -203,7 +212,7 @@ class ProfileDialog(QDialog):
             'angle': angle,
             'plotPoint': drawnPoint
         })
-        # Add layout row in gui
+        # Add layout row to gui
         lowerRange = self.profileMin
         upperRange = self.profileMax
         if idx > 0:
@@ -283,6 +292,17 @@ class ProfileDialog(QDialog):
         self.drawTool.updateSectionLine(endPoint)
         self.drawTool.deactivateCursor()
     
+    def deleteSections(self):
+        if self.noPoleSection:
+            # Redraw profile
+            self.sc.plotData(self.profile)
+            # Redraw markers of pole
+            for pole in self.poleData:
+                pole['plotPoint'] = self.sc.createPoint(pole['d'], pole['z'])
+            # Delete all sections in map
+            self.drawTool.deleteSectionLines()
+            self.noPoleSection = []
+    
     def stopActiveEdits(self):
         self.deactivateMapCursor()
         self.drawTool.clearUnfinishedLines()
@@ -291,18 +311,12 @@ class ProfileDialog(QDialog):
             self.noPoleSection.pop(-1)
 
     def Apply(self):
+        self.close()
+    
+    def closeEvent(self, event):
         self.stopActiveEdits()
         self.projectHandler.setFixedPoles(self.poleData)
         self.projectHandler.setNoPoleSection(self.noPoleSection)
-        self.close()
-
-    def Reject(self):
-        self.stopActiveEdits()
+        self.dataSet = False
+        # Reset gui since this can only be done when the window is still open
         self.reset()
-        self.close()
-
-    # def mousePressEvent(self, event):
-    #     focused_widget = QApplication.focusWidget()
-    #     if isinstance(focused_widget, QLineEdit):
-    #         focused_widget.clearFocus()
-    #     QDialog.mousePressEvent(self, event)

@@ -554,8 +554,6 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.updateLineByMapDraw(linecoord[1], 'E')
         # Stop pressing down button
         self.draw.setChecked(False)
-        # Reset profile window
-        self.profileWin.doReset = True
     
     def updateProfileWinContent(self):
         profile = PreviewProfile(self.projectHandler)
@@ -565,7 +563,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
                                     self.projectHandler.noPoleSection)
     
     def onShowProfile(self):
-        if self.profileWin.doReset:
+        if not self.profileWin.dataSet:
             self.updateProfileWinContent()
         self.profileWin.exec()
     

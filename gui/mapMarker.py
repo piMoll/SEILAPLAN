@@ -73,6 +73,7 @@ class MapMarkerTool(QgsMapTool):
         self.canvas.setMapTool(self)        # runs function self.activate()
 
     def activate(self):
+        self.removeMarker()
         self.canvas.setCursor(self.cursor)
 
     def deactivate(self):
@@ -142,6 +143,13 @@ class MapMarkerTool(QgsMapTool):
         self.linePointsS[1] = qgsPoint
         self.lineFeatureS[-1].setToGeometry(
             QgsGeometry.fromPolylineXY(self.linePointsS), None)
+    
+    def deleteSectionLines(self):
+        for line in self.lineFeatureS:
+            line.reset(False)
+            line.deleteLater()
+            self.linePoints = []
+        self.lineFeatureS = []
     
     def clearUnfinishedLines(self):
         if len(self.linePointsS) == 1:

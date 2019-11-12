@@ -166,8 +166,8 @@ class CustomPoleWidget(QObject):
         self.sig_zoomOut.emit()
     
     def removeAll(self):
-        for idx, pole in enumerate(self.poleRows):
-            self.poleRows[idx].remove()
+        for pole in self.poleRows:
+            pole.remove()
         self.poleRows = []
 
 
@@ -350,6 +350,14 @@ class PoleRow(object):
         self.fieldDist.setMaximum(maximum)
     
     def remove(self):
+        # Disconnect all widgets
+        self.fieldName.disconnect()
+        self.fieldDist.disconnect()
+        if self.fieldHeight: self.fieldHeight.disconnect()
+        if self.fieldAngle: self.fieldAngle.disconnect()
+        if self.addBtn: self.addBtn.disconnect()
+        if self.delBtn: self.delBtn.disconnect()
+        
         for i in reversed(range(self.row.count())):
             item = self.row.takeAt(i)
             widget = item.widget()

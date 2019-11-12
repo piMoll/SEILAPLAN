@@ -61,7 +61,6 @@ class ProfilePlot(FigureCanvas):
         self.evtPressPole = None
         self.evtMoveSection = None
         self.evtPressSection = None
-        self.vLine = None
         
         self.axes.set_aspect('equal', 'datalim')
         self.setFocusPolicy(Qt.ClickFocus)

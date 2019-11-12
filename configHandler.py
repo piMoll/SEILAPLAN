@@ -214,11 +214,12 @@ class ProjectConfHandler(AbstractConfHandler):
         
         self.coordState[pointType] = self.checkCoordinatePoint([x, y])
         
-        # Only continue if coordinates where actually changed
+        # Check if coordinates have actually changed
         if not (x == self.points[pointType][0]
                 and y == self.points[pointType][1]):
             hasChanged = True
-            self.setFixedPoles(False)
+            self.setFixedPoles(None)
+            self.setNoPoleSection([])
         
         self.points[pointType] = [x, y]
         self.setAzimut()
@@ -283,7 +284,6 @@ class ProjectConfHandler(AbstractConfHandler):
         return self.fixedPoles['poles']
     
     def setFixedPoles(self, value):
-        # TODO: save name,
         self.fixedPoles = {
             'poles': [],
             'HM_fix_d': [],
