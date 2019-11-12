@@ -99,11 +99,11 @@ def generateReportText(confHandler, result, comment):
          "Dokumentation zu finden."])
     
     # Section poles
-    str_posi = [["", "Höhe [m]", "X-Koordinate", "Y-Koordinate", "Z-Koordinate [M.ü.M.]"]]
+    str_posi = [["", "Höhe [m]", "Neigung [°]", "X-Koordinate", "Y-Koordinate", "Z-Koordinate [M.ü.M.]"]]
     for s in range(len(poleslist)):
         pole = poles.poles[s]
         str_posi.append([
-            f"{pole['name']}", f"{pole['h']:.1f}",
+            f"{pole['name']}", f"{pole['h']:.1f}", f"{pole['angle']:.0f}",
             f"{formatNum(pole['coordx'])}",
             f"{formatNum(pole['coordy'])}",
             f"{formatNum(pole['z'])}"])
@@ -361,10 +361,9 @@ def generateReport(reportText, outputLoc, projname):
                                  ('LEFTPADDING', (0, 0), (0, -1), lPadd)]))
 
     t_posi1 = Table(h_posi, wi_doc, he_rowT)
-    t_posi2 = Table(str_posi, [1.7*cm] + 4*[2.5*cm], len(str_posi) * he_row)
+    t_posi2 = Table(str_posi, [1.7*cm] + 5*[2.5*cm], len(str_posi) * he_row)
     t_posi1.setStyle(title_style)
     t_posi2.setStyle(TableStyle(stdStyleA + [
-        # ('ALIGN', (5, 0), (5, -0), 'LEFT'),
         ('FONT', (0, 0), (-1, 0), fontHeader, smallfontSize)]))
 
     t_abst1 = Table(h_abst, wi_doc, he_rowT)
