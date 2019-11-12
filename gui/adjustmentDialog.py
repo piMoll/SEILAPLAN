@@ -321,8 +321,9 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
             self.updateRecalcStatus('cableError')
             self.isRecalculating = False
             self.configurationHasChanged = False
-            QMessageBox.critical(self, 'Unerwarteter Fehler bei Neuberechnung '
-                'der Seillinie', str(e), QMessageBox.Ok)
+            # TODO: Error handling when shape mismach
+            # QMessageBox.critical(self, 'Unerwarteter Fehler bei Neuberechnung '
+            #     'der Seillinie', str(e), QMessageBox.Ok)
             return
 
         self.cableline = cableline
@@ -334,8 +335,9 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         except ValueError:
             # TODO: Wrong Array lengths, just ignore for the moment because
             #  there has to be some error in cable line function
-            QMessageBox.critical(self, 'Fehler', 'Fehler bei Berechnung des '
-                                 'Bodenabstands', QMessageBox.Ok)
+            # QMessageBox.critical(self, 'Fehler', 'Fehler bei Berechnung des '
+            #                      'Bodenabstands', QMessageBox.Ok)
+            pass
         
         # Update Plot
         [pole_d, pole_z, pole_h, pole_dtop, pole_ztop] = self.poles.getAsArray()
