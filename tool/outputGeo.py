@@ -35,7 +35,7 @@ def generateGeodata(project, poles, cableline, savePath):
     # Put geodata in separate sub folder
     savePath = os.path.join(savePath, 'geodata')
     os.makedirs(savePath)
-    epsg = project.dhm.spatialRef
+    epsg = project.heightSource.spatialRef
     spatialRef = QgsCoordinateReferenceSystem(epsg)
 
     # Calculate x and y coordinate in reference system

@@ -24,13 +24,12 @@ import re
 from operator import itemgetter
 import traceback
 from math import atan2, pi, cos, sin
-import numpy as np
 import time
 
 from qgis.PyQt.QtWidgets import QMessageBox
 from qgis.core import QgsPointXY
 
-from .tool.raster import Raster
+from .tool.heightSource import AbstractHeightSource, Raster, SurveyData
 from .tool.profile import Profile
 from .tool.poles import Poles
 from .tool.outputReport import getTimestamp
@@ -56,10 +55,10 @@ def formatNum(number):
 
 
 def castToNum(formattedNum):
-    if type(formattedNum) == int or type(formattedNum) == float:
+    if type(formattedNum) in [int, float]:
         return formattedNum
     try:
-        num = int(formattedNum.replace("'", ''))
+        num = float(formattedNum.replace("'", ''))
     except (ValueError, AttributeError):
         num = None
     return num
@@ -83,7 +82,7 @@ class AbstractConfHandler(object):
 # noinspection PyTypeChecker
 class ProjectConfHandler(AbstractConfHandler):
     
-    dhm: Raster
+    heightSource: AbstractHeightSource
     profile: Profile
     poles: Poles
 
@@ -97,7 +96,8 @@ class ProjectConfHandler(AbstractConfHandler):
         
         # Project data
         self.projectName = None
-        self.dhm = None
+        self.heightSource = None
+        self.heightSourceType = None
         self.points = {
             'A': [None, None],
             'E': [None, None]
@@ -119,6 +119,7 @@ class ProjectConfHandler(AbstractConfHandler):
         self.header = {
             'projectname': 'Projektname',
             'dhm': 'Hoehenmodell',
+            'survey': 'Laengsprofil',
             'A': 'Anfangspunkt',
             'E': 'Endpunkt',
             'fixedPoles': 'Fixe Stuetzen',
@@ -132,7 +133,10 @@ class ProjectConfHandler(AbstractConfHandler):
             self.setProjectName(value)
         
         elif property_name == self.header['dhm']:
-            self.setDhm(False, value)
+            self.setHeightSource(False, sourceType='dhm', sourcePath=value)
+        
+        elif property_name == self.header['survey']:
+            self.setHeightSource(False, sourceType='survey', sourcePath=value)
         
         elif property_name in [self.header['A'], self.header['E']]:
             point = property_name[0]
@@ -181,16 +185,28 @@ class ProjectConfHandler(AbstractConfHandler):
         self.projectName = "seilaplan_{}".format(timestamp)
         return self.projectName
     
-    def getDhmAsStr(self):
-        return '' if not self.dhm else self.dhm.path
+    def getHeightSourceAsStr(self):
+        return self.heightSource.getAsStr()
     
-    def setDhm(self, rasterLyr, rasterPath=None):
+    def setHeightSource(self, layer, sourceType='dhm', sourcePath=None):
         """Raster can be set by providing the QGIS Raster Layer or by giving
-        the path to the raster file."""
-        self.dhm = None
-        rst = Raster(rasterLyr, rasterPath)
-        if rst.valid:
-            self.dhm = rst
+        the path to the raster file.
+        :param layer: QGIS layer object
+        :param sourceType: dhm or survey
+        :param sourcePath: path to file
+         """
+        self.heightSource = None
+        self.heightSourceType = None
+        if sourceType == 'dhm':
+            rst = Raster(layer, sourcePath)
+            if rst.valid:
+                self.heightSource = rst
+                self.heightSourceType = sourceType
+        elif sourceType == 'survey':
+            srv = SurveyData(sourcePath)
+            if srv.valid:
+                self.heightSource = srv
+                self.heightSourceType = sourceType
         
         self.setPoint('A', self.points['A'])
         self.setPoint('E', self.points['E'])
@@ -227,11 +243,12 @@ class ProjectConfHandler(AbstractConfHandler):
         return self.points[pointType], self.coordState, hasChanged
     
     def checkCoordinatePoint(self, coords):
-        state = 'yellow'
         [x, y] = coords
+        state = 'yellow'
         
-        if self.dhm and coords[0] is not None and coords[1] is not None:
-            [extLx, extHy, extHx, extLy] = self.dhm.extent
+        if self.heightSource and self.heightSource.extent and \
+                x is not None and y is not None:
+            [extLx, extHy, extHx, extLy] = self.heightSource.extent
             
             if extLx <= x <= extHx and extLy <= y <= extHy:
                 state = 'green'
@@ -324,7 +341,7 @@ class ProjectConfHandler(AbstractConfHandler):
         
         txt = [
             [self.header['projectname'], self.getProjectName()],
-            [self.header['dhm'], self.getDhmAsStr()],
+            [self.header[self.heightSourceType], self.getHeightSourceAsStr()],
             [self.header['A'], '{0} / {1}'.format(*tuple(self.getPointAsStr('A')))],
             [self.header['E'], '{0} / {1}'.format(*tuple(self.getPointAsStr('E')))],
             [self.header['fixedPoles'], fixPolesStr],
@@ -370,10 +387,10 @@ class ProjectConfHandler(AbstractConfHandler):
         # DHM: Define buffer for subraster creation depended on anchor length
         anchorLen = max([self.params.getParameter('d_Anker_A'),
                          self.params.getParameter('d_Anker_E')])
-        # Create subraster
-        self.dhm.setSubraster(self.points, anchorLen)
-        
-        # From subraster create profile line
+        # Prepare raster (create subraster) or interpolate survey data
+        self.heightSource.prepareData(self.points, anchorLen)
+
+        # From subraster or survey data create profile line
         self.profile = Profile(self)
         
         # Initialize pole data (start/end point and anchors)
@@ -568,7 +585,7 @@ class ParameterConfHandler(AbstractConfHandler):
                 and self.params['d_Anker_A']['value'] != 0:
             msg = (f"Der Wert {self.params['d_Anker_A']['value']} im Feld "
                    f"'{self.params['d_Anker_A']['label']}' ist ungültig. "
-                   f"Ein Ankerfeld ist nur dann möglich, wenn die Anfangstütze"
+                   f"Ein Ankerfeld ist nur dann möglich, wenn die Anfangstütze "
                    f"grösser als 0 Meter ist.")
             self.onError(msg, 'Ungültige Eingabe')
             return False

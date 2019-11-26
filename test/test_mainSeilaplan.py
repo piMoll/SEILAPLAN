@@ -67,7 +67,7 @@ class TestMainResults(unittest.TestCase):
             'Endpunkt': proj_.getPoint('E')[0],
             'Projektname': proj_.getProjectName() + '_old',
             'Hoehenmodell': {
-                'path': proj_.getDhmAsStr()
+                'path': proj_.getHeightSourceAsStr()
             }
         }
         cls.inputData_ = {}

@@ -20,7 +20,7 @@ class Profile(object):
         [self.Ex, self.Ey] = project.points['E']
         self.profileLength = project.profileLength
         self.params = project.params
-        self.dhm = project.dhm
+        self.heightSource = project.heightSource
 
         self.dx = None
         self.dy = None
@@ -72,7 +72,7 @@ class Profile(object):
             yi = np.arange(self.Ay, self.Ey, dy)
     
         # Number of sampling points between start/end point and end of profile
-        pCount_d = floor(self.dhm.rasterBuffer / self.SAMPLING_DISTANCE)
+        pCount_d = floor(self.heightSource.buffer / self.SAMPLING_DISTANCE)
     
         xiA_d = np.linspace(self.Ax - dx, self.Ax - pCount_d * dx, pCount_d)
         yiA_d = np.linspace(self.Ay - dy, self.Ay - pCount_d * dy, pCount_d)
@@ -86,9 +86,9 @@ class Profile(object):
     
         # Interpolate z values on raster
         coords = np.rollaxis(np.array([self.yi_disp, self.xi_disp]), 1)
-        self.zi_disp = self.dhm.getInterpolatedHeightAtPoints(coords)
+        self.zi_disp = self.heightSource.getHeightAtPoints(coords)
         self.zi = self.zi_disp[pCount_d:-pCount_d]
-        self.di = np.arange(np.size(xi) * 1.0)
+        self.di = np.arange(np.size(xi) * self.SAMPLING_DISTANCE * 1.0)
         self.xi = xi
         self.yi = yi
         self.dx = dx

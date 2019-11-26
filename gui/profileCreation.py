@@ -39,9 +39,9 @@ class PreviewProfile(object):
         self.pointA = QgsPointXY(*tuple(coordsA))
         self.pointE = QgsPointXY(*tuple(coordsE))
         self.length = projectHandler.getProfileLen()
-        self.res = min(1, projectHandler.dhm.cellsize)
+        self.res = min(1, projectHandler.heightSource.cellsize)
         self.azimut = projectHandler.getAzimut()
-        self.rasterlyr = projectHandler.dhm.layer.dataProvider()
+        self.rasterlyr = projectHandler.heightSource.layer.dataProvider()
         
         self.profile = []
         self.xaxis = None

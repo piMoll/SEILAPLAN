@@ -61,7 +61,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         self.profile = self.confHandler.project.profile
         self.poles = self.confHandler.project.poles
         # Max distance the anchors can move away from initial position
-        self.anchorBuffer = self.confHandler.project.dhm.rasterBuffer
+        self.anchorBuffer = self.confHandler.project.heightSource.buffer
 
         # Load data
         self.originalData = {}

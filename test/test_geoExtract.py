@@ -40,7 +40,7 @@ class TestCalcProfile(unittest.TestCase):
             'Endpunkt': proj_.getPoint('E')[0],
             'Projektname': proj_.getProjectName() + '_old',
             'Hoehenmodell': {
-                'path': proj_.getDhmAsStr()
+                'path': proj_.getHeightSourceAsStr()
             }
         }
         cls.inputData_ = {}
@@ -58,7 +58,7 @@ class TestCalcProfile(unittest.TestCase):
         cls.conf.loadFromFile(PROJECT_FILE)
         cls.conf.prepareForCalculation()
 
-        cls.dhm = cls.project.dhm
+        cls.dhm = cls.project.heightSource
         cls.profile = cls.project.profile
         cls.poles = cls.project.poles
         cls.deltaP = cls.profile.SAMPLING_DISTANCE

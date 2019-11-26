@@ -15,7 +15,7 @@ class Poles(object):
         :type project: configHandler.ProjectConfHandler
         """
         self.params = project.params
-        self.dhm = project.dhm
+        self.heightSource = project.heightSource
         [self.Ax, self.Ay] = project.points['A']
         [self.Ex, self.Ey] = project.points['E']
         self.azimut = project.azimut
@@ -83,7 +83,7 @@ class Poles(object):
     def derivePoleProperties(self, d, h, angle):
         x = self.Ax + float(d) * sin(self.azimut)
         y = self.Ay + float(d) * cos(self.azimut)
-        z = self.dhm.getInterpolatedHeightAtPoints([y, x])[0]
+        z = self.heightSource.getHeightAtPoints([y, x])[0]
         dtop = d
         ztop = z + h
         if angle != 0:

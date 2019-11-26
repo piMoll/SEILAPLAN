@@ -134,20 +134,23 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         # Connect GUI elements from dialog window with functions
         self.connectGuiElements()
         
-        # Set initial sate of some buttons
-        # Button to show profile
-        self.buttonShowProf.setEnabled(False)
-        # Button that activates drawing on map
-        self.draw.setEnabled(False)
-        # Button stays down when pressed
-        self.draw.setCheckable(True)
-        
         # Dialog window with height profile
         self.profileWin = ProfileDialog(self, self.iface, self.drawTool,
                                         self.projectHandler)
 
         # Dialog windows for saving parameter and cable sets
         self.paramSetWindow = DialogSaveParamset(self)
+
+        # Set initial sate of some buttons
+        # Choosing height data
+        self.radioRaster.setChecked(True)
+        self.onToggleHeightSource()
+        # Button to show profile
+        self.buttonShowProf.setEnabled(False)
+        # Button that activates drawing on map
+        self.draw.setEnabled(False)
+        # Button stays down when pressed
+        self.draw.setCheckable(True)
         
         Processing.initialize()
     
@@ -162,6 +165,10 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.rasterField.currentTextChanged.connect(self.onChangeRaster)
         self.buttonRefreshRa.clicked.connect(self.updateRasterList)
         self.buttonInfo.clicked.connect(self.onInfo)
+
+        self.radioRaster.toggled.connect(self.onToggleHeightSource)
+        self.radioSurveyData.toggled.connect(self.onToggleHeightSource)
+        self.buttonLoadSurveyData.clicked.connect(self.onLoadSurveyData)
         
         # Info buttons
         self.infoBodenabstand.clicked.connect(self.onShowInfoImg)
@@ -242,6 +249,27 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
             'Ey': self.coordEy
         }
     
+    def onToggleHeightSource(self):
+        rasterActive = False
+        surveyDataActive = False
+        if self.radioRaster.isChecked():
+            rasterActive = True
+            self.fieldSurveyDataPath.setText('')
+        else:
+            surveyDataActive = True
+            self.rasterField.setCurrentIndex(-1)
+        
+        # Enable / disable gui elements
+        self.rasterField.setEnabled(rasterActive)
+        self.buttonRefreshRa.setEnabled(rasterActive)
+        self.fieldSurveyDataPath.setEnabled(surveyDataActive)
+        self.buttonLoadSurveyData.setEnabled(surveyDataActive)
+        # Reset height source data
+        self.projectHandler.setPoint('A', [None, None])
+        self.projectHandler.setPoint('E', [None, None])
+        self.projectHandler.setHeightSource(False)
+        self.checkPoints()
+    
     def getListenerLineEdit(self, property_name):
         return lambda: self.parameterChangedLineEdit(property_name)
     
@@ -291,9 +319,14 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         # Generate project name
         self.fieldProjName.setText(self.projectHandler.getProjectName())
         
-        rasterLyr = self.searchForRaster(self.projectHandler.getDhmAsStr())
-        # Update raster object with qgs raster layer
-        self.projectHandler.setDhm(rasterLyr)
+        if self.projectHandler.heightSourceType == 'dhm':
+            rasterLyr = self.searchForRaster(self.projectHandler.getHeightSourceAsStr())
+            # Update raster object with qgs raster layer
+            self.projectHandler.setHeightSource(rasterLyr)
+        elif self.projectHandler.heightSourceType == 'survey':
+            self.radioSurveyData.setChecked(True)
+            self.fieldSurveyDataPath.setText(self.projectHandler.surveyData['path'])
+            # TODO: draw profile line on map
         # Update start and end point
         self.checkPoints()
         
@@ -409,10 +442,10 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         rasterlist = self.getAvailableRaster()
         for rlyr in rasterlist:
             if rlyr['name'] == rastername:
-                self.projectHandler.setDhm(rlyr['lyr'])
+                self.projectHandler.setHeightSource(rlyr['lyr'])
                 # Check spatial reference of newly added raster
                 mapCrs = self.canvas.mapSettings().destinationCrs().authid()
-                lyrCrs = self.projectHandler.dhm.spatialRef
+                lyrCrs = self.projectHandler.heightSource.spatialRef
                 if lyrCrs and mapCrs != lyrCrs:
                     txt = (f'Das Raster in der Projektdatei liegt in KBS '
                            f'{lyrCrs} vor, das aktuelle QGIS-Projekt jedoch '
@@ -423,7 +456,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
                 rasterFound = True
                 break
         if not rasterFound:
-            self.projectHandler.setDhm(False)
+            self.projectHandler.setHeightSource(False)
         
         # If a raster was selected, OSM and Contour Layers can be generated
         self.osmLyrButton.setEnabled(rasterFound)
@@ -452,10 +485,45 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
                 # Sets the dhm name in the drop down and triggers self.setRaster()
                 self.rasterField.setCurrentText(baseName)
             else:
+                self.rasterField.setCurrentIndex(-1)
                 txt = f"Raster {path} nicht vorhanden"
                 title = "Fehler beim Laden des Rasters"
                 QMessageBox.information(self, title, txt)
         return rasterLyr
+    
+    def onLoadSurveyData(self):
+        title = 'Feldaufnahmen laden'
+        fFilter = 'csv Dateien (*.csv)'
+        filename, _ = QFileDialog.getOpenFileName(self, title,
+                self.confHandler.getCurrentPath(), fFilter)
+        if filename:
+            self.loadSurveyData(filename)
+        else:
+            return False
+    
+    def loadSurveyData(self, filename):
+        # Load data from csv file
+        self.projectHandler.setHeightSource(None, 'survey', filename)
+        if self.projectHandler.heightSource:
+            # Set path to csv in read only lineEdit
+            self.fieldSurveyDataPath.setText(filename)
+            # Remove earlier point coordinates from gui
+            self.checkPoints()
+            
+            # Draw profile line on map
+            A = self.projectHandler.heightSource.getFirstPoint()
+            E = self.projectHandler.heightSource.getLastPoint()
+            self.linePoints['A'] = QgsPointXY(A[0], A[1])
+            self.linePoints['E'] = QgsPointXY(E[0], E[1])
+            self.drawTool.updateLine(list(self.linePoints.values()), False)
+            # Activate draw tool
+            self.draw.setEnabled(True)
+        else:
+            self.fieldSurveyDataPath.setText('')
+            QMessageBox.critical(self, 'Fehler beim Laden',
+                    "csv-Datei konnte nicht geladen werden. Stellen Sie "
+                    "sicher, dass die Datei die drei Spalten 'x', 'y' und 'z' "
+                    "besitzt und ausser den Überschriften keine Texte enthält.")
     
     def setProjName(self, projname):
         self.projectHandler.setProjectName(projname)
@@ -545,8 +613,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
     def onClickContourButton(self):
         """Calcluate contour lines from currently selected dhm and add them to
         as a layer."""
-        self.projectHandler.dhm.contour = createContours(self.canvas,
-                                                         self.projectHandler.dhm)
+        createContours(self.canvas, self.projectHandler.heightSource)
         self.canvas.refresh()
     
     def onFinishedLineDraw(self, linecoord):

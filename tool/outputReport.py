@@ -72,7 +72,7 @@ def generateReportText(confHandler, result, comment):
     """
     poles = confHandler.project.poles
     poleslist = poles.poles
-    hmodell = confHandler.project.getDhmAsStr()
+    hmodell = confHandler.project.getHeightSourceAsStr()
     kraft = result['force']
     az_gon = math.degrees(poles.azimut) * 1.11111
 
@@ -85,7 +85,7 @@ def generateReportText(confHandler, result, comment):
     str_time = [
         [],
         ["Zeitpunkt", f"{result['duration'][2]}, Berechnungsdauer: {result['duration'][0]}"],
-        ["Höhenmodell", hmodell], []]
+        ["Höhendaten", hmodell], []]
     if comment:
         commentWraped = textwrap.fill(comment, 150).split('\n')
         # First line
@@ -118,7 +118,7 @@ def generateReportText(confHandler, result, comment):
         dist_z = nextPole['z'] - pole['z']
         dist_s = (dist_h**2 + dist_z**2)**0.5
         str_abst.append([f"von {pole['name']} zu {nextPole['name']}",
-                         f"{dist_h:.1f} m", f"{dist_s:.1f} m"])
+                         f"{dist_h:.1f} m", f"{dist_s:.2f} m"])
 
     # Section cable pull strength
     str_opti = [["optimaler Wertebeich",
