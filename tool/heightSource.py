@@ -12,7 +12,7 @@ class AbstractHeightSource(object):
     def __init__(self):
         self.path = None
         self.extent = None
-        self.buffer = None
+        self.buffer = (None, None)
     
     def getAsStr(self):
         return self.path or ''
@@ -26,7 +26,7 @@ class AbstractHeightSource(object):
     
 class Raster(AbstractHeightSource):
     
-    RASTER_BUFFER_DEFAULT = 21
+    BUFFER_DEFAULT = 21
     ANCHOR_BUFFER = 5
     
     def __init__(self, layer=None, path=None):
@@ -36,7 +36,7 @@ class Raster(AbstractHeightSource):
         self.spatialRef = None
         self.contour = None
         self.subraster = None
-        self.buffer = self.RASTER_BUFFER_DEFAULT
+        self.buffer = (self.BUFFER_DEFAULT, self.BUFFER_DEFAULT)
         self.valid = False
         
         # Get raster info from QGIS layer
@@ -79,8 +79,8 @@ class Raster(AbstractHeightSource):
     def setContour(self, contourLyr):
         self.contour = contourLyr
     
-    def prepareData(self, points, anchorLen):
-        self.updateRasterBuffer(anchorLen)
+    def prepareData(self, points, anchorLen, azimut):
+        self.updateRasterBuffer(points, anchorLen, azimut)
         
         [Ax, Ay] = points['A']
         [Ex, Ey] = points['E']
@@ -88,10 +88,10 @@ class Raster(AbstractHeightSource):
     
         # Create sub raster to perform faster interpolation
         # raster extent
-        pointXmin = min(Ax, Ex) - 2 * self.buffer
-        pointXmax = max(Ax, Ex) + 2 * self.buffer
-        pointYmin = min(Ay, Ey) - 2 * self.buffer
-        pointYmax = max(Ay, Ey) + 2 * self.buffer
+        pointXmin = min(Ax, Ex) - 2 * self.BUFFER_DEFAULT
+        pointXmax = max(Ax, Ex) + 2 * self.BUFFER_DEFAULT
+        pointYmin = min(Ay, Ey) - 2 * self.BUFFER_DEFAULT
+        pointYmax = max(Ay, Ey) + 2 * self.BUFFER_DEFAULT
     
         # Subraster can not exceed bigger raster extent
         pointXmin = pointXmin if pointXmin >= xMin else xMin
@@ -152,29 +152,41 @@ class Raster(AbstractHeightSource):
         points_lin = ipol.interpn((y, x), z, coords)
         return points_lin
 
-    def updateRasterBuffer(self, anchorLen):
+    def updateRasterBuffer(self, points, anchorLen, azimut):
+        # TODO:
+        #  1) self.buffer ignoriert wenn das grosse Raster früher als
+        #  nach self.buffer-Meter aufhört. Per Pythagoras feststellen, ob
+        #  Buffer Länge gekürzt werden muss und dies als neuer buffer definieren!
         anchorLen += self.ANCHOR_BUFFER
-        self.buffer = max(self.RASTER_BUFFER_DEFAULT, anchorLen)
+        self.buffer = (max(self.BUFFER_DEFAULT, anchorLen), max(self.BUFFER_DEFAULT, anchorLen))
 
 
 class SurveyData(AbstractHeightSource):
     
-    BUFFER_DEFAULT = 0
+    BUFFER_DEFAULT = 21
+    ANCHOR_BUFFER = 5
     
     def __init__(self, path):
         AbstractHeightSource.__init__(self)
         self.path = path
         self.extent = None
         self.cellsize = 1
-        self.buffer = self.BUFFER_DEFAULT
+        self.azimut = None
+        self.buffer = (self.BUFFER_DEFAULT, self.BUFFER_DEFAULT)
         self.surveyPoints = None
+        self.x = None
+        self.y = None
+        self.z = None
+        self.plane = None
+        self.normalVector = None
         self.interpolFunc = None
         self.valid = False
         self.readFromFile()
     
     def readFromFile(self):
         try:
-            z, x, y = np.genfromtxt(self.path, delimiter=',',
+            # TODO: In Header lesen welche spalte welche ist?
+            x, y, z = np.genfromtxt(self.path, delimiter=',',
                                     dtype='float64', skip_header=1,
                                     unpack=True)
         except Exception as e:
@@ -202,13 +214,13 @@ class SurveyData(AbstractHeightSource):
         flatpoints = np.array([x, y, np.zeros_like(x)])
         flatpoints = np.column_stack(flatpoints)
         # Fit a plane through X/Y coordinates with least squares algorithm
-        plane = np.linalg.lstsq(flatpoints, np.ones_like(x), rcond=None)[0]
+        self.plane = np.linalg.lstsq(flatpoints, np.ones_like(x), rcond=None)[0]
         # Get coefficients of plane
-        a, b, c = plane
+        a, b, c = self.plane
     
         # Get normal vector of plane
         vectorNorm = a * a + b * b + c * c
-        normalVector = np.array([a, b, c]) / np.sqrt(vectorNorm)
+        self.normalVector = np.array([a, b, c]) / np.sqrt(vectorNorm)
         # Get a sample point in plane
         pointInPlane = np.array([a, b, c]) / vectorNorm
     
@@ -219,10 +231,10 @@ class SurveyData(AbstractHeightSource):
         # Reference all survey points to the sample point in plane
         pointsFromPointInPlane = pointsN - pointInPlane
         # Project these points onto the normal vector
-        projOntoNormalVector = np.dot(pointsFromPointInPlane, normalVector)
+        projOntoNormalVector = np.dot(pointsFromPointInPlane, self.normalVector)
         # Subtract projection from the points
         projOntoPlane = (pointsFromPointInPlane - projOntoNormalVector[:, None]
-                         * normalVector)
+                         * self.normalVector)
         # Reference projected survey points back to the origin by adding sample
         # point in plane
         res = pointInPlane + projOntoPlane
@@ -233,37 +245,77 @@ class SurveyData(AbstractHeightSource):
             sortedCoordinates = res[res[:,1].argsort()]
         else:
             sortedCoordinates = res[res[:,0].argsort()]
+        self.x, self.y, self.z = np.column_stack(sortedCoordinates)
 
-        rxx, ryy, rzz = np.column_stack(sortedCoordinates)
-        self.surveyPoints = {
-            'x': rxx,
-            'y': ryy,
-            'z': rzz
-        }
-    
-    def prepareData(self):
-        # TODO
-        # # Calculate distances from every point to first point on profile
-        # dist = ((rxx - np.ones_like(x) * Ax) ** 2
-        #         + (ryy - np.ones_like(x) * Ay) ** 2) ** 0.5
-        # distArr = np.column_stack((dist, rzz))
-        # # Sort distances
-        # distArr_sort = np.sort(distArr, 0)
-        # # Interpolate points on profile
-        # self.interpolFunc = ipol.interp1d(distArr_sort[:, 0], distArr_sort[:, 1])
-        pass
+    def prepareData(self, points, anchorLen, azimut):
+        [Ax, Ay] = points['A']
+        [Ex, Ey] = points['E']
+        # Switch sorting of points if cable line goes in opposite direction
+        if Ax > Ex or (Ay > Ey and Ax == Ex):
+            # By default points are sorted by x coordinate in ascending order.
+            # If profile line defined by A and E has descending x-coordinates
+            # we have to switch the coordinate arrays.
+            # Special case: If all points lie perfectly on a vertical (map)
+            # axis (all points have same x-coord), wen have to check if
+            # y-coord is descending.
+            self.x = self.x[::-1]
+            self.y = self.y[::-1]
+            self.z = self.z[::-1]
+            
+        [x0, y0] = self.getFirstPoint()
+        [x1, y1] = self.getLastPoint()
+        # Calculate distances from every point to first point on profile
+        dist = ((self.x - np.ones_like(self.x) * x0) ** 2
+                + (self.y - np.ones_like(self.x) * y0) ** 2) ** 0.5
+        # distArr = np.column_stack((dist, self.z))
+        # Interpolate distance-height points on profile
+        self.interpolFunc = ipol.interp1d(dist, self.z)
+        
+        # Update buffer: take default buffer length if longer than anchor, else
+        # anchor length
+        buffer = max(self.BUFFER_DEFAULT, anchorLen + self.ANCHOR_BUFFER)
+        distToStart = ((x0 - Ax) ** 2 + (y0 - Ay) ** 2) ** 0.5
+        distToEnd = ((x1 - Ex) ** 2 + (y1 - Ey) ** 2) ** 0.5
+        # If distance to end of survey profile is shorter then new buffer,
+        # take the distance instead.
+        self.buffer = (min(distToStart, buffer), min(distToEnd, buffer))
+        # TODO: Was machen wenn der Anker ausserhalb des profils zu liegen kommt?
 
     def getFirstPoint(self):
-        return [self.surveyPoints['x'][0].item(), self.surveyPoints['y'][0].item()]
+        return [self.x[0].item(), self.y[0].item()]
 
     def getLastPoint(self):
-        return [self.surveyPoints['x'][-1].item(), self.surveyPoints['y'][-1].item()]
+        return [self.x[-1].item(), self.y[-1].item()]
 
     def getHeightAtPoints(self, coords):
-        # TODO: Profile could be in opposite direction of survey points
-        #  may sort surveyPoints when Start/End coordinate is known
-        distToFirst = ((coords[1][0] - self.surveyPoints['x'][0])**2 +
-                       (coords[0][0] - self.surveyPoints['y'][0])**2)**0.5
-        arr = np.arange(distToFirst, len(coords), 1)
-        return self.interpolFunc(arr)
-
+        [x0, y0] = self.getFirstPoint()
+        x0 = np.array([x0]*len(coords))
+        y0 = np.array([y0]*len(coords))
+        # Only one point
+        if np.shape(coords)[0] == 1:
+            dist = ((coords[0][1] - x0)**2 + (coords[0][0] - y0)**2)**0.5
+        # Several points in array
+        else:
+            dist = ((coords[:,1] - x0)**2 + (coords[:,0] - y0)**2)**0.5
+        return self.interpolFunc(dist)
+    
+    def projectPositionOnToLine(self, position):
+        """ Gets a position on map and transforms it to nearest points on
+        survey profile line."""
+        [x0, y0] = self.getFirstPoint()
+        [x1, y1] = self.getLastPoint()
+        if not position:
+            return [x0, y0]
+        # TODO: Anpassen und orthogonale Projektion verwenden
+        # X-coordinate is outside of profile line
+        if position.x() > x1:
+            xOnLine = x1
+        elif position.x() < x0:
+            xOnLine = x0
+        # X-coordinate is in between first and last point
+        else:
+            xOnLine = position.x()
+        # Get Y-coordinate by using plane coefficients and
+        # formula a*x + b*y +c*z = 1
+        yOnLine = (self.plane[0]*xOnLine-1)/(-1*self.plane[1])
+        return [xOnLine, yOnLine]

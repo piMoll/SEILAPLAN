@@ -83,7 +83,7 @@ class Poles(object):
     def derivePoleProperties(self, d, h, angle):
         x = self.Ax + float(d) * sin(self.azimut)
         y = self.Ay + float(d) * cos(self.azimut)
-        z = self.heightSource.getHeightAtPoints([y, x])[0]
+        z = self.heightSource.getHeightAtPoints([[y, x]])[0]
         dtop = d
         ztop = z + h
         if angle != 0:

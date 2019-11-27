@@ -72,12 +72,13 @@ class Profile(object):
             yi = np.arange(self.Ay, self.Ey, dy)
     
         # Number of sampling points between start/end point and end of profile
-        pCount_d = floor(self.heightSource.buffer / self.SAMPLING_DISTANCE)
+        pCount_dA = floor(self.heightSource.buffer[0] / self.SAMPLING_DISTANCE)
+        pCount_dE = floor(self.heightSource.buffer[1] / self.SAMPLING_DISTANCE)
     
-        xiA_d = np.linspace(self.Ax - dx, self.Ax - pCount_d * dx, pCount_d)
-        yiA_d = np.linspace(self.Ay - dy, self.Ay - pCount_d * dy, pCount_d)
-        xiE_d = np.linspace(xi[-1] + dx, xi[-1] + pCount_d * dx, pCount_d)
-        yiE_d = np.linspace(yi[-1] + dy, yi[-1] + pCount_d * dy, pCount_d)
+        xiA_d = np.linspace(self.Ax - dx, self.Ax - pCount_dA * dx, pCount_dA)
+        yiA_d = np.linspace(self.Ay - dy, self.Ay - pCount_dA * dy, pCount_dA)
+        xiE_d = np.linspace(xi[-1] + dx, xi[-1] + pCount_dE * dx, pCount_dE)
+        yiE_d = np.linspace(yi[-1] + dy, yi[-1] + pCount_dE * dy, pCount_dE)
     
         self.xi_disp = np.concatenate((xiA_d[::-1], xi, xiE_d))
         self.yi_disp = np.concatenate((yiA_d[::-1], yi, yiE_d))
@@ -87,7 +88,10 @@ class Profile(object):
         # Interpolate z values on raster
         coords = np.rollaxis(np.array([self.yi_disp, self.xi_disp]), 1)
         self.zi_disp = self.heightSource.getHeightAtPoints(coords)
-        self.zi = self.zi_disp[pCount_d:-pCount_d]
+        if pCount_dA == 0 and pCount_dE == 0:
+            self.zi = self.zi_disp
+        else:
+            self.zi = self.zi_disp[pCount_dA:-pCount_dE]
         self.di = np.arange(np.size(xi) * self.SAMPLING_DISTANCE * 1.0)
         self.xi = xi
         self.yi = yi

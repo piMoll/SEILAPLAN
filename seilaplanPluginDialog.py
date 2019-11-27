@@ -183,7 +183,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         # Filed that contains project names
         self.fieldProjName.textChanged.connect(self.setProjName)
         # Button starts map drawing
-        self.draw.clicked.connect(self.drawTool.drawLine)
+        self.draw.clicked.connect(self.drawLine)
         # Button shows profile window
         self.buttonShowProf.clicked.connect(self.onShowProfile)
         # Drop down field for parameter set choices
@@ -268,6 +268,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.projectHandler.setPoint('A', [None, None])
         self.projectHandler.setPoint('E', [None, None])
         self.projectHandler.setHeightSource(False)
+        self.drawTool.removeSurveyLine()
         self.checkPoints()
     
     def getListenerLineEdit(self, property_name):
@@ -507,15 +508,10 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         if self.projectHandler.heightSource:
             # Set path to csv in read only lineEdit
             self.fieldSurveyDataPath.setText(filename)
-            # Remove earlier point coordinates from gui
-            self.checkPoints()
-            
-            # Draw profile line on map
+            # Draw survey line on map
             A = self.projectHandler.heightSource.getFirstPoint()
             E = self.projectHandler.heightSource.getLastPoint()
-            self.linePoints['A'] = QgsPointXY(A[0], A[1])
-            self.linePoints['E'] = QgsPointXY(E[0], E[1])
-            self.drawTool.updateLine(list(self.linePoints.values()), False)
+            self.drawTool.drawSurveyLine([A, E])
             # Activate draw tool
             self.draw.setEnabled(True)
         else:
@@ -534,6 +530,16 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
     #     if isinstance(focused_widget, QtGui.QLineEdit):
     #         focused_widget.clearFocus()
     #     QtGui.QDialog.mousePressEvent(self, event)
+
+    def drawLine(self):
+        if self.projectHandler.heightSourceType == 'dhm':
+            self.drawTool.drawLine()
+        elif self.projectHandler.heightSourceType == 'survey':
+            self.drawTool.drawLine(self.projectToProfileLine)
+    
+    def projectToProfileLine(self, mapPosition):
+        point = self.projectHandler.heightSource.projectPositionOnToLine(mapPosition)
+        return QgsPointXY(point[0], point[1])
     
     def onCoordFieldChange(self, pointType):
         x = self.coordFields[pointType + 'x'].text()
@@ -711,6 +717,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.confHandler.updateUserSettings()
         # Clean markers and lines from map canvas
         self.drawTool.reset()
+        self.drawTool.surveyLine.reset()
     
     def closeEvent(self, QCloseEvent):
         """Last method that is called before main window is closed."""

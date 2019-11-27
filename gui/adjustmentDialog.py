@@ -158,8 +158,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
     
         # Create layout to modify poles
-        lowerDistRange = -1*self.anchorBuffer
-        upperDistRange = self.poles.poles[-1]['d'] + self.anchorBuffer
+        lowerDistRange = -1*self.anchorBuffer[0]
+        upperDistRange = self.poles.poles[-1]['d'] + self.anchorBuffer[1]
         self.poleLayout.setInitialGui(self.poles.poles, [lowerDistRange, upperDistRange])
 
         # Fill in cable parameters

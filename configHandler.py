@@ -195,6 +195,7 @@ class ProjectConfHandler(AbstractConfHandler):
         :param sourceType: dhm or survey
         :param sourcePath: path to file
          """
+        # TODO: Proj des projekts setzen? für raster aus txt und survey data wichtig
         self.heightSource = None
         self.heightSourceType = None
         if sourceType == 'dhm':
@@ -207,6 +208,11 @@ class ProjectConfHandler(AbstractConfHandler):
             if srv.valid:
                 self.heightSource = srv
                 self.heightSourceType = sourceType
+                # TODO: später wieder ändern
+                self.points = {
+                    'A': self.heightSource.getFirstPoint(),
+                    'E': self.heightSource.getLastPoint()
+                }
         
         self.setPoint('A', self.points['A'])
         self.setPoint('E', self.points['E'])
@@ -388,7 +394,7 @@ class ProjectConfHandler(AbstractConfHandler):
         anchorLen = max([self.params.getParameter('d_Anker_A'),
                          self.params.getParameter('d_Anker_E')])
         # Prepare raster (create subraster) or interpolate survey data
-        self.heightSource.prepareData(self.points, anchorLen)
+        self.heightSource.prepareData(self.points, anchorLen, self.azimut)
 
         # From subraster or survey data create profile line
         self.profile = Profile(self)

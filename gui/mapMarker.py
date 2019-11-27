@@ -45,6 +45,11 @@ class MapMarkerTool(QgsMapTool):
         self.cursor = QCursor(Qt.CrossCursor)
         # Cross hair when creating new fixed poles in profile window
         self.poleCursor = None
+        
+        # Profile line from survey data
+        self.surveyLine = QgsRubberBand(self.canvas)
+        self.surveyLine.setWidth(3)
+        self.surveyLine.setColor(QColor('#4fffb9'))
 
         # Red line for profile drawing
         self.rubberband = QgsRubberBand(self.canvas)
@@ -57,6 +62,9 @@ class MapMarkerTool(QgsMapTool):
         self.lineFeature = None
         # Point markers for poles
         self.markers = []
+        # Transformation function to project map coordinates on to survey
+        # profile
+        self.transformFunc = None
 
         # Line for section marking (sections without poles)
         self.linePointsS = []
@@ -68,7 +76,12 @@ class MapMarkerTool(QgsMapTool):
         # Backup the last active Tool before the profile tool became active
         self.savedTool = self.canvas.mapTool()
 
-    def drawLine(self):
+    def drawLine(self, transformFunc=None):
+        if not transformFunc:
+            # Define a default transformation that does nothing
+            def transformFunc(position):
+                return position
+        self.transformFunc = transformFunc
         self.reset()
         self.canvas.setMapTool(self)        # runs function self.activate()
 
@@ -94,13 +107,16 @@ class MapMarkerTool(QgsMapTool):
         self.deactivateCursor()
 
     def canvasMoveEvent(self, event):
+        position = self.transformFunc(event.mapPoint())
+        if self.surveyLine.getPoint(0):
+            self.updateCursor(position)
         if len(self.linePoints) > 0:
             self.rubberband.reset()
-            line = [self.linePoints[0], event.mapPoint()]
+            line = [self.linePoints[0], position]
             self.rubberband.setToGeometry(QgsGeometry.fromPolylineXY(line), None)
 
     def canvasReleaseEvent(self, event):
-        mapPos = event.mapPoint()
+        mapPos = self.transformFunc(event.mapPoint())
         if mapPos == self.dblclktemp:
             self.dblclktemp = None
             return
@@ -116,11 +132,12 @@ class MapMarkerTool(QgsMapTool):
             # Click is second point of line
             elif len(self.linePoints) == 1:
                 self.linePoints.append(mapPos)
-                # self.removePoleMarker()
                 self.dblclktemp = mapPos
                 self.lineFeature = self.createLineFeature(self.linePoints)
                 self.sig_lineFinished.emit(self.linePoints)
                 self.canvas.setMapTool(self.savedTool)      # self.deactivate()
+                # If we are on a survey data line, deactivate cursor
+                self.deactivateCursor()
 
     def updateLine(self, points, drawMarker=True):
         qgsPoints = [self.convertToQgsPoint(p) for p in points]
@@ -183,6 +200,14 @@ class MapMarkerTool(QgsMapTool):
                 self.canvas.scene().removeItem(marker)
             self.markers = []
         self.canvas.refresh()
+    
+    def drawSurveyLine(self, points):
+        qgsPoints = [self.convertToQgsPoint(p) for p in points]
+        self.surveyLine.setToGeometry(
+            QgsGeometry.fromPolylineXY(qgsPoints), None)
+    
+    def removeSurveyLine(self):
+        self.surveyLine.reset()
     
     def deactivateCursor(self):
         if self.poleCursor:
