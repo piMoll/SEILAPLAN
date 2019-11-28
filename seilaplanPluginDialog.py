@@ -78,7 +78,9 @@ infoTxt = ("SEILAPLAN - Seilkran-Layoutplaner\n\n"
            "SEILAPLAN ist freie Software: Sie können sie unter den Bedingungen "
            "der GNU General Public License, wie von der Free Software Foundation, "
            "Version 2 der Lizenz oder (nach Ihrer Wahl) jeder neueren "
-           "veröffentlichten Version, weiterverbreiten und/oder modifizieren.\n")
+           "veröffentlichten Version, weiterverbreiten und/oder modifizieren."
+           "\n\nPfad zu Dokumentation:\n"
+           + os.path.join(os.path.dirname(__file__), 'help', 'docs') + '\n')
 
 
 class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
@@ -171,6 +173,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.buttonLoadSurveyData.clicked.connect(self.onLoadSurveyData)
         
         # Info buttons
+        self.infoRasterlayer.clicked.connect(self.onHeightDataInfoShow)
+        self.infoSurveyData.clicked.connect(self.onHeightDataInfoShow)
         self.infoBodenabstand.clicked.connect(self.onShowInfoImg)
         self.infoVerankerungA.clicked.connect(self.onShowInfoImg)
         self.infoVerankerungE.clicked.connect(self.onShowInfoImg)
@@ -455,7 +459,6 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
                            f'in {mapCrs}. Bitte passen Sie das QGIS-KBS an.')
                     title = "Falsches Koordinatenbezugssystem (KBS)"
                     QMessageBox.information(self, title, txt)
-
                 rasterFound = True
                 break
         if not rasterFound:
@@ -687,6 +690,22 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
     
     def onInfo(self):
         QMessageBox.information(self, "SEILAPLAN Info", infoTxt,
+                                QMessageBox.Ok)
+    
+    def onHeightDataInfoShow(self, type):
+        msg = ''
+        if self.sender().objectName() == 'infoRasterlayer':
+            msg = ('Höheninformation aus einem Höhenraster auslesen. Die Liste'
+                   ' beinhaltet alle im aktuellen QGIS-Projekt vorhanden Raster.'
+                   '<br>Wird ein neuer Raster zu QGIS hinzugefügt, kann die Liste '
+                   'per Aktualisieren-Schaltfläche ergänzt werden.')
+        elif self.sender().objectName() == 'infoSurveyData':
+            msg = ("Mit dieser Option lässt sich ein Höhenprofil aus gemessenen "
+                   "Feldaufnahmen laden.<br>Die Messpunkte müssen im .csv Format "
+                   "(Komma-separiert) vorliegen und die Spalten 'x', 'y' und "
+                   "'z' aufweisen. Ausser in der ersten Kopfzeile dürfen keine "
+                   "weiteren Texte enthalten sein.")
+        QMessageBox.information(self, "Höheninformationen laden", msg,
                                 QMessageBox.Ok)
     
     def onShowInfoImg(self):
