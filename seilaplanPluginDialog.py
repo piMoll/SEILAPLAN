@@ -444,6 +444,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         for rlyr in rasterlist:
             if rlyr['name'] == rastername:
                 self.projectHandler.setHeightSource(rlyr['lyr'])
+                # Zoom to raster on map
+                self.zoomToHeightSource()
                 # Check spatial reference of newly added raster
                 mapCrs = self.canvas.mapSettings().destinationCrs().authid()
                 lyrCrs = self.projectHandler.heightSource.spatialRef
@@ -508,6 +510,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         if self.projectHandler.heightSource:
             # Set path to csv in read only lineEdit
             self.fieldSurveyDataPath.setText(filename)
+            # Zoom to survey data on map
+            self.zoomToHeightSource()
             # Draw survey line on map
             A = self.projectHandler.heightSource.getFirstPoint()
             E = self.projectHandler.heightSource.getLastPoint()
@@ -520,6 +524,12 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
                     "csv-Datei konnte nicht geladen werden. Stellen Sie "
                     "sicher, dass die Datei die drei Spalten 'x', 'y' und 'z' "
                     "besitzt und ausser den Überschriften keine Texte enthält.")
+    
+    def zoomToHeightSource(self):
+        if self.projectHandler.heightSource:
+            rect = self.projectHandler.heightSource.getExtent()
+            self.canvas.setExtent(rect.buffered(100))
+            self.canvas.refresh()
     
     def setProjName(self, projname):
         self.projectHandler.setProjectName(projname)

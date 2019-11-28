@@ -2,7 +2,7 @@ import os
 
 import numpy as np
 from osgeo import gdal, osr
-from qgis.core import QgsRasterLayer
+from qgis.core import QgsRasterLayer, QgsRectangle
 from scipy import interpolate as ipol
 from math import ceil, floor
 
@@ -11,7 +11,7 @@ class AbstractHeightSource(object):
     
     def __init__(self):
         self.path = None
-        self.extent = None
+        self.extent = []
         self.buffer = (None, None)
     
     def getAsStr(self):
@@ -22,6 +22,10 @@ class AbstractHeightSource(object):
     
     def getHeightAtPoints(self, coords):
         raise NotImplementedError
+    
+    def getExtent(self):
+        [xMin, yMax, xMax, yMin] = self.extent
+        return QgsRectangle(xMin, yMin, xMax, yMax)
     
     
 class Raster(AbstractHeightSource):
@@ -171,6 +175,8 @@ class SurveyData(AbstractHeightSource):
         self.path = path
         self.extent = None
         self.cellsize = 1
+        self.spatialRef = None
+        # mapCrs = self.canvas.mapSettings().destinationCrs().authid()
         self.azimut = None
         self.buffer = (self.BUFFER_DEFAULT, self.BUFFER_DEFAULT)
         self.surveyPoints = None
