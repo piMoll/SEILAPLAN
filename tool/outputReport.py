@@ -74,7 +74,8 @@ def generateReportText(confHandler, result, comment):
     poleslist = poles.poles
     hmodell = confHandler.project.getHeightSourceAsStr()
     kraft = result['force']
-    az_gon = math.degrees(poles.azimut) * 1.11111
+    az_grad = math.degrees(poles.azimut)
+    az_gon = az_grad * 1.11111
 
     poleCount = len(poleslist) - 2      # Without anchors
     fieldCount = poleCount - 1
@@ -99,17 +100,19 @@ def generateReportText(confHandler, result, comment):
          "Dokumentation zu finden."])
     
     # Section poles
-    str_posi = [["", "Höhe [m]", "Neigung [°]", "X-Koordinate", "Y-Koordinate", "Z-Koordinate [M.ü.M.]"]]
+    str_posi = [["", "Höhe [m]", "Neigung [°]", "X-Koordinate", "Y-Koordinate",
+                 "Z-Koordinate [M.ü.M.]"]]
     for s in range(len(poleslist)):
         pole = poles.poles[s]
+        angle = round(pole['angle'], 0) if pole['angle'] != 0 else '-'
         str_posi.append([
-            f"{pole['name']}", f"{pole['h']:.1f}", f"{pole['angle']:.0f}",
+            f"{pole['name']}", f"{pole['h']:.1f}", f"{angle}",
             f"{formatNum(pole['coordx'])}",
             f"{formatNum(pole['coordy'])}",
             f"{formatNum(pole['z'])}"])
 
     # Section field survey
-    str_abst = [[f"Azimut: {az_gon:.1f} gon"],
+    str_abst = [[f"Azimut: {az_gon:.2f} gon / {az_grad:.2f} °"],
                 ["", "Horizontaldistanz", "Schrägdistanz"]]
     for i in range(len(poleslist)-1):
         pole = poleslist[i]

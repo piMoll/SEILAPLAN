@@ -267,8 +267,8 @@ def preciseCable(IS, poles, STA):
     tg_phi_ob = (xv - xs[1:]) / (lv - ls[1:])
     # Winkel bei Last unmittelbar in der Nähe der Stütze
     phi = np.array([[np.nan]*anzStue]*2)
-    phi_ob =  np.array([np.nan]*anzStue)
-    phi_un =  np.array([np.nan]*anzStue)
+    phi_ob = np.array([np.nan]*anzStue)
+    phi_un = np.array([np.nan]*anzStue)
     phi_ob[1:] = np.arctan(tg_phi_ob)
     phi_un[:-1] = np.arctan(tg_phi_un)
     phi[0] = phi_ob / pi*180
