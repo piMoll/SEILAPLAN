@@ -185,6 +185,7 @@ class SurveyData(AbstractHeightSource):
         self.z = None
         self.plane = None
         self.normalVector = None
+        self.pointInPlane = None
         self.interpolFunc = None
         self.valid = False
         self.readFromFile()
@@ -228,14 +229,14 @@ class SurveyData(AbstractHeightSource):
         vectorNorm = a * a + b * b + c * c
         self.normalVector = np.array([a, b, c]) / np.sqrt(vectorNorm)
         # Get a sample point in plane
-        pointInPlane = np.array([a, b, c]) / vectorNorm
+        self.pointInPlane = np.array([a, b, c]) / vectorNorm
     
         # Restructure survey data
         pointsN = np.column_stack((x, y, z))
         # Projects the points with coordinates x, y, z onto the plane defined
         # by a*x + b*y + c*z = 1
         # Reference all survey points to the sample point in plane
-        pointsFromPointInPlane = pointsN - pointInPlane
+        pointsFromPointInPlane = pointsN - self.pointInPlane
         # Project these points onto the normal vector
         projOntoNormalVector = np.dot(pointsFromPointInPlane, self.normalVector)
         # Subtract projection from the points
@@ -243,7 +244,7 @@ class SurveyData(AbstractHeightSource):
                          * self.normalVector)
         # Reference projected survey points back to the origin by adding sample
         # point in plane
-        res = pointInPlane + projOntoPlane
+        res = self.pointInPlane + projOntoPlane
 
         # Sort coordinates by x
         if np.min(res[:,0]) == np.max(res[:,0]):
@@ -308,20 +309,27 @@ class SurveyData(AbstractHeightSource):
     def projectPositionOnToLine(self, position):
         """ Gets a position on map and transforms it to nearest points on
         survey profile line."""
+        point = np.array([[position.x(), position.y(), 0]])
+        # Reference point to a sample point in plane
+        pointsFromPointInPlane = point - self.pointInPlane
+        # Project this point onto the normal vector
+        projOntoNormalVector = np.dot(pointsFromPointInPlane, self.normalVector)
+        # Subtract projection from the point
+        projOntoPlane = (pointsFromPointInPlane - projOntoNormalVector[:, None]
+                         * self.normalVector)
+        # Reference projected point back to origin by adding sample point in plane
+        res = self.pointInPlane + projOntoPlane
+        xOnLine = res[0][0]
+        yOnLine = res[0][1]
+        
+        # Check that point never leaves profile between first and last point
         [x0, y0] = self.getFirstPoint()
         [x1, y1] = self.getLastPoint()
-        if not position:
-            return [x0, y0]
-        # TODO: Anpassen und orthogonale Projektion verwenden
-        # X-coordinate is outside of profile line
-        if position.x() > x1:
-            xOnLine = x1
-        elif position.x() < x0:
+        if xOnLine < x0 and (yOnLine > y0 > y1 or yOnLine < y0 < y1):
             xOnLine = x0
-        # X-coordinate is in between first and last point
-        else:
-            xOnLine = position.x()
-        # Get Y-coordinate by using plane coefficients and
-        # formula a*x + b*y +c*z = 1
-        yOnLine = (self.plane[0]*xOnLine-1)/(-1*self.plane[1])
+            yOnLine = y0
+        elif xOnLine > x1 and (yOnLine > y1 > y0 or yOnLine < y1 < y0):
+            xOnLine = x1
+            yOnLine = y1
+
         return [xOnLine, yOnLine]
