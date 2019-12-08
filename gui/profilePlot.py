@@ -33,7 +33,6 @@ from .mapMarker import PROFILE_COLOR, POLE_COLOR, SECTION_COLOR
 
 class ProfilePlot(FigureCanvas):
     
-    POLE_H = 12.0
     
     def __init__(self, parent=None, width=10, height=4, dpi=72):
         self.win = parent
@@ -46,6 +45,7 @@ class ProfilePlot(FigureCanvas):
         self.linePoints = []
         self.line_exists = False
         self.profileObj = None
+        self.labelScale = None
         
         # Mouse position
         self.x_data = None
@@ -79,7 +79,9 @@ class ProfilePlot(FigureCanvas):
         self.profileObj = plotData
         
         # Set plot extent
-        self.profileObj.expand(max([(self.profileObj.xmax * 0.02), 5]))
+        self.labelScale = (self.profileObj.ymax - self.profileObj.ymin) / 20
+        self.profileObj.expand(max([(self.profileObj.xmax * 0.02), 5]),
+                               self.labelScale)
         self.axes.set_xlim(self.profileObj.xmin, self.profileObj.xmax)
         self.axes.set_ylim(self.profileObj.ymin, self.profileObj.ymax)
     
@@ -93,13 +95,13 @@ class ProfilePlot(FigureCanvas):
         self.x_data = self.profileObj.xaxis
         self.y_data = self.profileObj.yaxis
 
-        # Draw start and end pole
-        self.axes.vlines(self.x_data[[0, -1]], self.y_data[[0, -1]],
-                         self.y_data[[0, -1]] + self.POLE_H)
+        # Draw start and end
+        self.axes.scatter(self.x_data[[0, -1]], self.y_data[[0, -1]],
+                          zorder=100, c=POLE_COLOR, s=80, marker='s')
         # Label
-        self.axes.text(self.x_data[0], self.y_data[0] + self.POLE_H + 4,
-                       'A', ha='center', fontsize=12)
-        self.axes.text(self.x_data[-1], self.y_data[-1] + self.POLE_H + 4,
+        self.axes.text(self.x_data[0], self.y_data[0] + self.labelScale,
+                       'A',  ha='center', fontsize=12)
+        self.axes.text(self.x_data[-1], self.y_data[-1] + self.labelScale,
                        'E', ha='center', fontsize=12)
 
         # Init cursor cross position
@@ -158,7 +160,8 @@ class ProfilePlot(FigureCanvas):
         self.win.addPole(posX, None)
 
     def createPoint(self, posX, posY):
-        scat = self.axes.scatter(posX, posY, zorder=100, c=POLE_COLOR, s=40)
+        scat = self.axes.scatter(posX, posY, zorder=100, c=POLE_COLOR, s=80,
+                                 marker='s')
         self.draw()
         return scat
 
@@ -229,7 +232,8 @@ class ProfilePlot(FigureCanvas):
     
     def drawSection(self, x, y):
         self.linePoints.append([x, y])
-        self.axes.vlines(x, y - 4, y + 4, lw=2, color=SECTION_COLOR)
+        self.axes.vlines(x, y - self.labelScale, y + self.labelScale, lw=2,
+                         color=SECTION_COLOR)
         if len(self.linePoints) == 2:
             idxA = np.argmax(self.x_data >= self.linePoints[0][0])
             idxE = np.argmax(self.x_data > self.linePoints[1][0])

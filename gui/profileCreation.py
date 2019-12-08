@@ -38,7 +38,7 @@ class PreviewProfile(object):
         coordsE, _ = projectHandler.getPoint('E')
         self.pointA = QgsPointXY(*tuple(coordsA))
         self.pointE = QgsPointXY(*tuple(coordsE))
-        self.length = projectHandler.getProfileLen()
+        self.length = projectHandler.profileLength
         self.res = min(1, projectHandler.heightSource.cellsize)
         self.azimut = projectHandler.getAzimut()
         self.rasterlyr = projectHandler.heightSource.layer.dataProvider()
@@ -93,11 +93,11 @@ class PreviewProfile(object):
                     pass
         return rasterVal
     
-    def expand(self, distance=10):
+    def expand(self, xdistance=10, ydistance=10):
         """Expands the extent of the raster. Used for plotting the data."""
         if not self.profile:
             return
-        self.xmin -= distance
-        self.ymin -= distance
-        self.xmax += distance
-        self.ymax += distance
+        self.xmin -= xdistance
+        self.ymin -= ydistance
+        self.xmax += xdistance
+        self.ymax += ydistance

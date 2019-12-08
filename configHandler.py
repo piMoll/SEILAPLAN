@@ -27,7 +27,7 @@ from math import atan2, pi, cos, sin
 import time
 
 from qgis.PyQt.QtWidgets import QMessageBox
-from qgis.core import QgsPointXY
+from qgis.core import QgsPointXY, QgsDistanceArea
 
 from .tool.heightSource import AbstractHeightSource, Raster, SurveyData
 from .tool.profile import Profile
@@ -36,22 +36,6 @@ from .tool.outputReport import getTimestamp
 
 # Constants
 HOMEPATH = os.path.join(os.path.dirname(__file__))
-
-
-def formatNum(number):
-    """Layout Coordinates with thousand markers."""
-    if number is None:
-        return ''
-    roundNum = int(round(number))
-    strNum = str(roundNum)
-    if roundNum > 999:
-        b, c = divmod(roundNum, 1000)
-        if b > 999:
-            a, b = divmod(b, 1000)
-            strNum = "{:0d}'{:0>3n}'{:0>3n}".format(a, b, c)
-        else:
-            strNum = "{:0n}'{:0>3n}".format(b, c)
-    return strNum
 
 
 def castToNum(formattedNum):
@@ -195,25 +179,26 @@ class ProjectConfHandler(AbstractConfHandler):
         :param sourceType: dhm or survey
         :param sourcePath: path to file
          """
-        # TODO: Proj des projekts setzen? für raster aus txt und survey data wichtig
         self.heightSource = None
         self.heightSourceType = None
+        srs = None
         if sourceType == 'dhm':
-            rst = Raster(layer, sourcePath)
-            if rst.valid:
-                self.heightSource = rst
-                self.heightSourceType = sourceType
+            srs = Raster(layer, sourcePath)
         elif sourceType == 'survey':
-            srv = SurveyData(sourcePath)
-            if srv.valid:
-                self.heightSource = srv
-                self.heightSourceType = sourceType
-                # TODO: später wieder ändern
+            srs = SurveyData(sourcePath)
+            if srs.valid:
                 self.points = {
-                    'A': self.heightSource.getFirstPoint(),
-                    'E': self.heightSource.getLastPoint()
+                    'A': srs.getFirstPoint(),
+                    'E': srs.getLastPoint()
                 }
+        if srs and srs.valid:
+            self.heightSource = srs
+            self.heightSourceType = sourceType
+        elif srs.errorMsg:
+            self.onError(srs.errorMsg)
         
+        # Points are ether empty (raster) or they are the first and last point
+        # of survey data
         self.setPoint('A', self.points['A'])
         self.setPoint('E', self.points['E'])
     
@@ -224,9 +209,9 @@ class ProjectConfHandler(AbstractConfHandler):
         x = ''
         y = ''
         if self.points[pointType][0]:
-            x = formatNum(self.points[pointType][0])
+            x = self.formatCoordinate(self.points[pointType][0])
         if self.points[pointType][1]:
-            y = formatNum(self.points[pointType][1])
+            y = self.formatCoordinate(self.points[pointType][1])
         return [x, y]
     
     def setPoint(self, pointType, coords):
@@ -256,11 +241,12 @@ class ProjectConfHandler(AbstractConfHandler):
                 x is not None and y is not None:
             [extLx, extHy, extHx, extLy] = self.heightSource.extent
             
-            if extLx <= x <= extHx and extLy <= y <= extHy:
+            # Round coordinates to avoid float imprecision
+            if round(extLx, 3) <= round(x, 3) <= round(extHx, 3) \
+                    and round(extLy, 3) <= round(y, 3) <= round(extHy, 3):
                 state = 'green'
             else:
                 state = 'red'
-        
         return state
     
     # noinspection PyTypeChecker
@@ -278,30 +264,31 @@ class ProjectConfHandler(AbstractConfHandler):
     def setAzimut(self):
         azimut = None
         if self.profileIsValid():
-            dx = (self.points['E'][0] - self.points['A'][0]) * 1.0
-            dy = (self.points['E'][1] - self.points['A'][1]) * 1.0
-            if dx == 0:
-                dx = 0.0001
-            if dy == 0:
-                dy = 0.0001
-            azimut = atan2(dx, dy)
-            if dx < 0:
+            azimut = atan2(self.points['E'][0] - self.points['A'][0],
+                           self.points['E'][1] - self.points['A'][1])
+            if self.points['E'][0] - self.points['A'][0] < 0:
                 azimut += 2*pi
-            
         self.azimut = azimut
     
-    def getProfileLen(self):
-        return self.profileLength
-    
     def getProfileLenAsStr(self):
-        return '' if self.profileLength is None else formatNum(self.profileLength)
+        return '' if self.profileLength is None else f"{self.profileLength:.0f}"
     
     def setProfileLen(self):
-        profileLen = None
+        length = None
         if self.profileIsValid():
-            profileLen = ((self.points['E'][0] - self.points['A'][0]) ** 2
-                          + (self.points['E'][1] - self.points['A'][1]) ** 2) ** 0.5
-        self.profileLength = profileLen
+            crs = self.heightSource.spatialRef
+            if crs and crs.isGeographic():
+                # Create a measure object
+                distance = QgsDistanceArea()
+                ell = crs.ellipsoidAcronym()
+                distance.setEllipsoid(ell)
+                # Measure the distance
+                length = distance.measureLine(QgsPointXY(*tuple(self.points['A'])),
+                                              QgsPointXY(*tuple(self.points['E'])))
+            else:
+                length = ((self.points['E'][0] - self.points['A'][0])**2 +
+                          (self.points['E'][1] - self.points['A'][1])**2)**0.5
+        self.profileLength = length
     
     def getFixedPoles(self):
         return self.fixedPoles['poles']
@@ -347,9 +334,9 @@ class ProjectConfHandler(AbstractConfHandler):
         
         txt = [
             [self.header['projectname'], self.getProjectName()],
-            [self.header[self.heightSourceType], self.getHeightSourceAsStr()],
-            [self.header['A'], '{0} / {1}'.format(*tuple(self.getPointAsStr('A')))],
-            [self.header['E'], '{0} / {1}'.format(*tuple(self.getPointAsStr('E')))],
+            [self.header[self.heightSourceType], self.heightSource.getAsStr()],
+            [self.header['A'], '{0} / {1}'.format(*tuple(self.points['A']))],
+            [self.header['E'], '{0} / {1}'.format(*tuple(self.points['E']))],
             [self.header['fixedPoles'], fixPolesStr],
             [self.header['noPoleSection'], noPoleSectionStr]
         ]
@@ -388,19 +375,45 @@ class ProjectConfHandler(AbstractConfHandler):
         if msg:
             self.onError(msg, 'Unglültige Daten')
         return self.profileIsValid() and self.projectName
+
+    @staticmethod
+    def formatCoordinate(number):
+        """Format big numbers with thousand separator"""
+        if number is None:
+            return ''
+        # Format big numbers with thousand separator
+        elif number >= 1000:
+            return f"{number:,.0f}".replace(',', "'")
+        else:
+            return f"{number:,.6f}"
     
     def prepareForCalculation(self):
-        # DHM: Define buffer for subraster creation depended on anchor length
-        anchorLen = max([self.params.getParameter('d_Anker_A'),
-                         self.params.getParameter('d_Anker_E')])
         # Prepare raster (create subraster) or interpolate survey data
-        self.heightSource.prepareData(self.points, anchorLen, self.azimut)
+        self.heightSource.prepareData(self.points, self.azimut)
 
         # From subraster or survey data create profile line
         self.profile = Profile(self)
         
         # Initialize pole data (start/end point and anchors)
         self.poles = Poles(self)
+    
+    def resetProfile(self):
+        self.points = {
+            'A': [None, None],
+            'E': [None, None]
+        }
+        self.coordState = {
+            'A': 'yellow',
+            'E': 'yellow'
+        }
+        self.profileLength = None
+        self.azimut = None
+        self.fixedPoles = {
+            'poles': [],
+            'HM_fix_d': [],
+            'HM_fix_h': []
+        }
+        self.noPoleSection = []
     
     def reset(self):
         self.poles = None

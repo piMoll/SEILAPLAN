@@ -45,16 +45,14 @@ class MapMarkerTool(QgsMapTool):
         self.cursor = QCursor(Qt.CrossCursor)
         # Cross hair when creating new fixed poles in profile window
         self.poleCursor = None
-        
-        # Profile line from survey data
-        self.surveyLine = QgsRubberBand(self.canvas)
-        self.surveyLine.setWidth(3)
-        self.surveyLine.setColor(QColor('#4fffb9'))
 
         # Red line for profile drawing
         self.rubberband = QgsRubberBand(self.canvas)
         self.rubberband.setWidth(3)
         self.rubberband.setColor(QColor(PROFILE_COLOR))
+
+        # Place markers only on profile line from survey data
+        self.surveyDataMode = False
 
         # Coordinates of drawn line points
         self.linePoints = []
@@ -108,7 +106,7 @@ class MapMarkerTool(QgsMapTool):
 
     def canvasMoveEvent(self, event):
         position = self.transformFunc(event.mapPoint())
-        if self.surveyLine.getPoint(0):
+        if self.surveyDataMode:
             self.updateCursor(position)
         if len(self.linePoints) > 0:
             self.rubberband.reset()
@@ -200,14 +198,6 @@ class MapMarkerTool(QgsMapTool):
                 self.canvas.scene().removeItem(marker)
             self.markers = []
         self.canvas.refresh()
-    
-    def drawSurveyLine(self, points):
-        qgsPoints = [self.convertToQgsPoint(p) for p in points]
-        self.surveyLine.setToGeometry(
-            QgsGeometry.fromPolylineXY(qgsPoints), None)
-    
-    def removeSurveyLine(self):
-        self.surveyLine.reset()
     
     def deactivateCursor(self):
         if self.poleCursor:

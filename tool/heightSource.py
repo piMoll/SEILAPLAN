@@ -1,10 +1,11 @@
 import os
 
 import numpy as np
-from osgeo import gdal, osr
-from qgis.core import QgsRasterLayer, QgsRectangle
+from osgeo import gdal
+from qgis.core import QgsRasterLayer, QgsCoordinateReferenceSystem
 from scipy import interpolate as ipol
-from math import ceil, floor
+from math import floor, sin, cos, pi
+import csv
 
 
 class AbstractHeightSource(object):
@@ -23,10 +24,6 @@ class AbstractHeightSource(object):
     def getHeightAtPoints(self, coords):
         raise NotImplementedError
     
-    def getExtent(self):
-        [xMin, yMax, xMax, yMin] = self.extent
-        return QgsRectangle(xMin, yMin, xMax, yMax)
-    
     
 class Raster(AbstractHeightSource):
     
@@ -38,17 +35,17 @@ class Raster(AbstractHeightSource):
         self.layer = None
         self.name = None
         self.spatialRef = None
-        self.contour = None
         self.subraster = None
         self.buffer = (self.BUFFER_DEFAULT, self.BUFFER_DEFAULT)
         self.valid = False
+        self.errorMsg = ''
         
         # Get raster info from QGIS layer
         if layer and isinstance(layer, QgsRasterLayer):
             self.layer = layer
             self.name = layer.name()
             self.path = layer.dataProvider().dataSourceUri()
-            self.spatialRef = layer.crs().authid()
+            self.spatialRef = layer.crs()
             ext = layer.extent()
             self.extent = [ext.xMinimum(),
                            ext.yMaximum(),
@@ -60,14 +57,16 @@ class Raster(AbstractHeightSource):
             self.valid = True
             
         # Get raster info from gdal raster object
-        elif path and os.path.exists(path):
+        elif path:
+            if not os.path.exists(path):
+                self.errorMsg = f"Raster-Datei {path} ist nicht vorhanden, " \
+                                f"Raster kann nicht geladen werden."
+                return
             self.path = path
             ds = gdal.Open(path)
             prj = ds.GetProjection()
             if prj:
-                srs = osr.SpatialReference(wkt=prj)
-                self.spatialRef = srs.GetAttrValue("AUTHORITY", 0) + ':' \
-                                  + srs.GetAttrValue("AUTHORITY", 1)
+                self.spatialRef = QgsCoordinateReferenceSystem(prj)
             self.cols = ds.RasterXSize
             self.rows = ds.RasterYSize
             upx, xres, xskew, upy, yskew, yres = ds.GetGeoTransform()
@@ -80,12 +79,7 @@ class Raster(AbstractHeightSource):
             self.valid = True
             del ds
     
-    def setContour(self, contourLyr):
-        self.contour = contourLyr
-    
-    def prepareData(self, points, anchorLen, azimut):
-        self.updateRasterBuffer(points, anchorLen, azimut)
-        
+    def prepareData(self, points, azimut):
         [Ax, Ay] = points['A']
         [Ex, Ey] = points['E']
         [xMin, yMax, xMax, yMin] = self.extent
@@ -156,18 +150,10 @@ class Raster(AbstractHeightSource):
         points_lin = ipol.interpn((y, x), z, coords)
         return points_lin
 
-    def updateRasterBuffer(self, points, anchorLen, azimut):
-        # TODO:
-        #  1) self.buffer ignoriert wenn das grosse Raster früher als
-        #  nach self.buffer-Meter aufhört. Per Pythagoras feststellen, ob
-        #  Buffer Länge gekürzt werden muss und dies als neuer buffer definieren!
-        anchorLen += self.ANCHOR_BUFFER
-        self.buffer = (max(self.BUFFER_DEFAULT, anchorLen), max(self.BUFFER_DEFAULT, anchorLen))
-
 
 class SurveyData(AbstractHeightSource):
     
-    BUFFER_DEFAULT = 21
+    BUFFER_DEFAULT = 0
     ANCHOR_BUFFER = 5
     
     def __init__(self, path):
@@ -176,10 +162,9 @@ class SurveyData(AbstractHeightSource):
         self.extent = None
         self.cellsize = 1
         self.spatialRef = None
-        # mapCrs = self.canvas.mapSettings().destinationCrs().authid()
         self.azimut = None
         self.buffer = (self.BUFFER_DEFAULT, self.BUFFER_DEFAULT)
-        self.surveyPoints = None
+        self.surveyPoints = {}
         self.x = None
         self.y = None
         self.z = None
@@ -254,7 +239,7 @@ class SurveyData(AbstractHeightSource):
             sortedCoordinates = res[res[:,0].argsort()]
         self.x, self.y, self.z = np.column_stack(sortedCoordinates)
 
-    def prepareData(self, points, anchorLen, azimut):
+    def prepareData(self, points, azimut):
         [Ax, Ay] = points['A']
         [Ex, Ey] = points['E']
         # Switch sorting of points if cable line goes in opposite direction
@@ -278,15 +263,11 @@ class SurveyData(AbstractHeightSource):
         # Interpolate distance-height points on profile
         self.interpolFunc = ipol.interp1d(dist, self.z)
         
-        # Update buffer: take default buffer length if longer than anchor, else
-        # anchor length
-        buffer = max(self.BUFFER_DEFAULT, anchorLen + self.ANCHOR_BUFFER)
+        # Update buffer: If user defined other start/end points than first and
+        # last point of profile, define distances to ends as buffer
         distToStart = ((x0 - Ax) ** 2 + (y0 - Ay) ** 2) ** 0.5
         distToEnd = ((x1 - Ex) ** 2 + (y1 - Ey) ** 2) ** 0.5
-        # If distance to end of survey profile is shorter then new buffer,
-        # take the distance instead.
-        self.buffer = (min(distToStart, buffer), min(distToEnd, buffer))
-        # TODO: Was machen wenn der Anker ausserhalb des profils zu liegen kommt?
+        self.buffer = (distToStart, distToEnd)
 
     def getFirstPoint(self):
         return [self.x[0].item(), self.y[0].item()]
