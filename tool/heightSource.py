@@ -173,27 +173,63 @@ class SurveyData(AbstractHeightSource):
         self.pointInPlane = None
         self.interpolFunc = None
         self.valid = False
-        self.readFromFile()
+        self.errorMsg = ''
+        self.openFile()
     
-    def readFromFile(self):
+    def openFile(self):
+        success = False
+        
+        def formatStr(s):
+            return s.strip().upper()
+        
+        with open(self.path) as file:
+            reader = csv.reader(file, delimiter=',')
+            for row in reader:
+                # Analyse header line
+                idxLon = [idx for idx, h in enumerate(row) if formatStr(h) == 'LON']
+                idxLat = [idx for idx, h in enumerate(row) if formatStr(h) == 'LAT']
+                idxAlt = [idx for idx, h in enumerate(row) if formatStr(h) == 'ALTITUDE']
+    
+                idxX = [idx for idx, h in enumerate(row) if formatStr(h) == 'X']
+                idxY = [idx for idx, h in enumerate(row) if formatStr(h) == 'Y']
+                idxZ = [idx for idx, h in enumerate(row) if formatStr(h) == 'Z']
+                break
+
+        # Check if data is in vertex format
+        if len(idxLat) == 1 and len(idxLon) == 1 and len(idxAlt) == 1:
+            success = self.readOutData(idxLon[0], idxLat[0], idxAlt[0])
+            self.spatialRef = QgsCoordinateReferenceSystem('EPSG:4326')
+        
+        # Check if data is in x, y, z format
+        elif len(idxX) == 1 and len(idxY) == 1 and len(idxZ) == 1:
+            success = self.readOutData(idxX[0], idxY[0], idxZ[0])
+            # TODO: Maybe inform that project coordinate system has to be set correctly
+        
+        if success:
+            self.projectOnLine()
+            self.valid = True
+        else:
+            # TODO: Text anpassen
+            self.errorMsg = ("csv-Datei konnte nicht geladen werden. Stellen "
+                    "Sie sicher, dass die Datei die drei Spalten 'x', 'y' und "
+                    "'z' besitzt und ausser den Überschriften keine Texte "
+                    "enthält.")
+        
+    def readOutData(self, idxX, idxY, idxZ):
         try:
-            # TODO: In Header lesen welche spalte welche ist?
-            x, y, z = np.genfromtxt(self.path, delimiter=',',
-                                    dtype='float64', skip_header=1,
-                                    unpack=True)
+            x, y, z = np.genfromtxt(self.path, delimiter=',', dtype='float64',
+                                    usecols=(idxX, idxY, idxZ), unpack=True,
+                                    skip_header=1)
         except Exception as e:
             # TODO
             return False
-    
-        self.extent = [floor(np.min(x)), ceil(np.max(y)),
-                       ceil(np.max(x)), floor(np.min(y))]
+        self.extent = [np.min(x), np.max(y), np.max(x), np.min(y)]
         self.surveyPoints = {
             'x': x,
             'y': y,
             'z': z
         }
-        self.valid = True
-        self.projectOnLine()
+        return True
     
     def projectOnLine(self):
         # Fit a plane through X/Y coordinates with least squares algorithm
