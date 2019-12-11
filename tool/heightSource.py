@@ -83,53 +83,62 @@ class Raster(AbstractHeightSource):
         [Ax, Ay] = points['A']
         [Ex, Ey] = points['E']
         [xMin, yMax, xMax, yMin] = self.extent
-    
-        # Create sub raster to perform faster interpolation
-        # raster extent
-        pointXmin = min(Ax, Ex) - 2 * self.BUFFER_DEFAULT
-        pointXmax = max(Ax, Ex) + 2 * self.BUFFER_DEFAULT
-        pointYmin = min(Ay, Ey) - 2 * self.BUFFER_DEFAULT
-        pointYmax = max(Ay, Ey) + 2 * self.BUFFER_DEFAULT
-    
-        # Subraster can not exceed bigger raster extent
+
+        # Extend profile line by buffer length so user can move start and end
+        #  point slightly
+        # TODO: Not possible for geographic coordinates
+        reverseAzimut = azimut + pi
+        if azimut > pi:
+            reverseAzimut = azimut - pi
+        AxBuff = Ax + self.buffer[0] * sin(reverseAzimut)
+        AyBuff = Ay + self.buffer[0] * cos(reverseAzimut)
+        ExBuff = Ex + self.buffer[1] * sin(azimut)
+        EyBuff = Ey + self.buffer[1] * cos(azimut)
+        
+        # Add 5 pixel safety margin
+        pointXmin = min(AxBuff, ExBuff) - 5 * self.cellsize
+        pointXmax = max(AxBuff, ExBuff) + 5 * self.cellsize
+        pointYmin = min(AyBuff, EyBuff) - 5 * self.cellsize
+        pointYmax = max(AyBuff, EyBuff) + 5 * self.cellsize
+        # Check if extended profile is still fully inside raster
         pointXmin = pointXmin if pointXmin >= xMin else xMin
         pointXmax = pointXmax if pointXmax <= xMax else xMax
         pointYmin = pointYmin if pointYmin >= yMin else yMin
         pointYmax = pointYmax if pointYmax <= yMax else yMax
-    
-        # Generate subraster, save to in memory storage
+
+        # The subraster is being created in memory, not on disk. It has the
+        # same cellsize as the original raster. If needed, the coordinates in
+        # 'projWin' are shifted so that the raster does not have to be
+        # resampled.
         ds = gdal.Open(self.path)
-        # for band in range(1, ds.RasterCount):
-        #     srcband = ds.GetRasterBand(band)
-        #     if srcband:
-        #         stats = srcband.GetStatistics(True, True)
-        #         rstType = srcband.GetUnitType()
-        #         rast_array = np.array(ds.GetRasterBand(i+1).ReadAsArray())
-        
-        # The subraster created has the same cellsize as the original raster.
-        # If needed, the coordinates in 'projWin' are shifted so that the
-        # raster does not have to be resampled
         subraster = gdal.Translate('/vsimem/in_memory_output.tif', ds,
                                    projWin=[pointXmin, pointYmax, pointXmax,
                                             pointYmin])
-        z = subraster.ReadAsArray()  # TODO: z ist momentan in m, bisher dm
-    
+        z = subraster.ReadAsArray()
         if np.ndim(z) > 2:
             # Assumption: Height information is in first raster band
             z = z[:][:][0]
         z = np.flip(z, 0)
     
         upx, xres, xskew, upy, yskew, yres = subraster.GetGeoTransform()
+        # This raster has its origin in the upper left corner, so y axis is
+        #  always descending
         cols = subraster.RasterXSize
         rows = subraster.RasterYSize
         cellsize = xres
-        xMin_ = upx + 0 * xres + 0 * xskew
-        yMax_ = upy + 0 * yskew + 0 * yres
+        xMin_ = upx
+        yMax_ = upy
         xMax_ = upx + cols * xres + rows * xskew
         yMin_ = upy + cols * yskew + rows * yres
+        
+        # Shift coordinates of cell from left upper corner to center of pixel
+        xMin_m = xMin_ + 0.5 * cellsize
+        xMax_m = xMax_ + 0.5 * cellsize
+        yMin_m = yMin_ - 0.5 * cellsize
+        yMax_m = yMax_ - 0.5 * cellsize
     
-        xaxis = np.arange(xMin_, xMax_, cellsize)
-        yaxis = np.arange(yMin_, yMax_, cellsize)
+        xaxis = np.arange(xMin_m, xMax_m, cellsize)
+        yaxis = np.arange(yMin_m, yMax_m, cellsize)
         extent = [xMin_, xMax_, yMin_, yMax_]
         
         self.subraster = {
@@ -139,6 +148,18 @@ class Raster(AbstractHeightSource):
             'extent': extent,
             'cellsize': cellsize
         }
+        # Update buffer at start and end point. If profile is near edge of
+        #  raster, no buffer is added to the profile (buffer length = 0)
+        bufferA = self.buffer[0]
+        bufferE = self.buffer[1]
+        if not (xMin_m <= AxBuff <= xMax_m - cellsize
+                and yMin_m <= AyBuff <= yMax_m - cellsize):
+            bufferA = 0
+        if not (xMin_m <= ExBuff <= xMax_m-cellsize
+                and yMin_m <= EyBuff <= yMax_m-cellsize):
+            bufferE = 0
+        self.buffer = (bufferA, bufferE)
+        
         del ds
         del subraster
     
@@ -147,7 +168,10 @@ class Raster(AbstractHeightSource):
         y = self.subraster['yaxis']
         z = self.subraster['z']
         # Linear interpolation on subraster
-        points_lin = ipol.interpn((y, x), z, coords)
+        try:
+            points_lin = ipol.interpn((y, x), z, coords)
+        except ValueError:
+            raise Exception('Interpolation auf Raster nicht möglich.')
         return points_lin
 
 

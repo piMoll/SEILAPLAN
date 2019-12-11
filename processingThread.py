@@ -71,6 +71,9 @@ class ProcessingTask(QgsTask):
         t_start = time.time()
         self.confHandler.prepareForCalculation()
         try:
+            # Create profile, initialize poles
+            self.confHandler.prepareForCalculation()
+            # Calculate pole positions
             result = main(self, self.projInfo)
         except Exception as e:
             self.exception = traceback.format_exc()

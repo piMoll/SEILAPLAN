@@ -1,4 +1,4 @@
-from math import floor, ceil
+from math import floor
 import numpy as np
 
 
@@ -52,10 +52,10 @@ class Profile(object):
         self.generateProfile()
     
     def generateProfile(self):
-        # Number of sampling points including start point but not end point.
-        pCount = floor(self.profileLength / self.SAMPLING_DISTANCE)
         # Length of single line section between start and end point
         dp = self.profileLength / self.SAMPLING_DISTANCE
+        # Number of sampling points including start point but not end point
+        pCount = floor(dp)
         # Line sections in x and y direction
         dx = (float(self.Ex) - float(self.Ax)) / dp
         dy = (float(self.Ey) - float(self.Ay)) / dp
@@ -88,10 +88,11 @@ class Profile(object):
         # Interpolate z values on raster
         coords = np.rollaxis(np.array([self.yi_disp, self.xi_disp]), 1)
         self.zi_disp = self.heightSource.getHeightAtPoints(coords)
-        if pCount_dA == 0 and pCount_dE == 0:
-            self.zi = self.zi_disp
-        else:
-            self.zi = self.zi_disp[pCount_dA:-pCount_dE]
+        self.zi = np.copy(self.zi_disp)
+        if pCount_dA > 0:
+            self.zi = self.zi[pCount_dA:]
+        if pCount_dE > 0:
+            self.zi = self.zi[:-pCount_dE]
         self.di = np.arange(np.size(xi) * self.SAMPLING_DISTANCE * 1.0)
         self.xi = xi
         self.yi = yi
