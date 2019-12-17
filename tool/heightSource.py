@@ -218,9 +218,16 @@ class SurveyData(AbstractHeightSource):
         def formatStr(s):
             return s.strip().upper()
         
-        with open(self.path) as file:
-            reader = csv.reader(file, delimiter=',')
+        with open(self.path, newline='') as file:
+            reader = csv.reader(file)
+            sep = ','
             for row in reader:
+                if len(row) == 1:
+                    row = row[0].split(';')
+                    sep = ';'
+                if len(row) == 1:
+                    row = row[0].split(',')
+                    sep = ','
                 # Analyse header line
                 idxLon = [idx for idx, h in enumerate(row) if formatStr(h) == 'LON']
                 idxLat = [idx for idx, h in enumerate(row) if formatStr(h) == 'LAT']
@@ -233,26 +240,23 @@ class SurveyData(AbstractHeightSource):
 
         # Check if data is in vertex format
         if len(idxLat) == 1 and len(idxLon) == 1 and len(idxAlt) == 1:
-            success = self.readOutData(idxLon[0], idxLat[0], idxAlt[0])
+            success = self.readOutData(idxLon[0], idxLat[0], idxAlt[0], sep)
             self.spatialRef = QgsCoordinateReferenceSystem('EPSG:4326')
         
         # Check if data is in x, y, z format
         elif len(idxX) == 1 and len(idxY) == 1 and len(idxZ) == 1:
-            success = self.readOutData(idxX[0], idxY[0], idxZ[0])
+            success = self.readOutData(idxX[0], idxY[0], idxZ[0], sep)
         
         if success:
             self.projectOnLine()
             self.valid = True
         else:
             # TODO: Text anpassen
-            self.errorMsg = ("csv-Datei konnte nicht geladen werden. Stellen "
-                    "Sie sicher, dass die Datei die drei Spalten 'x', 'y' und "
-                    "'z' besitzt und ausser den Überschriften keine Texte "
-                    "enthält.")
+            self.errorMsg = "csv-Datei konnte nicht geladen werden."
         
-    def readOutData(self, idxX, idxY, idxZ):
+    def readOutData(self, idxX, idxY, idxZ, sep):
         try:
-            x, y, z = np.genfromtxt(self.path, delimiter=',', dtype='float64',
+            x, y, z = np.genfromtxt(self.path, delimiter=sep, dtype='float64',
                                     usecols=(idxX, idxY, idxZ), unpack=True,
                                     skip_header=1)
         except Exception as e:

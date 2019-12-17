@@ -528,6 +528,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
     def checkEqualSpatialRef(self):
         # Check spatial reference of newly added raster
         heightSource = self.projectHandler.heightSource
+        if not heightSource:
+            return False
         hsType = self.projectHandler.heightSourceType
         mapCrs = self.canvas.mapSettings().destinationCrs()
         lyrCrs = heightSource.spatialRef
@@ -594,7 +596,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
             else:
                 msg += ('Bezugssystem der Höhendaten unbekannt. Es wird '
                         'angenommen, dass die Daten dasselbe KBS wie das '
-                        'QGIS-Projekt ({mapCrs.authid()}) besitzen.')
+                        f'QGIS-Projekt ({mapCrs.authid()}) besitzen.')
                 heightSource.spatialRef = mapCrs
                 success = True
         
