@@ -2,9 +2,10 @@ import os
 
 import numpy as np
 from osgeo import gdal
-from qgis.core import QgsRasterLayer, QgsCoordinateReferenceSystem
+from qgis.core import (QgsCoordinateTransform, QgsRasterLayer, QgsPoint,
+                       QgsCoordinateReferenceSystem, QgsProject)
 from scipy import interpolate as ipol
-from math import floor, sin, cos, pi
+from math import sin, cos, pi
 import csv
 
 
@@ -12,6 +13,7 @@ class AbstractHeightSource(object):
     
     def __init__(self):
         self.path = None
+        self.spatialRef = None
         self.extent = []
         self.buffer = (None, None)
     
@@ -23,6 +25,13 @@ class AbstractHeightSource(object):
     
     def getHeightAtPoints(self, coords):
         raise NotImplementedError
+    
+    def guessCrs(self):
+        if self.extent and -180 <= self.extent[0] <= 180 \
+                and -90 <= self.extent[1] <= 90:
+            self.spatialRef = QgsCoordinateReferenceSystem('EPSG:4326')
+        else:
+            self.spatialRef = QgsCoordinateReferenceSystem()
     
     
 class Raster(AbstractHeightSource):
@@ -76,6 +85,8 @@ class Raster(AbstractHeightSource):
             xMax = upx + self.cols * xres + self.rows * xskew
             yMin = upy + self.cols * yskew + self.rows * yres
             self.extent = [xMin, yMax, xMax, yMin]
+            if not self.spatialRef:
+                self.guessCrs()
             self.valid = True
             del ds
     
@@ -86,7 +97,6 @@ class Raster(AbstractHeightSource):
 
         # Extend profile line by buffer length so user can move start and end
         #  point slightly
-        # TODO: Not possible for geographic coordinates
         reverseAzimut = azimut + pi
         if azimut > pi:
             reverseAzimut = azimut - pi
@@ -199,6 +209,8 @@ class SurveyData(AbstractHeightSource):
         self.valid = False
         self.errorMsg = ''
         self.openFile()
+        if not self.spatialRef:
+            self.guessCrs()
     
     def openFile(self):
         success = False
@@ -227,7 +239,6 @@ class SurveyData(AbstractHeightSource):
         # Check if data is in x, y, z format
         elif len(idxX) == 1 and len(idxY) == 1 and len(idxZ) == 1:
             success = self.readOutData(idxX[0], idxY[0], idxZ[0])
-            # TODO: Maybe inform that project coordinate system has to be set correctly
         
         if success:
             self.projectOnLine()
@@ -254,6 +265,22 @@ class SurveyData(AbstractHeightSource):
             'z': z
         }
         return True
+    
+    def transformToProjectedCrs(self, destinationCrs):
+        if not destinationCrs:
+            destinationCrs = QgsCoordinateReferenceSystem('EPSG:2056')
+        transformer = QgsCoordinateTransform(self.spatialRef, destinationCrs,
+                                             QgsProject.instance())
+
+        for i in range(len(self.surveyPoints['x'])):
+            point = QgsPoint(self.surveyPoints['x'][i],
+                             self.surveyPoints['y'][i])
+            point.transform(transformer)
+            self.surveyPoints['x'][i] = point.x()
+            self.surveyPoints['y'][i] = point.y()
+        
+        self.spatialRef = destinationCrs
+        self.projectOnLine()
     
     def projectOnLine(self):
         # Fit a plane through X/Y coordinates with least squares algorithm
@@ -298,6 +325,9 @@ class SurveyData(AbstractHeightSource):
         else:
             sortedCoordinates = res[res[:,0].argsort()]
         self.x, self.y, self.z = np.column_stack(sortedCoordinates)
+        # Update extent with projected coordinates
+        self.extent = [np.min(self.x), np.max(self.y),
+                       np.max(self.x), np.min(self.y)]
 
     def prepareData(self, points, azimut):
         [Ax, Ay] = points['A']

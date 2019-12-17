@@ -117,10 +117,10 @@ class ProjectConfHandler(AbstractConfHandler):
             self.setProjectName(value)
         
         elif property_name == self.header['dhm']:
-            self.setHeightSource(False, sourceType='dhm', sourcePath=value)
+            self.setHeightSource(None, sourceType='dhm', sourcePath=value)
         
         elif property_name == self.header['survey']:
-            self.setHeightSource(False, sourceType='survey', sourcePath=value)
+            self.setHeightSource(None, sourceType='survey', sourcePath=value)
         
         elif property_name in [self.header['A'], self.header['E']]:
             point = property_name[0]

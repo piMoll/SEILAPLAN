@@ -27,7 +27,8 @@ from qgis.PyQt.QtCore import QFileInfo
 from qgis.PyQt.QtWidgets import QDialog, QMessageBox, QFileDialog, QComboBox
 from qgis.PyQt.QtGui import QPixmap
 from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject, QgsPoint,
-                       QgsFeature, QgsGeometry, QgsVectorLayer)
+                       QgsFeature, QgsGeometry, QgsVectorLayer,
+                       QgsCoordinateReferenceSystem)
 from processing.core.Processing import Processing
 
 # Further GUI modules for functionality
@@ -355,7 +356,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
             # Enable gui elements
             self.enableSurveyDataHeightSource()
             # Show data on map and in gui
-            self.loadSurveyData(self.projectHandler.heightSource)
+            self.loadSurveyData()
         
         # Update start and end point
         self.checkPoints()
@@ -475,14 +476,16 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         for rlyr in rasterlist:
             if rlyr['name'] == rastername:
                 self.projectHandler.setHeightSource(rlyr['lyr'], 'dhm')
-                self.iface.setActiveLayer(rlyr['lyr'])
                 # Check spatial reference of selected raster and show message
-                self.checkEqualSpatialRef()
+                if not self.checkEqualSpatialRef():
+                    self.rasterField.setCurrentIndex(-1)
+                    break
+                self.iface.setActiveLayer(rlyr['lyr'])
                 self.iface.zoomToActiveLayer()
                 rasterFound = True
                 break
         if not rasterFound:
-            self.projectHandler.setHeightSource(False)
+            self.projectHandler.setHeightSource(None)
         
         # If a raster was selected, OSM and Contour Layers can be generated
         self.osmLyrButton.setEnabled(rasterFound)
@@ -524,43 +527,80 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
     
     def checkEqualSpatialRef(self):
         # Check spatial reference of newly added raster
+        heightSource = self.projectHandler.heightSource
+        hsType = self.projectHandler.heightSourceType
         mapCrs = self.canvas.mapSettings().destinationCrs()
-        lyrCrs = self.projectHandler.heightSource.spatialRef
+        lyrCrs = heightSource.spatialRef
+        title = 'Fehler Koordinatenbezugssystem (KBS)'
+        msg = ''
+        success = True
         
-        # Just change project coordinate system to the one of raster
-        if lyrCrs.isValid() and lyrCrs != mapCrs:
-            title = 'Anpassung Projekt-Koordinatenbezugssystem (KBS)'
-            txt = ("Das Höhenmodell liegt in einem anderen KBS vor als das "
-                    "QGIS-Projekt. Das Projekt-KBS wird angepasst.")
-            QMessageBox.information(self, title, txt)
+        # Height source has a different crs than map --> map crs is changed
+        if lyrCrs.isValid() and not lyrCrs.isGeographic() and lyrCrs != mapCrs:
             self.canvas.setDestinationCrs(lyrCrs)
             self.canvas.refresh()
+            return True
         
-        # If height source ref system is unknown, check if geographic and
-        # projected systems are mixed
-        if not lyrCrs.isValid():
-            lyrIsGeogr = False
+        # Height source is in a geographic crs
+        elif lyrCrs.isValid() and lyrCrs.isGeographic():
+            # Raster is in geographic coordinates --> automatic transformation
+            # not possible
+            if hsType == 'dhm':
+                msg += ('Raster kann nicht ausgewählt werden. Seilaplan kann '
+                        'Höhenraster nur verarbeiten wenn sie in einem '
+                        'projizierten KBS vorliegen.')
+                success = False
+            # Survey data can be transformed to map crs
+            elif hsType == 'survey' and not mapCrs.isGeographic():
+                # Transform survey data to projected map coordinates
+                heightSource.transformToProjectedCrs(mapCrs)
+                self.projectHandler.setPoint('A', heightSource.getFirstPoint())
+                self.projectHandler.setPoint('E', heightSource.getLastPoint())
+                msg += (f'Felddaten liegen in einem geografischen '
+                        f'Bezugssystem vor.<br>Für die Verarbeitung in '
+                        f'Seilaplan ist ein projiziertes KBS notwendig, die '
+                        f'Daten werden deshalb in das QGIS Projekt-KBS '
+                        f'{mapCrs.description()} ({mapCrs.authid()}) '
+                        f'transformiert.')
+                success = True
             
-            # Analyse extent
-            if self.projectHandler.heightSource.extent \
-                and -180 <= self.projectHandler.heightSource.extent[0] <= 180 \
-                    and -90 <= self.projectHandler.heightSource.extent[1] <= 90:
-                lyrIsGeogr = True
-            
-            # Problem: mixing geographic and projected ref systems
-            if (mapCrs.isGeographic() and not lyrIsGeogr) \
-                    or (not mapCrs.isGeographic and lyrIsGeogr):
-                title = 'Vermischung von geografischem und projizierten KBS'
-                txt = ("Koordinatenbezugssystem (KBS) des Höhenmodells ist "
-                       "unbekannt und scheint nicht mit Projekt-KBS "
-                       "übereinzustimmen.")
-                QMessageBox.information(self, title, txt)
-                return False
+            elif hsType == 'survey' and mapCrs.isGeographic():
+                # Transform to LV95 by default
+                heightSource.transformToProjectedCrs(None)
+                self.projectHandler.setPoint('A', heightSource.getFirstPoint())
+                self.projectHandler.setPoint('E', heightSource.getLastPoint())
+                msg += ('Felddaten liegen in einem geografischen Bezugssystem '
+                        'vor.<br>Für die Verarbeitung in Seilaplan ist ein '
+                        'projiziertes KBS notwendig, die Daten werden '
+                        'deshalb nach CH LV95 (EPSG:2056) transformiert.<br>'
+                        'Soll ein anderes KBS benutzt werden, richten Sie ihr '
+                        'QGIS Projekt bitte vor dem Laden der Felddaten '
+                        'entsprechend ein.')
+                self.canvas.setDestinationCrs(heightSource.spatialRef)
+                self.canvas.refresh()
+                return True
+        
+        elif not lyrCrs.isValid():
+            if mapCrs.isGeographic():
+                msg += ('Bezugssystem der Höhendaten unbekannt.<br>Als '
+                        'Standard-KBS wird das Schweizer System LV95 '
+                        '(EPSG:2056) angenommen.<br>Soll ein anderes KBS '
+                        'benutzt werden, richten Sie ihr QGIS Projekt bitte '
+                        'vor dem Laden der Höhendaten entsprechend ein.')
+                heightSource.spatialRef = QgsCoordinateReferenceSystem('EPSG:2056')
+                self.canvas.setDestinationCrs(heightSource.spatialRef)
+                self.canvas.refresh()
+                success = True
             else:
-                # If mapCrs and layerCrs seem not to mix geographic and
-                # projected ref systems, set the mapCrs as layerCrs
-                self.projectHandler.heightSource.spatialRef = mapCrs
-        return True
+                msg += ('Bezugssystem der Höhendaten unbekannt. Es wird '
+                        'angenommen, dass die Daten dasselbe KBS wie das '
+                        'QGIS-Projekt ({mapCrs.authid()}) besitzen.')
+                heightSource.spatialRef = mapCrs
+                success = True
+        
+        if msg:
+            QMessageBox.information(self, title, msg)
+        return success
     
     def onLoadSurveyData(self):
         title = 'Feldaufnahmen laden'
@@ -571,28 +611,28 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
             self.projectHandler.resetProfile()
             # Load data from csv file
             self.projectHandler.setHeightSource(None, 'survey', filename)
-            self.loadSurveyData(self.projectHandler.heightSource)
+            self.loadSurveyData()
             self.checkPoints()
         else:
             return False
     
-    def loadSurveyData(self, heightSource):
-        """
-        heightSource : tool.heightSource.SurveyData
-        """
+    def loadSurveyData(self):
         # Remove earlier survey data layer
         self.removeSurveyDataLayer()
+
+        # Check the spatial reference and inform user if necessary
+        if not self.checkEqualSpatialRef():
+            self.projectHandler.setHeightSource(None)
+            self.projectHandler.resetProfile()
         
+        heightSource = self.projectHandler.heightSource
         if heightSource and heightSource.valid:
             # Add survey data line to map
             A = heightSource.getFirstPoint()
             E = heightSource.getLastPoint()
             
-            # Check the spatial reference and inform user if necessary
-            self.checkEqualSpatialRef()
-            lyrCrs = heightSource.spatialRef.authid()
-            
             # Create profile layer
+            lyrCrs = heightSource.spatialRef.authid()
             self.surveyLineLayer = QgsVectorLayer('Linestring?crs=' + lyrCrs,
                                                   'Felddaten-Profil', 'memory')
             pr = self.surveyLineLayer.dataProvider()

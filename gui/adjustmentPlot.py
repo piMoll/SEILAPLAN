@@ -121,10 +121,11 @@ class AdjustmentPlot(FigureCanvas):
         self.axes.plot(cable['xaxis'], cable['load'], color='#FF4D44',
                        linewidth=1.5*scale, label="Lastwegkurve\nnach Zweifel")
         # Anchors
-        self.axes.plot(cable['anchor']['d'][:2], cable['anchor']['z'][:2],
-                       color='#FF4D44', linewidth=1.5*scale)
-        self.axes.plot(cable['anchor']['d'][2:], cable['anchor']['z'][2:],
-                       color='#FF4D44', linewidth=1.5*scale)
+        if cable['anchor']:
+            self.axes.plot(cable['anchor']['d'][:2], cable['anchor']['z'][:2],
+                           color='#FF4D44', linewidth=1.5*scale)
+            self.axes.plot(cable['anchor']['d'][2:], cable['anchor']['z'][2:],
+                           color='#FF4D44', linewidth=1.5*scale)
         # Ground clearance
         self.axes.plot(cable['groundclear_di'], cable['groundclear'],
                        color='#910000', linewidth=1*scale, linestyle=':',
