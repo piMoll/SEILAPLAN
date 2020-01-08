@@ -891,5 +891,5 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         if self.profileWin.isVisible():
             self.profileWin.close()
         
-        if not self.startAlgorithm:
+        if not self.startAlgorithm and not self.goToAdjustment:
             self.cleanUp()
