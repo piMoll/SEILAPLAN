@@ -100,7 +100,6 @@ class MapMarkerTool(QgsMapTool):
         self.lineFeature = None
         for line in self.lineFeatureS:
             line.reset()
-            line.deleteLater()
         self.lineFeatureS = []
         self.deactivateCursor()
 
@@ -162,14 +161,12 @@ class MapMarkerTool(QgsMapTool):
     def deleteSectionLines(self):
         for line in self.lineFeatureS:
             line.reset(False)
-            line.deleteLater()
             self.linePoints = []
         self.lineFeatureS = []
     
     def clearUnfinishedLines(self):
         if len(self.linePointsS) == 1:
             self.lineFeatureS[-1].reset(False)
-            self.lineFeatureS[-1].deleteLater()
             self.lineFeatureS.pop(-1)
             self.linePointsS = []
 
