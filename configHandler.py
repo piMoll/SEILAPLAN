@@ -187,9 +187,14 @@ class ProjectConfHandler(AbstractConfHandler):
         elif sourceType == 'survey':
             srs = SurveyData(sourcePath)
             if srs.valid:
+                # TODO: Rückgängig machen wenn Problem mit Nullpunkt behoben
+                # self.points = {
+                #     'A': srs.getFirstPoint(),
+                #     'E': srs.getLastPoint()
+                # }
                 self.points = {
-                    'A': srs.getFirstPoint(),
-                    'E': srs.getLastPoint()
+                    'A': [None, None],
+                    'E': [None, None]
                 }
         if srs and srs.valid:
             self.heightSource = srs

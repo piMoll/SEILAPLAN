@@ -362,7 +362,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.checkPoints()
         
         # Tell profile window to update its content on next show
-        self.updateProfileWinContent()
+        if self.projectHandler.heightSourceType == 'dhm':
+            # TODO: Profil in Diagramm darstellen wenn Survey Data
+            self.updateProfileWinContent()
         
         # Set parameter set
         if self.paramHandler.currentSetName:
@@ -556,8 +558,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
             elif hsType == 'survey' and not mapCrs.isGeographic():
                 # Transform survey data to projected map coordinates
                 heightSource.transformToProjectedCrs(mapCrs)
-                self.projectHandler.setPoint('A', heightSource.getFirstPoint())
-                self.projectHandler.setPoint('E', heightSource.getLastPoint())
+                # TODO: Wieder aktivieren wenn Problem mit Nullpunkt behoben
+                # self.projectHandler.setPoint('A', heightSource.getFirstPoint())
+                # self.projectHandler.setPoint('E', heightSource.getLastPoint())
                 msg += (f'Felddaten liegen in einem geografischen '
                         f'Bezugssystem vor.<br>Für die Verarbeitung in '
                         f'Seilaplan ist ein projiziertes KBS notwendig, die '
@@ -569,8 +572,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
             elif hsType == 'survey' and mapCrs.isGeographic():
                 # Transform to LV95 by default
                 heightSource.transformToProjectedCrs(None)
-                self.projectHandler.setPoint('A', heightSource.getFirstPoint())
-                self.projectHandler.setPoint('E', heightSource.getLastPoint())
+                # TODO: Wieder aktivieren wenn Problem mit Nullpunkt behoben
+                # self.projectHandler.setPoint('A', heightSource.getFirstPoint())
+                # self.projectHandler.setPoint('E', heightSource.getLastPoint())
                 msg += ('Felddaten liegen in einem geografischen Bezugssystem '
                         'vor.<br>Für die Verarbeitung in Seilaplan ist ein '
                         'projiziertes KBS notwendig, die Daten werden '
