@@ -333,10 +333,13 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         # config folder
         parameterSetNames = self.paramHandler.getParametersetNames()
         # Add set names to drop down
+        self.fieldParamSet.blockSignals(True)
         self.fieldParamSet.addItems(parameterSetNames)
-        # Set standard parameter set and associated parameters
+        self.fieldParamSet.blockSignals(False)
+        # Set standard parameter set
         self.paramHandler.setParameterSet('Standardwerte')
         self.fieldParamSet.setCurrentText('Standardwerte')
+        self.fillInValues()
     
     def setupContent(self):
         self.startAlgorithm = False
@@ -366,7 +369,14 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
             # TODO: Profil in Diagramm darstellen wenn Survey Data
             self.updateProfileWinContent()
         
-        # Set parameter set
+        # Load all predefined and user-defined parameter sets from the
+        # config folder (maybe a new set was added when project was opened)
+        parameterSetNames = self.paramHandler.getParametersetNames()
+        # Add set names to drop down
+        self.fieldParamSet.blockSignals(True)
+        self.fieldParamSet.clear()
+        self.fieldParamSet.addItems(parameterSetNames)
+        self.fieldParamSet.blockSignals(False)
         if self.paramHandler.currentSetName:
             self.fieldParamSet.setCurrentText(self.paramHandler.currentSetName)
         else:
