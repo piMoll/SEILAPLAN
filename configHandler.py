@@ -694,7 +694,8 @@ class ParameterConfHandler(AbstractConfHandler):
         
         # Write parameter set out to file
         savePath = os.path.join(self.SETS_PATH, f'{setname}.txt')
-        with io.open(savePath, encoding='utf-8', mode='w+') as f:
+        # TODO: Check if file can be written to disk (filename, write access)
+        with io.open(savePath, encoding='utf-8', mode='w') as f:
             # Write header
             f.writelines('name\tvalue\n')
             f.writelines('label\t' + setname + '\n')
@@ -849,7 +850,7 @@ class ConfigHandler(object):
         
         if os.path.exists(filename):
             os.remove(filename)
-        with io.open(filename, encoding='utf-8', mode='w+') as f:
+        with io.open(filename, encoding='utf-8', mode='w') as f:
             # Write project info
             f.writelines(projectStr)
             f.writelines('\n')
