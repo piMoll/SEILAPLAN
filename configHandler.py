@@ -348,17 +348,17 @@ class ProjectConfHandler(AbstractConfHandler):
         formattedProjectInfo = []
         for title, info in txt:
             line = '{0: <17}{1}'.format(title, info)
-            formattedProjectInfo += line + os.linesep
+            formattedProjectInfo += line + '\n'
         
         # Pole data
         formattedPoleData = ''
         if self.poles:
             formattedPoleData = [
-                4 * os.linesep,
-                'Stützendaten:' + os.linesep,
+                4 * '\n',
+                'Stützendaten:\n',
                 '\t'.join(['Nr.', 'Dist.', 'Höhe', 'Neigung', 'man.', 'Typ',
-                           'Name']) + os.linesep,
-                '-'*60 + os.linesep
+                           'Name']) + '\n',
+                '-'*60 + '\n'
             ]
             idx = 0
             for p in self.poles.poles:
@@ -366,7 +366,7 @@ class ProjectConfHandler(AbstractConfHandler):
                             1 if p['manually'] else 0,
                            p['poleType'], p['name']]
                 poleStr = [str(m) for m in poleData]
-                formattedPoleData.append('\t'.join(poleStr) + os.linesep)
+                formattedPoleData.append('\t'.join(poleStr) + '\n')
                 idx += 1
         
         return formattedProjectInfo, formattedPoleData
@@ -644,14 +644,14 @@ class ParameterConfHandler(AbstractConfHandler):
         """ """
         txt = [
             '{5}{5}{0}{5}{1: <17}{2: <12}{3: <45}{4: <9} {5:-<84}{5}'.format(
-                'Parameter:', 'Name', 'Wert', 'Label', 'Einheit', os.linesep)]
+                'Parameter:', 'Name', 'Wert', 'Label', 'Einheit', '\n')]
         for property_name in self.paramOrder:
             p = self.params[property_name]
             # Get correctly formatted string of value
             value = self.getParameterAsStr(property_name)
             # Combine label, value and units
             line = '{0: <17}{1: <12}{2: <45}{3: <9}{4}'.format(property_name,
-                                    value, p['label'], p['unit'], os.linesep)
+                                    value, p['label'], p['unit'], '\n')
             txt.append(line)
         txt.append('{0: <17}{1: <12}'.format('Parameterset:', self.currentSetName))
         return txt
@@ -696,11 +696,11 @@ class ParameterConfHandler(AbstractConfHandler):
         savePath = os.path.join(self.SETS_PATH, f'{setname}.txt')
         with io.open(savePath, encoding='utf-8', mode='w+') as f:
             # Write header
-            f.writelines('name\tvalue' + os.linesep)
-            f.writelines('label\t' + setname + os.linesep)
+            f.writelines('name\tvalue\n')
+            f.writelines('label\t' + setname + '\n')
             # Write parameter values
             for property_name, value in self.parameterSets[setname].items():
-                f.writelines(f"{property_name}\t{value}{os.linesep}")
+                f.writelines(f"{property_name}\t{value}\n")
     
     def castToNumber(self, dtype, value):
         # Cast value to correct type
@@ -786,7 +786,11 @@ class ConfigHandler(object):
                     part[1] = ''
                 key = part[0]
                 if key == 'Parameterset:':
-                    self.params.currentSetName = part[1]
+                    setname = part[1]
+                    if setname not in self.params.parameterSets.keys():
+                        # Save new parameter set
+                        self.params.saveParameterSet(setname)
+                    self.params.currentSetName = setname
                     return lineNr
                 self.params.batchSetParameter(key, part[1])
         
@@ -848,7 +852,7 @@ class ConfigHandler(object):
         with io.open(filename, encoding='utf-8', mode='w+') as f:
             # Write project info
             f.writelines(projectStr)
-            f.writelines(os.linesep)
+            f.writelines('\n')
             # Write parameter values
             f.writelines(paramsStr)
             # Write pole info
@@ -911,9 +915,9 @@ class ConfigHandler(object):
                                         self.outputOptions['plot'],
                                         self.outputOptions['geodata'],
                                         self.outputOptions['coords'],
-                                        os.linesep))
+                                        '\n'))
             for path in self.commonPaths:
-                f.writelines(path + os.linesep)
+                f.writelines(path + '\n')
     
     def getCurrentPath(self):
         try:
