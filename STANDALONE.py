@@ -16,15 +16,19 @@ python -m SEILAPLAN.STANDALONE
 
 """
 
+import time
+import traceback
 from qgis.core import QgsTask
 from qgis.PyQt.QtCore import pyqtSignal
 from .configHandler import ConfigHandler
 from .tool.mainSeilaplan import main as mainSeilaplan
+from .tool.outputReport import getTimestamp
 
 
 class ProcessingTask(QgsTask):
     """
-    Dummy Class to handle the progress information events from the algorithm
+    Dummy Class to handle progress information events from the algorithm,
+    this would normally be handled by the qgis task manager.
     """
     # Signals
     sig_jobEnded = pyqtSignal(bool)
@@ -40,8 +44,8 @@ class ProcessingTask(QgsTask):
         self.exception = None
         self.confHandler = confHandler
         self.projInfo = confHandler.project
-        self.resultStatus = None
         self.result = None
+        self.status = []
     
     def isCanceled(self):
         return
@@ -56,28 +60,52 @@ class ProcessingTask(QgsTask):
 def main():
     """ Here we define parameters for the algorithm, let the algorithm rund
     and create output files."""
-    
+
+    t_start = time.time()
     conf = ConfigHandler()
-    conf.loadFromFile('/home/pi/Seilaplan/test/test_wartau_NO-SW_450m_DeltaP.txt')
+    conf.loadFromFile('/home/pi/Seilaplan/nullpunkt_test/NW_raster_840m_6pole/Projekteinstellungen.txt')
     conf.prepareForCalculation()
     
     # Start calculations
-    output = mainSeilaplan(ProcessingTask(conf), conf.project)
-    
-    if not output:  # If error in code
+    task = ProcessingTask(conf)
+    try:
+        result = mainSeilaplan(task, conf.project)
+    except Exception as e:
+        return traceback.format_exc()
+        
+    if not result:  # If error in code
         return False
-    else:
-        [resultStatus, result] = output
+
+    # Calculate duration of calculation and generate time stamp
+    result['duration'] = getTimestamp(t_start)
+
+    statusNames = {
+        1: 'optiSuccess',
+        2: 'liftsOff',
+        3: 'notComplete'
+    }
+    status = statusNames[max(task.status)]
     
-    # Output resultStatus
-    #   1 = Optimization successful
-    #   2 = Cable takes off from support
-    #   3 = Optimization partially successful
-    
-    return resultStatus, result, conf.project
+    return status, result, conf.project
 
 
 if __name__ == "__main__":
-    resultStatus, [t_start, cableline, kraft, optSTA, optiLen], project = main()
+    status, result, project = main()
+
+    # status:
+    #   optiSuccess =   Optimization successful
+    #   liftsOff =      Cable is lifting off one or more poles
+    #   notComplete =   Optimization partially successful: It was not possible
+    #                   to calculate poles along the entire profile
+
+    seillinie = result['cableline']
+    optSTA = result['optSTA']
+    optSTA_arr = result['optSTA_arr']
+    kraft = result['force']
+    optLen = result['optLen']
+    duration = result['duration']
     
+    # TODO: Bericht erstellen, csv exportieren
+    
+
     print('done')
