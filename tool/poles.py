@@ -17,25 +17,26 @@ class Poles(object):
         self.params = project.params
         self.heightSource = project.heightSource
         [self.Ax, self.Ay] = project.points['A']
-        [self.Ex, self.Ey] = project.points['E']
         self.azimut = project.azimut
         self.anchor = {}
         
         # Create anchors and start / end point
         self.poles = []
+        # Length of first anchor field; is used to shift horizontal distances
+        self.anchorA = self.params.getParameter('d_Anker_A')
+        heightA = self.params.getParameter('HM_Anfang')
+        anchorE = self.params.getParameter('d_Anker_E')
+        heightE = self.params.getParameter('HM_Ende_max')
         # Anchor at start point
-        self.add(0, -1 * self.params.getParameter('d_Anker_A'), 0,
-                 poleType='anchor')
-        # First pole at start point
-        self.add(1, 0, self.params.getParameter('HM_Anfang'))
+        self.add(0, 0, 0, poleType='anchor')
+        # First pole
+        self.add(1, self.anchorA, heightA)
         # Last pole at end point
         # End point is slightly moved (less than a meter) so that it is the
         # last point on profile with resolution 1m
-        self.add(2, floor(project.profileLength),
-                 self.params.getParameter('HM_Ende_max'))
+        self.add(2, floor(project.profileLength) - anchorE, heightE)
         # Anchor at end point
-        self.add(3, floor(project.profileLength) +
-                 self.params.getParameter('d_Anker_E'), 0, poleType='anchor')
+        self.add(3, floor(project.profileLength), 0, poleType='anchor')
         self.calculateAnchor()
     
     def add(self, idx, d, h=INIT_POLE_HEIGHT, angle=INIT_POLE_ANGLE,
@@ -101,7 +102,7 @@ class Poles(object):
             self.poles = [anchor_start]
             # Add calculated poles between start and end anchor
             for idx, p in enumerate(poles):
-                self.add(idx + 1, p['d'], p['h'], name=p['name'])
+                self.add(idx + 1, p['d'] + self.anchorA, p['h'], name=p['name'])
             # Add anchor at end point
             self.poles.append(anchor_end)
         
@@ -158,11 +159,13 @@ class Poles(object):
         poleE_hz = self.poles[-2]['h'] + (self.poles[-2]['z'] - self.poles[-1]['z'])
     
         # If anchor field has length 0, the first/last pole becomes the anchor
-        if self.poles[0]['d'] == 0:
+        # TODO: Wenn Ankerfeld = 0m oder Stützenhöhe = 0m, dann muss Anker
+        #  entfernt werden und 1. Stütze auf 0m eingestellt werden
+        if self.poles[0]['d'] == self.poles[1]['d']:
             poleA_hz = 0.0
         if self.poles[-1]['d'] == self.poles[-2]['d']:
             poleE_hz = 0.0
-        if self.poles[-2]['h'] == 0:
+        if self.poles[-2]['h'] == 0:        # last pole has height = 0
             poleE_hz = 0.0
     
         anchor_field = [d_Anchor_A, poleA_hz,

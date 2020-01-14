@@ -170,9 +170,12 @@ class MapMarkerTool(QgsMapTool):
             self.lineFeatureS.pop(-1)
             self.linePointsS = []
 
-    def drawMarker(self, point, idx=None, color=POLE_COLOR):
+    def drawMarker(self, point, idx=None, pointType='anchor', color=POLE_COLOR):
         qgsPoint = self.convertToQgsPoint(point)
-        marker = QgsPoleMarker(self.canvas, color)
+        if pointType == 'anchor':
+            marker = QgsAnchorMarker(self.canvas, color)
+        else:
+            marker = QgsPoleMarker(self.canvas, color)
         marker.setCenter(qgsPoint)
         if not idx:
             self.markers.append(marker)
@@ -230,6 +233,15 @@ class QgsPoleMarker(QgsVertexMarker):
         QgsVertexMarker.__init__(self, canvas)
         self.setColor(QColor(color))
         self.setIconType(QgsVertexMarker.ICON_BOX)
+        self.setIconSize(11)
+        self.setPenWidth(3)
+
+
+class QgsAnchorMarker(QgsVertexMarker):
+    def __init__(self, canvas, color):
+        QgsVertexMarker.__init__(self, canvas)
+        self.setColor(QColor(color))
+        self.setIconType(QgsVertexMarker.ICON_CIRCLE)
         self.setIconSize(11)
         self.setPenWidth(3)
 

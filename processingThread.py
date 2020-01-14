@@ -69,7 +69,6 @@ class ProcessingTask(QgsTask):
         #     pass
 
         t_start = time.time()
-        self.confHandler.prepareForCalculation()
         try:
             # Create profile, initialize poles
             self.confHandler.prepareForCalculation()

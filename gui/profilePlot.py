@@ -97,7 +97,7 @@ class ProfilePlot(FigureCanvas):
 
         # Draw start and end
         self.axes.scatter(self.x_data[[0, -1]], self.y_data[[0, -1]],
-                          zorder=100, c=POLE_COLOR, s=80, marker='s')
+                          zorder=100, c=POLE_COLOR, s=80, marker='o')
         # Label
         self.axes.text(self.x_data[0], self.y_data[0] + self.labelScale,
                        'A',  ha='center', fontsize=12)

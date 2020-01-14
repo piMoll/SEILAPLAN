@@ -568,9 +568,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
             elif hsType == 'survey' and not mapCrs.isGeographic():
                 # Transform survey data to projected map coordinates
                 heightSource.transformToProjectedCrs(mapCrs)
-                # TODO: Wieder aktivieren wenn Problem mit Nullpunkt behoben
-                # self.projectHandler.setPoint('A', heightSource.getFirstPoint())
-                # self.projectHandler.setPoint('E', heightSource.getLastPoint())
+                self.projectHandler.setPoint('A', heightSource.getFirstPoint())
+                self.projectHandler.setPoint('E', heightSource.getLastPoint())
                 msg += (f'Felddaten liegen in einem geografischen '
                         f'Bezugssystem vor.<br>Für die Verarbeitung in '
                         f'Seilaplan ist ein projiziertes KBS notwendig, die '
@@ -582,9 +581,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
             elif hsType == 'survey' and mapCrs.isGeographic():
                 # Transform to LV95 by default
                 heightSource.transformToProjectedCrs(None)
-                # TODO: Wieder aktivieren wenn Problem mit Nullpunkt behoben
-                # self.projectHandler.setPoint('A', heightSource.getFirstPoint())
-                # self.projectHandler.setPoint('E', heightSource.getLastPoint())
+                self.projectHandler.setPoint('A', heightSource.getFirstPoint())
+                self.projectHandler.setPoint('E', heightSource.getLastPoint())
                 msg += ('Felddaten liegen in einem geografischen Bezugssystem '
                         'vor.<br>Für die Verarbeitung in Seilaplan ist ein '
                         'projiziertes KBS notwendig, die Daten werden '
@@ -880,6 +878,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
     def apply(self):
         if self.confHandler.checkValidState() and self.checkEqualSpatialRef:
             self.startAlgorithm = True
+            self.goToAdjustment = False
         else:
             # If project info or parameter are missing or wrong, algorithm
             # can not start
@@ -905,5 +904,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         if self.profileWin.isVisible():
             self.profileWin.close()
         
-        if not self.startAlgorithm and not self.goToAdjustment:
+        if self.startAlgorithm or self.goToAdjustment:
+            self.drawTool.reset()
+        else:
             self.cleanUp()

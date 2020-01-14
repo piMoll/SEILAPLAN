@@ -18,9 +18,19 @@ class Profile(object):
         """
         [self.Ax, self.Ay] = project.points['A']
         [self.Ex, self.Ey] = project.points['E']
-        self.profileLength = project.profileLength
         self.params = project.params
         self.heightSource = project.heightSource
+        
+        # Profile for optimization algorithm is defined between first and
+        #  last pole
+        self.poleAx = project.poleAx
+        self.poleAy = project.poleAy
+        self.poleEx = project.poleEx
+        self.poleEy = project.poleEy
+        self.profileLength = ((self.poleEx - self.poleAx) ** 2 +
+                              (self.poleEy - self.poleAy) ** 2) ** 0.5
+        self.anchorA = self.params.getParameter('d_Anker_A')
+        self.anchorE = self.params.getParameter('d_Anker_E')
 
         self.dx = None
         self.dy = None
@@ -52,31 +62,33 @@ class Profile(object):
         self.generateProfile()
     
     def generateProfile(self):
-        # Length of single line section between start and end point
+        # Length of single line section between first and last pole
         dp = self.profileLength / self.SAMPLING_DISTANCE
         # Number of sampling points including start point but not end point
         pCount = floor(dp)
         # Line sections in x and y direction
-        dx = (float(self.Ex) - float(self.Ax)) / dp
-        dy = (float(self.Ey) - float(self.Ay)) / dp
+        dx = (float(self.poleEx) - float(self.poleAx)) / dp
+        dy = (float(self.poleEy) - float(self.poleAy)) / dp
     
         if dx == 0:
-            xi = np.array([self.Ax] * pCount)
+            xi = np.array([self.poleAx] * pCount)
         else:
             # range max value (end point) is not included
-            xi = np.arange(self.Ax, self.Ex, dx)
+            xi = np.arange(self.poleAx, self.poleEx, dx)
         if dy == 0:
-            yi = np.array([self.Ay] * pCount)
+            yi = np.array([self.poleAy] * pCount)
         else:
             # range max value (end point) is not included
-            yi = np.arange(self.Ay, self.Ey, dy)
+            yi = np.arange(self.poleAy, self.poleEy, dy)
     
         # Number of sampling points between start/end point and end of profile
-        pCount_dA = floor(self.heightSource.buffer[0] / self.SAMPLING_DISTANCE)
-        pCount_dE = floor(self.heightSource.buffer[1] / self.SAMPLING_DISTANCE)
+        pCount_dA = floor((self.heightSource.buffer[0] + self.anchorA) / self.SAMPLING_DISTANCE)
+        pCount_dE = floor((self.heightSource.buffer[1] + self.anchorE) / self.SAMPLING_DISTANCE)
     
-        xiA_d = np.linspace(self.Ax - dx, self.Ax - pCount_dA * dx, pCount_dA)
-        yiA_d = np.linspace(self.Ay - dy, self.Ay - pCount_dA * dy, pCount_dA)
+        # Array contains coordinates from first pole backwards to first anchor
+        #  and then the buffer amount
+        xiA_d = np.linspace(self.poleAx - dx, self.poleAx - pCount_dA * dx, pCount_dA)
+        yiA_d = np.linspace(self.poleAy - dy, self.poleAy - pCount_dA * dy, pCount_dA)
         xiE_d = np.linspace(xi[-1] + dx, xi[-1] + pCount_dE * dx, pCount_dE)
         yiE_d = np.linspace(yi[-1] + dy, yi[-1] + pCount_dE * dy, pCount_dE)
     
@@ -84,6 +96,9 @@ class Profile(object):
         self.yi_disp = np.concatenate((yiA_d[::-1], yi, yiE_d))
         self.di_disp = np.arange(-1 * np.size(xiA_d), np.size(xi)
                                  + np.size(xiE_d), self.SAMPLING_DISTANCE)
+        # For plots (disp = display) the horizontal distance array has its
+        #  origin at the first anchor, so everything is shifted by this amount
+        self.di_disp += int(self.anchorA)
     
         # Interpolate z values on raster
         coords = np.rollaxis(np.array([self.yi_disp, self.xi_disp]), 1)
@@ -179,5 +194,6 @@ class Profile(object):
         cableline['groundclear_rel'] = gclear_rel
     
     def setPeakLocations(self, peakLoc):
-        self.peakLoc_x = peakLoc
-        self.peakLoc_z = self.zi[self.peakLoc_x]
+        self.peakLoc_z = self.zi[peakLoc]
+        # Shift horizontal location by anchor field length
+        self.peakLoc_x = peakLoc + int(self.anchorA)

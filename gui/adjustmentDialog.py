@@ -189,11 +189,11 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
     def updatePole(self, idx, property_name, newVal):
         self.poles.update(idx, property_name, newVal)
        
-        # Update pole markers on map except if its an anchor
-        if property_name == 'd' and 0 < idx < len(self.poles.poles)-1:
+        # Update markers on map
+        if property_name == 'd':
             self.updateMarkerOnMap(idx)
-            # If star or end pole have changed, the profile line is also updated
-            if idx in [1, len(self.poles.poles) - 2]:
+            # If anchor have been changed, the profile line has to be updated
+            if idx in [0, len(self.poles.poles) - 1]:
                 self.updateLineOnMap()
 
         # self.plot.zoomTo(self.poles.poles[idx])
@@ -225,32 +225,37 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         self.poles.delete(idx)
         self.poleLayout.deleteRow(idx, self.poles.poles[idx-1]['d'],
                                   self.poles.poles[idx+1]['d'])
-        self.drawTool.removeMarker(idx-1)
+        self.drawTool.removeMarker(idx)
         # self.plot.zoomOut()
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         self.configurationHasChanged = True
     
     def updateLineOnMap(self):
-        startPole = self.poles.poles[1]
-        endPole = self.poles.poles[-2]
+        startPole = self.poles.poles[0]
+        endPole = self.poles.poles[-1]
         self.drawTool.updateLine([
                 [startPole['coordx'], startPole['coordy']],
-                [endPole['coordx'], endPole['coordy']]], False)
+                [endPole['coordx'], endPole['coordy']]], drawMarker=False)
     
     def addMarkerToMap(self, idx=-1):
         # Mark all poles except anchors on map
         if idx == -1:
-            for pole in self.poles.poles[1:-1]:
-                self.drawTool.drawMarker([pole['coordx'], pole['coordy']])
+            for i, pole in enumerate(self.poles.poles):
+                poleType = 'pole'
+                if i in [0, len(self.poles.poles) - 1]:
+                    poleType = 'anchor'
+                self.drawTool.drawMarker([pole['coordx'], pole['coordy']], i,
+                                         pointType=poleType)
         else:
             # Add a new pole to the map
             pole = self.poles.poles[idx]
-            self.drawTool.drawMarker([pole['coordx'], pole['coordy']], idx-1)
+            self.drawTool.drawMarker([pole['coordx'], pole['coordy']], idx,
+                                     'pole')
     
     def updateMarkerOnMap(self, idx):
         point = [self.poles.poles[idx]['coordx'],
                  self.poles.poles[idx]['coordy']]
-        self.drawTool.updateMarker(point, idx-1)
+        self.drawTool.updateMarker(point, idx)
     
     def updateOptSTA(self, newVal):
         self.result['optSTA'] = float(newVal)
