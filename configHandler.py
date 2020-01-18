@@ -391,7 +391,7 @@ class ProjectConfHandler(AbstractConfHandler):
     
     def prepareForCalculation(self):
         # Prepare raster (create subraster) or interpolate survey data
-        self.heightSource.prepareData(self.points, self.azimut)
+        self.heightSource.prepareData(self.points, self.azimut, self.params)
 
         # From subraster or survey data create profile line
         self.profile = Profile(self)

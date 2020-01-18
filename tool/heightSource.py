@@ -37,7 +37,6 @@ class AbstractHeightSource(object):
 class Raster(AbstractHeightSource):
     
     BUFFER_DEFAULT = 21
-    ANCHOR_BUFFER = 5
     
     def __init__(self, layer=None, path=None):
         AbstractHeightSource.__init__(self)
@@ -45,7 +44,7 @@ class Raster(AbstractHeightSource):
         self.name = None
         self.spatialRef = None
         self.subraster = None
-        self.buffer = (self.BUFFER_DEFAULT, self.BUFFER_DEFAULT)
+        self.buffer = [None, None]
         self.valid = False
         self.errorMsg = ''
         
@@ -90,10 +89,14 @@ class Raster(AbstractHeightSource):
             self.valid = True
             del ds
     
-    def prepareData(self, points, azimut):
+    def prepareData(self, points, azimut, params):
         [Ax, Ay] = points['A']
         [Ex, Ey] = points['E']
         [xMin, yMax, xMax, yMin] = self.extent
+        anchorA = params.getParameter('d_Anker_A')
+        anchorE = params.getParameter('d_Anker_E')
+        self.buffer = [self.BUFFER_DEFAULT + anchorA,
+                       self.BUFFER_DEFAULT + anchorE]
 
         # Extend profile line by buffer length so user can move start and end
         #  point slightly
@@ -188,7 +191,6 @@ class Raster(AbstractHeightSource):
 class SurveyData(AbstractHeightSource):
     
     BUFFER_DEFAULT = 0
-    ANCHOR_BUFFER = 5
     
     def __init__(self, path):
         AbstractHeightSource.__init__(self)
@@ -333,7 +335,7 @@ class SurveyData(AbstractHeightSource):
         self.extent = [np.min(self.x), np.max(self.y),
                        np.max(self.x), np.min(self.y)]
 
-    def prepareData(self, points, azimut):
+    def prepareData(self, points, azimut, params):
         [Ax, Ay] = points['A']
         [Ex, Ey] = points['E']
         # Switch sorting of points if cable line goes in opposite direction
@@ -342,7 +344,7 @@ class SurveyData(AbstractHeightSource):
             # If profile line defined by A and E has descending x-coordinates
             # we have to switch the coordinate arrays.
             # Special case: If all points lie perfectly on a vertical (map)
-            # axis (all points have same x-coord), wen have to check if
+            # axis (all points have same x-coord), we have to check if
             # y-coord is descending.
             self.x = self.x[::-1]
             self.y = self.y[::-1]
@@ -353,7 +355,7 @@ class SurveyData(AbstractHeightSource):
         # Calculate distances from every point to first point on profile
         dist = ((self.x - np.ones_like(self.x) * x0) ** 2
                 + (self.y - np.ones_like(self.x) * y0) ** 2) ** 0.5
-        # distArr = np.column_stack((dist, self.z))
+
         # Interpolate distance-height points on profile
         self.interpolFunc = ipol.interp1d(dist, self.z)
         
