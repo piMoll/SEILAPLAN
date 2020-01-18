@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>569</width>
+    <width>591</width>
     <height>459</height>
    </rect>
   </property>
@@ -234,7 +234,7 @@
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>180</width>
+                   <width>200</width>
                    <height>30</height>
                   </size>
                  </property>
@@ -267,7 +267,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>Distanz</string>
+                  <string>Horiz.distanz</string>
                  </property>
                  <property name="margin">
                   <number>0</number>
@@ -287,12 +287,12 @@
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>85</width>
+                   <width>95</width>
                    <height>30</height>
                   </size>
                  </property>
                  <property name="text">
-                  <string>Höhe</string>
+                  <string>Stützenhöhe</string>
                  </property>
                  <property name="margin">
                   <number>0</number>

@@ -243,7 +243,7 @@ class ProfilePlot(FigureCanvas):
 
     def __setupAxes(self):
         self.axes.set_xlabel("Horizontaldistanz [m]", fontsize=11)
-        self.axes.set_ylabel("Höhe [M.ü.M]", fontsize=11)
+        self.axes.set_ylabel("Höhe [m.ü.M]", fontsize=11)
         self.axes.grid(which='major', lw=1)
         self.axes.grid(which='minor', lw=1, linestyle=':')
         self.axes.ticklabel_format(style='plain', useOffset=False)

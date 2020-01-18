@@ -209,7 +209,7 @@ class AdjustmentPlot(FigureCanvas):
         self.axes.set_title(f'Seilaplan Plot  -  {title}', fontsize=10,
                             multialignment='center', y=1.05)
         self.axes.set_xlabel("Horizontaldistanz [m]", fontsize=9)
-        self.axes.set_ylabel("Höhe [M.ü.M]", fontsize=9)
+        self.axes.set_ylabel("Höhe [m.ü.M]", fontsize=9)
         self.axes.tick_params(labelsize=8)
         self.axes.grid(which='major', lw=0.5)
         self.axes.grid(which='minor', lw=0.5, linestyle=':')

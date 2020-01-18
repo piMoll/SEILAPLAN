@@ -101,7 +101,7 @@ def generateReportText(confHandler, result, comment):
     
     # Section poles
     str_posi = [["", "Höhe [m]", "Neigung [°]", "X-Koordinate", "Y-Koordinate",
-                 "Z-Koordinate [M.ü.M.]"]]
+                 "Z-Koordinate [m.ü.M.]"]]
     for s in range(len(poleslist)):
         pole = poles.poles[s]
         angle = round(pole['angle'], 0) if pole['angle'] != 0 else '-'
