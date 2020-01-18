@@ -11,7 +11,6 @@ class Poles(object):
     
     def __init__(self, project):
         """
-
         :type project: configHandler.ProjectConfHandler
         """
         self.params = project.params
@@ -24,20 +23,28 @@ class Poles(object):
         self.poles = []
         # Length of first anchor field; is used to shift horizontal distances
         self.anchorA = self.params.getParameter('d_Anker_A')
+        self.anchorE = self.params.getParameter('d_Anker_E')
         heightA = self.params.getParameter('HM_Anfang')
-        anchorE = self.params.getParameter('d_Anker_E')
         heightE = self.params.getParameter('HM_Ende_max')
-        # Anchor at start point
-        self.add(0, 0, 0, poleType='anchor')
-        # First pole
-        self.add(1, self.anchorA, heightA)
-        # Last pole at end point
         # End point is slightly moved (less than a meter) so that it is the
-        # last point on profile with resolution 1m
-        self.add(2, floor(project.profileLength) - anchorE, heightE)
-        # Anchor at end point
-        self.add(3, floor(project.profileLength), 0, poleType='anchor')
-        self.calculateAnchor()
+        # last point on profile with step size of 1m
+        self.profileLength = floor(project.profileLength)
+        
+        idx = 0
+        if self.anchorA:
+            # Anchor at start point
+            self.add(idx, -1*self.anchorA, 0, poleType='anchor')
+            idx = 1
+        # First pole at 0 m horizontal distance
+        self.add(idx, 0, heightA)
+        # Last pole
+        self.add(idx+1, self.profileLength, heightE)
+        if self.anchorE:
+            # Anchor at end point
+            self.add(idx+2, self.profileLength + self.anchorE, 0,
+                     poleType='anchor')
+        
+        self.calculateAnchorLength()
     
     def add(self, idx, d, h=INIT_POLE_HEIGHT, angle=INIT_POLE_ANGLE,
             manually=False, poleType='pole', name=''):
@@ -95,16 +102,22 @@ class Poles(object):
 
     def updateAllPoles(self, status, poles):
         if status == 'optimization':
-            # Optimization has run without an error, optimized poles are
-            # added to anchor points.
-            anchor_start = self.poles[0]
-            anchor_end = self.poles[-1]
-            self.poles = [anchor_start]
+            # Reset all pole data
+            self.poles = []
+            idx = 0
+            if self.anchorA:
+                self.add(0, -1*self.anchorA, 0, poleType='anchor')
+                idx = 1
+            
             # Add calculated poles between start and end anchor
-            for idx, p in enumerate(poles):
-                self.add(idx + 1, p['d'] + self.anchorA, p['h'], name=p['name'])
-            # Add anchor at end point
-            self.poles.append(anchor_end)
+            for p in poles:
+                self.add(idx, p['d'], p['h'], name=p['name'])
+                idx += 1
+            
+            if self.anchorE:
+                # Anchor at end point
+                self.add(idx, self.profileLength + self.anchorE, 0,
+                         poleType='anchor')
         
         elif status == 'savedFile':
             # User wants to jump over the optimization and has loaded a save
@@ -118,60 +131,66 @@ class Poles(object):
             # User wants to jump over the optimization but has not loaded a
             # save file with pole data. But since there are some fixed poles,
             # these are added in between first and last pole.
-            for idx, p in enumerate(poles):
-                self.add(idx + 2, p['d'], p['h'], name=p['name'])
+            idx = 1
+            if self.anchorA:
+                idx = 2
+            for i, p in enumerate(poles):
+                self.add(idx + i, p['d'], p['h'], name=p['name'])
 
         # Recalculate anchor data with updated pole data
-        self.calculateAnchor()
+        self.calculateAnchorLength()
     
     def getAsArray(self, withAnchor=False):
-        poles = self.poles[:]
-        arrLen = len(self.poles)
-        if not withAnchor:
-            poles = self.poles[1:-1]
-            arrLen -= 2
+        d = []
+        z = []
+        h = []
+        dtop = []
+        ztop = []
         
-        d = np.empty(arrLen)
-        z = np.empty(arrLen)
-        h = np.empty(arrLen)
-        dtop = np.empty(arrLen)
-        ztop = np.empty(arrLen)
-        
-        for i, pole in enumerate(poles):
-            d[i] = pole['d']
-            z[i] = pole['z']
-            h[i] = pole['h']
-            dtop[i] = pole['dtop']
-            ztop[i] = pole['ztop']
+        for i, pole in enumerate(self.poles):
+            if not withAnchor and pole['poleType'] == 'anchor':
+                continue
+            d.append(pole['d'])
+            z.append(pole['z'])
+            h.append(pole['h'])
+            dtop.append(pole['dtop'])
+            ztop.append(pole['ztop'])
+
+        d = np.array(d)
+        z = np.array(z)
+        h = np.array(h)
+        dtop = np.array(dtop)
+        ztop = np.array(ztop)
         return [d, z, h, dtop, ztop]
+    
+    def getFirstPole(self):
+        for idx, pole in enumerate(self.poles):
+            if pole['poleType'] == 'pole':
+                return pole, idx
+    
+    def getLastPole(self):
+        for idx, pole in enumerate(self.poles[::-1]):
+            if pole['poleType'] == 'pole':
+                return pole, len(self.poles) - 1 - idx
 
     def delete(self, idx):
         self.poles.pop(idx)
     
-    def calculateAnchor(self):
+    def calculateAnchorLength(self):
         """ Calculate anchor cable line and interpolate ground points.
         """
-        d_Anchor_A = self.params.getParameter('d_Anker_A')
-        d_Anchor_E = self.params.getParameter('d_Anker_E')
+        # Height difference between anchor point and top of first/last pole
+        poleA_hz = 0
+        poleE_hz = 0
+        if self.anchorA:
+            poleA_hz = self.poles[1]['ztop'] - self.poles[0]['ztop']
+        if self.anchorE:
+            poleE_hz = self.poles[-2]['ztop'] - self.poles[-1]['ztop']
     
-        # Height of first and last pole (not anchor) seen from point of anchor
-        poleA_hz = self.poles[1]['h'] + (self.poles[1]['z'] - self.poles[0]['z'])
-        poleE_hz = self.poles[-2]['h'] + (self.poles[-2]['z'] - self.poles[-1]['z'])
-    
-        # If anchor field has length 0, the first/last pole becomes the anchor
-        # TODO: Wenn Ankerfeld = 0m oder Stützenhöhe = 0m, dann muss Anker
-        #  entfernt werden und 1. Stütze auf 0m eingestellt werden
-        if self.poles[0]['d'] == self.poles[1]['d']:
-            poleA_hz = 0.0
-        if self.poles[-1]['d'] == self.poles[-2]['d']:
-            poleE_hz = 0.0
-        if self.poles[-2]['h'] == 0:        # last pole has height = 0
-            poleE_hz = 0.0
-    
-        anchor_field = [d_Anchor_A, poleA_hz,
-                        d_Anchor_E, poleE_hz]
-        anchor_len = (d_Anchor_A ** 2 + poleA_hz ** 2) ** 0.5 + \
-                     (d_Anchor_E ** 2 + poleE_hz ** 2) ** 0.5
+        anchor_field = [self.anchorA, poleA_hz,
+                        self.anchorE, poleE_hz]
+        anchor_len = (self.anchorA ** 2 + poleA_hz ** 2) ** 0.5 + \
+                     (self.anchorE ** 2 + poleE_hz ** 2) ** 0.5
     
         self.anchor = {
             'field': anchor_field,
@@ -187,8 +206,21 @@ class Poles(object):
         return b, h
     
     def getAnchorCable(self):
+        anchorFieldA = None
+        anchorFieldE = None
         [_, _, _, pole_dtop, pole_ztop] = self.getAsArray(True)
+        
+        if self.anchorA:
+            anchorFieldA = {
+                'd': pole_dtop[:2],
+                'z': pole_ztop[:2]
+            }
+        if self.anchorE:
+            anchorFieldE = {
+                'd': pole_dtop[-2:],
+                'z': pole_ztop[-2:]
+            }
         return {
-            'd': pole_dtop[[0, 1, -2, -1]],
-            'z': pole_ztop[[0, 1, -2, -1]]
+            'A': anchorFieldA,
+            'E': anchorFieldE
         }

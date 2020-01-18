@@ -129,7 +129,7 @@ class TestCalcProfile(unittest.TestCase):
         }
 
         # New calc
-        self.poles.calculateAnchor()
+        self.poles.calculateAnchorLength()
 
         # Tests
         # Compare interpolated z values of anchors
@@ -156,7 +156,7 @@ class TestCalcProfile(unittest.TestCase):
             'len': updated_anchor[1],
             'z': updated_anchor[2]
         }
-        self.poles.calculateAnchor()
+        self.poles.calculateAnchorLength()
 
         # Tests
         # Compare anchor fields

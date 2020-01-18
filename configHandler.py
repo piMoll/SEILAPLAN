@@ -86,12 +86,6 @@ class ProjectConfHandler(AbstractConfHandler):
             'A': [None, None],
             'E': [None, None]
         }
-        # Coordinates of first and last pole (depending on anchor length)
-        self.poleAx = None
-        self.poleAy = None
-        self.poleEx = None
-        self.poleEy = None
-        
         self.coordState = {
             'A': 'yellow',
             'E': 'yellow'
@@ -193,6 +187,8 @@ class ProjectConfHandler(AbstractConfHandler):
         elif sourceType == 'survey':
             srs = SurveyData(sourcePath)
             if srs.valid:
+                # TODO: If anchors are present, this start and end points
+                #  can not be used since the anchor fields are not within the profile data
                 self.points = {
                     'A': srs.getFirstPoint(),
                     'E': srs.getLastPoint()
@@ -237,7 +233,6 @@ class ProjectConfHandler(AbstractConfHandler):
         self.points[pointType] = [x, y]
         self.setAzimut()
         self.setProfileLen()
-        self.setFirstLastPole()
         return self.points[pointType], self.coordState, hasChanged
     
     def checkCoordinatePoint(self, coords):
@@ -297,23 +292,6 @@ class ProjectConfHandler(AbstractConfHandler):
                           (self.points['E'][1] - self.points['A'][1])**2)**0.5
         self.profileLength = length
     
-    def setFirstLastPole(self):
-        self.poleAx = None
-        self.poleAy = None
-        self.poleEx = None
-        self.poleEy = None
-        if self.profileIsValid():
-            # Calculate poles
-            reverseAzimut = self.azimut + pi
-            if self.azimut > pi:
-                reverseAzimut = self.azimut - pi
-            anchorA = self.params.getParameter('d_Anker_A')
-            anchorE = self.params.getParameter('d_Anker_E')
-            self.poleAx = self.points['A'][0] + anchorA * sin(self.azimut)
-            self.poleAy = self.points['A'][1] + anchorA * cos(self.azimut)
-            self.poleEx = self.points['E'][0] + anchorE * sin(reverseAzimut)
-            self.poleEy = self.points['E'][1] + anchorE * cos(reverseAzimut)
-
     def getFixedPoles(self):
         return self.fixedPoles['poles']
     
@@ -412,9 +390,6 @@ class ProjectConfHandler(AbstractConfHandler):
             return f"{number:,.6f}"
     
     def prepareForCalculation(self):
-        # Calculate position of first and last pole (defined by anchor lengths)
-        self.setFirstLastPole()
-        
         # Prepare raster (create subraster) or interpolate survey data
         self.heightSource.prepareData(self.points, self.azimut)
 
@@ -743,6 +718,8 @@ class ParameterConfHandler(AbstractConfHandler):
         return cval
     
     def prepareForCalculation(self):
+        # TODO: If anchor len is 0 --> no anchor len
+        #  if 1. pole h = 0 --> no anchor len
         pass
     
     def getSimpleParameterDict(self):
@@ -809,6 +786,7 @@ class ConfigHandler(object):
                     part[1] = ''
                 key = part[0]
                 if key == 'Parameterset:':
+                    # TODO: Was machen wenn kein paramerset angegeben ist --> kein Abbruchkriterium!
                     setname = part[1]
                     if setname not in self.params.parameterSets.keys():
                         # Save new parameter set

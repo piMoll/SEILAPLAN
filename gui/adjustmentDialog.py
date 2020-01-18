@@ -120,7 +120,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         f.close()
 
         self.poles.poles = dump['poles']
-        self.poles.calculateAnchor()
+        self.poles.calculateAnchorLength()
 
         self.initData(dump, 'optiSuccess')
         
@@ -129,7 +129,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
             self.close()
         # Save original data from optimization
         self.originalData = result
-        # Dictionary properties: cableline, optSTA, force, optLen, optLen_arr, duration
+        # result properties: cable line, optSTA, force, optLen, optLen_arr,
+        #  duration
         self.result = result
         # Algorithm was skipped, no optimized solution
         if status in ['jumpedOver', 'savedFile']:
@@ -158,8 +159,9 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
     
         # Create layout to modify poles
-        lowerDistRange = -1*self.anchorBuffer[0]
-        upperDistRange = self.poles.poles[-1]['d'] + self.anchorBuffer[1]
+        lastPole, _ = self.poles.getLastPole()
+        lowerDistRange = floor(-1*self.anchorBuffer[0])
+        upperDistRange = floor(lastPole['d'] + self.anchorBuffer[1])
         self.poleLayout.setInitialGui(self.poles.poles, [lowerDistRange, upperDistRange])
 
         # Fill in cable parameters
@@ -192,8 +194,9 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         # Update markers on map
         if property_name == 'd':
             self.updateMarkerOnMap(idx)
-            # If anchor have been changed, the profile line has to be updated
-            if idx in [0, len(self.poles.poles) - 1]:
+            _, idxFirst = self.poles.getFirstPole()
+            _, idxLast = self.poles.getLastPole()
+            if idx in [idxFirst, idxLast]:
                 self.updateLineOnMap()
 
         # self.plot.zoomTo(self.poles.poles[idx])
@@ -231,26 +234,23 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         self.configurationHasChanged = True
     
     def updateLineOnMap(self):
-        startPole = self.poles.poles[0]
-        endPole = self.poles.poles[-1]
+        firstPole, _ = self.poles.getFirstPole()
+        lastPole, _ = self.poles.getLastPole()
         self.drawTool.updateLine([
-                [startPole['coordx'], startPole['coordy']],
-                [endPole['coordx'], endPole['coordy']]], drawMarker=False)
+                [firstPole['coordx'], firstPole['coordy']],
+                [lastPole['coordx'], lastPole['coordy']]], drawMarker=False)
     
     def addMarkerToMap(self, idx=-1):
         # Mark all poles except anchors on map
         if idx == -1:
-            for i, pole in enumerate(self.poles.poles):
-                poleType = 'pole'
-                if i in [0, len(self.poles.poles) - 1]:
-                    poleType = 'anchor'
-                self.drawTool.drawMarker([pole['coordx'], pole['coordy']], i,
-                                         pointType=poleType)
+            for idx, pole in enumerate(self.poles.poles):
+                self.drawTool.drawMarker([pole['coordx'], pole['coordy']],
+                                         idx, pointType=pole['poleType'])
         else:
             # Add a new pole to the map
             pole = self.poles.poles[idx]
             self.drawTool.drawMarker([pole['coordx'], pole['coordy']], idx,
-                                     'pole')
+                                     pointType=pole['poleType'])
     
     def updateMarkerOnMap(self, idx):
         point = [self.poles.poles[idx]['coordx'],
@@ -497,8 +497,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
     def showThresholdInPlot(self, row):
         location = self.thData['rows'][row][4]
         arrIdx = []
-        for l in location:
-            arrIdx.append(np.argwhere(self.profile.di_disp == l)[0][0])
+        for loc in location:
+            arrIdx.append(np.argwhere(self.profile.di_disp == loc)[0][0])
         z = self.profile.zi_disp[arrIdx]
         self.plot.showArrow(location, z)
     

@@ -442,12 +442,14 @@ def preciseCable(IS, poles, STA):
     kraft['Spannkraft'] = [ST[0], ST[-1]]
     kraft['Seilzugkraft'] = [ST, Hs]
 
-    firstPole = poles.poles[1]
+    firstPole, _ = poles.getFirstPole()
+    anchorField = poles.getAnchorCable()
     cableline = {
         'xaxis': l_coord + firstPole['dtop'],    # X-data starts at first pole
         'empty': z_coord_leer + firstPole['ztop'],   # Y-data is calculated relative
         'load': z_coord_zweifel + firstPole['ztop'],
-        'anchor': poles.getAnchorCable(),
+        'anchorA': anchorField['A'],
+        'anchorE': anchorField['E'],
         'groundclear_di': [],
         'groundclear': [],
         'groundclear_under': [],
