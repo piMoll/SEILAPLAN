@@ -559,55 +559,46 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
             # Raster is in geographic coordinates --> automatic transformation
             # not possible
             if hsType == 'dhm':
-                msg += ('Raster kann nicht ausgewählt werden. Seilaplan kann '
-                        'Höhenraster nur verarbeiten wenn sie in einem '
-                        'projizierten KBS vorliegen.')
+                msg = ('Raster kann nicht gewählt werden. Seilaplan kann '
+                       'Höhenraster nur verarbeiten wenn sie in einem '
+                       'projizierten KBS vorliegen.')
                 success = False
             # Survey data can be transformed to map crs
             elif hsType == 'survey' and not mapCrs.isGeographic():
                 # Transform survey data to projected map coordinates
                 heightSource.transformToProjectedCrs(mapCrs)
-                self.projectHandler.setPoint('A', heightSource.getFirstPoint())
-                self.projectHandler.setPoint('E', heightSource.getLastPoint())
-                msg += (f'Felddaten liegen in einem geografischen '
-                        f'Bezugssystem vor.<br>Für die Verarbeitung in '
-                        f'Seilaplan ist ein projiziertes KBS notwendig, die '
-                        f'Daten werden deshalb in das QGIS Projekt-KBS '
-                        f'{mapCrs.description()} ({mapCrs.authid()}) '
-                        f'transformiert.')
+                msg = ('Felddaten liegen in einem geografischen KBS vor!\n\n'
+                       'Seilaplan kann nur mit Daten in einem projiziertes KBS '
+                       'arbeiten. Die Daten werden automatisch in das QGIS Projekt-KBS '
+                       f"'{mapCrs.description()}' ({mapCrs.authid()}) transformiert.")
                 success = True
             
             elif hsType == 'survey' and mapCrs.isGeographic():
                 # Transform to LV95 by default
                 heightSource.transformToProjectedCrs(None)
-                self.projectHandler.setPoint('A', heightSource.getFirstPoint())
-                self.projectHandler.setPoint('E', heightSource.getLastPoint())
-                msg += ('Felddaten liegen in einem geografischen Bezugssystem '
-                        'vor.<br>Für die Verarbeitung in Seilaplan ist ein '
-                        'projiziertes KBS notwendig, die Daten werden '
-                        'deshalb nach CH LV95 (EPSG:2056) transformiert.<br>'
-                        'Soll ein anderes KBS benutzt werden, richten Sie ihr '
-                        'QGIS Projekt bitte vor dem Laden der Felddaten '
-                        'entsprechend ein.')
+                msg = ('Felddaten liegen in einem geografischen KBS vor!\n\n'
+                       'Seilaplan kann nur mit Daten in einem projizierten '
+                       'KBS arbeiten. Die Daten werden ins Schweizer KBS '
+                       "'LV95' (EPSG:2056) transformiert.")
                 self.canvas.setDestinationCrs(heightSource.spatialRef)
                 self.canvas.refresh()
-                return True
+                success = True
         
         elif not lyrCrs.isValid():
             if mapCrs.isGeographic():
-                msg += ('Bezugssystem der Höhendaten unbekannt.<br>Als '
-                        'Standard-KBS wird das Schweizer System LV95 '
-                        '(EPSG:2056) angenommen.<br>Soll ein anderes KBS '
-                        'benutzt werden, richten Sie ihr QGIS Projekt bitte '
-                        'vor dem Laden der Höhendaten entsprechend ein.')
+                msg = ('Bezugssystem des Rasters unbekannt.\n\nDie Daten '
+                       "werden im Schweizer KBS 'LV95' (EPSG:2056) "
+                       'dargestellt.\nSoll ein anderes KBS benutzt werden, '
+                       'richten Sie ihr QGIS Projekt bitte vor dem Laden der '
+                       'Höhendaten entsprechend ein.')
                 heightSource.spatialRef = QgsCoordinateReferenceSystem('EPSG:2056')
                 self.canvas.setDestinationCrs(heightSource.spatialRef)
                 self.canvas.refresh()
                 success = True
             else:
-                msg += ('Bezugssystem der Höhendaten unbekannt. Es wird '
-                        'angenommen, dass die Daten dasselbe KBS wie das '
-                        f'QGIS-Projekt ({mapCrs.authid()}) besitzen.')
+                msg = ('Bezugssystem der Höhendaten unbekannt.\n\nEs wird '
+                       'angenommen, dass die Daten dasselbe KBS wie das '
+                       f'aktuelle QGIS-Projekt ({mapCrs.authid()}) besitzen.')
                 heightSource.spatialRef = mapCrs
                 success = True
         

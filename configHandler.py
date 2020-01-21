@@ -187,11 +187,9 @@ class ProjectConfHandler(AbstractConfHandler):
         elif sourceType == 'survey':
             srs = SurveyData(sourcePath)
             if srs.valid:
-                # TODO: If anchors are present, this start and end points
-                #  can not be used since the anchor fields are not within the profile data
                 self.points = {
-                    'A': srs.getFirstPoint(),
-                    'E': srs.getLastPoint()
+                    'A': [None, None],
+                    'E': [None, None]
                 }
         if srs and srs.valid:
             self.heightSource = srs
