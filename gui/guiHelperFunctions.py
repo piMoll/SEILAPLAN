@@ -18,12 +18,18 @@
  *                                                                         *
  ***************************************************************************/
 """
-import os
 
-from qgis.PyQt.QtCore import QSize, Qt, QFileInfo, QSettings
+import os
+import numpy as np
+
+from qgis.PyQt.QtGui import QFont, QColor
+from qgis.PyQt.QtCore import QSize, Qt, QFileInfo, QSettings, QVariant
 from qgis.PyQt.QtWidgets import (QDialog, QWidget, QLabel, QDialogButtonBox,
                                  QLayout, QVBoxLayout)
-from qgis.core import QgsRasterLayer, QgsVectorLayer, QgsProject
+from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject, QgsPoint,
+                       QgsFeature, QgsGeometry, QgsVectorLayer, QgsField,
+                       QgsPalLayerSettings, QgsTextFormat,
+                       QgsTextBufferSettings, QgsVectorLayerSimpleLabeling)
 from processing import run
 
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT \
@@ -127,3 +133,61 @@ def loadOsmLayer(homePath):
         baseName = QFileInfo(xmlPath).baseName()
         osmLayer = QgsRasterLayer(xmlPath, baseName)
         QgsProject.instance().addMapLayer(osmLayer)
+
+
+def createProfileLayers(heightSource):
+    lyrCrs = heightSource.spatialRef.authid()
+    pointA = heightSource.getFirstPoint()
+    pointE = heightSource.getLastPoint()
+    
+    # Create profile layer
+    surveyLineLayer = QgsVectorLayer('Linestring?crs=' + lyrCrs,
+                                     'Felddaten-Profil', 'memory')
+    pr = surveyLineLayer.dataProvider()
+    feature = QgsFeature()
+    feature.setGeometry(QgsGeometry.fromPolyline(
+        [QgsPoint(*tuple(pointA)), QgsPoint(*tuple(pointE))]))
+    pr.addFeatures([feature])
+    surveyLineLayer.updateExtents()
+    QgsProject.instance().addMapLayers([surveyLineLayer])
+
+    # Create survey point layer
+    surveyPointLayer = QgsVectorLayer('Point?crs=' + lyrCrs,
+                                      'Felddaten-Messpunkte', 'memory')
+    pr = surveyPointLayer.dataProvider()
+    pr.addAttributes([QgsField("nr", QVariant.Int)])
+    surveyPointLayer.updateFields()
+    features = []
+    idx = 1
+    # TODO: Survey points are NOT rounded
+    for x, y in np.column_stack([heightSource.x, heightSource.y]):
+        feature = QgsFeature()
+        feature.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(x, y)))
+        feature.setId(idx)
+        feature.setAttributes([idx])
+        features.append(feature)
+        idx += 1
+    pr.addFeatures(features)
+    surveyPointLayer.updateExtents()
+    QgsProject.instance().addMapLayers([surveyPointLayer])
+    
+    # Add Labels for point layer
+    layer_settings = QgsPalLayerSettings()
+    text_format = QgsTextFormat()
+    text_format.setFont(QFont("Arial", 12))
+    text_format.setSize(12)
+    buffer_settings = QgsTextBufferSettings()
+    buffer_settings.setEnabled(True)
+    buffer_settings.setSize(1)
+    buffer_settings.setColor(QColor("white"))
+    text_format.setBuffer(buffer_settings)
+    layer_settings.setFormat(text_format)
+    layer_settings.fieldName = "nr"
+    layer_settings.placement = 2
+    layer_settings.enabled = True
+    layer_settings = QgsVectorLayerSimpleLabeling(layer_settings)
+    surveyPointLayer.setLabelsEnabled(True)
+    surveyPointLayer.setLabeling(layer_settings)
+    surveyPointLayer.triggerRepaint()
+    
+    return surveyLineLayer, surveyPointLayer

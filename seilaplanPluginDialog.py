@@ -26,14 +26,13 @@ import os
 from qgis.PyQt.QtCore import QFileInfo
 from qgis.PyQt.QtWidgets import QDialog, QMessageBox, QFileDialog, QComboBox
 from qgis.PyQt.QtGui import QPixmap
-from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject, QgsPoint,
-                       QgsFeature, QgsGeometry, QgsVectorLayer,
+from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject,
                        QgsCoordinateReferenceSystem)
 from processing.core.Processing import Processing
 
 # Further GUI modules for functionality
 from .gui.guiHelperFunctions import (DialogWithImage, createContours,
-                                     loadOsmLayer)
+                                     loadOsmLayer, createProfileLayers)
 from .configHandler import ConfigHandler, castToNum
 # GUI elements
 from .gui.saveDialog import DialogSaveParamset
@@ -114,6 +113,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.drawTool.sig_lineFinished.connect(self.onFinishedLineDraw)
         # Survey data line layer
         self.surveyLineLayer = None
+        self.surveyPointLayer = None
         # Length of profile line
         self.profileLen = None
         
@@ -631,24 +631,11 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         
         heightSource = self.projectHandler.heightSource
         if heightSource and heightSource.valid:
-            # Add survey data line to map
-            A = heightSource.getFirstPoint()
-            E = heightSource.getLastPoint()
-            
-            # Create profile layer
-            lyrCrs = heightSource.spatialRef.authid()
-            self.surveyLineLayer = QgsVectorLayer('Linestring?crs=' + lyrCrs,
-                                                  'Felddaten-Profil', 'memory')
-            pr = self.surveyLineLayer.dataProvider()
-            feature = QgsFeature()
-            feature.setGeometry(QgsGeometry.fromPolyline(
-                [QgsPoint(*tuple(A)), QgsPoint(*tuple(E))]))
-            pr.addFeatures([feature])
-            self.surveyLineLayer.updateExtents()
-            QgsProject.instance().addMapLayers([self.surveyLineLayer])
-            
+            # Create and add QGS layers of data to the map
+            self.surveyLineLayer, \
+                self.surveyPointLayer = createProfileLayers(heightSource)
             # Zoom to layer
-            self.iface.setActiveLayer(self.surveyLineLayer)
+            self.iface.setActiveLayer(self.surveyPointLayer)
             self.iface.zoomToActiveLayer()
 
             # Set path to csv in read only lineEdit
@@ -668,6 +655,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         if self.surveyLineLayer:
             QgsProject.instance().removeMapLayer(self.surveyLineLayer.id())
             self.surveyLineLayer = None
+        if self.surveyPointLayer:
+            QgsProject.instance().removeMapLayer(self.surveyPointLayer.id())
+            self.surveyPointLayer = None
     
     def setProjName(self, projname):
         self.projectHandler.setProjectName(projname)
