@@ -101,9 +101,11 @@ class AdjustmentPlot(FigureCanvas):
     def updatePlot(self, poles, cable, printPdf=False):
         scale = 1
         legendCol = 4
+        fontSize = 11
         if printPdf:
             legendCol = 3
             scale = 0.5
+            fontSize = 8
         
         # current Zoom
         xlim = self.axes.get_xlim()
@@ -121,7 +123,7 @@ class AdjustmentPlot(FigureCanvas):
                                [pointY, pointY - 6 * self.labelBuffer * scale],
                                color='green', linewidth=1.5 * scale)
                 self.axes.text(pointX, pointY - 8 * self.labelBuffer * scale,
-                               str(int(idx)), fontsize=11, ha='center',
+                               str(int(idx)), fontsize=fontSize, ha='center',
                                va='top', color='green')
         
         if not printPdf:
@@ -167,7 +169,7 @@ class AdjustmentPlot(FigureCanvas):
         if not printPdf:
             self.placeLabels(pole_dtop, pole_ztop)
         # Legend
-        self.axes.legend(loc='lower center', fontsize=11,
+        self.axes.legend(loc='lower center', fontsize=fontSize,
                          bbox_to_anchor=(0.5, 0), ncol=legendCol)
         
         self.axes.set_xlim(xlim)
@@ -226,8 +228,6 @@ class AdjustmentPlot(FigureCanvas):
         self.axes.tick_params(labelsize=8)
         self.axes.grid(which='major', lw=0.5)
         self.axes.grid(which='minor', lw=0.5, linestyle=':')
-        self.axes.legend(loc='lower center', fontsize=8,
-                         bbox_to_anchor=(0.5, 0), ncol=3)
         # Label poles
         for pole in poles:
             if pole['poleType'] == 'pole':
