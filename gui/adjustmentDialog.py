@@ -540,7 +540,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
             plotSavePath = os.path.join(outputLoc, 'Diagramm.pdf')
             printPlot = AdjustmentPlot(self)
             printPlot.initData(self.profile.di_disp, self.profile.zi_disp,
-                               self.profile.peakLoc_x, self.profile.peakLoc_z)
+                               self.profile.peakLoc_x, self.profile.peakLoc_z,
+                               self.profile.surveyPnts)
             printPlot.updatePlot(self.poles.getAsArray(), self.cableline, True)
             printPlot.printToPdf(plotSavePath, projName, self.poles.poles)
 

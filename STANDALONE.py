@@ -199,7 +199,8 @@ if __name__ == "__main__":
         plotSavePath = os.path.join(outputLoc, 'Diagramm.pdf')
         printPlot = AdjustmentPlot()
         printPlot.initData(profile.di_disp, profile.zi_disp,
-                           profile.peakLoc_x, profile.peakLoc_z)
+                           profile.peakLoc_x, profile.peakLoc_z,
+                           profile.surveyPnts)
         printPlot.updatePlot(poles.getAsArray(), cableline, True)
         printPlot.printToPdf(plotSavePath, projName, poles.poles)
     
