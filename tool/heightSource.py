@@ -329,8 +329,13 @@ class SurveyData(AbstractHeightSource):
         # Update extent with projected coordinates
         self.extent = [np.min(self.x), np.max(self.y),
                        np.max(self.x), np.min(self.y)]
+        points = {
+            'A': self.getFirstPoint(),
+            'E': self.getLastPoint()
+        }
+        self.prepareData(points)
 
-    def prepareData(self, points, azimut, params):
+    def prepareData(self, points, azimut=None, params=None):
         [Ax, Ay] = points['A']
         [Ex, Ey] = points['E']
         # Switch sorting of points if cable line goes in opposite direction
@@ -345,8 +350,8 @@ class SurveyData(AbstractHeightSource):
         [x0, y0] = self.getFirstPoint()
         [x1, y1] = self.getLastPoint()
         # Calculate distances from every point to first point on profile
-        self.dist = ((self.x - np.ones_like(self.x) * x0) ** 2
-                     + (self.y - np.ones_like(self.y) * y0) ** 2) ** 0.5
+        self.dist = np.hypot(self.x - np.ones_like(self.x) * x0,
+                         self.y - np.ones_like(self.y) * y0)
 
         # Interpolate distance-height points on profile
         self.interpolFunc = ipol.interp1d(self.dist, self.z)
@@ -379,10 +384,10 @@ class SurveyData(AbstractHeightSource):
         y0 = np.array([y0]*len(coords))
         # Only one point
         if np.shape(coords)[0] == 1:
-            dist = ((coords[0][1] - x0)**2 + (coords[0][0] - y0)**2)**0.5
+            dist = np.hypot(coords[0][1] - x0, coords[0][0] - y0)
         # Several points in array
         else:
-            dist = ((coords[:,1] - x0)**2 + (coords[:,0] - y0)**2)**0.5
+            dist = np.hypot(coords[:,1] - x0, coords[:,0] - y0)
         return self.interpolFunc(dist)
     
     def projectPositionOnToLine(self, position):
@@ -410,5 +415,12 @@ class SurveyData(AbstractHeightSource):
         elif xOnLine > x1 and (yOnLine > y1 > y0 or yOnLine < y1 < y0):
             xOnLine = x1
             yOnLine = y1
+
+        # Snap cursor to a survey point if near one
+        distToFirst = np.hypot(x0 - xOnLine, y0 - yOnLine)
+        idx = np.argwhere(self.plotPoints[:, 0] == round(distToFirst))
+        if len(idx > 0):
+            xOnLine = self.x[idx[0]]
+            yOnLine = self.y[idx[0]]
 
         return [xOnLine, yOnLine]
