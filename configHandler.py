@@ -389,6 +389,13 @@ class ProjectConfHandler(AbstractConfHandler):
         else:
             return f"{number:,.6f}"
     
+    def preparePreviewProfile(self):
+        if not self.profileIsValid():
+            return False
+        self.heightSource.prepareData(self.points, self.azimut, self.params)
+        profile = Profile(self)
+        return profile
+    
     def prepareForCalculation(self):
         # Prepare raster (create subraster) or interpolate survey data
         self.heightSource.prepareData(self.points, self.azimut, self.params)

@@ -40,6 +40,7 @@ class AdjustmentPlot(FigureCanvas):
         
         self.xdata = None
         self.terrain = None
+        self.tPoints = None
         self.peakLoc_x = None
         self.peakLoc_y = None
         self.data_xlow = 0
@@ -68,7 +69,8 @@ class AdjustmentPlot(FigureCanvas):
         self.axes.minorticks_on()
         self.axes.tick_params(which="minor", direction="in")
         
-    def initData(self, xdata, terrain, peakLocation_x, peakLocation_y):
+    def initData(self, xdata, terrain, peakLocation_x, peakLocation_y,
+                 surveyPoints):
         self.xdata = xdata
         self.terrain = terrain
         self.peakLoc_x = peakLocation_x
@@ -77,6 +79,7 @@ class AdjustmentPlot(FigureCanvas):
         self.data_xhi = np.max(self.xdata)
         self.data_ylow = np.min(self.terrain)
         self.data_yhi = np.max(self.terrain) + 25
+        self.tPoints = surveyPoints
     
     def setPlotLimits(self):
         if self.isZoomed:
@@ -111,6 +114,16 @@ class AdjustmentPlot(FigureCanvas):
         # Terrain
         self.axes.plot(self.xdata, self.terrain, color='#a1d1ab',
                        linewidth=3.5*scale, zorder=1)
+        if self.tPoints is not None:
+            # Add markers for survey points
+            for pointX, pointY, idx in self.tPoints:
+                self.axes.plot([pointX, pointX],
+                               [pointY, pointY - 6 * self.labelBuffer * scale],
+                               color='green', linewidth=1.5 * scale)
+                self.axes.text(pointX, pointY - 8 * self.labelBuffer * scale,
+                               str(int(idx)), fontsize=11, ha='center',
+                               va='top', color='green')
+        
         if not printPdf:
             self.axes.scatter(self.peakLoc_x, self.peakLoc_y, marker='^',
                               color='#ffaa00', edgecolors='#496b48',

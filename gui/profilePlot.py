@@ -33,7 +33,6 @@ from .mapMarker import PROFILE_COLOR, POLE_COLOR, SECTION_COLOR
 
 class ProfilePlot(FigureCanvas):
     
-    
     def __init__(self, parent=None, width=10, height=4, dpi=72):
         self.win = parent
         self.fig = Figure(figsize=(width, height), dpi=dpi, facecolor='#efefef')
@@ -44,7 +43,7 @@ class ProfilePlot(FigureCanvas):
         
         self.linePoints = []
         self.line_exists = False
-        self.profileObj = None
+        self.profile = None
         self.labelScale = None
         
         # Mouse position
@@ -72,28 +71,36 @@ class ProfilePlot(FigureCanvas):
         
     def plotData(self, plotData):
         """
-        :type plotData: gui.profileCreation.PreviewProfile
+        :type plotData: tool.profile.Profile
         """
         self.axes.clear()
         self.__setupAxes()
-        self.profileObj = plotData
+        self.profile = plotData
         
         # Set plot extent
-        self.labelScale = (self.profileObj.ymax - self.profileObj.ymin) / 20
-        self.profileObj.expand(max([(self.profileObj.xmax * 0.02), 5]),
-                               self.labelScale)
-        self.axes.set_xlim(self.profileObj.xmin, self.profileObj.xmax)
-        self.axes.set_ylim(self.profileObj.ymin, self.profileObj.ymax)
-    
-        # Add plot data
-        pltSegs = self.profileObj.profile
-        lineColl = LineCollection([pltSegs], linewidths=2.5, picker=True,
-                                  colors=PROFILE_COLOR, label='LBL')
-        self.axes.add_collection(lineColl)
-        
+        xmin = np.min(self.profile.di_disp)
+        ymin = np.min(self.profile.zi_disp)
+        xmax = np.max(self.profile.di_disp)
+        ymax = np.max(self.profile.zi_disp)
+        self.labelScale = (ymax - ymin) / 20
+        self.axes.set_xlim(xmin - 2 * self.labelScale, xmax + 2 * self.labelScale)
+        self.axes.set_ylim(ymin - 2 * self.labelScale, ymax + 2 * self.labelScale)
+
         # Data point of profile
-        self.x_data = self.profileObj.xaxis
-        self.y_data = self.profileObj.yaxis
+        self.x_data = self.profile.di
+        self.y_data = self.profile.zi
+    
+        # Add plot data (whole profile)
+        pltSegs = np.column_stack([self.profile.di_disp, self.profile.zi_disp])
+        pltSegs = tuple(map(tuple, pltSegs))
+        lineColl = LineCollection([pltSegs], linewidths=1, colors='green')
+        self.axes.add_collection(lineColl)
+        # Add profile section between A and E
+        pltSegsAE = np.column_stack([self.x_data, self.y_data])
+        pltSegsAE = tuple(map(tuple, pltSegsAE))
+        lineCollAE = LineCollection([pltSegsAE], linewidths=2.5, picker=True,
+                                  colors=PROFILE_COLOR, label='LBL')
+        self.axes.add_collection(lineCollAE)
 
         # Draw start and end
         self.axes.scatter(self.x_data[[0, -1]], self.y_data[[0, -1]],
@@ -103,6 +110,16 @@ class ProfilePlot(FigureCanvas):
                        'A',  ha='center', fontsize=12)
         self.axes.text(self.x_data[-1], self.y_data[-1] + self.labelScale,
                        'E', ha='center', fontsize=12)
+        
+        if self.profile.surveyPnts is not None:
+            # Add markers for survey points
+            for pointX, pointY, idx in self.profile.surveyPnts:
+                self.axes.plot([pointX, pointX],
+                               [pointY, pointY - 3 * self.labelScale],
+                               color='green', linewidth=1.5)
+                self.axes.text(pointX, pointY - 4 * self.labelScale,
+                               str(int(idx)), ha='center', fontsize=12,
+                               color='green')
 
         # Init cursor cross position
         self.xcursor = self.x_data[floor(len(self.x_data) / 2)]

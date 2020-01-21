@@ -131,8 +131,8 @@ class ProfileDialog(QDialog):
 
     def setProfile(self, profile):
         self.profile = profile
-        self.xdata = self.profile.xaxis
-        self.zdata = self.profile.yaxis
+        self.xdata = self.profile.di
+        self.zdata = self.profile.zi
         self.profileMax = floor(self.xdata[-1])
         # Draw profile in diagram
         self.sc.plotData(self.profile)

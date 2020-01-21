@@ -40,7 +40,6 @@ from .gui.saveDialog import DialogSaveParamset
 from .gui.mapMarker import MapMarkerTool
 from .gui.ui_seilaplanDialog import Ui_SeilaplanDialog
 from .gui.profileDialog import ProfileDialog
-from .gui.profileCreation import PreviewProfile
 
 # OS dependent line break
 nl = os.linesep
@@ -789,11 +788,11 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.draw.setChecked(False)
     
     def updateProfileWinContent(self):
-        profile = PreviewProfile(self.projectHandler)
-        profile.create()
-        self.profileWin.setProfile(profile)
-        self.profileWin.setPoleData(self.projectHandler.fixedPoles['poles'],
-                                    self.projectHandler.noPoleSection)
+        profile = self.projectHandler.preparePreviewProfile()
+        if profile:
+            self.profileWin.setProfile(profile)
+            self.profileWin.setPoleData(self.projectHandler.fixedPoles['poles'],
+                                        self.projectHandler.noPoleSection)
     
     def onShowProfile(self):
         if not self.profileWin.dataSet:

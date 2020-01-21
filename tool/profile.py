@@ -1,5 +1,6 @@
 from math import floor
 import numpy as np
+from .heightSource import SurveyData
 
 
 class Profile(object):
@@ -23,6 +24,11 @@ class Profile(object):
         self.heightSource = project.heightSource
         self.anchorA = self.params.getParameter('d_Anker_A')
         self.anchorE = self.params.getParameter('d_Anker_E')
+        
+        self.surveyPnts = None
+        # In case of survey data, save survey points
+        if isinstance(self.heightSource, SurveyData):
+            self.surveyPnts = self.heightSource.plotPoints
 
         self.dx = None
         self.dy = None

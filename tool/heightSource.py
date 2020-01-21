@@ -204,10 +204,12 @@ class SurveyData(AbstractHeightSource):
         self.x = None
         self.y = None
         self.z = None
+        self.dist = None
         self.plane = None
         self.normalVector = None
         self.pointInPlane = None
         self.interpolFunc = None
+        self.plotPoints = None
         self.valid = False
         self.errorMsg = ''
         self.openFile()
@@ -323,14 +325,7 @@ class SurveyData(AbstractHeightSource):
         # Reference projected survey points back to the origin by adding sample
         # point in plane
         res = self.pointInPlane + projOntoPlane
-
-        # Sort coordinates by x
-        if np.min(res[:,0]) == np.max(res[:,0]):
-            # Special case: coordinates lie perfectly on vertical axis
-            sortedCoordinates = res[res[:,1].argsort()]
-        else:
-            sortedCoordinates = res[res[:,0].argsort()]
-        self.x, self.y, self.z = np.column_stack(sortedCoordinates)
+        self.x, self.y, self.z = np.column_stack(res)
         # Update extent with projected coordinates
         self.extent = [np.min(self.x), np.max(self.y),
                        np.max(self.x), np.min(self.y)]
@@ -339,13 +334,10 @@ class SurveyData(AbstractHeightSource):
         [Ax, Ay] = points['A']
         [Ex, Ey] = points['E']
         # Switch sorting of points if cable line goes in opposite direction
-        if Ax > Ex or (Ay > Ey and Ax == Ex):
-            # By default points are sorted by x coordinate in ascending order.
-            # If profile line defined by A and E has descending x-coordinates
-            # we have to switch the coordinate arrays.
-            # Special case: If all points lie perfectly on a vertical (map)
-            # axis (all points have same x-coord), we have to check if
-            # y-coord is descending.
+        if Ax > Ex and self.x[0] < self.x[-1]:
+            # If profile line defined by A and E has the opposite direction
+            # than the original survey data, we have to switch the coordinate
+            # arrays.
             self.x = self.x[::-1]
             self.y = self.y[::-1]
             self.z = self.z[::-1]
@@ -353,17 +345,27 @@ class SurveyData(AbstractHeightSource):
         [x0, y0] = self.getFirstPoint()
         [x1, y1] = self.getLastPoint()
         # Calculate distances from every point to first point on profile
-        dist = ((self.x - np.ones_like(self.x) * x0) ** 2
-                + (self.y - np.ones_like(self.x) * y0) ** 2) ** 0.5
+        self.dist = ((self.x - np.ones_like(self.x) * x0) ** 2
+                     + (self.y - np.ones_like(self.y) * y0) ** 2) ** 0.5
 
         # Interpolate distance-height points on profile
-        self.interpolFunc = ipol.interp1d(dist, self.z)
+        self.interpolFunc = ipol.interp1d(self.dist, self.z)
         
         # Update buffer: If user defined other start/end points than first and
         # last point of profile, define distances to ends as buffer
         distToStart = ((x0 - Ax) ** 2 + (y0 - Ay) ** 2) ** 0.5
         distToEnd = ((x1 - Ex) ** 2 + (y1 - Ey) ** 2) ** 0.5
         self.buffer = (distToStart, distToEnd)
+
+        # For display in plot survey points are being rounded to the nearest
+        #  meter and numbered
+        surveyPnts_d = self.dist - distToStart
+        surveyPnts_d[1:-1] = np.round(surveyPnts_d[1:-1])
+        surveyPnts_z = self.interpolFunc(surveyPnts_d + distToStart)
+        surveyPnts_i = np.arange(1, len(self.dist) + 1)
+
+        self.plotPoints = np.column_stack([surveyPnts_d, surveyPnts_z,
+                                           surveyPnts_i])
 
     def getFirstPoint(self):
         return [self.x[0].item(), self.y[0].item()]
