@@ -76,6 +76,7 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles):
 
     # neu:
     Option_Optimize_Anf_Stuetze = IS["HM_Anfang"] == -1
+    Option_Optimize_Anf_Stuetze = True
 
     posAnz = int(np.sum(StuetzenPos))
     posIdx = np.where(StuetzenPos == 1)[0][1:-1]
@@ -83,7 +84,7 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles):
     hStufung = range(min_HM, max_HM+1, Abstufung_HM)    # Mögl. H normalen Stütze
     hStufungEnd = range(min_HM_end, max_HM_end+1, Abstufung_HM) # H Endstütze
 
-    # neu LB (22.1.2020)
+    # Anfangsstütze mit variabler oder fixer Höhe definieren
     if Option_Optimize_Anf_Stuetze:
         hStufungAnf = range(min_HM, max_HM+1, Abstufung_HM)  # H Endstütze
         stufenAnzAnf = len(hStufungAnf)
@@ -92,26 +93,16 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles):
         stufenAnzAnf = 1
 
     stufenAnzEnd = len(hStufungEnd)
-    #           ?   A und E anders, normale Stufung, Endstütze
-
-    # arraySize = 1 + (posAnz-2) * len(hStufung) + stufenAnzEnd
     arraySize = stufenAnzAnf + (posAnz - 2) * len(hStufung) + stufenAnzEnd
 
     # Pos = Längenposition für den Knoten i
     Pos = np.empty(arraySize).astype(int)
-#    Pos[0] = 0
-#    Pos[1:-stufenAnzEnd] = np.ravel(np.array([posIdx]*len(hStufung)), order = 'F')
-#    Pos[-stufenAnzEnd:] = [posIdxEnd] * stufenAnzEnd
-
     Pos[0:stufenAnzAnf] = 0
     Pos[stufenAnzAnf:-stufenAnzEnd] = np.ravel(np.array([posIdx]*len(hStufung)), order = 'F')
     Pos[-stufenAnzEnd:] = [posIdxEnd] * stufenAnzEnd
 
-
     # HM = Höhe der Stütze des Knoten i
     HM = np.empty(arraySize)
-#    HM[0] = IS["HM_Anfang"]
-#    HM[1:-stufenAnzEnd] = np.tile(hStufung, posAnz-2)
     HM[0:stufenAnzAnf] = hStufungAnf
     HM[stufenAnzAnf:-stufenAnzEnd] = np.tile(hStufung, posAnz-2)
     HM[-stufenAnzEnd:] = hStufungEnd
@@ -229,58 +220,31 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles):
         G[aa, ee] = KostStue * ind
         G[indexMax, arraySize] = 1
 
-## Folgendes wurde gelöscht (LB, 22.1.2020)
-
-#        # Shortest Path
-#        Weight = sps.csc_matrix(G)
-#
-#        dist, predecessors = sps.csgraph.dijkstra(Weight, directed=True,
-#                                indices=0, return_predecessors=True)
-#        LengthInLP = np.where(dist < float('inf'))[0][-1]
-#        dist = dist[LengthInLP]
-
-#        # Route of shortest path
-#        i = LengthInLP
-#        path = []
-#        while i != 0:
-#            path.append(i)
-#            i = predecessors[i]
-#        path.append(0)
-
-        ## Anfang Input Leo:
-        ## rewrite this section (22.1.2020, Leo Bont)
-
         G_n = G.copy()
         size_of_matrix_G = arraySize + 1
         G_n = np.zeros((size_of_matrix_G + 1, size_of_matrix_G + 1))
-        G_n[:-1,:-1] = G
+        G_n[:-1, :-1] = G
         ind_start = np.where(Pos == 0)[0]
-
+        
         # Matrix erweitern
         G_n[ind_start, size_of_matrix_G] = 1
         G_n[size_of_matrix_G, ind_start] = 1
-        Weight_n = sps.csc_matrix(G_n)
-        # Shortest Path:
-        dist_n, predecessors_n = sps.csgraph.dijkstra(Weight_n, directed=True,
-                                                  indices=size_of_matrix_G, return_predecessors=True)
-        dist_n_mod = dist_n[:- 1]
-
-        LengthInLP_n = np.where(dist_n_mod < float('inf'))[0][-1]
-        dist_n_mod = dist_n_mod[LengthInLP]-1
+        # Shortest Path
+        Weight = sps.csc_matrix(G_n)
+        dist, predecessors = sps.csgraph.dijkstra(Weight, directed=True,
+                                indices=size_of_matrix_G, return_predecessors=True)
+        dist = dist[:- 1]
+        
+        LengthInLP = np.where(dist < float('inf'))[0][-1]
+        dist = dist[LengthInLP]-1
 
         # Route of shortest path
-        i = LengthInLP_n
-        path_n = []
+        i = LengthInLP
+        path = []
         while i != 0:
-            path_n.append(i)
-            i = predecessors_n[i]
-        path_n.append(0)
-
-
-
-        ## Ende Input Leo
-
-
+            path.append(i)
+            i = predecessors[i]
+        path.append(0)
 
         mem[sk] = dist
         memLength[sk] = LengthInLP
