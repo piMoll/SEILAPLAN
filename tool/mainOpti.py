@@ -241,7 +241,8 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles):
         # Route of shortest path
         i = LengthInLP
         path = []
-        while i != 0:
+
+        while i > stufenAnzAnf:
             path.append(i)
             i = predecessors[i]
         path.append(0)
