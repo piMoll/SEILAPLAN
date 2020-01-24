@@ -611,3 +611,5 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
                 self.drawTool.reset()
         else:
             self.drawTool.reset()
+
+        self.timer.stop()
