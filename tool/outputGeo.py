@@ -50,7 +50,7 @@ def generateGeodata(project, poles, cableline, savePath):
     poleGeo = []
     poleName = []
     for pole in poles:
-        if pole['poleType'] == 'pole':
+        if pole['poleType'] != 'anchor':
             poleGeo.append([pole['coordx'], pole['coordy'], pole['z']])
             poleName.append(pole['name'])
 

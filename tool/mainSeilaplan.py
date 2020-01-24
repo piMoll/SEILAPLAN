@@ -80,8 +80,7 @@ def main(progress, project):
         })
     poles.updateAllPoles('optimization', optiPoles)
 
-    lastPole, _ = poles.getLastPole()
-    if int(lastPole['d']) != int(profile.di[-1]):
+    if int(poles.lastPole['d']) != int(profile.di[-1]):
         # It was not possible to calculate poles along the entire profile
         progress.status.append(3)
 

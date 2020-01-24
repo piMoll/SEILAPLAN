@@ -150,8 +150,8 @@ class Profile(object):
     
     def updateProfileAnalysis(self, cableline, poles):
         # Update zi
-        di_start = np.where(self.di_disp >= poles[1]['dtop'])[0][0]
-        di_end = np.where(self.di_disp >= poles[-2]['dtop'])[0][0]
+        di_start = np.where(self.di_disp >= poles.firstPole['dtop'])[0][0]
+        di_end = np.where(self.di_disp >= poles.lastPole['dtop'])[0][0]
         self.zi = self.zi_disp[di_start:di_end + 1]
         
         # By moving the first or last pole, the cable line can become longer or

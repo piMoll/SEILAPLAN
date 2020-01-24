@@ -90,6 +90,8 @@ class ProjectConfHandler(AbstractConfHandler):
             'A': 'yellow',
             'E': 'yellow'
         }
+        self.A_type = 'pole'     # pole, pole_anchor, crane
+        self.E_type = 'pole'     # pole, pole_anchor
         self.profileLength = None
         self.azimut = None
         self.fixedPoles = {
@@ -723,8 +725,6 @@ class ParameterConfHandler(AbstractConfHandler):
         return cval
     
     def prepareForCalculation(self):
-        # TODO: If anchor len is 0 --> no anchor len
-        #  if 1. pole h = 0 --> no anchor len
         pass
     
     def getSimpleParameterDict(self):
@@ -973,7 +973,7 @@ class ConfigHandler(object):
             status = 'savedFile'
             self.project.poles.updateAllPoles(status, self.polesFromTxt)
         # If instead user has defined some fixed poles, add these to Poles()
-        elif self.project.fixedPoles:
+        elif len(self.project.fixedPoles['poles']) > 0:
             self.project.poles.updateAllPoles(status, self.project.fixedPoles['poles'])
         
         zulSK = self.params.params['zul_SK']['value']

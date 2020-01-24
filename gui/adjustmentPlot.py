@@ -230,7 +230,7 @@ class AdjustmentPlot(FigureCanvas):
         self.axes.grid(which='minor', lw=0.5, linestyle=':')
         # Label poles
         for pole in poles:
-            if pole['poleType'] == 'pole':
+            if pole['poleType'] != 'anchor':
                 self.axes.text(pole['dtop'], pole['ztop'] + self.labelBuffer*2,
                                pole['name'], ha='center', fontsize=8)
         self.print_figure(filelocation, dpi)

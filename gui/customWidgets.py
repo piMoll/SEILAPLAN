@@ -20,7 +20,7 @@
 """
 from qgis.PyQt.QtCore import QSize, Qt, pyqtSignal, QObject
 from qgis.PyQt.QtWidgets import (QDoubleSpinBox, QSpinBox, QPushButton,
-                                 QLineEdit, QHBoxLayout, QLabel)
+                                 QLineEdit, QHBoxLayout, QLabel, QCheckBox)
 from qgis.PyQt.QtGui import QIcon, QPixmap
 
 from ..tool.poles import Poles
@@ -53,16 +53,17 @@ class CustomPoleWidget(QObject):
         self.distRange = []
         self.poleCount = 0
     
-    def setInitialGui(self, poleData, distRange):
+    def setInitialGui(self, distRange, poles=None):
         """
-        :type poleData: list
+        :type poles: tool.poles.Poles
         :type distRange: list
         """
         self.distRange = distRange
-        initCount = len(poleData)
         self.layout.setAlignment(Qt.AlignTop)
+        if not poles:
+            return
 
-        for idx in range(initCount):
+        for idx, pole in enumerate(poles.poles):
             delBtn = False
             addBtn = False
             
@@ -70,26 +71,26 @@ class CustomPoleWidget(QObject):
             lowerRange = self.distRange[0]
             upperRange = self.distRange[1]
             if idx > 0:
-                lowerRange = poleData[idx - 1]['d'] + self.pole_dist_step
-            if idx < initCount - 1:
-                upperRange = poleData[idx + 1]['d'] - self.pole_dist_step
+                lowerRange = poles.poles[idx - 1]['d'] + self.pole_dist_step
+            if idx < len(poles.poles) - 1:
+                upperRange = poles.poles[idx + 1]['d'] - self.pole_dist_step
                 
             # Delete button: anchor and first and last pole cannot be deleted
-            if 1 < idx < initCount - 2:
+            if poles.idxA < idx < poles.idxE:
                 delBtn = True
             # Add button: Pole can only be added between first and last pole
-            if 0 < idx < initCount - 2:
+            if poles.idxA <= idx < poles.idxE:
                 addBtn = True
 
             # Create layout
             self.poleRows.append(
                 PoleRow(self, self.widget, self.layout, idx,
-                        poleData[idx]['name'],
-                        poleData[idx]['poleType'],
-                        poleData[idx]['d'],
-                        [lowerRange, upperRange],
-                        poleData[idx]['h'],
-                        poleData[idx]['angle'], delBtn, addBtn))
+                        pole['name'], pole['poleType'], pole['d'],
+                        [lowerRange, upperRange], pole['h'], pole['angle'],
+                        delBtn, addBtn))
+            if not pole['active']:
+                self.poleRows[-1].deactivate()
+        self.updatePoleRowIdx()
 
     def onRowChange(self, newVal=False, idx=False, property_name=False):
         if self.editActive:
@@ -132,6 +133,11 @@ class CustomPoleWidget(QObject):
         self.editActive = False
     
     def deleteRow(self, idx, distLower, distUpper):
+        # If distance range was not defined, take outer ranges
+        if not distLower:
+            distLower = self.distRange[0]
+        if not distUpper:
+            distUpper = self.distRange[1]
         # Update distance range of neighbours
         if idx > 0:
             self.poleRows[idx-1].updateUpperDistRange(distUpper - self.pole_dist_step)
@@ -146,8 +152,12 @@ class CustomPoleWidget(QObject):
         
     def updatePoleRowIdx(self):
         pole: PoleRow
+        label = 1
         for i, pole in enumerate(self.poleRows):
             pole.updateIndex(i)
+            if pole.rowType != 'anchor':
+                pole.updateLabel(label)
+                label += 1
     
     def updateNeighbourDistRange(self, idx, dist):
         if idx > 0:
@@ -158,6 +168,25 @@ class CustomPoleWidget(QObject):
             # Right neighbour
             self.poleRows[idx+1].updateLowerDistRange(
                 dist + self.pole_dist_step)
+    
+    def deactivateRow(self, idx, distLower, distUpper):
+        if not distLower:
+            distLower = self.distRange[0]
+        if not distUpper:
+            distUpper = self.distRange[1]
+        distUpper -= self.pole_dist_step
+        distLower += self.pole_dist_step
+        # Update distance range of neighbours
+        if idx > 0:
+            self.poleRows[idx-1].updateUpperDistRange(distUpper)
+        if idx < self.poleCount - 1:
+            self.poleRows[idx+1].updateLowerDistRange(distLower)
+        self.poleRows[idx].deactivate()
+        self.editActive = False
+    
+    def activateRow(self, idx, dist):
+        self.poleRows[idx].activate()
+        self.poleRows[idx].fieldDist.setValue(float(dist))
 
     def zoomIn(self, idx):
         self.sig_zoomIn.emit(idx)
@@ -187,6 +216,7 @@ class PoleRow(object):
         self.widget = widget
         self.layout = layout
         self.index = idx
+        self.label = idx
         self.rowType = rowType
         self.parent.poleCount += 1
 
@@ -194,6 +224,7 @@ class PoleRow(object):
         self.row.setAlignment(Qt.AlignLeft)
         
         self.labelIndex = None
+        self.statusSwitcher = None
         self.fieldName = None
         self.fieldDist = None
         self.fieldHeight = None
@@ -203,10 +234,13 @@ class PoleRow(object):
 
         self.addRowToLayout()
         self.addBtnPlus(addBtn)
-        self.addLabelIndex()
+        if self.rowType == 'anchor':
+            self.addSwitcher()
+        else:
+            self.addLabelIndex()
         self.addFieldName(name)
         self.addFieldDist(dist, distRange)
-        if self.rowType in ['pole', 'fixed']:
+        if self.rowType not in ['anchor', 'pole_anchor']:
             self.addFieldHeight(height)
             self.addFieldAngle(angle)
         self.addBtnDel(delBtn)
@@ -219,18 +253,33 @@ class PoleRow(object):
             # Insert new row between existing ones
             self.layout.insertLayout(self.index + 1, self.row)
     
+    def addSwitcher(self):
+        self.statusSwitcher = QCheckBox(self.widget)
+        self.statusSwitcher.setText('')
+        self.statusSwitcher.setFixedWidth(20)
+        self.statusSwitcher.setChecked(True)
+        self.row.addWidget(self.statusSwitcher)
+        
+        # Connect events
+        self.statusSwitcher.stateChanged.connect(
+            lambda newVal: self.parent.onRowChange(newVal==2, self.index, 'active'))
+    
     def addLabelIndex(self):
         self.labelIndex = QLabel(self.widget)
         self.labelIndex.setFixedWidth(20)
         self.labelIndex.setAlignment(Qt.AlignVCenter | Qt.AlignRight)
         self.row.addWidget(self.labelIndex)
-        if self.rowType == 'pole':
+        if self.rowType != 'anchor':
             self.labelIndex.setText(f"{self.index}:")
     
     def updateIndex(self, idx):
         self.index = idx
-        if self.rowType == 'pole':
+        if self.rowType != 'anchor':
             self.labelIndex.setText(f"{self.index}:")
+    
+    def updateLabel(self, label):
+        if self.rowType != 'anchor':
+            self.labelIndex.setText(f"{label}:")
             
     def addFieldName(self, value):
         self.fieldName = QLineEditWithFocus(self.widget)
@@ -271,6 +320,8 @@ class PoleRow(object):
         self.fieldHeight.setFocusPolicy(Qt.ClickFocus)
         self.fieldHeight.setDecimals(1)
         self.fieldHeight.setSingleStep(self.parent.pole_height_step)
+        # Pole rows with type fixed are only used in profile window, so before
+        #  optimization. That's why they only have 1 meter resolution.
         if self.rowType == 'fixed':
             self.fieldHeight.setDecimals(0)
             self.fieldHeight.setSingleStep(1)
@@ -348,6 +399,16 @@ class PoleRow(object):
     
     def updateUpperDistRange(self, maximum):
         self.fieldDist.setMaximum(maximum)
+
+    def activate(self):
+        self.statusSwitcher.setChecked(True)
+        self.fieldName.setEnabled(True)
+        self.fieldDist.setEnabled(True)
+        
+    def deactivate(self):
+        self.statusSwitcher.setChecked(False)
+        self.fieldName.setEnabled(False)
+        self.fieldDist.setEnabled(False)
     
     def remove(self):
         # Disconnect all widgets

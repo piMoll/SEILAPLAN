@@ -150,7 +150,7 @@ class ProfileDialog(QDialog):
     def setPoleData(self, poles, sections):
         """Fills gui, plot and map with data of fixed poles and pole
         sections."""
-        self.poleLayout.setInitialGui([], [self.profileMin, self.profileMax])
+        self.poleLayout.setInitialGui([self.profileMin, self.profileMax])
         for pole in poles:
             self.addPole(pole['d'], pole['z'], pole['h'], name=pole['name'])
         for section in sections:
