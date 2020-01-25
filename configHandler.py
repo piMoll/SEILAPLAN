@@ -66,6 +66,11 @@ class AbstractConfHandler(object):
 # noinspection PyTypeChecker
 class ProjectConfHandler(AbstractConfHandler):
     
+    POINT_TYPE = {
+        0: 'pole',
+        1: 'pole_anchor',
+        2: 'crane'
+    }
     heightSource: AbstractHeightSource
     profile: Profile
     poles: Poles
@@ -107,7 +112,9 @@ class ProjectConfHandler(AbstractConfHandler):
             'dhm': 'Hoehenmodell',
             'survey': 'Laengsprofil',
             'A': 'Anfangspunkt',
+            'A_Type': 'Anfangspunkt-Typ',
             'E': 'Endpunkt',
+            'E_Type': 'Endpunkt-Typ',
             'fixedPoles': 'Fixe Stuetzen',
             'noPoleSection': 'Keine Stuetzen'
         }
@@ -128,6 +135,14 @@ class ProjectConfHandler(AbstractConfHandler):
             point = property_name[0]
             [x, y] = value.split('/')
             self.setPoint(point, [x, y])
+        
+        elif property_name == self.header['A_Type']:
+            if value in self.POINT_TYPE.values():
+                self.A_type = value
+        
+        elif property_name == self.header['E_Type']:
+            if value in self.POINT_TYPE.values():
+                self.E_type = value
         
         elif property_name == self.header['fixedPoles']:
             polesStr = value.split('/')[:-1]
@@ -338,13 +353,15 @@ class ProjectConfHandler(AbstractConfHandler):
             [self.header['projectname'], self.getProjectName()],
             [self.header[self.heightSourceType], self.heightSource.getAsStr()],
             [self.header['A'], '{0} / {1}'.format(*tuple(self.points['A']))],
+            [self.header['A_Type'], self.A_type],
             [self.header['E'], '{0} / {1}'.format(*tuple(self.points['E']))],
+            [self.header['E_Type'], self.E_type],
             [self.header['fixedPoles'], fixPolesStr],
             [self.header['noPoleSection'], noPoleSectionStr]
         ]
         formattedProjectInfo = []
         for title, info in txt:
-            line = '{0: <17}{1}'.format(title, info)
+            line = '{0: <20}{1}'.format(title, info)
             formattedProjectInfo += line + '\n'
         
         # Pole data
@@ -377,6 +394,27 @@ class ProjectConfHandler(AbstractConfHandler):
         if msg:
             self.onError(msg, 'Unglültige Daten')
         return self.profileIsValid() and self.projectName
+    
+    def getPointTypeAsIdx(self, point):
+        if point == 'A':
+            currentPtype = self.A_type
+        elif point == 'E':
+            currentPtype = self.E_type
+        else:
+            return False
+        for key, ptype in self.POINT_TYPE.items():
+            if currentPtype == ptype:
+                return key
+    
+    def setPointType(self, point, typeIdx):
+        if isinstance(typeIdx, int):
+            pType = self.POINT_TYPE[typeIdx]
+        else:
+            pType = typeIdx
+        if point == 'A':
+            self.A_type = pType
+        elif point == 'E':
+            self.E_type = pType
 
     @staticmethod
     def formatCoordinate(number):
@@ -392,19 +430,45 @@ class ProjectConfHandler(AbstractConfHandler):
     def preparePreviewProfile(self):
         if not self.profileIsValid():
             return False
-        self.heightSource.prepareData(self.points, self.azimut, self.params)
-        profile = Profile(self)
+        self.heightSource.prepareData(self.points, self.azimut, self.params.ANCHOR_LEN)
+        try:
+            profile = Profile(self)
+        except ValueError:
+            self.onError('Unerwarteter Fehler bei der Erstellung des Profils.')
+            return False
         return profile
     
     def prepareForCalculation(self):
+        success = True
+        # Remove height of crane if first point is of type pole or pole_anchor
+        self.params.updateHM(self.A_type)
+        
         # Prepare raster (create subraster) or interpolate survey data
-        self.heightSource.prepareData(self.points, self.azimut, self.params)
+        self.heightSource.prepareData(self.points, self.azimut,
+                                      self.params.ANCHOR_LEN)
+        
+        # Anchor length is shortened in case the height source has not enough
+        #  data to extract terrain data for anchor field
+        self.params.updateAnchorLen(self.heightSource.buffer)
 
-        # From subraster or survey data create profile line
-        self.profile = Profile(self)
+        # Create profile line from subraster or survey data
+        try:
+            self.profile = Profile(self)
+        except ValueError:
+            self.onError('Unerwarteter Fehler bei Erstellung des Profils')
+            return False
+        # Now that height of point A and B is known, pull rope forces are
+        #  calculated
+        if not self.params.setPullRope(self.profile.direction):
+            return False
         
         # Initialize pole data (start/end point and anchors)
-        self.poles = Poles(self)
+        try:
+            self.poles = Poles(self)
+        except ValueError:
+            self.onError('Unerwarteter Fehler bei Erstellung des Profils')
+            return False
+        return success
     
     def resetProfile(self):
         self.points = {
@@ -430,6 +494,12 @@ class ProjectConfHandler(AbstractConfHandler):
 
 class ParameterConfHandler(AbstractConfHandler):
     
+    SEILSYS_TYPES = {
+        0: 'Zweiseil-System',
+        1: 'Mehrseil-System'
+    }
+    HM_KRAN = 12
+    ANCHOR_LEN = 20
     SETS_PATH = os.path.join(HOMEPATH, 'config', 'parametersets')
     
     def __init__(self):
@@ -437,6 +507,7 @@ class ParameterConfHandler(AbstractConfHandler):
         
         # Parameters
         self.params = {}
+        self.derievedParams = {}
         self.paramOrder = []
         # Short-hand dictionary for use in algorithm
         self.p = {}
@@ -452,8 +523,8 @@ class ParameterConfHandler(AbstractConfHandler):
         
         for key, pDef in parameterDef.items():
             parameterDef[key]['value'] = None
-            # Cast numeric information to int / float
             
+            # Cast numeric information to int / float
             for field in ['std_val', 'sort']:
                 if not pDef[field].isalpha():
                     parameterDef[key][field] = self.castToNumber(
@@ -470,6 +541,14 @@ class ParameterConfHandler(AbstractConfHandler):
         
         self.params = parameterDef
         self.paramOrder = [elem[0] for elem in orderedParams]
+        
+        # Initialize derived parameters
+        self.derievedParams['d_Anker_A'] = {
+            'value': self.ANCHOR_LEN
+        }
+        self.derievedParams['d_Anker_E'] = {
+            'value': self.ANCHOR_LEN
+        }
 
     def readParamsFromTxt(self, path):
         """Read txt files of parameter sets and save the key - value pairs to a
@@ -511,7 +590,11 @@ class ParameterConfHandler(AbstractConfHandler):
             return {}
     
     def getParameter(self, property_name):
-        return self.params[property_name]['value']
+        try:
+            return self.params[property_name]['value']
+        except KeyError:
+            # Try to find parameter in derived parameter dictionary
+            return self.derievedParams[property_name]['value']
     
     def getParameterAsStr(self, property_name):
         p = self._getParameterInfo(property_name)
@@ -520,6 +603,8 @@ class ParameterConfHandler(AbstractConfHandler):
         value = p['value']
         if value is None:
             return ''
+        if p['ftype'] == 'drop_field' and property_name == 'Seilsys':
+            return self.SEILSYS_TYPES[int(value)]
         if p['dtype'] in ['int', 'float']:
             value = str(value)
         # Float values without decimal places are reformatted: 10.0 --> 10
@@ -567,6 +652,8 @@ class ParameterConfHandler(AbstractConfHandler):
         p = self._getParameterInfo(property_name)
         if not p:
             return False
+        if p['ftype'] == 'drop_field' and property_name == 'Seilsys':
+            value = self.getSeilsysAsIdx(value)
         cval = self.castToNumber(p['dtype'], value)
         self.params[property_name]['value'] = cval
     
@@ -608,26 +695,6 @@ class ParameterConfHandler(AbstractConfHandler):
             return False
         return True
     
-    def checkAnchorDependency(self):
-        if self.params['HM_Anfang']['value'] == 0 \
-                and self.params['d_Anker_A']['value'] != 0:
-            msg = (f"Der Wert {self.params['d_Anker_A']['value']} im Feld "
-                   f"'{self.params['d_Anker_A']['label']}' ist ungültig. "
-                   f"Ein Ankerfeld ist nur dann möglich, wenn die Anfangstütze "
-                   f"grösser als 0 Meter ist.")
-            self.onError(msg, 'Ungültige Eingabe')
-            return False
-        
-        if self.params['HM_Ende_max']['value'] == 0 \
-                and self.params['d_Anker_E']['value'] != 0:
-            msg = (f"Der Wert {self.params['d_Anker_E']['value']} im Feld "
-                   f"'{self.params['d_Anker_E']['label']}' ist ungültig. "
-                   f"Ein Ankerfeld ist nur dann möglich, wenn die Endstütze "
-                   f"grösser als 0 Meter sein darf.")
-            self.onError(msg, 'Ungültige Eingabe')
-            return False
-        return True
-    
     def checkValidState(self):
         """ Check whole parameterset for valid values."""
         # Check value range
@@ -639,25 +706,22 @@ class ParameterConfHandler(AbstractConfHandler):
                 if not valid:
                     self.params[property_name]['value'] = None
                     success = False
-        
-        # Check anchor parameter dependence
-        success = False if not self.checkAnchorDependency() else success
         return success
     
     def getParametersAsStr(self):
         """ """
         txt = [
-            '{5}{5}{0}{5}{1: <17}{2: <12}{3: <45}{4: <9} {5:-<84}{5}'.format(
+            '{5}{5}{0}{5}{1: <20}{2: <20}{3: <45}{4: <9} {5:-<94}{5}'.format(
                 'Parameter:', 'Name', 'Wert', 'Label', 'Einheit', '\n')]
         for property_name in self.paramOrder:
             p = self.params[property_name]
             # Get correctly formatted string of value
             value = self.getParameterAsStr(property_name)
             # Combine label, value and units
-            line = '{0: <17}{1: <12}{2: <45}{3: <9}{4}'.format(property_name,
+            line = '{0: <20}{1: <20}{2: <45}{3: <9}{4}'.format(property_name,
                                     value, p['label'], p['unit'], '\n')
             txt.append(line)
-        txt.append('{0: <17}{1: <12}'.format('Parameterset:', self.currentSetName))
+        txt.append('{0: <20}{1}'.format('Parameterset:', self.currentSetName))
         return txt
     
     def loadPredefinedParametersets(self):
@@ -724,13 +788,76 @@ class ParameterConfHandler(AbstractConfHandler):
             return None
         return cval
     
+    def getSeilsysAsIdx(self, sysStr):
+        # If Seilsys was saved as text instead of index number (when loading
+        #  project files)
+        if isinstance(sysStr, str) and len(sysStr) > 1:
+            for key, ptype in self.SEILSYS_TYPES.items():
+                if ptype == sysStr:
+                    return key
+        else:
+            return sysStr
+    
     def prepareForCalculation(self):
-        pass
+        # Derive min_SK from parameters MBK and SF_T
+        mbk = self.getParameter('MBK')
+        sft = self.getParameter('SF_T')
+        self.derievedParams['zul_SK'] = {
+            'value': int(round(mbk / sft))
+        }
+        return True
+    
+    def updateHM(self, typeA):
+        if typeA in ['pole', 'pole_anchor']:
+            self.setParameter('HM_Kran', 0)
+            
+    def updateAnchorLen(self, buffer):
+        anchor_A = self.ANCHOR_LEN if buffer[0] > self.ANCHOR_LEN else buffer[0]
+        anchor_E = self.ANCHOR_LEN if buffer[1] > self.ANCHOR_LEN else buffer[1]
+        self.derievedParams['d_Anker_A'] = {
+            'value': anchor_A
+        }
+        self.derievedParams['d_Anker_E'] = {
+            'value': anchor_E
+        }
+        
+    def setPullRope(self, direction):
+        seilsys = self.getParameter('Seilsys')
+        qZ = self.getParameter('qZ')
+        qR = self.getParameter('qR')
+        if direction == 'up':
+            if seilsys == 1:    # Mehrseil-System
+                qz1 = qZ
+                qz2 = qR
+            else:               # Zweiseil-System
+                msg = ('Fehler: Kein Zweilseil-System möglich wenn der '
+                       'Anfangspunkt (bei Winde / Maschine) tiefer als der '
+                       'Endpunkt liegt.')
+                self.onError(msg)
+                return False
+        elif direction == 'down':
+            if seilsys == 1:    # Mehrseil-System
+                qz1 = qZ
+                qz2 = qR
+            else:               # Zweiseil-System
+                qz1 = qZ
+                qz2 = 0
+        else:
+            return False
+        self.derievedParams['qz1'] = {
+            'value': qz1
+        }
+        self.derievedParams['qz2'] = {
+            'value': qz2
+        }
+        return True
     
     def getSimpleParameterDict(self):
         # Short-hand dictionary for use in algorithm
         self.p = {}
         for key, p in self.params.items():
+            self.p[key] = p['value']
+        for key, p in self.derievedParams.items():
             self.p[key] = p['value']
         return self.p
     
@@ -777,14 +904,14 @@ class ConfigHandler(object):
                 lineNr += 1
                 if line == '':
                     return lineNr
-                property_name = line[:17].rstrip()
-                data = line[17:]
+                parts = re.split(r'\s{3,}', line)
+                [property_name, data] = parts
                 self.project.setConfigFromFile(property_name, data)
         
         def readOutParamData(lines, lineNr):
             for line in lines[lineNr:]:
                 lineNr += 1
-                part = re.split(r'\s{2,}', line)
+                part = re.split(r'\s{3,}', line)
                 if len(part) <= 1:
                     continue
                 if part[1] == '-':
@@ -960,11 +1087,12 @@ class ConfigHandler(object):
         Initializes pole data.
         :return:
         """
-        self.params.prepareForCalculation()
-        self.project.prepareForCalculation()
+        success = self.params.prepareForCalculation()
+        if success:
+            success = self.project.prepareForCalculation()
+        return success
     
     def loadCableDataFromFile(self):
-        self.prepareForCalculation()
         status = 'jumpedOver'
         
         # If the project file already contains pole data from an earlier run,
@@ -976,8 +1104,8 @@ class ConfigHandler(object):
         elif len(self.project.fixedPoles['poles']) > 0:
             self.project.poles.updateAllPoles(status, self.project.fixedPoles['poles'])
         
-        zulSK = self.params.params['zul_SK']['value']
-        minSK = self.params.params['min_SK']['value']
+        zulSK = self.params.getParameter('zul_SK')
+        minSK = self.params.getParameter('min_SK')
         optSTA = int(minSK + (zulSK - minSK) / 2)
         
         return {

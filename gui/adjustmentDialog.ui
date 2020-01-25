@@ -366,22 +366,15 @@
        </widget>
        <widget class="QWidget" name="tabCableline">
         <attribute name="title">
-         <string>Tragesystem</string>
+         <string>Tragsystem</string>
         </attribute>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="1" column="0">
+         <item row="0" column="0">
           <layout class="QGridLayout" name="gridLayout_3">
-           <item row="6" column="0">
-            <widget class="QLabel" name="label_10">
+           <item row="5" column="2">
+            <widget class="QLabel" name="label_14">
              <property name="text">
-              <string>Vorspannung Tragseil</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_6">
-             <property name="text">
-              <string>Querschnittsfläche Tragseil</string>
+              <string>kN/m</string>
              </property>
             </widget>
            </item>
@@ -392,27 +385,6 @@
              </property>
             </widget>
            </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_7">
-             <property name="text">
-              <string>Elastizitätsmodul Tragseil</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="0">
-            <widget class="QLabel" name="label_9">
-             <property name="text">
-              <string>Gewicht des Zugseils rechts</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="2">
-            <widget class="QLabel" name="label_12">
-             <property name="text">
-              <string>kN/mm2</string>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="2">
             <widget class="QLabel" name="label_3">
              <property name="text">
@@ -420,19 +392,25 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="2">
-            <widget class="QLabel" name="label_13">
+           <item row="5" column="0">
+            <widget class="QLabel" name="label_9">
              <property name="text">
-              <string>kN/m</string>
+              <string>Gewicht Rückholseil</string>
              </property>
             </widget>
            </item>
-           <item row="5" column="2">
-            <widget class="QLabel" name="label_14">
-             <property name="text">
-              <string>kN/m</string>
+           <item row="0" column="3">
+            <spacer name="horizontalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
              </property>
-            </widget>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
            <item row="2" column="2">
             <widget class="QLabel" name="label_11">
@@ -441,15 +419,29 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label_8">
+           <item row="6" column="0">
+            <widget class="QLabel" name="label_10">
              <property name="text">
-              <string>Gewicht des Zugseils links</string>
+              <string>Vorspannung Tragseil</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="fieldQ">
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>Gewicht Tragseil</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>Querschnittsfläche Tragseil</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QLineEdit" name="fieldqZ">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -477,35 +469,44 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_4">
+           <item row="4" column="2">
+            <widget class="QLabel" name="label_13">
              <property name="text">
-              <string>Gewicht Tragseil</string>
+              <string>kN/m</string>
              </property>
             </widget>
            </item>
-           <item row="6" column="2">
-            <widget class="QLabel" name="label_15">
+           <item row="7" column="0">
+            <widget class="QLabel" name="label">
              <property name="text">
-              <string>kN</string>
+              <string>Minimaler Abstand Tragseil - Boden</string>
              </property>
             </widget>
-           </item>
-           <item row="0" column="3">
-            <spacer name="horizontalSpacer_4">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
            </item>
            <item row="1" column="1">
             <widget class="QLineEdit" name="fieldqT">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>80</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>80</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="1">
+            <widget class="QLineEdit" name="fieldBabstMin">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -548,52 +549,51 @@
              </property>
             </widget>
            </item>
-           <item row="3" column="1">
-            <widget class="QLineEdit" name="fieldE">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>80</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>80</width>
-               <height>16777215</height>
-              </size>
+           <item row="6" column="2">
+            <widget class="QLabel" name="label_15">
+             <property name="text">
+              <string>kN</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="1">
-            <widget class="QLineEdit" name="fieldqz1">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>80</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>80</width>
-               <height>16777215</height>
-              </size>
+           <item row="7" column="2">
+            <widget class="QLabel" name="label_22">
+             <property name="text">
+              <string>m</string>
              </property>
             </widget>
            </item>
            <item row="5" column="1">
-            <widget class="QLineEdit" name="fieldqz2">
+            <widget class="QLineEdit" name="fieldqR">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>80</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>80</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_8">
+             <property name="text">
+              <string>Gewicht Zugseil</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="fieldQ">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -636,26 +636,45 @@
              </property>
             </widget>
            </item>
-          </layout>
-         </item>
-         <item row="0" column="0">
-          <layout class="QVBoxLayout" name="verticalLayout">
-           <item>
-            <widget class="QLabel" name="label">
-             <property name="font">
-              <font>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_12">
              <property name="text">
-              <string>Anpassung der mechanischen Eigenschaften des Tragesystems</string>
+              <string>Mindestbruchkraft Tragseil</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLineEdit" name="fieldMBK">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>80</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>80</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2">
+            <widget class="QLabel" name="label_23">
+             <property name="text">
+              <string>kN</string>
              </property>
             </widget>
            </item>
           </layout>
          </item>
-         <item row="2" column="0">
+         <item row="1" column="0">
           <spacer name="verticalSpacer_2">
            <property name="orientation">
             <enum>Qt::Vertical</enum>

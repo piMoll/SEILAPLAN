@@ -56,8 +56,6 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles):
     befGSK = profile.befGSK
     min_HM = IS["HM_min"]                # int
     max_HM = IS["HM_max"]                # int
-    min_HM_end = IS['HM_Ende_min']       # int
-    max_HM_end = IS['HM_Ende_max']      # int
     Abstufung_HM = IS["HM_Delta"]        # int
     Min_Dist_Mast = int(IS["Min_Dist_Mast"])  # int
     dfix = np.array(fixedPoles['HM_fix_d'])
@@ -67,32 +65,28 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles):
 
     # Initialisierung der Matrizen mit Knoten für Optimierungsproblem
     # -------------------------------------------------------------------------
-    # Hilfsvariablen
-
-    # Neu soll die Höhe der Anfangsstütze nur noch definiert sein, falls IS["HM_Anfang"] >= 0 aufweist.
-    # Es macht Sinn, dass als Input IS["HM_Anfang"] == -1 hat falls Höhe der Anfangsstütze nicht mehr definiert sein
-    # soll, sondern durch das Optimierungsprogramm gewähl werden soll. Die Änderungen im Skript sind nachfolgend auf
-    # diesen Fall ausgerichtet
-
-    # neu:
-    Option_Optimize_Anf_Stuetze = IS["HM_Anfang"] == -1
-    Option_Optimize_Anf_Stuetze = True
 
     posAnz = int(np.sum(StuetzenPos))
     posIdx = np.where(StuetzenPos == 1)[0][1:-1]
     posIdxEnd = StuetzenPos.size-1      # Annahme: Letzte Position in StuetzenPos ist immer 1 ==> Endstütze RICHTIG???
-    hStufung = range(min_HM, max_HM+1, Abstufung_HM)    # Mögl. H normalen Stütze
-    hStufungEnd = range(min_HM_end, max_HM_end+1, Abstufung_HM) # H Endstütze
+    hStufung = range(min_HM, max_HM+1, Abstufung_HM)
 
-    # Anfangsstütze mit variabler oder fixer Höhe definieren
-    if Option_Optimize_Anf_Stuetze:
-        hStufungAnf = range(min_HM, max_HM+1, Abstufung_HM)  # H Endstütze
+    # Anfangsstütze
+    # Die Höhe der Anfangsstütze ist entweder durch die Höhe des Seilmastkrans
+    #  fixiert oder hat eine variable Höhe von 0 Meter (=Verankerung) bis HM_max
+    if IS["HM_Kran"] == 0:
+        # Anfangsstütze mit variabler Höhe
+        hStufungAnf = range(0, max_HM+1, Abstufung_HM)
         stufenAnzAnf = len(hStufungAnf)
     else:
-        hStufungAnf = IS["HM_Anfang"]
+        # Fixe Höhe des Seilkranmasts
+        hStufungAnf = IS["HM_Kran"]
         stufenAnzAnf = 1
 
+    # Die Endstütze hat eine Höhe zwischen 0 und max_HM Meter
+    hStufungEnd = range(0, max_HM + 1, Abstufung_HM)
     stufenAnzEnd = len(hStufungEnd)
+    
     arraySize = stufenAnzAnf + (posAnz - 2) * len(hStufung) + stufenAnzEnd
 
     # Pos = Längenposition für den Knoten i

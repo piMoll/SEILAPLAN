@@ -421,15 +421,15 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
             ]
             units = [
                 params.params['Bodenabst_min']['unit'],
-                params.params['zul_SK']['unit'],
-                params.params['zul_SK']['unit'],
+                params.params['min_SK']['unit'],
+                params.params['min_SK']['unit'],
                 '°',
                 ''
             ]
             thresholds = [
                 params.getParameter('Bodenabst_min'),
-                float(params.getParameter('zul_SK')),
-                float(params.getParameter('zul_SK')),
+                float(params.getParameter('min_SK')),
+                float(params.getParameter('min_SK')),
                 None,
                 None
             ]
@@ -448,8 +448,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
             ]
             thresholdStr = [
                 f"{params.getParameterAsStr('Bodenabst_min')} {units[0]}",
-                f"{params.getParameterAsStr('zul_SK')} {units[1]}",
-                f"{params.getParameterAsStr('zul_SK')} {units[2]}",
+                f"{params.getParameterAsStr('min_SK')} {units[1]}",
+                f"{params.getParameterAsStr('min_SK')} {units[2]}",
                 '0 ° - 30 °',
                 '-'
             ]

@@ -38,10 +38,11 @@ class AdjustmentDialogParams(object):
             'Q': self.parent.fieldQ,
             'qT': self.parent.fieldqT,
             'A': self.parent.fieldA,
-            'E': self.parent.fieldE,
-            'qz1': self.parent.fieldqz1,
-            'qz2': self.parent.fieldqz2,
+            'MBK': self.parent.fieldMBK,
+            'qZ': self.parent.fieldqZ,
+            'qR': self.parent.fieldqR,
             'Vorsp': self.parent.fieldVorsp,
+            'Bodenabst_min': self.parent.fieldBabstMin
         }
         self.connectFields()
 
@@ -50,9 +51,10 @@ class AdjustmentDialogParams(object):
             'Q': self.paramHandler.getParameterAsStr('Q'),
             'qT': self.paramHandler.getParameterAsStr('qT'),
             'A': self.paramHandler.getParameterAsStr('A'),
-            'E': self.paramHandler.getParameterAsStr('E'),
-            'qz1': self.paramHandler.getParameterAsStr('qz1'),
-            'qz2': self.paramHandler.getParameterAsStr('qz2'),
+            'MBK': self.paramHandler.getParameterAsStr('MBK'),
+            'qZ': self.paramHandler.getParameterAsStr('qZ'),
+            'qR': self.paramHandler.getParameterAsStr('qR'),
+            'Bodenabst_min': self.paramHandler.getParameterAsStr('Bodenabst_min'),
             'Vorsp': str(self.parent.result['optSTA']),
         }
         for key, field in self.fields.items():
@@ -67,14 +69,16 @@ class AdjustmentDialogParams(object):
             lambda: self.paramHasChanged('qT'))
         self.parent.fieldA.editingFinished.connect(
             lambda: self.paramHasChanged('A'))
-        self.parent.fieldE.editingFinished.connect(
-            lambda: self.paramHasChanged('E'))
-        self.parent.fieldqz1.editingFinished.connect(
-            lambda: self.paramHasChanged('qz1'))
-        self.parent.fieldqz2.editingFinished.connect(
-            lambda: self.paramHasChanged('qz2'))
-        self.parent.fieldVorsp.editingFinished.connect(
-            lambda: self.paramHasChanged('Vorsp'))
+        self.parent.fieldMBK.editingFinished.connect(
+            lambda: self.paramHasChanged('MBK'))
+        self.parent.fieldqZ.editingFinished.connect(
+            lambda: self.paramHasChanged('qZ'))
+        self.parent.fieldqR.editingFinished.connect(
+            lambda: self.paramHasChanged('qR'))
+        self.parent.fieldqR.editingFinished.connect(
+            lambda: self.paramHasChanged('qR'))
+        self.parent.fieldBabstMin.editingFinished.connect(
+            lambda: self.paramHasChanged('Bodenabst_min'))
 
     def paramHasChanged(self, fieldName=''):
         newVal = self.fields[fieldName].text()

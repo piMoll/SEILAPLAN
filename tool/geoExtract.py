@@ -155,9 +155,9 @@ def stuePos(IS, gp, noPoleSection, fixedPoles):
 
     # Rückerichtung bestimmen
     #########################
-    if IS['GravSK'] == 'nein':
+    if IS['Seilsys'] == 1:      # Mehrseil-System
         R_R = 0
-    else:
+    else:                       # Zweiseil-System
         try:
             index = [i for i in range(len(gp.di_s) - 1, -1, -1) if di[i] < 100][0]
         except IndexError:

@@ -81,7 +81,10 @@ def optimizeCableLine(conf):
     calculates the finale cable line.
     """
     # Ready configuration data from project file
-    conf.prepareForCalculation()
+    success = conf.prepareForCalculation()
+    if not success:
+        print('ERROR: Fehler beim vorbereiten der Input Werte')
+        exit()
     # Initialize dummy task manager
     task = ProcessingTask(conf)
     res = None
@@ -101,6 +104,10 @@ def calculateFinalCableLine(conf):
     """ This function only calculates the finale cable line. Pole locations
     are read from a project file.
     """
+    success = conf.prepareForCalculation()
+    if not success:
+        print('ERROR: Fehler beim vorbereiten der Input Werte')
+        exit()
     optiResults, _ = conf.loadCableDataFromFile()
     parameters = conf.params.getSimpleParameterDict()
     
@@ -126,7 +133,6 @@ if __name__ == "__main__":
     
     # Define the project file you want to load
     savedProjectFile = '/home/pi/Seilaplan/nullpunkt_test/NW_raster_350m_3pole_4manchor/Projekteinstellungen.txt'
-    # TODO: savedProjectFile = r"C:\path\to\your\file.txt"
 
     # Define which functions the code should perform
     #  'optimize':  Run optimization algorithm to define pole positions and
@@ -141,7 +147,6 @@ if __name__ == "__main__":
     createOutput = True     # or: False
     # Where do you want output to be saved?
     outputLocation = '/home/pi/Seilaplan'
-    # TODO: outputLocation = r"C:\path\to\your\outputLocation"
     
     # #########################################################################
 

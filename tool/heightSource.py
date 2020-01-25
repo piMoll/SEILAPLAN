@@ -89,14 +89,12 @@ class Raster(AbstractHeightSource):
             self.valid = True
             del ds
     
-    def prepareData(self, points, azimut, params):
+    def prepareData(self, points, azimut, anchorLen):
         [Ax, Ay] = points['A']
         [Ex, Ey] = points['E']
         [xMin, yMax, xMax, yMin] = self.extent
-        anchorA = params.getParameter('d_Anker_A')
-        anchorE = params.getParameter('d_Anker_E')
-        self.buffer = [self.BUFFER_DEFAULT + anchorA,
-                       self.BUFFER_DEFAULT + anchorE]
+        self.buffer = (self.BUFFER_DEFAULT + anchorLen,
+                       self.BUFFER_DEFAULT + anchorLen)
 
         # Extend profile line by buffer length so user can move start and end
         #  point slightly
@@ -255,8 +253,7 @@ class SurveyData(AbstractHeightSource):
             self.projectOnLine()
             self.valid = True
         else:
-            # TODO: Text anpassen
-            self.errorMsg = "csv-Datei konnte nicht geladen werden."
+            self.errorMsg = "Daten in CSV-Datei konnten nicht geladen werden."
         
     def readOutData(self, idxX, idxY, idxZ, sep):
         try:
@@ -264,7 +261,6 @@ class SurveyData(AbstractHeightSource):
                                     usecols=(idxX, idxY, idxZ), unpack=True,
                                     skip_header=1)
         except Exception as e:
-            # TODO
             return False
         self.extent = [np.min(x), np.max(y), np.max(x), np.min(y)]
         self.surveyPoints = {
@@ -335,7 +331,7 @@ class SurveyData(AbstractHeightSource):
         }
         self.prepareData(points)
 
-    def prepareData(self, points, azimut=None, params=None):
+    def prepareData(self, points, azimut=None, anchorLen=None):
         [Ax, Ay] = points['A']
         [Ex, Ey] = points['E']
         # Switch sorting of points if cable line goes in opposite direction

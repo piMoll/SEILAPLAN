@@ -12,6 +12,7 @@
 #------------------------------------------------------------------------------
 """
 import numpy as np
+from math import inf
 
 
 def calcBandH(zi, di, H_Anfangsmast, H_Endmast, z_null, z_ende, d_null, d_ende):
@@ -38,19 +39,19 @@ def calcBandH(zi, di, H_Anfangsmast, H_Endmast, z_null, z_ende, d_null, d_ende):
     return b, h, feld
 
 
-def checkCable(zi, si, sc, befGSK, GravSK, R_R):
+def checkCable(zi, si, sc, befGSK, SeilSys, R_R):
     """ Prüft ob an allen Punkten die minimale Bodenfreiheit gegeben ist
     R_R = Rückerrichtung  1 = rauf, -1 = runter
-    GravSK = 1    1 = Gravitationsseilkran, 0 = kein Gravitationsseilkran
+    Seilsys     0 = Zweiseil-System, 1 = Mehrseil-System
     R_R = 0 --> egal ob rauf oder runder weil kein Gravitationsseilkran
     """
     sc_dm = np.array(sc*10, dtype=np.int)
     sc_dm[sc_dm == 0] = -10
     bodenabst = np.sum((si-zi) > sc_dm, axis=0) == sc_dm.size
 
-    if GravSK == 'nein':    # Kein Gravitationsbetrieb
+    if SeilSys == 1:        # Mehrseil-System
         Cable_Possible = bodenabst
-    else:                   # Gravitationsbetrieb
+    else:                   # Zweiseil-System
         if R_R == -1:       # runter
             Cable_Possible = bodenabst and (si[1] > si[0] or befGSK[0]==0)
         else:               # für Gravitationslift (rauf rücken)
@@ -128,7 +129,7 @@ def calcCable(IS, zi, di, sc, befGSK, z_null, STA, b, h, feld):
     F = IS["A"]        # [mm^2]
     E = IS["E"]        # [kN/mm^2]
     # beta = IS["beta"]     # [1/°C] Ausdehnungskoeffizient von Stahl
-    Federkonstante = IS["Federkonstante"]  # [kN/m] Anker
+    Federkonstante = inf        # Federkonstante der Verankerung
     qz1 = IS["qz1"]     # [kN/m] Zugseilgewicht links
     qz2 = IS["qz2"]     # [kN/m] Zugseilgewicht rechts
     # min_Bodenabstand = IS["Bodenabst_min"]*10     # [dm] (10*[m])
@@ -275,7 +276,7 @@ def calcCable(IS, zi, di, sc, befGSK, z_null, STA, b, h, feld):
 
             ym_z = ym       # Ausgabegrösse: dient zur Kontrolle
             si = 10 * (x_coord_last_zweifel + z_null)
-            Cable_Possible = checkCable(zi, si, sc, befGSK, IS['GravSK'],
+            Cable_Possible = checkCable(zi, si, sc, befGSK, IS['Seilsys'],
                                         IS['R_R'])
             # add_values = [ym, HT, Hs, Hm, STfm_Last]
 

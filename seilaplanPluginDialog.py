@@ -176,12 +176,15 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.radioSurveyData.toggled.connect(self.onToggleHeightSource)
         self.buttonLoadSurveyData.clicked.connect(self.onLoadSurveyData)
         
+        self.fieldTypeA.currentTextChanged.connect(self.onTypeAChange)
+        self.fieldTypeE.currentTextChanged.connect(self.onTypeEChange)
+        
         # Info buttons
         self.infoRasterlayer.clicked.connect(self.onHeightDataInfoShow)
         self.infoSurveyData.clicked.connect(self.onHeightDataInfoShow)
+        self.infoPointA.clicked.connect(self.onPointAInfoShow)
+        self.infoPointE.clicked.connect(self.onPointEInfoShow)
         self.infoBodenabstand.clicked.connect(self.onShowInfoImg)
-        self.infoVerankerungA.clicked.connect(self.onShowInfoImg)
-        self.infoVerankerungE.clicked.connect(self.onShowInfoImg)
         self.infoStuetzen.clicked.connect(self.onShowInfoImg)
         
         # OSM map and contour buttons
@@ -212,9 +215,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
             # lambda definition is put in its own function "getListener" to
             # preserve scope, otherwise var "name" gets overwritten in every
             # iteration of this loop
-            if isinstance(inputField, QComboBox) and name == 'GravSK':
-                inputField.currentTextChanged.connect(
-                    lambda newVal: self.getListenerComboBox('GravSK', newVal))
+            if isinstance(inputField, QComboBox) and name == 'Seilsys':
+                inputField.currentIndexChanged.connect(
+                    self.getListenerComboBox(name))
             else:
                 inputField.editingFinished.connect(
                     self.getListenerLineEdit(name))
@@ -223,32 +226,31 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         """Combine all GUI fields in dictionary for faster access.
         """
         self.parameterFields = {
-            'Q': self.fieldQ,
-            'qT': self.fieldQt,
-            'A': self.fieldA,
-            'E': self.fieldE,
-            'zul_SK': self.fieldzulSK,
-            'min_SK': self.fieldminSK,
-            'qz1': self.fieldqz1,
-            'qz2': self.fieldqz2,
+            'Seilsys': self.fieldSeilsys,
+            'HM_Kran': self.fieldHMKran,
+            'Befahr_A': self.fieldBefA,
+            'Befahr_E': self.fieldBefE,
             'Bodenabst_min': self.fieldBabstMin,
             'Bodenabst_A': self.fieldBabstA,
             'Bodenabst_E': self.fieldBabstE,
-            'GravSK': self.fieldGravSK,
-            'Befahr_A': self.fieldBefA,
-            'Befahr_E': self.fieldBefE,
-            'HM_Anfang': self.fieldHManf,
-            'd_Anker_A': self.fieldDAnkA,
-            'HM_Ende_min': self.fieldHMeMin,
-            'HM_Ende_max': self.fieldHMeMax,
-            'd_Anker_E': self.fieldDAnkE,
+            
+            'Q': self.fieldQ,
+            'qT': self.fieldQt,
+            'A': self.fieldA,
+            'MBK': self.fieldMBK,
+            'qZ': self.fieldqZ,
+            'qR': self.fieldqR,
+            
             'Min_Dist_Mast': self.fieldMinDist,
             'L_Delta': self.fieldLdelta,
-            'N_Zw_Mast_max': self.fieldNzwSt,
             'HM_min': self.fieldHMmin,
             'HM_max': self.fieldHMmax,
             'HM_Delta': self.fieldHMdelta,
-            'HM_nat': self.fieldHMnat
+            'HM_nat': self.fieldHMnat,
+            'min_SK': self.fieldminSK,
+            
+            'E': self.fieldE,
+            'SF_T': self.fieldSFT
         }
         self.coordFields = {
             'Ax': self.coordAx,
@@ -297,8 +299,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
     def getListenerLineEdit(self, property_name):
         return lambda: self.parameterChangedLineEdit(property_name)
     
-    def getListenerComboBox(self, property_name, newVal):
-        return self.paramHandler.setParameter(property_name, newVal)
+    def getListenerComboBox(self, property_name):
+        return lambda: self.parameterChangedComboBox(property_name)
     
     def parameterChangedLineEdit(self, property_name):
         # Deactivate editFinished signal so it is not fired twice when
@@ -307,14 +309,23 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         newVal = self.parameterFields[property_name].text()
         newValAsStr = self.paramHandler.setParameter(property_name, newVal)
         if newValAsStr is not False:
-            # Change current parameter set name
-            if self.paramHandler.currentSetName:
-                self.fieldParamSet.setCurrentText(self.paramHandler.currentSetName)
-            else:
-                self.fieldParamSet.setCurrentIndex(-1)
+            self.updateParametersetField()
             # Insert correctly formatted value
-            self.parameterFields[property_name].setText(newValAsStr)
+            self.parameterFields[property_name].setText(newVal)
         self.parameterFields[property_name].blockSignals(False)
+    
+    def parameterChangedComboBox(self, property_name):
+        newVal = self.parameterFields[property_name].currentIndex()
+        newValAsIdx = self.paramHandler.setParameter(property_name, newVal)
+        if newValAsIdx is not False:
+            self.updateParametersetField()
+    
+    def updateParametersetField(self):
+        # Change current parameter set name
+        if self.paramHandler.currentSetName:
+            self.fieldParamSet.setCurrentText(self.paramHandler.currentSetName)
+        else:
+            self.fieldParamSet.setCurrentIndex(-1)
     
     def setupContentForFirstRun(self):
         # Generate project name
@@ -337,8 +348,14 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.fieldParamSet.blockSignals(False)
         # Set standard parameter set
         self.paramHandler.setParameterSet('Standardwerte')
-        self.fieldParamSet.setCurrentText('Standardwerte')
+        self.fieldParamSet.setCurrentIndex(self.fieldParamSet.findText('Standardwerte'))
         self.fillInValues()
+        
+        # Set point types
+        self.fieldTypeA.setCurrentIndex(
+            self.projectHandler.getPointTypeAsIdx('A'))
+        self.fieldTypeE.setCurrentIndex(
+            self.projectHandler.getPointTypeAsIdx('E'))
     
     def setupContent(self):
         self.startAlgorithm = False
@@ -364,9 +381,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.checkPoints()
         
         # Tell profile window to update its content on next show
-        if self.projectHandler.heightSourceType == 'dhm':
-            # TODO: Profil in Diagramm darstellen wenn Survey Data
-            self.updateProfileWinContent()
+        self.updateProfileWinContent()
         
         # Load all predefined and user-defined parameter sets from the
         # config folder (maybe a new set was added when project was opened)
@@ -382,6 +397,12 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
             self.fieldParamSet.setCurrentIndex(-1)
         # Fill in parameter values
         self.fillInValues()
+
+        # Set point types
+        self.fieldTypeA.setCurrentIndex(
+            self.projectHandler.getPointTypeAsIdx('A'))
+        self.fieldTypeE.setCurrentIndex(
+            self.projectHandler.getPointTypeAsIdx('E'))
     
     def enableToolTips(self):
         for field_name, field in list(self.parameterFields.items()):
@@ -400,7 +421,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
             val = self.paramHandler.getParameterAsStr(field_name)
             if val:
                 if isinstance(field, QComboBox):
-                    field.setCurrentText(val)
+                    val = self.paramHandler.getParameter(field_name)
+                    field.setCurrentIndex(val)
                     continue
                 
                 field.setText(val)
@@ -732,23 +754,23 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         if point == 'A':
             if state == 'green':
                 self.symA.setText(greenIcon)
-                self.symTxtA.setText(greenTxt)
+                self.symA.setToolTip(greenTxt)
             if state == 'yellow':
                 self.symA.setText(yellowIcon)
-                self.symTxtA.setText(yellowTxt)
+                self.symA.setToolTip(yellowTxt)
             if state == 'red':
                 self.symA.setText(redIcon)
-                self.symTxtA.setText(redTxt)
+                self.symA.setToolTip(redTxt)
         if point == 'E':
             if state == 'green':
                 self.symE.setText(greenIcon)
-                self.symTxtE.setText(greenTxt)
+                self.symE.setToolTip(greenTxt)
             if state == 'yellow':
                 self.symE.setText(yellowIcon)
-                self.symTxtE.setText(yellowTxt)
+                self.symE.setToolTip(yellowTxt)
             if state == 'red':
                 self.symE.setText(redIcon)
-                self.symTxtE.setText(redTxt)
+                self.symE.setToolTip(redTxt)
     
     def onClickOsmButton(self):
         """Add a OpenStreetMap layer."""
@@ -815,6 +837,24 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         else:
             return False
     
+    def onTypeAChange(self):
+        idx = self.fieldTypeA.currentIndex()
+        self.projectHandler.setPointType('A', idx)
+        # Update GUI: fieldHMKran
+        if idx in [0, 1]:       # pole, pole_anchor
+            self.fieldHMKran.setEnabled(False)
+            self.paramHandler.setParameter('HM_Kran', 0)
+        elif idx == 2:          # crane
+            stdVal = self.paramHandler.HM_KRAN
+            self.fieldHMKran.setText(str(stdVal))
+            self.fieldHMKran.setEnabled(True)
+            self.paramHandler.setParameter('HM_Kran', stdVal)
+        self.updateParametersetField()
+    
+    def onTypeEChange(self):
+        idx = self.fieldTypeE.currentIndex()
+        self.projectHandler.setPointType('E', idx)
+    
     def onInfo(self):
         QMessageBox.information(self, "SEILAPLAN Info", infoTxt,
                                 QMessageBox.Ok)
@@ -835,6 +875,18 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         QMessageBox.information(self, "Höheninformationen laden", msg,
                                 QMessageBox.Ok)
     
+    def onPointAInfoShow(self):
+        # TODO
+        msg = ('')
+        QMessageBox.information(self, "Anfangspunkt", msg,
+                                QMessageBox.Ok)
+
+    def onPointEInfoShow(self):
+        # TODO
+        msg = ('')
+        QMessageBox.information(self, "Endpunkt", msg,
+                                QMessageBox.Ok)
+    
     def onShowInfoImg(self):
         sender = self.sender().objectName()
         infoType = sender[4:]
@@ -848,7 +900,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.imgBox.show()
     
     def goToAdjustmentWindow(self):
-        if self.confHandler.checkValidState():
+        if self.confHandler.checkValidState() \
+                and self.checkEqualSpatialRef \
+                and self.confHandler.prepareForCalculation():
             self.startAlgorithm = False
             self.goToAdjustment = True
             self.close()
@@ -856,14 +910,16 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
             return False
     
     def apply(self):
-        if self.confHandler.checkValidState() and self.checkEqualSpatialRef:
+        if self.confHandler.checkValidState() \
+                and self.checkEqualSpatialRef \
+                and self.confHandler.prepareForCalculation():
             self.startAlgorithm = True
             self.goToAdjustment = False
+            self.close()
         else:
             # If project info or parameter are missing or wrong, algorithm
             # can not start
             return False
-        self.close()
     
     def cancel(self):
         """ Called when 'Cancel' is pressed."""

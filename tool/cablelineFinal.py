@@ -13,7 +13,7 @@
 """
 
 import numpy as np
-from math import pi, cos, sin
+from math import pi, cos, sin, inf
 
 
 def xfrange(start, stop, step):
@@ -55,7 +55,7 @@ def preciseCable(IS, poles, STA):
     F = IS["A"]        # [mm^2]
     E = IS["E"]        # [kN/mm^2]
     #beta = IS["beta"]     # [1/°C] Ausdehnungskoeffizient von Stahl
-    Federkonstante = IS["Federkonstante"]  # [kN/m] Anker
+    Federkonstante = inf        # Federkonstante der Verankerung
     qz1 = IS["qz1"]     # [kN/m] Zugseilgewicht links
     qz2 = IS["qz2"]     # [kN/m] Zugseilgewicht rechts
 

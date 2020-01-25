@@ -24,6 +24,7 @@ class Profile(object):
         self.heightSource = project.heightSource
         self.anchorA = self.params.getParameter('d_Anker_A')
         self.anchorE = self.params.getParameter('d_Anker_E')
+        self.direction = None     # 'down' or 'up'
         
         self.surveyPnts = None
         # In case of survey data, save survey points
@@ -124,6 +125,11 @@ class Profile(object):
         # zi_n and zi_s in dm instead of m
         self.zi_s *= 10
         self.zi_n *= 10
+        
+        # Update profile direction
+        self.direction = 'down'
+        if self.zi[0] < self.zi[-1]:
+            self.direction = 'up'
     
     def analyseProfile(self, lenCableline):  # locb
         # Ground clearance (Bodenabstand)

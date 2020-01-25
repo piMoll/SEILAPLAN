@@ -30,21 +30,24 @@ class Poles(object):
         # Length of first anchor field; is used to shift horizontal distances
         self.anchorA = self.params.getParameter('d_Anker_A')
         self.anchorE = self.params.getParameter('d_Anker_E')
-        heightA = self.params.getParameter('HM_Anfang')
+        heightA = self.params.getParameter('HM_Kran')
         heightE = 0 if self.E_type == 'pole_anchor' else self.INIT_POLE_HEIGHT
         # End point is slightly moved (less than a meter) so that it is the
         # last point on profile with step size of 1m
         self.profileLength = floor(project.profileLength)
         
         idx = 0
+        nameA = 'Anfangsstütze' if self.A_type == 'pole' else None
+        nameE = 'Endstütze' if self.E_type == 'pole' else None
         if self.A_type == 'pole':
             # Anchor at start point
             self.add(idx, -1*self.anchorA, 0, poleType='anchor')
             idx = 1
         # First pole at 0 m horizontal distance
-        self.add(idx, 0, heightA, poleType=self.A_type)
+        self.add(idx, 0, heightA, poleType=self.A_type, name=nameA)
         # Last pole
-        self.add(idx+1, self.profileLength, heightE, poleType=self.E_type)
+        self.add(idx+1, self.profileLength, heightE, poleType=self.E_type,
+                 name=nameE)
         if self.E_type == 'pole':
             # Anchor at end point
             self.add(idx+2, self.profileLength + self.anchorE, 0,
@@ -122,8 +125,6 @@ class Poles(object):
             for p in poles[1:-1]:
                 self.add(idx, p['d'], p['h'], name=p['name'])
                 idx += 1
-            # Update name of last pole
-            self.update(self.idxE, 'name', f'{idx}. Stütze')
             self.updateAnchorStatus()
         
         elif status == 'savedFile':
