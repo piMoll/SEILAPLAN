@@ -19,5 +19,5 @@ HM_max		Maximal Stützenhöhe	m	field	int	HM_min	50	Maximale Stützenhöhe	33
 HM_Delta		Abstufungsinterval	m	field	int	1	5	Abstufungsinterval der möglichen Stützenhöhen	34
 HM_nat		Künstliche Stützen ab Stützenhöhe	m	field	int	0	100	Künstliche Stützen werden ab ... Höhe verwendet	35
 min_SK		Minimal zulässige Seilzugkraft	kN	field	int	10	500	Minimal zulässige Seilzugkraft	36
-E		Elastizitätsmodul Tragseil	kN/mm2	field	float	10	1000	Elastizitätsmodul des Tragseils	40
-SF_T		Sicherheitsfaktor Tragseil		field	float	0	20	Sicherheitsfaktor Tragseil	41
+E		Elastizitätsmodul Tragseil	kN/mm2	field	float	10	1000	Elastizitätsmodul des Tragseils	37
+SF_T		Sicherheitsfaktor Tragseil		field	float	0	20	Sicherheitsfaktor Tragseil	38

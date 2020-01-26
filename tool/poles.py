@@ -60,7 +60,7 @@ class Poles(object):
         self.calculateAnchorLength()
     
     def add(self, idx, d, h=INIT_POLE_HEIGHT, angle=INIT_POLE_ANGLE,
-            manually=False, poleType='pole', name=''):
+            manually=False, poleType='pole', active=True, name=''):
        
         d = float(d)
         if h == -1:
@@ -88,7 +88,7 @@ class Poles(object):
             'coordx': x,
             'coordy': y,
             'manually': manually,
-            'active': True
+            'active': active
         })
         self.updateFirstLastPole()
 
@@ -137,7 +137,8 @@ class Poles(object):
             self.poles = []
             for p in poles:
                 self.add(p['idx'], p['dist'], p['height'], p['angle'],
-                         p['manual'], p['pType'], name=p['name'])
+                         p['manual'], p['pType'], active=p['active'],
+                         name=p['name'])
         
         elif status == 'jumpedOver':
             # User wants to jump over the optimization but has not loaded a

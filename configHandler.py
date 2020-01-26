@@ -370,15 +370,15 @@ class ProjectConfHandler(AbstractConfHandler):
             formattedPoleData = [
                 4 * '\n',
                 'Stützendaten:\n',
-                '\t'.join(['Nr.', 'Dist.', 'Höhe', 'Neigung', 'man.', 'Typ',
-                           'Name']) + '\n',
+                '\t'.join(['Nr.', 'Dist.', 'Höhe', 'Neigung', 'man.', 'Typ\t',
+                           'aktiv', 'Name']) + '\n',
                 '-'*60 + '\n'
             ]
             idx = 0
             for p in self.poles.poles:
                 poleData = [idx, p['d'], round(p['h'], 1), round(p['angle'], 1),
-                            1 if p['manually'] else 0,
-                           p['poleType'], p['name']]
+                            1 if p['manually'] else 0, p['poleType'],
+                            1 if p['active'] else 0, p['name']]
                 poleStr = [str(m) for m in poleData]
                 formattedPoleData.append('\t'.join(poleStr) + '\n')
                 idx += 1
@@ -933,7 +933,7 @@ class ConfigHandler(object):
                 if line == '':
                     return lineNr
                 parts = line.split('\t')
-                if len(parts) != 7:
+                if len(parts) != 8:
                     continue
                 self.polesFromTxt.append({
                     'idx': int(parts[0]),
@@ -942,7 +942,8 @@ class ConfigHandler(object):
                     'angle': float(parts[3]),
                     'manual': True if int(parts[4]) == 1 else False,
                     'pType': parts[5],
-                    'name': parts[6]
+                    'active': True if int(parts[6]) == 1 else False,
+                    'name': parts[7]
                 })
 
         lineCount = 0
