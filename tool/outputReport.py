@@ -71,15 +71,16 @@ def generateReportText(confHandler, result, comment):
     :type confHandler: configHandler.ConfigHandler
     """
     poles = confHandler.project.poles
-    poleslist = poles.poles
+    polesWithAnchors = poles.poles
+    polesWithoutAnchors = polesWithAnchors[poles.idxA:poles.idxE+1]
     hmodell = confHandler.project.getHeightSourceAsStr()
     kraft = result['force']
     az_grad = math.degrees(poles.azimut)
     az_gon = az_grad * 1.11111
 
-    poleCount = len(poleslist) - 2      # Without anchors
+    poleCount = len(polesWithoutAnchors)
     fieldCount = poleCount - 1
-    sHeader = [i['name'] for i in poleslist[1:-1]]
+    sHeader = [i['name'] for i in polesWithoutAnchors]
     fHeader = [f"{i+1}. Feld" for i in range(fieldCount)]
 
     # First section with duration, dhm and several comments
@@ -102,8 +103,9 @@ def generateReportText(confHandler, result, comment):
     # Section poles
     str_posi = [["", "Höhe [m]", "Neigung [°]", "X-Koordinate", "Y-Koordinate",
                  "Z-Koordinate [m.ü.M.]"]]
-    for s in range(len(poleslist)):
-        pole = poles.poles[s]
+    for pole in polesWithAnchors:
+        if not pole['active']:
+            continue
         angle = round(pole['angle'], 0) if pole['angle'] != 0 else '-'
         str_posi.append([
             f"{pole['name']}", f"{pole['h']:.1f}", f"{angle}",
@@ -114,9 +116,8 @@ def generateReportText(confHandler, result, comment):
     # Section field survey
     str_abst = [[f"Azimut: {az_gon:.2f} gon / {az_grad:.2f} °"],
                 ["", "Horizontaldistanz", "Schrägdistanz"]]
-    for i in range(len(poleslist)-1):
-        pole = poleslist[i]
-        nextPole = poleslist[i+1]
+    for i, pole in enumerate(polesWithAnchors[:-1]):
+        nextPole = polesWithAnchors[i+1]
         dist_h = nextPole['d'] - pole['d']
         dist_z = nextPole['z'] - pole['z']
         dist_s = (dist_h**2 + dist_z**2)**0.5
@@ -264,23 +265,26 @@ def generateReportText(confHandler, result, comment):
     
     orderedParams = confHandler.params.paramOrder
     # Parameter set name
-    str_anna = [['Parameterset:', confHandler.params.currentSetName, '', ''],
+    setname = confHandler.params.currentSetName
+    setname = setname if setname else '-'
+    str_para = [['Parameterset:', setname, '', ''],
                 ['']*4]     # empty row
-    lenParam = math.ceil(len(orderedParams) / 2)
-    for i in range(lenParam):
-        paramFirstRow = confHandler.params.params[orderedParams[i]]
-        paramSecondRow = confHandler.params.params[orderedParams[i + lenParam]]
-        firstColum = [paramFirstRow['label'],
-                      f"{confHandler.params.getParameterAsStr(orderedParams[i])} "
-                      f"{paramFirstRow['unit']}"]
-        spacer = ['']
-        secondColumn = [paramSecondRow['label'],
-                        f"{confHandler.params.getParameterAsStr(orderedParams[i + lenParam])} "
-                        f"{paramSecondRow['unit']}"]
-        str_anna.append(firstColum + spacer + secondColumn)
+
+    maxColLen = 10
+    columns = [[['', '']]*maxColLen, [['', '']]*maxColLen, [['', '']]*maxColLen]
+    for key in orderedParams:
+        param = confHandler.params.params[key]
+        paramStr = confHandler.params.getParameterAsStr(key) + ''
+        sort = param['sort']
+        col = int(sort/10) - 1
+        row = int(sort % 10)
+        columns[col][row] = ([param['label'], f"{paramStr} {param['unit']}"])
+
+    for i in range(maxColLen):
+        str_para.append(columns[0][i] + [''] + columns[1][i] + [''] + columns[2][i])
 
     text = [str_time, str_posi, str_abst, str_opti, str_laen, str_durc,
-            str_seil, str_stue, str_wink, str_nach, str_anna]
+            str_seil, str_stue, str_wink, str_nach, str_para]
     str_report = removeTxtElements(text, "nan")
 
     return str_report
@@ -307,7 +311,7 @@ def generateReport(reportText, outputLoc, projname):
 
     [str_time, str_posi, str_abst, str_opti, str_laen,
      str_durc, [str_seil1, str_seil2, str_seil3, str_seil4],
-     [str_stue1, str_stue2], str_wink, str_nach, str_anna] = reportText
+     [str_stue1, str_stue2], str_wink, str_nach, str_para] = reportText
 
     widthT, heightT = [width-2*margin, height-2*margin]
     wi_doc = [widthT]
@@ -453,14 +457,16 @@ def generateReport(reportText, outputLoc, projname):
         ('FONT', (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
 
     t_anna1 = Table(h_anna, wi_doc, he_rowT)
-    t_anna2 = Table(str_anna, [5*cm, 3*cm, 1*cm, 5*cm, 3*cm], len(str_anna) * [0.35*cm])
+    t_anna2 = Table(str_para, [5*cm, 3*cm, 1*cm, 5*cm, 3*cm, 1*cm, 5*cm, 3*cm], len(str_para) * [0.35*cm])
     t_anna1.setStyle(title_style)
     t_anna2.setStyle(TableStyle([
         ('ALIGN', (0, 0), (0, -1), 'LEFT'),
         ('LEFTPADDING', (0, 0), (0, -1), lPadd),
         ('ALIGN', (3, 0), (3, -1), 'LEFT'),
+        ('ALIGN', (6, 0), (6, -1), 'LEFT'),
         ('ALIGN', (1, 0), (1, -1), 'RIGHT'),
         ('ALIGN', (4, 0), (4, -1), 'RIGHT'),
+        ('ALIGN', (7, 0), (7, -1), 'RIGHT'),
         ('FONT', (0, 0), (-1, -1), font, fontSize)]))
 
     data = [ [Table([[t_tite1], [t_tite2]])], [Table([[t_posi1], [t_posi2]])],

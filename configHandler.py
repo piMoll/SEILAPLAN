@@ -370,9 +370,9 @@ class ProjectConfHandler(AbstractConfHandler):
             formattedPoleData = [
                 4 * '\n',
                 'Stützendaten:\n',
-                '\t'.join(['Nr.', 'Dist.', 'Höhe', 'Neigung', 'man.', 'Typ\t',
+                '\t'.join(['Nr.', 'Dist.', 'Höhe', 'Neigung', 'man.', 'Typ',
                            'aktiv', 'Name']) + '\n',
-                '-'*60 + '\n'
+                '-'*70 + '\n'
             ]
             idx = 0
             for p in self.poles.poles:
