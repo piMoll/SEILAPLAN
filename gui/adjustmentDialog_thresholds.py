@@ -61,14 +61,15 @@ class AdjustmentDialogThresholds(QObject):
         self.model.setHorizontalHeaderLabels(header)
         self.tbl.hideColumn(4)
         
+        # Insert data into cells
         for i, row in enumerate(dataset):
             for j, cell in enumerate(row):
                 if j < 4:
                     item = QStandardItem(cell)
                     self.model.setItem(i, j, item)
+                # Set background color for cells where threshold is exceeded
                 if j == 4 and len(cell) != 0:
                     self.colorBackground(i, valueColumn, self.COLOR_ERROR)
-                    self.thresholdExeeded = True
         
         # Adjust column widths
         self.tbl.resizeColumnsToContents()
@@ -79,23 +80,16 @@ class AdjustmentDialogThresholds(QObject):
         self.tbl.resizeRowsToContents()
         self.updateTabIcon()
     
-    def updateData(self, dataset):
-        self.thresholdExeeded = False
-        self.tbl.clearSelection()
-        
-        for i, row in enumerate(dataset):
-            for j, cell in enumerate(row):
-                if j < 3:
-                    continue
-                if j == 3:
-                    self.model.setData(self.model.index(i, j), cell)
-                elif j == 4:
-                    color = self.COLOR_NEUTRAL
-                    if len(cell) != 0:
-                        color = self.COLOR_ERROR
-                        self.thresholdExeeded = True
-                    self.colorBackground(i, 3, color)
-
+    def updateData(self, row, col, newVal):
+        # Update background color of new values
+        if col == 4:
+            newVal = len(newVal)
+            color = self.COLOR_NEUTRAL
+            if newVal != 0:
+                color = self.COLOR_ERROR
+            self.colorBackground(row, 3, color)
+        # Update value itself
+        self.model.setData(self.model.index(row, col), newVal)
         self.updateTabIcon()
 
         # Remove the background color from initially calculated
@@ -110,12 +104,25 @@ class AdjustmentDialogThresholds(QObject):
                            QBrush(color), Qt.BackgroundRole)
     
     def updateTabIcon(self):
-        if self.thresholdExeeded:
+        """ Updates icon of QTabWidget with an exclamation mark or check
+        mark depending on presents of exceeded thresholds."""
+        thresholdExceeded = False
+        for i in range(0, 5):
+            data = self.model.data(self.model.index(i, 4))
+            if data and data > 0:
+                thresholdExceeded = True
+                break
+        if thresholdExceeded:
             self.parent.tabWidget.setTabIcon(2, self.iconErr)
         else:
             self.parent.tabWidget.setTabIcon(2, self.iconOk)
     
     def onClick(self, item):
+        # Row is already selected
+        if self.parent.selectedThresholdRow == item.row():
+            # Deselect
+            self.tbl.clearSelection()
+        # Emit select signal
         self.sig_clickedRow.emit(item.row())
 
 

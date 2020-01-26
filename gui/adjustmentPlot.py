@@ -49,6 +49,7 @@ class AdjustmentPlot(FigureCanvas):
         self.data_yhi = 0
         self.labelBuffer = 1
         self.arrowMarker = None
+        self.arrowLabel = []
         
         self.currentPole = None
         self.isZoomed = False
@@ -116,20 +117,22 @@ class AdjustmentPlot(FigureCanvas):
         # Terrain
         self.axes.plot(self.xdata, self.terrain, color='#a1d1ab',
                        linewidth=3.5*scale, zorder=1)
+        # Mark survey points when working with CSV height data
         if self.tPoints is not None:
             # Add markers for survey points
             for pointX, pointY, idx in self.tPoints:
                 self.axes.plot([pointX, pointX],
                                [pointY, pointY - 6 * self.labelBuffer * scale],
-                               color='green', linewidth=1.5 * scale)
+                               color='green', linewidth=1.5 * scale, zorder=2)
                 self.axes.text(pointX, pointY - 8 * self.labelBuffer * scale,
                                str(int(idx)), fontsize=fontSize, ha='center',
                                va='top', color='green')
         
         if not printPdf:
+            # Well suited locations (peaks) for poles
             self.axes.scatter(self.peakLoc_x, self.peakLoc_y, marker='^',
                               color='#ffaa00', edgecolors='#496b48',
-                              label='Günstige\nGeländeform', zorder=2)
+                              label='Günstige\nGeländeform', zorder=3)
         # Cable lines
         self.axes.plot(cable['xaxis'], cable['empty'], color='#4D83B2',
                        linewidth=1.5*scale, label="Leerseil")
@@ -176,13 +179,28 @@ class AdjustmentPlot(FigureCanvas):
         self.axes.set_ylim(ylim)
         self.draw()
     
-    def showArrow(self, x, y):
+    def showMarkers(self, x, y, label):
+        # Displays marker for thresholds
+        self.removeMarkers()
+        y -= self.labelBuffer * 3
+        self.arrowMarker = self.axes.scatter(x, y, marker='^', zorder=20,
+                                             c='#e06767', s=100)
+        # Adds a label underneath marker with threshold value
+        self.arrowLabel = []
+        for i, txt in enumerate(label):
+            self.arrowLabel.append(
+                self.axes.text(x[i], y[i] - 2*self.labelBuffer, txt, zorder=30,
+                               ha='center', backgroundcolor='white', va='top',
+                               color='#e06767'))
+        self.draw()
+    
+    def removeMarkers(self):
         if self.arrowMarker:
             self.arrowMarker.remove()
-        y -= self.labelBuffer * 3
-        self.arrowMarker = self.axes.scatter(x, y, marker='^', zorder=100,
-                                             c='#e06767', s=100)
-        self.draw()
+            [l.remove() for l in self.arrowLabel]
+            self.arrowMarker = None
+            self.arrowLabel = []
+            self.draw()
 
     def zoomTo(self, pole):
         self.isZoomed = True

@@ -81,14 +81,18 @@ class AdjustmentDialogParams(object):
             lambda: self.paramHasChanged('Bodenabst_min'))
 
     def paramHasChanged(self, fieldName=''):
-        newVal = self.fields[fieldName].text()
+        newVal = float(self.fields[fieldName].text())
         if fieldName == 'Vorsp':
             newVal = self.parent.updateOptSTA(newVal)
+        elif fieldName == 'Bodenabst_min':
+            self.parent.thData['thresholds'][0] = newVal
+            self.parent.thresholdLayout.updateData(0, 1, newVal)
+            newVal = self.paramHandler.setParameter(fieldName, newVal)
         else:
             newVal = self.paramHandler.setParameter(fieldName, newVal)
         if newVal is not False:
             # Set correctly formatted Value
             self.fields[fieldName].blockSignals(True)
-            self.fields[fieldName].setText(newVal)
+            self.fields[fieldName].setText(str(newVal))
             self.fields[fieldName].blockSignals(False)
             self.parent.updateCableParam()

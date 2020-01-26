@@ -95,6 +95,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         
         self.thresholdLayout = AdjustmentDialogThresholds(self, self.thSize)
         self.thresholdLayout.sig_clickedRow.connect(self.showThresholdInPlot)
+        self.selectedThresholdRow = None
 
         self.paramLayout = AdjustmentDialogParams(self, self.confHandler.params)
 
@@ -410,6 +411,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         ]
         
         if not self.thData:
+            # Fill table with initial data
             rows = [['' for cell in range(self.thSize[1])]
                     for row in range(self.thSize[0])]
             header = [
@@ -428,8 +430,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
             ]
             thresholds = [
                 params.getParameter('Bodenabst_min'),
-                float(params.getParameter('min_SK')),
-                float(params.getParameter('min_SK')),
+                float(params.getParameter('zul_SK')),
+                float(params.getParameter('zul_SK')),
                 None,
                 None
             ]
@@ -437,19 +439,20 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
                 'header': header,
                 'rows': rows,
                 'units': units,
-                'thresholds': thresholds
+                'thresholds': thresholds,
+                'plotLabels': []
             }
             label = [
                 'Minimaler Bodenabstand',
-                'Max. auftretende Seilzugkraft (am Lastseil, Last in Feldmitte des längsten Seilfeldes)',
-                'Max. resultierende Sattelkraft (an befahrbarer Stütze, Last auf Stütze)',
-                'Seilwinkel am Lastseil',
+                'Max. auftretende Seilzugkraft\n(am Lastseil, Last in Feldmitte)',
+                'Max. resultierende Sattelkraft\n(an befahrbarer Stütze, Last auf Stütze)',
+                'Seilwinkel am Lastseil\n(eingehend / ausgehend)',
                 'Nachweis erbracht, dass Seil nicht vom Sattel abhebt',
             ]
             thresholdStr = [
                 f"{params.getParameterAsStr('Bodenabst_min')} {units[0]}",
-                f"{params.getParameterAsStr('min_SK')} {units[1]}",
-                f"{params.getParameterAsStr('min_SK')} {units[2]}",
+                f"{params.getParameter('zul_SK')} {units[1]}",
+                f"{params.getParameter('zul_SK')} {units[2]}",
                 '0 ° - 30 °',
                 '-'
             ]
@@ -462,83 +465,159 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
                 emptyColumn = 2
             
             for i in range(self.thSize[0]):
-                val, location = self.checkThresholdAndLocation(i, resultData[i])
+                val, location, \
+                    plotLabels = self.checkThresholdAndLocation(i, resultData[i])
                 self.thData['rows'][i][0] = label[i]
                 self.thData['rows'][i][1] = thresholdStr[i]
                 self.thData['rows'][i][valColumn] = val
                 self.thData['rows'][i][emptyColumn] = ''
                 self.thData['rows'][i][4] = location
+                self.thData['plotLabels'].append(plotLabels)
             
             self.thresholdLayout.populate(header, self.thData['rows'], valColumn)
         
         else:
+            # Cable was recalculated, update threshold values
+            self.thData['plotLabels'] = []
             for i in range(len(self.thData['rows'])):
-                val, location = self.checkThresholdAndLocation(i, resultData[i])
+                val, location, \
+                    plotLabels = self.checkThresholdAndLocation(i, resultData[i])
+                self.thresholdLayout.updateData(i, 3, val)
+                self.thresholdLayout.updateData(i, 4, location)
                 self.thData['rows'][i][3] = val
                 self.thData['rows'][i][4] = location
-
-            self.thresholdLayout.updateData(self.thData['rows'])
+                self.thData['plotLabels'].append(plotLabels)
+        
+        self.showThresholdInPlot()
     
     def checkThresholdAndLocation(self, idx, data):
-        val = None
+        maxVal = None
+        # Formatted value to insert into threshold table
         valStr = ""
+        # Location in relation to origin on horizontal axis (needed for
+        #  plotting)
         location = []
+        # Formatted threshold value to show in plot
+        plotLabel = []
 
         # Ground clearance
         if idx == 0:
             if np.isnan(data).all():
                 return valStr, location
-            val = np.nanmin(data)
+            maxVal = np.nanmin(data)
             # Check if min value is smaller than ground clearance
-            if val < self.thData['thresholds'][idx]:
+            if maxVal < self.thData['thresholds'][idx]:
                 # Replace nan so there is no Runtime Warning in np.argwhere()
                 localCopy = np.copy(data)
                 localCopy[np.isnan(localCopy)] = 100.0
-                location = np.ravel(np.argwhere(localCopy == val))
+                # Check where the minimal ground clearance is located
+                location = np.ravel(np.argwhere(localCopy == maxVal))
+                if location:
+                    plotLabel = [self.formatThreshold(l, idx) for l in localCopy[location]]
+                location = [int(l + self.poles.firstPole['d']) for l in location]
         
         # Max force on cable and on pole
         elif idx in [1, 2]:
             # Replace nan with 0 so that no Runtime Warning is thrown in
             # np.argwhere()
             localCopy = np.nan_to_num(data)
-            val = np.max(localCopy)
+            maxVal = np.max(localCopy)
             location = np.argwhere(localCopy > self.thData['thresholds'][idx])
             if len(location) != 0:
-                location = np.ravel(location)
+                plotLabel = np.ravel(localCopy[location])
+                plotLabel = [self.formatThreshold(l, idx) for l in plotLabel]
+                locationIdx = np.ravel(location)
+                if idx == 1:
+                    # Force is calculated in the middle of the field, so
+                    #  marker should also be in the middle between two poles
+                    location = []
+                    for field in locationIdx:
+                        leftPole = self.poles.poles[self.poles.idxA + field]['d']
+                        rightPole = self.poles.poles[self.poles.idxA + field + 1]['d']
+                        location.append(int(leftPole + floor((rightPole - leftPole) / 2)))
+                elif idx == 2:
+                    # Force is located at pole, so we need horizontal distance
+                    #  of poles
+                    location = [int(self.poles.poles[self.poles.idxA + l]['d']) for l in locationIdx]
         
         # Cable angle
         elif idx == 3:
             # Replace nan with 0 so that no Runtime Warning is thrown
             localCopy = np.nan_to_num(data)
             # Transform negative values to values over 30, so we have to do
-            # only one check
+            #  only do one check
             localCopy[localCopy < 0] -= 30
             localCopy[localCopy < 0] *= -1
-            val = np.nanmax(localCopy)
-            locationPole = np.unique(np.rollaxis(
-                np.argwhere(localCopy > 30), 1)[1])
-            for loc in locationPole:
-                location.append(int(self.poles.poles[loc + self.poles.idxA]['d']))
+            maxVal = np.nanmax(localCopy)
+            greaterThan = localCopy > 30
+            # Check which pole is affected
+            locationPole = np.ravel(np.argwhere(np.any(greaterThan, 0)))
+            # Generate labels: For every pole, there is an incoming and
+            #  outgoing angle which has to be extracted and correctly formatted
+            if len(locationPole) != 0:
+                # Transpose arrays to get incoming / outgoing angle pairwise
+                dataT = data.T
+                greaterThanT = greaterThan.T
+                for i, gT in enumerate(greaterThanT):
+                    if not np.any(gT):
+                        continue
+                    txt = ''
+                    if gT[0]:       # incoming angle
+                        txt += f'ein: {self.formatThreshold(dataT[i][0], idx)}\n'
+                    elif gT[1]:     # outgoing angle
+                        txt += f'aus: {self.formatThreshold(dataT[i][1], idx)}'
+                    plotLabel.append(txt)
+                for loc in locationPole:
+                    # Get horizontal distance of affected poles
+                    location.append(int(self.poles.poles[loc + self.poles.idxA]['d']))
         
         # Proof: Only test for poles that are not first and last pole
         elif idx == 4:
             valStr = 'Nein' if 'Nein' in data[1:-1] else 'Ja'
+            # Without first and last pole!
             locationPole = [i for i, m in enumerate(data[1:-1]) if m == 'Nein']
             for loc in locationPole:
-                location.append(int(self.poles.poles[loc + self.poles.idxA]['d']))
+                location.append(int(self.poles.poles[loc + self.poles.idxA + 1]['d']))
         
+        if isinstance(maxVal, float) and maxVal is not np.nan:
+            valStr = self.formatThreshold(maxVal, idx)
+
+        return valStr, location, plotLabel
+
+    def formatThreshold(self, val, idx):
         if isinstance(val, float) and val is not np.nan:
-            valStr = f"{round(val, 1)} {self.thData['units'][idx]}"
+            return f"{round(val, 1)} {self.thData['units'][idx]}"
 
-        return valStr, location
-
-    def showThresholdInPlot(self, row):
+    def showThresholdInPlot(self, row=None):
+        # Click on row was emitted but row is already selected -> deselect
+        if row is not None and row == self.selectedThresholdRow:
+            # Remove markers from plot
+            self.plot.removeMarkers()
+            self.selectedThresholdRow = None
+            return
+        # There was no new selection but a redraw of the table was done, so
+        #  current selection has be added to the plot again
+        if row is None:
+            if self.selectedThresholdRow is not None:
+                row = self.selectedThresholdRow
+            # Nothing is selected at the moment
+            else:
+                return
+        
         location = self.thData['rows'][row][4]
         arrIdx = []
-        for loc in location:
-            arrIdx.append(np.argwhere(self.profile.di_disp == loc)[0][0])
-        z = self.profile.zi_disp[arrIdx]
-        self.plot.showArrow(location, z)
+        # Get index of horizontal distance so we know which height value to
+        #  chose
+        if row in [2, 3, 4]:
+            # For thresholds that correspond to a pole
+            for loc in location:
+                arrIdx.append(np.argwhere(self.profile.di_disp == loc)[0][0])
+            z = self.profile.zi_disp[arrIdx]
+        else:  # row in [0, 1]
+            # For thresholds that correspond to cable
+            z = self.cableline['groundclear'][location]
+        self.plot.showMarkers(location, z, self.thData['plotLabels'][row])
+        self.selectedThresholdRow = row
     
     def onClose(self):
         self.close()

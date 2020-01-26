@@ -27,11 +27,15 @@ class Poles(object):
         self.idxA = None
         self.idxE = None
         
-        # Length of first anchor field; is used to shift horizontal distances
+        # Default height for different pole types
+        height = {
+            'pole': self.INIT_POLE_HEIGHT,
+            'pole_anchor': 0,
+            'crane': self.params.getParameter('HM_Kran')
+        }
         self.anchorA = self.params.getParameter('d_Anker_A')
         self.anchorE = self.params.getParameter('d_Anker_E')
-        heightA = self.params.getParameter('HM_Kran')
-        heightE = 0 if self.E_type == 'pole_anchor' else self.INIT_POLE_HEIGHT
+        
         # End point is slightly moved (less than a meter) so that it is the
         # last point on profile with step size of 1m
         self.profileLength = floor(project.profileLength)
@@ -44,10 +48,10 @@ class Poles(object):
             self.add(idx, -1*self.anchorA, 0, poleType='anchor')
             idx = 1
         # First pole at 0 m horizontal distance
-        self.add(idx, 0, heightA, poleType=self.A_type, name=nameA)
+        self.add(idx, 0, height[self.A_type], poleType=self.A_type, name=nameA)
         # Last pole
-        self.add(idx+1, self.profileLength, heightE, poleType=self.E_type,
-                 name=nameE)
+        self.add(idx+1, self.profileLength, height[self.E_type],
+                 poleType=self.E_type, name=nameE)
         if self.E_type == 'pole':
             # Anchor at end point
             self.add(idx+2, self.profileLength + self.anchorE, 0,
