@@ -401,7 +401,6 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         self.unsavedChanges = True
     
     def updateThresholds(self):
-        params = self.confHandler.params
         resultData = [
             self.cableline['groundclear_rel'],  # Distance cable - terrain
             self.result['force']['MaxSeilzugkraft'][0],  # Max force on cable
@@ -412,69 +411,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         
         if not self.thData:
             # Fill table with initial data
-            rows = [['' for cell in range(self.thSize[1])]
-                    for row in range(self.thSize[0])]
-            header = [
-                'Kennwert',
-                'Definierter\nGrenzwert',
-                'Optimierte\nLösung',
-                'Aktuelle\nLösung',
-                'Wo?'
-            ]
-            units = [
-                params.params['Bodenabst_min']['unit'],
-                params.params['min_SK']['unit'],
-                params.params['min_SK']['unit'],
-                '°',
-                ''
-            ]
-            thresholds = [
-                params.getParameter('Bodenabst_min'),
-                float(params.getParameter('zul_SK')),
-                float(params.getParameter('zul_SK')),
-                None,
-                None
-            ]
-            self.thData = {
-                'header': header,
-                'rows': rows,
-                'units': units,
-                'thresholds': thresholds,
-                'plotLabels': []
-            }
-            label = [
-                'Minimaler Bodenabstand',
-                'Max. auftretende Seilzugkraft\n(am Lastseil, Last in Feldmitte)',
-                'Max. resultierende Sattelkraft\n(an befahrbarer Stütze, Last auf Stütze)',
-                'Seilwinkel am Lastseil\n(eingehend / ausgehend)',
-                'Nachweis erbracht, dass Seil nicht vom Sattel abhebt',
-            ]
-            thresholdStr = [
-                f"{params.getParameterAsStr('Bodenabst_min')} {units[0]}",
-                f"{params.getParameter('zul_SK')} {units[1]}",
-                f"{params.getParameter('zul_SK')} {units[2]}",
-                '0 ° - 30 °',
-                '-'
-            ]
-            # Where to put the current threshold values
-            valColumn = 2
-            emptyColumn = 3
-            if self.status in ['jumpedOver', 'savedFile']:
-                # No optimization was run, so no optimal solution
-                valColumn = 3
-                emptyColumn = 2
-            
-            for i in range(self.thSize[0]):
-                val, location, \
-                    plotLabels = self.checkThresholdAndLocation(i, resultData[i])
-                self.thData['rows'][i][0] = label[i]
-                self.thData['rows'][i][1] = thresholdStr[i]
-                self.thData['rows'][i][valColumn] = val
-                self.thData['rows'][i][emptyColumn] = ''
-                self.thData['rows'][i][4] = location
-                self.thData['plotLabels'].append(plotLabels)
-            
-            self.thresholdLayout.populate(header, self.thData['rows'], valColumn)
+            self.initThresholdData(resultData)
         
         else:
             # Cable was recalculated, update threshold values
@@ -489,6 +426,72 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
                 self.thData['plotLabels'].append(plotLabels)
         
         self.showThresholdInPlot()
+    
+    def initThresholdData(self, resultData):
+        params = self.confHandler.params
+        rows = [['' for cell in range(self.thSize[1])]
+                for row in range(self.thSize[0])]
+        header = [
+            'Kennwert',
+            'Definierter\nGrenzwert',
+            'Optimierte\nLösung',
+            'Aktuelle\nLösung',
+            'Wo?'
+        ]
+        units = [
+            params.params['Bodenabst_min']['unit'],
+            params.params['min_SK']['unit'],
+            params.params['min_SK']['unit'],
+            '°',
+            ''
+        ]
+        thresholds = [
+            params.getParameter('Bodenabst_min'),
+            float(params.getParameter('zul_SK')),
+            float(params.getParameter('zul_SK')),
+            None,
+            None
+        ]
+        self.thData = {
+            'header': header,
+            'rows': rows,
+            'units': units,
+            'thresholds': thresholds,
+            'plotLabels': []
+        }
+        label = [
+            'Minimaler Bodenabstand',
+            'Max. auftretende Seilzugkraft\n(am Lastseil, Last in Feldmitte)',
+            'Max. resultierende Sattelkraft\n(an befahrbarer Stütze, Last auf Stütze)',
+            'Seilwinkel am Lastseil\n(eingehend / ausgehend)',
+            'Nachweis erbracht, dass Seil nicht vom Sattel abhebt',
+        ]
+        thresholdStr = [
+            f"{params.getParameterAsStr('Bodenabst_min')} {units[0]}",
+            f"{params.getParameter('zul_SK')} {units[1]}",
+            f"{params.getParameter('zul_SK')} {units[2]}",
+            '0 ° - 30 °',
+            '-'
+        ]
+        # Where to put the current threshold values
+        valColumn = 2
+        emptyColumn = 3
+        if self.status in ['jumpedOver', 'savedFile']:
+            # No optimization was run, so no optimal solution
+            valColumn = 3
+            emptyColumn = 2
+    
+        for i in range(self.thSize[0]):
+            val, location, \
+                plotLabels = self.checkThresholdAndLocation(i, resultData[i])
+            self.thData['rows'][i][0] = label[i]
+            self.thData['rows'][i][1] = thresholdStr[i]
+            self.thData['rows'][i][valColumn] = val
+            self.thData['rows'][i][emptyColumn] = ''
+            self.thData['rows'][i][4] = location
+            self.thData['plotLabels'].append(plotLabels)
+    
+        self.thresholdLayout.populate(header, self.thData['rows'], valColumn)
     
     def checkThresholdAndLocation(self, idx, data):
         maxVal = None
