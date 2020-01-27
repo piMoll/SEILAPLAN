@@ -26,6 +26,7 @@ from qgis.PyQt.QtWidgets import QDialog, QWidget, QLabel, QDialogButtonBox, \
     QHBoxLayout, QComboBox, QSizePolicy, QPushButton, QCheckBox, \
     QVBoxLayout, QFileDialog, QLineEdit, QMessageBox
 from qgis.PyQt.QtGui import QIcon, QPixmap
+from .guiHelperFunctions import validateFilename
 
 
 class DialogSaveParamset(QDialog):
@@ -75,7 +76,8 @@ class DialogSaveParamset(QDialog):
     def checkName(self, setname):
         if setname in self.availableSets:
             return False
-        savePath = os.path.join(self.savePath, f'{setname}.txt')
+        fileName = validateFilename(setname)
+        savePath = os.path.join(self.savePath, f'{fileName}.txt')
         if not os.access(savePath, os.W_OK):
             try:
                 open(savePath, 'w').close()

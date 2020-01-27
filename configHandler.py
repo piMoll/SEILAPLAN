@@ -33,6 +33,7 @@ from .tool.heightSource import AbstractHeightSource, Raster, SurveyData
 from .tool.profile import Profile
 from .tool.poles import Poles
 from .tool.outputReport import getTimestamp
+from .gui.guiHelperFunctions import validateFilename
 
 # Constants
 HOMEPATH = os.path.join(os.path.dirname(__file__))
@@ -768,8 +769,8 @@ class ParameterConfHandler(AbstractConfHandler):
             self.parameterSets[setname][property_name] = p['value']
         
         # Write parameter set out to file
-        savePath = os.path.join(self.SETS_PATH, f'{setname}.txt')
-        # TODO: Check if file can be written to disk (filename, write access)
+        fileName = validateFilename(setname)
+        savePath = os.path.join(self.SETS_PATH, f'{fileName}.txt')
         with io.open(savePath, encoding='utf-8', mode='w') as f:
             # Write header
             f.writelines('name\tvalue\n')
