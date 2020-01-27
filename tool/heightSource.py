@@ -340,7 +340,8 @@ class SurveyData(AbstractHeightSource):
         [Ax, Ay] = points['A']
         [Ex, Ey] = points['E']
         # Switch sorting of points if cable line goes in opposite direction
-        if Ax > Ex and self.x[0] < self.x[-1]:
+        if (Ax > Ex and self.x[0] < self.x[-1]) \
+                or (Ax < Ex and self.x[0] > self.x[-1]):
             # If profile line defined by A and E has the opposite direction
             # than the original survey data, we have to switch the coordinate
             # arrays.
