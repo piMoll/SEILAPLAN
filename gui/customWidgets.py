@@ -401,12 +401,16 @@ class PoleRow(object):
         self.fieldDist.setMaximum(maximum)
 
     def activate(self):
+        self.statusSwitcher.blockSignals(True)
         self.statusSwitcher.setChecked(True)
+        self.statusSwitcher.blockSignals(False)
         self.fieldName.setEnabled(True)
         self.fieldDist.setEnabled(True)
         
     def deactivate(self):
+        self.statusSwitcher.blockSignals(True)
         self.statusSwitcher.setChecked(False)
+        self.statusSwitcher.blockSignals(False)
         self.fieldName.setEnabled(False)
         self.fieldDist.setEnabled(False)
     

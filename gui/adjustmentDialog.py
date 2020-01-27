@@ -164,11 +164,6 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         lowerDistRange = floor(-1*self.anchorBuffer[0])
         upperDistRange = floor(self.poles.lastPole['d'] + self.anchorBuffer[1])
         self.poleLayout.setInitialGui([lowerDistRange, upperDistRange], self.poles)
-        # Deactivate inactive anchor rows
-        if not self.poles.poles[0]['active']:
-            self.updatePole(0, 'active', False)
-        if not self.poles.poles[-1]['active']:
-            self.updatePole(len(self.poles.poles)-1, 'active', False)
 
         # Fill in cable parameters
         self.paramLayout.fillInParams()
@@ -287,10 +282,10 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         # Mark all poles except anchors on map
         if idx == -1:
             for idx, pole in enumerate(self.poles.poles):
-                if not pole['active']:
-                    continue
                 self.drawTool.drawMarker([pole['coordx'], pole['coordy']],
                                          idx, pointType=pole['poleType'])
+                if not pole['active']:
+                    self.drawTool.hideMarker(idx)
         else:
             # Add a new pole to the map
             pole = self.poles.poles[idx]
