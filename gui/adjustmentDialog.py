@@ -283,7 +283,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         if idx == -1:
             for idx, pole in enumerate(self.poles.poles):
                 self.drawTool.drawMarker([pole['coordx'], pole['coordy']],
-                                         idx, pointType=pole['poleType'])
+                                         idx, pointType=pole['poleType'],
+                                         firstPoint=(idx == self.poles.idxA))
                 if not pole['active']:
                     self.drawTool.hideMarker(idx)
         else:

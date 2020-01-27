@@ -118,16 +118,17 @@ class MapMarkerTool(QgsMapTool):
             self.dblclktemp = None
             return
         else:
-            # Mark point with marker symbol
-            self.drawMarker(mapPos)
-            
             # Click ist first point of line
             if len(self.linePoints) == 0:
+                # Mark point with marker symbol
+                self.drawMarker(mapPos, firstPoint=True)
                 self.rubberband.reset()
                 self.linePoints.append(mapPos)
             
             # Click is second point of line
             elif len(self.linePoints) == 1:
+                # Mark point with marker symbol
+                self.drawMarker(mapPos)
                 self.linePoints.append(mapPos)
                 self.dblclktemp = mapPos
                 self.lineFeature = self.createLineFeature(self.linePoints)
@@ -141,7 +142,7 @@ class MapMarkerTool(QgsMapTool):
         self.rubberband.setToGeometry(QgsGeometry.fromPolylineXY(qgsPoints), None)
         self.lineFeature = self.createLineFeature(qgsPoints)
         if drawMarker:
-            self.drawMarker(qgsPoints[0])
+            self.drawMarker(qgsPoints[0], firstPoint=True)
             self.drawMarker(qgsPoints[1])
     
     def activateSectionLine(self, initPoint):
@@ -170,12 +171,13 @@ class MapMarkerTool(QgsMapTool):
             self.lineFeatureS.pop(-1)
             self.linePointsS = []
 
-    def drawMarker(self, point, idx=None, pointType='pole', color=POLE_COLOR):
+    def drawMarker(self, point, idx=None, pointType='pole', color=POLE_COLOR,
+                   firstPoint=False):
         qgsPoint = self.convertToQgsPoint(point)
         if pointType == 'anchor':
             marker = QgsAnchorMarker(self.canvas, color)
         else:
-            marker = QgsPoleMarker(self.canvas, color)
+            marker = QgsPoleMarker(self.canvas, color, firstPoint)
         marker.setCenter(qgsPoint)
         if not idx:
             self.markers.append(marker)
@@ -245,11 +247,15 @@ class MapMarkerTool(QgsMapTool):
 
 
 class QgsPoleMarker(QgsVertexMarker):
-    def __init__(self, canvas, color):
+    def __init__(self, canvas, color, firstPoint=False):
         QgsVertexMarker.__init__(self, canvas)
         self.setColor(QColor(color))
-        self.setIconType(QgsVertexMarker.ICON_BOX)
-        self.setIconSize(11)
+        if firstPoint:
+            self.setIconType(QgsVertexMarker.ICON_DOUBLE_TRIANGLE)
+            self.setIconSize(15)
+        else:
+            self.setIconType(QgsVertexMarker.ICON_BOX)
+            self.setIconSize(11)
         self.setPenWidth(3)
 
 
