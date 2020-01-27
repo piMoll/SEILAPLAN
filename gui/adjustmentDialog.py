@@ -213,6 +213,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
             if idx < len(self.poles.poles) - 1:
                 upperRange = self.poles.poles[idx + 1]['d']
             self.poleLayout.deactivateRow(idx, lowerRange, upperRange)
+            self.drawTool.hideMarker(idx)
             
         # Anchor was activated
         elif property_name == 'active' and newVal is True:
@@ -233,6 +234,9 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
             self.poleLayout.changeRow(idx, 'd', dist)
             # Activate input fields
             self.poleLayout.activateRow(idx, dist)
+            point = [self.poles.poles[idx]['coordx'],
+                    self.poles.poles[idx]['coordy']]
+            self.drawTool.showMarker(point, idx, 'anchor')
 
         # self.plot.zoomTo(self.poles.poles[idx])
         self.poleLayout.changeRow(idx, property_name, newVal)
@@ -283,6 +287,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         # Mark all poles except anchors on map
         if idx == -1:
             for idx, pole in enumerate(self.poles.poles):
+                if not pole['active']:
+                    continue
                 self.drawTool.drawMarker([pole['coordx'], pole['coordy']],
                                          idx, pointType=pole['poleType'])
         else:

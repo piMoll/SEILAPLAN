@@ -199,6 +199,22 @@ class MapMarkerTool(QgsMapTool):
             self.markers = []
         self.canvas.refresh()
     
+    def hideMarker(self, idx):
+        marker = self.markers[idx]
+        self.canvas.scene().removeItem(marker)
+        
+    def showMarker(self, point, idx, pointType, color=POLE_COLOR):
+        qgsPoint = self.convertToQgsPoint(point)
+        if pointType == 'anchor':
+            marker = QgsAnchorMarker(self.canvas, color)
+        else:
+            marker = QgsPoleMarker(self.canvas, color)
+        marker.setCenter(qgsPoint)
+        # Delete old marker reference and replace with new marker
+        self.markers.pop(idx)
+        self.markers.insert(idx, marker)
+        self.canvas.refresh()
+    
     def deactivateCursor(self):
         if self.poleCursor:
             self.canvas.scene().removeItem(self.poleCursor)

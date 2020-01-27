@@ -265,7 +265,7 @@ class ProfileDialog(QDialog):
     
     def createMapMarker(self, horiDist, idx):
         point = self.projectHandler.transform2MapCoords(float(horiDist))
-        self.drawTool.drawMarker(point, idx, 'pole')
+        self.drawTool.drawMarker(point, idx)
         
     def deactivateMapCursor(self):
         self.drawTool.deactivateCursor()
