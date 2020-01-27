@@ -310,6 +310,10 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
     
     def updateRecalcStatus(self, status):
         self.status = status
+        color = None
+        green = '#b6ddb5'
+        yellow = '#f4e27a'
+        red = '#e8c4ca'
         ico_path = os.path.join(os.path.dirname(__file__), 'icons')
         if status == 'optiSuccess':
             self.recalcStatus_txt.setText(
@@ -322,24 +326,28 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
                 'bei mindestens einer Stütze ab.')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_yellow.png')))
+            color = yellow
         elif status == 'notComplete':
             self.recalcStatus_txt.setText(
                 'Die Seillinie konnte nicht komplett berechnet werden, '
                 'es sind nicht genügend\nStützenstandorte bestimmbar.')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_yellow.png')))
+            color = yellow
         elif status == 'jumpedOver':
             self.recalcStatus_txt.setText(
                 'Optimierung wurde übersprungen, Stützen müssen manuell '
                 'platziert werden.')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_green.png')))
+            color = yellow
         elif status == 'savedFile':
             self.recalcStatus_txt.setText(
                 'Optimierung wurde übersprungen, Stützen wurden aus '
                 'Projektdatei geladen.')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_green.png')))
+            color = yellow
         elif status == 'cableSuccess':
             self.recalcStatus_txt.setText('Seillinie neu berechnet.')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
@@ -349,10 +357,16 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
                 'ist ein Fehler aufgetreten.')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_yellow.png')))
+            color = red
         elif status == 'saveDone':
             self.recalcStatus_txt.setText('Ergebnisse gespeichert.')
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_save.png')))
+            color = green
+        stylesheet = ''
+        if color:
+            stylesheet = f"background-color:{color};"
+        self.recalcStatus_txt.setStyleSheet(stylesheet)
     
     def recalculate(self):
         if not self.configurationHasChanged or self.isRecalculating:
