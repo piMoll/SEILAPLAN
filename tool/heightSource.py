@@ -270,9 +270,14 @@ class SurveyData(AbstractHeightSource):
         }
         return True
     
-    def transformToProjectedCrs(self, destinationCrs):
+    def reprojectToCrs(self, destinationCrs):
+        if isinstance(destinationCrs, str):
+            destinationCrs = QgsCoordinateReferenceSystem(destinationCrs)
         if not destinationCrs:
             destinationCrs = QgsCoordinateReferenceSystem('EPSG:2056')
+        # Do not reproject if data is already in destinationCrs
+        if self.spatialRef == destinationCrs or not destinationCrs.isValid():
+            return
         transformer = QgsCoordinateTransform(self.spatialRef, destinationCrs,
                                              QgsProject.instance())
 

@@ -111,6 +111,7 @@ class ProjectConfHandler(AbstractConfHandler):
             'projectname': 'Projektname',
             'dhm': 'Hoehenmodell',
             'survey': 'Laengsprofil',
+            'CRS': 'KBS',
             'A': 'Anfangspunkt',
             'A_Type': 'Anfangspunkt-Typ',
             'E': 'Endpunkt',
@@ -130,6 +131,10 @@ class ProjectConfHandler(AbstractConfHandler):
         
         elif property_name == self.header['survey']:
             self.setHeightSource(None, sourceType='survey', sourcePath=value)
+        
+        elif property_name == self.header['CRS']:
+            if self.heightSource and self.heightSourceType == 'survey':
+                self.heightSource.reprojectToCrs(value)
         
         elif property_name in [self.header['A'], self.header['E']]:
             point = property_name[0]
@@ -352,6 +357,7 @@ class ProjectConfHandler(AbstractConfHandler):
         txt = [
             [self.header['projectname'], self.getProjectName()],
             [self.header[self.heightSourceType], self.heightSource.getAsStr()],
+            [self.header['CRS'], self.heightSource.spatialRef.authid()],
             [self.header['A'], '{0} / {1}'.format(*tuple(self.points['A']))],
             [self.header['A_Type'], self.A_type],
             [self.header['E'], '{0} / {1}'.format(*tuple(self.points['E']))],
@@ -911,6 +917,8 @@ class ConfigHandler(object):
         def readOutParamData(lines, lineNr):
             for line in lines[lineNr:]:
                 lineNr += 1
+                if line == '':
+                    return lineNr
                 part = re.split(r'\s{3,}', line)
                 if len(part) <= 1:
                     continue
@@ -918,7 +926,6 @@ class ConfigHandler(object):
                     part[1] = ''
                 key = part[0]
                 if key == 'Parameterset:':
-                    # TODO: Was machen wenn kein paramerset angegeben ist --> kein Abbruchkriterium!
                     setname = part[1]
                     if setname not in self.params.parameterSets.keys():
                         # Save new parameter set
