@@ -154,16 +154,24 @@ class Profile(object):
         # befahrbar[di_cable > (di_cable[-1] - befGSK_E)] = 0
         # self.befGSK = befahrbar
     
-    def updateProfileAnalysis(self, cableline, poles):
+    def updateProfileAnalysis(self, cableline):
+        # Cable line has a resolution of 10 cm, profile data has 1m. By
+        #  choosing every 10th element in the cable line, we get the
+        #  cable value for every terrain point.
+        cableline_meter = cableline['load'][::10]
+        
+        # Get nearest point on horizontal axis of cable start and end point
+        hdist_start = np.round(cableline['xaxis'][::10])[0]
+        hdist_end = np.round(cableline['xaxis'][::10])[-1]
+        # Index on display array
+        di_start = np.where(self.di_disp == hdist_start)[0][0]
+        di_end = np.where(self.di_disp == hdist_end)[0][0]
         # Update zi
-        di_start = np.where(self.di_disp >= poles.firstPole['dtop'])[0][0]
-        di_end = np.where(self.di_disp >= poles.lastPole['dtop'])[0][0]
         self.zi = self.zi_disp[di_start:di_end + 1]
         
         # By moving the first or last pole, the cable line can become longer or
         # shorter than the initial solution. Ground clearance has to be
         # recalculated
-        cableline_meter = cableline['load'][::10]  # cable data from dm to m
         lenCable = np.size(cableline_meter)
         self.analyseProfile(lenCable)
         

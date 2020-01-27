@@ -150,7 +150,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
                 return
 
         self.cableline = self.result['cableline']
-        self.profile.updateProfileAnalysis(self.cableline, self.poles)
+        self.profile.updateProfileAnalysis(self.cableline)
 
         self.updateRecalcStatus(status)
 
@@ -390,14 +390,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         self.result['force'] = force
         
         # Ground clearance
-        try:
-            self.profile.updateProfileAnalysis(self.cableline, self.poles)
-        except ValueError:
-            # TODO: Wrong Array lengths, just ignore for the moment because
-            #  there has to be some error in cable line function
-            # QMessageBox.critical(self, 'Fehler', 'Fehler bei Berechnung des '
-            #                      'Bodenabstands', QMessageBox.Ok)
-            pass
+        self.profile.updateProfileAnalysis(self.cableline)
         
         # Update Plot
         [pole_d, pole_z, pole_h, pole_dtop, pole_ztop] = self.poles.getAsArray()
