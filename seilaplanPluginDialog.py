@@ -114,8 +114,6 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         # Survey data line layer
         self.surveyLineLayer = None
         self.surveyPointLayer = None
-        # Length of profile line
-        self.profileLen = None
         
         # Dictionary of all GUI setting fields
         self.parameterFields = {}
@@ -311,7 +309,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         if newValAsStr is not False:
             self.updateParametersetField()
             # Insert correctly formatted value
-            self.parameterFields[property_name].setText(newVal)
+            self.parameterFields[property_name].setText(newValAsStr)
         self.parameterFields[property_name].blockSignals(False)
     
     def parameterChangedComboBox(self, property_name):
@@ -347,8 +345,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.fieldParamSet.addItems(parameterSetNames)
         self.fieldParamSet.blockSignals(False)
         # Set standard parameter set
-        self.paramHandler.setParameterSet('Standardwerte')
-        self.fieldParamSet.setCurrentIndex(self.fieldParamSet.findText('Standardwerte'))
+        self.paramHandler.setParameterSet(self.paramHandler.DEFAULTSET)
+        self.fieldParamSet.setCurrentIndex(
+            self.fieldParamSet.findText(self.paramHandler.DEFAULTSET))
         self.fillInValues()
         
         # Set point types
@@ -847,10 +846,12 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
             self.fieldHMKran.setEnabled(False)
             self.paramHandler.setParameter('HM_Kran', 0)
         elif idx == 2:          # crane
-            stdVal = self.paramHandler.HM_KRAN
-            self.fieldHMKran.setText(str(stdVal))
+            paramVal = self.paramHandler.getParameter('HM_Kran')
+            if paramVal == 0:
+                paramVal = self.paramHandler.HM_KRAN
+            self.fieldHMKran.setText(str(paramVal))
             self.fieldHMKran.setEnabled(True)
-            self.paramHandler.setParameter('HM_Kran', stdVal)
+            self.paramHandler.setParameter('HM_Kran', paramVal)
         self.updateParametersetField()
     
     def onTypeEChange(self):

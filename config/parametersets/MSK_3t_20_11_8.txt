@@ -1,18 +1,18 @@
 name	value
-label	3t SF 20.5mm, Seil (F30 TB)
-Seilsys	0
-HM_Kran	0
+label	MSK 3t 20/11/8mm
+Seilsys	1
+HM_Kran	11.5
 Befahr_A	0
 Befahr_E	0
 Bodenabst_min	7
 Bodenabst_A	40
 Bodenabst_E	40
-Q	33.94
-qT	0.0189
-A	329.9
-MBK	400
-qZ	0.0059
-qR	0.0059
+Q	35
+qT	0.0194
+A	314
+MBK	356
+qZ	0.0063
+qR	0.0036
 Min_Dist_Mast	10
 L_Delta	10
 HM_min	8

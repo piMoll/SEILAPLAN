@@ -1,6 +1,6 @@
 name	std_val	label	unit	ftype	dtype	min	max	tooltip	sort
 Seilsys		Seilsystem		drop_field	int	0	1	Seilsystem	10
-HM_Kran		Höhe Seilkranmast	m	field	int	0	50	Höhe Seilkranmast	11
+HM_Kran		Höhe Seilkranmast	m	field	float	0	50	Höhe Seilkranmast	11
 Befahr_A		Befahrbarkeit ab (vom Startpunkt)	m	field	int	0	1000	Befahrbarkeit ab ... Meter vom Startpunkt	12
 Befahr_E		Befahrbarkeit bis (vor dem Endpunkt)	m	field	int	0	1000	Befahrbarkeit bis ... Meter vor dem Endpunkt	13
 Bodenabst_min		Minimaler Abstand Tragseil - Boden	m	field	float	0	HM_min	Minimaler Abstand Seil - Boden, Achtung: kleiner oder gleich minimale Stützenhöhe	14
@@ -10,8 +10,8 @@ Q		Gewicht der Last inkl. Laufwagen	kN	field	float	1	100	Gewicht der Last inkl. 
 qT		Gewicht Tragseil	kN/m	field	float	0.001	1	Gewicht des Tragseils	21
 A		Querschnittssfläche Tragseil	mm2	field	float	50	5000	Querschnittssfläche des Tragseils	22
 MBK		Mindestbruchkraft Tragseil	kN	field	float	10	1000	Mindestbruchkraft Tragseil	23
-qZ		Gewicht Zugseil	kN/m	field	float	0.001	1	Gewicht Zugseil	24
-qR		Gewicht Rückholseil	kN/m	field	float	0.001	1	Gewicht Rückholseil	25
+qZ		Gewicht Zugseil	kN/m	field	float	0	1	Gewicht Zugseil	24
+qR		Gewicht Rückholseil	kN/m	field	float	0	1	Gewicht Rückholseil	25
 Min_Dist_Mast		Minimaler Abstand zwischen Stützen	m	field	int	0	200	Minimaler Abstand zwischen Stützen	30
 L_Delta		Horiz. Auflösung mögl. Stützenstandorte	m	field	int	1	20	Horizontale Auflösung möglicher Stützenstandorte	31
 HM_min		Minimale Stützenhöhe	m	field	int	Bodenabst_min	HM_max	Minimale Stützenhöhe, Achtung: grösser oder gleich minimaler Bodenabstand	32

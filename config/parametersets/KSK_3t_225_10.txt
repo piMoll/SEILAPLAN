@@ -1,5 +1,5 @@
 name	value
-label	Standardparameter
+label	KSK 3t 22.5/10mm
 Seilsys	0
 HM_Kran	0
 Befahr_A	0
@@ -8,10 +8,10 @@ Bodenabst_min	7
 Bodenabst_A	40
 Bodenabst_E	40
 Q	35
-qT	0.0232
-A	380
-MBK	424
-qZ	0.0073
+qT	0.0243
+A	398
+MBK	546
+qZ	0.0053
 qR	0
 Min_Dist_Mast	10
 L_Delta	10

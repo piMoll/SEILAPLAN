@@ -506,6 +506,7 @@ class ParameterConfHandler(AbstractConfHandler):
     }
     HM_KRAN = 12
     ANCHOR_LEN = 20
+    DEFAULTSET = 'Standardparameter'
     SETS_PATH = os.path.join(HOMEPATH, 'config', 'parametersets')
     
     def __init__(self):
