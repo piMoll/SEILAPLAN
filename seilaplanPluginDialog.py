@@ -782,8 +782,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
     def onClickContourButton(self):
         """Calcluate contour lines from currently selected dhm and add them to
         as a layer."""
-        createContours(self.canvas, self.projectHandler.heightSource)
-        self.canvas.refresh()
+        if self.projectHandler.heightSource.contourLayer is None:
+            createContours(self.canvas, self.projectHandler.heightSource)
     
     def onFinishedLineDraw(self, linecoord):
         self.projectHandler.resetProfile()

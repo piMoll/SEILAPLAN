@@ -68,53 +68,29 @@ class MyNavigationToolbar(NavigationToolbar):
         self.layout().setSpacing(5)
 
 
-def createContours(canvas, dhm):
-    contourLyr = dhm.contour
-    contourName = "Hoehenlinien_" + dhm.name
-    
-    # Get current CRS of qgis project
-    s = QSettings()
-    oldValidation = s.value("/Projections/defaultBehaviour")
-    crs = canvas.mapSettings().destinationCrs()
-    crsEPSG = crs.authid()
-    # If project and raster CRS are equal and set correctly
-    if crsEPSG == dhm.spatialRef and "USER" not in crsEPSG:
-        s.setValue("/Projections/defaultBehaviour", "useProject")
+def createContours(canvas, heightSource):
+    contourName = "Hoehenlinien_" + heightSource.name
+    crs = heightSource.spatialRef
+    outputPath = os.path.join(os.path.dirname(heightSource.path),
+                              contourName + '.shp')
+    if os.path.exists(outputPath):
+        contourLyr = QgsVectorLayer(outputPath, contourName, "ogr")
     else:
-        crs = dhm.layer.crs()
+        processingParams = {
+            'INPUT': heightSource.layer,
+            'BAND': 1,
+            'INTERVAL': 20,
+            'FIELD_NAME': "Hoehe",
+            'OUTPUT': outputPath
+        }
+        algOutput = run("gdal:contour", processingParams)
+        contourLyr = QgsVectorLayer(algOutput['OUTPUT'], contourName, "ogr")
     
-    # If contours exist, remove them
-    if contourLyr:
-        QgsProject.instance().removeMapLayer(contourLyr.id())
-        contourLyr = None
-    
-    # If no contours exist, create them
-    else:
-        # TODO: IN MEMORY LAYER
-        outputPath = os.path.join(os.path.dirname(dhm.path), contourName + '.shp')
-        if os.path.exists(outputPath):
-            contourLyr = QgsVectorLayer(outputPath, contourName, "ogr")
-        else:
-            processingParams = {
-                'INPUT': dhm.layer,
-                'BAND': 1,
-                'INTERVAL': 20,
-                'FIELD_NAME': "Hoehe",
-                'OUTPUT': outputPath
-            }
-            algOutput = run("gdal:contour", processingParams)
-            contourLyr = QgsVectorLayer(algOutput['OUTPUT'], contourName, "ogr")
-        # contourLyr the same CRS as qgis project
-        contourLyr.setCrs(crs)
-        QgsProject.instance().addMapLayer(contourLyr)
-        s.setValue("/Projections/defaultBehaviour", oldValidation)
-        
-    # More useful stuff
-    # uri = "linestring?crs=epsg:{}".format(crsNum)
-    # contourName = "Hoehenlinien_" + self.dhm['name']
-    # contour = QgsVectorLayer(uri, contourName,  "memory")
-    
-    return contourLyr
+    # contourLyr the same CRS as qgis project
+    contourLyr.setCrs(crs)
+    QgsProject.instance().addMapLayer(contourLyr)
+    canvas.refresh()
+    heightSource.contourLyr = contourLyr
 
 
 def loadOsmLayer(homePath):

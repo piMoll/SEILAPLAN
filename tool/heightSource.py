@@ -14,6 +14,7 @@ class AbstractHeightSource(object):
     def __init__(self):
         self.path = None
         self.spatialRef = None
+        self.contourLayer = None
         self.extent = []
         self.buffer = (None, None)
     
