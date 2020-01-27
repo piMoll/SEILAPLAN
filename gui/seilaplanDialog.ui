@@ -1729,7 +1729,7 @@
         <item row="0" column="0">
          <widget class="QRadioButton" name="radioRaster">
           <property name="toolTip">
-           <string>Auswahl eines QGIS-Rasterlayer im aktuellen Projekt</string>
+           <string/>
           </property>
           <property name="text">
            <string>Rasterlayer</string>
@@ -1738,9 +1738,6 @@
         </item>
         <item row="1" column="0">
          <widget class="QRadioButton" name="radioSurveyData">
-          <property name="toolTip">
-           <string>Höhenprofil aus Feldaufnahmen laden</string>
-          </property>
           <property name="text">
            <string>Geländeprofil</string>
           </property>
@@ -2079,7 +2076,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Höhenlinien berechnen</string>
+           <string>Höhenlinien darstellen</string>
           </property>
           <property name="text">
            <string/>
@@ -2367,7 +2364,7 @@ color: rgb(75, 75, 75);</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Höhenprofil darstellen und fixe Stützen definieren&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>Geländelinie in Diagramm darstellen und fixe Stützen definieren</string>
           </property>
           <property name="text">
            <string>Geländelinie</string>

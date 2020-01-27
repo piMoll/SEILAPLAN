@@ -869,11 +869,12 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
                    '<br>Wird ein neuer Raster zu QGIS hinzugefügt, kann die Liste '
                    'per Aktualisieren-Schaltfläche ergänzt werden.')
         elif self.sender().objectName() == 'infoSurveyData':
-            msg = ("Mit dieser Option lässt sich ein Höhenprofil aus gemessenen "
-                   "Feldaufnahmen laden.<br>Die Messpunkte müssen im .csv Format "
-                   "(Komma-separiert) vorliegen und die Spalten 'x', 'y' und "
-                   "'z' aufweisen. Ausser in der ersten Kopfzeile dürfen keine "
-                   "weiteren Texte enthalten sein.")
+            msg = ("Profil-Messpunkte aus Feldaufnahmen laden.<br><br>"
+                   "Unterstützte Dateitypen:<br>"
+                   "1) CSV-Exportdatei des Haglöf Sweden Vertex Messgerätes.<br>"
+                   "2) Generische CSV-Datei (Komma-separiert) mit den "
+                   "Koordinaten-Spalten 'x', 'y' und 'z'. Die Datei darf keine "
+                   "Kommentare enthalten und die Punkte sind sortiert aufzulisten.")
         QMessageBox.information(self, "Höheninformationen laden", msg,
                                 QMessageBox.Ok)
     
