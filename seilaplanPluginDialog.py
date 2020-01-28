@@ -469,8 +469,10 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
             self.rasterField.removeItem(i)
         for rLyr in rasterList:
             self.rasterField.addItem(rLyr['name'])
-        if selectedRaster != '':
+        if selectedRaster != '' and selectedRaster in rasterList:
             self.rasterField.setCurrentText(selectedRaster)
+        else:
+            self.rasterField.setCurrentIndex(-1)
         self.rasterField.blockSignals(False)
     
     def searchForDhm(self, rasterlist):
@@ -492,7 +494,6 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
     
     def onChangeRaster(self, rastername):
         """Triggered by choosing a raster from the drop down menu."""
-        self.projectHandler.resetProfile()
         self.setRaster(rastername)
         # Update start and end point
         self.checkPoints()
@@ -510,7 +511,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
                 self.projectHandler.setHeightSource(rlyr['lyr'], 'dhm')
                 # Check spatial reference of selected raster and show message
                 if not self.checkEqualSpatialRef():
+                    self.rasterField.blockSignals(True)
                     self.rasterField.setCurrentIndex(-1)
+                    self.rasterField.blockSignals(False)
                     break
                 self.iface.setActiveLayer(rlyr['lyr'])
                 self.iface.zoomToActiveLayer()
@@ -548,6 +551,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
                 QgsProject.instance().addMapLayer(rasterLyr)
                 # Update drop down menu
                 self.updateRasterList()
+                self.rasterField.blockSignals(True)
                 self.rasterField.setCurrentText(rasterName)
             else:
                 self.rasterField.setCurrentIndex(-1)
@@ -620,8 +624,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
             else:
                 msg = ('Bezugssystem der Höhendaten unbekannt.\n\nEs wird '
                        'angenommen, dass die Daten dasselbe KBS wie das '
-                       f"aktuelle QGIS-Projekt besitzen "
-                       f"('{mapCrs.description()}' ({mapCrs.authid()})).")
+                       f"aktuelle QGIS-Projekt besitzen: "
+                       f"{mapCrs.description()} ({mapCrs.authid()}).")
                 heightSource.spatialRef = mapCrs
                 success = True
         
