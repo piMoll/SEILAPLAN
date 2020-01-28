@@ -184,6 +184,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.infoPointE.clicked.connect(self.onPointEInfoShow)
         self.infoBodenabstand.clicked.connect(self.onShowInfoImg)
         self.infoStuetzen.clicked.connect(self.onShowInfoImg)
+        self.infoFieldE.clicked.connect(self.onShowInfoFieldE)
+        self.infoFieldSFT.clicked.connect(self.onShowInfoFieldSFT)
         
         # OSM map and contour buttons
         self.osmLyrButton.clicked.connect(self.onClickOsmButton)
@@ -904,6 +906,20 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.imgBox.setLayout(self.imgBox.container)
         self.imgBox.show()
     
+    def onShowInfoFieldE(self):
+        msg = ('Materialkennwert des Tragseils, welcher den Zusammenhang '
+               'zwischen Spannung und Dehnung des Seils beschreibt. Der '
+               'Kennwert variiert kaum, weshalb der Default-Wert für die '
+               'meisten üblichen Seile übernommen werden kann.')
+        QMessageBox.information(self, "Elastizitätsmodul Tragseil", msg,
+                                QMessageBox.Ok)
+    
+    def onShowInfoFieldSFT(self):
+        msg = ('Europaweit wird ein Sicherheitsfaktor von 3.0 für das '
+               'Tragseil verwendet.')
+        QMessageBox.information(self, "Sicherheitsfaktor Tragseil", msg,
+                                QMessageBox.Ok)
+        
     def goToAdjustmentWindow(self):
         if self.confHandler.checkValidState() \
                 and self.checkEqualSpatialRef \
