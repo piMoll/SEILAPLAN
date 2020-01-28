@@ -1,7 +1,7 @@
 name	value
 label	Standardparameter
 Seilsys	0
-HM_Kran	0
+HM_Kran	12
 Befahr_A	0
 Befahr_E	0
 Bodenabst_min	7

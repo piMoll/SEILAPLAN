@@ -62,14 +62,17 @@ class AdjustmentDialogThresholds(QObject):
         self.tbl.hideColumn(4)
         
         # Insert data into cells
-        for i, row in enumerate(dataset):
-            for j, cell in enumerate(row):
-                if j < 4:
-                    item = QStandardItem(cell)
-                    self.model.setItem(i, j, item)
-                # Set background color for cells where threshold is exceeded
-                if j == 4 and len(cell) != 0:
-                    self.colorBackground(i, valueColumn, self.COLOR_ERROR)
+        for i, rowData in enumerate(dataset):
+            for j, cellData in enumerate(rowData):
+                if j == 4:
+                    cellData = len(cellData)
+                    if cellData > 0:
+                        # Set background color for cells where threshold is
+                        #  exceeded
+                        self.colorBackground(i, valueColumn, self.COLOR_ERROR)
+                item = QStandardItem(cellData)
+                self.model.setItem(i, j, item)
+                self.model.setData(self.model.index(i, j), cellData)
         
         # Adjust column widths
         self.tbl.resizeColumnsToContents()

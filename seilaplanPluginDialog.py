@@ -844,14 +844,11 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         # Update GUI: fieldHMKran
         if idx in [0, 1]:       # pole, pole_anchor
             self.fieldHMKran.setEnabled(False)
-            self.paramHandler.setParameter('HM_Kran', 0)
+            self.fieldHMKran.setText('')
         elif idx == 2:          # crane
-            paramVal = self.paramHandler.getParameter('HM_Kran')
-            if paramVal == 0:
-                paramVal = self.paramHandler.HM_KRAN
-            self.fieldHMKran.setText(str(paramVal))
+            paramVal = self.paramHandler.getParameterAsStr('HM_Kran')
+            self.fieldHMKran.setText(paramVal)
             self.fieldHMKran.setEnabled(True)
-            self.paramHandler.setParameter('HM_Kran', paramVal)
         self.updateParametersetField()
     
     def onTypeEChange(self):

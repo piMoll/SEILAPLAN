@@ -20,7 +20,7 @@ from .optiSTA import calcSTA
 import scipy.sparse as sps
 
 
-def optimization(IS, profile, StuetzenPos, progress, fixedPoles):
+def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
     """Berechnung der optimalen Anordnung der Stützen im Laengenprofil
 
     Diese Funktion berechnet aufgrund der zulässigen maximalen Seilzugkraft
@@ -74,7 +74,7 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles):
     # Anfangsstütze
     # Die Höhe der Anfangsstütze ist entweder durch die Höhe des Seilmastkrans
     #  fixiert oder hat eine variable Höhe von 0 Meter (=Verankerung) bis HM_max
-    if IS["HM_Kran"] == 0:
+    if pole_type in ['pole', 'pole_anchor']:
         # Anfangsstütze mit variabler Höhe
         hStufungAnf = range(0, max_HM+1, Abstufung_HM)
         stufenAnzAnf = len(hStufungAnf)

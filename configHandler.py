@@ -447,9 +447,6 @@ class ProjectConfHandler(AbstractConfHandler):
     
     def prepareForCalculation(self):
         success = True
-        # Remove height of crane if first point is of type pole or pole_anchor
-        self.params.updateHM(self.A_type)
-        
         # Prepare raster (create subraster) or interpolate survey data
         self.heightSource.prepareData(self.points, self.azimut,
                                       self.params.ANCHOR_LEN)
@@ -505,7 +502,6 @@ class ParameterConfHandler(AbstractConfHandler):
         0: 'Zweiseil-System',
         1: 'Mehrseil-System'
     }
-    HM_KRAN = 12
     ANCHOR_LEN = 20
     DEFAULTSET = 'Standardparameter'
     SETS_PATH = os.path.join(HOMEPATH, 'config', 'parametersets')
@@ -814,10 +810,6 @@ class ParameterConfHandler(AbstractConfHandler):
             'value': int(round(mbk / sft))
         }
         return True
-    
-    def updateHM(self, typeA):
-        if typeA in ['pole', 'pole_anchor']:
-            self.setParameter('HM_Kran', 0)
             
     def updateAnchorLen(self, buffer):
         anchor_A = self.ANCHOR_LEN if buffer[0] > self.ANCHOR_LEN else buffer[0]
