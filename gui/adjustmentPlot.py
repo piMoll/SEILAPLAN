@@ -24,6 +24,7 @@ from qgis.PyQt.QtWidgets import QSizePolicy
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
+from .plotting_tools import zoom_with_wheel
 
 
 class AdjustmentPlot(FigureCanvas):
@@ -50,9 +51,14 @@ class AdjustmentPlot(FigureCanvas):
         self.labelBuffer = 1
         self.arrowMarker = None
         self.arrowLabel = []
+        # Reference to navigation toolbar
+        self.tbar = None
         
         self.currentPole = None
         self.isZoomed = False
+
+        # Enable zoom with scroll wheel
+        zoomFunc = zoom_with_wheel(self, self.axes, zoomScale=1.3)
 
         self.axes.set_aspect('equal', 'datalim')
         self.setFocusPolicy(Qt.ClickFocus)
@@ -178,6 +184,11 @@ class AdjustmentPlot(FigureCanvas):
         self.axes.set_xlim(xlim)
         self.axes.set_ylim(ylim)
         self.draw()
+        print(self.axes._get_view())
+        # Set new plot extent as home extent (for home button)
+        if not printPdf:
+            self.tbar.update()
+            self.tbar.push_current()
     
     def showMarkers(self, x, y, label):
         # Displays marker for thresholds
@@ -211,6 +222,9 @@ class AdjustmentPlot(FigureCanvas):
         self.isZoomed = False
         self.currentPole = {}
         self.setPlotLimits()
+        # Set new plot extent as home extent (for home button)
+        self.tbar.update()
+        self.tbar.push_current()
     
     def placeLabels(self, xdata, ydata):
         if self.isZoomed:
@@ -252,3 +266,6 @@ class AdjustmentPlot(FigureCanvas):
                 self.axes.text(pole['dtop'], pole['ztop'] + self.labelBuffer*2,
                                pole['name'], ha='center', fontsize=8)
         self.print_figure(filelocation, dpi)
+
+    def setToolbar(self, tbar):
+        self.tbar = tbar

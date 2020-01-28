@@ -23,7 +23,7 @@ import os
 import numpy as np
 
 from qgis.PyQt.QtGui import QFont, QColor
-from qgis.PyQt.QtCore import QSize, Qt, QFileInfo, QSettings, QVariant
+from qgis.PyQt.QtCore import QSize, Qt, QFileInfo, QVariant
 from qgis.PyQt.QtWidgets import (QDialog, QWidget, QLabel, QDialogButtonBox,
                                  QLayout, QVBoxLayout)
 from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject, QgsPoint,
@@ -31,9 +31,6 @@ from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject, QgsPoint,
                        QgsPalLayerSettings, QgsTextFormat,
                        QgsTextBufferSettings, QgsVectorLayerSimpleLabeling)
 from processing import run
-
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT \
-    as NavigationToolbar
 
 
 class DialogWithImage(QDialog):
@@ -55,18 +52,6 @@ class DialogWithImage(QDialog):
 
     def Apply(self):
         self.close()
-
-
-class MyNavigationToolbar(NavigationToolbar):
-    # Only display the buttons we need
-    toolitems = [t for t in NavigationToolbar.toolitems if
-                 t[0] in ('Home', 'Pan', 'Zoom')]
-
-    def __init__(self, *args, **kwargs):
-        super(MyNavigationToolbar, self).__init__(*args, **kwargs)
-        self.layout().takeAt(3)  # 3 = Amount of tools we need
-        self.layout().setSpacing(5)
-
 
 def createContours(canvas, heightSource):
     contourName = "Hoehenlinien_" + heightSource.name

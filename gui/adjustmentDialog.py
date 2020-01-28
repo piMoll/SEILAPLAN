@@ -29,7 +29,7 @@ from qgis.PyQt.QtGui import QPixmap
 
 from .ui_adjustmentDialog import Ui_AdjustmenDialog
 from .adjustmentPlot import AdjustmentPlot
-from .guiHelperFunctions import MyNavigationToolbar
+from .plotting_tools import MyNavigationToolbar
 from .customWidgets import CustomPoleWidget
 from .adjustmentDialog_params import AdjustmentDialogParams
 from .adjustmentDialog_thresholds import AdjustmentDialogThresholds
@@ -80,10 +80,11 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         # Create plot
         self.plot = AdjustmentPlot(self)
         # Pan/Zoom tools for plot, pan already active
-        bar = MyNavigationToolbar(self.plot, self)
-        bar.pan()
+        tbar = MyNavigationToolbar(self.plot, self)
+        tbar.pan()
+        self.plot.setToolbar(tbar)
         self.plotLayout.addWidget(self.plot)
-        self.plotLayout.addWidget(bar, alignment=Qt.AlignHCenter | Qt.AlignTop)
+        self.plotLayout.addWidget(tbar, alignment=Qt.AlignHCenter | Qt.AlignTop)
 
         # Fill tab widget with data
         self.poleLayout = CustomPoleWidget(self.tabPoles, self.poleVGrid)

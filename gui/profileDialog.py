@@ -31,7 +31,7 @@ from qgis.PyQt.QtWidgets import (QDialog, QWidget, QLabel, QDialogButtonBox,
 from qgis.PyQt.QtGui import QIcon, QPixmap
 
 from .profilePlot import ProfilePlot
-from .guiHelperFunctions import MyNavigationToolbar
+from .plotting_tools import MyNavigationToolbar
 from .customWidgets import CustomPoleWidget
 
 
@@ -64,8 +64,9 @@ class ProfileDialog(QDialog):
         # Plot
         self.sc = ProfilePlot(self)
         # Pan/Zoom Tools for diagram
-        bar = MyNavigationToolbar(self.sc, self)
-        bar.pan()
+        tbar = MyNavigationToolbar(self.sc, self)
+        tbar.pan()
+        self.sc.setToolbar(tbar)
 
         # Layout
         main_widget = QWidget(self)
@@ -108,7 +109,7 @@ class ProfileDialog(QDialog):
         self.buttonBox.setStandardButtons(QDialogButtonBox.Ok)
         # Build up Gui
         self.container.addWidget(self.sc)
-        self.container.addWidget(bar, alignment=Qt.AlignHCenter | Qt.AlignTop)
+        self.container.addWidget(tbar, alignment=Qt.AlignHCenter | Qt.AlignTop)
         self.container.addWidget(line1)
         self.container.addWidget(stueTitle)
         self.container.addLayout(hbox)

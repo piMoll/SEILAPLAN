@@ -204,6 +204,7 @@ class MapMarkerTool(QgsMapTool):
     def hideMarker(self, idx):
         marker = self.markers[idx]
         self.canvas.scene().removeItem(marker)
+        self.canvas.refresh()
         
     def showMarker(self, point, idx, pointType, color=POLE_COLOR):
         qgsPoint = self.convertToQgsPoint(point)
@@ -255,7 +256,7 @@ class QgsPoleMarker(QgsVertexMarker):
             self.setIconSize(15)
         else:
             self.setIconType(QgsVertexMarker.ICON_BOX)
-            self.setIconSize(11)
+        self.setIconSize(11)
         self.setPenWidth(3)
 
 

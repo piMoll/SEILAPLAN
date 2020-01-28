@@ -29,6 +29,7 @@ from matplotlib.figure import Figure
 from matplotlib.collections import LineCollection
 
 from .mapMarker import PROFILE_COLOR, POLE_COLOR, SECTION_COLOR
+from .plotting_tools import zoom_with_wheel
 
 
 class ProfilePlot(FigureCanvas):
@@ -45,6 +46,8 @@ class ProfilePlot(FigureCanvas):
         self.line_exists = False
         self.profile = None
         self.labelScale = None
+        # Reference to toolbar
+        self.tbar = None
         
         # Mouse position
         self.x_data = None
@@ -60,6 +63,9 @@ class ProfilePlot(FigureCanvas):
         self.evtPressPole = None
         self.evtMoveSection = None
         self.evtPressSection = None
+        
+        # Enable zoom with scroll wheel
+        zoomFunc = zoom_with_wheel(self, self.axes, zoomScale=1.3)
         
         self.axes.set_aspect('equal', 'datalim')
         self.setFocusPolicy(Qt.ClickFocus)
@@ -130,6 +136,9 @@ class ProfilePlot(FigureCanvas):
         self.lx.set_visible(False)
         
         self.draw()
+        # Set new plot extent as home extent (for home button)
+        self.tbar.update()
+        self.tbar.push_current()
 
     def acitvateCrosshairPole(self):
         self.evtMovePole = self.mpl_connect('motion_notify_event', self.onMouseMoveP)
@@ -268,3 +277,6 @@ class ProfilePlot(FigureCanvas):
                               bottom=True, top=False, left=True, right=False)
         self.axes.tick_params(axis="both", which="both", direction="in")
         self.axes.minorticks_on()
+    
+    def setToolbar(self, tbar):
+        self.tbar = tbar
