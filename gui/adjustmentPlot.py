@@ -82,8 +82,8 @@ class AdjustmentPlot(FigureCanvas):
         self.terrain = terrain
         self.peakLoc_x = peakLocation_x
         self.peakLoc_y = peakLocation_y
-        self.data_xlow = np.min(self.xdata)
-        self.data_xhi = np.max(self.xdata)
+        self.data_xlow = np.min(self.xdata) - 20
+        self.data_xhi = np.max(self.xdata) + 20
         self.data_ylow = np.min(self.terrain)
         self.data_yhi = np.max(self.terrain) + 25
         self.tPoints = surveyPoints
@@ -184,7 +184,6 @@ class AdjustmentPlot(FigureCanvas):
         self.axes.set_xlim(xlim)
         self.axes.set_ylim(ylim)
         self.draw()
-        print(self.axes._get_view())
         # Set new plot extent as home extent (for home button)
         if not printPdf:
             self.tbar.update()

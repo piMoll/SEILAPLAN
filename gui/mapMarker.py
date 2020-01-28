@@ -252,12 +252,13 @@ class QgsPoleMarker(QgsVertexMarker):
         QgsVertexMarker.__init__(self, canvas)
         self.setColor(QColor(color))
         if firstPoint:
-            self.setIconType(QgsVertexMarker.ICON_DOUBLE_TRIANGLE)
-            self.setIconSize(15)
+            self.setIconType(QgsVertexMarker.ICON_BOX)
+            self.setIconSize(14)
+            self.setPenWidth(4)
         else:
             self.setIconType(QgsVertexMarker.ICON_BOX)
-        self.setIconSize(11)
-        self.setPenWidth(3)
+            self.setIconSize(11)
+            self.setPenWidth(2)
 
 
 class QgsAnchorMarker(QgsVertexMarker):
