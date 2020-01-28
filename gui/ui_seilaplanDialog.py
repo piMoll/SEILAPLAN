@@ -829,7 +829,7 @@ class Ui_SeilaplanDialog(object):
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.laenge = QtWidgets.QLineEdit(self.groupBox_3)
-        self.laenge.setEnabled(True)
+        self.laenge.setEnabled(False)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -841,8 +841,6 @@ class Ui_SeilaplanDialog(object):
         font.setItalic(False)
         self.laenge.setFont(font)
         self.laenge.setAutoFillBackground(False)
-        self.laenge.setStyleSheet("background-color: rgb(243, 243, 243);\n"
-"color: rgb(75, 75, 75);")
         self.laenge.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.laenge.setReadOnly(True)
         self.laenge.setObjectName("laenge")
