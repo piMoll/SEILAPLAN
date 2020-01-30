@@ -57,6 +57,7 @@ class Ui_AdjustmenDialog(object):
         self.horizontalLayout_2.addWidget(self.btnSave)
         self.gridLayout_2.addLayout(self.horizontalLayout_2, 8, 0, 1, 1)
         self.plotLayout = QtWidgets.QVBoxLayout()
+        self.plotLayout.setSpacing(0)
         self.plotLayout.setObjectName("plotLayout")
         self.gridLayout_2.addLayout(self.plotLayout, 4, 0, 1, 1)
         self.tabLayout = QtWidgets.QVBoxLayout()

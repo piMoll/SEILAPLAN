@@ -64,7 +64,6 @@ class AdjustmentPlot(FigureCanvas):
         self.setFocusPolicy(Qt.ClickFocus)
         FigureCanvas.setSizePolicy(self, QSizePolicy.Expanding,
                                    QSizePolicy.Expanding)
-        self.setMinimumSize(QSize(600, 400))
         FigureCanvas.updateGeometry(self)
         self.fig.tight_layout(pad=0, w_pad=0.1, h_pad=0.1)
 
@@ -82,12 +81,26 @@ class AdjustmentPlot(FigureCanvas):
         self.terrain = terrain
         self.peakLoc_x = peakLocation_x
         self.peakLoc_y = peakLocation_y
-        self.data_xlow = np.min(self.xdata) - 20
-        self.data_xhi = np.max(self.xdata) + 20
-        self.data_ylow = np.min(self.terrain)
-        self.data_yhi = np.max(self.terrain) + 25
+        self.data_xlow = np.min(self.xdata)
+        self.data_xhi = np.max(self.xdata)
+        # Add 40m to have space for labels (survey points)
+        self.data_ylow = np.min(self.terrain) - 40
+        # Add 40m to have space for poles
+        self.data_yhi = np.max(self.terrain) + 40
         self.tPoints = surveyPoints
-    
+        
+        # Add some buffer from drawn terrain to axis for better look
+        self.data_xlow -= max(10, 10 * ((self.data_xhi - self.data_xlow) / 300))
+        self.data_xhi += max(10, 10 * ((self.data_xhi - self.data_xlow) / 300))
+        rangeX = self.data_xhi - self.data_xlow
+        rangeY = self.data_yhi - self.data_ylow
+        ratio = rangeX / rangeY
+        # Update figure size to fit data, height is a minimum of 330 px
+        self.setMinimumSize(QSize(330 * ratio, 330))
+        # Set label positioning by taking height of figure into account
+        height_m2px = rangeY / self.height()
+        self.labelBuffer = 5 * height_m2px
+
     def setPlotLimits(self):
         if self.isZoomed:
             d = self.currentPole['d']
@@ -103,7 +116,6 @@ class AdjustmentPlot(FigureCanvas):
         else:
             self.axes.set_xlim(self.data_xlow, self.data_xhi)
             self.axes.set_ylim(self.data_ylow, self.data_yhi)
-            self.labelBuffer = (self.data_yhi - self.data_ylow) / 40
         
     def updatePlot(self, poles, cable, printPdf=False):
         scale = 1
@@ -242,7 +254,7 @@ class AdjustmentPlot(FigureCanvas):
             self.axes.text(pos_h_d, pos_h_z, f'{round(h, 1)} m', ha='center')
         else:
             for i in range(len(xdata)):
-                self.axes.text(xdata[i], ydata[i] + self.labelBuffer*2,
+                self.axes.text(xdata[i], ydata[i] + self.labelBuffer,
                                f'{i + 1}', fontsize=12, ha='center')
     
     def printToPdf(self, filelocation, title, poles, dpi=300):

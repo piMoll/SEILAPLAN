@@ -576,7 +576,9 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
                         continue
                     txt = ''
                     if gT[0]:       # incoming angle
-                        txt += f'ein: {self.formatThreshold(dataT[i][0], idx)}\n'
+                        txt += f'ein: {self.formatThreshold(dataT[i][0], idx)}'
+                        if gT[1]:
+                            txt += '\n'
                     elif gT[1]:     # outgoing angle
                         txt += f'aus: {self.formatThreshold(dataT[i][1], idx)}'
                     plotLabel.append(txt)

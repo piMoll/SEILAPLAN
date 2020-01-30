@@ -125,7 +125,11 @@
     </layout>
    </item>
    <item row="4" column="0">
-    <layout class="QVBoxLayout" name="plotLayout"/>
+    <layout class="QVBoxLayout" name="plotLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+    </layout>
    </item>
    <item row="6" column="0">
     <layout class="QVBoxLayout" name="tabLayout">
