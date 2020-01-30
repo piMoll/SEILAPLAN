@@ -80,7 +80,6 @@ def createContours(canvas, heightSource):
 
 
 def loadOsmLayer(homePath):
-    # TODO: Wird in Karte nicht dargestellt: Wahrsch. Projektionsproblem
     osmLyr = None
     
     for l in QgsProject.instance().layerTreeRoot().findLayers():

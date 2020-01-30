@@ -124,7 +124,6 @@ class Poles(object):
             else:
                 z = self.heightSource.getHeightAtPoints([[self.Ey, self.Ex]])[0]
             ztop = z
-            print(f'ERROR! Stütze ausserhalb Raster: dist = {d}, h = {h}')
         return x, y, z, dtop, ztop
 
     def updateAllPoles(self, status, poles):
