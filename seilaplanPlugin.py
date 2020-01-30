@@ -185,11 +185,11 @@ class SeilaplanPlugin(object):
         #  the standard qgis python interpreter
         try:
             import scipy
-        except ImportError:
-            self.iface.messageBar().pushMessage('Python-Fehler',
+        except ModuleNotFoundError:
+            self.iface.messageBar().pushMessage('SEILAPLAN Fehler',
                 "Bibliothek scipy ist nicht installiert. Seilaplan kann nicht "
-                "ausgeführt werden. Bitte installieren und starten sie QGIS "
-                "neu.", level=Qgis.Critical)
+                "ausgeführt werden. Bitte installieren Sie die fehlende "
+                "Bibliothek und starten sie QGIS neu.", level=Qgis.Critical)
             return
 
         # Check if plugin is already running

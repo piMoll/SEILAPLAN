@@ -2,8 +2,12 @@
 
 import numpy as np
 from math import pi, log
-from scipy import fft, ifft
-from scipy.optimize import curve_fit
+try:
+    from scipy import fft, ifft
+    from scipy.optimize import curve_fit
+except ModuleNotFoundError:
+    # Import error is handled in seilaplanPlugin.py run() function
+    pass
 
 i = 10000
 x = np.linspace(0, 3.5 * pi, i)

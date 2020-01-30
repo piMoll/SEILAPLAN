@@ -4,9 +4,15 @@ import numpy as np
 from osgeo import gdal
 from qgis.core import (QgsCoordinateTransform, QgsRasterLayer, QgsPoint,
                        QgsCoordinateReferenceSystem, QgsProject)
-from scipy import interpolate as ipol
 from math import sin, cos, pi
 import csv
+# Check if library scipy is present. On linux scipy isn't included in
+#  the standard qgis python interpreter
+try:
+    from scipy import interpolate as ipol
+except ModuleNotFoundError:
+    # Import error is handled in seilaplanPlugin.py run() function
+    pass
 
 
 class AbstractHeightSource(object):

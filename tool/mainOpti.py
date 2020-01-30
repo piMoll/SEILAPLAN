@@ -17,7 +17,11 @@ import numpy as np
 
 from .geoExtract import ismember
 from .optiSTA import calcSTA
-import scipy.sparse as sps
+try:
+    import scipy.sparse as sps
+except ModuleNotFoundError:
+    # Import error is handled in seilaplanPlugin.py run() function
+    pass
 
 
 def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
