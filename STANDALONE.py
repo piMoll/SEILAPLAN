@@ -35,6 +35,11 @@ from .gui.adjustmentPlot import AdjustmentPlot
 from .tool.outputReport import generateReportText, generateReport, createOutputFolder
 from .tool.outputGeo import generateGeodata, generateCoordTable
 
+# Add plugin library folder to path
+libPath = os.path.join(os.path.dirname(__file__), 'lib')
+if libPath not in sys.path:
+    sys.path.append(libPath)
+
 
 class ProcessingTask(QgsTask):
     """

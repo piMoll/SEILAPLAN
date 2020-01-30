@@ -30,7 +30,7 @@ from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject, QgsPoint,
                        QgsFeature, QgsGeometry, QgsVectorLayer, QgsField,
                        QgsPalLayerSettings, QgsTextFormat,
                        QgsTextBufferSettings, QgsVectorLayerSimpleLabeling)
-from processing import run
+
 
 
 class DialogWithImage(QDialog):
@@ -54,6 +54,7 @@ class DialogWithImage(QDialog):
         self.close()
 
 def createContours(canvas, heightSource):
+    from processing import run
     contourName = "Hoehenlinien_" + heightSource.name
     crs = heightSource.spatialRef
     outputPath = os.path.join(os.path.dirname(heightSource.path),
