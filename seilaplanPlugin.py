@@ -25,7 +25,7 @@ import sys
 from qgis.PyQt.QtCore import QSettings, QTranslator, qVersion, QCoreApplication
 from qgis.PyQt.QtWidgets import QAction
 from qgis.PyQt.QtGui import QIcon
-from qgis.core import QgsApplication
+from qgis.core import QgsApplication, Qgis
 # Initialize Qt resources from file resources.py
 from .gui import resources_rc
 # Main dialog window
@@ -180,7 +180,22 @@ class SeilaplanPlugin(object):
         #     pass
         # except ImportError:
         #     pass
-        
+
+        # Check if library scipy is present. On linux scipy isn't included in
+        #  the standard qgis python interpreter
+        try:
+            import scipy
+        except ImportError:
+            self.iface.messageBar().pushMessage('Python-Fehler',
+                "Bibliothek scipy ist nicht installiert. Seilaplan kann nicht "
+                "ausgeführt werden. Bitte installieren und starten sie QGIS "
+                "neu.", level=Qgis.Critical)
+            return
+
+        # Check if plugin is already running
+        if self.dlg:
+            return
+
         # Configuration handler
         conf = ConfigHandler()
 
@@ -208,16 +223,19 @@ class SeilaplanPlugin(object):
             self.dlg.show()
             self.dlg.exec()
 
-            # # Uncomment when trying to debug adjustment window
-            # # Show adjustment window directly without running optimization algorithm
-            # conf.loadFromFile("/home/pi/Seilaplan/project_to_pickl_20191022.txt")
-            # pickleFile = '/home/pi/Projects/seilaplan/pickle_dumps/pickl_20191022.pckl'
+            # # Uncomment the following code when trying to debug adjustment
+            # #  window directly without having to run the optimization
+            # #  algorithm. Comment out the two previous lines (self.dgl...) to
+            # #  stop first window from showing
+            # conf.loadFromFile("/path/to/projectfile.txt")
             # conf.prepareForCalculation()
+            # result, status = conf.loadCableDataFromFile()
             # self.adjustmentWindow = AdjustmentDialog(self.iface, conf)
-            # self.adjustmentWindow.loadData(pickleFile)
+            # self.adjustmentWindow.initData(result, status)
             # self.adjustmentWindow.unsavedChanges = False
             # self.adjustmentWindow.show()
             # self.adjustmentWindow.exec()
+            # return
 
             # Begin with computation when user clicked on "Start calculations"
             # and parameters are valid
