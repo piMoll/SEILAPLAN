@@ -282,5 +282,6 @@ class SeilaplanPlugin(object):
                 del self.adjustmentWindow
 
         self.dlg.cleanUp()
-        del self.dlg
+        self.dlg.deleteLater()
+        self.dlg = None
         return

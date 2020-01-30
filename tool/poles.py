@@ -109,13 +109,22 @@ class Poles(object):
     def derivePoleProperties(self, d, h, angle):
         x = self.Ax + float(d) * sin(self.azimut)
         y = self.Ay + float(d) * cos(self.azimut)
-        z = self.heightSource.getHeightAtPoints([[y, x]])[0]
-        dtop = d
-        ztop = z + h
         if angle != 0:
-            rad_angle = -1 * radians(angle)
-            dtop = d - h * sin(rad_angle)
-            ztop = z + h * cos(rad_angle)
+            angle = -1 * radians(angle)
+        dtop = d - h * sin(angle)
+        try:
+            z = self.heightSource.getHeightAtPoints([[y, x]])[0]
+            ztop = z + h * cos(angle)
+        except ValueError:
+            # Anchor is outside of profile data. This can happen when working
+            #  with survey data. In this case, we use height of first/last
+            #  pole as anchor height.
+            if d < 0:
+                z = self.heightSource.getHeightAtPoints([[self.Ay, self.Ax]])[0]
+            else:
+                z = self.heightSource.getHeightAtPoints([[self.Ey, self.Ex]])[0]
+            ztop = z
+            print(f'ERROR! Stütze ausserhalb Raster: dist = {d}, h = {h}')
         return x, y, z, dtop, ztop
 
     def updateAllPoles(self, status, poles):
