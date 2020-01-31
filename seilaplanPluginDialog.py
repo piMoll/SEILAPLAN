@@ -887,17 +887,23 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
                                 QMessageBox.Ok)
     
     def onPointAInfoShow(self):
-        # TODO
-        msg = ('')
-        QMessageBox.information(self, "Anfangspunkt", msg,
-                                QMessageBox.Ok)
+        imgPath = os.path.join(self.homePath, 'img', 'Anfangspunkt.png')
+        self.imgBox.setWindowTitle('Endpunkt')
+        # Load image
+        myPixmap = QPixmap(imgPath)
+        self.imgBox.label.setPixmap(myPixmap)
+        self.imgBox.setLayout(self.imgBox.container)
+        self.imgBox.show()
 
     def onPointEInfoShow(self):
-        # TODO
-        msg = ('')
-        QMessageBox.information(self, "Endpunkt", msg,
-                                QMessageBox.Ok)
-    
+        imgPath = os.path.join(self.homePath, 'img', 'Endpunkt.png')
+        self.imgBox.setWindowTitle('Endpunkt')
+        # Load image
+        myPixmap = QPixmap(imgPath)
+        self.imgBox.label.setPixmap(myPixmap)
+        self.imgBox.setLayout(self.imgBox.container)
+        self.imgBox.show()
+        
     def onShowInfoImg(self):
         sender = self.sender().objectName()
         infoType = sender[4:]
