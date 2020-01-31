@@ -31,14 +31,14 @@ from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject,
 from processing.core.Processing import Processing
 
 # Further GUI modules for functionality
-from .gui.guiHelperFunctions import (DialogWithImage, createContours,
-                                     loadOsmLayer, createProfileLayers)
-from .configHandler import ConfigHandler, castToNum
+from .guiHelperFunctions import (DialogWithImage, createContours,
+                                    loadOsmLayer, createProfileLayers)
+from ..configHandler import ConfigHandler, castToNum
 # GUI elements
-from .gui.saveDialog import DialogSaveParamset
-from .gui.mapMarker import MapMarkerTool
-from .gui.ui_seilaplanDialog import Ui_SeilaplanDialog
-from .gui.profileDialog import ProfileDialog
+from .saveDialog import DialogSaveParamset
+from .mapMarker import MapMarkerTool
+from .ui_seilaplanDialog import Ui_SeilaplanDialog
+from .profileDialog import ProfileDialog
 
 # OS dependent line break
 nl = os.linesep

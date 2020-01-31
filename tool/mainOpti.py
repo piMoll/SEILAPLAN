@@ -15,7 +15,7 @@
 """
 import numpy as np
 
-from .geoExtract import ismember
+from .terrainAnalysis import ismember
 from .optiSTA import calcSTA
 try:
     import scipy.sparse as sps

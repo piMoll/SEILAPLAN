@@ -30,7 +30,7 @@ from qgis.PyQt.QtGui import QPixmap
 from .ui_adjustmentDialog import Ui_AdjustmenDialog
 from .adjustmentPlot import AdjustmentPlot
 from .plotting_tools import MyNavigationToolbar
-from .customWidgets import CustomPoleWidget
+from .poleWidget import CustomPoleWidget
 from .adjustmentDialog_params import AdjustmentDialogParams
 from .adjustmentDialog_thresholds import AdjustmentDialogThresholds
 from .saveDialog import DialogOutputOptions

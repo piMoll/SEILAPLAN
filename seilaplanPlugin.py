@@ -29,7 +29,7 @@ from qgis.core import QgsApplication, Qgis
 # Initialize Qt resources from file resources.py
 from .gui import resources_rc
 # Main dialog window
-from .seilaplanPluginDialog import SeilaplanPluginDialog
+from .gui.seilaplanPluginDialog import SeilaplanPluginDialog
 # Further dialog windows and helpers
 from .gui.progressDialog import ProgressDialog
 from .configHandler import ConfigHandler

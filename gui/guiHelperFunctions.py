@@ -32,7 +32,6 @@ from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject, QgsPoint,
                        QgsTextBufferSettings, QgsVectorLayerSimpleLabeling)
 
 
-
 class DialogWithImage(QDialog):
     def __init__(self):
         QDialog.__init__(self)
@@ -52,6 +51,7 @@ class DialogWithImage(QDialog):
 
     def Apply(self):
         self.close()
+
 
 def createContours(canvas, heightSource):
     from processing import run

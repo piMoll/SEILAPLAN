@@ -20,7 +20,7 @@
 """
 
 import numpy as np
-from .geoExtract import stuePos
+from .terrainAnalysis import stuePos
 from .mainOpti import optimization
 from .cablelineFinal import preciseCable
 

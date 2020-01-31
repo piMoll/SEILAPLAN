@@ -32,7 +32,7 @@ from qgis.PyQt.QtGui import QIcon, QPixmap
 
 from .profilePlot import ProfilePlot
 from .plotting_tools import MyNavigationToolbar
-from .customWidgets import CustomPoleWidget
+from .poleWidget import CustomPoleWidget
 
 
 class ProfileDialog(QDialog):

@@ -133,7 +133,7 @@ class Profile(object):
     
     def analyseProfile(self, lenCableline):  # locb
         # Ground clearance (Bodenabstand)
-        # TODO: Refactoring of old function in geoExtract.py
+        # TODO: Refactoring of old function in terrainAnalysis.py
         groundclearance = self.params.getParameter('Bodenabst_min')
         clearA = self.params.getParameter('Bodenabst_A')
         clearE = self.params.getParameter('Bodenabst_E')
