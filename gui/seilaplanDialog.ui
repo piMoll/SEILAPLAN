@@ -1747,7 +1747,7 @@
 }</string>
      </property>
      <property name="title">
-      <string>Höhenmodell</string>
+      <string>Terraindaten</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>

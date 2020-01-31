@@ -1081,7 +1081,7 @@ class Ui_SeilaplanDialog(object):
         self.infoFieldSFT.setText(_translate("SeilaplanDialog", "?"))
         self.label_12.setText(_translate("SeilaplanDialog", "Sicherheitsfaktor"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("SeilaplanDialog", "Optional #2"))
-        self.groupBox_2.setTitle(_translate("SeilaplanDialog", "Höhenmodell"))
+        self.groupBox_2.setTitle(_translate("SeilaplanDialog", "Terraindaten"))
         self.radioRaster.setText(_translate("SeilaplanDialog", "Rasterlayer"))
         self.radioSurveyData.setText(_translate("SeilaplanDialog", "Geländeprofil"))
         self.buttonRefreshRa.setToolTip(_translate("SeilaplanDialog", "Liste der in QGIS geladenen Raster aktualisieren"))
