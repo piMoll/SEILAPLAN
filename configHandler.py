@@ -383,7 +383,8 @@ class ProjectConfHandler(AbstractConfHandler):
             ]
             idx = 0
             for p in self.poles.poles:
-                poleData = [idx, p['d'], round(p['h'], 1), round(p['angle'], 1),
+                poleData = [idx, round(p['d'], 1), round(p['h'], 1),
+                            round(p['angle'], 1),
                             1 if p['manually'] else 0, p['poleType'],
                             1 if p['active'] else 0, p['name']]
                 poleStr = [str(m) for m in poleData]
