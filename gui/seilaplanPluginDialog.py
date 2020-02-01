@@ -102,7 +102,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.projectHandler = confHandler.project
         self.startAlgorithm = False
         self.goToAdjustment = False
-        self.homePath = os.path.dirname(__file__)
+        # Path to plugin root
+        self.homePath = os.path.dirname(os.path.dirname(__file__))
         
         # Setup GUI of SEILAPLAN (import from ui_seilaplanDialog.py)
         self.setupUi(self)
