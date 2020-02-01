@@ -2593,22 +2593,60 @@
   <tabstop>fieldProjName</tabstop>
   <tabstop>buttonSavePr</tabstop>
   <tabstop>buttonOpenPr</tabstop>
+  <tabstop>radioRaster</tabstop>
+  <tabstop>rasterField</tabstop>
+  <tabstop>buttonRefreshRa</tabstop>
+  <tabstop>radioSurveyData</tabstop>
+  <tabstop>fieldSurveyDataPath</tabstop>
+  <tabstop>buttonLoadSurveyData</tabstop>
   <tabstop>draw</tabstop>
+  <tabstop>contourLyrButton</tabstop>
+  <tabstop>osmLyrButton</tabstop>
+  <tabstop>coordAx</tabstop>
+  <tabstop>coordAy</tabstop>
+  <tabstop>fieldTypeA</tabstop>
+  <tabstop>coordEx</tabstop>
+  <tabstop>coordEy</tabstop>
+  <tabstop>fieldTypeE</tabstop>
+  <tabstop>laenge</tabstop>
+  <tabstop>buttonShowProf</tabstop>
   <tabstop>fieldParamSet</tabstop>
   <tabstop>buttonSaveParamset</tabstop>
   <tabstop>tabWidget</tabstop>
+  <tabstop>fieldSeilsys</tabstop>
+  <tabstop>fieldHMKran</tabstop>
+  <tabstop>fieldBefA</tabstop>
+  <tabstop>fieldBefE</tabstop>
+  <tabstop>fieldBabstMin</tabstop>
+  <tabstop>fieldBabstA</tabstop>
+  <tabstop>fieldBabstE</tabstop>
   <tabstop>fieldQ</tabstop>
   <tabstop>fieldQt</tabstop>
   <tabstop>fieldA</tabstop>
   <tabstop>fieldMBK</tabstop>
   <tabstop>fieldqZ</tabstop>
   <tabstop>fieldqR</tabstop>
-  <tabstop>fieldE</tabstop>
   <tabstop>fieldMinDist</tabstop>
   <tabstop>fieldLdelta</tabstop>
-  <tabstop>buttonInfo</tabstop>
+  <tabstop>fieldHMmin</tabstop>
+  <tabstop>fieldHMmax</tabstop>
+  <tabstop>fieldHMdelta</tabstop>
+  <tabstop>fieldHMnat</tabstop>
+  <tabstop>fieldminSK</tabstop>
+  <tabstop>fieldE</tabstop>
+  <tabstop>fieldSFT</tabstop>
   <tabstop>buttonCancel</tabstop>
+  <tabstop>btnAdjustment</tabstop>
   <tabstop>buttonRun</tabstop>
+  <tabstop>buttonInfo</tabstop>
+  <tabstop>infoRasterlayer</tabstop>
+  <tabstop>infoSurveyData</tabstop>
+  <tabstop>infoPointA</tabstop>
+  <tabstop>infoPointE</tabstop>
+  <tabstop>infoBodenabstand</tabstop>
+  <tabstop>infoStuetzen</tabstop>
+  <tabstop>infoFieldE</tabstop>
+  <tabstop>infoFieldSFT</tabstop>
  </tabstops>
  <resources>
   <include location="resources.qrc"/>
