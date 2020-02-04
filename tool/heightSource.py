@@ -374,9 +374,9 @@ class SurveyData(AbstractHeightSource):
         # For display in plot survey points are being rounded to the nearest
         #  meter and numbered
         surveyPnts_d = self.dist - distToStart
-        surveyPnts_d[1:-1] = np.round(surveyPnts_d[1:-1])
+        # surveyPnts_d[1:-1] = np.round(surveyPnts_d[1:-1])
         surveyPnts_z = self.interpolFunc(surveyPnts_d + distToStart)
-        surveyPnts_i = np.arange(1, len(self.dist) + 1)
+        surveyPnts_i = np.arange(len(self.dist)) + 1
 
         self.plotPoints = np.column_stack([surveyPnts_d, surveyPnts_z,
                                            surveyPnts_i])
@@ -418,13 +418,15 @@ class SurveyData(AbstractHeightSource):
         # Check that point never leaves profile between first and last point
         [x0, y0] = self.getFirstPoint()
         [x1, y1] = self.getLastPoint()
-        if xOnLine < x0 and (yOnLine > y0 > y1 or yOnLine < y0 < y1):
+        if xOnLine < x0 < x1 or xOnLine > x0 > x1:
             xOnLine = x0
-            yOnLine = y0
-        elif xOnLine > x1 and (yOnLine > y1 > y0 or yOnLine < y1 < y0):
+        if xOnLine < x1 < x0 or xOnLine > x1 > x0:
             xOnLine = x1
+        if yOnLine < y0 < y1 or yOnLine > y0 > y1:
+            yOnLine = y0
+        if yOnLine < y1 < y0 or yOnLine > y1 > y0:
             yOnLine = y1
-
+        
         # Snap cursor to a survey point if near one
         distToFirst = np.hypot(x0 - xOnLine, y0 - yOnLine)
         idx = np.argwhere(self.plotPoints[:, 0] == round(distToFirst))
