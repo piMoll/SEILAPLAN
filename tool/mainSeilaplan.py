@@ -48,7 +48,7 @@ def main(progress, project):
     params['Ank'] = poles.anchor
 
     out = optimization(params, profile, StuetzenPos, progress,
-                       project.fixedPoles, project.A_type)
+                       project.fixedPoles, [project.A_type, project.E_type])
     if not out:
         if not progress.isCanceled():
             progress.exception = "Fehler in Optimierungsalgorithmus."

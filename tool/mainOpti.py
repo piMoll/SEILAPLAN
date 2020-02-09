@@ -76,20 +76,30 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
     hStufung = range(min_HM, max_HM+1, Abstufung_HM)
 
     # Anfangsstütze
-    # Die Höhe der Anfangsstütze ist entweder durch die Höhe des Seilmastkrans
-    #  fixiert oder hat eine variable Höhe von 0 Meter (=Verankerung) bis HM_max
-    if pole_type in ['pole', 'pole_anchor']:
-        # Anfangsstütze mit variabler Höhe
+    if pole_type[0] == 'pole':
+        # Punkttyp: Stütze - Anfangsstütze mit variabler Höhe
         hStufungAnf = range(0, max_HM+1, Abstufung_HM)
         stufenAnzAnf = len(hStufungAnf)
+    
+    elif pole_type[0] == 'pole_anchor':
+        # Punkttyp: Verankerung - Anfangsstütze mit 0m Höhe
+        hStufungAnf = 0
+        stufenAnzAnf = 1
     else:
-        # Fixe Höhe des Seilkranmasts
+        # Punkttyp: Seilkran - Anfangsstütze mit fixer Höhe des Seilkranmasts
         hStufungAnf = IS["HM_Kran"]
         stufenAnzAnf = 1
 
-    # Die Endstütze hat eine Höhe zwischen 0 und max_HM Meter
-    hStufungEnd = range(0, max_HM + 1, Abstufung_HM)
-    stufenAnzEnd = len(hStufungEnd)
+    # Endstütze
+    if pole_type[1] == 'pole':
+        # Punkttyp: Stütze - Endstütze mit variabler Höhe
+        hStufungEnd = range(0, max_HM + 1, Abstufung_HM)
+        stufenAnzEnd = len(hStufungEnd)
+
+    else:
+        # Punkttyp: Verankerung - Endstütze mit 0m Höhe
+        hStufungEnd = 0
+        stufenAnzEnd = 1
     
     arraySize = stufenAnzAnf + (posAnz - 2) * len(hStufung) + stufenAnzEnd
 
