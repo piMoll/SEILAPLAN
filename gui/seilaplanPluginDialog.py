@@ -889,7 +889,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
     
     def onPointAInfoShow(self):
         imgPath = os.path.join(self.homePath, 'img', 'Anfangspunkt.png')
-        self.imgBox.setWindowTitle('Endpunkt')
+        self.imgBox.setWindowTitle('Anfangspunkt')
         # Load image
         myPixmap = QPixmap(imgPath)
         self.imgBox.label.setPixmap(myPixmap)
