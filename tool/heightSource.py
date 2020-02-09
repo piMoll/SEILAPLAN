@@ -209,6 +209,7 @@ class SurveyData(AbstractHeightSource):
         self.x = None
         self.y = None
         self.z = None
+        self.nr = None
         self.dist = None
         self.plane = None
         self.normalVector = None
@@ -275,6 +276,7 @@ class SurveyData(AbstractHeightSource):
             'y': y,
             'z': z
         }
+        self.nr = np.arange(len(x)) + 1
         return True
     
     def reprojectToCrs(self, destinationCrs):
@@ -355,6 +357,7 @@ class SurveyData(AbstractHeightSource):
             self.x = self.x[::-1]
             self.y = self.y[::-1]
             self.z = self.z[::-1]
+            self.nr = self.nr[::-1]
             
         [x0, y0] = self.getFirstPoint()
         [x1, y1] = self.getLastPoint()
@@ -376,10 +379,7 @@ class SurveyData(AbstractHeightSource):
         surveyPnts_d = self.dist - distToStart
         # surveyPnts_d[1:-1] = np.round(surveyPnts_d[1:-1])
         surveyPnts_z = self.interpolFunc(surveyPnts_d + distToStart)
-        surveyPnts_i = np.arange(len(self.dist)) + 1
-
-        self.plotPoints = np.column_stack([surveyPnts_d, surveyPnts_z,
-                                           surveyPnts_i])
+        self.plotPoints = np.column_stack([surveyPnts_d, surveyPnts_z, self.nr])
 
     def getFirstPoint(self):
         return [self.x[0].item(), self.y[0].item()]
@@ -435,7 +435,7 @@ class SurveyData(AbstractHeightSource):
         if len(idx > 0):
             nextIdx = idx[0][0]
         else:
-            nextIdx = len(self.plotPoints[:, 0])
+            nextIdx = len(self.plotPoints[:, 0])-1
         lastIdx = nextIdx - 1
         distNext = self.plotPoints[:, 0][nextIdx] - distToFirst
         distLast = distToFirst - self.plotPoints[:, 0][lastIdx]
