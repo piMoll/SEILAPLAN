@@ -427,11 +427,24 @@ class SurveyData(AbstractHeightSource):
         if yOnLine < y1 < y0 or yOnLine > y1 > y0:
             yOnLine = y1
         
-        # Snap cursor to a survey point if near one
+        # Cursor snapping to survey points
+        snapDist = 2
         distToFirst = np.hypot(x0 - xOnLine, y0 - yOnLine)
-        idx = np.argwhere(self.plotPoints[:, 0] == round(distToFirst))
+        # Get neighbouring survey points
+        idx = np.argwhere(self.plotPoints[:, 0] > distToFirst)
         if len(idx > 0):
-            xOnLine = self.x[idx[0]]
-            yOnLine = self.y[idx[0]]
+            nextIdx = idx[0][0]
+        else:
+            nextIdx = len(self.plotPoints[:, 0])
+        lastIdx = nextIdx - 1
+        distNext = self.plotPoints[:, 0][nextIdx] - distToFirst
+        distLast = distToFirst - self.plotPoints[:, 0][lastIdx]
+        # Check if cursor is near a survey point
+        if distNext < snapDist and distNext < distLast:
+            xOnLine = self.x[nextIdx]
+            yOnLine = self.y[nextIdx]
+        elif distLast < snapDist and distLast < distNext:
+            xOnLine = self.x[lastIdx]
+            yOnLine = self.y[lastIdx]
 
         return [xOnLine, yOnLine]
