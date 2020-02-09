@@ -738,8 +738,12 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         
         # Update coordinate field (formatted string)
         [xStr, yStr] = self.projectHandler.getPointAsStr(pointType)
+        self.coordFields[pointType + 'x'].blockSignals(True)
+        self.coordFields[pointType + 'y'].blockSignals(True)
         self.coordFields[pointType + 'x'].setText(xStr)
         self.coordFields[pointType + 'y'].setText(yStr)
+        self.coordFields[pointType + 'x'].blockSignals(False)
+        self.coordFields[pointType + 'y'].blockSignals(False)
         
         # Update profile button and profile length
         self.buttonShowProf.setEnabled(self.projectHandler.profileIsValid())
