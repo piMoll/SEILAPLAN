@@ -58,8 +58,6 @@ class ProfileDialog(QDialog):
         self.zdata = None
         self.profileMin = 0
         self.profileMax = None
-        # Control variable to know when data was set
-        self.dataSet = False
 
         # Plot
         self.sc = ProfilePlot(self)
@@ -163,8 +161,6 @@ class ProfileDialog(QDialog):
                 z = self.getZValue(x)
                 self.sc.drawSection(x, z)
             self.sc.draw()
-        # Window is ready to show new data
-        self.dataSet = True
 
     def buildPoleHeader(self):
         headerRow = QHBoxLayout()
@@ -318,6 +314,5 @@ class ProfileDialog(QDialog):
         self.stopActiveEdits()
         self.projectHandler.setFixedPoles(self.poleData)
         self.projectHandler.setNoPoleSection(self.noPoleSection)
-        self.dataSet = False
         # Reset gui since this can only be done when the window is still open
         self.reset()

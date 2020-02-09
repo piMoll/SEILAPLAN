@@ -143,6 +143,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         # Dialog window with height profile
         self.profileWin = ProfileDialog(self, self.iface, self.drawTool,
                                         self.projectHandler)
+        # Control variable for setting new data in profile window
+        self.resetProfileWin = True
 
         # Dialog windows for saving parameter and cable sets
         self.paramSetWindow = DialogSaveParamset(self)
@@ -387,7 +389,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.checkPoints()
         
         # Tell profile window to update its content on next show
-        self.updateProfileWinContent()
+        self.resetProfileWin = True
         
         # Load all predefined and user-defined parameter sets from the
         # config folder (maybe a new set was added when project was opened)
@@ -753,7 +755,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
     
     def updateLineByCoordFields(self):
         self.drawTool.reset()
-        self.profileWin.doReset = True
+        self.resetProfileWin = True
         if self.projectHandler.profileIsValid():
             self.drawTool.updateLine(list(self.linePoints.values()))
     
@@ -797,6 +799,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
     
     def onFinishedLineDraw(self, linecoord):
         self.projectHandler.resetProfile()
+        self.resetProfileWin = True
         self.updateLineByMapDraw(linecoord[0], 'A')
         self.updateLineByMapDraw(linecoord[1], 'E')
         # Stop pressing down button
@@ -808,9 +811,10 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
             self.profileWin.setProfile(profile)
             self.profileWin.setPoleData(self.projectHandler.fixedPoles['poles'],
                                         self.projectHandler.noPoleSection)
+            self.resetProfileWin = False
     
     def onShowProfile(self):
-        if not self.profileWin.dataSet:
+        if self.resetProfileWin:
             self.updateProfileWinContent()
         self.profileWin.exec()
     

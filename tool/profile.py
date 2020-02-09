@@ -7,7 +7,7 @@ class Profile(object):
     
     SAMPLING_DISTANCE = 1
     
-    def __init__(self, project):
+    def __init__(self, project, sampling=SAMPLING_DISTANCE):
         """
         Generates a profile with line sections of exactly 1 meter length. This
         means, that the end point is slightly moved to be part of the profile
@@ -25,6 +25,7 @@ class Profile(object):
         self.anchorA = self.params.getParameter('d_Anker_A')
         self.anchorE = self.params.getParameter('d_Anker_E')
         self.direction = None     # 'down' or 'up'
+        self.sampling_dist = sampling
         
         self.surveyPnts = None
         # In case of survey data, save survey points
@@ -62,7 +63,7 @@ class Profile(object):
     
     def generateProfile(self):
         # Length of single line section between first and last pole
-        dp = self.profileLength / self.SAMPLING_DISTANCE
+        dp = self.profileLength / self.sampling_dist
         # Number of sampling points including start point but not end point
         pCount = floor(dp)
         # Line sections in x and y direction
@@ -81,8 +82,8 @@ class Profile(object):
             yi = np.arange(self.Ay, self.Ey, dy)
     
         # Number of sampling points between start/end point and end of profile
-        pCount_dA = floor(self.heightSource.buffer[0] / self.SAMPLING_DISTANCE)
-        pCount_dE = floor(self.heightSource.buffer[1] / self.SAMPLING_DISTANCE)
+        pCount_dA = floor(self.heightSource.buffer[0] / self.sampling_dist)
+        pCount_dE = floor(self.heightSource.buffer[1] / self.sampling_dist)
     
         xiA_d = np.linspace(self.Ax - dx, self.Ax - pCount_dA * dx, pCount_dA)
         yiA_d = np.linspace(self.Ay - dy, self.Ay - pCount_dA * dy, pCount_dA)
@@ -91,8 +92,8 @@ class Profile(object):
     
         self.xi_disp = np.concatenate((xiA_d[::-1], xi, xiE_d))
         self.yi_disp = np.concatenate((yiA_d[::-1], yi, yiE_d))
-        self.di_disp = np.arange(-1 * np.size(xiA_d), np.size(xi)
-                                 + np.size(xiE_d), self.SAMPLING_DISTANCE)
+        self.di_disp = np.arange(0, np.size(self.xi_disp) * self.sampling_dist,
+                                 self.sampling_dist) - pCount_dA*self.sampling_dist
     
         # Interpolate z values on raster
         coords = np.rollaxis(np.array([self.yi_disp, self.xi_disp]), 1)
@@ -102,7 +103,7 @@ class Profile(object):
             self.zi = self.zi[pCount_dA:]
         if pCount_dE > 0:
             self.zi = self.zi[:-pCount_dE]
-        self.di = np.arange(np.size(xi) * self.SAMPLING_DISTANCE * 1.0)
+        self.di = np.arange(0, np.size(xi) * self.sampling_dist, self.sampling_dist)
         self.xi = xi
         self.yi = yi
         self.dx = dx
