@@ -257,14 +257,19 @@ def preciseCable(IS, poles, STA):
 
     # Last nicht auf Stütze, sondern in unmittelbarer Nähe
     # Berechnung der Sattelkräfte
-    xn = z_coord_zweifel[idxNachher]
-    xv = z_coord_zweifel[idxVorher]
-    xs = z_coord_zweifel[idxStuetze]
-    ln = l_coord[idxNachher]
-    lv = l_coord[idxVorher]
-    ls = l_coord[idxStuetze]
-    tg_phi_un = (xn - xs[:-1]) / (ln - ls[:-1])
-    tg_phi_ob = (xv - xs[1:]) / (lv - ls[1:])
+    #xn = z_coord_zweifel[idxNachher]
+    #xv = z_coord_zweifel[idxVorher]
+    #xs = z_coord_zweifel[idxStuetze]
+    #ln = l_coord[idxNachher]
+    #lv = l_coord[idxVorher]
+    #ls = l_coord[idxStuetze]
+    #tg_phi_un = (xn - xs[:-1]) / (ln - ls[:-1])
+    #tg_phi_ob = (xv - xs[1:]) / (lv - ls[1:])
+
+    # Berechnung der Winkel wie bei Leerseil
+    tg_phi_ob = (h / 2 + 2 * ym) / (b / 2)
+    tg_phi_un = (h / 2 - 2 * ym) / (b / 2)
+
     # Winkel bei Last unmittelbar in der Nähe der Stütze
     phi = np.array([[np.nan]*anzStue]*2)
     phi_ob = np.array([np.nan]*anzStue)
@@ -274,6 +279,8 @@ def preciseCable(IS, poles, STA):
     phi[0] = phi_ob / pi*180
     phi[1] = phi_un / pi*180
     kraft['Anlegewinkel_Lastseil'] = phi
+    phi_last_knick = (phi_ob - phi_un) / pi * 180
+    kraft['Lastseilknickwinkel'] = phi_last_knick
 
     # Seilzugkräfte
     Hn = H[idxNachher]
@@ -330,18 +337,27 @@ def preciseCable(IS, poles, STA):
     phi_leer[1] = phi_u / pi*180
     kraft['Anlegewinkel_Leerseil'] = phi_leer
     # TODO: Werte sind +- 2 Grad anders als in matlab
-    kraft['Leerseilknickwinkel'] = (phi_o - phi_u) / pi*180
+    phi_leer_knick = (phi_o - phi_u) / pi*180
+    kraft['Leerseilknickwinkel'] = phi_leer_knick
 
     # TODO: Test funktioniert nicht richtig. Wenn Winkel negativ ist, ist Nachweis nicht erbracht
     # TODO: Beim Test für Fall: Anker-Anfangsstütze oder Endstütze-Anker nur Warnung ausgeben, dass Anker kürzer gewählt werden müssen
     zqT = z*qT
     ST = STA + zqT
     Vi = ST * (np.sin(phi_o) - np.sin(phi_u))      # Vi darf nicht negativ sein
-    kraft['Nachweis'] = np.where(Vi >= 0.01, ['Ja'], ['Nein'])
-    if 'Nein' in kraft['Nachweis'][1:-1]:   # Test für die Zwischenstützen
+    #kraft['Nachweis'] = np.where(Vi >= 0.01, ['Ja'], ['Nein'])
+    #if 'Nein' in kraft['Nachweis'][1:-1]:   # Test für die Zwischenstützen
+    #    seil_possible = False
+    #if 'Nein' in kraft['Nachweis'][[0, -1]]:    # Test für die Anker
+    #    pass
+
+    # Nachweis basierend auf Leerseilknickwinkel
+    kraft['Nachweis'] = np.where(phi_leer_knick >= 2, ['Ja'], ['Nein'])
+    if 'Nein' in kraft['Nachweis'][1:-1]:  # Test für die Zwischenstützen
         seil_possible = False
-    if 'Nein' in kraft['Nachweis'][[0, -1]]:    # Test für die Anker
+    if 'Nein' in kraft['Nachweis'][[0, -1]]:  # Test für die Anker
         pass
+
         # TODO hier wert abfangen
 
     Hi = ST * (np.cos(phi_o) - np.cos(phi_u))
