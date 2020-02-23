@@ -2,6 +2,7 @@ import os
 
 import numpy as np
 from osgeo import gdal
+from qgis.PyQt.QtCore import QCoreApplication
 from qgis.core import (QgsCoordinateTransform, QgsRasterLayer, QgsPoint,
                        QgsCoordinateReferenceSystem, QgsProject)
 from math import sin, cos, pi
@@ -39,8 +40,26 @@ class AbstractHeightSource(object):
             self.spatialRef = QgsCoordinateReferenceSystem('EPSG:4326')
         else:
             self.spatialRef = QgsCoordinateReferenceSystem()
+
+    # noinspection PyMethodMayBeStatic
+    def tr(self, message, **kwargs):
+        """Get the translation for a string using Qt translation API.
+        We implement this ourselves since we do not inherit QObject.
     
+        :param message: String for translation.
+        :type message: str, QString
     
+        :returns: Translated version of message.
+        :rtype: QString
+    
+        Parameters
+        ----------
+        **kwargs
+        """
+        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
+        return QCoreApplication.translate(type(self).__name__, message)
+
+
 class Raster(AbstractHeightSource):
     
     BUFFER_DEFAULT = 21
@@ -261,7 +280,7 @@ class SurveyData(AbstractHeightSource):
             self.projectOnLine()
             self.valid = True
         else:
-            self.errorMsg = "Daten in CSV-Datei konnten nicht geladen werden."
+            self.errorMsg = self.tr("Daten in CSV-Datei konnten nicht geladen werden.")
         
     def readOutData(self, idxX, idxY, idxZ, sep):
         try:

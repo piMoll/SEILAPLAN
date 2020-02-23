@@ -25,7 +25,7 @@
 
 import numpy as np
 from math import floor
-from qgis.PyQt.QtCore import QSize, Qt
+from qgis.PyQt.QtCore import QSize, Qt, QCoreApplication
 from qgis.PyQt.QtWidgets import (QDialog, QWidget, QLabel, QDialogButtonBox,
     QHBoxLayout, QPushButton, QVBoxLayout, QFrame, QSpacerItem, QSizePolicy)
 from qgis.PyQt.QtGui import QIcon, QPixmap
@@ -45,7 +45,7 @@ class ProfileDialog(QDialog):
         self.iface = interface
         self.projectHandler = projectHandler
         self.drawTool = drawTool
-        self.setWindowTitle("Höhenprofil")
+        self.setWindowTitle(self.tr('Gelaendelinie'))
         self.setWindowModality(Qt.WindowModal)
         
         self.profile = None
@@ -72,28 +72,25 @@ class ProfileDialog(QDialog):
         self.outerLayout = QVBoxLayout()
 
         # GUI fields
-        stueTitle = QLabel("<b>Stützenoptimierung einschränken</b>")
+        stueTitle = QLabel('<b>' + self.tr('Stuetzenoptimierung einschraenken') + '</b>')
         hbox = QHBoxLayout()
         line1 = QFrame()
         line1.setFrameShape(QFrame.HLine)
         line1.setFrameShadow(QFrame.Sunken)
 
         # Create labels and buttons
-        self.fixStueAdd = QPushButton("Fixe Stütze definieren")
-        self.noStueAdd = QPushButton("Abschnitt ohne Stützen definieren")
+        self.fixStueAdd = QPushButton(self.tr('Fixe Stuetze definieren'))
+        self.noStueAdd = QPushButton(self.tr('Abschnitt ohne Stuetzen definieren'))
         self.noStueDel = QPushButton()
         icon = QIcon()
         icon.addPixmap(
-            QPixmap(":/plugins/SeilaplanPlugin/gui/icons/icon_bin.png"),
+            QPixmap(':/plugins/SeilaplanPlugin/gui/icons/icon_bin.png'),
             QIcon.Normal, QIcon.Off)
         self.noStueDel.setIcon(icon)
         self.noStueDel.setIconSize(QSize(16, 16))
-        self.fixStueAdd.setToolTip('Fixe Stützen werden vom '
-            'Optimierungsalgorithmus als bereits vorhandene Stützen '
-            'berücksichtigt.')
-        self.noStueAdd.setToolTip('Abschnitte, in denen während der '
-            'Optimierung keine Stützen platziert werden.')
-        self.noStueDel.setToolTip('Abschnitte löschen')
+        self.fixStueAdd.setToolTip(self.tr('Tooltip Fixe Stuetzen'))
+        self.noStueAdd.setToolTip(self.tr('Tooltip Abschnitte ohne Stuetzen'))
+        self.noStueDel.setToolTip(self.tr('Tooltip Abschnitte loeschen'))
         spacerItem1 = QSpacerItem(40, 20, QSizePolicy.Expanding,
                                         QSizePolicy.Minimum)
         hbox.addWidget(self.fixStueAdd)
@@ -128,6 +125,24 @@ class ProfileDialog(QDialog):
         self.poleLayout.sig_updatePole.connect(self.updatePole)
         self.poleLayout.sig_deletePole.connect(self.deletePole)
 
+    # noinspection PyMethodMayBeStatic
+    def tr(self, message, **kwargs):
+        """Get the translation for a string using Qt translation API.
+        We implement this ourselves since we do not inherit QObject.
+
+        :param message: String for translation.
+        :type message: str, QString
+
+        :returns: Translated version of message.
+        :rtype: QString
+
+        Parameters
+        ----------
+        **kwargs
+        """
+        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
+        return QCoreApplication.translate(type(self).__name__, message)
+    
     def setProfile(self, profile):
         self.profile = profile
         self.xdata = self.profile.di
@@ -168,11 +183,11 @@ class ProfileDialog(QDialog):
                                  QSizePolicy.Minimum)
         spacerItemE = QSpacerItem(60, 20, QSizePolicy.Expanding,
                                  QSizePolicy.Minimum)
-        headername = QLabel('Stützenbezeichnung')
+        headername = QLabel(self.tr('Stuetzenbezeichnung'))
         headername.setMinimumSize(QSize(180, 30))
-        headerDist = QLabel('Distanz')
+        headerDist = QLabel(self.tr('Hori.distanz'))
         headerDist.setMinimumSize(QSize(95, 30))
-        headerHeight = QLabel('Höhe')
+        headerHeight = QLabel(self.tr('Hoehe'))
         headerHeight.setMinimumSize(QSize(85, 30))
 
         headerRow.addItem(spacerItemA)
@@ -194,7 +209,7 @@ class ProfileDialog(QDialog):
         if not z:
             z = self.getZValue(d)
         if not name:
-            name = 'fixe Stütze'
+            name = self.tr('fixe Stuetze')
         # Draw point on plot
         drawnPoint = self.sc.createPoint(d, z)
         # Draw marker onto map

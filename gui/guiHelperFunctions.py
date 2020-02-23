@@ -23,7 +23,7 @@ import os
 import numpy as np
 
 from qgis.PyQt.QtGui import QFont, QColor
-from qgis.PyQt.QtCore import QSize, Qt, QFileInfo, QVariant
+from qgis.PyQt.QtCore import QSize, Qt, QFileInfo, QVariant, QCoreApplication
 from qgis.PyQt.QtWidgets import (QDialog, QWidget, QLabel, QDialogButtonBox,
                                  QLayout, QVBoxLayout)
 from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject, QgsPoint,
@@ -31,6 +31,24 @@ from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject, QgsPoint,
                        QgsPalLayerSettings, QgsTextFormat,
                        QgsTextBufferSettings, QgsVectorLayerSimpleLabeling)
 
+
+# noinspection PyMethodMayBeStatic
+def tr(message, **kwargs):
+    """Get the translation for a string using Qt translation API.
+    We implement this ourselves since we do not inherit QObject.
+
+    :param message: String for translation.
+    :type message: str, QString
+
+    :returns: Translated version of message.
+    :rtype: QString
+
+    Parameters
+    ----------
+    **kwargs
+    """
+    # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
+    return QCoreApplication.translate('@default', message)
 
 class DialogWithImage(QDialog):
     def __init__(self):
@@ -55,7 +73,7 @@ class DialogWithImage(QDialog):
 
 def createContours(canvas, heightSource):
     from processing import run
-    contourName = "Hoehenlinien_" + heightSource.name
+    contourName = tr("Hoehenlinien_") + heightSource.name
     crs = heightSource.spatialRef
     outputPath = os.path.join(os.path.dirname(heightSource.path),
                               contourName + '.shp')
@@ -83,7 +101,7 @@ def loadOsmLayer(homePath):
     osmLyr = None
     
     for l in QgsProject.instance().layerTreeRoot().findLayers():
-        if l.layer().name() == 'OSM_Karte':
+        if l.layer().name() == tr('OSM_Karte'):
             osmLyr = l.layer()
             QgsProject.instance().removeMapLayer(osmLyr.id())
             break
@@ -103,7 +121,7 @@ def createProfileLayers(heightSource):
     
     # Create profile layer
     surveyLineLayer = QgsVectorLayer('Linestring?crs=' + lyrCrs,
-                                     'Felddaten-Profil', 'memory')
+                                     tr('Felddaten-Profil'), 'memory')
     pr = surveyLineLayer.dataProvider()
     feature = QgsFeature()
     feature.setGeometry(QgsGeometry.fromPolyline(
@@ -114,7 +132,7 @@ def createProfileLayers(heightSource):
 
     # Create survey point layer
     surveyPointLayer = QgsVectorLayer('Point?crs=' + lyrCrs,
-                                      'Felddaten-Messpunkte', 'memory')
+                                      tr('Felddaten-Messpunkte'), 'memory')
     pr = surveyPointLayer.dataProvider()
     pr.addAttributes([QgsField("nr", QVariant.Int)])
     surveyPointLayer.updateFields()

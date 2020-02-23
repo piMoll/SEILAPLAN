@@ -85,7 +85,7 @@ class SeilaplanPlugin(object):
         :rtype: QString
         """
         # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
-        return QCoreApplication.translate('SEILAPLAN', message)
+        return QCoreApplication.translate(type(self).__name__, message)
 
     def add_action(self, icon_path, text, callback, enabled_flag=True,
                    add_to_menu=True, add_to_toolbar=True, status_tip=None,
@@ -186,10 +186,8 @@ class SeilaplanPlugin(object):
         try:
             import scipy
         except ModuleNotFoundError:
-            self.iface.messageBar().pushMessage('SEILAPLAN Fehler',
-                "Bibliothek scipy ist nicht installiert. Seilaplan kann nicht "
-                "ausgeführt werden. Bitte installieren Sie die fehlende "
-                "Bibliothek und starten sie QGIS neu.", level=Qgis.Critical)
+            self.iface.messageBar().pushMessage(self.tr('SEILAPLAN Fehler'),
+                self.tr("Fehler mit Bibliothek scipy"), level=Qgis.Critical)
             return
 
         # Check if plugin is already running

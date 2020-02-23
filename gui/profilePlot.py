@@ -21,7 +21,7 @@
 
 import numpy as np
 from math import floor
-from qgis.PyQt.QtCore import Qt, QSize
+from qgis.PyQt.QtCore import Qt, QSize, QCoreApplication
 from qgis.PyQt.QtWidgets import QSizePolicy
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -268,8 +268,8 @@ class ProfilePlot(FigureCanvas):
             self.linePoints = []
 
     def __setupAxes(self):
-        self.axes.set_xlabel("Horizontaldistanz [m]", fontsize=11)
-        self.axes.set_ylabel("Höhe [m.ü.M]", fontsize=11)
+        self.axes.set_xlabel(self.tr("Horizontaldistanz [m]"), fontsize=11)
+        self.axes.set_ylabel(self.tr("Hoehe [m.ue.M]"), fontsize=11)
         self.axes.grid(which='major', lw=1)
         self.axes.grid(which='minor', lw=1, linestyle=':')
         self.axes.ticklabel_format(style='plain', useOffset=False)
@@ -280,3 +280,21 @@ class ProfilePlot(FigureCanvas):
     
     def setToolbar(self, tbar):
         self.tbar = tbar
+    
+    # noinspection PyMethodMayBeStati
+    def tr(self, message, **kwargs):
+        """Get the translation for a string using Qt translation API.
+        We implement this ourselves since we do not inherit QObject.
+
+        :param message: String for translation.
+        :type message: str, QString
+
+        :returns: Translated version of message.
+        :rtype: QString
+
+        Parameters
+        ----------
+        **kwargs
+        """
+        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
+        return QCoreApplication.translate(type(self).__name__, message)

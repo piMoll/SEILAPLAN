@@ -23,7 +23,7 @@
 import os
 
 # GUI and QGIS libraries
-from qgis.PyQt.QtCore import QFileInfo
+from qgis.PyQt.QtCore import QFileInfo, QCoreApplication
 from qgis.PyQt.QtWidgets import QDialog, QMessageBox, QFileDialog, QComboBox
 from qgis.PyQt.QtGui import QPixmap
 from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject,
@@ -37,53 +37,11 @@ from ..configHandler import ConfigHandler, castToNum
 # GUI elements
 from .saveDialog import DialogSaveParamset
 from .mapMarker import MapMarkerTool
-from .ui_seilaplanDialog import Ui_SeilaplanDialog
+from .ui_seilaplanDialog import Ui_SeilaplanDialogUI
 from .profileDialog import ProfileDialog
 
-# OS dependent line break
-nl = os.linesep
 
-# Source of icons in GUI
-greenIcon = '<html><head/><body><p><img src=":/plugins/SeilaplanPlugin/' \
-            'gui/icons/icon_green.png"/></p></body></html>'
-yellowIcon = '<html><head/><body><p><img src=":/plugins/SeilaplanPlugin/' \
-             'gui/icons/icon_yellow.png"/></p></body></html>'
-redIcon = '<html><head/><body><p><img src=":/plugins/SeilaplanPlugin/' \
-          'gui/icons/icon_red.png"/></p></body></html>'
-# Text next to coord status
-greenTxt = ''
-yellowTxt = 'zu definieren'
-redTxt = 'ausserhalb Raster'
-
-# Titles of info images
-infImg = {'Bodenabstand': 'Erklärungen zum Bodenabstand',
-          'VerankerungA': 'Erklärungen zur Verankerung am Anfangspunkt',
-          'VerankerungE': 'Erklärungen zur Verankerung am Anfangspunkt',
-          'Stuetzen': 'Erklärungen zu den Zwischenstützen'}
-
-# Info button text
-infoTxt = ("SEILAPLAN - Seilkran-Layoutplaner\n\n"
-           "SEILAPLAN berechnet auf Grund eines digitalen Höhenmodells zwischen "
-           "definierten Anfangs- und Endkoordinaten sowie technischen Parametern das "
-           "optimale Seillinienlayout. Es werden Position und Höhe der Stütze,"
-           "sowie die wichtigsten Kennwerte der Seillinie bestimmt.\n\n"
-           "Realisierung:\n\nProfessur für forstliches Ingenieurwesen\n"
-           "ETH Zürich\n8092 Zürich\n(Konzept, Realisierung Version 1.x für QGIS 2)\n\n"
-           "Gruppe Forstliche Produktionssysteme FPS\n"
-           "Eidgenössische Forschungsanstalt WSL\n"
-           "8903 Birmensdorf\n(Realisierung Version 2.x für QGIS 3)\n\n"
-           "\nBeteiligte Personen:\n\n"
-           "Leo Bont, Hans Rudolf Heinimann (Konzept, Mechanik)\nPatricia Moll "
-           "(Implementation in Python / QGIS)\n\n\n"
-           "SEILAPLAN ist freie Software: Sie können sie unter den Bedingungen "
-           "der GNU General Public License, wie von der Free Software Foundation, "
-           "Version 2 der Lizenz oder (nach Ihrer Wahl) jeder neueren "
-           "veröffentlichten Version, weiterverbreiten und/oder modifizieren."
-           "\n\nPfad zu Dokumentation:\n"
-           + os.path.join(os.path.dirname(__file__), 'help', 'docs') + '\n')
-
-
-class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
+class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
     def __init__(self, interface, confHandler):
         """
 
@@ -128,7 +86,6 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         
         # Organize parameter GUI fields in dictionary
         self.groupFields()
-        self.enableToolTips()
         
         # Dialog with explanatory images
         self.imgBox = DialogWithImage()
@@ -160,6 +117,24 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.draw.setCheckable(True)
         
         Processing.initialize()
+    
+    # noinspection PyMethodMayBeStati
+    def tr(self, message, **kwargs):
+        """Get the translation for a string using Qt translation API.
+        We implement this ourselves since we do not inherit QObject.
+
+        :param message: String for translation.
+        :type message: str, QString
+
+        :returns: Translated version of message.
+        :rtype: QString
+
+        Parameters
+        ----------
+        **kwargs
+        """
+        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
+        return QCoreApplication.translate(type(self).__name__, message)
     
     def connectGuiElements(self):
         """Connect GUI elements with functions.
@@ -354,9 +329,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.fieldParamSet.addItems(parameterSetNames)
         self.fieldParamSet.blockSignals(False)
         # Set standard parameter set
-        self.paramHandler.setParameterSet(self.paramHandler.DEFAULTSET)
+        self.paramHandler.setParameterSet(self.paramHandler.defaultSet)
         self.fieldParamSet.setCurrentIndex(
-            self.fieldParamSet.findText(self.paramHandler.DEFAULTSET))
+            self.fieldParamSet.findText(self.paramHandler.defaultSet))
         self.fillInValues()
         
         # Set point types
@@ -412,10 +387,6 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.fieldTypeE.setCurrentIndex(
             self.projectHandler.getPointTypeAsIdx('E'))
     
-    def enableToolTips(self):
-        for field_name, field in list(self.parameterFields.items()):
-            field.setToolTip(self.paramHandler.getParameterTooltip(field_name))
-    
     def setParameterSet(self):
         name = self.fieldParamSet.currentText()
         if name:
@@ -452,14 +423,13 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.addRastersToDropDown(rasterlist)
         return rasterlist
     
-    @staticmethod
-    def getAvailableRaster():
+    def getAvailableRaster(self):
         """Go trough table of content and collect all raster layers.
         """
         rColl = []
         for l in QgsProject.instance().layerTreeRoot().findLayers():
             lyr = l.layer()
-            if lyr.type() == 1 and lyr.name() != 'OSM_Karte':  # = raster
+            if lyr.type() == 1 and lyr.name() != self.tr('OSM_Karte'):  # = raster
                 lyrName = lyr.name()
                 r = {
                     'lyr': lyr,
@@ -564,8 +534,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
                 self.rasterField.setCurrentText(rasterName)
             else:
                 self.rasterField.setCurrentIndex(-1)
-                txt = f"Raster {path} nicht vorhanden"
-                title = "Fehler beim Laden des Rasters"
+                txt = self.tr("Raster '{}' nicht vorhanden".format(path))
+                title = self.tr("Fehler beim Laden des Rasters")
                 QMessageBox.information(self, title, txt)
         self.rasterField.blockSignals(False)
         return rasterName
@@ -578,7 +548,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         hsType = self.projectHandler.heightSourceType
         mapCrs = self.canvas.mapSettings().destinationCrs()
         lyrCrs = heightSource.spatialRef
-        title = 'Fehler Koordinatenbezugssystem (KBS)'
+        title = self.tr('Fehler Koordinatenbezugssystem (KBS)')
         msg = ''
         success = True
         
@@ -593,48 +563,33 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
             # Raster is in geographic coordinates --> automatic transformation
             # not possible
             if hsType == 'dhm':
-                msg = (f"Raster mit geografischem KBS '{lyrCrs.description()}' "
-                       f"({lyrCrs.authid()}) kann nicht benutzt werden. "
-                       'Seilaplan kann Höhenraster nur verarbeiten wenn sie '
-                       'in einem projizierten KBS vorliegen.')
+                msg = self.tr('KBS-Fehler - Raster kann nicht verarbeitet werden')\
+                    .format(lyrCrs.description(), lyrCrs.authid())
                 success = False
             # Survey data can be transformed to map crs
             elif hsType == 'survey' and not mapCrs.isGeographic():
-                # Transform survey data to projected map coordinates
+                # Survey data is transformed to map reference system
                 heightSource.reprojectToCrs(mapCrs)
-                msg = ('Felddaten liegen in einem geografischen KBS vor!\n\n'
-                       'Seilaplan kann nur mit Daten in einem projizierten KBS '
-                       'arbeiten. Die Daten werden automatisch in das QGIS Projekt-KBS '
-                       f"'{mapCrs.description()}' ({mapCrs.authid()}) transformiert.")
                 success = True
             
             elif hsType == 'survey' and mapCrs.isGeographic():
                 # Transform to LV95 by default
                 heightSource.reprojectToCrs(None)
-                msg = ('Felddaten liegen in einem geografischen KBS vor!\n\n'
-                       'Seilaplan kann nur mit Daten in einem projizierten '
-                       'KBS arbeiten. Die Daten werden automatisch ins '
-                       "Schweizer KBS 'LV95' (EPSG:2056) transformiert.")
+                msg = self.tr('KBS-Fehler - Felddaten und QGIS in geografischem KBS')
                 self.canvas.setDestinationCrs(heightSource.spatialRef)
                 self.canvas.refresh()
                 success = True
         
         elif not lyrCrs.isValid():
             if mapCrs.isGeographic():
-                msg = ('Bezugssystem des Rasters unbekannt.\n\nDas Raster wird '
-                       "im Schweizer KBS 'LV95' (EPSG:2056) dargestellt. Soll "
-                       "ein anderes KBS benutzt werden, richten Sie ihr QGIS "
-                       "Projekt bitte vor dem Laden der Höhendaten "
-                       "entsprechend ein.")
+                msg = self.tr('KBS-Fehler - Bezugssystem des Rasters unbekannt')
                 heightSource.spatialRef = QgsCoordinateReferenceSystem('EPSG:2056')
                 self.canvas.setDestinationCrs(heightSource.spatialRef)
                 self.canvas.refresh()
                 success = True
             else:
-                msg = ('Bezugssystem der Höhendaten unbekannt.\n\nEs wird '
-                       'angenommen, dass die Daten dasselbe KBS wie das '
-                       f"aktuelle QGIS-Projekt besitzen: "
-                       f"{mapCrs.description()} ({mapCrs.authid()}).")
+                # Reference system of survey data not valid or unknown. We use
+                #  refsys of map
                 heightSource.spatialRef = mapCrs
                 success = True
         
@@ -643,8 +598,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         return success
     
     def onLoadSurveyData(self):
-        title = 'Feldaufnahmen laden'
-        fFilter = 'csv Dateien (*.csv *.CSV)'
+        title = self.tr('Feldaufnahmen laden')
+        fFilter = self.tr('csv Dateien (*.csv *.CSV)')
         filename, _ = QFileDialog.getOpenFileName(self, title,
                 self.confHandler.getCurrentPath(), fFilter)
         if filename:
@@ -769,25 +724,31 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.changePoint(pointType, [x, y], coordState)
     
     def changePointSym(self, state, point):
+        iPath = '<html><head/><body><p><img src=":/plugins/SeilaplanPlugin/' \
+                'gui/icons/icon_{}.png"/></p></body></html>'
+        greenTxt = ''
+        yellowTxt = self.tr('zu definieren')
+        redTxt = self.tr('ausserhalb Raster')
+        
         if point == 'A':
             if state == 'green':
-                self.symA.setText(greenIcon)
+                self.symA.setText(iPath.format('green'))
                 self.symA.setToolTip(greenTxt)
             if state == 'yellow':
-                self.symA.setText(yellowIcon)
+                self.symA.setText(iPath.format('yellow'))
                 self.symA.setToolTip(yellowTxt)
             if state == 'red':
-                self.symA.setText(redIcon)
+                self.symA.setText(iPath.format('red'))
                 self.symA.setToolTip(redTxt)
         if point == 'E':
             if state == 'green':
-                self.symE.setText(greenIcon)
+                self.symE.setText(iPath.format('green'))
                 self.symE.setToolTip(greenTxt)
             if state == 'yellow':
-                self.symE.setText(yellowIcon)
+                self.symE.setText(iPath.format('yellow'))
                 self.symE.setToolTip(yellowTxt)
             if state == 'red':
-                self.symE.setText(redIcon)
+                self.symE.setText(iPath.format('red'))
                 self.symE.setToolTip(redTxt)
     
     def onClickOsmButton(self):
@@ -823,8 +784,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.profileWin.exec()
     
     def onLoadProjects(self):
-        title = 'Projekt laden'
-        fFilter = 'Txt Dateien (*.txt)'
+        title = self.tr('Projekt laden')
+        fFilter = self.tr('Txt Dateien (*.txt)')
         filename, _ = QFileDialog.getOpenFileName(self, title,
                                                   self.confHandler.getCurrentPath(),
                                                   fFilter)
@@ -833,14 +794,14 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
             if success:
                 self.setupContent()
             else:
-                QMessageBox.critical(self, 'Fehler beim Laden',
-                                'Projektdatei konnte nicht geladen werden.')
+                QMessageBox.critical(self, self.tr('Fehler beim Laden'),
+                                self.tr('Projektdatei konnte nicht geladen werden.'))
         else:
             return False
     
     def onSaveProject(self):
-        title = 'Projekt speichern'
-        fFilter = 'TXT (*.txt)'
+        title = self.tr('Projekt speichern')
+        fFilter = self.tr('TXT (*.txt)')
         if not self.confHandler.checkValidState():
             return
         projname = self.projectHandler.getProjectName()
@@ -875,29 +836,22 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.projectHandler.setPointType('E', idx)
     
     def onInfo(self):
-        QMessageBox.information(self, "SEILAPLAN Info", infoTxt,
-                                QMessageBox.Ok)
+        msg = self.tr('Infotext').format(
+            os.path.join(os.path.dirname(__file__), 'help', 'docs'))
+        QMessageBox.information(self, "SEILAPLAN Info", msg, QMessageBox.Ok)
     
     def onHeightDataInfoShow(self):
         msg = ''
         if self.sender().objectName() == 'infoRasterlayer':
-            msg = ('Höheninformation aus einem Höhenraster auslesen. Die Liste'
-                   ' beinhaltet alle im aktuellen QGIS-Projekt vorhanden Raster.'
-                   '<br>Wird ein neuer Raster zu QGIS hinzugefügt, kann die Liste '
-                   'per Aktualisieren-Schaltfläche ergänzt werden.')
+            msg = self.tr('Hoeheninformation - Erklaerung Raster')
         elif self.sender().objectName() == 'infoSurveyData':
-            msg = ("Profil-Messpunkte aus Feldaufnahmen laden.<br><br>"
-                   "Unterstützte Dateitypen:<br>"
-                   "1) CSV-Exportdatei des Haglöf Sweden Vertex Messgerätes.<br>"
-                   "2) Generische CSV-Datei (Komma-separiert) mit den "
-                   "Koordinaten-Spalten 'x', 'y' und 'z'. Die Datei darf keine "
-                   "Kommentare enthalten und die Punkte sind sortiert aufzulisten.")
-        QMessageBox.information(self, "Höheninformationen laden", msg,
+            msg = self.tr('Hoeheninformation - Erklaerung Felddaten')
+        QMessageBox.information(self, self.tr("Hoeheninformationen laden"), msg,
                                 QMessageBox.Ok)
     
     def onPointAInfoShow(self):
         imgPath = os.path.join(self.homePath, 'img', 'Anfangspunkt.png')
-        self.imgBox.setWindowTitle('Anfangspunkt')
+        self.imgBox.setWindowTitle(self.tr('Anfangspunkt'))
         # Load image
         myPixmap = QPixmap(imgPath)
         self.imgBox.label.setPixmap(myPixmap)
@@ -906,7 +860,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
 
     def onPointEInfoShow(self):
         imgPath = os.path.join(self.homePath, 'img', 'Endpunkt.png')
-        self.imgBox.setWindowTitle('Endpunkt')
+        self.imgBox.setWindowTitle(self.tr('Endpunkt'))
         # Load image
         myPixmap = QPixmap(imgPath)
         self.imgBox.label.setPixmap(myPixmap)
@@ -916,6 +870,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
     def onShowInfoImg(self):
         sender = self.sender().objectName()
         infoType = sender[4:]
+        # Titles of info images
+        infImg = {'Bodenabstand': self.tr('Erklaerungen zum Bodenabstand'),
+                  'Stuetzen': self.tr('Erklaerungen zu den Zwischenstuetzen')}
         infoTitle = infImg[infoType]
         imgPath = os.path.join(self.homePath, 'img', infoType + '.png')
         self.imgBox.setWindowTitle(infoTitle)
@@ -926,17 +883,14 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialog):
         self.imgBox.show()
     
     def onShowInfoFieldE(self):
-        msg = ('Materialkennwert des Tragseils, welcher den Zusammenhang '
-               'zwischen Spannung und Dehnung des Seils beschreibt. Der '
-               'Kennwert variiert kaum, weshalb der Default-Wert für die '
-               'meisten üblichen Seile übernommen werden kann.')
-        QMessageBox.information(self, "Elastizitätsmodul Tragseil", msg,
-                                QMessageBox.Ok)
+        msg = self.tr('Elastizitaetsmodul Tragseil Erklaerung')
+        QMessageBox.information(self, self.tr("Elastizitaetsmodul Tragseil"),
+                                msg, QMessageBox.Ok)
     
     def onShowInfoFieldSFT(self):
-        msg = ('Europaweit wird ein Sicherheitsfaktor von 3.0 für das '
+        msg = self.tr('Europaweit wird ein Sicherheitsfaktor von 3.0 fuer das '
                'Tragseil verwendet.')
-        QMessageBox.information(self, "Sicherheitsfaktor Tragseil", msg,
+        QMessageBox.information(self, self.tr("Sicherheitsfaktor Tragseil"), msg,
                                 QMessageBox.Ok)
         
     def goToAdjustmentWindow(self):

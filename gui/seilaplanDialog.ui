@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0" idbasedtr="true">
- <class>SeilaplanDialog</class>
- <widget class="QDialog" name="SeilaplanDialog">
+ <class>SeilaplanDialogUI</class>
+ <widget class="QDialog" name="SeilaplanDialogUI">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -144,7 +144,7 @@
         <item>
          <widget class="QLabel" name="label_6">
           <property name="text">
-           <string>Parameterset auswählen</string>
+           <string>Parameterset auswaehlen</string>
           </property>
           <property name="textFormat">
            <enum>Qt::AutoText</enum>
@@ -362,7 +362,7 @@
                </size>
               </property>
               <property name="text">
-               <string>Höhe Seilkranmast</string>
+               <string>Hoehe Seilkranmast</string>
               </property>
              </widget>
             </item>
@@ -799,7 +799,7 @@
             <item row="6" column="0">
              <widget class="QLabel" name="label_35">
               <property name="text">
-               <string>Gewicht Rückholseil</string>
+               <string>Gewicht Rueckholseil</string>
               </property>
              </widget>
             </item>
@@ -926,7 +926,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Querschnittsfläche Tragseil</string>
+               <string>Querschnittsflaeche Tragseil</string>
               </property>
              </widget>
             </item>
@@ -1071,7 +1071,7 @@
                </size>
               </property>
               <property name="text">
-               <string>Künstliche Stütze ab Stützenhöhe von</string>
+               <string>Kuenstliche Stuetze ab Stuetzenhoehe von</string>
               </property>
              </widget>
             </item>
@@ -1109,7 +1109,7 @@
                </size>
               </property>
               <property name="text">
-               <string>Maximale Stützenhöhe</string>
+               <string>Maximale Stuetzenhoehe</string>
               </property>
              </widget>
             </item>
@@ -1295,7 +1295,7 @@
                </size>
               </property>
               <property name="text">
-               <string>Minimale Stützenhöhe</string>
+               <string>Minimale Stuetzenhoehe</string>
               </property>
              </widget>
             </item>
@@ -1333,7 +1333,7 @@
                </size>
               </property>
               <property name="text">
-               <string>Horiz. Auflösung mögl. Stützenstandorte</string>
+               <string>Horiz. Aufloesung moegl. Stuetzenstandorte</string>
               </property>
              </widget>
             </item>
@@ -1444,7 +1444,7 @@
                </size>
               </property>
               <property name="text">
-               <string>Minimaler Abstand zwischen Stützen</string>
+               <string>Minimaler Abstand zwischen Stuetzen</string>
               </property>
              </widget>
             </item>
@@ -1479,7 +1479,7 @@
             <item row="7" column="0">
              <widget class="QLabel" name="label_14">
               <property name="text">
-               <string>Minimal gewählte Seilzugkraft</string>
+               <string>Minimal gewaehlte Seilzugkraft</string>
               </property>
              </widget>
             </item>
@@ -1655,7 +1655,7 @@
                </size>
               </property>
               <property name="text">
-               <string>Elastizitätsmodul Tragseil</string>
+               <string>Elastizitaetsmodul Tragseil</string>
               </property>
              </widget>
             </item>
@@ -1765,7 +1765,7 @@
         <item row="1" column="0">
          <widget class="QRadioButton" name="radioSurveyData">
           <property name="text">
-           <string>Geländeprofil</string>
+           <string>Gelaendeprofil</string>
           </property>
          </widget>
         </item>
@@ -1853,7 +1853,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Öffne Komma-getrennte Textdatei (.csv Datei)</string>
+           <string>Oeffne Komma-getrennte Textdatei (.csv Datei)</string>
           </property>
           <property name="text">
            <string/>
@@ -1957,7 +1957,7 @@
      <item>
       <widget class="QPushButton" name="btnAdjustment">
        <property name="toolTip">
-        <string>Stützenoptimierung überspringen und direkt zur manuellen Bearbeitung der Seillinie übergehen</string>
+        <string>Stuetzenoptimierung ueberspringen und direkt zur manuellen Bearbeitung der Seillinie uebergehen</string>
        </property>
        <property name="text">
         <string>Seillinie direkt bearbeiten</string>
@@ -1970,10 +1970,10 @@
      <item>
       <widget class="QPushButton" name="buttonRun">
        <property name="toolTip">
-        <string>Berechnung der optimalen Stützenstandorte ausführen</string>
+        <string>Berechnung der optimalen Stuetzenstandorte ausfuehren</string>
        </property>
        <property name="text">
-        <string>Stützen optimieren</string>
+        <string>Stuetzen optimieren</string>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
@@ -2102,7 +2102,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Höhenlinien darstellen</string>
+           <string>Hoehenlinien darstellen</string>
           </property>
           <property name="text">
            <string/>
@@ -2231,7 +2231,7 @@
           </property>
           <item>
            <property name="text">
-            <string id="pole">Stütze</string>
+            <string id="pole">Stuetze</string>
            </property>
           </item>
           <item>
@@ -2269,7 +2269,7 @@
           </property>
           <item>
            <property name="text">
-            <string id="pole">Stütze</string>
+            <string id="pole">Stuetze</string>
            </property>
           </item>
           <item>
@@ -2386,10 +2386,10 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Geländelinie in Diagramm darstellen und fixe Stützen definieren</string>
+           <string>Gelaendelinie in Diagramm darstellen und fixe Stuetzen definieren</string>
           </property>
           <property name="text">
-           <string>Geländelinie</string>
+           <string>Gelaendelinie</string>
           </property>
           <property name="autoDefault">
            <bool>false</bool>

@@ -1,5 +1,6 @@
 from math import cos, sin, floor, radians
 import numpy as np
+from qgis.PyQt.QtCore import QCoreApplication
 
 
 class Poles(object):
@@ -41,8 +42,8 @@ class Poles(object):
         self.profileLength = floor(project.profileLength)
         
         idx = 0
-        nameA = 'Anfangsstütze' if self.A_type == 'pole' else None
-        nameE = 'Endstütze' if self.E_type == 'pole' else None
+        nameA = self.tr('Anfangsstuetze') if self.A_type == 'pole' else None
+        nameE = self.tr('Endstuetze') if self.E_type == 'pole' else None
         if self.A_type == 'pole':
             # Anchor at start point
             self.add(idx, -1*self.anchorA, 0, poleType='anchor')
@@ -58,7 +59,25 @@ class Poles(object):
                      poleType='anchor')
         self.updateAnchorStatus()
         self.calculateAnchorLength()
-    
+
+    # noinspection PyMethodMayBeStatic
+    def tr(self, message, **kwargs):
+        """Get the translation for a string using Qt translation API.
+        We implement this ourselves since we do not inherit QObject.
+
+        :param message: String for translation.
+        :type message: str, QString
+
+        :returns: Translated version of message.
+        :rtype: QString
+
+        Parameters
+        ----------
+        **kwargs
+        """
+        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
+        return QCoreApplication.translate(type(self).__name__, message)
+
     def add(self, idx, d, h=INIT_POLE_HEIGHT, angle=INIT_POLE_ANGLE,
             manually=False, poleType='pole', active=True, name=''):
        
@@ -68,13 +87,13 @@ class Poles(object):
         h = float(h)
         x, y, z, dtop, ztop = self.derivePoleProperties(d, h, angle)
         if not name:
-            name = f"{idx}. Stütze"
+            name = self.tr('{}. Stuetze').format(idx)
             if manually:
-                name = 'neue Stütze'
+                name = self.tr('neue Stuetze')
             if poleType in ['anchor', 'pole_anchor']:
-                name = 'Verankerung'
+                name = self.tr('Verankerung')
             elif poleType == 'crane':
-                name = 'Seilkran'
+                name = self.tr('Seilkran')
         
         self.poles.insert(idx, {
             'name': name,

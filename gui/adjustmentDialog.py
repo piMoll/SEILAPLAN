@@ -23,11 +23,11 @@ import os
 import numpy as np
 from math import floor
 
-from qgis.PyQt.QtCore import QTimer, Qt
+from qgis.PyQt.QtCore import QTimer, Qt, QCoreApplication
 from qgis.PyQt.QtWidgets import QDialog, QMessageBox
 from qgis.PyQt.QtGui import QPixmap
 
-from .ui_adjustmentDialog import Ui_AdjustmenDialog
+from .ui_adjustmentDialog import Ui_AdjustmentDialogUI
 from .adjustmentPlot import AdjustmentPlot
 from .plotting_tools import MyNavigationToolbar
 from .poleWidget import CustomPoleWidget
@@ -40,7 +40,7 @@ from ..tool.outputReport import generateReportText, generateReport, createOutput
 from ..tool.outputGeo import generateGeodata, addToMap, generateCoordTable
 
 
-class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
+class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
     """
     Dialog window that is shown after the optimization has successfully run
     through. Users can change the calculated cable layout by changing pole
@@ -115,6 +115,24 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         self.btnBackToStart.clicked.connect(self.onReturnToStart)
         self.fieldComment.textChanged.connect(self.onCommentChanged)
 
+    # noinspection PyMethodMayBeStatic
+    def tr(self, message, **kwargs):
+        """Get the translation for a string using Qt translation API.
+        We implement this ourselves since we do not inherit QObject.
+
+        :param message: String for translation.
+        :type message: str, QString
+
+        :returns: Translated version of message.
+        :rtype: QString
+
+        Parameters
+        ----------
+        **kwargs
+        """
+        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
+        return QCoreApplication.translate(type(self).__name__, message)
+
     def loadData(self, pickleFile):
         """ Is used to load testdata from pickl object in debug mode """
         f = open(pickleFile, 'rb')
@@ -145,9 +163,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
                 self.result['force'] = force
 
             except Exception as e:
-                QMessageBox.critical(self,
-                    'Unerwarteter Fehler bei Berechnung der Seillinie',
-                                     str(e), QMessageBox.Ok)
+                QMessageBox.critical(self, self.tr('Unerwarteter Fehler '
+                    'bei Berechnung der Seillinie'), str(e), QMessageBox.Ok)
                 return
 
         self.cableline = self.result['cableline']
@@ -318,49 +335,45 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         ico_path = os.path.join(os.path.dirname(__file__), 'icons')
         if status == 'optiSuccess':
             self.recalcStatus_txt.setText(
-                'Optimierung erfolgreich abgeschlossen.')
+                self.tr('Optimierung erfolgreich abgeschlossen'))
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_green.png')))
         elif status == 'liftsOff':
             self.recalcStatus_txt.setText(
-                'Die Seillinie wurde berechnet, das Tragseil hebt jedoch '
-                'bei mindestens einer Stütze ab.')
+                self.tr('Tragseil hebt bei mindestens einer Stuetze ab'))
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_yellow.png')))
             color = yellow
         elif status == 'notComplete':
             self.recalcStatus_txt.setText(
-                'Die Seillinie konnte nicht komplett berechnet werden, '
-                'es sind nicht genügend\nStützenstandorte bestimmbar.')
+                self.tr('Nicht genuegend Stuetzenstandorte bestimmbar'))
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_yellow.png')))
             color = yellow
         elif status == 'jumpedOver':
             self.recalcStatus_txt.setText(
-                'Optimierung wurde übersprungen, Stützen müssen manuell '
-                'platziert werden.')
+                self.tr('Stuetzen manuell platzieren'))
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_green.png')))
             color = yellow
         elif status == 'savedFile':
             self.recalcStatus_txt.setText(
-                'Optimierung wurde übersprungen, Stützen wurden aus '
-                'Projektdatei geladen.')
+                self.tr('Stuetzen aus Projektdatei geladen'))
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_green.png')))
             color = yellow
         elif status == 'cableSuccess':
-            self.recalcStatus_txt.setText('Seillinie neu berechnet.')
+            self.recalcStatus_txt.setText(self.tr('Seillinie neu berechnet.'))
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_green.png')))
         elif status == 'cableError':
-            self.recalcStatus_txt.setText('Bei der Berechnung der Seillinie '
-                'ist ein Fehler aufgetreten.')
+            self.recalcStatus_txt.setText(
+                self.tr('Fehler aufgetreten'))
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_yellow.png')))
             color = red
         elif status == 'saveDone':
-            self.recalcStatus_txt.setText('Ergebnisse gespeichert.')
+            self.recalcStatus_txt.setText(self.tr('Ergebnisse gespeichert'))
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_save.png')))
             color = green
@@ -442,11 +455,11 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         rows = [['' for cell in range(self.thSize[1])]
                 for row in range(self.thSize[0])]
         header = [
-            'Kennwert',
-            'Definierter\nGrenzwert',
-            'Optimierte\nLösung',
-            'Aktuelle\nLösung',
-            'Wo?'
+            self.tr('Kennwert'),
+            self.tr('Definierter Grenzwert'),
+            self.tr('Optimierte Loesung'),
+            self.tr('Aktuelle Loesung'),
+            self.tr('Wo?')
         ]
         units = [
             params.params['Bodenabst_min']['unit'],
@@ -470,11 +483,11 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
             'plotLabels': []
         }
         label = [
-            'Minimaler Bodenabstand',
-            'Max. auftretende Seilzugkraft\n(am Lastseil, Last in Feldmitte)',
-            'Max. resultierende Sattelkraft\n(an befahrbarer Stütze, Last auf Stütze)',
-            'Seilwinkel am Lastseil\n(eingehend / ausgehend)',
-            'Nachweis erbracht, dass Seil nicht vom Sattel abhebt',
+            self.tr('Minimaler Bodenabstand'),
+            self.tr('Max. auftretende Seilzugkraft'),
+            self.tr('Max. resultierende Sattelkraft'),
+            self.tr('Seilwinkel am Lastseil'),  # TODO
+            self.tr('Nachweis erbracht, dass Seil nicht vom Sattel abhebt')
         ]
         thresholdStr = [
             f"{params.getParameterAsStr('Bodenabst_min')} {units[0]}",
@@ -576,6 +589,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
                         continue
                     txt = ''
                     if gT[0]:       # incoming angle
+                        # TODO Übersetzen
                         txt += f'ein: {self.formatThreshold(dataT[i][0], idx)}'
                         if gT[1]:
                             txt += '\n'
@@ -588,7 +602,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         
         # Proof: Only test for poles that are not first and last pole
         elif idx == 4:
-            valStr = 'Nein' if 'Nein' in data[1:-1] else 'Ja'
+            valStr = self.tr('Nein') if 'Nein' in data[1:-1] else self.tr('Ja')
             # Without first and last pole!
             locationPole = [i for i, m in enumerate(data[1:-1]) if m == 'Nein']
             for loc in locationPole:
@@ -658,7 +672,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
                                    project.azimut)
         # Save project file
         self.confHandler.saveToFile(os.path.join(outputLoc,
-                                                 'Projekteinstellungen.txt'))
+                                    self.tr('Projekteinstellungen.txt')))
 
         # Create report
         if self.confHandler.getOutputOption('report'):
@@ -668,7 +682,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
 
         # Create plot
         if self.confHandler.getOutputOption('plot'):
-            plotSavePath = os.path.join(outputLoc, 'Diagramm.pdf')
+            plotSavePath = os.path.join(outputLoc, self.tr('Diagramm.pdf'))
             printPlot = AdjustmentPlot(self)
             printPlot.initData(self.profile.di_disp, self.profile.zi_disp,
                                self.profile.peakLoc_x, self.profile.peakLoc_z,
@@ -693,9 +707,10 @@ class AdjustmentDialog(QDialog, Ui_AdjustmenDialog):
         if self.isRecalculating or self.configurationHasChanged:
             return
         if self.unsavedChanges:
-            reply = QMessageBox.information(self, 'Nicht gespeicherte Änderungen',
-                'Möchten Sie die Ergebnisse speichern?', QMessageBox.Cancel |
-                                            QMessageBox.No | QMessageBox.Yes)
+            reply = QMessageBox.information(self,
+                self.tr('Nicht gespeicherte Aenderungen'),
+                self.tr('Moechten Sie die Ergebnisse speichern?'),
+                QMessageBox.Cancel | QMessageBox.No | QMessageBox.Yes)
             if reply == QMessageBox.Yes:
                 self.onSave()
                 self.drawTool.reset()

@@ -26,6 +26,7 @@ import traceback
 from math import atan2, pi, cos, sin
 import time
 
+from qgis.PyQt.QtCore import QCoreApplication
 from qgis.PyQt.QtWidgets import QMessageBox
 from qgis.core import QgsPointXY, QgsDistanceArea
 
@@ -57,11 +58,31 @@ class AbstractConfHandler(object):
     def setDialog(self, dialog):
         self.dialog = dialog
     
-    def onError(self, message=None, title='Fehler'):
+    def onError(self, message=None, title=''):
+        if not title:
+            title = self.tr('Fehler')
         if not message:
             message = traceback.format_exc()
         QMessageBox.information(self.dialog, title, message,
                                 QMessageBox.Ok)
+
+    # noinspection PyMethodMayBeStatic
+    def tr(self, message, **kwargs):
+        """Get the translation for a string using Qt translation API.
+        We implement this ourselves since we do not inherit QObject.
+
+        :param message: String for translation.
+        :type message: str, QString
+
+        :returns: Translated version of message.
+        :rtype: QString
+
+        Parameters
+        ----------
+        **kwargs
+        """
+        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
+        return QCoreApplication.translate(type(self).__name__, message)
 
 
 # noinspection PyTypeChecker
@@ -396,11 +417,11 @@ class ProjectConfHandler(AbstractConfHandler):
     def checkValidState(self):
         msg = ''
         if not self.profileIsValid():
-            msg = 'Bitte definieren Sie gültige Start- und Endkoordinaten'
+            msg = self.tr('Bitte definieren Sie gueltige Start- und Endkoordinaten')
         if not self.projectName:
-            msg = 'Bitte definieren Sie einen Projektnamen'
+            msg = self.tr('Bitte definieren Sie einen Projektnamen')
         if msg:
-            self.onError(msg, 'Unglültige Daten')
+            self.onError(msg, self.tr('Ungueltige Daten'))
         return self.profileIsValid() and self.projectName
     
     def getPointTypeAsIdx(self, point):
@@ -442,7 +463,7 @@ class ProjectConfHandler(AbstractConfHandler):
         try:
             profile = Profile(self)
         except ValueError:
-            self.onError('Unerwarteter Fehler bei der Erstellung des Profils.')
+            self.onError(self.tr('Unerwarteter Fehler bei der Erstellung des Profils.'))
             return False
         return profile
     
@@ -460,7 +481,7 @@ class ProjectConfHandler(AbstractConfHandler):
         try:
             self.profile = Profile(self)
         except ValueError:
-            self.onError('Unerwarteter Fehler bei Erstellung des Profils')
+            self.onError(self.tr('Unerwarteter Fehler bei Erstellung des Profils'))
             return False
         # Now that height of point A and B is known, pull rope forces are
         #  calculated
@@ -471,7 +492,7 @@ class ProjectConfHandler(AbstractConfHandler):
         try:
             self.poles = Poles(self)
         except ValueError:
-            self.onError('Unerwarteter Fehler bei Erstellung des Profils')
+            self.onError(self.tr('Unerwarteter Fehler bei Erstellung des Profils'))
             return False
         return success
     
@@ -504,7 +525,6 @@ class ParameterConfHandler(AbstractConfHandler):
         1: 'Mehrseil-System'
     }
     ANCHOR_LEN = 20
-    DEFAULTSET = 'Standardparameter'
     SETS_PATH = os.path.join(HOMEPATH, 'config', 'parametersets')
     
     def __init__(self):
@@ -520,6 +540,7 @@ class ParameterConfHandler(AbstractConfHandler):
         # Parameter sets
         self.currentSetName = ''
         self.parameterSets = {}
+        self.defaultSet = self.tr('Standardparameter')
     
     def initParameters(self):
         # Load parameter definitions and rules from text file
@@ -561,8 +582,8 @@ class ParameterConfHandler(AbstractConfHandler):
         fileData = {}
         if not os.path.exists(path) and os.path.isfile(path) \
                 and path.lower().endswith('.txt'):
-            msg = f"Fehler in Parameterset '{path}' " \
-                  f"gefunden. Set kann nicht geladen werden."
+            msg = self.tr("Fehler in Parameterset '{}' gefunden. "
+                          "Set kann nicht geladen werden.").format(path)
             self.onError(msg)
             return False
     
@@ -685,18 +706,16 @@ class ParameterConfHandler(AbstractConfHandler):
         
         # Check if value is defined
         if value is None:
-            errorMsg = (f"Bitte geben Sie im Feld {paramInfo['label']} einen "
-                        f"Wert zwischen {rangeSet[0]} und {rangeSet[1]} "
-                        f"{paramInfo['unit']} ein.")
-            self.onError(errorMsg, 'Ungültige Eingabe')
+            errorMsg = self.tr('Bitte geben Sie im Feld einen Wert ein').format(
+                paramInfo['label'], rangeSet[0], rangeSet[1], paramInfo['unit'])
+            self.onError(errorMsg, self.tr('Ungueltige Eingabe'))
             return False
         
         # Finally check range
         if value is None or not rangeSet[0] <= value <= rangeSet[1]:
-            errorMsg = (f"Der Wert {value} im Feld {paramInfo['label']} ist "
-                        f"ungültig. Bitte wählen Sie einen Wert zwischen "
-                        f"{rangeSet[0]} und {rangeSet[1]} {paramInfo['unit']}.")
-            self.onError(errorMsg, 'Ungültige Eingabe')
+            errorMsg = self.tr('Der Wert im Feld ist ungueltig').format(
+                value, paramInfo['label'], rangeSet[0], rangeSet[1], paramInfo['unit'])
+            self.onError(errorMsg, self.tr('Ungueltige Eingabe'))
             return False
         return True
     
@@ -737,6 +756,8 @@ class ParameterConfHandler(AbstractConfHandler):
                 if not params:
                     break
                 setname = params['label']
+                if setname == 'Standardparameter':
+                    setname = self.defaultSet       # Translated setname
                 self.parameterSets[setname] = params
                 del self.parameterSets[setname]['label']
     
@@ -747,8 +768,7 @@ class ParameterConfHandler(AbstractConfHandler):
         try:
             self.parameterSets[setname]
         except KeyError:
-            msg = (f"Fehler in Parameterset '{setname}' gefunden. "
-                   f"Set kann nicht geladen werden.")
+            msg = self.tr('Fehler in Parameterset gefunden').format(setname)
             self.onError(msg)
             return
         
@@ -789,7 +809,7 @@ class ParameterConfHandler(AbstractConfHandler):
             else:  # int
                 cval = int(float(value))
         except ValueError:
-            self.onError('Bitte geben Sie eine gültige Zahl ein.')
+            self.onError(self.tr('Bitte geben Sie eine gueltige Zahl ein.'))
             return None
         return cval
     
@@ -831,9 +851,7 @@ class ParameterConfHandler(AbstractConfHandler):
                 qz1 = qZ
                 qz2 = qR
             else:               # Zweiseil-System
-                msg = ('Fehler: Kein Zweilseil-System möglich wenn der '
-                       'Anfangspunkt (bei Winde / Maschine) tiefer als der '
-                       'Endpunkt liegt.')
+                msg = self.tr('Kein Zweiseil-System moeglich')
                 self.onError(msg)
                 return False
         elif direction == 'down':

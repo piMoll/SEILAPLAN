@@ -19,7 +19,7 @@
  ***************************************************************************/
 """
 import numpy as np
-from qgis.PyQt.QtCore import Qt, QSize
+from qgis.PyQt.QtCore import Qt, QSize, QCoreApplication
 from qgis.PyQt.QtWidgets import QSizePolicy
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -150,12 +150,12 @@ class AdjustmentPlot(FigureCanvas):
             # Well suited locations (peaks) for poles
             self.axes.scatter(self.peakLoc_x, self.peakLoc_y, marker='^',
                               color='#ffaa00', edgecolors='#496b48',
-                              label='Günstige\nGeländeform', zorder=3)
+                              label=self.tr('Guenstige Gelaendeform'), zorder=3)
         # Cable lines
         self.axes.plot(cable['xaxis'], cable['empty'], color='#4D83B2',
-                       linewidth=1.5*scale, label="Leerseil")
+                       linewidth=1.5*scale, label=self.tr('Leerseil'))
         self.axes.plot(cable['xaxis'], cable['load'], color='#FF4D44',
-                       linewidth=1.5*scale, label="Lastwegkurve\nnach Zweifel")
+                       linewidth=1.5*scale, label=self.tr('Lastwegkurve nach Zweifel'))
         # Anchors
         if cable['anchorA']:
             self.axes.plot(cable['anchorA']['d'], cable['anchorA']['z'],
@@ -166,7 +166,7 @@ class AdjustmentPlot(FigureCanvas):
         # Ground clearance
         self.axes.plot(cable['groundclear_di'], cable['groundclear'],
                        color='#910000', linewidth=1*scale, linestyle=':',
-                       label="Min. Bodenabstand")
+                       label=self.tr('Min. Bodenabstand'))
         self.axes.plot(cable['groundclear_di'], cable['groundclear_under'],
                        color='#910000', linewidth=1*scale)
             
@@ -264,10 +264,10 @@ class AdjustmentPlot(FigureCanvas):
         self.fig.tight_layout(pad=4, w_pad=1, h_pad=3)
         self.setPlotLimits()
         # Layout plot
-        self.axes.set_title(f'Seilaplan Plot  -  {title}', fontsize=10,
-                            multialignment='center', y=1.05)
-        self.axes.set_xlabel("Horizontaldistanz [m]", fontsize=9)
-        self.axes.set_ylabel("Höhe [m.ü.M]", fontsize=9)
+        self.axes.set_title(self.tr('Seilaplan Plot  -  {}').format(title),
+                            fontsize=10, multialignment='center', y=1.05)
+        self.axes.set_xlabel(self.tr('Horizontaldistanz [m]'), fontsize=9)
+        self.axes.set_ylabel(self.tr("Hoehe [m.ue.M]"), fontsize=9)
         self.axes.tick_params(labelsize=8)
         self.axes.grid(which='major', lw=0.5)
         self.axes.grid(which='minor', lw=0.5, linestyle=':')
@@ -280,3 +280,21 @@ class AdjustmentPlot(FigureCanvas):
 
     def setToolbar(self, tbar):
         self.tbar = tbar
+    
+    # noinspection PyMethodMayBeStatic
+    def tr(self, message, **kwargs):
+        """Get the translation for a string using Qt translation API.
+        We implement this ourselves since we do not inherit QObject.
+
+        :param message: String for translation.
+        :type message: str, QString
+
+        :returns: Translated version of message.
+        :rtype: QString
+
+        Parameters
+        ----------
+        **kwargs
+        """
+        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
+        return QCoreApplication.translate(type(self).__name__, message)

@@ -21,7 +21,7 @@
 
 import os
 
-from qgis.PyQt.QtCore import QSize, Qt
+from qgis.PyQt.QtCore import QSize, Qt, QCoreApplication
 from qgis.PyQt.QtWidgets import QDialog, QWidget, QLabel, QDialogButtonBox, \
     QHBoxLayout, QComboBox, QSizePolicy, QPushButton, QCheckBox, \
     QVBoxLayout, QFileDialog, QLineEdit, QMessageBox
@@ -37,12 +37,12 @@ class DialogSaveParamset(QDialog):
         self.availableSets = None
         self.savePath = None
         self.setname = None
-        self.setWindowTitle("Name Parameterset")
+        self.setWindowTitle(self.tr('Name Parameterset'))
         main_widget = QWidget(self)
         
         # Build gui
         hbox = QHBoxLayout()
-        setnameLabel = QLabel("Bezeichnung Parameterset")
+        setnameLabel = QLabel(self.tr('Bezeichnung Parameterset'))
         self.setnameField = QLineEdit()
         self.setnameField.setMinimumWidth(400)
         self.setnameField.setSizePolicy(
@@ -65,6 +65,24 @@ class DialogSaveParamset(QDialog):
         container.addWidget(buttonBox)
         container.setAlignment(Qt.AlignLeft)
         self.setLayout(container)
+
+    # noinspection PyMethodMayBeStatic
+    def tr(self, message, **kwargs):
+        """Get the translation for a string using Qt translation API.
+        We implement this ourselves since we do not inherit QObject.
+
+        :param message: String for translation.
+        :type message: str, QString
+
+        :returns: Translated version of message.
+        :rtype: QString
+
+        Parameters
+        ----------
+        **kwargs
+        """
+        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
+        return QCoreApplication.translate(type(self).__name__, message)
     
     def setData(self, availableSets, savePath):
         self.availableSets = availableSets
@@ -90,9 +108,9 @@ class DialogSaveParamset(QDialog):
         setname = self.setnameField.text()
         valid = self.checkName(setname)
         if not valid:
-            QMessageBox.information(self, 'Fehler', "Bitte geben Sie einen "
-                                    "gültigen Dateinamen für das Parameterset an",
-                                    QMessageBox.Ok)
+            QMessageBox.information(self, self.tr('Fehler'),
+                self.tr('Bitte geben Sie einen gueltigen Dateinamen fuer das '
+                        'Parameterset an'), QMessageBox.Ok)
             return
         self.setname = setname
         self.close()
@@ -111,14 +129,14 @@ class DialogOutputOptions(QDialog):
         self.confHandler = confHandler
         self.doSave = False
         
-        self.setWindowTitle("Output Optionen")
+        self.setWindowTitle(self.tr('Output Optionen'))
         main_widget = QWidget(self)
         
         # Build up gui
         
         # Project title
         hbox1 = QHBoxLayout()
-        projectNameLabel = QLabel("Projektname")
+        projectNameLabel = QLabel(self.tr('Projektname'))
         projectNameLabel.setMinimumWidth(100)
         self.projectField = QLineEdit()
         self.projectField.setMinimumWidth(400)
@@ -130,7 +148,7 @@ class DialogOutputOptions(QDialog):
         
         # Save path
         hbox2 = QHBoxLayout()
-        saveLabel = QLabel("Speicherpfad")
+        saveLabel = QLabel(self.tr('Speicherpfad'))
         saveLabel.setMinimumWidth(100)
         self.pathField = QComboBox()
         self.pathField.setMinimumWidth(400)
@@ -153,14 +171,11 @@ class DialogOutputOptions(QDialog):
         hbox2.addWidget(self.pathField)
         hbox2.addWidget(openButton)
         # Create checkboxes
-        questionLabel = \
-            QLabel(u"Welche Produkte sollen erzeugt werden?")
-        self.checkBoxReport = QCheckBox(u"Technischer Bericht")
-        self.checkBoxPlot = QCheckBox(u"Diagramm")
-        self.checkBoxGeodata = \
-            QCheckBox(u"Shape-Daten der Stützen und Seillinie")
-        self.checkBoxCoords = \
-            QCheckBox(u"Koordinaten-Tabellen der Stützen und Seillinie")
+        questionLabel = QLabel(self.tr('Welche Produkte sollen erzeugt werden?'))
+        self.checkBoxReport = QCheckBox(self.tr('Technischer Bericht'))
+        self.checkBoxPlot = QCheckBox(self.tr('Diagramm'))
+        self.checkBoxGeodata = QCheckBox(self.tr('Shape-Daten der Stuetzen und Seillinie'))
+        self.checkBoxCoords = QCheckBox(self.tr('Koordinaten-Tabellen der Stuetzen und Seillinie'))
         # Set tick correctly
         self.checkBoxReport.setChecked(self.confHandler.outputOptions['report'])
         self.checkBoxPlot.setChecked(self.confHandler.outputOptions['plot'])
@@ -176,7 +191,7 @@ class DialogOutputOptions(QDialog):
         container = QVBoxLayout(main_widget)
         container.addLayout(hbox1)
         container.addLayout(hbox2)
-        container.addWidget(QLabel(""))
+        container.addWidget(QLabel(''))
         container.addWidget(questionLabel)
         container.addWidget(self.checkBoxReport)
         container.addWidget(self.checkBoxPlot)
@@ -187,7 +202,25 @@ class DialogOutputOptions(QDialog):
         self.setLayout(container)
 
         self.fillInData()
-    
+
+    # noinspection PyMethodMayBeStati
+    def tr(self, message, **kwargs):
+        """Get the translation for a string using Qt translation API.
+        We implement this ourselves since we do not inherit QObject.
+
+        :param message: String for translation.
+        :type message: str, QString
+
+        :returns: Translated version of message.
+        :rtype: QString
+
+        Parameters
+        ----------
+        **kwargs
+        """
+        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
+        return QCoreApplication.translate(type(self).__name__, message)
+
     def fillInData(self):
         # Project name
         self.projectField.setText(self.confHandler.project.getProjectName())
@@ -199,7 +232,7 @@ class DialogOutputOptions(QDialog):
             self.pathField.addItem(path)
     
     def onOpenDialog(self):
-        title = u"Output Ordner auswählen"
+        title = self.tr('Output Ordner auswaehlen')
         folder = QFileDialog.getExistingDirectory(self, title,
             self.confHandler.getCurrentPath(), QFileDialog.ShowDirsOnly)
         if folder:

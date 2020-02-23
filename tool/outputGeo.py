@@ -22,7 +22,7 @@ import numpy as np
 import os
 import csv
 
-from qgis.PyQt.QtCore import QVariant
+from qgis.PyQt.QtCore import QVariant, QCoreApplication
 from qgis.core import QgsWkbTypes, QgsFields, QgsField, QgsVectorFileWriter, \
     QgsFeature, QgsGeometry, QgsPoint, QgsCoordinateReferenceSystem
 
@@ -55,17 +55,17 @@ def generateGeodata(project, poles, cableline, savePath):
             poleName.append(pole['name'])
 
     # Save pole positions
-    stuePath = os.path.join(savePath, 'stuetzen.shp')
+    stuePath = os.path.join(savePath, tr('stuetzen.shp'))
     checkShpPath(stuePath)
     save2PointShape(stuePath, poleGeo, poleName, spatialRef)
     
     # Save empty cable line
-    seilLeerPath = os.path.join(savePath, 'leerseil.shp')
+    seilLeerPath = os.path.join(savePath, tr('leerseil.shp'))
     checkShpPath(seilLeerPath)
     save2LineShape(seilLeerPath, lineEmptyGeo, spatialRef)
 
     # Save cable line under load
-    seilLastPath = os.path.join(savePath, 'lastseil.shp')
+    seilLastPath = os.path.join(savePath, tr('lastseil.shp'))
     checkShpPath(seilLastPath)
     save2LineShape(seilLastPath, lineLoadGeo, spatialRef)
 
@@ -84,8 +84,9 @@ def save2PointShape(shapePath, geodata, label, spatialRef):
     """
 
     # Define fields for feature attributes. A QgsFields object is needed
+    stueNrName = tr('StuetzenNr')
     fields = QgsFields()
-    fields.append(QgsField("StuetzenNr", QVariant.String, 'text', 254))
+    fields.append(QgsField(stueNrName, QVariant.String, 'text', 254))
     fields.append(QgsField("x", QVariant.Double))
     fields.append(QgsField("y", QVariant.Double))
     fields.append(QgsField("h", QVariant.Double))
@@ -102,7 +103,7 @@ def save2PointShape(shapePath, geodata, label, spatialRef):
         feature.setFields(fields)
         feature.setGeometry(QgsPoint(coords[0], coords[1], coords[2]))
         feature.setId(idx)
-        feature.setAttribute("StuetzenNr", label[idx])
+        feature.setAttribute(stueNrName, label[idx])
         feature.setAttribute("x", float(coords[0]))
         feature.setAttribute("y", float(coords[1]))
         feature.setAttribute("h", float(coords[2]))
@@ -159,9 +160,9 @@ def addToMap(geodata, projName):
     root = QgsProject.instance().layerTreeRoot()
     projGroup = root.insertGroup(0, projName)
     
-    polesLyr = QgsVectorLayer(geodata['stuetzen'], "Stützen", "ogr")
-    emptyLineLyr = QgsVectorLayer(geodata['leerseil'], "Leerseil", "ogr")
-    loadLineLyar = QgsVectorLayer(geodata['lastseil'], "Lastseil", "ogr")
+    polesLyr = QgsVectorLayer(geodata['stuetzen'], tr("Stuetzen"), "ogr")
+    emptyLineLyr = QgsVectorLayer(geodata['leerseil'], tr("Leerseil"), "ogr")
+    loadLineLyar = QgsVectorLayer(geodata['lastseil'], tr("Lastseil"), "ogr")
     
     for layer in [polesLyr, emptyLineLyr, loadLineLyar]:
         layer.setProviderEncoding('UTF-8')
@@ -176,8 +177,8 @@ def addToMap(geodata, projName):
 
 def generateCoordTable(cableline, profile, poles, outputLoc):
     """Creates csv files with the corse of the cable line."""
-    savePathStue = os.path.join(outputLoc, 'Koordinaten Stuetzen.csv')
-    savePathSeil = os.path.join(outputLoc, 'Koordinaten Seil.csv')
+    savePathStue = os.path.join(outputLoc, tr('Koordinaten Stuetzen.csv'))
+    savePathSeil = os.path.join(outputLoc, tr('Koordinaten Seil.csv'))
 
     # Combine cable data into matrix
     seilDataMatrix = np.array(
@@ -188,8 +189,8 @@ def generateCoordTable(cableline, profile, poles, outputLoc):
     seilDataMatrix = seilDataMatrix.transpose()
 
     # Txt header
-    header = ["Horizontaldistanz", "X", "Y", "Z Lastseil", "Z Leerseil",
-              "Z Gelaende", "Abstand Lastseil-Boden"]
+    header = [tr("Horizontaldistanz"), "X", "Y", tr("Z Lastseil"),
+              tr("Z Leerseil"), tr("Z Gelaende"), tr("Abstand Lastseil-Boden")]
     
     # Write to file
     with open(savePathSeil, 'w') as f:
@@ -201,8 +202,8 @@ def generateCoordTable(cableline, profile, poles, outputLoc):
     # Pole data
     with open(savePathStue, 'w') as f:
         fi = csv.writer(f, delimiter=';', dialect='excel', lineterminator='\n')
-        fi.writerow(["Stuetze", "X", "Y", "Z Stuetze Boden",
-                     "Z Stuetze Spitze", "Stuetzenhoehe", "Neigung"])
+        fi.writerow([tr("Stuetze"), "X", "Y", tr("Z Stuetze Boden"),
+                     tr("Z Stuetze Spitze"), tr("Stuetzenhoehe"), tr("Neigung")])
         for pole in poles:
             name = [unicode2acii(pole['name'])]
             coords = ([round(e, 3) for e in [pole['coordx'], pole['coordy'],
@@ -220,3 +221,21 @@ def unicode2acii(text):
                    0xfc: 'ue'}
     return text.translate(translation)
 
+
+# noinspection PyMethodMayBeStatic
+def tr(message, **kwargs):
+    """Get the translation for a string using Qt translation API.
+    We implement this ourselves since we do not inherit QObject.
+
+    :param message: String for translation.
+    :type message: str, QString
+
+    :returns: Translated version of message.
+    :rtype: QString
+
+    Parameters
+    ----------
+    **kwargs
+    """
+    # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
+    return QCoreApplication.translate('@default', message)

@@ -20,7 +20,7 @@
 """
 
 import textwrap
-from qgis.PyQt.QtCore import Qt
+from qgis.PyQt.QtCore import Qt, QCoreApplication
 from qgis.PyQt.QtWidgets import (QDialog, QVBoxLayout, QProgressBar, QLabel,
     QHBoxLayout, QDialogButtonBox, QSizePolicy, QPushButton, QSpacerItem,
     QLayout)
@@ -42,7 +42,7 @@ class ProgressDialog(QDialog):
         self.result = None
         
         # Build GUI Elements
-        self.setWindowTitle("SEILAPLAN wird ausgeführt")
+        self.setWindowTitle(self.tr("SEILAPLAN wird ausgefuehrt"))
         self.resize(500, 100)
         self.container = QVBoxLayout()
         self.progressBar = QProgressBar(self)
@@ -58,7 +58,7 @@ class ProgressDialog(QDialog):
         self.resultLabel.setWordWrap(True)
         spacer1 = QSpacerItem(20, 20, QSizePolicy.Fixed,
                               QSizePolicy.Fixed)
-        self.rerunButton = QPushButton("zurück zum Startfenster")
+        self.rerunButton = QPushButton(self.tr("zurueck zum Startfenster"))
         self.rerunButton.setVisible(False)
         spacer2 = QSpacerItem(40, 20, QSizePolicy.Expanding,
                              QSizePolicy.Minimum)
@@ -81,6 +81,24 @@ class ProgressDialog(QDialog):
         self.container.addLayout(self.hbox)
         self.container.setSizeConstraint(QLayout.SetFixedSize)
         self.setLayout(self.container)
+
+    # noinspection PyMethodMayBeStatic
+    def tr(self, message, **kwargs):
+        """Get the translation for a string using Qt translation API.
+        We implement this ourselves since we do not inherit QObject.
+
+        :param message: String for translation.
+        :type message: str, QString
+
+        :returns: Translated version of message.
+        :rtype: QString
+
+        Parameters
+        ----------
+        **kwargs
+        """
+        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
+        return QCoreApplication.translate(type(self).__name__, message)
         
     def setThread(self, workerThread):
         self.workerThread = workerThread
@@ -110,7 +128,7 @@ class ProgressDialog(QDialog):
             # Close progress dialog so that adjustment window can be opened
             self.close()
         else:  # If there was an abort by the user
-            self.statusLabel.setText("Berechnungen abgebrochen.")
+            self.statusLabel.setText(self.tr("Berechnungen abgebrochen."))
             self.progressBar.setValue(self.progressBar.minimum())
             self.finallyDo()
     
@@ -134,14 +152,15 @@ class ProgressDialog(QDialog):
         #   3 = Optimization partially successful
     
     def onAbort(self):
-        self.setWindowTitle("SEILAPLAN")
-        self.statusLabel.setText("Laufender Prozess wird abgebrochen...")
+        self.setWindowTitle('SEILAPLAN')
+        self.statusLabel.setText(self.tr(
+            'Laufender Prozess wird abgebrochen...'))
         self.workerThread.cancel()  # Terminates process cleanly
         self.wasCanceled = True
     
     def onError(self, exception_string):
-        self.setWindowTitle("SEILAPLAN: Berechnung fehlgeschlagen")
-        self.statusLabel.setText("Ein Fehler ist aufgetreten:")
+        self.setWindowTitle(self.tr('SEILAPLAN: Berechnung fehlgeschlagen'))
+        self.statusLabel.setText(self.tr('Ein Fehler ist aufgetreten:'))
         self.resultLabel.setText(textwrap.fill(exception_string, 60)
                                  .replace('\n', '<br>'))
         self.resultLabel.setHidden(False)

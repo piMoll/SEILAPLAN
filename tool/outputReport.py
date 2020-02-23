@@ -25,6 +25,8 @@ import math
 import time
 import textwrap
 
+from qgis.PyQt.QtCore import QCoreApplication
+
 p = 21
 nl = os.linesep
 
@@ -81,28 +83,30 @@ def generateReportText(confHandler, result, comment):
     poleCount = len(polesWithoutAnchors)
     fieldCount = poleCount - 1
     sHeader = [i['name'] for i in polesWithoutAnchors]
-    fHeader = [f"{i+1}. Feld" for i in range(fieldCount)]
+    fHeader = [f"{i+1}. " + tr('Feld') for i in range(fieldCount)]
 
     # First section with duration, dhm and several comments
     str_time = [
         [],
-        ["Zeitpunkt", f"{result['duration'][2]}, Berechnungsdauer: {result['duration'][0]}"],
-        ["Höhendaten", hmodell], []]
+        [tr('Zeitpunkt'), "{}, {}: {}".format(result['duration'][2],
+                                              tr('Berechnungsdauer'),
+                                              result['duration'][0])],
+        [tr('Hoehendaten'), hmodell], []]
     if comment:
         commentWraped = textwrap.fill(comment, 150).split('\n')
         # First line
-        str_time.append(['Bemerkung', commentWraped[0]])
+        str_time.append([tr('Bemerkung'), commentWraped[0]])
         # Consecutive lines
         for line in commentWraped[1:]:
             str_time.append(['', line])
         str_time.append([])
 
-    str_time.append(["Erklärungen und Diagramme zu den technischen Werten sind in der "
-         "Dokumentation zu finden."])
+    str_time.append([tr('Erklaerungen und Diagramme zu den technischen Werten '
+                        'sind in der Dokumentation zu finden.')])
     
     # Section poles
-    str_posi = [["", "Höhe [m]", "Neigung [°]", "X-Koordinate", "Y-Koordinate",
-                 "Z-Koordinate [m.ü.M.]"]]
+    str_posi = [["", tr('Hoehe [m]'), tr('Neigung []'), tr('X-Koordinate'),
+                 tr('Y-Koordinate'), tr('Z-Koordinate [m.ue.M.]')]]
     for pole in polesWithAnchors:
         if not pole['active']:
             continue
@@ -114,99 +118,99 @@ def generateReportText(confHandler, result, comment):
             f"{formatNum(pole['z'])}"])
 
     # Section field survey
-    str_abst = [[f"Azimut: {az_gon:.2f} gon / {az_grad:.2f} °"],
-                ["", "Horizontaldistanz", "Schrägdistanz"]]
+    str_abst = [["{}: {:.2f} {} / {:.2f} °".format(tr('Azimut'), az_gon, tr('gon'), az_grad)],
+                ["", tr('Horizontaldistanz'), tr('Schraegdistanz')]]
     for i, pole in enumerate(polesWithAnchors[:-1]):
         nextPole = polesWithAnchors[i+1]
         dist_h = nextPole['d'] - pole['d']
         dist_z = nextPole['z'] - pole['z']
         dist_s = (dist_h**2 + dist_z**2)**0.5
-        str_abst.append([f"von {pole['name']} zu {nextPole['name']}",
+        str_abst.append(["{} {} {} {}".format(tr('von'), pole['name'], tr('zu'), nextPole['name']),
                          f"{dist_h:.1f} m", f"{dist_s:.2f} m"])
 
     # Section cable pull strength
-    str_opti = [["optimaler Wertebeich",
+    str_opti = [[tr('optimaler Wertebeich'),
                  f"{np.min(result['optSTA_arr']):.0f} - {np.max(result['optSTA_arr']):.0f} kN"],      # TODO: Was machen mit manuell definiertem OptSTA? Leo fragen
-                ["gewählte Seilzugkraft bei der Anfangsstütze",
+                [tr('gewaehlte Seilzugkraft bei der Anfangsstuetze'),
                  f"{kraft['Spannkraft'][0]:.0f} kN"]]
 
     # Section cable length
-    str_laen = [[""]*2 + fHeader,
-                ["Länge Leerseil bei Anfangszugkraft",
-                 f"{kraft['LaengeSeil'][0]:.0f} m"] + [""]*fieldCount,
-                ["Länge Leerseil bei 0 kN Seilzugkraft",
-                 f"{kraft['LaengeSeil'][1]:.0f} m"] + [""]*fieldCount,
-                ["Länge der Spannfelder"] + (",{:.0f} m"*fieldCount).format(
+    str_laen = [['']*2 + fHeader,
+                [tr('Laenge Leerseil bei Anfangszugkraft'),
+                 f"{kraft['LaengeSeil'][0]:.0f} m"] + ['']*fieldCount,
+                [tr('Laenge Leerseil bei 0 kN Seilzugkraft'),
+                 f"{kraft['LaengeSeil'][1]:.0f} m"] + ['']*fieldCount,
+                [tr('Laenge der Spannfelder')] + (",{:.0f} m" * fieldCount).format(
                     *tuple(kraft['LaengeSeil'][2])).split(',', fieldCount)]
 
     # Section cable slack
-    str_durc = [["Abk.", ""] + fHeader,
-                ["yLE", "Leerseil"] + ("{:.2f} m,"*fieldCount).format(
+    str_durc = [[tr('Abk.'), ''] + fHeader,
+                ['yLE', tr('Leerseil')] + ("{:.2f} m," * fieldCount).format(
                     *tuple(kraft['Durchhang'][0])).rstrip(',').split(',', fieldCount),
-                ["yLA", "Lastseil"] + ("{:.2f} m,"*fieldCount).format(
+                ['yLA', tr('Lastseil')] + ("{:.2f} m," * fieldCount).format(
                     *tuple(kraft['Durchhang'][1])).rstrip(',').split(',', fieldCount)]
 
     str_seil1 = [
-        ["Abk.", "am Leerseil"] + [""]*(poleCount+1),
-        ["T0,A", "Seilzugkraft an der Anfangsstütze"] +
-        [f"{kraft['Spannkraft'][0]:.0f} kN"] + [""]*poleCount,
-        ["T0,E", "Seilzugkraft an der Endstütze"] +
-        [f"{kraft['Spannkraft'][1]:.0f} kN"] + [""]*poleCount,
-        [""]*3 + sHeader,
-        ["T0", "Seilzugkraft des Leerseils an den Stützen", ""] +
-        ("{:.0f} kN,"*poleCount).format(*tuple(
+        [tr('Abk.'), tr('am Leerseil')] + [''] * (poleCount + 1),
+        ['T0,A', tr('Seilzugkraft an der Anfangsstuetze')] +
+        [f"{kraft['Spannkraft'][0]:.0f} kN"] + [''] * poleCount,
+        ['T0,E', tr('Seilzugkraft an der Endstuetze')] +
+        [f"{kraft['Spannkraft'][1]:.0f} kN"] + [''] * poleCount,
+        [''] * 3 + sHeader,
+        ['T0', tr('Seilzugkraft des Leerseils an den Stuetzen'), ''] +
+        ('{:.0f} kN,' * poleCount).format(*tuple(
             np.round(kraft['Seilzugkraft'][0]))).rstrip(',').split(',', poleCount)]
     str_seil2 = [
-        ["HS", "Leerseilverhältnis: Horizontalkomponente"] + fHeader,
-        ["", "     der Seilzugkraft an den Stützen"] +
-        ("{:.0f} kN,"*fieldCount).format(*tuple(
+        ['HS', tr('Leerseilverhaeltnis: Horizontalkomponente')] + fHeader,
+        ['', '     ' + tr('der Seilzugkraft an den Stuetzen')] +
+        ('{:.0f} kN,' * fieldCount).format(*tuple(
                 kraft['Seilzugkraft'][1])).rstrip(',').split(',', fieldCount)]
     str_seil3 = [
-        ["", "am Lastseil"] + [""]*fieldCount,
-        ["", "Max. auftretende Seilzugkraft"],
-        ["Tmax", "     am höchsten Punkt im Seilsystem",
+        ['', tr('am Lastseil')] + ['']*fieldCount,
+        ['', tr('Max. auftretende Seilzugkraft')],
+        ['Tmax', '     ' + tr('am hoechsten Punkt im Seilsystem'),
          f"{kraft['MaxSeilzugkraft_L'][0]:.0f} kN"],
-        ["Tmax,A", "     am Anfangsanker",
+        ['Tmax,A', '     ' + tr('am Anfangsanker'),
          f"{kraft['MaxSeilzugkraft_L'][1]:.0f} kN"],
-        ["Tmax,E", "     am Endanker",
+        ['Tmax,E', '     ' + tr('am Endanker'),
          f"{kraft['MaxSeilzugkraft_L'][2]:.0f} kN"]]
     str_seil4 = [
-        ["", "am Lastseil mit Last in Feldmitte"] + fHeader,
-        ["Tm", "Max. auftretende Seilzugkraft gemessen in Feldmitte"] +
-            ("{:.0f} kN,"*fieldCount).format(*tuple(kraft['MaxSeilzugkraft'][0])
+        ['', tr('am Lastseil mit Last in Feldmitte')] + fHeader,
+        ['Tm', tr('Max. auftretende Seilzugkraft gemessen in Feldmitte')] +
+        ("{:.0f} kN,"*fieldCount).format(*tuple(kraft['MaxSeilzugkraft'][0])
             ).rstrip(',').split(','),
-        ["Hm", "     davon horizontale Komponente"] +
-            ("{:.0f} kN,"*fieldCount).format(*tuple(kraft['MaxSeilzugkraft'][1])
+        ['Hm', '     ' + tr('davon horizontale Komponente')] +
+        ("{:.0f} kN,"*fieldCount).format(*tuple(kraft['MaxSeilzugkraft'][1])
             ).rstrip(',').split(','),
-        ["Tm,max", "     gemessen am höchsten Punkt im Seilsystem"] +
-            ("{:.0f} kN,"*fieldCount).format(*tuple(kraft['MaxSeilzugkraft'][2])
+        ['Tm,max', '     ' + tr('gemessen am hoechsten Punkt im Seilsystem')] +
+        ("{:.0f} kN,"*fieldCount).format(*tuple(kraft['MaxSeilzugkraft'][2])
             ).rstrip(',').split(','),
         ]
     str_seil = [str_seil1, str_seil2, str_seil3, str_seil4]
 
     # Section cable forces
     str_stue1 = [
-        ["", "an befahrbarer Stütze, Laufwagen auf Stütze"] + sHeader,
-        ["F_Sa_BefRes", "Sattelkraft, resultierend"] +
-            ("{:.0f} kN,"*poleCount).format(*tuple(
+        ['', tr('an befahrbarer Stuetze, Laufwagen auf Stuetze')] + sHeader,
+        ['F_Sa_BefRes', tr('Sattelkraft, resultierend')] +
+        ("{:.0f} kN,"*poleCount).format(*tuple(
                 kraft['Sattelkraft_Total'][0])).rstrip(',').split(','),
-        ["F_Sa_BefV", "Sattelkraft, vertikale Komponente"] +
-            ("{:.0f} kN,"*poleCount).format(*tuple(
+        ['F_Sa_BefV', tr('Sattelkraft, vertikale Komponente')] +
+        ("{:.0f} kN,"*poleCount).format(*tuple(
                 kraft['Sattelkraft_Total'][1])).rstrip(',').split(','),
-        ["F_Sa_BefH", "Sattelkraft, horizontale Komponente"] +
-            ("{:.0f} kN,"*poleCount).format(*tuple(
+        ['F_Sa_BefH', tr('Sattelkraft, horizontale Komponente')] +
+        ("{:.0f} kN,"*poleCount).format(*tuple(
                 kraft['Sattelkraft_Total'][2])).rstrip(',').split(','),
-        ["FSR", "Sattelkraft (Anteil von Tragseil), resultierend"] +
-            ("{:.0f} kN,"*poleCount).format(*tuple(
+        ['FSR', tr('Sattelkraft (Anteil von Tragseil), resultierend')] +
+        ("{:.0f} kN,"*poleCount).format(*tuple(
                 kraft['Sattelkraft_ausSeil'][0])).rstrip(',').split(','),
-        ["FSV", "Sattelkraft (Anteil von Tragseil), vertikale Komponente"] +
-            ("{:.0f} kN,"*poleCount).format(*tuple(
+        ['FSV', tr('Sattelkraft (Anteil von Tragseil), vertikale Komponente')] +
+        ("{:.0f} kN,"*poleCount).format(*tuple(
                 kraft['Sattelkraft_ausSeil'][1])).rstrip(',').split(','),
-        ["FSH", "Sattelkraft (Anteil von Tragseil), horizontale Komponente"] +
-            ("{:.0f} kN,"*poleCount).format(*tuple(
+        ['FSH', tr('Sattelkraft (Anteil von Tragseil), horizontale Komponente')] +
+        ("{:.0f} kN,"*poleCount).format(*tuple(
                 kraft['Sattelkraft_ausSeil'][2])).rstrip(',').split(','),
-        ["FU", "Einwirkung auf Stütze aus Last, Gewicht Zug- & Tragseil"] +
-            ("{:.0f} kN,"*poleCount).format(*tuple(
+        ['FU', tr('Einwirkung auf Stuetze aus Last, Gewicht Zug- Tragseil')] +
+        ("{:.0f} kN,"*poleCount).format(*tuple(
                 kraft['UebrigeKraft_befStuetze'])).rstrip(',').split(','),
         ]
     newHeader = [""]*(poleCount*2)
@@ -215,51 +219,51 @@ def generateReportText(confHandler, result, comment):
         newHeader[i+1] = sHeader[a]
         a += 1
     str_stue2 = [
-        ["", "an nicht befahrbarer Stütze,"] + newHeader,
-        ["", "     Laufwagen unmittelbar links/rechts bei Stütze"] +
-            ["links", "rechts"]*poleCount,
-        ["TCS", "Seilzugkraft"] +
-            ("{:.0f} kN,"*(poleCount*2)).format(*tuple(
+        ['', tr('an nicht befahrbarer Stuetze,')] + newHeader,
+        ['', '     ' + tr('Laufwagen unmittelbar links/rechts bei Stuetze')] +
+        [tr('links'), tr('rechts')] * poleCount,
+        ['TCS', tr('Seilzugkraft')] +
+        ("{:.0f} kN,"*(poleCount*2)).format(*tuple(
                 kraft['Seilzugkraft_beiStuetze'])).rstrip(',').split(','),
-        ["F_Sa_NBefRes", "Sattelkraft, resultierend"] +
-            ("{:.0f} kN,"*(poleCount*2)).format(*tuple(
+        ['F_Sa_NBefRes', tr('Sattelkraft, resultierend')] +
+        ("{:.0f} kN,"*(poleCount*2)).format(*tuple(
                 kraft['Sattelkraft_beiStuetze'][0])).rstrip(',').split(','),
-        ["F_Sa_NBefV", "Sattelkraft, vertikale Komponente"] +
-            ("{:.0f} kN,"*(poleCount*2)).format(*tuple(
+        ['F_Sa_NBefV', tr('Sattelkraft, vertikale Komponente')] +
+        ("{:.0f} kN,"*(poleCount*2)).format(*tuple(
                 kraft['Sattelkraft_beiStuetze'][1])).rstrip(',').split(','),
-        ["F_Sa_NBefH", "Sattelkraft, horizontale Komponente"] +
-            ("{:.0f} kN,"*(poleCount*2)).format(*tuple(
+        ['F_Sa_NBefH', tr('Sattelkraft, horizontale Komponente')] +
+        ("{:.0f} kN,"*(poleCount*2)).format(*tuple(
                 kraft['Sattelkraft_beiStuetze'][2])).rstrip(',').split(','),
     ]
     str_stue = [str_stue1, str_stue2]
 
     # Section cable angles
     str_wink = [
-        ["", "am Leerseil"] + sHeader,
-        ["alpha LA", "eingehender Winkel"] +
-            ("{:.0f}°,"*poleCount).format(*tuple(
+        ['', tr('am Leerseil')] + sHeader,
+        ['alpha LA', tr('eingehender Winkel')] +
+        ("{:.0f}°,"*poleCount).format(*tuple(
                 kraft['Anlegewinkel_Leerseil'][0])).rstrip(',').split(','),
-        ["alpha LE", "ausgehender Winkel"] +
-            ("{:.0f}°,"*poleCount).format(*tuple(
+        ['alpha LE', tr('ausgehender Winkel')] +
+        ("{:.0f}°,"*poleCount).format(*tuple(
                 kraft['Anlegewinkel_Leerseil'][1])).rstrip(',').split(','),
-        [""],
-        ["", "am Lastseil"] + sHeader,
-        ["alpha LA", "eingehender Winkel", ""] +
-            ("{:.0f}°,"*fieldCount).format(*tuple(
+        [''],
+        ['', tr('am Lastseil')] + sHeader,
+        ['alpha LA', tr('eingehender Winkel'), ''] +
+        ("{:.0f}°,"*fieldCount).format(*tuple(
                 kraft['Anlegewinkel_Lastseil'][0][1:])).rstrip(',').split(','),
-        ["alpha LE", "ausgehender Winkel"] +
-            ("{:.0f}°,"*fieldCount).format(*tuple(
+        ['alpha LE', tr('ausgehender Winkel')] +
+        ("{:.0f}°,"*fieldCount).format(*tuple(
                 kraft['Anlegewinkel_Lastseil'][1][:-1])).rstrip(',').split(',')
         ]
 
     # Section verification
     str_nach = [
-        ["", ""] + sHeader,
-        ["beta", "Leerseilknickwinkel"] +
-            ("{:.0f}°,"*poleCount).format(*tuple(
+        ['', ''] + sHeader,
+        ['beta', tr('Leerseilknickwinkel')] +
+        ("{:.0f}°,"*poleCount).format(*tuple(
                 kraft['Leerseilknickwinkel'])).rstrip(',').split(','),
-        ["", "Nachweis erfüllt"] +
-            ("{},"*poleCount).format(*tuple(
+        ['', tr('Nachweis erfuellt')] +
+        ('{},' * poleCount).format(*tuple(
                 kraft['Nachweis'])).rstrip(',').split(',')
     ]
     
@@ -267,7 +271,7 @@ def generateReportText(confHandler, result, comment):
     # Parameter set name
     setname = confHandler.params.currentSetName
     setname = setname if setname else '-'
-    str_para = [['Parameterset:', setname, '', ''],
+    str_para = [[tr('Parameterset:'), setname, '', ''],
                 ['']*4]     # empty row
 
     maxColLen = 10
@@ -297,7 +301,7 @@ def generateReport(reportText, outputLoc, projname):
     from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
     from reportlab.graphics.shapes import colors
 
-    savePath = os.path.join(outputLoc, 'Bericht.pdf')
+    savePath = os.path.join(outputLoc, tr('Bericht.pdf'))
     if os.path.exists(savePath):
         os.remove(savePath)
 
@@ -326,17 +330,17 @@ def generateReport(reportText, outputLoc, projname):
     smallfontSize = 6
     
     # Title definition
-    h_tite = [["Seilbahnprojekt        "+projname]]
-    h_posi = [["Stützenpositionen"]]
-    h_abst = [["Daten für Absteckung im Feld (Bodenpunkt)"]]
-    h_opti = [["Vorspannung der Seilzugkraft"]]
-    h_leng = [["Seillänge"]]
-    h_durc = [["Durchhang"]]
-    h_seil = [["Auftretende Kräfte am Seil"]]
-    h_stue = [["Auftretende Kräfte an den Stützen"]]
-    h_wink = [["Seilwinkel an den Stützen"]]
-    h_nach = [["Nachweis, dass Tragseil nicht vom Sattel abhebt"]]
-    h_anna = [["Annahmen"]]
+    h_tite = [[tr('Seilbahnprojekt') + '        '+projname]]
+    h_posi = [[tr('Stuetzenpositionen')]]
+    h_abst = [[tr('Daten fuer Absteckung im Feld (Bodenpunkt)')]]
+    h_opti = [[tr('Vorspannung der Seilzugkraft')]]
+    h_leng = [[tr('Seillaenge')]]
+    h_durc = [[tr('Durchhang')]]
+    h_seil = [[tr('Auftretende Kraefte am Seil')]]
+    h_stue = [[tr('Auftretende Kraefte an den Stuetzen')]]
+    h_wink = [[tr('Seilwinkel an den Stuetzen')]]
+    h_nach = [[tr('Nachweis, dass Tragseil nicht vom Sattel abhebt')]]
+    h_anna = [[tr('Annahmen')]]
 
     # Table styles
     font = 'Helvetica'
@@ -492,3 +496,22 @@ def createOutputFolder(location):
         i += 1
     os.makedirs(location)
     return location
+
+
+# noinspection PyMethodMayBeStatic
+def tr(message, **kwargs):
+    """Get the translation for a string using Qt translation API.
+    We implement this ourselves since we do not inherit QObject.
+
+    :param message: String for translation.
+    :type message: str, QString
+
+    :returns: Translated version of message.
+    :rtype: QString
+
+    Parameters
+    ----------
+    **kwargs
+    """
+    # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
+    return QCoreApplication.translate('@default', message)

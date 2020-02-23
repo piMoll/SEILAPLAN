@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0" idbasedtr="true">
- <class>AdjustmenDialog</class>
- <widget class="QDialog" name="AdjustmenDialog">
+ <class>AdjustmentDialogUI</class>
+ <widget class="QDialog" name="AdjustmentDialogUI">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -73,10 +73,10 @@
      <item>
       <widget class="QPushButton" name="btnBackToStart">
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Manuelle Anpassungen verwerfen und zurück zum Startfenster wechseln&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Manuelle Anpassungen verwerfen und zurueck zum Startfenster wechseln</string>
        </property>
        <property name="text">
-        <string>zurück zum Startfenster</string>
+        <string>zurueck zum Startfenster</string>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
@@ -155,7 +155,7 @@
          <enum>Qt::ClickFocus</enum>
         </property>
         <attribute name="title">
-         <string>Stützen</string>
+         <string>Stuetzen</string>
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_6">
          <item>
@@ -175,7 +175,7 @@
               </font>
              </property>
              <property name="text">
-              <string>Feinjustierung der Stützen</string>
+              <string>Feinjustierung der Stuetzen</string>
              </property>
             </widget>
            </item>
@@ -246,7 +246,7 @@
                   <number>1</number>
                  </property>
                  <property name="text">
-                  <string>Stützenbezeichnung</string>
+                  <string>Stuetzenbezeichnung</string>
                  </property>
                  <property name="margin">
                   <number>0</number>
@@ -296,7 +296,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>Stützenhöhe</string>
+                  <string>Stuetzenhoehe</string>
                  </property>
                  <property name="margin">
                   <number>0</number>
@@ -399,7 +399,7 @@
            <item row="5" column="0">
             <widget class="QLabel" name="label_9">
              <property name="text">
-              <string>Gewicht Rückholseil</string>
+              <string>Gewicht Rueckholseil</string>
              </property>
             </widget>
            </item>
@@ -440,7 +440,7 @@
            <item row="2" column="0">
             <widget class="QLabel" name="label_6">
              <property name="text">
-              <string>Querschnittsfläche Tragseil</string>
+              <string>Querschnittsflaeche Tragseil</string>
              </property>
             </widget>
            </item>
@@ -805,7 +805,7 @@
               </font>
              </property>
              <property name="text">
-              <string>Klick auf Zeile markiert Position der Grenzwert-Überschreitung im Diagramm.</string>
+              <string>Klick auf Zeile markiert Position der Grenzwert-Ueberschreitung im Diagramm.</string>
              </property>
             </widget>
            </item>
@@ -836,7 +836,7 @@
            <item>
             <widget class="QLabel" name="label_16">
              <property name="text">
-              <string>Bemerkungstext, welcher im technischen Bericht ergänzt wird</string>
+              <string>Bemerkungstext, welcher im technischen Bericht ergaenzt wird</string>
              </property>
             </widget>
            </item>

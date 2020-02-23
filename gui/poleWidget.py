@@ -18,7 +18,7 @@
  *                                                                         *
  ***************************************************************************/
 """
-from qgis.PyQt.QtCore import QSize, Qt, pyqtSignal, QObject
+from qgis.PyQt.QtCore import QSize, Qt, pyqtSignal, QObject, QCoreApplication
 from qgis.PyQt.QtWidgets import (QDoubleSpinBox, QSpinBox, QPushButton,
                                  QLineEdit, QHBoxLayout, QLabel, QCheckBox)
 from qgis.PyQt.QtGui import QIcon, QPixmap
@@ -369,7 +369,7 @@ class PoleRow(object):
             QPixmap(PoleRow.ICON_ADD_ROW), QIcon.Normal, QIcon.Off)
         self.addBtn.setIcon(icon)
         self.addBtn.setIconSize(QSize(16, 16))
-        self.addBtn.setToolTip('Fügt eine neue Stütze nach dieser hinzu')
+        self.addBtn.setToolTip(self.tr('Fuegt eine neue Stuetze nach dieser hinzu'))
         self.addBtn.setAutoDefault(False)
         self.row.addWidget(self.addBtn)
         
@@ -387,7 +387,7 @@ class PoleRow(object):
             QPixmap(PoleRow.ICON_DEL_ROW), QIcon.Normal, QIcon.Off)
         self.delBtn.setIcon(icon)
         self.delBtn.setIconSize(QSize(16, 16))
-        self.delBtn.setToolTip('Löscht die Stütze')
+        self.delBtn.setToolTip(self.tr('Loescht die Stuetze'))
         self.delBtn.setAutoDefault(False)
         self.row.addWidget(self.delBtn)
 
@@ -434,6 +434,24 @@ class PoleRow(object):
             
         self.layout.removeItem(self.row)
         self.parent.poleCount -= 1
+
+    # noinspection PyMethodMayBeStatic
+    def tr(self, message, **kwargs):
+        """Get the translation for a string using Qt translation API.
+        We implement this ourselves since we do not inherit QObject.
+
+        :param message: String for translation.
+        :type message: str, QString
+
+        :returns: Translated version of message.
+        :rtype: QString
+
+        Parameters
+        ----------
+        **kwargs
+        """
+        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
+        return QCoreApplication.translate(type(self).__name__, message)
 
 
 class QLineEditWithFocus(QLineEdit):
