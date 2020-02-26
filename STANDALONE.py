@@ -18,7 +18,8 @@ import sys
 
 # ################# PATH TO CURRENT QGIS PYTHON LOCATION ######################
 if 'WIN' in sys.platform.upper():
-    sys.path.append(r'C:\Program Files (x86)\QGIS 3.4\apps\qgis-ltr\python')
+    sys.path.append(r'C:\Program Files\QGIS 3.4\apps\qgis-ltr\python')
+    # sys.path.append(r'C:\Program Files (x86)\QGIS 3.4\apps\qgis-ltr\python')
     # Other possible paths:
     #   r'C:\Program Files\QGIS 3.4\apps\qgis-ltr\python'
     #   r'C:\Program Files\QGIS 3.10\apps\qgis\python'
@@ -137,8 +138,8 @@ if __name__ == "__main__":
     # ################## ALL CONFIGURATIONS GO HERE ###########################
     
     # Define the project file you want to load
-    savedProjectFile = '/home/pi/Seilaplan/nullpunkt_test/NW_raster_350m_3pole_4manchor/Projekteinstellungen.txt'
-
+    #savedProjectFile = r'N:\forema\FPS\Projekte_der_Gruppe\Seillinienplanung\6_Unterlagen_ProgrammierungSeilaplan\Python_Debugging\ProjectFiles\Projekteinstellungen_2_works.txt'
+    savedProjectFile = r'N:\forema\FPS\Projekte_der_Gruppe\Seillinienplanung\2c_Arbeitspaket1_Projekte\Martin_Ammann\Buriwand\buriwand_2.txt'
     # Define which functions the code should perform
     #  'optimize':  Run optimization algorithm to define pole positions and
     #               calculate final cable line.
@@ -149,9 +150,9 @@ if __name__ == "__main__":
     perform = 'optimize'
     
     # Do you want do generate output data? (PDFs, CSV, ...)
-    createOutput = True     # or: False
+    createOutput = False     # or: False
     # Where do you want output to be saved?
-    outputLocation = '/home/pi/Seilaplan'
+    outputLocation = r'N:\forema\FPS\Projekte_der_Gruppe\Seillinienplanung\6_Unterlagen_ProgrammierungSeilaplan\Python_Debugging\BerechneteVersionen'
     
     # #########################################################################
 
