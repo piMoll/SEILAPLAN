@@ -110,7 +110,7 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
             min_HM_End = 0
 
         # Punkttyp: Stütze - Endstütze mit variabler Höhe
-        hStufungEnd = range(min_HM_End, max_HM + 1, Abstufung_HM)
+        hStufungEnd = range(int(min_HM_End), max_HM + 1, Abstufung_HM)
         stufenAnzEnd = len(hStufungEnd)
 
     else:
