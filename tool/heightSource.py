@@ -389,8 +389,8 @@ class SurveyData(AbstractHeightSource):
         
         # Update buffer: If user defined other start/end points than first and
         # last point of profile, define distances to ends as buffer
-        distToStart = ((x0 - Ax) ** 2 + (y0 - Ay) ** 2) ** 0.5
-        distToEnd = ((x1 - Ex) ** 2 + (y1 - Ey) ** 2) ** 0.5
+        distToStart = np.hypot(x0 - Ax, y0 - Ay)
+        distToEnd = np.hypot(x1 - Ex, y1 - Ey)
         self.buffer = (distToStart, distToEnd)
 
         # For display in plot survey points are being rounded to the nearest
