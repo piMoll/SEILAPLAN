@@ -78,27 +78,45 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
     # Anfangsstütze
     if pole_type[0] == 'pole':
         # Punkttyp: Stütze - Anfangsstütze mit variabler Höhe
-        hStufungAnf = range(0, max_HM+1, Abstufung_HM)
+
+        # neu (26.2.2020) Falls der Bodenabstand ab 0 m geprüft wird, ist die minimale Stuetzenhoehe am Anfang
+        # immer gleich dem minimal gefordertem Bodenabstand
+        if IS['Bodenabst_A']==0:
+            min_HM_Anf = IS['Bodenabst_min']
+        else:
+            min_HM_Anf = 0
+
+
+        hStufungAnf = range(int(min_HM_Anf), max_HM+1, Abstufung_HM)
         stufenAnzAnf = len(hStufungAnf)
     
     elif pole_type[0] == 'pole_anchor':
         # Punkttyp: Verankerung - Anfangsstütze mit 0m Höhe
-        hStufungAnf = 0
+        min_HM_Anf = 0
+        hStufungAnf = min_HM_Anf
         stufenAnzAnf = 1
     else:
         # Punkttyp: Seilkran - Anfangsstütze mit fixer Höhe des Seilkranmasts
         hStufungAnf = IS["HM_Kran"]
         stufenAnzAnf = 1
+        min_HM_Anf = IS["HM_Kran"]
 
     # Endstütze
+
     if pole_type[1] == 'pole':
+        if IS['Bodenabst_E']==0:
+            min_HM_End = IS['Bodenabst_min']
+        else:
+            min_HM_End = 0
+
         # Punkttyp: Stütze - Endstütze mit variabler Höhe
-        hStufungEnd = range(0, max_HM + 1, Abstufung_HM)
+        hStufungEnd = range(int(min_HM_End), max_HM + 1, Abstufung_HM)
         stufenAnzEnd = len(hStufungEnd)
 
     else:
+        min_HM_End = 0
         # Punkttyp: Verankerung - Endstütze mit 0m Höhe
-        hStufungEnd = 0
+        hStufungEnd = min_HM_End
         stufenAnzEnd = 1
     
     arraySize = stufenAnzAnf + (posAnz - 2) * len(hStufung) + stufenAnzEnd
@@ -169,13 +187,15 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
     Pos_gp_A = Pos_gp[aa]
     Pos_gp_E = Pos_gp[ee]
 
-    # Bestimmen der min. und max. Zeilvorzugspannung für jede Knotenverbindung
+    # Bestimmen der min. und max. Seilvorzugspannung für jede Knotenverbindung
     # -------------------------------------------------------------------------
     MinSTA = np.zeros(optiLen)
     MaxSTA = np.zeros(optiLen)
     # Startwerte
-    z_null = zi[0] * 0.1 + HM[0]
-    z_ende = zi[-1] * 0.1 + HM[-1]
+    # z_null = zi[0] * 0.1 + HM[0]
+    # z_ende = zi[-1] * 0.1 + HM[-1]
+    # z_null & z_ende neu definieren: (26.02.2020): --> weiter unten in der for Schlaufe!
+
     d_null = di[0]
     d_ende = di[-1]
 
@@ -184,6 +204,7 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
     progress.sig_text.emit("Berechnung der optimalen Stützenpositionen...")
 
     for i in range(optiLen):
+
         if progress.isCanceled():
             # Überprüfen ob vom Benutzer ein Abbruch durchgeführt wurde
             return False
@@ -193,11 +214,27 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
         sc_part = sc[Pos_gp_A[i]:Pos_gp_E[i]+1]
         befGSK_part = befGSK[Pos_gp_A[i]:Pos_gp_E[i]+1]
 
+        # z_null definieren:
+        if di_part[0] == d_null:  # falls erstes Feld geprueft wird!
+            z_null = zi[0] * 0.1 + HeightA[i]
+        else:  # Annahme fuer weitere Felder (der tatsächlich gewählte Wert ist unbekannt)
+            z_null = zi[0] * 0.1 + min_HM_Anf
+
+
+        # z_ende definieren:
+        if di_part[-1] == d_ende:  # falls letztes Feld geprueft wird!
+            z_ende = zi[-1] * 0.1 + HeightE[i]
+        else:  # Annahme fuer weitere Felder (der tatsächlich gewählte Wert ist unbekannt)
+            z_ende = zi[-1] * 0.1 + min_HM_End
+
+
+
         # Zweifel-Methode
         [CableLineImpossible,
         Min, Max] = calcSTA(IS, zi_part, di_part, sc_part,
                             befGSK_part, HeightA[i], HeightE[i],
                             z_null, z_ende, d_null, d_ende)
+
         if not CableLineImpossible:
             MinSTA[i] = Min
             MaxSTA[i] = Max
@@ -222,13 +259,16 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
     min_dist = float('inf')
     Max_LengthInLP = 0
 
+
+
+
     for sk in range(min_SK, zul_SK+1):
         G = emptyMatrix
         ind = (MinSTA < sk) & (MaxSTA > sk)
         G[aa, ee] = KostStue * ind
         G[indexMax, arraySize] = 1
 
-        G_n = G.copy()
+
         size_of_matrix_G = arraySize + 1
         G_n = np.zeros((size_of_matrix_G + 1, size_of_matrix_G + 1))
         G_n[:-1, :-1] = G
@@ -253,7 +293,7 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
         while i > stufenAnzAnf:
             path.append(i)
             i = predecessors[i]
-        path.append(0)
+        path.append(i)  ## 0 durch i ersetzt (26.2.2020)
 
         mem[sk] = dist
         memLength[sk] = LengthInLP
