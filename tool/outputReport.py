@@ -105,7 +105,7 @@ def generateReportText(confHandler, result, comment):
                         'sind in der Dokumentation zu finden.')])
     
     # Section poles
-    str_posi = [["", tr('Hoehe [m]'), tr('Neigung []'), tr('X-Koordinate'),
+    str_posi = [["", tr('Hoehe Sattel [m]'), tr('Neigung []'), tr('X-Koordinate'),
                  tr('Y-Koordinate'), tr('Z-Koordinate [m.ue.M.]')]]
     for pole in polesWithAnchors:
         if not pole['active']:
@@ -129,25 +129,23 @@ def generateReportText(confHandler, result, comment):
                          f"{dist_h:.1f} m", f"{dist_s:.2f} m"])
 
     # Section cable pull strength
-    str_opti = [[tr('optimaler Wertebeich'),
-                 f"{np.min(result['optSTA_arr']):.0f} - {np.max(result['optSTA_arr']):.0f} kN"],      # TODO: Was machen mit manuell definiertem OptSTA? Leo fragen
-                [tr('gewaehlte Seilzugkraft bei der Anfangsstuetze'),
+    str_opti = [[tr('gewaehlte Seilzugkraft bei der Anfangsstuetze'),
                  f"{kraft['Spannkraft'][0]:.0f} kN"]]
 
     # Section cable length
     str_laen = [['']*2 + fHeader,
                 [tr('Laenge Leerseil bei Anfangszugkraft'),
-                 f"{kraft['LaengeSeil'][0]:.0f} m"] + ['']*fieldCount,
+                 f"{kraft['LaengeSeil'][0]:.1f} m"] + ['']*fieldCount,
                 [tr('Laenge Leerseil bei 0 kN Seilzugkraft'),
-                 f"{kraft['LaengeSeil'][1]:.0f} m"] + ['']*fieldCount,
-                [tr('Laenge der Spannfelder')] + (",{:.0f} m" * fieldCount).format(
+                 f"{kraft['LaengeSeil'][1]:.1f} m"] + ['']*fieldCount,
+                [tr('Laenge der Spannfelder (Schraegdistanz)')] + (",{:.1f} m" * fieldCount).format(
                     *tuple(kraft['LaengeSeil'][2])).split(',', fieldCount)]
 
     # Section cable slack
     str_durc = [[tr('Abk.'), ''] + fHeader,
-                ['yLE', tr('Leerseil')] + ("{:.2f} m," * fieldCount).format(
+                ['yLE', tr('Leerseil')] + ("{:.1f} m," * fieldCount).format(
                     *tuple(kraft['Durchhang'][0])).rstrip(',').split(',', fieldCount),
-                ['yLA', tr('Lastseil')] + ("{:.2f} m," * fieldCount).format(
+                ['yLA', tr('Lastseil')] + ("{:.1f} m," * fieldCount).format(
                     *tuple(kraft['Durchhang'][1])).rstrip(',').split(',', fieldCount)]
 
     str_seil1 = [
@@ -241,30 +239,35 @@ def generateReportText(confHandler, result, comment):
     str_wink = [
         ['', tr('am Leerseil')] + sHeader,
         ['alpha LA', tr('eingehender Winkel')] +
-        ("{:.0f}°,"*poleCount).format(*tuple(
+        ("{:.1f}°,"*poleCount).format(*tuple(
                 kraft['Anlegewinkel_Leerseil'][0])).rstrip(',').split(','),
         ['alpha LE', tr('ausgehender Winkel')] +
-        ("{:.0f}°,"*poleCount).format(*tuple(
+        ("{:.1f}°,"*poleCount).format(*tuple(
                 kraft['Anlegewinkel_Leerseil'][1])).rstrip(',').split(','),
         [''],
         ['', tr('am Lastseil')] + sHeader,
         ['alpha LA', tr('eingehender Winkel'), ''] +
-        ("{:.0f}°,"*fieldCount).format(*tuple(
+        ("{:.1f}°,"*fieldCount).format(*tuple(
                 kraft['Anlegewinkel_Lastseil'][0][1:])).rstrip(',').split(','),
         ['alpha LE', tr('ausgehender Winkel')] +
-        ("{:.0f}°,"*fieldCount).format(*tuple(
+        ("{:.1f}°,"*fieldCount).format(*tuple(
                 kraft['Anlegewinkel_Lastseil'][1][:-1])).rstrip(',').split(',')
         ]
 
     # Section verification
+    tr('Ja'), tr('Nein')        # For automatic i18n string extraction
+    nachweis = [tr(n) for n in kraft['Nachweis']]
     str_nach = [
         ['', ''] + sHeader,
+        ['', tr('Lastseilknickwinkel')] +
+        ("{:.1f}°," * poleCount).format(*tuple(
+            kraft['Lastseilknickwinkel'])).rstrip(',').split(','),
         ['beta', tr('Leerseilknickwinkel')] +
-        ("{:.0f}°,"*poleCount).format(*tuple(
+        ("{:.1f}°,"*poleCount).format(*tuple(
                 kraft['Leerseilknickwinkel'])).rstrip(',').split(','),
         ['', tr('Nachweis erfuellt')] +
-        ('{},' * poleCount).format(*tuple(
-                kraft['Nachweis'])).rstrip(',').split(',')
+        ('{},' * poleCount).format(*tuple(nachweis)).rstrip(',').split(','),
+        ["", "  " + tr('(Leerseilknickwinkel 2)')]
     ]
     
     orderedParams = confHandler.params.paramOrder
@@ -384,7 +387,7 @@ def generateReport(reportText, outputLoc, projname):
         ('FONT', (0, 1), (-1, 1), fontHeader, smallfontSize)]))
 
     t_opti1 = Table(h_opti, wi_doc, he_rowT)
-    t_opti2 = Table(str_opti, [5*cm] + wi_clo, 2*he_row)
+    t_opti2 = Table(str_opti, [5*cm] + wi_clo, len(str_opti) * he_row)
     t_opti1.setStyle(title_style)
     t_opti2.setStyle(TableStyle(stdStyleA))
 
@@ -454,11 +457,12 @@ def generateReport(reportText, outputLoc, projname):
         ('FONT', (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
 
     t_nach1 = Table(h_nach, wi_doc, he_rowT)
-    t_nach2 = Table(str_nach, wi_abk + [4*cm] + [1.7*cm]*len_field, 3*he_row)
+    t_nach2 = Table(str_nach, wi_abk + [4*cm] + [1.7*cm]*len_field, len(str_nach) * he_row)
     t_nach1.setStyle(title_style)
     t_nach2.setStyle(TableStyle(stdStyleB + [
         ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),  # field header
-        ('FONT', (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
+        ('FONT', (0, 0), (0, -1), font, smallfontSize),  # abbreviation in first column
+        ('FONT', (0, len(str_nach)-1), (-1, len(str_nach)-1), font, 7)]))  # Comment
 
     t_anna1 = Table(h_anna, wi_doc, he_rowT)
     t_anna2 = Table(str_para, [5*cm, 3*cm, 1*cm, 5*cm, 3*cm, 1*cm, 5*cm, 3*cm], len(str_para) * [0.35*cm])
