@@ -20,14 +20,16 @@
 """
 
 from qgis.PyQt.QtCore import (Qt, QObject, QAbstractTableModel, QModelIndex,
-                              pyqtSignal)
+                              pyqtSignal, QSize)
 from qgis.PyQt.QtGui import (QColor, QBrush, QStandardItem, QStandardItemModel,
                              QIcon, QPixmap)
+from qgis.PyQt.QtWidgets import QPushButton, QHBoxLayout, QWidget, QMessageBox
 
 
 class AdjustmentDialogThresholds(QObject):
     
     COLOR_ERROR = QColor(224, 103, 103)
+    COLOR_ATTENTION = QColor(237, 148, 76)
     COLOR_NEUTRAL = QColor(255, 255, 255)
     
     sig_clickedRow = pyqtSignal(int)
@@ -59,38 +61,45 @@ class AdjustmentDialogThresholds(QObject):
     
     def populate(self, header, dataset, valueColumn):
         self.model.setHorizontalHeaderLabels(header)
-        self.tbl.hideColumn(4)
+        self.tbl.hideColumn(5)
         
         # Insert data into cells
         for i, rowData in enumerate(dataset):
             for j, cellData in enumerate(rowData):
-                if j == 4:
-                    cellData = len(cellData)
-                    if cellData > 0:
+                if j == 0:
+                    # Create clickable info button in first column
+                    btnWidget = self.createInfoBtn(cellData)
+                    self.tbl.setIndexWidget(self.model.index(i, j), btnWidget)
+                    continue
+                if j == 5 and isinstance(cellData, dict):
+                    loclen = len(cellData['loc'])
+                    if loclen > 0:
                         # Set background color for cells where threshold is
                         #  exceeded
-                        self.colorBackground(i, valueColumn, self.COLOR_ERROR)
+                        color = self.COLOR_ERROR if cellData['col'] == 1 else self.COLOR_ATTENTION
+                        self.colorBackground(i, valueColumn, color)
+                    cellData = loclen
                 item = QStandardItem(cellData)
                 self.model.setItem(i, j, item)
                 self.model.setData(self.model.index(i, j), cellData)
         
         # Adjust column widths
         self.tbl.resizeColumnsToContents()
-        self.tbl.setColumnWidth(0, 300)
-        for idx in range(1, self.model.columnCount()):
+        for idx in range(2, self.model.columnCount()):
             currSize = self.tbl.sizeHintForColumn(idx)
             self.tbl.setColumnWidth(idx, max(currSize, 90))
-        self.tbl.resizeRowsToContents()
+        self.tbl.setFocusPolicy(Qt.NoFocus)
         self.updateTabIcon()
     
     def updateData(self, row, col, newVal):
         # Update background color of new values
-        if col == 4:
-            newVal = len(newVal)
+        if col == 5 and isinstance(newVal, dict):
+            locLen = len(newVal['loc'])
             color = self.COLOR_NEUTRAL
-            if newVal != 0:
-                color = self.COLOR_ERROR
-            self.colorBackground(row, 3, color)
+            if locLen != 0:
+                color = self.COLOR_ERROR if newVal['col'] == 1 else self.COLOR_ATTENTION
+            self.colorBackground(row, 4, color)
+            newVal = locLen
         # Update value itself
         self.model.setData(self.model.index(row, col), newVal)
         self.updateTabIcon()
@@ -100,7 +109,7 @@ class AdjustmentDialogThresholds(QObject):
         if self.initState:
             self.initState = False
             for row in range(self.model.rowCount()):
-                self.colorBackground(row, 2, self.COLOR_NEUTRAL)
+                self.colorBackground(row, 3, self.COLOR_NEUTRAL)
     
     def colorBackground(self, row, col, color):
         self.model.setData(self.model.index(row, col),
@@ -110,8 +119,8 @@ class AdjustmentDialogThresholds(QObject):
         """ Updates icon of QTabWidget with an exclamation mark or check
         mark depending on presents of exceeded thresholds."""
         thresholdExceeded = False
-        for i in range(0, 5):
-            data = self.model.data(self.model.index(i, 4))
+        for i in range(0, self.model.rowCount()):
+            data = self.model.data(self.model.index(i, 5))
             if data and data > 0:
                 thresholdExceeded = True
                 break
@@ -127,6 +136,21 @@ class AdjustmentDialogThresholds(QObject):
             self.tbl.clearSelection()
         # Emit select signal
         self.sig_clickedRow.emit(item.row())
+    
+    def createInfoBtn(self, cellData):
+        button = QPushButton('?')
+        button.setMaximumSize(QSize(22, 22))
+        # Fill info text into message box
+        button.clicked.connect(
+            lambda: QMessageBox.information(self.parent, cellData['title'],
+                                            cellData['message'], QMessageBox.Ok))
+        cellWidget = QWidget()
+        # Add layout to center button in cell
+        layout = QHBoxLayout(cellWidget)
+        layout.addWidget(button, 0, Qt.AlignCenter)
+        layout.setAlignment(Qt.AlignCenter)
+        cellWidget.setLayout(layout)
+        return cellWidget
 
 
 class ThresholdTblModel(QAbstractTableModel):
@@ -141,18 +165,6 @@ class ThresholdTblModel(QAbstractTableModel):
     
     def columnCount(self, index=QModelIndex()):
         return len(self.header)
-    
-    def data(self, index, role=Qt.DisplayRole):
-        if not index.isValid():
-            return None
-        if role == Qt.DisplayRole:
-            return self.dataset[index.row()][index.column()]
-        if role == Qt.BackgroundColorRole:
-            return QBrush(Qt.red)
-        if role == Qt.TextAlignmentRole:
-            return Qt.AlignVCenter
-        else:
-            return None
     
     def headerData(self, col, orientation=Qt.Horizontal, role=Qt.DisplayRole):
         if orientation == Qt.Horizontal and role == Qt.DisplayRole:

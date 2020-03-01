@@ -47,7 +47,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
     position, height, angle and the properties of the cable line. The cable
     line is then recalculated and the new layout is shown in a plot.
     """
-
+    
     def __init__(self, interface, confHandler):
         """
         :type confHandler: configHandler.ConfigHandler
@@ -62,19 +62,19 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.poles = self.confHandler.project.poles
         # Max distance the anchors can move away from initial position
         self.anchorBuffer = self.confHandler.project.heightSource.buffer
-
+        
         # Load data
         self.originalData = {}
         self.result = {}
         self.cableline = {}
-        self.thSize = [5, 5]
+        self.thSize = [5, 6]
         self.thData = {}
         self.status = None
         self.doReRun = False
-
+        
         # Setup GUI from UI-file
         self.setupUi(self)
-
+        
         self.drawTool = MapMarkerTool(self.iface.mapCanvas())
         
         # Create plot
@@ -85,7 +85,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.plot.setToolbar(tbar)
         self.plotLayout.addWidget(self.plot)
         self.plotLayout.addWidget(tbar, alignment=Qt.AlignHCenter | Qt.AlignTop)
-
+        
         # Fill tab widget with data
         self.poleLayout = CustomPoleWidget(self.tabPoles, self.poleVGrid)
         # self.poleLayout.sig_zoomIn.connect(self.zoomToPole)
@@ -97,15 +97,15 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.thresholdLayout = AdjustmentDialogThresholds(self, self.thSize)
         self.thresholdLayout.sig_clickedRow.connect(self.showThresholdInPlot)
         self.selectedThresholdRow = None
-
+        
         self.paramLayout = AdjustmentDialogParams(self, self.confHandler.params)
-
+        
         # Thread for instant recalculation when poles or parameters are changed
         self.timer = QTimer()
         self.configurationHasChanged = False
         self.isRecalculating = False
         self.unsavedChanges = True
-
+        
         # Save dialog
         self.saveDialog = DialogOutputOptions(self, self.confHandler)
         
@@ -114,7 +114,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.btnSave.clicked.connect(self.onSave)
         self.btnBackToStart.clicked.connect(self.onReturnToStart)
         self.fieldComment.textChanged.connect(self.onCommentChanged)
-
+    
     # noinspection PyMethodMayBeStatic
     def tr(self, message, **kwargs):
         """Get the translation for a string using Qt translation API.
@@ -132,18 +132,18 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         """
         # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
         return QCoreApplication.translate(type(self).__name__, message)
-
+    
     def loadData(self, pickleFile):
         """ Is used to load testdata from pickl object in debug mode """
         f = open(pickleFile, 'rb')
         dump = pickle.load(f)
         f.close()
-
+        
         self.poles.poles = dump['poles']
         self.poles.calculateAnchorLength()
-
-        self.initData(dump, 'optiSuccess')
         
+        self.initData(dump, 'optiSuccess')
+    
     def initData(self, result, status):
         if not result:
             self.close()
@@ -157,29 +157,29 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             try:
                 params = self.confHandler.params.getSimpleParameterDict()
                 cableline, force, \
-                    seil_possible = preciseCable(params, self.poles,
-                                                 self.result['optSTA'])
+                seil_possible = preciseCable(params, self.poles,
+                                             self.result['optSTA'])
                 self.result['cableline'] = cableline
                 self.result['force'] = force
-
+            
             except Exception as e:
                 QMessageBox.critical(self, self.tr('Unerwarteter Fehler '
                     'bei Berechnung der Seillinie'), str(e), QMessageBox.Ok)
                 return
-
+        
         self.cableline = self.result['cableline']
         self.profile.updateProfileAnalysis(self.cableline)
-
+        
         self.updateRecalcStatus(status)
-
+        
         # Draw profile in diagram
         self.plot.initData(self.profile.di_disp, self.profile.zi_disp,
                            self.profile.peakLoc_x, self.profile.peakLoc_z,
                            self.profile.surveyPnts)
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
-    
+        
         # Create layout to modify poles
-        lowerDistRange = floor(-1*self.anchorBuffer[0])
+        lowerDistRange = floor(-1 * self.anchorBuffer[0])
         upperDistRange = floor(self.poles.lastPole['d'] + self.anchorBuffer[1])
         self.poleLayout.setInitialGui([lowerDistRange, upperDistRange], self.poles)
 
@@ -192,7 +192,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         # Mark profile line and poles on map
         self.updateLineOnMap()
         self.addMarkerToMap()
-
+        
         # Start Thread to recalculate cable line every 300 milliseconds
         self.timer.timeout.connect(self.recalculate)
         self.timer.start(300)
@@ -206,10 +206,10 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
     def zoomOut(self):
         self.plot.zoomOut()
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
-
+    
     def updatePole(self, idx, property_name, newVal):
         self.poles.update(idx, property_name, newVal)
-       
+        
         # Update markers on map
         if property_name == 'd':
             self.updateMarkerOnMap(idx)
@@ -227,7 +227,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
                 upperRange = self.poles.poles[idx + 1]['d']
             self.poleLayout.deactivateRow(idx, lowerRange, upperRange)
             self.drawTool.hideMarker(idx)
-            
+        
         # Anchor was activated
         elif property_name == 'active' and newVal is True:
             # Update new distance ranges of neighbouring poles
@@ -248,9 +248,9 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             # Activate input fields
             self.poleLayout.activateRow(idx, dist)
             point = [self.poles.poles[idx]['coordx'],
-                    self.poles.poles[idx]['coordy']]
+                     self.poles.poles[idx]['coordy']]
             self.drawTool.showMarker(point, idx, 'anchor')
-
+        
         # self.plot.zoomTo(self.poles.poles[idx])
         self.poleLayout.changeRow(idx, property_name, newVal)
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
@@ -266,7 +266,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         d = floor(lowerRange + 0.5 * rangeDist)
         
         self.poles.add(newPoleIdx, d, manually=True)
-
+        
         self.poleLayout.addRow(
             newPoleIdx, self.poles.poles[newPoleIdx]['name'], d, lowerRange,
             upperRange, self.poles.poles[newPoleIdx]['h'],
@@ -275,15 +275,15 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         # self.plot.zoomOut()
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         self.configurationHasChanged = True
-
+    
     def deletePole(self, idx):
         self.poles.delete(idx)
         lowerRange = None
         upperRange = None
         if idx > 0:
-            lowerRange = self.poles.poles[idx-1]['d']
-        if idx < len(self.poles.poles)-1:
-            upperRange = self.poles.poles[idx+1]['d']
+            lowerRange = self.poles.poles[idx - 1]['d']
+        if idx < len(self.poles.poles) - 1:
+            upperRange = self.poles.poles[idx + 1]['d']
         self.poleLayout.deleteRow(idx, lowerRange, upperRange)
         self.drawTool.removeMarker(idx)
         # self.plot.zoomOut()
@@ -399,7 +399,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             # QMessageBox.critical(self, 'Unerwarteter Fehler bei Neuberechnung '
             #     'der Seillinie', str(e), QMessageBox.Ok)
             return
-
+        
         self.cableline = cableline
         self.result['force'] = force
         
@@ -413,7 +413,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         
         # Update Threshold data
         self.updateThresholds()
-
+        
         # cable line lifts off of pole
         if not seil_possible:
             self.updateRecalcStatus('liftsOff')
@@ -428,8 +428,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             self.cableline['groundclear_rel'],  # Distance cable - terrain
             self.result['force']['MaxSeilzugkraft'][0],  # Max force on cable
             self.result['force']['Sattelkraft_Total'][0],  # Max force on pole
-            self.result['force']['Anlegewinkel_Lastseil'],  # Cable angle
-            self.result['force']['Nachweis'],  # Prove
+            self.result['force']['Lastseilknickwinkel'],  # Cable angle on pole
+            self.result['force']['Leerseilknickwinkel'],  # Cable angle on pole
         ]
         
         if not self.thData:
@@ -440,12 +440,12 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             # Cable was recalculated, update threshold values
             self.thData['plotLabels'] = []
             for i in range(len(self.thData['rows'])):
-                val, location, \
-                    plotLabels = self.checkThresholdAndLocation(i, resultData[i])
-                self.thresholdLayout.updateData(i, 3, val)
-                self.thresholdLayout.updateData(i, 4, location)
-                self.thData['rows'][i][3] = val
-                self.thData['rows'][i][4] = location
+                val, location, color, \
+                plotLabels = self.checkThresholdAndLocation(i, resultData[i])
+                self.thresholdLayout.updateData(i, 4, val)
+                self.thresholdLayout.updateData(i, 5, {'loc': location, 'col': color})
+                self.thData['rows'][i][4] = val
+                self.thData['rows'][i][5] = {'loc': location, 'col': color}
                 self.thData['plotLabels'].append(plotLabels)
         
         self.showThresholdInPlot()
@@ -455,25 +455,49 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         rows = [['' for cell in range(self.thSize[1])]
                 for row in range(self.thSize[0])]
         header = [
+            '',
             self.tr('Kennwert'),
-            self.tr('Definierter Grenzwert'),
+            self.tr('Grenzwert'),
             self.tr('Optimierte Loesung'),
             self.tr('Aktuelle Loesung'),
             self.tr('Wo?')
         ]
+        infoText = [
+            {
+                'title': self.tr('Minimaler Bodenabstand'),
+                'message': self.tr('Es wird der im Parameterset definierte minimale Bodenabstand mit einer Aufloesung von 1m getestet.'),
+            },
+            {
+                'title': self.tr('Max. auftretende Seilzugkraft'),
+                'message': self.tr('Es wird die maximal auftretende Seilzugkraft am Lastseil mit der Last in Feldmitte berechnet.'),
+            },
+            {
+                'title': self.tr('Max. resultierende Sattelkraft'),
+                'message': self.tr('Es wird die maximal resultierende Sattelkraft an befahrbaren Stuetzen mit der Last auf der Stuetze berechnet.'),
+            },
+            {
+                'title': self.tr('Max. Lastseilknickwinkel'),
+                'message': self.tr('Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften.'),
+            },
+            {
+                'title': self.tr('Min. Leerseilknickwinkel'),
+                'message': self.tr('Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).'),
+            },
+        ]
+        
         units = [
             params.params['Bodenabst_min']['unit'],
             params.params['min_SK']['unit'],
             params.params['min_SK']['unit'],
             '°',
-            ''
+            '°'
         ]
         thresholds = [
             params.getParameter('Bodenabst_min'),
             float(params.getParameter('zul_SK')),
-            float(params.getParameter('zul_SK')),
             None,
-            None
+            30,
+            [2, 4],
         ]
         self.thData = {
             'header': header,
@@ -486,34 +510,35 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             self.tr('Minimaler Bodenabstand'),
             self.tr('Max. auftretende Seilzugkraft'),
             self.tr('Max. resultierende Sattelkraft'),
-            self.tr('Seilwinkel am Lastseil'),  # TODO
-            self.tr('Nachweis erbracht, dass Seil nicht vom Sattel abhebt')
+            self.tr('Max. Lastseilknickwinkel'),
+            self.tr('Min. Leerseilknickwinkel')
         ]
         thresholdStr = [
             f"{params.getParameterAsStr('Bodenabst_min')} {units[0]}",
             f"{params.getParameter('zul_SK')} {units[1]}",
-            f"{params.getParameter('zul_SK')} {units[2]}",
-            '0 ° - 30 °',
-            '-'
+            '-',
+            '30 °',
+            '2 / 4 °'
         ]
         # Where to put the current threshold values
-        valColumn = 2
-        emptyColumn = 3
+        valColumn = 3
+        emptyColumn = 4
         if self.status in ['jumpedOver', 'savedFile']:
             # No optimization was run, so no optimal solution
-            valColumn = 3
-            emptyColumn = 2
-    
+            valColumn = 4
+            emptyColumn = 3
+        
         for i in range(self.thSize[0]):
-            val, location, \
+            val, location, color, \
                 plotLabels = self.checkThresholdAndLocation(i, resultData[i])
-            self.thData['rows'][i][0] = label[i]
-            self.thData['rows'][i][1] = thresholdStr[i]
+            self.thData['rows'][i][0] = infoText[i]
+            self.thData['rows'][i][1] = label[i]
+            self.thData['rows'][i][2] = thresholdStr[i]
             self.thData['rows'][i][valColumn] = val
             self.thData['rows'][i][emptyColumn] = ''
-            self.thData['rows'][i][4] = location
+            self.thData['rows'][i][5] = {'loc': location, 'col': color}
             self.thData['plotLabels'].append(plotLabels)
-    
+        
         self.thresholdLayout.populate(header, self.thData['rows'], valColumn)
     
     def checkThresholdAndLocation(self, idx, data):
@@ -523,9 +548,11 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         # Location in relation to origin on horizontal axis (needed for
         #  plotting)
         location = []
+        # Color of marked threshold
+        color = 1   # red
         # Formatted threshold value to show in plot
         plotLabel = []
-
+        
         # Ground clearance
         if idx == 0:
             if np.isnan(data).all():
@@ -542,8 +569,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
                     plotLabel = [self.formatThreshold(l, idx) for l in localCopy[location]]
                 location = [int(l + self.poles.firstPole['d']) for l in location]
         
-        # Max force on cable and on pole
-        elif idx in [1, 2]:
+        # Max force on cable
+        elif idx == 1:
             # Replace nan with 0 so that no Runtime Warning is thrown in
             # np.argwhere()
             localCopy = np.nan_to_num(data)
@@ -553,70 +580,56 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
                 plotLabel = np.ravel(localCopy[location])
                 plotLabel = [self.formatThreshold(l, idx) for l in plotLabel]
                 locationIdx = np.ravel(location)
-                if idx == 1:
-                    # Force is calculated in the middle of the field, so
-                    #  marker should also be in the middle between two poles
-                    location = []
-                    for field in locationIdx:
-                        leftPole = self.poles.poles[self.poles.idxA + field]['d']
-                        rightPole = self.poles.poles[self.poles.idxA + field + 1]['d']
-                        location.append(int(leftPole + floor((rightPole - leftPole) / 2)))
-                elif idx == 2:
-                    # Force is located at pole, so we need horizontal distance
-                    #  of poles
-                    location = [int(self.poles.poles[self.poles.idxA + l]['d']) for l in locationIdx]
+                # Force is calculated in the middle of the field, so
+                #  marker should also be in the middle between two poles
+                location = []
+                for field in locationIdx:
+                    leftPole = self.poles.poles[self.poles.idxA + field]['d']
+                    rightPole = self.poles.poles[self.poles.idxA + field + 1]['d']
+                    location.append(int(leftPole + floor((rightPole - leftPole) / 2)))
         
-        # Cable angle
-        elif idx == 3:
+        elif idx == 2:
+            localCopy = np.nan_to_num(data)
+            maxVal = np.max(localCopy)
+        
+        # Lastseilknickwinkel
+        elif idx == 3 and not np.all(np.isnan(data)):
             # Replace nan with 0 so that no Runtime Warning is thrown
             localCopy = np.nan_to_num(data)
-            # Transform negative values to values over 30, so we have to do
-            #  only do one check
-            localCopy[localCopy < 0] -= 30
-            localCopy[localCopy < 0] *= -1
             maxVal = np.nanmax(localCopy)
-            greaterThan = localCopy > 30
+            greaterThan = localCopy > self.thData['thresholds'][idx]
             # Check which pole is affected
-            locationPole = np.ravel(np.argwhere(np.any(greaterThan, 0)))
-            # Generate labels: For every pole, there is an incoming and
-            #  outgoing angle which has to be extracted and correctly formatted
-            if len(locationPole) != 0:
-                # Transpose arrays to get incoming / outgoing angle pairwise
-                dataT = data.T
-                greaterThanT = greaterThan.T
-                for i, gT in enumerate(greaterThanT):
-                    if not np.any(gT):
-                        continue
-                    txt = ''
-                    if gT[0]:       # incoming angle
-                        # TODO Übersetzen
-                        txt += f'ein: {self.formatThreshold(dataT[i][0], idx)}'
-                        if gT[1]:
-                            txt += '\n'
-                    elif gT[1]:     # outgoing angle
-                        txt += f'aus: {self.formatThreshold(dataT[i][1], idx)}'
-                    plotLabel.append(txt)
-                for loc in locationPole:
-                    # Get horizontal distance of affected poles
-                    location.append(int(self.poles.poles[loc + self.poles.idxA]['d']))
+            locationPole = np.ravel(np.argwhere(greaterThan))
+            for poleIdx in locationPole:
+                pole = self.poles.poles[self.poles.idxA + poleIdx]
+                location.append(pole['d'])
+                plotLabel.append(self.formatThreshold(localCopy[poleIdx], idx))
         
-        # Proof: Only test for poles that are not first and last pole
-        elif idx == 4:
-            valStr = self.tr('Nein') if 'Nein' in data[1:-1] else self.tr('Ja')
-            # Without first and last pole!
-            locationPole = [i for i, m in enumerate(data[1:-1]) if m == 'Nein']
-            for loc in locationPole:
-                location.append(int(self.poles.poles[loc + self.poles.idxA + 1]['d']))
+        # Leerseilknickwinkel
+        elif idx == 4 and not np.all(np.isnan(data)):
+            # Replace nan with 0 so that no Runtime Warning is thrown
+            localCopy = np.nan_to_num(data)
+            maxVal = np.nanmin(localCopy)
+            smallerThan = localCopy < self.thData['thresholds'][idx][1]
+            # Angles between 2 and 4 degrees have error level 'attention'
+            if self.thData['thresholds'][idx][0] < maxVal < self.thData['thresholds'][idx][1]:
+                color = 2
+            # Check which pole is affected
+            locationPole = np.ravel(np.argwhere(smallerThan))
+            for poleIdx in locationPole:
+                pole = self.poles.poles[self.poles.idxA + poleIdx]
+                location.append(pole['d'])
+                plotLabel.append(self.formatThreshold(localCopy[poleIdx], idx))
         
         if isinstance(maxVal, float) and maxVal is not np.nan:
             valStr = self.formatThreshold(maxVal, idx)
-
-        return valStr, location, plotLabel
-
+        
+        return valStr, location, color, plotLabel
+    
     def formatThreshold(self, val, idx):
         if isinstance(val, float) and val is not np.nan:
             return f"{round(val, 1)} {self.thData['units'][idx]}"
-
+    
     def showThresholdInPlot(self, row=None):
         # Click on row was emitted but row is already selected -> deselect
         if row is not None and row == self.selectedThresholdRow:
@@ -633,7 +646,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             else:
                 return
         
-        location = self.thData['rows'][row][4]
+        location = self.thData['rows'][row][5]['loc']
         arrIdx = []
         # Get index of horizontal distance so we know which height value to
         #  chose
@@ -679,7 +692,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             reportText = generateReportText(self.confHandler, self.result,
                                             self.fieldComment.toPlainText())
             generateReport(reportText, outputLoc, projName)
-
+        
         # Create plot
         if self.confHandler.getOutputOption('plot'):
             plotSavePath = os.path.join(outputLoc, self.tr('Diagramm.pdf'))
@@ -689,20 +702,20 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
                                self.profile.surveyPnts)
             printPlot.updatePlot(self.poles.getAsArray(), self.cableline, True)
             printPlot.printToPdf(plotSavePath, projName, self.poles.poles)
-
+        
         # Generate geo data
         if self.confHandler.getOutputOption('geodata'):
             geodata = generateGeodata(project, self.poles.poles,
                                       self.cableline, outputLoc)
             addToMap(geodata, projName)
-
+        
         # Generate coordinate tables
         if self.confHandler.getOutputOption('coords'):
             generateCoordTable(self.cableline, self.profile, self.poles.poles,
                                outputLoc)
         
         self.updateRecalcStatus('saveDone')
-
+    
     def closeEvent(self, event):
         if self.isRecalculating or self.configurationHasChanged:
             return
@@ -720,5 +733,5 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
                 self.drawTool.reset()
         else:
             self.drawTool.reset()
-
+        
         self.timer.stop()

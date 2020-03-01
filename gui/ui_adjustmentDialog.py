@@ -327,6 +327,7 @@ class Ui_AdjustmentDialogUI(object):
         self.tableThresholds.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         self.tableThresholds.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.tableThresholds.setAutoScroll(True)
+        self.tableThresholds.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.tableThresholds.setProperty("showDropIndicator", False)
         self.tableThresholds.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
         self.tableThresholds.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
