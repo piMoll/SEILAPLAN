@@ -159,10 +159,10 @@ class AdjustmentPlot(FigureCanvas):
         # Anchors
         if cable['anchorA']:
             self.axes.plot(cable['anchorA']['d'], cable['anchorA']['z'],
-                           color='#FF4D44', linewidth=1.5*scale)
+                           color='#a6a6a6', linewidth=1.5*scale)
         if cable['anchorE']:
             self.axes.plot(cable['anchorE']['d'], cable['anchorE']['z'],
-                           color='#FF4D44', linewidth=1.5*scale)
+                           color='#a6a6a6', linewidth=1.5*scale)
         # Ground clearance
         self.axes.plot(cable['groundclear_di'], cable['groundclear'],
                        color='#910000', linewidth=1*scale, linestyle=':',
