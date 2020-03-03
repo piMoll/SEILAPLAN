@@ -258,7 +258,7 @@ def preciseCable(IS, poles, STA):
     # Last nicht auf Stütze, sondern in unmittelbarer Nähe
     # Berechnung der Sattelkräfte
 
-    # Berechnung der Winkel wie bei Leerseil
+    # Berechnung der Lastseilwinkel wie bei Leerseil
     tg_phi_ob = (h / 2 + 2 * ym) / (b / 2)
     tg_phi_un = (h / 2 - 2 * ym) / (b / 2)
 

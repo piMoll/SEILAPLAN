@@ -237,7 +237,7 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
     #                                    MaxSTA, aa, ee, arraySize, IS)
     natStuetze = IS['HM_nat']
     kStuetz = HeightE > natStuetze
-    KostStue = (HeightE + 100)**2 * (1 + (4*(kStuetz + 0)))
+    KostStue = ((HeightE == 0) * 0 + (HeightE > 0) * (HeightE + 100)**2) * (1 + (4*(kStuetz + 0)))
     indexMax = np.where(Pos == np.max(Pos))[0]
     emptyMatrix = np.zeros((arraySize+1, arraySize+1))      # Entspricht N+2
 
