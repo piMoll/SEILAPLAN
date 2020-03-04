@@ -308,14 +308,6 @@ def preciseCable(IS, poles, STA):
     dAnkerE = poles.anchor['field'][2]
     zAnkerE = poles.anchor['field'][3]
 
-    # TODO An einem sinnvolleren Ort implementieren
-    if poles.A_type == 'crane':
-        dAnkerA = 0
-    if poles.A_type == 'pole_anchor':
-        dAnkerA = 0
-    if poles.E_type == 'pole_anchor':
-        dAnkerE = 0
-
     try:
         phi_oA = np.arctan(zAnkerA/dAnkerA)
     except ZeroDivisionError:

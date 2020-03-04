@@ -474,8 +474,9 @@ class ProjectConfHandler(AbstractConfHandler):
                                       self.params.ANCHOR_LEN)
         
         # Anchor length is shortened in case the height source has not enough
-        #  data to extract terrain data for anchor field
-        self.params.updateAnchorLen(self.heightSource.buffer)
+        #  data to extract terrain data for anchor field. Also, anchor is
+        #  0m when pole type is crane or anchor.
+        self.params.updateAnchorLen(self.heightSource.buffer, self.A_type, self.E_type)
 
         # Create profile line from subraster or survey data
         try:
@@ -832,9 +833,16 @@ class ParameterConfHandler(AbstractConfHandler):
         }
         return True
             
-    def updateAnchorLen(self, buffer):
+    def updateAnchorLen(self, buffer, poletype_A, poletype_E):
+        # Check buffer length
         anchor_A = self.ANCHOR_LEN if buffer[0] > self.ANCHOR_LEN else buffer[0]
         anchor_E = self.ANCHOR_LEN if buffer[1] > self.ANCHOR_LEN else buffer[1]
+        # Check pole type
+        if poletype_A in ['crane', 'pole_anchor']:
+            anchor_A = 0
+        if poletype_E == 'pole_anchor':
+            anchor_E = 0
+            
         self.derievedParams['d_Anker_A'] = {
             'value': anchor_A
         }
