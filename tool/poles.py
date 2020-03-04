@@ -147,9 +147,19 @@ class Poles(object):
 
     def updateAllPoles(self, status, poles):
         if status == 'optimization':
-            # Update height of start and end point
+            # Update height of start point
             self.update(self.idxA, 'h', poles[0]['h'])
-            self.update(self.idxE, 'h', poles[-1]['h'])
+            # Optimization was successful, line reaches end point
+            if int(poles[-1]['d']) == int(self.lastPole['d']):
+                # Update optimized height of end point
+                self.update(self.idxE, 'h', poles[-1]['h'])
+            # Optimization was not successful, last pole is not at end point
+            else:
+                # Delete former end point
+                self.delete(self.idxE)
+                # Add dummy entry so that all relevant poles get added in next
+                #  for loop
+                poles.append({})
             
             # Add the newly calculated poles between start and end point
             idx = self.idxA + 1
