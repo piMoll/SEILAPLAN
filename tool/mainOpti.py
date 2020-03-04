@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
 #------------------------------------------------------------------------------
 # Name:         SEILAPLAN
@@ -237,7 +237,15 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
     #                                    MaxSTA, aa, ee, arraySize, IS)
     natStuetze = IS['HM_nat']
     kStuetz = HeightE > natStuetze
-    KostStue = (HeightE + 100)**2 * (1 + (4*(kStuetz + 0)))
+    kStuetzA = HeightA > natStuetze
+
+    # Kostenfunktion darf bei Stuetzenhoehe 0 nie den Wert null haben, weil im Netzwerk dann 0 bedeutet, dass V
+    # Verbindung nicht moeglich ist.: (4.3.2020), darum bekommt Stuetzenhoehe 0 den Wert 1
+
+    # KostStue = ((HeightE == 0) * 1 + (HeightE > 0) * (HeightE + 100)**2) * (1 + (4*(kStuetz + 0)))
+    # Auch noch die erste Stuetze soll einen Penalty Wert erhalten --> 2te Zeile
+    KostStue = ((HeightE == 0) * 1 + (HeightE > 0) * (HeightE + 100)**2) * (1 + (4*(kStuetz + 0))) + \
+        (aa == 0) * ((HeightA == 0) * 1 + (HeightA > 0) * (HeightA + 100)**2) * (1 + (4*(kStuetzA + 0)))
     indexMax = np.where(Pos == np.max(Pos))[0]
     emptyMatrix = np.zeros((arraySize+1, arraySize+1))      # Entspricht N+2
 
@@ -307,5 +315,12 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
     Value = min_dist
     Loesung_HM = [HM[i] for i in min_path]
     stueIdx = [Pos[i] for i in min_path]
+
+    ## Wert wird nur zur Kontrolle berechnet:
+    stue_pos = [Pos_gp[i] for i in min_path]
+
+    ## Weitere Kontrollwerte:
+
+    res_mat = np.array([aa,ee,MinSTA,MaxSTA,HeightE,HeightA,Pos_gp_A,Pos_gp_E,KostStue])
 
     return Loesung_HM, stueIdx, Value, OptSTA, optiLen

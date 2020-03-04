@@ -258,7 +258,7 @@ def preciseCable(IS, poles, STA):
     # Last nicht auf Stütze, sondern in unmittelbarer Nähe
     # Berechnung der Sattelkräfte
 
-    # Berechnung der Winkel wie bei Leerseil
+    # Berechnung der Lastseilwinkel wie bei Leerseil
     tg_phi_ob = (h / 2 + 2 * ym) / (b / 2)
     tg_phi_un = (h / 2 - 2 * ym) / (b / 2)
 
@@ -271,8 +271,6 @@ def preciseCable(IS, poles, STA):
     phi[0] = phi_ob / pi*180
     phi[1] = phi_un / pi*180
     kraft['Anlegewinkel_Lastseil'] = phi
-    phi_last_knick = (phi_ob - phi_un) / pi * 180
-    kraft['Lastseilknickwinkel'] = phi_last_knick
 
     # Seilzugkräfte
     Hn = H[idxNachher]
@@ -309,6 +307,15 @@ def preciseCable(IS, poles, STA):
     zAnkerA = poles.anchor['field'][1]
     dAnkerE = poles.anchor['field'][2]
     zAnkerE = poles.anchor['field'][3]
+
+    # TODO An einem sinnvolleren Ort implementieren
+    if poles.A_type == 'crane':
+        dAnkerA = 0
+    if poles.A_type == 'pole_anchor':
+        dAnkerA = 0
+    if poles.E_type == 'pole_anchor':
+        dAnkerE = 0
+
     try:
         phi_oA = np.arctan(zAnkerA/dAnkerA)
     except ZeroDivisionError:
@@ -330,6 +337,17 @@ def preciseCable(IS, poles, STA):
     kraft['Anlegewinkel_Leerseil'] = phi_leer
     phi_leer_knick = (phi_o - phi_u) / pi*180
     kraft['Leerseilknickwinkel'] = phi_leer_knick
+
+    # Berechnung Lastseilknickwinkel mit der Last rechts bzw. links direkt neben der Stütze
+    # Hinzufügen des Leerseilwinkels vor dem Anfangspunkt resp. nach dem Endpunkt
+    phi_ob[0] = phi_oA
+    phi_un[-1] = phi_oE
+
+    # Der grössere Knickwinkel wird als Lastseilknickwinkel ausgegeben
+    phi_last_knick_ob = (phi_ob - phi_u) / pi * 180
+    phi_last_knick_un = (phi_o - phi_un) / pi * 180
+    phi_last_knick = np.fmax(phi_last_knick_un, phi_last_knick_ob)
+    kraft['Lastseilknickwinkel'] = phi_last_knick
 
     zqT = z*qT
     ST = STA + zqT
