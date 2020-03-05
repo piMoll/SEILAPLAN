@@ -5,8 +5,8 @@ HM_Kran	12
 Befahr_A	0
 Befahr_E	0
 Bodenabst_min	7
-Bodenabst_A	0
-Bodenabst_E	0
+Bodenabst_A	20
+Bodenabst_E	20
 Q	35
 qT	0.0243
 A	398
