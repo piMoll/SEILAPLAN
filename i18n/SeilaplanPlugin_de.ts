@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="de_CH" sourcelanguage="">
+<!DOCTYPE TS>
+<TS version="2.1" language="de_CH">
 <context>
     <name>@default</name>
     <message>
@@ -28,12 +29,12 @@
         <translation>Stützen</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="149"/>
+        <location filename="../tool/outputReport.py" line="146"/>
         <source>Leerseil</source>
         <translation>Leerseil</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="151"/>
+        <location filename="../tool/outputReport.py" line="148"/>
         <source>Lastseil</source>
         <translation>Lastseil</translation>
     </message>
@@ -48,7 +49,7 @@
         <translation>Koordinaten Seil.csv</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="125"/>
+        <location filename="../tool/outputReport.py" line="122"/>
         <source>Horizontaldistanz</source>
         <translation>Horizontaldistanz</translation>
     </message>
@@ -118,302 +119,302 @@
         <translation>Felddaten-Messpunkte</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="94"/>
+        <location filename="../tool/outputReport.py" line="91"/>
         <source>Zeitpunkt</source>
         <translation>Zeitpunkt</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="94"/>
+        <location filename="../tool/outputReport.py" line="91"/>
         <source>Berechnungsdauer</source>
         <translation>Berechnungsdauer</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="97"/>
+        <location filename="../tool/outputReport.py" line="94"/>
         <source>Hoehendaten</source>
         <translation>Höhendaten</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="101"/>
+        <location filename="../tool/outputReport.py" line="98"/>
         <source>Bemerkung</source>
         <translation>Bemerkung</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="107"/>
+        <location filename="../tool/outputReport.py" line="104"/>
         <source>Erklaerungen und Diagramme zu den technischen Werten sind in der Dokumentation zu finden.</source>
         <translation>Erklärungen und Diagramme zu den technischen Werten sind in der Dokumentation zu finden.</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tool/outputReport.py" line="108"/>
         <source>Hoehe Sattel [m]</source>
         <translation>Höhe Sattel [m]</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tool/outputReport.py" line="108"/>
         <source>Neigung []</source>
         <translation>Neigung [°]</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tool/outputReport.py" line="108"/>
         <source>X-Koordinate</source>
         <translation>X-Koordinate</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="112"/>
+        <location filename="../tool/outputReport.py" line="109"/>
         <source>Y-Koordinate</source>
         <translation>Y-Koordinate</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="112"/>
+        <location filename="../tool/outputReport.py" line="109"/>
         <source>Z-Koordinate [m.ue.M.]</source>
         <translation>Z-Koordinate [m.ü.M.]</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="125"/>
+        <location filename="../tool/outputReport.py" line="122"/>
         <source>Schraegdistanz</source>
         <translation>Schrägdistanz</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="135"/>
+        <location filename="../tool/outputReport.py" line="132"/>
         <source>gewaehlte Seilzugkraft bei der Anfangsstuetze</source>
         <translation>gewählte Seilzugkraft bei der Anfangsstütze</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="140"/>
+        <location filename="../tool/outputReport.py" line="137"/>
         <source>Laenge Leerseil bei Anfangszugkraft</source>
         <translation>Länge Leerseil bei Anfangszugkraft</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="142"/>
+        <location filename="../tool/outputReport.py" line="139"/>
         <source>Laenge Leerseil bei 0 kN Seilzugkraft</source>
         <translation>Länge Leerseil bei 0 kN Seilzugkraft</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="155"/>
+        <location filename="../tool/outputReport.py" line="152"/>
         <source>Abk.</source>
         <translation>Abk.</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="249"/>
+        <location filename="../tool/outputReport.py" line="240"/>
         <source>am Leerseil</source>
         <translation>am Leerseil</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="156"/>
+        <location filename="../tool/outputReport.py" line="153"/>
         <source>Seilzugkraft an der Anfangsstuetze</source>
         <translation>Seilzugkraft an der Anfangsstütze</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="158"/>
+        <location filename="../tool/outputReport.py" line="155"/>
         <source>Seilzugkraft an der Endstuetze</source>
         <translation>Seilzugkraft an der Endstütze</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="161"/>
+        <location filename="../tool/outputReport.py" line="158"/>
         <source>Seilzugkraft des Leerseils an den Stuetzen</source>
         <translation>Seilzugkraft des Leerseils an den Stützen</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="171"/>
+        <location filename="../tool/outputReport.py" line="162"/>
         <source>Leerseilverhaeltnis: Horizontalkomponente</source>
         <translation>Leerseilverhältnis: Horizontalkomponente</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="173"/>
+        <location filename="../tool/outputReport.py" line="164"/>
         <source>der Seilzugkraft an den Stuetzen</source>
         <translation>der Seilzugkraft an den Stützen</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="257"/>
+        <location filename="../tool/outputReport.py" line="248"/>
         <source>am Lastseil</source>
         <translation>am Lastseil</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="177"/>
+        <location filename="../tool/outputReport.py" line="168"/>
         <source>Max. auftretende Seilzugkraft</source>
         <translation>Max. auftretende Seilzugkraft</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="178"/>
+        <location filename="../tool/outputReport.py" line="169"/>
         <source>am hoechsten Punkt im Seilsystem</source>
         <translation>am höchsten Punkt im Seilsystem</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="180"/>
+        <location filename="../tool/outputReport.py" line="171"/>
         <source>am Anfangsanker</source>
         <translation>am Anfangsanker</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="182"/>
+        <location filename="../tool/outputReport.py" line="173"/>
         <source>am Endanker</source>
         <translation>am Endanker</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="185"/>
+        <location filename="../tool/outputReport.py" line="176"/>
         <source>am Lastseil mit Last in Feldmitte</source>
         <translation>am Lastseil mit Last in Feldmitte</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="187"/>
+        <location filename="../tool/outputReport.py" line="178"/>
         <source>Max. auftretende Seilzugkraft gemessen in Feldmitte</source>
         <translation>Max. auftretende Seilzugkraft gemessen in Feldmitte</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="190"/>
+        <location filename="../tool/outputReport.py" line="181"/>
         <source>davon horizontale Komponente</source>
         <translation>avon horizontale Komponente</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="193"/>
+        <location filename="../tool/outputReport.py" line="184"/>
         <source>gemessen am hoechsten Punkt im Seilsystem</source>
         <translation>gemessen am höchsten Punkt im Seilsystem</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="200"/>
+        <location filename="../tool/outputReport.py" line="191"/>
         <source>an befahrbarer Stuetze, Laufwagen auf Stuetze</source>
         <translation>an befahrbarer Stütze, Laufwagen auf Stütze</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="236"/>
+        <location filename="../tool/outputReport.py" line="227"/>
         <source>Sattelkraft, resultierend</source>
         <translation>Sattelkraft, resultierend</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="239"/>
+        <location filename="../tool/outputReport.py" line="230"/>
         <source>Sattelkraft, vertikale Komponente</source>
         <translation>Sattelkraft, vertikale Komponente</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="242"/>
+        <location filename="../tool/outputReport.py" line="233"/>
         <source>Sattelkraft, horizontale Komponente</source>
         <translation>Sattelkraft, horizontale Komponente</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="211"/>
+        <location filename="../tool/outputReport.py" line="202"/>
         <source>Sattelkraft (Anteil von Tragseil), resultierend</source>
         <translation>Sattelkraft (Anteil von Tragseil), resultierend</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="214"/>
+        <location filename="../tool/outputReport.py" line="205"/>
         <source>Sattelkraft (Anteil von Tragseil), vertikale Komponente</source>
         <translation>Sattelkraft (Anteil von Tragseil), vertikale Komponente</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="217"/>
+        <location filename="../tool/outputReport.py" line="208"/>
         <source>Sattelkraft (Anteil von Tragseil), horizontale Komponente</source>
         <translation>Sattelkraft (Anteil von Tragseil), horizontale Komponente</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="220"/>
+        <location filename="../tool/outputReport.py" line="211"/>
         <source>Einwirkung auf Stuetze aus Last, Gewicht Zug- Tragseil</source>
         <translation>Einwirkung auf Stütze aus Last, Gewicht Zug- &amp; Tragseil</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="229"/>
+        <location filename="../tool/outputReport.py" line="220"/>
         <source>an nicht befahrbarer Stuetze,</source>
         <translation>an nicht befahrbarer Stütze,</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="230"/>
+        <location filename="../tool/outputReport.py" line="221"/>
         <source>Laufwagen unmittelbar links/rechts bei Stuetze</source>
         <translation>Laufwagen unmittelbar links/rechts bei Stütze</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="231"/>
+        <location filename="../tool/outputReport.py" line="222"/>
         <source>links</source>
         <translation>links</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="231"/>
+        <location filename="../tool/outputReport.py" line="222"/>
         <source>rechts</source>
         <translation>rechts</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="233"/>
+        <location filename="../tool/outputReport.py" line="224"/>
         <source>Seilzugkraft</source>
         <translation>Seilzugkraft</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="258"/>
+        <location filename="../tool/outputReport.py" line="249"/>
         <source>eingehender Winkel</source>
         <translation>eingehender Winkel</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="262"/>
+        <location filename="../tool/outputReport.py" line="253"/>
         <source>ausgehender Winkel</source>
         <translation>ausgehender Winkel</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="275"/>
+        <location filename="../tool/outputReport.py" line="266"/>
         <source>Leerseilknickwinkel</source>
         <translation>Leerseilknickwinkel</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="278"/>
+        <location filename="../tool/outputReport.py" line="269"/>
         <source>Nachweis erfuellt</source>
         <translation>Nachweis erfüllt</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="295"/>
+        <location filename="../tool/outputReport.py" line="277"/>
         <source>Parameterset:</source>
         <translation>Parameterset:</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="326"/>
+        <location filename="../tool/outputReport.py" line="307"/>
         <source>Bericht.pdf</source>
         <translation>Bericht.pdf</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="358"/>
+        <location filename="../tool/outputReport.py" line="336"/>
         <source>Seilbahnprojekt</source>
         <translation>Seilbahnprojekt</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="359"/>
+        <location filename="../tool/outputReport.py" line="337"/>
         <source>Stuetzenpositionen</source>
         <translation>Stützenpositionen</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="360"/>
+        <location filename="../tool/outputReport.py" line="338"/>
         <source>Daten fuer Absteckung im Feld (Bodenpunkt)</source>
         <translation>Daten für Absteckung im Feld (Bodenpunkt)</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="361"/>
+        <location filename="../tool/outputReport.py" line="339"/>
         <source>Vorspannung der Seilzugkraft</source>
         <translation>Vorspannung der Seilzugkraft</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="362"/>
+        <location filename="../tool/outputReport.py" line="340"/>
         <source>Seillaenge</source>
         <translation>Seillänge</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="363"/>
+        <location filename="../tool/outputReport.py" line="341"/>
         <source>Durchhang</source>
         <translation>Durchhang</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="364"/>
+        <location filename="../tool/outputReport.py" line="342"/>
         <source>Auftretende Kraefte am Seil</source>
         <translation>Auftretende Kräfte am Seil</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="365"/>
+        <location filename="../tool/outputReport.py" line="343"/>
         <source>Auftretende Kraefte an den Stuetzen</source>
         <translation>Auftretende Kräfte an den Stützen</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="366"/>
+        <location filename="../tool/outputReport.py" line="344"/>
         <source>Seilwinkel an den Stuetzen</source>
         <translation>Seilwinkel an den Stützen</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="367"/>
+        <location filename="../tool/outputReport.py" line="345"/>
         <source>Nachweis, dass Tragseil nicht vom Sattel abhebt</source>
         <translation>Nachweis, dass Tragseil nicht vom Sattel abhebt</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="368"/>
+        <location filename="../tool/outputReport.py" line="346"/>
         <source>Annahmen</source>
         <translation>Annahmen</translation>
     </message>
@@ -423,47 +424,47 @@
         <translation>Feld</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="124"/>
+        <location filename="../tool/outputReport.py" line="121"/>
         <source>Azimut</source>
         <translation>Azimut</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="124"/>
+        <location filename="../tool/outputReport.py" line="121"/>
         <source>gon</source>
         <translation>gon</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="131"/>
+        <location filename="../tool/outputReport.py" line="128"/>
         <source>von</source>
         <translation>von</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="131"/>
+        <location filename="../tool/outputReport.py" line="128"/>
         <source>zu</source>
         <translation>zu</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="144"/>
+        <location filename="../tool/outputReport.py" line="141"/>
         <source>Laenge der Spannfelder (Schraegdistanz)</source>
         <translation>Länge der Spannfelder (Schrägdistanz)</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="267"/>
+        <location filename="../tool/outputReport.py" line="258"/>
         <source>Ja</source>
         <translation>Ja</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="267"/>
+        <location filename="../tool/outputReport.py" line="258"/>
         <source>Nein</source>
         <translation>Nein</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="279"/>
+        <location filename="../tool/outputReport.py" line="270"/>
         <source>(Leerseilknickwinkel 2)</source>
-        <translation>(Leerseilknickwinkel > 2°)</translation>
+        <translation>(Leerseilknickwinkel &gt; 2°)</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="272"/>
+        <location filename="../tool/outputReport.py" line="263"/>
         <source>Lastseilknickwinkel</source>
         <translation>Lastseilknickwinkel</translation>
     </message>
@@ -910,42 +911,42 @@ nach Zweifel</translation>
 <context>
     <name>ParameterConfHandler</name>
     <message>
-        <location filename="../configHandler.py" line="585"/>
+        <location filename="../configHandler.py" line="586"/>
         <source>Fehler in Parameterset &apos;{}&apos; gefunden. Set kann nicht geladen werden.</source>
         <translation>Fehler in Parameterset &apos;{}&apos; gefunden. Set kann nicht geladen werden.</translation>
     </message>
     <message>
-        <location filename="../configHandler.py" line="709"/>
+        <location filename="../configHandler.py" line="710"/>
         <source>Bitte geben Sie im Feld einen Wert ein</source>
         <translation>Bitte geben Sie im Feld {} einen Wert zwischen {} und {} {} ein.</translation>
     </message>
     <message>
-        <location filename="../configHandler.py" line="718"/>
+        <location filename="../configHandler.py" line="719"/>
         <source>Ungueltige Eingabe</source>
         <translation>Ungültige Eingabe</translation>
     </message>
     <message>
-        <location filename="../configHandler.py" line="716"/>
+        <location filename="../configHandler.py" line="717"/>
         <source>Der Wert im Feld ist ungueltig</source>
         <translation>Der Wert {} im Feld {} ist ungültig. Bitte wählen Sie einen Wert zwischen {} und {} {}.</translation>
     </message>
     <message>
-        <location filename="../configHandler.py" line="543"/>
+        <location filename="../configHandler.py" line="544"/>
         <source>Standardparameter</source>
         <translation>Standardparameter</translation>
     </message>
     <message>
-        <location filename="../configHandler.py" line="771"/>
+        <location filename="../configHandler.py" line="772"/>
         <source>Fehler in Parameterset gefunden</source>
         <translation>Fehler in Parameterset {} gefunden. Set kann nicht geladen werden.</translation>
     </message>
     <message>
-        <location filename="../configHandler.py" line="812"/>
+        <location filename="../configHandler.py" line="813"/>
         <source>Bitte geben Sie eine gueltige Zahl ein.</source>
         <translation>Bitte geben Sie eine gültige Zahl ein.</translation>
     </message>
     <message>
-        <location filename="../configHandler.py" line="854"/>
+        <location filename="../configHandler.py" line="862"/>
         <source>Kein Zweiseil-System moeglich</source>
         <translation>Fehler: Kein Zweilseil-System möglich wenn der Anfangspunkt (bei Winde / Maschine) tiefer als der Endpunkt liegt.</translation>
     </message>
@@ -1123,7 +1124,7 @@ nach Zweifel</translation>
         <translation>Unerwarteter Fehler bei der Erstellung des Profils.</translation>
     </message>
     <message>
-        <location filename="../configHandler.py" line="495"/>
+        <location filename="../configHandler.py" line="496"/>
         <source>Unerwarteter Fehler bei Erstellung des Profils</source>
         <translation>Unerwarteter Fehler bei Erstellung des Profils</translation>
     </message>

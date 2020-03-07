@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="en">
+<TS version="2.1" language="it">
 <context>
     <name>@default</name>
     <message>
@@ -150,6 +150,11 @@
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="108"/>
+        <source>Hoehe Sattel [m]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="108"/>
         <source>Neigung []</source>
         <translation type="unfinished"></translation>
     </message>
@@ -206,6 +211,11 @@
     <message>
         <location filename="../tool/outputReport.py" line="139"/>
         <source>Laenge Leerseil bei 0 kN Seilzugkraft</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="141"/>
+        <source>Laenge der Spannfelder (Schraegdistanz)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -364,6 +374,21 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../tool/outputReport.py" line="258"/>
+        <source>Ja</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="258"/>
+        <source>Nein</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="263"/>
+        <source>Lastseilknickwinkel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../tool/outputReport.py" line="266"/>
         <source>Leerseilknickwinkel</source>
         <translation type="unfinished"></translation>
@@ -371,6 +396,11 @@
     <message>
         <location filename="../tool/outputReport.py" line="269"/>
         <source>Nachweis erfuellt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="270"/>
+        <source>(Leerseilknickwinkel 2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -436,36 +466,6 @@
     <message>
         <location filename="../tool/outputReport.py" line="346"/>
         <source>Annahmen</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../tool/outputReport.py" line="141"/>
-        <source>Laenge der Spannfelder (Schraegdistanz)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../tool/outputReport.py" line="258"/>
-        <source>Ja</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../tool/outputReport.py" line="258"/>
-        <source>Nein</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../tool/outputReport.py" line="108"/>
-        <source>Hoehe Sattel [m]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../tool/outputReport.py" line="270"/>
-        <source>(Leerseilknickwinkel 2)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../tool/outputReport.py" line="263"/>
-        <source>Lastseilknickwinkel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -555,8 +555,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../gui/adjustmentDialog.py" line="468"/>
+        <source>Es wird der im Parameterset definierte minimale Bodenabstand mit einer Aufloesung von 1m getestet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../gui/adjustmentDialog.py" line="511"/>
         <source>Max. auftretende Seilzugkraft</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="472"/>
+        <source>Es wird die maximal auftretende Seilzugkraft am Lastseil mit der Last in Feldmitte berechnet.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -565,13 +575,28 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../gui/adjustmentDialog.py" line="476"/>
+        <source>Es wird die maximal resultierende Sattelkraft an befahrbaren Stuetzen mit der Last auf der Stuetze berechnet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../gui/adjustmentDialog.py" line="513"/>
         <source>Max. Lastseilknickwinkel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../gui/adjustmentDialog.py" line="480"/>
+        <source>Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../gui/adjustmentDialog.py" line="514"/>
         <source>Min. Leerseilknickwinkel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="484"/>
+        <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -592,31 +617,6 @@
     <message>
         <location filename="../gui/adjustmentDialog.py" line="723"/>
         <source>Moechten Sie die Ergebnisse speichern?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="468"/>
-        <source>Es wird der im Parameterset definierte minimale Bodenabstand mit einer Aufloesung von 1m getestet.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="472"/>
-        <source>Es wird die maximal auftretende Seilzugkraft am Lastseil mit der Last in Feldmitte berechnet.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="476"/>
-        <source>Es wird die maximal resultierende Sattelkraft an befahrbaren Stuetzen mit der Last auf der Stuetze berechnet.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="480"/>
-        <source>Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="484"/>
-        <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
