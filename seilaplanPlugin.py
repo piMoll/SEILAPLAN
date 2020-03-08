@@ -50,17 +50,26 @@ class SeilaplanPlugin(object):
         self.iface = iface
         # Initialize plugin directory
         self.plugin_dir = os.path.dirname(__file__)
+        
         # Initialize locale
-        locale = QSettings().value("locale/userLocale")[0:2]
+        # Default locale is german
+        useLocale = os.path.join(self.plugin_dir, 'i18n',
+                                     'SeilaplanPlugin_de.qm')
+        # Get locale from QGIS settings
+        qgisLocale = QSettings().value("locale/userLocale")[0:2]
         localePath = os.path.join(self.plugin_dir, 'i18n',
-                                  'SeilaplanPlugin_{}.qm'.format(locale))
+                                  'SeilaplanPlugin_{}.qm'.format(qgisLocale))
 
-        if os.path.exists(localePath):
-            self.translator = QTranslator()
-            self.translator.load(localePath)
+        # TODO: Add more locales to array when translations are ready or
+        #   they need to be tested: ['de', 'en', 'fr', ...]
+        if qgisLocale in ['de'] and os.path.exists(localePath):
+            useLocale = localePath
 
-            if qVersion() > '4.3.3':
-                QCoreApplication.installTranslator(self.translator)
+        self.translator = QTranslator()
+        self.translator.load(useLocale)
+
+        if qVersion() > '4.3.3':
+            QCoreApplication.installTranslator(self.translator)
 
         self.actions = []
         self.menu = self.tr('SEILAPLAN')
