@@ -380,6 +380,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             self.fieldParamSet.setCurrentIndex(-1)
         # Fill in parameter values
         self.fillInValues()
+        # Emit point type change so that crane value can be removed
+        #  from field if point type is not crane
+        self.onTypeAChange()
 
         # Set point types
         self.fieldTypeA.setCurrentIndex(
@@ -393,6 +396,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             self.paramHandler.setParameterSet(name)
             # Fill in values of parameter set
             self.fillInValues()
+            # Emit point type change so that crane value can be removed
+            #  from field if point type is not crane
+            self.onTypeAChange()
     
     def fillInValues(self):
         """Fills parameter values into GUI fields."""
@@ -820,6 +826,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
     
     def onTypeAChange(self):
         idx = self.fieldTypeA.currentIndex()
+        if idx == -1:
+            return
         self.projectHandler.setPointType('A', idx)
         # Update GUI: fieldHMKran
         if idx in [0, 1]:       # pole, pole_anchor
@@ -829,7 +837,6 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             paramVal = self.paramHandler.getParameterAsStr('HM_Kran')
             self.fieldHMKran.setText(paramVal)
             self.fieldHMKran.setEnabled(True)
-        self.updateParametersetField()
     
     def onTypeEChange(self):
         idx = self.fieldTypeE.currentIndex()
