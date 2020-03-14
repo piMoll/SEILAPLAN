@@ -149,9 +149,13 @@ def stuePos(IS, gp, noPoleSection, fixedPoles):
     # Zusätzliche Maststandorte dort wo der Benutzer sie angegeben hat
     idxFix = ismember(fixedPoles['HM_fix_d'], gp.di_s)
     Maststandort[idxFix] = 1
-    # Idee an den ersten fünf und letzten fünf Stellen soll immer eine Stütze möglich
-    # sein, wegen zum Teil tiefen Anfangs- und Endstützenhoehen (0m)
-    Maststandort[[1,2,3,4,5,-5,-4,-3,-2]] = 1
+    # Idee an den ersten fünf und letzten fünf Stellen nach Anfangs- und End-
+    #   stütze soll immer eine Stütze möglich sein, wegen zum Teil tiefen
+    #   Anfangs- und Endstützenhoehen (0m)
+    startBereich = [i for i in range(1, min(5, len(Maststandort)))]
+    endBereich = [-1 * (i+1) for i in startBereich]
+    Maststandort[[startBereich]] = 1
+    Maststandort[[endBereich]] = 1
 
     # Rückerichtung bestimmen
     #########################
