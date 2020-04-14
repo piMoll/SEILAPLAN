@@ -62,7 +62,7 @@ class SeilaplanPlugin(object):
 
         # TODO: Add more locales to array when translations are ready or
         #   they need to be tested: ['de', 'en', 'fr', ...]
-        if qgisLocale in ['de'] and os.path.exists(localePath):
+        if qgisLocale in ['de', 'en', 'fr', 'it'] and os.path.exists(localePath):
             useLocale = localePath
 
         self.translator = QTranslator()

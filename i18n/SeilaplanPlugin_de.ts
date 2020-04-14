@@ -21,7 +21,7 @@
     <message>
         <location filename="../tool/outputGeo.py" line="87"/>
         <source>StuetzenNr</source>
-        <translation>StuetzenNr</translation>
+        <translation>Stuetzen Nr</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="163"/>
@@ -166,7 +166,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="109"/>
         <source>Z-Koordinate [m.ue.M.]</source>
-        <translation>Z-Koordinate [m.ü.M.]</translation>
+        <translation>Z-Koordinate [m ü.M.]</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="122"/>
@@ -176,7 +176,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="132"/>
         <source>gewaehlte Seilzugkraft bei der Anfangsstuetze</source>
-        <translation>gewählte Seilzugkraft bei der Anfangsstütze</translation>
+        <translation>Gewählte Seilzugkraft bei der Anfangsstütze</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="137"/>
@@ -261,7 +261,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="181"/>
         <source>davon horizontale Komponente</source>
-        <translation>avon horizontale Komponente</translation>
+        <translation>davon horizontale Komponente</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="184"/>
@@ -271,7 +271,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="191"/>
         <source>an befahrbarer Stuetze, Laufwagen auf Stuetze</source>
-        <translation>an befahrbarer Stütze, Laufwagen auf Stütze</translation>
+        <translation>an befahrbarer Stütze, Laufwagen auf Sattel</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="227"/>
@@ -306,7 +306,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="211"/>
         <source>Einwirkung auf Stuetze aus Last, Gewicht Zug- Tragseil</source>
-        <translation>Einwirkung auf Stütze aus Last, Gewicht Zug- &amp; Tragseil</translation>
+        <translation>Einwirkung auf Stütze aus Last, Gewicht Trag- und Zugseil</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="220"/>
@@ -366,7 +366,8 @@
     <message>
         <location filename="../tool/outputReport.py" line="337"/>
         <source>Seilbahnprojekt</source>
-        <translation>Seilbahnprojekt</translation>
+        <translatorcomment>Fritz: korrekt ist &quot;SeilKRANprojekt&quot;, besser ist aber Seillinienprojekt</translatorcomment>
+        <translation>Seillinienprojekt</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="338"/>
@@ -381,7 +382,8 @@
     <message>
         <location filename="../tool/outputReport.py" line="340"/>
         <source>Vorspannung der Seilzugkraft</source>
-        <translation>Vorspannung der Seilzugkraft</translation>
+        <translatorcomment>Fritz: &quot;Vorspannung der Seilzugkraft&quot; ist meiner Meinung nach kein korrekter Begriff, Vorschlag: Vorspannkraft (des Tragseils)</translatorcomment>
+        <translation>Vorspannkraft</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="341"/>
@@ -396,7 +398,8 @@
     <message>
         <location filename="../tool/outputReport.py" line="343"/>
         <source>Auftretende Kraefte am Seil</source>
-        <translation>Auftretende Kräfte am Seil</translation>
+        <translatorcomment>präziser: am Tragseil</translatorcomment>
+        <translation>Auftretende Kräfte am Tragseil</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="344"/>
@@ -421,7 +424,8 @@
     <message>
         <location filename="../tool/outputReport.py" line="86"/>
         <source>Feld</source>
-        <translation>Feld</translation>
+        <translatorcomment>Habe nicht gefunden wo das steht, könnte auch ein Eingabefeld sein?</translatorcomment>
+        <translation>Spannfeld</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="121"/>
@@ -436,11 +440,13 @@
     <message>
         <location filename="../tool/outputReport.py" line="128"/>
         <source>von</source>
+        <translatorcomment>Kommt auf den Zusammenhang an, wo steht das?</translatorcomment>
         <translation>von</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="128"/>
         <source>zu</source>
+        <translatorcomment>Kommt auf den Zusammenhang an, wo steht das?</translatorcomment>
         <translation>zu</translation>
     </message>
     <message>
@@ -492,13 +498,13 @@
     <message>
         <location filename="../gui/adjustmentDialog.py" line="342"/>
         <source>Tragseil hebt bei mindestens einer Stuetze ab</source>
-        <translation>Die Seillinie wurde berechnet, das Tragseil hebt jedoch bei mindestens einer Stütze ab.</translation>
+        <translatorcomment>Seilkranlinie (ich finde, hier könnten wir in allen Sprachen die abgekürzten Begriffe &quot;Seillinie&quot; verwenden, weil klar ist, in welchem Kontext das steht)</translatorcomment>
+        <translation>Die Seillinie wurde berechnet, das Tragseil hebt jedoch bei mindestens einer Stütze ab</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="348"/>
         <source>Nicht genuegend Stuetzenstandorte bestimmbar</source>
-        <translation>Die Seillinie konnte nicht komplett berechnet werden, es sind nicht genügend
-Stützenstandorte bestimmbar.</translation>
+        <translation>Die Seillinie konnte nicht komplett berechnet werden, es sind nicht genügend Stützenstandorte bestimmbar.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="354"/>
@@ -600,7 +606,7 @@ Lösung</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="469"/>
         <source>Es wird der im Parameterset definierte minimale Bodenabstand mit einer Aufloesung von 1m getestet.</source>
-        <translation>Es wird der im Parameterset definierte minimale Bodenabstand mit einer Auflösung von 1m getestet.</translation>
+        <translation>Es wird der im Parameterset definierte minimale Bodenabstand mit einer Aufloesung von 1m getestet.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="473"/>
@@ -704,6 +710,7 @@ Bei Knickwinkeln zwischen 2° und 4° muss das Tragseil mittels Niederhaltelasch
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="324"/>
         <source>Neigung</source>
+        <translatorcomment>Neigung der Stütze und nicht Geländeneigung</translatorcomment>
         <translation>Neigung</translation>
     </message>
     <message>
@@ -739,8 +746,7 @@ Bei Knickwinkeln zwischen 2° und 4° muss das Tragseil mittels Niederhaltelasch
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="429"/>
         <source>Vorspannung Tragseil</source>
-        <translatorcomment>Änderung von Vorspannung Tragseil (zu lang?)</translatorcomment>
-        <translation>Grundspannung Tragseil (Anfangsp.)</translation>
+        <translation>Grundspannung Tragseil (Anfangssp.)</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="436"/>
@@ -755,7 +761,7 @@ Bei Knickwinkeln zwischen 2° und 4° muss das Tragseil mittels Niederhaltelasch
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="486"/>
         <source>Minimaler Abstand Tragseil - Boden</source>
-        <translation>Minimaler Abstand Tragseil - Boden</translation>
+        <translation>Minimaler Abstand zwischen Tragseil und Boden</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="566"/>
@@ -830,7 +836,8 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="270"/>
         <source>Hoehe [m.ue.M]</source>
-        <translation>Höhe [m.ü.M]</translation>
+        <translatorcomment>korrigiert: die Abkürzung &quot;m&quot; hat nie einen Punkt</translatorcomment>
+        <translation>Höhe [m ü.M]</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="155"/>
@@ -906,6 +913,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/saveDialog.py" line="111"/>
         <source>Bitte geben Sie einen gueltigen Dateinamen fuer das Parameterset an</source>
+        <translatorcomment>Allenfalls das &quot;Bitte&quot; weglassen</translatorcomment>
         <translation>Bitte geben Sie einen gültigen Dateinamen für das Parameterset an</translation>
     </message>
 </context>
@@ -949,7 +957,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../configHandler.py" line="874"/>
         <source>Kein Zweiseil-System moeglich</source>
-        <translation>Fehler: Kein Zweilseil-System möglich wenn der Anfangspunkt (bei Winde / Maschine) tiefer als der Endpunkt liegt.</translation>
+        <translation>Fehler: Kein Zweilseil-System möglich wenn der Anfangspunkt (bei Winde/Maschine) tiefer als der Endpunkt liegt.</translation>
     </message>
 </context>
 <context>
@@ -957,7 +965,8 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/poleWidget.py" line="372"/>
         <source>Fuegt eine neue Stuetze nach dieser hinzu</source>
-        <translation>Fügt eine neue Stütze nach dieser hinzu</translation>
+        <translatorcomment>&quot;nach&quot; ist eine unpräzise Formulierung</translatorcomment>
+        <translation>Eine neue Stütze hinzufügen</translation>
     </message>
     <message>
         <location filename="../gui/poleWidget.py" line="390"/>
@@ -1013,6 +1022,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/profileDialog.py" line="82"/>
         <source>Fixe Stuetze definieren</source>
+        <translatorcomment>effektiv ist es ein fixer Stützenstandort</translatorcomment>
         <translation>Fixe Stütze definieren</translation>
     </message>
     <message>
@@ -1033,7 +1043,8 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/profileDialog.py" line="93"/>
         <source>Tooltip Abschnitte loeschen</source>
-        <translation>Tooltip Abschnitte löschen</translation>
+        <translatorcomment>Ist das hier der richtige Text? (Bei den nachfolgenden 2 Zeilen kommt &quot;Tooltip&quot; im Text nicht vor)</translatorcomment>
+        <translation>Abschnitte löschen</translation>
     </message>
     <message>
         <location filename="../gui/profileDialog.py" line="186"/>
@@ -1043,7 +1054,8 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/profileDialog.py" line="188"/>
         <source>Hori.distanz</source>
-        <translation>Hori.distanz</translation>
+        <translatorcomment>Hori.distanz ist sehr unschön</translatorcomment>
+        <translation>Horiz.distanz</translation>
     </message>
     <message>
         <location filename="../gui/profileDialog.py" line="190"/>
@@ -1066,7 +1078,8 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/profilePlot.py" line="272"/>
         <source>Hoehe [m.ue.M]</source>
-        <translation>Höhe [m.ü.M]</translation>
+        <translatorcomment>Abkürzung im Ursprungstext falsch: Nach der Abkürzung &quot;m&quot; für Meter kommt nie ein Punkt</translatorcomment>
+        <translation>Höhe [m ü.M]</translation>
     </message>
 </context>
 <context>
@@ -1079,7 +1092,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/progressDialog.py" line="61"/>
         <source>zurueck zum Startfenster</source>
-        <translation>zurück zum Startfenster</translation>
+        <translation>zurück zur Eingabemaske</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="131"/>
@@ -1135,6 +1148,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="17"/>
         <source>SEILAPLAN - Seilkran-Layoutplaner</source>
+        <translatorcomment>Seilaplan ist der Eigenname in allen Sprachen, der Zusatz sollte meines Erachtens in die jeweilige Sprache übersetzt werden</translatorcomment>
         <translation>SEILAPLAN - Seilkran-Layoutplaner</translation>
     </message>
     <message>
@@ -1200,7 +1214,8 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="372"/>
         <source>Seillinie befahrbar bis ... vor dem Endpunkt   </source>
-        <translation>Seillinie befahrbar bis ... vor dem Endpunkt   </translation>
+        <translatorcomment>Korrekter: Tragseil befahrbar ...</translatorcomment>
+        <translation>Tragseil befahrbar bis ... vor dem Endpunkt</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="379"/>
@@ -1225,7 +1240,8 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="567"/>
         <source>Seillinie befahrbar ab ... vom Anfangspunkt</source>
-        <translation>Seillinie befahrbar ab ... vom Anfangspunkt</translation>
+        <translatorcomment>Tragseil befahrbar...</translatorcomment>
+        <translation>Tragseil befahrbar ab ... vom Anfangspunkt</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="580"/>
@@ -1385,7 +1401,8 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1856"/>
         <source>Oeffne Komma-getrennte Textdatei (.csv Datei)</source>
-        <translation>Oeffne Komma-getrennte Textdatei (.csv Datei)</translation>
+        <translatorcomment>An anderen Orten wird die Höflichkeitsform verwendet. Sollte bei allen Befehlen gleich sein?? Müssen wir diskutieren.</translatorcomment>
+        <translation type="unfinished">Oeffne Komma-getrennte Textdatei (.csv Datei)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1921"/>
@@ -1405,7 +1422,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1963"/>
         <source>Seillinie direkt bearbeiten</source>
-        <translation>Seillinie direkt bearbeiten</translation>
+        <translation>Seillinie manuell bearbeiten</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1973"/>
@@ -1415,22 +1432,25 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1976"/>
         <source>Stuetzen optimieren</source>
-        <translation>Stützen optimieren</translation>
+        <translatorcomment>Abkürzung finden</translatorcomment>
+        <translation type="unfinished">Seillinie automatisch optimieren</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1993"/>
         <source>Verlauf der Seillinie</source>
+        <translatorcomment>Habe nicht gefunden, wo das vorkommt. Was ist mit Verlauf genau gemeint?</translatorcomment>
         <translation>Verlauf der Seillinie</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2013"/>
         <source>oder Koordinaten der Seillinie manuell angeben:</source>
-        <translation>oder Koordinaten der Seillinie manuell angeben:</translation>
+        <translatorcomment>Ich habe &quot;angeben&quot; durch &quot;eingeben&quot; ersetzt</translatorcomment>
+        <translation>oder Koordinaten der Seillinie manuell eingeben:</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2043"/>
         <source>Profil in Karte zeichnen</source>
-        <translation>Profil in Karte zeichnen</translation>
+        <translation>Seillinie in Karte einzeichnen</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2046"/>
@@ -1556,22 +1576,19 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="568"/>
         <source>KBS-Fehler - Raster kann nicht verarbeitet werden</source>
-        <translation>Raster mit geografischem KBS &apos;{}&apos; ({}) kann nicht benutzt werden.
-
-Seilaplan kann nur Höhenraster in einem projiziertem KBS verarbeiten.</translation>
+        <translation>Raster mit geografischem KBS (&apos;{}&apos; ({}) kann nicht benutzt werden.
+Seilaplan kann nur Höhenraster in einem projizierten KBS verarbeiten.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="580"/>
         <source>KBS-Fehler - Felddaten und QGIS in geografischem KBS</source>
         <translation>Felddaten liegen in einem geografischen KBS vor!
-
 Seilaplan kann nur mit Daten in einem projizierten KBS arbeiten. Die Daten werden automatisch ins Schweizer KBS &apos;LV95&apos; (EPSG:2056) transformiert.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="587"/>
         <source>KBS-Fehler - Bezugssystem des Rasters unbekannt</source>
         <translation>Bezugssystem des Rasters unbekannt.
-
 Das Raster wird im Schweizer KBS &apos;LV95&apos; (EPSG:2056) dargestellt. Soll ein anderes KBS benutzt werden, richten Sie ihr QGIS Projekt bitte vor dem Laden der Höhendaten entsprechend ein.</translation>
     </message>
     <message>
@@ -1624,9 +1641,8 @@ Wird ein neuer Raster zu QGIS hinzugefügt, kann die Liste per Aktualisieren-Sch
         <location filename="../gui/seilaplanPluginDialog.py" line="852"/>
         <source>Hoeheninformation - Erklaerung Felddaten</source>
         <translation>Profil-Messpunkte aus Feldaufnahmen laden.
-
 Unterstützte Dateitypen:
-1) CSV-Exportdatei des Haglöf Sweden Vertex Messgerät.
+1) CSV-Exportdatei des Haglöf Vertex Messgerätes (Schweden).
 2) Generische CSV-Datei (Komma-separiert) mit den Koordinaten-Spalten &apos;x&apos;, &apos;y&apos; und &apos;z&apos;. Die Datei darf keine Kommentare enthalten und die Punkte sind sortiert aufzulisten.</translation>
     </message>
     <message>
@@ -1669,7 +1685,7 @@ Unterstützte Dateitypen:
         <source>Infotext</source>
         <translation>SEILAPLAN - Seilkran-Layoutplaner
 
-SEILAPLAN berechnet auf Grund eines digitalen Höhenmodells und technischen Parametern zwischen definierten Anfangs- und Endkoordinaten das optimale Seillinienlayout. Es werden Position und Höhe der Stütze,sowie die wichtigsten Kennwerte der Seillinie bestimmt.
+SEILAPLAN berechnet auf Grund eines digitalen Höhenmodells und technischen Parametern zwischen definierten Anfangs- und Endkoordinaten das optimale Seillinienlayout. Es werden Position und Höhe der Stützen,sowie die wichtigsten Kennwerte der Seillinie bestimmt.
 
 Realisierung:
 
@@ -1678,8 +1694,8 @@ ETH Zürich
 8092 Zürich
 (Konzept, Realisierung Version 1.x für QGIS 2)
 
-Gruppe Forstliche Produktionssysteme FPS
-Eidgenössische Forschungsanstalt WSL
+Gruppe Nachhaltige Forstwirtschaft
+Eidg. Forschungsanstalt für Wald, Schnee und Landschaft WSL
 8903 Birmensdorf
 (Realisierung Version 2.x für QGIS 3)
 
@@ -1690,7 +1706,8 @@ Leo Bont, Hans Rudolf Heinimann (Konzept, Mechanik)
 Patricia Moll (Implementation in Python / QGIS)
 
 
-SEILAPLAN ist freie Software: Sie können sie unter den Bedingungen der GNU General Public License, publiziert durch die Free Software Foundation, Version 2 der Lizenz oder (nach Ihrer Wahl) jeder neueren veröffentlichten Version, weiterverbreiten und/oder modifizieren (www.gnu.org/licenses).
+SEILAPLAN ist freie Software: Sie können sie unter den Bedingungen der GNU General Public License, publiziert durch die Free Software Foundation, Version 2 der Lizenz oder (nach Ihrer Wahl) jeder neueren veröffentlichten Version,
+ weiterverbreiten und/oder modifizieren (www.gnu.org/licenses).
 
 Pfad zu Dokumentation:
 {}

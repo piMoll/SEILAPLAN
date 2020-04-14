@@ -6,126 +6,129 @@
     <message>
         <location filename="../gui/guiHelperFunctions.py" line="76"/>
         <source>Hoehenlinien_</source>
-        <translation type="unfinished"></translation>
+        <translation>Isoipse_</translation>
     </message>
     <message>
         <location filename="../gui/guiHelperFunctions.py" line="104"/>
         <source>OSM_Karte</source>
         <translatorcomment>Internet</translatorcomment>
-        <translation>OSM_mappa</translation>
+        <translation>Mappa_OSM</translation>
     </message>
     <message>
         <location filename="../gui/guiHelperFunctions.py" line="123"/>
         <source>Felddaten-Profil</source>
-        <translation type="unfinished"></translation>
+        <translation>Profilo dei dati rilevati sul terreno</translation>
     </message>
     <message>
         <location filename="../gui/guiHelperFunctions.py" line="134"/>
         <source>Felddaten-Messpunkte</source>
-        <translation type="unfinished"></translation>
+        <translation>Punti rilevati sul terreno</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="58"/>
         <source>stuetzen.shp</source>
         <translatorcomment>HeProMo</translatorcomment>
-        <translation>cavalletti_intermedi.shp</translation>
+        <translation>cavalletti.shp</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="63"/>
         <source>leerseil.shp</source>
-        <translation type="unfinished"></translation>
+        <translation>funenoncaricata.shp</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="68"/>
         <source>lastseil.shp</source>
-        <translation type="unfinished"></translation>
+        <translation>funecaricata.shp</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="87"/>
         <source>StuetzenNr</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Fritz</translatorcomment>
+        <translation>Numero del cavalletto</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="163"/>
         <source>Stuetzen</source>
         <translatorcomment>HeProMo</translatorcomment>
-        <translation>Cavalletti intermedi</translation>
+        <translation>Cavalletti</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="146"/>
         <source>Leerseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Fune non caricata</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="148"/>
         <source>Lastseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Fune caricata</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="180"/>
         <source>Koordinaten Stuetzen.csv</source>
-        <translation type="unfinished"></translation>
+        <translation>Coordinate_Cavalletti.csv</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="181"/>
         <source>Koordinaten Seil.csv</source>
-        <translation type="unfinished"></translation>
+        <translation>Coordinate_Fune.csv</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="122"/>
         <source>Horizontaldistanz</source>
-        <translation type="unfinished"></translation>
+        <translation>Distanza orizzontale</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="192"/>
         <source>Z Lastseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Z fune caricata</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="193"/>
         <source>Z Leerseil</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Fritz</translatorcomment>
+        <translation>Z fune non caricata</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="193"/>
         <source>Z Gelaende</source>
-        <translation type="unfinished"></translation>
+        <translation>Z terreno</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="193"/>
         <source>Abstand Lastseil-Boden</source>
-        <translation type="unfinished"></translation>
+        <translation>Distanza fune caricata - suolo</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="205"/>
         <source>Stuetze</source>
-        <translatorcomment>HeProMo</translatorcomment>
-        <translation>Cavalletti intermedi</translation>
+        <translatorcomment>HeproMo</translatorcomment>
+        <translation>Cavalletto</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="205"/>
         <source>Z Stuetze Boden</source>
-        <translation type="unfinished"></translation>
+        <translation>Z cavalletto suolo</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="205"/>
         <source>Z Stuetze Spitze</source>
-        <translation type="unfinished"></translation>
+        <translation>Z cima del cavalletto</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="205"/>
         <source>Stuetzenhoehe</source>
-        <translation type="unfinished"></translation>
+        <translation>Altezza del cavalletto</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="205"/>
         <source>Neigung</source>
-        <translation type="unfinished"></translation>
+        <translation>Pendenza</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="86"/>
         <source>Feld</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>??? kläre ich ab</translatorcomment>
+        <translation type="unfinished">Portata</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="91"/>
@@ -136,93 +139,93 @@
     <message>
         <location filename="../tool/outputReport.py" line="91"/>
         <source>Berechnungsdauer</source>
-        <translation type="unfinished"></translation>
+        <translation>Durata del calcolo</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="94"/>
         <source>Hoehendaten</source>
-        <translation type="unfinished"></translation>
+        <translation>Dati d&apos;altezza</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="98"/>
         <source>Bemerkung</source>
-        <translation type="unfinished"></translation>
+        <translation>Nota</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="104"/>
         <source>Erklaerungen und Diagramme zu den technischen Werten sind in der Dokumentation zu finden.</source>
-        <translation type="unfinished"></translation>
+        <translation>Spiegazioni e diagrammi relativi ai dati tecnici si trovano nella documentazione.</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="108"/>
         <source>Hoehe Sattel [m]</source>
-        <translation type="unfinished"></translation>
+        <translation>Altezza della sella [m]</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="108"/>
         <source>Neigung []</source>
-        <translation type="unfinished"></translation>
+        <translation>Pendenza [°]</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="108"/>
         <source>X-Koordinate</source>
-        <translation type="unfinished"></translation>
+        <translation>Coordinata X</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="109"/>
         <source>Y-Koordinate</source>
-        <translation type="unfinished"></translation>
+        <translation>Coordinata Y</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="109"/>
         <source>Z-Koordinate [m.ue.M.]</source>
-        <translation type="unfinished"></translation>
+        <translation>Coordinata Z [m s.l.m.]</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="121"/>
         <source>Azimut</source>
-        <translatorcomment>Internet</translatorcomment>
         <translation>Azimut</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="121"/>
         <source>gon</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Internet</translatorcomment>
+        <translation>gon</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="122"/>
         <source>Schraegdistanz</source>
-        <translation type="unfinished"></translation>
+        <translation>Distanza obliqua</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="128"/>
         <source>von</source>
-        <translation type="unfinished"></translation>
+        <translation>dal</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="128"/>
         <source>zu</source>
-        <translation type="unfinished"></translation>
+        <translation>al</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="132"/>
         <source>gewaehlte Seilzugkraft bei der Anfangsstuetze</source>
-        <translation type="unfinished"></translation>
+        <translation>Tensione della fune scelta al primo cavalletto</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="137"/>
         <source>Laenge Leerseil bei Anfangszugkraft</source>
-        <translation type="unfinished"></translation>
+        <translation>Lunghezza della fune non caricata alla tensione iniziale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="139"/>
         <source>Laenge Leerseil bei 0 kN Seilzugkraft</source>
-        <translation type="unfinished"></translation>
+        <translation>Lunghezza della fune non caricata alla tensione di 0 kN</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="141"/>
         <source>Laenge der Spannfelder (Schraegdistanz)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lunghezza delle portate (distanza obliqua)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="152"/>
@@ -233,127 +236,128 @@
     <message>
         <location filename="../tool/outputReport.py" line="240"/>
         <source>am Leerseil</source>
-        <translation type="unfinished"></translation>
+        <translation>alla fune non caricata</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="153"/>
         <source>Seilzugkraft an der Anfangsstuetze</source>
-        <translation type="unfinished"></translation>
+        <translation>Forza di trazione della fune al primo cavalletto</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="155"/>
         <source>Seilzugkraft an der Endstuetze</source>
-        <translation type="unfinished"></translation>
+        <translation>Forza di trazione della fune al cavalletto terminale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="158"/>
         <source>Seilzugkraft des Leerseils an den Stuetzen</source>
-        <translation type="unfinished"></translation>
+        <translation>Forza di trazione della fune non caricata ai cavalletti intermedi</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="162"/>
         <source>Leerseilverhaeltnis: Horizontalkomponente</source>
-        <translation type="unfinished"></translation>
+        <translation>Rapporto della fune non caricata: Componente orrizontale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="164"/>
         <source>der Seilzugkraft an den Stuetzen</source>
-        <translation type="unfinished"></translation>
+        <translation>della Forza di trazione della fune ai cavalletti</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="248"/>
         <source>am Lastseil</source>
-        <translation type="unfinished"></translation>
+        <translation>alla fune caricata</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="168"/>
         <source>Max. auftretende Seilzugkraft</source>
-        <translation type="unfinished"></translation>
+        <translation>Forza di trazione massimale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="169"/>
         <source>am hoechsten Punkt im Seilsystem</source>
-        <translation type="unfinished"></translation>
+        <translation>al punto il più alto della sistema teleferica</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="171"/>
         <source>am Anfangsanker</source>
-        <translation type="unfinished"></translation>
+        <translation>al ancoraggio iniziale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="173"/>
         <source>am Endanker</source>
-        <translation type="unfinished"></translation>
+        <translation>al ancoraggio terminale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="176"/>
         <source>am Lastseil mit Last in Feldmitte</source>
-        <translation type="unfinished"></translation>
+        <translation>alla fune caricata con carico in metà della portata</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="178"/>
         <source>Max. auftretende Seilzugkraft gemessen in Feldmitte</source>
-        <translation type="unfinished"></translation>
+        <translation>Forza di trazione massimale misurata in metà della portata</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="181"/>
         <source>davon horizontale Komponente</source>
-        <translation type="unfinished"></translation>
+        <translation>di questa componente orrizontale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="184"/>
         <source>gemessen am hoechsten Punkt im Seilsystem</source>
-        <translation type="unfinished"></translation>
+        <translation>misurata al punto il più alto della sistema teleferica</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="191"/>
         <source>an befahrbarer Stuetze, Laufwagen auf Stuetze</source>
-        <translation type="unfinished"></translation>
+        <translation>su un cavalletto carrabile, carrello sulla sella</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="227"/>
         <source>Sattelkraft, resultierend</source>
-        <translation type="unfinished"></translation>
+        <translation>Forza sulla sella, risultante</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="230"/>
         <source>Sattelkraft, vertikale Komponente</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>habe noch nichts Besseres als &quot;sella&quot; gefunden</translatorcomment>
+        <translation>Forza sulla sella, componente verticale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="233"/>
         <source>Sattelkraft, horizontale Komponente</source>
-        <translation type="unfinished"></translation>
+        <translation>Forza sulla sella, componente orrizontale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="202"/>
         <source>Sattelkraft (Anteil von Tragseil), resultierend</source>
-        <translation type="unfinished"></translation>
+        <translation>Forza sulla sella (quota della fune portante), risultante</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="205"/>
         <source>Sattelkraft (Anteil von Tragseil), vertikale Komponente</source>
-        <translation type="unfinished"></translation>
+        <translation>Forza sulla sella (quota della fune portante), componente verticale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="208"/>
         <source>Sattelkraft (Anteil von Tragseil), horizontale Komponente</source>
-        <translation type="unfinished"></translation>
+        <translation>Forza sulla sella (quota della fune portante), componente orizzontale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="211"/>
         <source>Einwirkung auf Stuetze aus Last, Gewicht Zug- Tragseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Impatto sul cavalletto dal carico e dal peso della fune portante e della fune traente</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="220"/>
         <source>an nicht befahrbarer Stuetze,</source>
-        <translation type="unfinished"></translation>
+        <translation>su un cavalletto non carrabile,</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="221"/>
         <source>Laufwagen unmittelbar links/rechts bei Stuetze</source>
-        <translation type="unfinished"></translation>
+        <translation>carello immediatamente a sinistra/a destra del cavalletto</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="222"/>
@@ -369,22 +373,21 @@
     <message>
         <location filename="../tool/outputReport.py" line="224"/>
         <source>Seilzugkraft</source>
-        <translation type="unfinished"></translation>
+        <translation>Forza di trazione della fune</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="249"/>
         <source>eingehender Winkel</source>
-        <translation type="unfinished"></translation>
+        <translation>angolo entrando</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="253"/>
         <source>ausgehender Winkel</source>
-        <translation type="unfinished"></translation>
+        <translation>angolo uscendo</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="258"/>
         <source>Ja</source>
-        <translatorcomment>HeProMo</translatorcomment>
         <translation>Sì</translation>
     </message>
     <message>
@@ -395,87 +398,88 @@
     <message>
         <location filename="../tool/outputReport.py" line="263"/>
         <source>Lastseilknickwinkel</source>
-        <translation type="unfinished"></translation>
+        <translation>Angolo della fune caricata</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="266"/>
         <source>Leerseilknickwinkel</source>
-        <translation type="unfinished"></translation>
+        <translation>Angolo della fune non caricata</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="269"/>
         <source>Nachweis erfuellt</source>
-        <translation type="unfinished"></translation>
+        <translation>Prova adempita</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="270"/>
         <source>(Leerseilknickwinkel 2)</source>
-        <translation type="unfinished"></translation>
+        <translation>(Angolo della fune non caricata &gt; 2°)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="277"/>
         <source>Parameterset:</source>
-        <translation type="unfinished"></translation>
+        <translation>Serie di parametri:</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="308"/>
         <source>Bericht.pdf</source>
-        <translation type="unfinished"></translation>
+        <translation>Rapporto.pdf</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="337"/>
         <source>Seilbahnprojekt</source>
-        <translation type="unfinished"></translation>
+        <translation>Progetto di linea di gru a cavo</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="338"/>
         <source>Stuetzenpositionen</source>
-        <translation type="unfinished"></translation>
+        <translation>Posizione dei cavalletti</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="339"/>
         <source>Daten fuer Absteckung im Feld (Bodenpunkt)</source>
-        <translation type="unfinished"></translation>
+        <translation>Dati per la picchetazzione della linea (punto al suolo)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="340"/>
         <source>Vorspannung der Seilzugkraft</source>
-        <translation type="unfinished"></translation>
+        <translation>Forza di precarico</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="341"/>
         <source>Seillaenge</source>
-        <translation type="unfinished"></translation>
+        <translation>Lunghezza della fune</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="342"/>
         <source>Durchhang</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>verifizieren</translatorcomment>
+        <translation type="unfinished">Freccia</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="343"/>
         <source>Auftretende Kraefte am Seil</source>
-        <translation type="unfinished"></translation>
+        <translation>Forze manifestandosi nella fune portante</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="344"/>
         <source>Auftretende Kraefte an den Stuetzen</source>
-        <translation type="unfinished"></translation>
+        <translation>Forze manifestandosi sui cavalletti</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="345"/>
         <source>Seilwinkel an den Stuetzen</source>
-        <translation type="unfinished"></translation>
+        <translation>Angolo della fune ai cavalletti</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="346"/>
         <source>Nachweis, dass Tragseil nicht vom Sattel abhebt</source>
-        <translation type="unfinished"></translation>
+        <translation>Prova che la fune portante non si decolla della sella</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="347"/>
         <source>Annahmen</source>
-        <translation type="unfinished"></translation>
+        <translation>Supposizioni</translation>
     </message>
 </context>
 <context>
@@ -491,52 +495,55 @@
     <message>
         <location filename="../gui/adjustmentDialog.py" line="166"/>
         <source>Unerwarteter Fehler bei Berechnung der Seillinie</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore inaspettato al calcolo della linea di gru a cavo</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="337"/>
         <source>Optimierung erfolgreich abgeschlossen</source>
-        <translation type="unfinished"></translation>
+        <translation>Ottimizzazione finita con successo</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="342"/>
         <source>Tragseil hebt bei mindestens einer Stuetze ab</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>linea della gru a cavo</translatorcomment>
+        <translation>La linea è stata calcolata però la fune portante si decolla della sella su un cavalletto al minimo</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="348"/>
         <source>Nicht genuegend Stuetzenstandorte bestimmbar</source>
-        <translation type="unfinished"></translation>
+        <translation>La linea non è stata calcolata completamente, delle posizioni per cavalletti non c&apos;è ne sono abbastanze.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="354"/>
         <source>Stuetzen manuell platzieren</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>L&apos;ottimizzazione è stata passata, i cavalletti devono essere posizionati manualmente.</translatorcomment>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="360"/>
         <source>Stuetzen aus Projektdatei geladen</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;ottimizzazione è stata passata, i cavalletti sono stati caricati d&apos; un file di dati del progetto.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="366"/>
         <source>Seillinie neu berechnet.</source>
-        <translation type="unfinished"></translation>
+        <translation>Linea di gru a cavo calcolata di nuovo.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="370"/>
         <source>Fehler aufgetreten</source>
-        <translation type="unfinished"></translation>
+        <translation>Si è presentato un errore al calcolo della linea.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="376"/>
         <source>Ergebnisse gespeichert</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Abgekürzte Form: Risultati salvati?</translatorcomment>
+        <translation>I risultati sono stati salvati.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="460"/>
         <source>Kennwert</source>
-        <translation type="unfinished"></translation>
+        <translation>Carratteristica</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="461"/>
@@ -547,14 +554,14 @@
     <message>
         <location filename="../gui/adjustmentDialog.py" line="462"/>
         <source>Optimierte Loesung</source>
-        <translation type="unfinished"></translation>
+        <translation>Soluzione
+ottimizzata</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="463"/>
         <source>Aktuelle Loesung</source>
-        <translatorcomment>Internet</translatorcomment>
-        <translation>Attuale
-soluzione</translation>
+        <translation>Soluzione
+attuale</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="464"/>
@@ -565,57 +572,60 @@ soluzione</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="511"/>
         <source>Minimaler Bodenabstand</source>
-        <translation type="unfinished"></translation>
+        <translation>Altezza da terra minimale</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="469"/>
         <source>Es wird der im Parameterset definierte minimale Bodenabstand mit einer Aufloesung von 1m getestet.</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>C&apos;è verificato l&apos;altezza da terra minimale, definito nella serie di parametri, con una definizione di 1m.</translatorcomment>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="512"/>
         <source>Max. auftretende Seilzugkraft</source>
-        <translation type="unfinished"></translation>
+        <translation>Forza di trazione massimale</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="473"/>
         <source>Es wird die maximal auftretende Seilzugkraft am Lastseil mit der Last in Feldmitte berechnet.</source>
-        <translation type="unfinished"></translation>
+        <translation>C&apos;è calcolato il massimo della forza di trazione alla fune caricata col carico trovandosi in metà della portata.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="513"/>
         <source>Max. resultierende Sattelkraft</source>
-        <translation type="unfinished"></translation>
+        <translation>Massimo della forza risultante sulla sella</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="477"/>
         <source>Es wird die maximal resultierende Sattelkraft an befahrbaren Stuetzen mit der Last auf der Stuetze berechnet.</source>
-        <translation type="unfinished"></translation>
+        <translation>C&apos;è calcolato il massimo della forza risultante sulla sella ai cavalletti carrabili col carico trovandosi sulla sella.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="514"/>
         <source>Max. Lastseilknickwinkel</source>
-        <translation type="unfinished"></translation>
+        <translation>Angolo maximale della fune caricata</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="481"/>
         <source>Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften.</source>
-        <translation type="unfinished"></translation>
+        <translation>Angoli più grandi causano un carico di rottura ridotto della fune portante e delle forze aumentate sulle selle.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="515"/>
         <source>Min. Leerseilknickwinkel</source>
-        <translation type="unfinished"></translation>
+        <translation>Angolo minimale della fune non caricata</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="485"/>
         <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Lasche =linguetta ? (Leo Dict.) kläre ich ab</translatorcomment>
+        <translation type="unfinished">Nel caso di un angolo convesso di 2° c&apos;è il rischio che la fune portante si decolla della sella (rosso).
+Nel caso di un angolo tra 2° e 4° la fune portante deve essere atrezzato con una linguetta (orange).</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="690"/>
         <source>Projekteinstellungen.txt</source>
-        <translation type="unfinished"></translation>
+        <translation>Settagginelprogetto.txt</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="701"/>
@@ -625,12 +635,12 @@ soluzione</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="726"/>
         <source>Nicht gespeicherte Aenderungen</source>
-        <translation type="unfinished"></translation>
+        <translation>Modificazioni non salvate</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="726"/>
         <source>Moechten Sie die Ergebnisse speichern?</source>
-        <translation type="unfinished"></translation>
+        <translation>Desideri salvare i risultati?</translation>
     </message>
 </context>
 <context>
@@ -638,59 +648,58 @@ soluzione</translation>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="17"/>
         <source>Manuelle Anpassung</source>
-        <translation type="unfinished"></translation>
+        <translation>Regolazione manuale</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="39"/>
         <source>Neuberechnung...</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuovo calcolo...</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="67"/>
         <source>Manuelle Anpassung der Seillinie</source>
-        <translation type="unfinished"></translation>
+        <translation>Regolazione manuale della linea di gru a cavo</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="76"/>
         <source>Manuelle Anpassungen verwerfen und zurueck zum Startfenster wechseln</source>
-        <translation type="unfinished"></translation>
+        <translation>Rigettare la regolazione manuale e ritornare alla posizione di partenza</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="79"/>
         <source>zurueck zum Startfenster</source>
-        <translation type="unfinished"></translation>
+        <translation>Ritornare alla posizione di partenza</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="102"/>
         <source>Plugin beenden</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiudere il plugin</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="105"/>
         <source>Schliessen</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiudere</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="115"/>
         <source>Ergebnisse speichern</source>
-        <translation type="unfinished"></translation>
+        <translation>Salvare i risultati</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="118"/>
         <source>Speichern</source>
-        <translatorcomment>Internet</translatorcomment>
-        <translation>Salva</translation>
+        <translation>Salvare</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="158"/>
         <source>Stuetzen</source>
-        <translatorcomment>HeProMo</translatorcomment>
-        <translation>Cavalletti intermedi</translation>
+        <translatorcomment>HePorMo</translatorcomment>
+        <translation>Cavalletti</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="178"/>
         <source>Feinjustierung der Stuetzen</source>
-        <translation type="unfinished"></translation>
+        <translation>Regolazione fina dei cavalletti</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="227"/>
@@ -701,27 +710,27 @@ soluzione</translation>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="249"/>
         <source>Stuetzenbezeichnung</source>
-        <translation type="unfinished"></translation>
+        <translation>Denominazione dei cavalletti</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="274"/>
         <source>Horiz.distanz</source>
-        <translation type="unfinished"></translation>
+        <translation>Distanza orizz.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="299"/>
         <source>Stuetzenhoehe</source>
-        <translation type="unfinished"></translation>
+        <translation>Altezza del cavalletto</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="324"/>
         <source>Neigung</source>
-        <translation type="unfinished"></translation>
+        <translation>Pendenza</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="373"/>
         <source>Tragsystem</source>
-        <translation type="unfinished"></translation>
+        <translation>Sistema di supporto</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="479"/>
@@ -731,7 +740,7 @@ soluzione</translation>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="388"/>
         <source>Gewicht der Last inkl. Laufwagen</source>
-        <translation type="unfinished"></translation>
+        <translation>Peso del carico, carrello compreso</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="675"/>
@@ -741,7 +750,8 @@ soluzione</translation>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="402"/>
         <source>Gewicht Rueckholseil</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Valentini</translatorcomment>
+        <translation>Peso della fune di ritorno</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="422"/>
@@ -751,22 +761,23 @@ soluzione</translation>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="429"/>
         <source>Vorspannung Tragseil</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>di base</translatorcomment>
+        <translation>Forza di trazione iniziale</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="436"/>
         <source>Gewicht Tragseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Peso della fune portante</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="443"/>
         <source>Querschnittsflaeche Tragseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Area della sezione trasversale della fune portante</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="486"/>
         <source>Minimaler Abstand Tragseil - Boden</source>
-        <translation type="unfinished"></translation>
+        <translation>Spazio minimale tra fune portante e suolo</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="566"/>
@@ -776,37 +787,37 @@ soluzione</translation>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="595"/>
         <source>Gewicht Zugseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Peso della fune traente</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="646"/>
         <source>Mindestbruchkraft Tragseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Carico di rottura minimale della fune portante</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="698"/>
         <source>Kennwerte</source>
-        <translation type="unfinished"></translation>
+        <translation>Carratteristiche</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="710"/>
         <source>Kennwerte und Maximalwerte</source>
-        <translation type="unfinished"></translation>
+        <translation>Carratteristiche e valori massimi</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="811"/>
         <source>Klick auf Zeile markiert Position der Grenzwert-Ueberschreitung im Diagramm.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cliccando sulla riga, la posizione del eccesso del valore limite viene marcato nel diagramma.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="834"/>
         <source>Bemerkungen</source>
-        <translation type="unfinished"></translation>
+        <translation>Note</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="842"/>
         <source>Bemerkungstext, welcher im technischen Bericht ergaenzt wird</source>
-        <translation type="unfinished"></translation>
+        <translation>Testo delle note, quello che sarebbe completato nel rapporto technico</translation>
     </message>
 </context>
 <context>
@@ -814,38 +825,39 @@ soluzione</translation>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="151"/>
         <source>Guenstige Gelaendeform</source>
-        <translation type="unfinished"></translation>
+        <translation>Forma del terreno
+favorevole</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="155"/>
         <source>Leerseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Fune non caricata</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="157"/>
         <source>Lastwegkurve nach Zweifel</source>
-        <translation type="unfinished"></translation>
+        <translation>Curva di carico
+dopo Zweifel</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="167"/>
         <source>Min. Bodenabstand</source>
-        <translation type="unfinished"></translation>
+        <translation>Altezza da terra minimale</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="267"/>
         <source>Seilaplan Plot  -  {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Tabulato Seilaplan  -  {}</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="269"/>
         <source>Horizontaldistanz [m]</source>
-        <translatorcomment>HeProMo</translatorcomment>
         <translation>Distanza orizzontale [m]</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="270"/>
         <source>Hoehe [m.ue.M]</source>
-        <translation type="unfinished"></translation>
+        <translation>Altezza [m s.l.m.]</translation>
     </message>
 </context>
 <context>
@@ -853,49 +865,48 @@ soluzione</translation>
     <message>
         <location filename="../gui/saveDialog.py" line="132"/>
         <source>Output Optionen</source>
-        <translation type="unfinished"></translation>
+        <translation>Opzioni per l&apos;output</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="139"/>
         <source>Projektname</source>
-        <translatorcomment>Internet</translatorcomment>
-        <translation>Numero di progetto</translation>
+        <translation>Nome del progetto</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="151"/>
         <source>Speicherpfad</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>??</translatorcomment>
+        <translation type="unfinished">Percorso di archiviazione</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="174"/>
         <source>Welche Produkte sollen erzeugt werden?</source>
-        <translation type="unfinished"></translation>
+        <translation>Quale sono i prodotti da generare?</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="175"/>
         <source>Technischer Bericht</source>
-        <translation type="unfinished"></translation>
+        <translation>Rapporto technico</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="176"/>
         <source>Diagramm</source>
-        <translatorcomment>Internet</translatorcomment>
         <translation>Grafico</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="177"/>
         <source>Shape-Daten der Stuetzen und Seillinie</source>
-        <translation type="unfinished"></translation>
+        <translation>Dati dei cavalletti e della linea di gru a cavo nel formato shape</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="178"/>
         <source>Koordinaten-Tabellen der Stuetzen und Seillinie</source>
-        <translation type="unfinished"></translation>
+        <translation>Tabella delle coordinate dei cavalletti et della linea di gru a cavo</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="235"/>
         <source>Output Ordner auswaehlen</source>
-        <translation type="unfinished"></translation>
+        <translation>Scegliere la cartella del output</translation>
     </message>
 </context>
 <context>
@@ -903,23 +914,22 @@ soluzione</translation>
     <message>
         <location filename="../gui/saveDialog.py" line="40"/>
         <source>Name Parameterset</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome della serie di parametri</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="45"/>
         <source>Bezeichnung Parameterset</source>
-        <translation type="unfinished"></translation>
+        <translation>Designazione della serie di parametri</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="111"/>
         <source>Fehler</source>
-        <translatorcomment>Internet</translatorcomment>
         <translation>Errore</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="111"/>
         <source>Bitte geben Sie einen gueltigen Dateinamen fuer das Parameterset an</source>
-        <translation type="unfinished"></translation>
+        <translation>Per favore inserisca un nome valido per la serie di parametri</translation>
     </message>
 </context>
 <context>
@@ -927,42 +937,42 @@ soluzione</translation>
     <message>
         <location filename="../configHandler.py" line="552"/>
         <source>Standardparameter</source>
-        <translation type="unfinished"></translation>
+        <translation>Parametri standard</translation>
     </message>
     <message>
         <location filename="../configHandler.py" line="594"/>
         <source>Fehler in Parameterset &apos;{}&apos; gefunden. Set kann nicht geladen werden.</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore nella serie di parametri &apos;{}&apos;. La serie non può essere caricata.</translation>
     </message>
     <message>
         <location filename="../configHandler.py" line="722"/>
         <source>Bitte geben Sie im Feld einen Wert ein</source>
-        <translation type="unfinished"></translation>
+        <translation>Per favore inserisca un valore tra {} e {} {}.</translation>
     </message>
     <message>
         <location filename="../configHandler.py" line="731"/>
         <source>Ungueltige Eingabe</source>
-        <translation type="unfinished"></translation>
+        <translation>Input invalido</translation>
     </message>
     <message>
         <location filename="../configHandler.py" line="729"/>
         <source>Der Wert im Feld ist ungueltig</source>
-        <translation type="unfinished"></translation>
+        <translation>Il valore {} nel campo{} non e valido. Per favore scelga un valore tra {} e {} {}.</translation>
     </message>
     <message>
         <location filename="../configHandler.py" line="784"/>
         <source>Fehler in Parameterset gefunden</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore nella serie di parametri &apos;{}&apos;. La serie non può essere caricata.</translation>
     </message>
     <message>
         <location filename="../configHandler.py" line="825"/>
         <source>Bitte geben Sie eine gueltige Zahl ein.</source>
-        <translation type="unfinished"></translation>
+        <translation>Per favore inserisca un numero valido.</translation>
     </message>
     <message>
         <location filename="../configHandler.py" line="874"/>
         <source>Kein Zweiseil-System moeglich</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore: Il sistema a due funi non è possibile se il punto d&apos;inizio (argano/macchina) si trova più basso che il punto finale.</translation>
     </message>
 </context>
 <context>
@@ -970,12 +980,12 @@ soluzione</translation>
     <message>
         <location filename="../gui/poleWidget.py" line="372"/>
         <source>Fuegt eine neue Stuetze nach dieser hinzu</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiungere un nuovo cavalletto</translation>
     </message>
     <message>
         <location filename="../gui/poleWidget.py" line="390"/>
         <source>Loescht die Stuetze</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancella il cavalletto</translation>
     </message>
 </context>
 <context>
@@ -983,33 +993,32 @@ soluzione</translation>
     <message>
         <location filename="../tool/poles.py" line="45"/>
         <source>Anfangsstuetze</source>
-        <translation type="unfinished"></translation>
+        <translation>Cavalletto iniziale</translation>
     </message>
     <message>
         <location filename="../tool/poles.py" line="46"/>
         <source>Endstuetze</source>
-        <translation type="unfinished"></translation>
+        <translation>Cavalletto terminale</translation>
     </message>
     <message>
         <location filename="../tool/poles.py" line="90"/>
         <source>{}. Stuetze</source>
         <translatorcomment>HeProMo</translatorcomment>
-        <translation>{}. Cavalletti intermedi</translation>
+        <translation>{}. Cavalletto</translation>
     </message>
     <message>
         <location filename="../tool/poles.py" line="92"/>
         <source>neue Stuetze</source>
-        <translation type="unfinished"></translation>
+        <translation>nuovo cavalletto</translation>
     </message>
     <message>
         <location filename="../tool/poles.py" line="94"/>
         <source>Verankerung</source>
-        <translation type="unfinished"></translation>
+        <translation>Ancoraggio</translation>
     </message>
     <message>
         <location filename="../tool/poles.py" line="96"/>
         <source>Seilkran</source>
-        <translatorcomment>HeProMo</translatorcomment>
         <translation>Gru a cavo</translation>
     </message>
 </context>
@@ -1018,58 +1027,57 @@ soluzione</translation>
     <message>
         <location filename="../gui/profileDialog.py" line="48"/>
         <source>Gelaendelinie</source>
-        <translation type="unfinished"></translation>
+        <translation>Linea del terreno</translation>
     </message>
     <message>
         <location filename="../gui/profileDialog.py" line="75"/>
         <source>Stuetzenoptimierung einschraenken</source>
-        <translation type="unfinished"></translation>
+        <translation>Contrarre l&apos;ottimizzazione dei cavalletti</translation>
     </message>
     <message>
         <location filename="../gui/profileDialog.py" line="82"/>
         <source>Fixe Stuetze definieren</source>
-        <translation type="unfinished"></translation>
+        <translation>Definire una posizione di cavalletto fissa</translation>
     </message>
     <message>
         <location filename="../gui/profileDialog.py" line="83"/>
         <source>Abschnitt ohne Stuetzen definieren</source>
-        <translation type="unfinished"></translation>
+        <translation>Definire un settore senza cavalletti</translation>
     </message>
     <message>
         <location filename="../gui/profileDialog.py" line="91"/>
         <source>Tooltip Fixe Stuetzen</source>
-        <translation type="unfinished"></translation>
+        <translation>Dal algoritmo d&apos;ottimizzazione ,i cavalletti fissi sono cosiderati dei cavalletti già esistenti.</translation>
     </message>
     <message>
         <location filename="../gui/profileDialog.py" line="92"/>
         <source>Tooltip Abschnitte ohne Stuetzen</source>
-        <translation type="unfinished"></translation>
+        <translation>Settore in quello nessun&apos; cavalletto viene posizionato durante il processo d&apos;ottimizzazione.</translation>
     </message>
     <message>
         <location filename="../gui/profileDialog.py" line="93"/>
         <source>Tooltip Abschnitte loeschen</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancellare dei settori</translation>
     </message>
     <message>
         <location filename="../gui/profileDialog.py" line="186"/>
         <source>Stuetzenbezeichnung</source>
-        <translation type="unfinished"></translation>
+        <translation>Denominazione dei cavalletti</translation>
     </message>
     <message>
         <location filename="../gui/profileDialog.py" line="188"/>
         <source>Hori.distanz</source>
-        <translatorcomment>Internet (bessere Abkürzung?)</translatorcomment>
-        <translation>Distanza oriz.</translation>
+        <translation>Distanza orizz.</translation>
     </message>
     <message>
         <location filename="../gui/profileDialog.py" line="190"/>
         <source>Hoehe</source>
-        <translation type="unfinished"></translation>
+        <translation>Altezza</translation>
     </message>
     <message>
         <location filename="../gui/profileDialog.py" line="212"/>
         <source>fixe Stuetze</source>
-        <translation type="unfinished"></translation>
+        <translation>cavalletto fisso</translation>
     </message>
 </context>
 <context>
@@ -1077,13 +1085,12 @@ soluzione</translation>
     <message>
         <location filename="../gui/profilePlot.py" line="271"/>
         <source>Horizontaldistanz [m]</source>
-        <translatorcomment>HeProMo</translatorcomment>
         <translation>Distanza orizzontale [m]</translation>
     </message>
     <message>
         <location filename="../gui/profilePlot.py" line="272"/>
         <source>Hoehe [m.ue.M]</source>
-        <translation type="unfinished"></translation>
+        <translation>Altezza [m s.l.m.]</translation>
     </message>
 </context>
 <context>
@@ -1091,32 +1098,33 @@ soluzione</translation>
     <message>
         <location filename="../gui/progressDialog.py" line="45"/>
         <source>SEILAPLAN wird ausgefuehrt</source>
-        <translation type="unfinished"></translation>
+        <translation>SEILAPLAN è effettuato</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="61"/>
         <source>zurueck zum Startfenster</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>maschera d&apos;inserimento wird syynonym verwendet, wir können die Kurzform nehmen</translatorcomment>
+        <translation>ritornare alla maschera</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="131"/>
         <source>Berechnungen abgebrochen.</source>
-        <translation type="unfinished"></translation>
+        <translation>Calcolo interrotto.</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="156"/>
         <source>Laufender Prozess wird abgebrochen...</source>
-        <translation type="unfinished"></translation>
+        <translation>Il processo corrente è arrestato...</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="162"/>
         <source>SEILAPLAN: Berechnung fehlgeschlagen</source>
-        <translation type="unfinished"></translation>
+        <translation>SEILAPLAN: Calcolo abortito</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="163"/>
         <source>Ein Fehler ist aufgetreten:</source>
-        <translation type="unfinished"></translation>
+        <translation>E avvenuto un errore:</translation>
     </message>
 </context>
 <context>
@@ -1124,27 +1132,27 @@ soluzione</translation>
     <message>
         <location filename="../configHandler.py" line="426"/>
         <source>Bitte definieren Sie gueltige Start- und Endkoordinaten</source>
-        <translation type="unfinished"></translation>
+        <translation>Per favore, definisca delle coordinate d&apos;inizio e di fine validi</translation>
     </message>
     <message>
         <location filename="../configHandler.py" line="428"/>
         <source>Bitte definieren Sie einen Projektnamen</source>
-        <translation type="unfinished"></translation>
+        <translation>Per favore, definisca un nome per il progetto</translation>
     </message>
     <message>
         <location filename="../configHandler.py" line="430"/>
         <source>Ungueltige Daten</source>
-        <translation type="unfinished"></translation>
+        <translation>Dai invalidi</translation>
     </message>
     <message>
         <location filename="../configHandler.py" line="473"/>
         <source>Unerwarteter Fehler bei der Erstellung des Profils.</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore inaspettato alla realizzazione del profilo.</translation>
     </message>
     <message>
         <location filename="../configHandler.py" line="503"/>
         <source>Unerwarteter Fehler bei Erstellung des Profils</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore inaspettato alla realizzazione del profilo</translation>
     </message>
 </context>
 <context>
@@ -1152,55 +1160,53 @@ soluzione</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="17"/>
         <source>SEILAPLAN - Seilkran-Layoutplaner</source>
-        <translation>SEILAPLAN - Seilkran-Layoutplaner</translation>
+        <translation>SEILAPLAN - Pianificazione del layout di linee di gru a cavo</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="32"/>
         <source>Projekt</source>
-        <translatorcomment>Internet</translatorcomment>
         <translation>Progetto</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="38"/>
         <source>Projektname</source>
-        <translatorcomment>Internet</translatorcomment>
-        <translation>Numero di progetto</translation>
+        <translation>Numero del progetto</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="73"/>
         <source>Einstellungen in Textdatei abspeichern</source>
-        <translation type="unfinished"></translation>
+        <translation>Salvare il settaggio in un file testo</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="108"/>
         <source>Projekteinstellungen aus Textdatei laden</source>
-        <translation type="unfinished"></translation>
+        <translation>Caricare il settaggio del progetto da un file testo</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="139"/>
         <source>Eigenschaften der Seillinie</source>
-        <translation type="unfinished"></translation>
+        <translation>Caratteristiche della linea di gru a cavo</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="147"/>
         <source>Parameterset auswaehlen</source>
-        <translation type="unfinished"></translation>
+        <translation>Scegliere una serie di parametri</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="179"/>
         <source>Eigenschaften der Seillinie in neuem Parameterset abspeichern</source>
-        <translation type="unfinished"></translation>
+        <translation>Salvare le caratteristiche della linae teleferica in una nuova serie di parametri</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="208"/>
         <source>Seillinie</source>
-        <translatorcomment>HeProMo</translatorcomment>
+        <translatorcomment>Termini forestali tedesco-italiano (Conedera/Giudici, WSL)</translatorcomment>
         <translation>Linea di gru a cavo</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="254"/>
         <source>Minimaler Abstand Tragseil - Boden</source>
-        <translation type="unfinished"></translation>
+        <translation>Altezza da terra minimale (fune portante-suolo)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2189"/>
@@ -1210,23 +1216,23 @@ soluzione</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="317"/>
         <source>einzuhalten bis ... vor dem Endpunkt</source>
-        <translation type="unfinished"></translation>
+        <translation>Da rispettare fino ... davanti al punto finale.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="365"/>
         <source>Hoehe Seilkranmast</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Valentini/Mayr Melnhof</translatorcomment>
+        <translation>Altezza della torretta</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="372"/>
         <source>Seillinie befahrbar bis ... vor dem Endpunkt   </source>
-        <translation type="unfinished"></translation>
+        <translation>Fune portante carrabile fino a ...davanti al punto finale</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="379"/>
         <source>Seilsystem</source>
-        <translatorcomment>HeProMo</translatorcomment>
-        <translation>Tipo di sistema gru a cavo</translation>
+        <translation>Sistema di gru a cavo</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="497"/>
@@ -1237,22 +1243,23 @@ soluzione</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="502"/>
         <source>Mehrseil-System</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>HeProMo</translatorcomment>
+        <translation>Sistema a più funi</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="535"/>
         <source>einzuhalten ab ... vom Anfangspunkt</source>
-        <translation type="unfinished"></translation>
+        <translation>Da rispettare a partire da ... dal punto iniziale</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="567"/>
         <source>Seillinie befahrbar ab ... vom Anfangspunkt</source>
-        <translation type="unfinished"></translation>
+        <translation>Fune portante carrabile a partire da ... dal punto iniziale</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="580"/>
         <source>Bodenabstand</source>
-        <translation type="unfinished"></translation>
+        <translation>Altezza da terra</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2546"/>
@@ -1262,7 +1269,7 @@ soluzione</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="671"/>
         <source>Maschinendaten</source>
-        <translation type="unfinished"></translation>
+        <translation>Dati macchina</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="967"/>
@@ -1272,7 +1279,7 @@ soluzione</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="719"/>
         <source>Gewicht der Last inkl. Laufwagen</source>
-        <translation type="unfinished"></translation>
+        <translation>Peso del carico, carrello compreso</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1526"/>
@@ -1282,22 +1289,22 @@ soluzione</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="802"/>
         <source>Gewicht Rueckholseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Peso della fune di ritorno</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="916"/>
         <source>Gewicht Zugseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Peso della fune traente</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="929"/>
         <source>Querschnittsflaeche Tragseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Area della sezione trasversale della fune portante</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="942"/>
         <source>Gewicht Tragseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Peso della fune portante</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="992"/>
@@ -1307,62 +1314,62 @@ soluzione</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="999"/>
         <source>Mindestbruchkraft Tragseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Carico di rottura minimale della fune portante</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1041"/>
         <source>Optional #1</source>
-        <translation type="unfinished"></translation>
+        <translation>Opzionale #1</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1074"/>
         <source>Kuenstliche Stuetze ab Stuetzenhoehe von</source>
-        <translation type="unfinished"></translation>
+        <translation>Cavalletto artificiale a partire d&apos;un altezza della sella di</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1112"/>
         <source>Maximale Stuetzenhoehe</source>
-        <translation type="unfinished"></translation>
+        <translation>Altezza massimale del cavalletto</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1298"/>
         <source>Minimale Stuetzenhoehe</source>
-        <translation type="unfinished"></translation>
+        <translation>Altezza minimale del cavalletto</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1336"/>
         <source>Horiz. Aufloesung moegl. Stuetzenstandorte</source>
-        <translation type="unfinished"></translation>
+        <translation>Risoluzione orizzontale di potenziali posizioni di cavalletti</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1387"/>
         <source>Abstufungsinterval</source>
-        <translation type="unfinished"></translation>
+        <translation>Intervallo di graduazione</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1425"/>
         <source>Optimierungsparameter</source>
-        <translation type="unfinished"></translation>
+        <translation>Parametri d&apos; ottimizzazione</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1447"/>
         <source>Minimaler Abstand zwischen Stuetzen</source>
-        <translation type="unfinished"></translation>
+        <translation>Distanza minimale tra i cavalletti</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1482"/>
         <source>Minimal gewaehlte Seilzugkraft</source>
-        <translation type="unfinished"></translation>
+        <translation>Forza di trazione minimale scegliata</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1549"/>
         <source>Optional #2</source>
-        <translation type="unfinished"></translation>
+        <translation>Opzionale #2</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1576"/>
         <source>Diverses</source>
-        <translation type="unfinished"></translation>
+        <translation>Vario</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1639"/>
@@ -1372,124 +1379,125 @@ soluzione</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1658"/>
         <source>Elastizitaetsmodul Tragseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Coefficiente del potere elastico della fune portante</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1710"/>
         <source>Sicherheitsfaktor</source>
-        <translation type="unfinished"></translation>
+        <translation>Fattore di sicurezza</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1750"/>
         <source>Terraindaten</source>
-        <translation type="unfinished"></translation>
+        <translation>Dati del terreno</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1761"/>
         <source>Rasterlayer</source>
-        <translation type="unfinished"></translation>
+        <translation>Raster</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1768"/>
         <source>Gelaendeprofil</source>
-        <translation type="unfinished"></translation>
+        <translation>Profilo del terreno</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1787"/>
         <source>Liste der in QGIS geladenen Raster aktualisieren</source>
-        <translation type="unfinished"></translation>
+        <translation>Attualizzare la lista delle griglie caricata in QGIS</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1821"/>
         <source>Pfad zu csv-Datei</source>
-        <translation type="unfinished"></translation>
+        <translation>Percorso al file csv</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1856"/>
         <source>Oeffne Komma-getrennte Textdatei (.csv Datei)</source>
-        <translation type="unfinished"></translation>
+        <translation>Apra il file testo con i valori separati tramite comma (file .csv)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1921"/>
         <source>Info</source>
-        <translatorcomment>HeProMO</translatorcomment>
-        <translation>Informazione</translation>
+        <translatorcomment>Informazione</translatorcomment>
+        <translation>Info</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1950"/>
         <source>Abbrechen</source>
-        <translation type="unfinished"></translation>
+        <translation>Interrompere</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1960"/>
         <source>Stuetzenoptimierung ueberspringen und direkt zur manuellen Bearbeitung der Seillinie uebergehen</source>
-        <translation type="unfinished"></translation>
+        <translation>Saltare l&apos;ottimizzazione dei cavalletti et passare direttamente all&apos; elaborazione manuale della linea</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1963"/>
         <source>Seillinie direkt bearbeiten</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>abkürzen</translatorcomment>
+        <translation>Elaborazione manuale della linea</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1973"/>
         <source>Berechnung der optimalen Stuetzenstandorte ausfuehren</source>
-        <translation type="unfinished"></translation>
+        <translation>Effettuare il calcolo dei posizioni di cavalletto ottimali</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1976"/>
         <source>Stuetzen optimieren</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Abk.</translatorcomment>
+        <translation>Ottimizzare automaticamente la linea</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1993"/>
         <source>Verlauf der Seillinie</source>
-        <translation type="unfinished"></translation>
+        <translation>Tracciamento della linea di cavo gru</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2013"/>
         <source>oder Koordinaten der Seillinie manuell angeben:</source>
-        <translation type="unfinished"></translation>
+        <translation>o inserire manualmente le coordinate della linea:</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2043"/>
         <source>Profil in Karte zeichnen</source>
-        <translation type="unfinished"></translation>
+        <translation>Tracciare la linea sulla carta</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2046"/>
         <source>zeichnen</source>
-        <translation type="unfinished"></translation>
+        <translation>tracciare</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2079"/>
         <source>Seillinie in Karte einzeichnen</source>
-        <translation type="unfinished"></translation>
+        <translation>Tracciare la linea sulla carta</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2105"/>
         <source>Hoehenlinien darstellen</source>
-        <translation type="unfinished"></translation>
+        <translation>Figurare le isoipse</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2126"/>
         <source>X-Koordinate</source>
-        <translation type="unfinished"></translation>
+        <translation>Coordinata X</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2477"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/plugins/SeilaplanPlugin/gui/icons/icon_yellow.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/plugins/SeilaplanPlugin/gui/icons/icon_yellow.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2272"/>
         <source>Stuetze</source>
-        <translatorcomment>HeProMo (Mehrzahl!!)</translatorcomment>
-        <translation>Cavalletti intermedi</translation>
+        <translation>Cavalletto</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2277"/>
         <source>Verankerung</source>
-        <translation type="unfinished"></translation>
+        <translation>Ancoraggio</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2244"/>
@@ -1500,38 +1508,37 @@ soluzione</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2252"/>
         <source>Punktart</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipo di punto</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2291"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Anfangspunkt&lt;br&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;(bei Maschine/Winde)&lt;/span&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Anfangspunkt&lt;br&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;(bei Maschine/Winde)&lt;/span&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2332"/>
         <source>Endpunkt</source>
-        <translation type="unfinished"></translation>
+        <translation>Punto terminale</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2345"/>
         <source>Horizontaldistanz</source>
-        <translatorcomment>HeProMo</translatorcomment>
         <translation>Distanza orizzontale [m]</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2389"/>
         <source>Gelaendelinie in Diagramm darstellen und fixe Stuetzen definieren</source>
-        <translation type="unfinished"></translation>
+        <translation>Figurare la linea del terreno nella diagramma et definire i cavalletti fissi</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2392"/>
         <source>Gelaendelinie</source>
-        <translation type="unfinished"></translation>
+        <translation>Linea del terreno</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2467"/>
         <source>Y-Koordinate</source>
-        <translation type="unfinished"></translation>
+        <translation>Coordinata Y</translation>
     </message>
 </context>
 <context>
@@ -1555,7 +1562,7 @@ soluzione</translation>
     <message>
         <location filename="../seilaplanPlugin.py" line="189"/>
         <source>Fehler mit Bibliothek scipy</source>
-        <translation type="unfinished"></translation>
+        <translation>La biblioteca scipy non è installata. Seilaplan non può essere eseguito. Per favore installi la biblioteca mancante e riavvi QGIS.</translation>
     </message>
 </context>
 <context>
@@ -1563,83 +1570,88 @@ soluzione</translation>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="432"/>
         <source>OSM_Karte</source>
-        <translation type="unfinished"></translation>
+        <translation>mappa_OSM</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="538"/>
         <source>Raster &apos;{}&apos; nicht vorhanden</source>
-        <translation type="unfinished"></translation>
+        <translation>Griglia &apos;{}&apos; non esiste</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="539"/>
         <source>Fehler beim Laden des Rasters</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore al carico della griglia</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="552"/>
         <source>Fehler Koordinatenbezugssystem (KBS)</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore sistema delle coordinate di riferimento (SCR)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="568"/>
         <source>KBS-Fehler - Raster kann nicht verarbeitet werden</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>project-wide CRS (coordinate reference system)   SCR Sistema delle coordinate di riferimento</translatorcomment>
+        <translation>La griglia col SCR geografico (&apos;{}&apos; ({}) non può essere utilizzato.
+Seilaplan può processare unicamente delle griglie di altezza in un SCR proiettato.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="580"/>
         <source>KBS-Fehler - Felddaten und QGIS in geografischem KBS</source>
-        <translation type="unfinished"></translation>
+        <translation>I dati di terreno esistono in un SCR geografico!
+Seilaplan può processare unicamente dei dati in un SCR proiettato. I dati saranno trasformati automaticamente nel SCR svizzero &apos;LV95&apos; (EPSG:2056).</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="587"/>
         <source>KBS-Fehler - Bezugssystem des Rasters unbekannt</source>
-        <translation type="unfinished"></translation>
+        <translation>Sistema di riferimento della griglia sconosciuto.
+La griglia viene figurata nel SCR svizzero &apos;LV95&apos; (EPSG:2056). Se vuole utilizzare un altro SCR, deve configurare il vostro progetto QGIS adeguatamente primo di caricare i dati di altezza.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="603"/>
         <source>Feldaufnahmen laden</source>
-        <translation type="unfinished"></translation>
+        <translation>Caricare i dati di terreno</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="604"/>
         <source>csv Dateien (*.csv *.CSV)</source>
-        <translation type="unfinished"></translation>
+        <translation>file csv (*.csv *.CSV)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="733"/>
         <source>zu definieren</source>
-        <translation type="unfinished"></translation>
+        <translation>da definire</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="734"/>
         <source>ausserhalb Raster</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>fuori dalla griglia</translatorcomment>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="790"/>
         <source>Projekt laden</source>
-        <translation type="unfinished"></translation>
+        <translation>Caricare il progetto</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="791"/>
         <source>Txt Dateien (*.txt)</source>
-        <translatorcomment>Internet</translatorcomment>
         <translation>File di testo (*.txt)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="800"/>
         <source>Fehler beim Laden</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Errore al caricamento</translatorcomment>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="800"/>
         <source>Projektdatei konnte nicht geladen werden.</source>
-        <translation type="unfinished"></translation>
+        <translation>File del progetto non ha potuto essere caricato.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="806"/>
         <source>Projekt speichern</source>
-        <translation type="unfinished"></translation>
+        <translation>Salvare il progetto</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="807"/>
@@ -1649,62 +1661,93 @@ soluzione</translation>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="842"/>
         <source>Infotext</source>
-        <translation type="unfinished"></translation>
+        <translation>SEILAPLAN - Seilkran-Layoutplaner
+
+SEILAPLAN calcola, sulla base di un modello digitale del terreno e dei parametri tecnici tra le coordinate di partenza e di fine ben definiti, la disposizione ottimale della linea di gru a cavo. Saranno determinati la posizione e l&apos;altezza dei cavalletti intermedi come pure i parametri i più importanti della linea di gru a cavo.
+
+Realizzazione:
+
+Chair of Land Use Engineering
+ETH Zurich
+8092 Zurich
+(Concetto, realizzazione versione 1.x per QGIS 2)
+
+Gruppo Gestione forestale sostenibile
+Istituto federale di ricerca per la foresta, la neve e il paesaggio WSL
+8903 Birmensdorf
+(Realizzazione versione 2.x per QGIS 3)
+
+
+Persone implicate:
+
+Leo Bont, Hans Rudolf Heinimann (concetto, meccanica)
+Patricia Moll (implementazione in Python / QGIS)
+
+
+SEILAPLAN è un software gratuito: Può distribuirlo e/o modificarlo secondo le normative della GNU General Public License, publicata dalla Free Software Foundation, versione 2 della licenza o (alla vostra scelta) delle versione ulteriori (www.gnu.org/licenses).
+.
+Percorso alla documentazione:
+{}</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="850"/>
         <source>Hoeheninformation - Erklaerung Raster</source>
-        <translation type="unfinished"></translation>
+        <translation>Le informazioni d&apos;altezza sono selezionati in una griglia d&apos;altezza. La lista contiene tutte le griglie esistenti del progetto QGIS attuale.
+Se una nuova griglia viene aggiunta a QGIS, la lista può essere completata cliccando sul bottone d&apos;attualizzazione.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="852"/>
         <source>Hoeheninformation - Erklaerung Felddaten</source>
-        <translation type="unfinished"></translation>
+        <translation>Caricare i punti di profilo rilevati sul terreno.
+Tipi di file supportati:
+1) File csv esportato dallo strumento di misura Haglöf Vertex (Svezia).
+2) File csv generico (valori separati tramite comma) con le coordinate &apos;x&apos;, &apos;y&apos; e &apos;z&apos; in colonne. Il file non può comprendere commenti e i punti devono essere assortiti.
+</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="853"/>
         <source>Hoeheninformationen laden</source>
-        <translation type="unfinished"></translation>
+        <translation>Caricare le informazioni dell&apos; altezza</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="858"/>
         <source>Anfangspunkt</source>
-        <translation type="unfinished"></translation>
+        <translation>Punto iniziale</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="867"/>
         <source>Endpunkt</source>
-        <translation type="unfinished"></translation>
+        <translation>Punto terminale</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="878"/>
         <source>Erklaerungen zum Bodenabstand</source>
-        <translation type="unfinished"></translation>
+        <translation>Nota sull&apos; altezza da terra</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="879"/>
         <source>Erklaerungen zu den Zwischenstuetzen</source>
-        <translation type="unfinished"></translation>
+        <translation>Nota sui cavalletti intermedi</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="890"/>
         <source>Elastizitaetsmodul Tragseil Erklaerung</source>
-        <translation type="unfinished"></translation>
+        <translation>Carratteristica del materiale della fune portante, che descriva la relazione tra la tensione e l&apos;elasticità della fune. La caratteristica varia pocissima, per questo il valore di default può essere utilizzato per la maggior parte dei tipi di fune in uso.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="891"/>
         <source>Elastizitaetsmodul Tragseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Modulo d&apos;elasticità</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="895"/>
         <source>Europaweit wird ein Sicherheitsfaktor von 3.0 fuer das Tragseil verwendet.</source>
-        <translation type="unfinished"></translation>
+        <translation>A livello europeo, per la fune portante c&apos;è utilizzata un fattore di sicurezza di 3.0.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
         <source>Sicherheitsfaktor Tragseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Fattore di sicurezza della fune portante</translation>
     </message>
 </context>
 <context>
@@ -1712,7 +1755,7 @@ soluzione</translation>
     <message>
         <location filename="../tool/heightSource.py" line="286"/>
         <source>Daten in CSV-Datei konnten nicht geladen werden.</source>
-        <translation type="unfinished"></translation>
+        <translation>I dati del file CSV non hanno potuto essere caricato.</translation>
     </message>
 </context>
 </TS>
