@@ -1114,6 +1114,16 @@ nach Zweifel</translation>
         <source>Ein Fehler ist aufgetreten:</source>
         <translation>Ein Fehler ist aufgetreten:</translation>
     </message>
+    <message>
+        <location filename="../gui/progressDialog.py" line="44"/>
+        <source>Berechnung der optimalen Stuetzenpositionen...</source>
+        <translation>Berechnung der optimalen Stützenpositionen...</translation>
+    </message>
+    <message>
+        <location filename="../gui/progressDialog.py" line="45"/>
+        <source>Berechnung der optimale Seillinie...</source>
+        <translation>Berechnung der optimale Seillinie...</translation>
+    </message>
 </context>
 <context>
     <name>ProjectConfHandler</name>
@@ -1448,14 +1458,14 @@ nach Zweifel</translation>
         <translation>oder Koordinaten der Seillinie manuell eingeben:</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2043"/>
-        <source>Profil in Karte zeichnen</source>
-        <translation>Seillinie in Karte einzeichnen</translation>
-    </message>
-    <message>
         <location filename="../gui/seilaplanDialog.ui" line="2046"/>
         <source>zeichnen</source>
         <translation>zeichnen</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="2046"/>
+        <source>OpenStreetMap Layer laden</source>
+        <translation>OpenStreetMap Layer laden</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2079"/>
@@ -1679,6 +1689,21 @@ Unterstützte Dateitypen:
         <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
         <source>Sicherheitsfaktor Tragseil</source>
         <translation>Sicherheitsfaktor Tragseil</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="905"/>
+        <source>Erklaerungen Berechnungsbuttons</source>
+        <translation>Seillinie manuell bearbeiten:
+Es wird keine Optimierung durchgeführt und kein Seillinienlayout vorgeschlagen. Das Layout kann direkt manuell bearbeitet werden.
+
+Seillinie automatisch optimieren:
+Es wird diejenige Lösung gesucht, welche in erster Priorität eine minimale Anzahl an Stützen aufweist und in zweiter Priorität die Stützenhöhe minimiert.
+</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="906"/>
+        <source>Naechste Schritte</source>
+        <translation>Nächste Schritte</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="842"/>

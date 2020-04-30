@@ -1130,6 +1130,16 @@ d&apos;après Zweifel</translation>
         <source>Ein Fehler ist aufgetreten:</source>
         <translation>Il s&apos;est produit un erreur:</translation>
     </message>
+    <message>
+        <location filename="../gui/progressDialog.py" line="44"/>
+        <source>Berechnung der optimalen Stuetzenpositionen...</source>
+        <translation>Calcul de la position optimale des support…</translation>
+    </message>
+    <message>
+        <location filename="../gui/progressDialog.py" line="45"/>
+        <source>Berechnung der optimale Seillinie...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ProjectConfHandler</name>
@@ -1462,14 +1472,14 @@ d&apos;après Zweifel</translation>
         <translation>ou entrer manuellement les coordonnés de la ligne de câble:</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2043"/>
-        <source>Profil in Karte zeichnen</source>
-        <translation>Tracer la ligne de câble sur la carte</translation>
-    </message>
-    <message>
         <location filename="../gui/seilaplanDialog.ui" line="2046"/>
         <source>zeichnen</source>
         <translation>tracer</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="2046"/>
+        <source>OpenStreetMap Layer laden</source>
+        <translation>Charger OpenStreetMap layer</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2079"/>
@@ -1748,6 +1758,21 @@ Types de fichier supportés:
         <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
         <source>Sicherheitsfaktor Tragseil</source>
         <translation>Facteur de sécurité du câble porteur</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="905"/>
+        <source>Erklaerungen Berechnungsbuttons</source>
+        <translation type="unfinished">Elaboration manuelle de la ligne de câble:
+Il n&#39;y a pas d&#39;optimisation et de proposition du tracement de la ligne de câble. Le tracement peut être fait directement à la main.
+
+Optimiser automatiquement la ligne:
+Il est recherché la solution qui, en première priorité, minimalise le nombre de supports et, en deuxième priorité, la hauteur des supports.
+</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="906"/>
+        <source>Naechste Schritte</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

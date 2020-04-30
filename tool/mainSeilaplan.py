@@ -54,7 +54,7 @@ def main(progress, project):
             progress.exception = "Fehler in Optimierungsalgorithmus."
         return False
 
-    progress.sig_text.emit("Berechnung der optimale Seillinie...")
+    progress.sig_text.emit('msg_seillinie')
     [HM, HMidx, optValue, optSTA, optiLen] = out
 
     if not HMidx or HMidx == [0]:

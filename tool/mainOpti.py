@@ -195,7 +195,7 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
 
     # Progressbar einrichten
     progress.sig_range.emit([0, optiLen*1.02])
-    progress.sig_text.emit("Berechnung der optimalen Stützenpositionen...")
+    progress.sig_text.emit('msg_optimierung')
 
     for i in range(optiLen):
         if progress.isCanceled():

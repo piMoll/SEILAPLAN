@@ -1126,6 +1126,16 @@ dopo Zweifel</translation>
         <source>Ein Fehler ist aufgetreten:</source>
         <translation>E avvenuto un errore:</translation>
     </message>
+    <message>
+        <location filename="../gui/progressDialog.py" line="44"/>
+        <source>Berechnung der optimalen Stuetzenpositionen...</source>
+        <translation>Calcolo della posizione ottimale dei cavalletti…</translation>
+    </message>
+    <message>
+        <location filename="../gui/progressDialog.py" line="45"/>
+        <source>Berechnung der optimale Seillinie...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ProjectConfHandler</name>
@@ -1460,14 +1470,14 @@ dopo Zweifel</translation>
         <translation>o inserire manualmente le coordinate della linea:</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2043"/>
-        <source>Profil in Karte zeichnen</source>
-        <translation>Tracciare la linea sulla carta</translation>
-    </message>
-    <message>
         <location filename="../gui/seilaplanDialog.ui" line="2046"/>
         <source>zeichnen</source>
         <translation>tracciare</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="2046"/>
+        <source>OpenStreetMap Layer laden</source>
+        <translation>Caricare OpenStreetMap layer</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2079"/>
@@ -1748,6 +1758,21 @@ Tipi di file supportati:
         <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
         <source>Sicherheitsfaktor Tragseil</source>
         <translation>Fattore di sicurezza della fune portante</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="905"/>
+        <source>Erklaerungen Berechnungsbuttons</source>
+        <translation type="unfinished">Elaborazione manuale della linea:
+Non c&#39;è effetuato un&#39;ottimizzazione né una proposizione per il tracciamento della linea. Il tracciamento può essere fatto direttamente a mano.
+
+Ottimizzare automaticamente la linea:
+C&#39;è cercato la soluzione che, in prima priorità, minimizza il numero dei cavalletti e, in seconda priorità, l&#39;altezza dei cavalletti.
+</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="906"/>
+        <source>Naechste Schritte</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

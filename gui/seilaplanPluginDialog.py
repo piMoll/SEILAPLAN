@@ -164,6 +164,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.infoStuetzen.clicked.connect(self.onShowInfoImg)
         self.infoFieldE.clicked.connect(self.onShowInfoFieldE)
         self.infoFieldSFT.clicked.connect(self.onShowInfoFieldSFT)
+        self.infoBerechnung.clicked.connect(self.onShowInfoBerechnung)
         
         # OSM map and contour buttons
         self.osmLyrButton.clicked.connect(self.onClickOsmButton)
@@ -898,6 +899,11 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         msg = self.tr('Europaweit wird ein Sicherheitsfaktor von 3.0 fuer das '
                'Tragseil verwendet.')
         QMessageBox.information(self, self.tr("Sicherheitsfaktor Tragseil"), msg,
+                                QMessageBox.Ok)
+    
+    def onShowInfoBerechnung(self):
+        msg = self.tr('Erklaerungen Berechnungsbuttons')
+        QMessageBox.information(self, self.tr("Naechste Schritte"), msg,
                                 QMessageBox.Ok)
         
     def goToAdjustmentWindow(self):

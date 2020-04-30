@@ -1137,6 +1137,16 @@ by Zweifel</translation>
         <source>Ein Fehler ist aufgetreten:</source>
         <translation>An error occured:</translation>
     </message>
+    <message>
+        <location filename="../gui/progressDialog.py" line="44"/>
+        <source>Berechnung der optimalen Stuetzenpositionen...</source>
+        <translation>Calculation of the optimal support positions…</translation>
+    </message>
+    <message>
+        <location filename="../gui/progressDialog.py" line="45"/>
+        <source>Berechnung der optimale Seillinie...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ProjectConfHandler</name>
@@ -1171,7 +1181,7 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="17"/>
         <source>SEILAPLAN - Seilkran-Layoutplaner</source>
-        <translation>SEILAPLAN - Câble line layout planning</translation>
+        <translation>SEILAPLAN - Cable line layout planning</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="32"/>
@@ -1439,7 +1449,7 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1960"/>
         <source>Stuetzenoptimierung ueberspringen und direkt zur manuellen Bearbeitung der Seillinie uebergehen</source>
-        <translation>Skip the support optimization and pass directlyto the manual conditioning of the cable line</translation>
+        <translation>Skip the support optimization and pass directly to the manual conditioning of the cable line</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1963"/>
@@ -1468,14 +1478,14 @@ by Zweifel</translation>
         <translation>or insert the coordinates of the cable line manually:</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2043"/>
-        <source>Profil in Karte zeichnen</source>
-        <translation>Trace the cable line onto the map</translation>
-    </message>
-    <message>
         <location filename="../gui/seilaplanDialog.ui" line="2046"/>
         <source>zeichnen</source>
         <translation>trace</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="2046"/>
+        <source>OpenStreetMap Layer laden</source>
+        <translation>Load OpenStreetMap layer</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2079"/>
@@ -1758,6 +1768,21 @@ Supported data types:
         <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
         <source>Sicherheitsfaktor Tragseil</source>
         <translation>Safety factor of the skyline</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="905"/>
+        <source>Erklaerungen Berechnungsbuttons</source>
+        <translation type="unfinished">Manual drafting of the cable line:
+No optimization is performed and no cable line layout is proposed. The layout can be directly edited manually.
+
+Automatical optimization of the cable line:
+The algorithm calculates a solution, which in first priority is minimizing the number of supports and in second priority the height of the supports.
+</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="906"/>
+        <source>Naechste Schritte</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -40,6 +40,10 @@ class ProgressDialog(QDialog):
         self.wasSuccessful = False
         self.savedProj = None
         self.result = None
+        self.messageTxt = {
+            'msg_optimierung': self.tr('Berechnung der optimalen Stuetzenpositionen...'),
+            'msg_seillinie': self.tr('Berechnung der optimale Seillinie...')
+        }
         
         # Build GUI Elements
         self.setWindowTitle(self.tr("SEILAPLAN wird ausgefuehrt"))
@@ -141,8 +145,8 @@ class ProgressDialog(QDialog):
     def maxFromThread(self, max):
         self.progressBar.setValue(self.progressBar.maximum())
     
-    def textFromThread(self, value):
-        self.statusLabel.setText(value)
+    def textFromThread(self, message):
+        self.statusLabel.setText(self.messageTxt[message])
     
     def resultFromThread(self, resultStatus):
         self.resultStatus = resultStatus
