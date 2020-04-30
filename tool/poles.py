@@ -1,4 +1,4 @@
-from math import cos, sin, floor, radians
+from math import cos, sin, atan, floor, radians, degrees
 import numpy as np
 from qgis.PyQt.QtCore import QCoreApplication
 
@@ -237,21 +237,45 @@ class Poles(object):
         """ Calculate anchor cable line and interpolate ground points.
         """
         # Height difference between anchor point and top of first/last pole
-        poleA_hz = 0
-        poleE_hz = 0
-        if self.poles[0]['poleType'] == 'anchor' and self.poles[0]['active']:
-            poleA_hz = self.poles[1]['ztop'] - self.poles[0]['ztop']
-        if self.poles[-1]['poleType'] == 'anchor' and self.poles[-1]['active']:
-            poleE_hz = self.poles[-2]['ztop'] - self.poles[-1]['ztop']
+        anchorA = self.poles[0]
+        anchorE = self.poles[-1]
+        firstPole = self.poles[1]
+        lastPole = self.poles[-2]
+        
+        poleA_ztop_diff = 0
+        poleA_dtop_diff = self.anchorA
+        poleE_ztop_diff = 0
+        poleE_dtop_diff = self.anchorE
+        angriffswinkel_A = None
+        angriffswinkel_E = None
+        
+        if anchorA['poleType'] == 'anchor' and anchorA['active']:
+            poleA_ztop_diff = firstPole['ztop'] - anchorA['ztop']
+            poleA_z_diff = firstPole['z'] - anchorA['z']
+            poleA_dtop_diff = firstPole['dtop'] - anchorA['dtop']
+            poleA_d_diff = firstPole['d'] - anchorA['d']
+            
+            angriffswinkel_A = degrees(atan(poleA_ztop_diff / poleA_dtop_diff)
+                                      - atan(poleA_z_diff / poleA_d_diff))
+            
+        if anchorE['poleType'] == 'anchor' and anchorE['active']:
+            poleE_ztop_diff = lastPole['ztop'] - anchorE['ztop']
+            poleE_z_diff = lastPole['z'] - anchorE['z']
+            poleE_dtop_diff = anchorE['dtop'] - lastPole['dtop']
+            poleE_d_diff = anchorE['d'] - lastPole['d']
+
+            angriffswinkel_E = degrees(atan(poleE_ztop_diff / poleE_dtop_diff)
+                                      - atan(poleE_z_diff / poleE_d_diff))
     
-        anchor_field = [self.anchorA, poleA_hz,
-                        self.anchorE, poleE_hz]
-        anchor_len = (self.anchorA ** 2 + poleA_hz ** 2) ** 0.5 + \
-                     (self.anchorE ** 2 + poleE_hz ** 2) ** 0.5
+        anchor_field = [poleA_dtop_diff, poleA_ztop_diff,
+                        poleE_dtop_diff, poleE_ztop_diff]
+        anchor_len = (poleA_dtop_diff ** 2 + poleA_ztop_diff ** 2) ** 0.5 + \
+                     (poleE_dtop_diff ** 2 + poleE_ztop_diff ** 2) ** 0.5
     
         self.anchor = {
             'field': anchor_field,
-            'len': anchor_len
+            'len': anchor_len,
+            'angriffwinkel': [angriffswinkel_A, angriffswinkel_E]
         }
 
     def getCableFieldDimension(self):

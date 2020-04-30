@@ -60,6 +60,7 @@ def preciseCable(IS, poles, STA):
     qz2 = IS["qz2"]     # [kN/m] Zugseilgewicht rechts
 
     # Field dimension
+    poles.calculateAnchorLength()
     b, h = poles.getCableFieldDimension()
     # Round the field dimensions do dm because this is going to be the
     # the resolution of the cable calculation
