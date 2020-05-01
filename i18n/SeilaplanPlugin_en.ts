@@ -6,13 +6,11 @@
     <message>
         <location filename="../gui/guiHelperFunctions.py" line="76"/>
         <source>Hoehenlinien_</source>
-        <translatorcomment>Internet</translatorcomment>
         <translation>Contours_</translation>
     </message>
     <message>
         <location filename="../gui/guiHelperFunctions.py" line="104"/>
         <source>OSM_Karte</source>
-        <translatorcomment>Internet (eigentlich OS_Map?)</translatorcomment>
         <translation>OSM_map</translation>
     </message>
     <message>
@@ -28,7 +26,6 @@
     <message>
         <location filename="../tool/outputGeo.py" line="58"/>
         <source>stuetzen.shp</source>
-        <translatorcomment>HeProMo</translatorcomment>
         <translation>supports.shp</translation>
     </message>
     <message>
@@ -39,19 +36,16 @@
     <message>
         <location filename="../tool/outputGeo.py" line="68"/>
         <source>lastseil.shp</source>
-        <translatorcomment>Leo</translatorcomment>
         <translation>loadedcable.shp</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="87"/>
         <source>StuetzenNr</source>
-        <translatorcomment>Internet</translatorcomment>
         <translation>Support number</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="163"/>
         <source>Stuetzen</source>
-        <translatorcomment>HeProMo</translatorcomment>
         <translation>Supports</translation>
     </message>
     <message>
@@ -87,7 +81,6 @@
     <message>
         <location filename="../tool/outputGeo.py" line="193"/>
         <source>Z Leerseil</source>
-        <translatorcomment>Leo</translatorcomment>
         <translation>Z unloaded cable</translation>
     </message>
     <message>
@@ -103,13 +96,11 @@
     <message>
         <location filename="../tool/outputGeo.py" line="205"/>
         <source>Stuetze</source>
-        <translatorcomment>HeProMo</translatorcomment>
         <translation>Support</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="205"/>
         <source>Z Stuetze Boden</source>
-        <translatorcomment>Internet</translatorcomment>
         <translation>Z support ground</translation>
     </message>
     <message>
@@ -130,18 +121,16 @@
     <message>
         <location filename="../tool/outputReport.py" line="86"/>
         <source>Feld</source>
-        <translation type="unfinished">Span</translation>
+        <translation>Span</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="91"/>
         <source>Zeitpunkt</source>
-        <translatorcomment>Internet</translatorcomment>
         <translation>Date</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="91"/>
         <source>Berechnungsdauer</source>
-        <translatorcomment>Internet</translatorcomment>
         <translation>Calculation time</translation>
     </message>
     <message>
@@ -152,7 +141,6 @@
     <message>
         <location filename="../tool/outputReport.py" line="98"/>
         <source>Bemerkung</source>
-        <translatorcomment>Internet (oder comment)</translatorcomment>
         <translation>Note</translation>
     </message>
     <message>
@@ -168,7 +156,6 @@
     <message>
         <location filename="../tool/outputReport.py" line="108"/>
         <source>X-Koordinate</source>
-        <translatorcomment>Internet</translatorcomment>
         <translation>X coordinate</translation>
     </message>
     <message>
@@ -189,13 +176,11 @@
     <message>
         <location filename="../tool/outputReport.py" line="121"/>
         <source>gon</source>
-        <translatorcomment>Internet</translatorcomment>
         <translation>gon</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="122"/>
         <source>Schraegdistanz</source>
-        <translatorcomment>möglich wäre auch &quot;inclined&quot;</translatorcomment>
         <translation>Oblique distance</translation>
     </message>
     <message>
@@ -226,7 +211,6 @@
     <message>
         <location filename="../tool/outputReport.py" line="152"/>
         <source>Abk.</source>
-        <translatorcomment>Internet</translatorcomment>
         <translation>Abbr.</translation>
     </message>
     <message>
@@ -317,7 +301,6 @@
     <message>
         <location filename="../tool/outputReport.py" line="230"/>
         <source>Sattelkraft, vertikale Komponente</source>
-        <translatorcomment>Wyssen Prospekt</translatorcomment>
         <translation>Saddle force, vertical component</translation>
     </message>
     <message>
@@ -403,7 +386,6 @@
     <message>
         <location filename="../tool/outputReport.py" line="337"/>
         <source>Seilbahnprojekt</source>
-        <translatorcomment>möglich wäre auch &quot;cable yarder&quot;</translatorcomment>
         <translation>Project for cable crane line</translation>
     </message>
     <message>
@@ -429,8 +411,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="342"/>
         <source>Durchhang</source>
-        <translatorcomment>verifizieren</translatorcomment>
-        <translation type="unfinished">Catenary sag</translation>
+        <translation>Catenary sag</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="343"/>
@@ -511,7 +492,6 @@
     <message>
         <location filename="../gui/adjustmentDialog.py" line="342"/>
         <source>Tragseil hebt bei mindestens einer Stuetze ab</source>
-        <translatorcomment>cable crane line</translatorcomment>
         <translation>The cable line has been calculated but the skyline lifts off the saddle at one support minimally</translation>
     </message>
     <message>
@@ -552,13 +532,11 @@
     <message>
         <location filename="../gui/adjustmentDialog.py" line="461"/>
         <source>Grenzwert</source>
-        <translatorcomment>Internet, nur &quot;threshold&quot; wäre auch möglich</translatorcomment>
         <translation>Threshold value</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="462"/>
         <source>Optimierte Loesung</source>
-        <translatorcomment>Internet</translatorcomment>
         <translation>Optimized
 solution</translation>
     </message>
@@ -601,7 +579,6 @@ solution</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="690"/>
         <source>Projekteinstellungen.txt</source>
-        <translatorcomment>Projet</translatorcomment>
         <translation>Projectsettings.txt</translation>
     </message>
     <message>
@@ -651,19 +628,16 @@ With angles between 2° and 4° the skyline has to be locked by a hold-down plat
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="17"/>
         <source>Manuelle Anpassung</source>
-        <translatorcomment>Internet</translatorcomment>
         <translation>Manual adjustment</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="39"/>
         <source>Neuberechnung...</source>
-        <translatorcomment>Internet</translatorcomment>
         <translation>Recalculation...</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="67"/>
         <source>Manuelle Anpassung der Seillinie</source>
-        <translatorcomment>HeProMo</translatorcomment>
         <translation>Manual adjustment of the cable line</translation>
     </message>
     <message>
@@ -684,7 +658,6 @@ With angles between 2° and 4° the skyline has to be locked by a hold-down plat
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="105"/>
         <source>Schliessen</source>
-        <translatorcomment>Internet</translatorcomment>
         <translation>Close</translation>
     </message>
     <message>
@@ -695,13 +668,11 @@ With angles between 2° and 4° the skyline has to be locked by a hold-down plat
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="118"/>
         <source>Speichern</source>
-        <translatorcomment>Internet</translatorcomment>
         <translation>Save</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="158"/>
         <source>Stuetzen</source>
-        <translatorcomment>HeProMo</translatorcomment>
         <translation>Supports</translation>
     </message>
     <message>
@@ -712,7 +683,6 @@ With angles between 2° and 4° the skyline has to be locked by a hold-down plat
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="227"/>
         <source>Nr.</source>
-        <translatorcomment>Internet</translatorcomment>
         <translation>No.</translation>
     </message>
     <message>
@@ -758,7 +728,6 @@ With angles between 2° and 4° the skyline has to be locked by a hold-down plat
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="402"/>
         <source>Gewicht Rueckholseil</source>
-        <translatorcomment>hier gibt es unterschiedliche Schreibweisen: haul-back line</translatorcomment>
         <translation>Weight of the haulbackline</translation>
     </message>
     <message>
@@ -769,7 +738,6 @@ With angles between 2° and 4° the skyline has to be locked by a hold-down plat
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="429"/>
         <source>Vorspannung Tragseil</source>
-        <translatorcomment>Basic traction force</translatorcomment>
         <translation>Initial skyline traction force</translation>
     </message>
     <message>
@@ -860,7 +828,6 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="269"/>
         <source>Horizontaldistanz [m]</source>
-        <translatorcomment>Samset</translatorcomment>
         <translation>Horizontal distance [m]</translation>
     </message>
     <message>
@@ -874,13 +841,11 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/saveDialog.py" line="132"/>
         <source>Output Optionen</source>
-        <translatorcomment>Internet</translatorcomment>
         <translation>Output options</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="139"/>
         <source>Projektname</source>
-        <translatorcomment>Internet</translatorcomment>
         <translation>Project name</translation>
     </message>
     <message>
@@ -1013,7 +978,6 @@ by Zweifel</translation>
     <message>
         <location filename="../tool/poles.py" line="90"/>
         <source>{}. Stuetze</source>
-        <translatorcomment>HeProMo</translatorcomment>
         <translation>{}. Support</translation>
     </message>
     <message>
@@ -1087,7 +1051,6 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/profileDialog.py" line="212"/>
         <source>fixe Stuetze</source>
-        <translatorcomment>oder: fixed support</translatorcomment>
         <translation>fix support</translation>
     </message>
 </context>
@@ -1101,7 +1064,6 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/profilePlot.py" line="272"/>
         <source>Hoehe [m.ue.M]</source>
-        <translatorcomment>Internet</translatorcomment>
         <translation>Elevation [m a.s.l.]</translation>
     </message>
 </context>
@@ -1191,7 +1153,6 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="38"/>
         <source>Projektname</source>
-        <translatorcomment>Internet</translatorcomment>
         <translation>Project name</translation>
     </message>
     <message>
@@ -1257,7 +1218,6 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="497"/>
         <source>Zweiseil-System</source>
-        <translatorcomment>HeProMo</translatorcomment>
         <translation>Two-cable system</translation>
     </message>
     <message>
@@ -1438,7 +1398,6 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1921"/>
         <source>Info</source>
-        <translatorcomment>Information</translatorcomment>
         <translation>Info</translation>
     </message>
     <message>
@@ -1454,7 +1413,7 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1963"/>
         <source>Seillinie direkt bearbeiten</source>
-        <translation type="unfinished">Manual drafting of the cable line</translation>
+        <translation>Manual editing of the cable line</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1973"/>
@@ -1464,7 +1423,6 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1976"/>
         <source>Stuetzen optimieren</source>
-        <translatorcomment>Abkürzung finden</translatorcomment>
         <translation>Automatical optimization of the cable line</translation>
     </message>
     <message>
@@ -1520,7 +1478,6 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2244"/>
         <source>Seilkran</source>
-        <translatorcomment>HeProMo</translatorcomment>
         <translation>Cable yarder</translation>
     </message>
     <message>
@@ -1531,7 +1488,7 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2291"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Anfangspunkt&lt;br&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;(bei Maschine/Winde)&lt;/span&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Anfangspunkt&lt;br&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;(bei Maschine/Winde)&lt;/span&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Starting point&lt;br&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;(at winch/machine)&lt;/span&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2332"/>
@@ -1562,23 +1519,22 @@ by Zweifel</translation>
 <context>
     <name>SeilaplanPlugin</name>
     <message>
-        <location filename="../seilaplanPlugin.py" line="154"/>
+        <location filename="../seilaplanPlugin.py" line="163"/>
         <source>SEILAPLAN</source>
         <translation>SEILAPLAN</translation>
     </message>
     <message>
-        <location filename="../seilaplanPlugin.py" line="166"/>
+        <location filename="../seilaplanPlugin.py" line="175"/>
         <source>&amp;SEILAPLAN</source>
         <translation>&amp;SEILAPLAN</translation>
     </message>
     <message>
-        <location filename="../seilaplanPlugin.py" line="189"/>
+        <location filename="../seilaplanPlugin.py" line="198"/>
         <source>SEILAPLAN Fehler</source>
-        <translatorcomment>Internet</translatorcomment>
         <translation>SEILAPLAN Error</translation>
     </message>
     <message>
-        <location filename="../seilaplanPlugin.py" line="189"/>
+        <location filename="../seilaplanPlugin.py" line="198"/>
         <source>Fehler mit Bibliothek scipy</source>
         <translation>The scipy library is not installed. Seilaplan cannot be run. Please install the missing library and restart QGIS.</translation>
     </message>
@@ -1586,101 +1542,96 @@ by Zweifel</translation>
 <context>
     <name>SeilaplanPluginDialog</name>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="432"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="438"/>
         <source>OSM_Karte</source>
-        <translatorcomment>Eigentlich ist map unnötig, da OSM = Open Street Map</translatorcomment>
         <translation>OSM_map</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="538"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="544"/>
         <source>Raster &apos;{}&apos; nicht vorhanden</source>
         <translation>Raster &apos;{}&apos; nonexistent</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="539"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="545"/>
         <source>Fehler beim Laden des Rasters</source>
         <translation>Error in loading the raster</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="552"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="558"/>
         <source>Fehler Koordinatenbezugssystem (KBS)</source>
         <translation>Error coordinate reference system (CRS)</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="568"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="574"/>
         <source>KBS-Fehler - Raster kann nicht verarbeitet werden</source>
         <translation>Raster with geographic CRS (&apos;{}&apos; ({}) cannot be used.
 Seilaplan can process only height grid data in a projected CRS.</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="580"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="586"/>
         <source>KBS-Fehler - Felddaten und QGIS in geografischem KBS</source>
-        <translatorcomment>CRS error - field data and QGIS in geographic CRS</translatorcomment>
         <translation>Field data are existing in a geographic CRS!
 Seilaplan can only process data in a projected CRS. The data are transformed automatically into the Swiss CRS &apos;LV95&apos; (EPSG:2056).</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="587"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="593"/>
         <source>KBS-Fehler - Bezugssystem des Rasters unbekannt</source>
-        <translatorcomment>CRS error - reference system of raster is unknown</translatorcomment>
         <translation>Reference system of the raster unknown.
 The raster is displayed in the Swiss CRS &apos;LV95&apos; (EPSG:2056). To use another CRS system you have to arrange your QGIS project accordingly before loading the height data.</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="603"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="609"/>
         <source>Feldaufnahmen laden</source>
         <translation>Load field data</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="604"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="610"/>
         <source>csv Dateien (*.csv *.CSV)</source>
         <translation>csv file (*.csv *.CSV)</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="733"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="739"/>
         <source>zu definieren</source>
         <translation>to define</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="734"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="740"/>
         <source>ausserhalb Raster</source>
         <translation>beyond the raster</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="790"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="796"/>
         <source>Projekt laden</source>
         <translation>Load project</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="791"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="797"/>
         <source>Txt Dateien (*.txt)</source>
         <translation>Text files (*.txt)</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="800"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="806"/>
         <source>Fehler beim Laden</source>
         <translation>Error at loading</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="800"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="806"/>
         <source>Projektdatei konnte nicht geladen werden.</source>
         <translation>Project file could not be loaded.</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="806"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="812"/>
         <source>Projekt speichern</source>
-        <translatorcomment>Internet</translatorcomment>
         <translation>Save the project</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="807"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="813"/>
         <source>TXT (*.txt)</source>
         <translation>TXT (*.txt)</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="842"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="849"/>
         <source>Infotext</source>
-        <translatorcomment>Internet</translatorcomment>
         <translation>SEILAPLAN - Seilkran-Layoutplaner
 
 SEILAPLAN is calculating, based on a digital terrain model and technical parameters between defined start and end coordinates, the optimal yarding road layout. The position and the height of the supports as well as the most important parameters of the yarding road are determined.
@@ -1711,13 +1662,13 @@ Path to the documentation:
 {}</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="850"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="857"/>
         <source>Hoeheninformation - Erklaerung Raster</source>
         <translation>The height information could not be read out of the height raster. The list incorporates all the existing rasters in the actual QGIS project.
 If a new raster is added to QGIS, the list may be completed by clicking on the update button.</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="852"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="859"/>
         <source>Hoeheninformation - Erklaerung Felddaten</source>
         <translation>Load the measured terrain profile points.
 Supported data types:
@@ -1725,47 +1676,47 @@ Supported data types:
 2) Generic csv file (comma-separated) with the coordinates &apos;x&apos;, &apos;y&apos; and &apos;z&apos; in columns. The file must not contain comments and the points have to be assorted.</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="853"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="860"/>
         <source>Hoeheninformationen laden</source>
         <translation>Load height information</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="858"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="865"/>
         <source>Anfangspunkt</source>
         <translation>Starting point</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="867"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="874"/>
         <source>Endpunkt</source>
         <translation>End point</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="878"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="885"/>
         <source>Erklaerungen zum Bodenabstand</source>
         <translation>Explications to the ground clearance</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="879"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="886"/>
         <source>Erklaerungen zu den Zwischenstuetzen</source>
         <translation>Explications on the intermediate supports</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="890"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
         <source>Elastizitaetsmodul Tragseil Erklaerung</source>
         <translation>Material property of the skyline, which describes the relation between tension and elasticity of the rope. The property is variing marginally, therefore the default value may be used for most of the common rope types.</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="891"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="898"/>
         <source>Elastizitaetsmodul Tragseil</source>
         <translation>Modulus of elasticity</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="895"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="902"/>
         <source>Europaweit wird ein Sicherheitsfaktor von 3.0 fuer das Tragseil verwendet.</source>
         <translation>Europe-wide there is used a safety factor of 3.0 for the skyline.</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="904"/>
         <source>Sicherheitsfaktor Tragseil</source>
         <translation>Safety factor of the skyline</translation>
     </message>

@@ -366,7 +366,6 @@
     <message>
         <location filename="../tool/outputReport.py" line="337"/>
         <source>Seilbahnprojekt</source>
-        <translatorcomment>Fritz: korrekt ist &quot;SeilKRANprojekt&quot;, besser ist aber Seillinienprojekt</translatorcomment>
         <translation>Seillinienprojekt</translation>
     </message>
     <message>
@@ -382,7 +381,6 @@
     <message>
         <location filename="../tool/outputReport.py" line="340"/>
         <source>Vorspannung der Seilzugkraft</source>
-        <translatorcomment>Fritz: &quot;Vorspannung der Seilzugkraft&quot; ist meiner Meinung nach kein korrekter Begriff, Vorschlag: Vorspannkraft (des Tragseils)</translatorcomment>
         <translation>Vorspannkraft</translation>
     </message>
     <message>
@@ -398,7 +396,6 @@
     <message>
         <location filename="../tool/outputReport.py" line="343"/>
         <source>Auftretende Kraefte am Seil</source>
-        <translatorcomment>präziser: am Tragseil</translatorcomment>
         <translation>Auftretende Kräfte am Tragseil</translation>
     </message>
     <message>
@@ -424,7 +421,6 @@
     <message>
         <location filename="../tool/outputReport.py" line="86"/>
         <source>Feld</source>
-        <translatorcomment>Habe nicht gefunden wo das steht, könnte auch ein Eingabefeld sein?</translatorcomment>
         <translation>Spannfeld</translation>
     </message>
     <message>
@@ -440,13 +436,11 @@
     <message>
         <location filename="../tool/outputReport.py" line="128"/>
         <source>von</source>
-        <translatorcomment>Kommt auf den Zusammenhang an, wo steht das?</translatorcomment>
         <translation>von</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="128"/>
         <source>zu</source>
-        <translatorcomment>Kommt auf den Zusammenhang an, wo steht das?</translatorcomment>
         <translation>zu</translation>
     </message>
     <message>
@@ -498,7 +492,6 @@
     <message>
         <location filename="../gui/adjustmentDialog.py" line="342"/>
         <source>Tragseil hebt bei mindestens einer Stuetze ab</source>
-        <translatorcomment>Seilkranlinie (ich finde, hier könnten wir in allen Sprachen die abgekürzten Begriffe &quot;Seillinie&quot; verwenden, weil klar ist, in welchem Kontext das steht)</translatorcomment>
         <translation>Die Seillinie wurde berechnet, das Tragseil hebt jedoch bei mindestens einer Stütze ab</translation>
     </message>
     <message>
@@ -710,7 +703,6 @@ Bei Knickwinkeln zwischen 2° und 4° muss das Tragseil mittels Niederhaltelasch
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="324"/>
         <source>Neigung</source>
-        <translatorcomment>Neigung der Stütze und nicht Geländeneigung</translatorcomment>
         <translation>Neigung</translation>
     </message>
     <message>
@@ -836,7 +828,6 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="270"/>
         <source>Hoehe [m.ue.M]</source>
-        <translatorcomment>korrigiert: die Abkürzung &quot;m&quot; hat nie einen Punkt</translatorcomment>
         <translation>Höhe [m ü.M]</translation>
     </message>
     <message>
@@ -913,7 +904,6 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/saveDialog.py" line="111"/>
         <source>Bitte geben Sie einen gueltigen Dateinamen fuer das Parameterset an</source>
-        <translatorcomment>Allenfalls das &quot;Bitte&quot; weglassen</translatorcomment>
         <translation>Bitte geben Sie einen gültigen Dateinamen für das Parameterset an</translation>
     </message>
 </context>
@@ -965,7 +955,6 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/poleWidget.py" line="372"/>
         <source>Fuegt eine neue Stuetze nach dieser hinzu</source>
-        <translatorcomment>&quot;nach&quot; ist eine unpräzise Formulierung</translatorcomment>
         <translation>Eine neue Stütze hinzufügen</translation>
     </message>
     <message>
@@ -1022,7 +1011,6 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/profileDialog.py" line="82"/>
         <source>Fixe Stuetze definieren</source>
-        <translatorcomment>effektiv ist es ein fixer Stützenstandort</translatorcomment>
         <translation>Fixe Stütze definieren</translation>
     </message>
     <message>
@@ -1043,7 +1031,6 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/profileDialog.py" line="93"/>
         <source>Tooltip Abschnitte loeschen</source>
-        <translatorcomment>Ist das hier der richtige Text? (Bei den nachfolgenden 2 Zeilen kommt &quot;Tooltip&quot; im Text nicht vor)</translatorcomment>
         <translation>Abschnitte löschen</translation>
     </message>
     <message>
@@ -1054,7 +1041,6 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/profileDialog.py" line="188"/>
         <source>Hori.distanz</source>
-        <translatorcomment>Hori.distanz ist sehr unschön</translatorcomment>
         <translation>Horiz.distanz</translation>
     </message>
     <message>
@@ -1078,7 +1064,6 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/profilePlot.py" line="272"/>
         <source>Hoehe [m.ue.M]</source>
-        <translatorcomment>Abkürzung im Ursprungstext falsch: Nach der Abkürzung &quot;m&quot; für Meter kommt nie ein Punkt</translatorcomment>
         <translation>Höhe [m ü.M]</translation>
     </message>
 </context>
@@ -1114,16 +1099,6 @@ nach Zweifel</translation>
         <source>Ein Fehler ist aufgetreten:</source>
         <translation>Ein Fehler ist aufgetreten:</translation>
     </message>
-    <message>
-        <location filename="../gui/progressDialog.py" line="44"/>
-        <source>Berechnung der optimalen Stuetzenpositionen...</source>
-        <translation>Berechnung der optimalen Stützenpositionen...</translation>
-    </message>
-    <message>
-        <location filename="../gui/progressDialog.py" line="45"/>
-        <source>Berechnung der optimale Seillinie...</source>
-        <translation>Berechnung der optimale Seillinie...</translation>
-    </message>
 </context>
 <context>
     <name>ProjectConfHandler</name>
@@ -1158,7 +1133,6 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="17"/>
         <source>SEILAPLAN - Seilkran-Layoutplaner</source>
-        <translatorcomment>Seilaplan ist der Eigenname in allen Sprachen, der Zusatz sollte meines Erachtens in die jeweilige Sprache übersetzt werden</translatorcomment>
         <translation>SEILAPLAN - Seilkran-Layoutplaner</translation>
     </message>
     <message>
@@ -1224,7 +1198,6 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="372"/>
         <source>Seillinie befahrbar bis ... vor dem Endpunkt   </source>
-        <translatorcomment>Korrekter: Tragseil befahrbar ...</translatorcomment>
         <translation>Tragseil befahrbar bis ... vor dem Endpunkt</translation>
     </message>
     <message>
@@ -1250,7 +1223,6 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="567"/>
         <source>Seillinie befahrbar ab ... vom Anfangspunkt</source>
-        <translatorcomment>Tragseil befahrbar...</translatorcomment>
         <translation>Tragseil befahrbar ab ... vom Anfangspunkt</translation>
     </message>
     <message>
@@ -1341,7 +1313,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1387"/>
         <source>Abstufungsinterval</source>
-        <translation>Abstufungsinterval</translation>
+        <translation>Abstufungsintervall</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1425"/>
@@ -1411,8 +1383,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1856"/>
         <source>Oeffne Komma-getrennte Textdatei (.csv Datei)</source>
-        <translatorcomment>An anderen Orten wird die Höflichkeitsform verwendet. Sollte bei allen Befehlen gleich sein?? Müssen wir diskutieren.</translatorcomment>
-        <translation type="unfinished">Oeffne Komma-getrennte Textdatei (.csv Datei)</translation>
+        <translation>Oeffne Komma-getrennte Textdatei (.csv Datei)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1921"/>
@@ -1442,30 +1413,27 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1976"/>
         <source>Stuetzen optimieren</source>
-        <translatorcomment>Abkürzung finden</translatorcomment>
-        <translation type="unfinished">Seillinie automatisch optimieren</translation>
+        <translation>Seillinie automatisch optimieren</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1993"/>
         <source>Verlauf der Seillinie</source>
-        <translatorcomment>Habe nicht gefunden, wo das vorkommt. Was ist mit Verlauf genau gemeint?</translatorcomment>
         <translation>Verlauf der Seillinie</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2013"/>
         <source>oder Koordinaten der Seillinie manuell angeben:</source>
-        <translatorcomment>Ich habe &quot;angeben&quot; durch &quot;eingeben&quot; ersetzt</translatorcomment>
         <translation>oder Koordinaten der Seillinie manuell eingeben:</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="2043"/>
+        <source>Profil in Karte zeichnen</source>
+        <translation>Seillinie in Karte einzeichnen</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2046"/>
         <source>zeichnen</source>
         <translation>zeichnen</translation>
-    </message>
-    <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2046"/>
-        <source>OpenStreetMap Layer laden</source>
-        <translation>OpenStreetMap Layer laden</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2079"/>
@@ -1541,22 +1509,22 @@ nach Zweifel</translation>
 <context>
     <name>SeilaplanPlugin</name>
     <message>
-        <location filename="../seilaplanPlugin.py" line="154"/>
+        <location filename="../seilaplanPlugin.py" line="163"/>
         <source>SEILAPLAN</source>
         <translation>SEILAPLAN</translation>
     </message>
     <message>
-        <location filename="../seilaplanPlugin.py" line="166"/>
+        <location filename="../seilaplanPlugin.py" line="175"/>
         <source>&amp;SEILAPLAN</source>
         <translation>&amp;SEILAPLAN</translation>
     </message>
     <message>
-        <location filename="../seilaplanPlugin.py" line="189"/>
+        <location filename="../seilaplanPlugin.py" line="198"/>
         <source>SEILAPLAN Fehler</source>
         <translation>SEILAPLAN Fehler</translation>
     </message>
     <message>
-        <location filename="../seilaplanPlugin.py" line="189"/>
+        <location filename="../seilaplanPlugin.py" line="198"/>
         <source>Fehler mit Bibliothek scipy</source>
         <translation>Bibliothek scipy ist nicht installiert. Seilaplan kann nicht ausgeführt werden. Bitte installieren Sie die fehlende Bibliothek und starten sie QGIS neu.</translation>
     </message>
@@ -1564,91 +1532,91 @@ nach Zweifel</translation>
 <context>
     <name>SeilaplanPluginDialog</name>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="432"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="438"/>
         <source>OSM_Karte</source>
         <translation>OSM_Karte</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="538"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="544"/>
         <source>Raster &apos;{}&apos; nicht vorhanden</source>
         <translation>Raster &apos;{}&apos; nicht vorhanden</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="539"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="545"/>
         <source>Fehler beim Laden des Rasters</source>
         <translation>Fehler beim Laden des Rasters</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="552"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="558"/>
         <source>Fehler Koordinatenbezugssystem (KBS)</source>
         <translation>Fehler Koordinatenbezugssystem (KBS)</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="568"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="574"/>
         <source>KBS-Fehler - Raster kann nicht verarbeitet werden</source>
         <translation>Raster mit geografischem KBS (&apos;{}&apos; ({}) kann nicht benutzt werden.
 Seilaplan kann nur Höhenraster in einem projizierten KBS verarbeiten.</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="580"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="586"/>
         <source>KBS-Fehler - Felddaten und QGIS in geografischem KBS</source>
         <translation>Felddaten liegen in einem geografischen KBS vor!
 Seilaplan kann nur mit Daten in einem projizierten KBS arbeiten. Die Daten werden automatisch ins Schweizer KBS &apos;LV95&apos; (EPSG:2056) transformiert.</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="587"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="593"/>
         <source>KBS-Fehler - Bezugssystem des Rasters unbekannt</source>
         <translation>Bezugssystem des Rasters unbekannt.
 Das Raster wird im Schweizer KBS &apos;LV95&apos; (EPSG:2056) dargestellt. Soll ein anderes KBS benutzt werden, richten Sie ihr QGIS Projekt bitte vor dem Laden der Höhendaten entsprechend ein.</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="603"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="609"/>
         <source>Feldaufnahmen laden</source>
         <translation>Feldaufnahmen laden</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="604"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="610"/>
         <source>csv Dateien (*.csv *.CSV)</source>
         <translation>csv Dateien (*.csv *.CSV)</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="790"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="796"/>
         <source>Projekt laden</source>
         <translation>Projekt laden</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="791"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="797"/>
         <source>Txt Dateien (*.txt)</source>
         <translation>Txt Dateien (*.txt)</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="800"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="806"/>
         <source>Fehler beim Laden</source>
         <translation>Fehler beim Laden</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="800"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="806"/>
         <source>Projektdatei konnte nicht geladen werden.</source>
         <translation>Projektdatei konnte nicht geladen werden.</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="806"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="812"/>
         <source>Projekt speichern</source>
         <translation>Projekt speichern</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="807"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="813"/>
         <source>TXT (*.txt)</source>
         <translation>TXT (*.txt)</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="850"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="857"/>
         <source>Hoeheninformation - Erklaerung Raster</source>
         <translation>Höheninformation aus einem Höhenraster auslesen. Die Liste beinhaltet alle im aktuellen QGIS-Projekt vorhanden Raster.
 Wird ein neuer Raster zu QGIS hinzugefügt, kann die Liste per Aktualisieren-Schaltfläche ergänzt werden.</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="852"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="859"/>
         <source>Hoeheninformation - Erklaerung Felddaten</source>
         <translation>Profil-Messpunkte aus Feldaufnahmen laden.
 Unterstützte Dateitypen:
@@ -1656,57 +1624,42 @@ Unterstützte Dateitypen:
 2) Generische CSV-Datei (Komma-separiert) mit den Koordinaten-Spalten &apos;x&apos;, &apos;y&apos; und &apos;z&apos;. Die Datei darf keine Kommentare enthalten und die Punkte sind sortiert aufzulisten.</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="853"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="860"/>
         <source>Hoeheninformationen laden</source>
         <translation>Höheninformationen laden</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="858"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="865"/>
         <source>Anfangspunkt</source>
         <translation>Anfangspunkt</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="867"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="874"/>
         <source>Endpunkt</source>
         <translation>Endpunkt</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="890"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
         <source>Elastizitaetsmodul Tragseil Erklaerung</source>
         <translation>Materialkennwert des Tragseils, welcher den Zusammenhang zwischen Spannung und Dehnung des Seils beschreibt. Der Kennwert variiert kaum, weshalb der Default-Wert für die meisten üblichen Seile übernommen werden kann.</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="891"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="898"/>
         <source>Elastizitaetsmodul Tragseil</source>
         <translation>Elastizitätsmodul Tragseil</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="895"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="902"/>
         <source>Europaweit wird ein Sicherheitsfaktor von 3.0 fuer das Tragseil verwendet.</source>
         <translation>Europaweit wird ein Sicherheitsfaktor von 3.0 für das Tragseil verwendet.</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="904"/>
         <source>Sicherheitsfaktor Tragseil</source>
         <translation>Sicherheitsfaktor Tragseil</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="905"/>
-        <source>Erklaerungen Berechnungsbuttons</source>
-        <translation>Seillinie manuell bearbeiten:
-Es wird keine Optimierung durchgeführt und kein Seillinienlayout vorgeschlagen. Das Layout kann direkt manuell bearbeitet werden.
-
-Seillinie automatisch optimieren:
-Es wird diejenige Lösung gesucht, welche in erster Priorität eine minimale Anzahl an Stützen aufweist und in zweiter Priorität die Stützenhöhe minimiert.
-</translation>
-    </message>
-    <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="906"/>
-        <source>Naechste Schritte</source>
-        <translation>Nächste Schritte</translation>
-    </message>
-    <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="842"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="849"/>
         <source>Infotext</source>
         <translation>SEILAPLAN - Seilkran-Layoutplaner
 
@@ -1739,22 +1692,22 @@ Pfad zu Dokumentation:
 </translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="733"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="739"/>
         <source>zu definieren</source>
         <translation>zu definieren</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="734"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="740"/>
         <source>ausserhalb Raster</source>
         <translation>ausserhalb Raster</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="878"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="885"/>
         <source>Erklaerungen zum Bodenabstand</source>
         <translation>Erklärungen zum Bodenabstand</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="879"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="886"/>
         <source>Erklaerungen zu den Zwischenstuetzen</source>
         <translation>Erklärungen zu den Zwischenstützen</translation>
     </message>
