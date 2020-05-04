@@ -1128,7 +1128,7 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/progressDialog.py" line="45"/>
         <source>Berechnung der optimale Seillinie...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Calcolo della linea di gru a cavo ottimale…</translation>
     </message>
 </context>
 <context>
@@ -1756,17 +1756,18 @@ Tipi di file supportati:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="905"/>
         <source>Erklaerungen Berechnungsbuttons</source>
-        <translation type="unfinished">Elaborazione manuale della linea:
-Non c&#39;è effetuato un&#39;ottimizzazione né una proposizione per il tracciamento della linea. Il tracciamento può essere fatto direttamente a mano.
+        <translation>Elaborazione manuale della linea:
+Non c&apos;è effetuato un&apos;ottimizzazione né una proposizione per il tracciamento della linea. Il tracciamento può essere fatto direttamente a mano.
 
 Ottimizzare automaticamente la linea:
-C&#39;è cercato la soluzione che, in prima priorità, minimizza il numero dei cavalletti e, in seconda priorità, l&#39;altezza dei cavalletti.
+C&apos;è cercato la soluzione che, in prima priorità, minimizza il numero dei cavalletti e, in seconda priorità, l&apos;altezza dei cavalletti.
 </translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="906"/>
         <source>Naechste Schritte</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>??</translatorcomment>
+        <translation type="unfinished">Prossime tappe</translation>
     </message>
 </context>
 <context>

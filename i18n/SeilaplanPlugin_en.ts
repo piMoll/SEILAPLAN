@@ -1144,7 +1144,7 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/progressDialog.py" line="45"/>
         <source>Berechnung der optimale Seillinie...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Calculation of the optimal cable line…</translation>
     </message>
 </context>
 <context>
@@ -1771,7 +1771,7 @@ Supported data types:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="905"/>
         <source>Erklaerungen Berechnungsbuttons</source>
-        <translation type="unfinished">Manual drafting of the cable line:
+        <translation>Manual drafting of the cable line:
 No optimization is performed and no cable line layout is proposed. The layout can be directly edited manually.
 
 Automatical optimization of the cable line:
@@ -1781,7 +1781,7 @@ The algorithm calculates a solution, which in first priority is minimizing the n
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="906"/>
         <source>Naechste Schritte</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Next steps</translation>
     </message>
 </context>
 <context>

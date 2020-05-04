@@ -1122,7 +1122,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/progressDialog.py" line="45"/>
         <source>Berechnung der optimale Seillinie...</source>
-        <translation>Berechnung der optimale Seillinie...</translation>
+        <translation>Berechnung der optimalen Seillinie...</translation>
     </message>
 </context>
 <context>
@@ -1411,8 +1411,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1856"/>
         <source>Oeffne Komma-getrennte Textdatei (.csv Datei)</source>
-        <translatorcomment>An anderen Orten wird die Höflichkeitsform verwendet. Sollte bei allen Befehlen gleich sein?? Müssen wir diskutieren.</translatorcomment>
-        <translation type="unfinished">Öffne Komma-getrennte Textdatei (.csv Datei)</translation>
+        <translation>Öffne Komma-getrennte Textdatei (.csv Datei)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1921"/>
@@ -1442,8 +1441,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1976"/>
         <source>Stuetzen optimieren</source>
-        <translatorcomment>Abkürzung finden</translatorcomment>
-        <translation type="unfinished">Seillinie automatisch optimieren</translation>
+        <translation>Seillinie automatisch optimieren</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1993"/>

@@ -878,8 +878,7 @@ d&apos;après Zweifel</translation>
     <message>
         <location filename="../gui/saveDialog.py" line="151"/>
         <source>Speicherpfad</source>
-        <translatorcomment>??</translatorcomment>
-        <translation type="unfinished">Chemin de sauvegarde</translation>
+        <translation>Chemin de sauvegarde</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="174"/>
@@ -1137,7 +1136,7 @@ d&apos;après Zweifel</translation>
     <message>
         <location filename="../gui/progressDialog.py" line="45"/>
         <source>Berechnung der optimale Seillinie...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Calcul de la position optimale de la ligne de câble…</translation>
     </message>
 </context>
 <context>
@@ -1759,8 +1758,8 @@ Types de fichier supportés:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="905"/>
         <source>Erklaerungen Berechnungsbuttons</source>
-        <translation type="unfinished">Elaboration manuelle de la ligne de câble:
-Il n&#39;y a pas d&#39;optimisation et de proposition du tracement de la ligne de câble. Le tracement peut être fait directement à la main.
+        <translation>Elaboration manuelle de la ligne de câble:
+Il n&apos;y a pas d&apos;optimisation et de proposition du tracement de la ligne de câble. Le tracement peut être fait directement à la main.
 
 Optimiser automatiquement la ligne:
 Il est recherché la solution qui, en première priorité, minimalise le nombre de supports et, en deuxième priorité, la hauteur des supports.
@@ -1769,7 +1768,8 @@ Il est recherché la solution qui, en première priorité, minimalise le nombre 
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="906"/>
         <source>Naechste Schritte</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>??</translatorcomment>
+        <translation type="unfinished">Prochaines étapes</translation>
     </message>
 </context>
 <context>
