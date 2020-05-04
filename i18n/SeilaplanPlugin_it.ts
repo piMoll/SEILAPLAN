@@ -11,6 +11,7 @@
     <message>
         <location filename="../gui/guiHelperFunctions.py" line="104"/>
         <source>OSM_Karte</source>
+        <translatorcomment>Internet</translatorcomment>
         <translation>Mappa_OSM</translation>
     </message>
     <message>
@@ -26,6 +27,7 @@
     <message>
         <location filename="../tool/outputGeo.py" line="58"/>
         <source>stuetzen.shp</source>
+        <translatorcomment>HeProMo</translatorcomment>
         <translation>cavalletti.shp</translation>
     </message>
     <message>
@@ -41,11 +43,13 @@
     <message>
         <location filename="../tool/outputGeo.py" line="87"/>
         <source>StuetzenNr</source>
+        <translatorcomment>Fritz</translatorcomment>
         <translation>Numero del cavalletto</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="163"/>
         <source>Stuetzen</source>
+        <translatorcomment>HeProMo</translatorcomment>
         <translation>Cavalletti</translation>
     </message>
     <message>
@@ -81,6 +85,7 @@
     <message>
         <location filename="../tool/outputGeo.py" line="193"/>
         <source>Z Leerseil</source>
+        <translatorcomment>Fritz</translatorcomment>
         <translation>Z fune non caricata</translation>
     </message>
     <message>
@@ -96,6 +101,7 @@
     <message>
         <location filename="../tool/outputGeo.py" line="205"/>
         <source>Stuetze</source>
+        <translatorcomment>HeproMo</translatorcomment>
         <translation>Cavalletto</translation>
     </message>
     <message>
@@ -126,6 +132,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="91"/>
         <source>Zeitpunkt</source>
+        <translatorcomment>Internet</translatorcomment>
         <translation>Data</translation>
     </message>
     <message>
@@ -181,6 +188,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="121"/>
         <source>gon</source>
+        <translatorcomment>Internet</translatorcomment>
         <translation>gon</translation>
     </message>
     <message>
@@ -221,6 +229,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="152"/>
         <source>Abk.</source>
+        <translatorcomment>Internet</translatorcomment>
         <translation>Abbr.</translation>
     </message>
     <message>
@@ -311,6 +320,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="230"/>
         <source>Sattelkraft, vertikale Komponente</source>
+        <translatorcomment>habe noch nichts Besseres als &quot;sella&quot; gefunden</translatorcomment>
         <translation>Forza sulla sella, componente verticale</translation>
     </message>
     <message>
@@ -356,6 +366,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="222"/>
         <source>rechts</source>
+        <translatorcomment>Internet</translatorcomment>
         <translation>a destra</translation>
     </message>
     <message>
@@ -492,6 +503,7 @@
     <message>
         <location filename="../gui/adjustmentDialog.py" line="342"/>
         <source>Tragseil hebt bei mindestens einer Stuetze ab</source>
+        <translatorcomment>linea della gru a cavo</translatorcomment>
         <translation>La linea è stata calcolata però la fune portante si decolla della sella su un cavalletto al minimo</translation>
     </message>
     <message>
@@ -502,7 +514,7 @@
     <message>
         <location filename="../gui/adjustmentDialog.py" line="354"/>
         <source>Stuetzen manuell platzieren</source>
-        <translation>L&apos; ottimizzazione è stato passato, i cavalletti devono essere posizionati manualmente.</translation>
+        <translation>L&apos;ottimizzazione è stato passato, i cavalletti devono essere posizionati manualmente.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="360"/>
@@ -522,6 +534,7 @@
     <message>
         <location filename="../gui/adjustmentDialog.py" line="376"/>
         <source>Ergebnisse gespeichert</source>
+        <translatorcomment>Abgekürzte Form: Risultati salvati?</translatorcomment>
         <translation>I risultati sono stati salvati.</translation>
     </message>
     <message>
@@ -532,6 +545,7 @@
     <message>
         <location filename="../gui/adjustmentDialog.py" line="461"/>
         <source>Grenzwert</source>
+        <translatorcomment>BAFU</translatorcomment>
         <translation>Valore limite</translation>
     </message>
     <message>
@@ -549,6 +563,7 @@ attuale</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="464"/>
         <source>Wo?</source>
+        <translatorcomment>Internet</translatorcomment>
         <translation>Dove?</translation>
     </message>
     <message>
@@ -559,7 +574,7 @@ attuale</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="469"/>
         <source>Es wird der im Parameterset definierte minimale Bodenabstand mit einer Aufloesung von 1m getestet.</source>
-        <translation></translation>
+        <translation>C&apos;è verificato l&apos;altezza da terra minimale, definito nella serie di parametri, con una definizione di 1m.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="512"/>
@@ -673,6 +688,7 @@ Nel caso di un angolo tra 2° e 4° la fune portante deve essere atrezzato con u
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="158"/>
         <source>Stuetzen</source>
+        <translatorcomment>HePorMo</translatorcomment>
         <translation>Cavalletti</translation>
     </message>
     <message>
@@ -683,6 +699,7 @@ Nel caso di un angolo tra 2° e 4° la fune portante deve essere atrezzato con u
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="227"/>
         <source>Nr.</source>
+        <translatorcomment>HeProMo</translatorcomment>
         <translation>N°</translation>
     </message>
     <message>
@@ -728,6 +745,7 @@ Nel caso di un angolo tra 2° e 4° la fune portante deve essere atrezzato con u
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="402"/>
         <source>Gewicht Rueckholseil</source>
+        <translatorcomment>Valentini</translatorcomment>
         <translation>Peso della fune di ritorno</translation>
     </message>
     <message>
@@ -738,6 +756,7 @@ Nel caso di un angolo tra 2° e 4° la fune portante deve essere atrezzato con u
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="429"/>
         <source>Vorspannung Tragseil</source>
+        <translatorcomment>di base</translatorcomment>
         <translation>Forza di trazione iniziale</translation>
     </message>
     <message>
@@ -978,6 +997,7 @@ dopo Zweifel</translation>
     <message>
         <location filename="../tool/poles.py" line="90"/>
         <source>{}. Stuetze</source>
+        <translatorcomment>HeProMo</translatorcomment>
         <translation>{}. Cavalletto</translation>
     </message>
     <message>
@@ -1077,6 +1097,7 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/progressDialog.py" line="61"/>
         <source>zurueck zum Startfenster</source>
+        <translatorcomment>maschera d&apos;inserimento wird syynonym verwendet, wir können die Kurzform nehmen</translatorcomment>
         <translation>ritornare alla maschera</translation>
     </message>
     <message>
@@ -1183,6 +1204,7 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="208"/>
         <source>Seillinie</source>
+        <translatorcomment>Termini forestali tedesco-italiano (Conedera/Giudici, WSL)</translatorcomment>
         <translation>Linea di gru a cavo</translation>
     </message>
     <message>
@@ -1203,6 +1225,7 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="365"/>
         <source>Hoehe Seilkranmast</source>
+        <translatorcomment>Valentini/Mayr Melnhof</translatorcomment>
         <translation>Altezza della torretta</translation>
     </message>
     <message>
@@ -1218,11 +1241,13 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="497"/>
         <source>Zweiseil-System</source>
+        <translatorcomment>HeProMo</translatorcomment>
         <translation>Sistema a due funi</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="502"/>
         <source>Mehrseil-System</source>
+        <translatorcomment>HeProMo</translatorcomment>
         <translation>Sistema a più funi</translation>
     </message>
     <message>
@@ -1398,6 +1423,7 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1921"/>
         <source>Info</source>
+        <translatorcomment>Informazione</translatorcomment>
         <translation>Info</translation>
     </message>
     <message>
@@ -1413,6 +1439,7 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1963"/>
         <source>Seillinie direkt bearbeiten</source>
+        <translatorcomment>abkürzen</translatorcomment>
         <translation>Elaborazione manuale della linea</translation>
     </message>
     <message>
@@ -1423,6 +1450,7 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1976"/>
         <source>Stuetzen optimieren</source>
+        <translatorcomment>Abk.</translatorcomment>
         <translation>Ottimizzare automaticamente la linea</translation>
     </message>
     <message>
@@ -1478,6 +1506,7 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2244"/>
         <source>Seilkran</source>
+        <translatorcomment>HeProMo</translatorcomment>
         <translation>Gru a cavo</translation>
     </message>
     <message>
@@ -1531,6 +1560,7 @@ dopo Zweifel</translation>
     <message>
         <location filename="../seilaplanPlugin.py" line="198"/>
         <source>SEILAPLAN Fehler</source>
+        <translatorcomment>Internet</translatorcomment>
         <translation>SEILAPLAN Errore</translation>
     </message>
     <message>
@@ -1564,6 +1594,7 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="574"/>
         <source>KBS-Fehler - Raster kann nicht verarbeitet werden</source>
+        <translatorcomment>project-wide CRS (coordinate reference system)   SCR Sistema delle coordinate di riferimento</translatorcomment>
         <translation>La griglia col SCR geografico (&apos;{}&apos; ({}) non può essere utilizzato.
 Seilaplan può processare unicamente delle griglie di altezza in un SCR proiettato.</translation>
     </message>
@@ -1597,7 +1628,8 @@ La griglia viene figurata nel SCR svizzero &apos;LV95&apos; (EPSG:2056). Se vuol
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="740"/>
         <source>ausserhalb Raster</source>
-        <translation></translation>
+        <translatorcomment>fuori dalla griglia</translatorcomment>
+        <translation>fuori dalla griglia</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="796"/>
@@ -1612,7 +1644,8 @@ La griglia viene figurata nel SCR svizzero &apos;LV95&apos; (EPSG:2056). Se vuol
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="806"/>
         <source>Fehler beim Laden</source>
-        <translation></translation>
+        <translatorcomment>Errore al caricamento</translatorcomment>
+        <translation>Errore al caricamento</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="806"/>

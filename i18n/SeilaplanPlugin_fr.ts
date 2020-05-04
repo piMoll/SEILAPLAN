@@ -6,11 +6,13 @@
     <message>
         <location filename="../gui/guiHelperFunctions.py" line="76"/>
         <source>Hoehenlinien_</source>
+        <translatorcomment>Internet (Verkürzung ok?) - korrekt wäre courbes de niveau</translatorcomment>
         <translation>CourbesNiveau_</translation>
     </message>
     <message>
         <location filename="../gui/guiHelperFunctions.py" line="104"/>
         <source>OSM_Karte</source>
+        <translatorcomment>Internet</translatorcomment>
         <translation>Carte_OSM</translation>
     </message>
     <message>
@@ -26,6 +28,7 @@
     <message>
         <location filename="../tool/outputGeo.py" line="58"/>
         <source>stuetzen.shp</source>
+        <translatorcomment>HeProMo</translatorcomment>
         <translation>supports.shp</translation>
     </message>
     <message>
@@ -41,11 +44,13 @@
     <message>
         <location filename="../tool/outputGeo.py" line="87"/>
         <source>StuetzenNr</source>
+        <translatorcomment>Fritz</translatorcomment>
         <translation>Numéro du support</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="163"/>
         <source>Stuetzen</source>
+        <translatorcomment>HeProMo</translatorcomment>
         <translation>Supports</translation>
     </message>
     <message>
@@ -81,6 +86,7 @@
     <message>
         <location filename="../tool/outputGeo.py" line="193"/>
         <source>Z Leerseil</source>
+        <translatorcomment>Fritz</translatorcomment>
         <translation>Z câble non chargé</translation>
     </message>
     <message>
@@ -96,11 +102,13 @@
     <message>
         <location filename="../tool/outputGeo.py" line="205"/>
         <source>Stuetze</source>
+        <translatorcomment>HeProMo</translatorcomment>
         <translation>Support</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="205"/>
         <source>Z Stuetze Boden</source>
+        <translatorcomment>Internet</translatorcomment>
         <translation>Z support sol</translation>
     </message>
     <message>
@@ -126,11 +134,13 @@
     <message>
         <location filename="../tool/outputReport.py" line="91"/>
         <source>Zeitpunkt</source>
+        <translatorcomment>Internet</translatorcomment>
         <translation>Date</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="91"/>
         <source>Berechnungsdauer</source>
+        <translatorcomment>Internet</translatorcomment>
         <translation>Temps de calcul</translation>
     </message>
     <message>
@@ -141,6 +151,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="98"/>
         <source>Bemerkung</source>
+        <translatorcomment>Internet</translatorcomment>
         <translation>Remarque</translation>
     </message>
     <message>
@@ -176,6 +187,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="121"/>
         <source>gon</source>
+        <translatorcomment>Internet</translatorcomment>
         <translation>gon</translation>
     </message>
     <message>
@@ -301,6 +313,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="230"/>
         <source>Sattelkraft, vertikale Komponente</source>
+        <translatorcomment>Technique du câble-grue, IFM</translatorcomment>
         <translation>Force sur l&apos;étrier, composant vertical</translation>
     </message>
     <message>
@@ -346,6 +359,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="222"/>
         <source>rechts</source>
+        <translatorcomment>Internet</translatorcomment>
         <translation>à droite</translation>
     </message>
     <message>
@@ -492,6 +506,7 @@
     <message>
         <location filename="../gui/adjustmentDialog.py" line="342"/>
         <source>Tragseil hebt bei mindestens einer Stuetze ab</source>
+        <translatorcomment>ligne de câble-grue</translatorcomment>
         <translation>La ligne de câble a été calculée mais le câble porteur s&apos;enlève de l&apos;étrier à un support au minimum</translation>
     </message>
     <message>
@@ -522,6 +537,7 @@
     <message>
         <location filename="../gui/adjustmentDialog.py" line="376"/>
         <source>Ergebnisse gespeichert</source>
+        <translatorcomment>Abgekürzte Form: Résultats enregistrés?</translatorcomment>
         <translation>Les résultats ont été enregistrés.</translation>
     </message>
     <message>
@@ -532,11 +548,13 @@
     <message>
         <location filename="../gui/adjustmentDialog.py" line="461"/>
         <source>Grenzwert</source>
+        <translatorcomment>BAFU</translatorcomment>
         <translation>Valeur limite</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="462"/>
         <source>Optimierte Loesung</source>
+        <translatorcomment>Internet</translatorcomment>
         <translation>Solution
 optimisée</translation>
     </message>
@@ -549,6 +567,7 @@ actuelle</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="464"/>
         <source>Wo?</source>
+        <translatorcomment>Internet</translatorcomment>
         <translation>Où?</translation>
     </message>
     <message>
@@ -633,6 +652,7 @@ En cas des angles entre 2° et 4° le câble porteur doit être sécurisé par u
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="39"/>
         <source>Neuberechnung...</source>
+        <translatorcomment>Internet</translatorcomment>
         <translation>Nouveau calcul...</translation>
     </message>
     <message>
@@ -658,6 +678,7 @@ En cas des angles entre 2° et 4° le câble porteur doit être sécurisé par u
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="105"/>
         <source>Schliessen</source>
+        <translatorcomment>Internet</translatorcomment>
         <translation>Fermer</translation>
     </message>
     <message>
@@ -668,11 +689,13 @@ En cas des angles entre 2° et 4° le câble porteur doit être sécurisé par u
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="118"/>
         <source>Speichern</source>
+        <translatorcomment>Internet</translatorcomment>
         <translation>Enregistrer</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="158"/>
         <source>Stuetzen</source>
+        <translatorcomment>HeProMo</translatorcomment>
         <translation>Supports</translation>
     </message>
     <message>
@@ -683,6 +706,7 @@ En cas des angles entre 2° et 4° le câble porteur doit être sécurisé par u
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="227"/>
         <source>Nr.</source>
+        <translatorcomment>HeProMo</translatorcomment>
         <translation>No.</translation>
     </message>
     <message>
@@ -738,6 +762,7 @@ En cas des angles entre 2° et 4° le câble porteur doit être sécurisé par u
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="429"/>
         <source>Vorspannung Tragseil</source>
+        <translatorcomment>de base</translatorcomment>
         <translation>Force de traction initiale du câble porteur</translation>
     </message>
     <message>
@@ -763,6 +788,7 @@ En cas des angles entre 2° et 4° le câble porteur doit être sécurisé par u
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="595"/>
         <source>Gewicht Zugseil</source>
+        <translatorcomment>Alternative: câble de traction</translatorcomment>
         <translation>Poids du câble tracteur</translation>
     </message>
     <message>
@@ -841,6 +867,7 @@ d&apos;après Zweifel</translation>
     <message>
         <location filename="../gui/saveDialog.py" line="132"/>
         <source>Output Optionen</source>
+        <translatorcomment>Variante: pour le flux sortant</translatorcomment>
         <translation>Options pour l&apos;output</translation>
     </message>
     <message>
@@ -851,7 +878,8 @@ d&apos;après Zweifel</translation>
     <message>
         <location filename="../gui/saveDialog.py" line="151"/>
         <source>Speicherpfad</source>
-        <translation>Chemin de sauvegarde</translation>
+        <translatorcomment>??</translatorcomment>
+        <translation type="unfinished">Chemin de sauvegarde</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="174"/>
@@ -978,6 +1006,7 @@ d&apos;après Zweifel</translation>
     <message>
         <location filename="../tool/poles.py" line="90"/>
         <source>{}. Stuetze</source>
+        <translatorcomment>HeProMo</translatorcomment>
         <translation>{}. Support</translation>
     </message>
     <message>
@@ -1077,6 +1106,7 @@ d&apos;après Zweifel</translation>
     <message>
         <location filename="../gui/progressDialog.py" line="61"/>
         <source>zurueck zum Startfenster</source>
+        <translatorcomment>Startfenster?</translatorcomment>
         <translation>retour à la masque de saisie</translation>
     </message>
     <message>
@@ -1218,6 +1248,7 @@ d&apos;après Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="497"/>
         <source>Zweiseil-System</source>
+        <translatorcomment>HeProMo</translatorcomment>
         <translation>Système à 2 câbles</translation>
     </message>
     <message>
@@ -1398,6 +1429,7 @@ d&apos;après Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1921"/>
         <source>Info</source>
+        <translatorcomment>Information</translatorcomment>
         <translation>Info</translation>
     </message>
     <message>
@@ -1413,6 +1445,7 @@ d&apos;après Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1963"/>
         <source>Seillinie direkt bearbeiten</source>
+        <translatorcomment>abkürzen</translatorcomment>
         <translation>Elaboration manuelle de la ligne de câble</translation>
     </message>
     <message>
@@ -1478,6 +1511,7 @@ d&apos;après Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2244"/>
         <source>Seilkran</source>
+        <translatorcomment>HeProMo</translatorcomment>
         <translation>Câble-grue</translation>
     </message>
     <message>
@@ -1531,6 +1565,7 @@ d&apos;après Zweifel</translation>
     <message>
         <location filename="../seilaplanPlugin.py" line="198"/>
         <source>SEILAPLAN Fehler</source>
+        <translatorcomment>Internet</translatorcomment>
         <translation>SEILAPLAN Erreur</translation>
     </message>
     <message>
@@ -1564,6 +1599,7 @@ d&apos;après Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="574"/>
         <source>KBS-Fehler - Raster kann nicht verarbeitet werden</source>
+        <translatorcomment>KBS = système de coordonnées de référence (SCR)</translatorcomment>
         <translation>La grille avec le SCR géographique (&apos;{}&apos; ({})) ne peut pas être utilisée.
 Seilaplan ne peut traiter que des grilles de hauteur dans un SCR projeté.</translation>
     </message>

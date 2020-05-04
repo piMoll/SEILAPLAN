@@ -366,6 +366,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="337"/>
         <source>Seilbahnprojekt</source>
+        <translatorcomment>Fritz: korrekt ist &quot;SeilKRANprojekt&quot;, besser ist aber Seillinienprojekt</translatorcomment>
         <translation>Seillinienprojekt</translation>
     </message>
     <message>
@@ -381,6 +382,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="340"/>
         <source>Vorspannung der Seilzugkraft</source>
+        <translatorcomment>Fritz: &quot;Vorspannung der Seilzugkraft&quot; ist meiner Meinung nach kein korrekter Begriff, Vorschlag: Vorspannkraft (des Tragseils)</translatorcomment>
         <translation>Vorspannkraft</translation>
     </message>
     <message>
@@ -396,6 +398,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="343"/>
         <source>Auftretende Kraefte am Seil</source>
+        <translatorcomment>präziser: am Tragseil</translatorcomment>
         <translation>Auftretende Kräfte am Tragseil</translation>
     </message>
     <message>
@@ -421,6 +424,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="86"/>
         <source>Feld</source>
+        <translatorcomment>Habe nicht gefunden wo das steht, könnte auch ein Eingabefeld sein?</translatorcomment>
         <translation>Spannfeld</translation>
     </message>
     <message>
@@ -436,11 +440,13 @@
     <message>
         <location filename="../tool/outputReport.py" line="128"/>
         <source>von</source>
+        <translatorcomment>Kommt auf den Zusammenhang an, wo steht das?</translatorcomment>
         <translation>von</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="128"/>
         <source>zu</source>
+        <translatorcomment>Kommt auf den Zusammenhang an, wo steht das?</translatorcomment>
         <translation>zu</translation>
     </message>
     <message>
@@ -492,6 +498,7 @@
     <message>
         <location filename="../gui/adjustmentDialog.py" line="342"/>
         <source>Tragseil hebt bei mindestens einer Stuetze ab</source>
+        <translatorcomment>Seilkranlinie (ich finde, hier könnten wir in allen Sprachen die abgekürzten Begriffe &quot;Seillinie&quot; verwenden, weil klar ist, in welchem Kontext das steht)</translatorcomment>
         <translation>Die Seillinie wurde berechnet, das Tragseil hebt jedoch bei mindestens einer Stütze ab</translation>
     </message>
     <message>
@@ -703,6 +710,7 @@ Bei Knickwinkeln zwischen 2° und 4° muss das Tragseil mittels Niederhaltelasch
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="324"/>
         <source>Neigung</source>
+        <translatorcomment>Neigung der Stütze und nicht Geländeneigung</translatorcomment>
         <translation>Neigung</translation>
     </message>
     <message>
@@ -828,6 +836,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="270"/>
         <source>Hoehe [m.ue.M]</source>
+        <translatorcomment>korrigiert: die Abkürzung &quot;m&quot; hat nie einen Punkt</translatorcomment>
         <translation>Höhe [m ü.M]</translation>
     </message>
     <message>
@@ -904,6 +913,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/saveDialog.py" line="111"/>
         <source>Bitte geben Sie einen gueltigen Dateinamen fuer das Parameterset an</source>
+        <translatorcomment>Allenfalls das &quot;Bitte&quot; weglassen</translatorcomment>
         <translation>Bitte geben Sie einen gültigen Dateinamen für das Parameterset an</translation>
     </message>
 </context>
@@ -955,6 +965,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/poleWidget.py" line="372"/>
         <source>Fuegt eine neue Stuetze nach dieser hinzu</source>
+        <translatorcomment>&quot;nach&quot; ist eine unpräzise Formulierung</translatorcomment>
         <translation>Eine neue Stütze hinzufügen</translation>
     </message>
     <message>
@@ -1011,6 +1022,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/profileDialog.py" line="82"/>
         <source>Fixe Stuetze definieren</source>
+        <translatorcomment>effektiv ist es ein fixer Stützenstandort</translatorcomment>
         <translation>Fixe Stütze definieren</translation>
     </message>
     <message>
@@ -1031,6 +1043,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/profileDialog.py" line="93"/>
         <source>Tooltip Abschnitte loeschen</source>
+        <translatorcomment>Ist das hier der richtige Text? (Bei den nachfolgenden 2 Zeilen kommt &quot;Tooltip&quot; im Text nicht vor)</translatorcomment>
         <translation>Abschnitte löschen</translation>
     </message>
     <message>
@@ -1041,6 +1054,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/profileDialog.py" line="188"/>
         <source>Hori.distanz</source>
+        <translatorcomment>Hori.distanz ist sehr unschön</translatorcomment>
         <translation>Horiz.distanz</translation>
     </message>
     <message>
@@ -1064,6 +1078,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/profilePlot.py" line="272"/>
         <source>Hoehe [m.ue.M]</source>
+        <translatorcomment>Abkürzung im Ursprungstext falsch: Nach der Abkürzung &quot;m&quot; für Meter kommt nie ein Punkt</translatorcomment>
         <translation>Höhe [m ü.M]</translation>
     </message>
 </context>
@@ -1099,6 +1114,16 @@ nach Zweifel</translation>
         <source>Ein Fehler ist aufgetreten:</source>
         <translation>Ein Fehler ist aufgetreten:</translation>
     </message>
+    <message>
+        <location filename="../gui/progressDialog.py" line="44"/>
+        <source>Berechnung der optimalen Stuetzenpositionen...</source>
+        <translation>Berechnung der optimalen Stützenpositionen...</translation>
+    </message>
+    <message>
+        <location filename="../gui/progressDialog.py" line="45"/>
+        <source>Berechnung der optimale Seillinie...</source>
+        <translation>Berechnung der optimale Seillinie...</translation>
+    </message>
 </context>
 <context>
     <name>ProjectConfHandler</name>
@@ -1133,6 +1158,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="17"/>
         <source>SEILAPLAN - Seilkran-Layoutplaner</source>
+        <translatorcomment>Seilaplan ist der Eigenname in allen Sprachen, der Zusatz sollte meines Erachtens in die jeweilige Sprache übersetzt werden</translatorcomment>
         <translation>SEILAPLAN - Seilkran-Layoutplaner</translation>
     </message>
     <message>
@@ -1198,6 +1224,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="372"/>
         <source>Seillinie befahrbar bis ... vor dem Endpunkt   </source>
+        <translatorcomment>Korrekter: Tragseil befahrbar ...</translatorcomment>
         <translation>Tragseil befahrbar bis ... vor dem Endpunkt</translation>
     </message>
     <message>
@@ -1223,6 +1250,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="567"/>
         <source>Seillinie befahrbar ab ... vom Anfangspunkt</source>
+        <translatorcomment>Tragseil befahrbar...</translatorcomment>
         <translation>Tragseil befahrbar ab ... vom Anfangspunkt</translation>
     </message>
     <message>
@@ -1383,7 +1411,8 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1856"/>
         <source>Oeffne Komma-getrennte Textdatei (.csv Datei)</source>
-        <translation>Oeffne Komma-getrennte Textdatei (.csv Datei)</translation>
+        <translatorcomment>An anderen Orten wird die Höflichkeitsform verwendet. Sollte bei allen Befehlen gleich sein?? Müssen wir diskutieren.</translatorcomment>
+        <translation type="unfinished">Öffne Komma-getrennte Textdatei (.csv Datei)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1921"/>
@@ -1413,27 +1442,30 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1976"/>
         <source>Stuetzen optimieren</source>
-        <translation>Seillinie automatisch optimieren</translation>
+        <translatorcomment>Abkürzung finden</translatorcomment>
+        <translation type="unfinished">Seillinie automatisch optimieren</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1993"/>
         <source>Verlauf der Seillinie</source>
+        <translatorcomment>Habe nicht gefunden, wo das vorkommt. Was ist mit Verlauf genau gemeint?</translatorcomment>
         <translation>Verlauf der Seillinie</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2013"/>
         <source>oder Koordinaten der Seillinie manuell angeben:</source>
+        <translatorcomment>Ich habe &quot;angeben&quot; durch &quot;eingeben&quot; ersetzt</translatorcomment>
         <translation>oder Koordinaten der Seillinie manuell eingeben:</translation>
-    </message>
-    <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2043"/>
-        <source>Profil in Karte zeichnen</source>
-        <translation>Seillinie in Karte einzeichnen</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2046"/>
         <source>zeichnen</source>
         <translation>zeichnen</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="2046"/>
+        <source>OpenStreetMap Layer laden</source>
+        <translation>OpenStreetMap Layer laden</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2079"/>
@@ -1659,7 +1691,22 @@ Unterstützte Dateitypen:
         <translation>Sicherheitsfaktor Tragseil</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="849"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="905"/>
+        <source>Erklaerungen Berechnungsbuttons</source>
+        <translation>Seillinie manuell bearbeiten:
+Es wird keine Optimierung durchgeführt und kein Seillinienlayout vorgeschlagen. Das Layout kann direkt manuell bearbeitet werden.
+
+Seillinie automatisch optimieren:
+Es wird diejenige Lösung gesucht, welche in erster Priorität eine minimale Anzahl an Stützen aufweist und in zweiter Priorität die Stützenhöhe minimiert.
+</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="906"/>
+        <source>Naechste Schritte</source>
+        <translation>Nächste Schritte</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="842"/>
         <source>Infotext</source>
         <translation>SEILAPLAN - Seilkran-Layoutplaner
 
