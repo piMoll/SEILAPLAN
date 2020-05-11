@@ -740,8 +740,8 @@ Bei Knickwinkeln zwischen 2° und 4° muss das Tragseil mittels Niederhaltelasch
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="422"/>
-        <source>mm2</source>
-        <translation>mm2</translation>
+        <source>mm</source>
+        <translation>mm</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="429"/>
@@ -755,8 +755,8 @@ Bei Knickwinkeln zwischen 2° und 4° muss das Tragseil mittels Niederhaltelasch
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="443"/>
-        <source>Querschnittsflaeche Tragseil</source>
-        <translation>Querschnittsfläche Tragseil</translation>
+        <source>Durchmesser Tragseil</source>
+        <translation>Durchmesser Tragseil</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="486"/>
@@ -1295,8 +1295,8 @@ nach Zweifel</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="929"/>
-        <source>Querschnittsflaeche Tragseil</source>
-        <translation>Querschnittsfläche Tragseil</translation>
+        <source>Durchmesser Tragseil</source>
+        <translation>Durchmesser Tragseil</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="942"/>
@@ -1305,8 +1305,8 @@ nach Zweifel</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="992"/>
-        <source>mm2</source>
-        <translation>mm2</translation>
+        <source>mm</source>
+        <translation>mm</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="999"/>

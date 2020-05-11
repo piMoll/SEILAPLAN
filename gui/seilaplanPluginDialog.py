@@ -215,7 +215,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             
             'Q': self.fieldQ,
             'qT': self.fieldQt,
-            'A': self.fieldA,
+            'D': self.fieldD,
             'MBK': self.fieldMBK,
             'qZ': self.fieldqZ,
             'qR': self.fieldqR,
@@ -229,6 +229,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             'min_SK': self.fieldminSK,
             
             'E': self.fieldE,
+            'FuellF': self.fieldFuellF,
             'SF_T': self.fieldSFT
         }
         self.coordFields = {

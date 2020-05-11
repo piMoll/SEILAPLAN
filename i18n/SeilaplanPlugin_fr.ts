@@ -756,8 +756,8 @@ En cas des angles entre 2° et 4° le câble porteur doit être sécurisé par u
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="422"/>
-        <source>mm2</source>
-        <translation>mm2</translation>
+        <source>mm</source>
+        <translation>mm</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="429"/>
@@ -772,8 +772,8 @@ En cas des angles entre 2° et 4° le câble porteur doit être sécurisé par u
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="443"/>
-        <source>Querschnittsflaeche Tragseil</source>
-        <translation>Surface de coupe du câble porteur</translation>
+        <source>Durchmesser Tragseil</source>
+        <translation type="unfinished">Surface de coupe du câble porteur</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="486"/>
@@ -1307,8 +1307,8 @@ d&apos;après Zweifel</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="929"/>
-        <source>Querschnittsflaeche Tragseil</source>
-        <translation>Surface de coupe du câble porteur</translation>
+        <source>Durchmesser Tragseil</source>
+        <translation type="unfinished">Surface de coupe du câble porteur</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="942"/>
@@ -1317,8 +1317,8 @@ d&apos;après Zweifel</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="992"/>
-        <source>mm2</source>
-        <translation>mm2</translation>
+        <source>mm</source>
+        <translation>mm</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="999"/>

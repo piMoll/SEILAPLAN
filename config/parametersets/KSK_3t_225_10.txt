@@ -9,7 +9,7 @@ Bodenabst_A	20
 Bodenabst_E	20
 Q	35
 qT	0.0243
-A	398
+D	22
 MBK	546
 qZ	0.0053
 qR	0
@@ -21,4 +21,5 @@ HM_Delta	2
 HM_nat	22
 min_SK	70
 E	100
+FuellF	0.7
 SF_T	3

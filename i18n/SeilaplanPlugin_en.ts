@@ -762,8 +762,8 @@ With angles between 2° and 4° the skyline has to be locked by a hold-down plat
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="422"/>
-        <source>mm2</source>
-        <translation>mm2</translation>
+        <source>mm</source>
+        <translation>mm</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="429"/>
@@ -778,8 +778,8 @@ With angles between 2° and 4° the skyline has to be locked by a hold-down plat
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="443"/>
-        <source>Querschnittsflaeche Tragseil</source>
-        <translation>Cross sectional area of the skyline</translation>
+        <source>Durchmesser Tragseil</source>
+        <translation type="unfinished">Cross sectional area of the skyline</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="486"/>
@@ -1316,8 +1316,8 @@ by Zweifel</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="929"/>
-        <source>Querschnittsflaeche Tragseil</source>
-        <translation>Cross sectional area of the skyline</translation>
+        <source>Durchmesser Tragseil</source>
+        <translation type="unfinished">Cross sectional area of the skyline</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="942"/>
@@ -1326,8 +1326,8 @@ by Zweifel</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="992"/>
-        <source>mm2</source>
-        <translation>mm2</translation>
+        <source>mm</source>
+        <translation>mm</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="999"/>

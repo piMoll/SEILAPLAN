@@ -831,6 +831,12 @@ class ParameterConfHandler(AbstractConfHandler):
         self.derievedParams['zul_SK'] = {
             'value': int(round(mbk / sft))
         }
+        # Derive cable area from diameter and fuellfaktor
+        diameter = self.getParameter('D')
+        fuellF = self.getParameter('FuellF')
+        self.derievedParams['A'] = {
+            'value': pi * (diameter * 0.5)**2 * fuellF
+        }
         return True
             
     def updateAnchorLen(self, buffer, poletype_A, poletype_E):

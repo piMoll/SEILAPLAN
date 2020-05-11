@@ -37,7 +37,7 @@ class AdjustmentDialogParams(object):
         self.fields = {
             'Q': self.parent.fieldQ,
             'qT': self.parent.fieldqT,
-            'A': self.parent.fieldA,
+            'D': self.parent.fieldD,
             'MBK': self.parent.fieldMBK,
             'qZ': self.parent.fieldqZ,
             'qR': self.parent.fieldqR,
@@ -50,7 +50,7 @@ class AdjustmentDialogParams(object):
         self.params = {
             'Q': self.paramHandler.getParameterAsStr('Q'),
             'qT': self.paramHandler.getParameterAsStr('qT'),
-            'A': self.paramHandler.getParameterAsStr('A'),
+            'D': self.paramHandler.getParameterAsStr('D'),
             'MBK': self.paramHandler.getParameterAsStr('MBK'),
             'qZ': self.paramHandler.getParameterAsStr('qZ'),
             'qR': self.paramHandler.getParameterAsStr('qR'),
@@ -67,8 +67,8 @@ class AdjustmentDialogParams(object):
             lambda: self.paramHasChanged('Q'))
         self.parent.fieldqT.editingFinished.connect(
             lambda: self.paramHasChanged('qT'))
-        self.parent.fieldA.editingFinished.connect(
-            lambda: self.paramHasChanged('A'))
+        self.parent.fieldD.editingFinished.connect(
+            lambda: self.paramHasChanged('D'))
         self.parent.fieldMBK.editingFinished.connect(
             lambda: self.paramHasChanged('MBK'))
         self.parent.fieldqZ.editingFinished.connect(
@@ -88,8 +88,12 @@ class AdjustmentDialogParams(object):
             self.parent.thData['thresholds'][0] = newVal
             self.parent.thresholdLayout.updateData(0, 1, newVal)
             newVal = self.paramHandler.setParameter(fieldName, newVal)
+        elif fieldName in ['D', 'MBK']:
+            newVal = self.paramHandler.setParameter(fieldName, newVal)
+            self.paramHandler.prepareForCalculation()
         else:
             newVal = self.paramHandler.setParameter(fieldName, newVal)
+        
         if newVal is not False:
             # Set correctly formatted Value
             self.fields[fieldName].blockSignals(True)

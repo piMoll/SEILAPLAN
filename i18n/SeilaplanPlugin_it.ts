@@ -750,8 +750,8 @@ Nel caso di un angolo tra 2° e 4° la fune portante deve essere atrezzato con u
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="422"/>
-        <source>mm2</source>
-        <translation>mm2</translation>
+        <source>mm</source>
+        <translation>mm</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="429"/>
@@ -766,8 +766,8 @@ Nel caso di un angolo tra 2° e 4° la fune portante deve essere atrezzato con u
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="443"/>
-        <source>Querschnittsflaeche Tragseil</source>
-        <translation>Area della sezione trasversale della fune portante</translation>
+        <source>Durchmesser Tragseil</source>
+        <translation type="unfinished">Area della sezione trasversale della fune portante</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="486"/>
@@ -1302,8 +1302,8 @@ dopo Zweifel</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="929"/>
-        <source>Querschnittsflaeche Tragseil</source>
-        <translation>Area della sezione trasversale della fune portante</translation>
+        <source>Durchmesser Tragseil</source>
+        <translation type="unfinished">Area della sezione trasversale della fune portante</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="942"/>
@@ -1312,8 +1312,8 @@ dopo Zweifel</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="992"/>
-        <source>mm2</source>
-        <translation>mm2</translation>
+        <source>mm</source>
+        <translation>mm</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="999"/>

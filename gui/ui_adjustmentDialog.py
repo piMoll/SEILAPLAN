@@ -2,9 +2,10 @@
 
 # Form implementation generated from reading ui file 'gui/adjustmentDialog.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.1
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -228,16 +229,16 @@ class Ui_AdjustmentDialogUI(object):
         self.fieldBabstMin.setMaximumSize(QtCore.QSize(80, 16777215))
         self.fieldBabstMin.setObjectName("fieldBabstMin")
         self.gridLayout_3.addWidget(self.fieldBabstMin, 7, 1, 1, 1)
-        self.fieldA = QtWidgets.QLineEdit(self.tabCableline)
+        self.fieldD = QtWidgets.QLineEdit(self.tabCableline)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.fieldA.sizePolicy().hasHeightForWidth())
-        self.fieldA.setSizePolicy(sizePolicy)
-        self.fieldA.setMinimumSize(QtCore.QSize(80, 0))
-        self.fieldA.setMaximumSize(QtCore.QSize(80, 16777215))
-        self.fieldA.setObjectName("fieldA")
-        self.gridLayout_3.addWidget(self.fieldA, 2, 1, 1, 1)
+        sizePolicy.setHeightForWidth(self.fieldD.sizePolicy().hasHeightForWidth())
+        self.fieldD.setSizePolicy(sizePolicy)
+        self.fieldD.setMinimumSize(QtCore.QSize(80, 0))
+        self.fieldD.setMaximumSize(QtCore.QSize(80, 16777215))
+        self.fieldD.setObjectName("fieldD")
+        self.gridLayout_3.addWidget(self.fieldD, 2, 1, 1, 1)
         self.label_15 = QtWidgets.QLabel(self.tabCableline)
         self.label_15.setObjectName("label_15")
         self.gridLayout_3.addWidget(self.label_15, 6, 2, 1, 1)
@@ -380,6 +381,19 @@ class Ui_AdjustmentDialogUI(object):
         self.retranslateUi(AdjustmentDialogUI)
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(AdjustmentDialogUI)
+        AdjustmentDialogUI.setTabOrder(self.fieldQ, self.fieldqT)
+        AdjustmentDialogUI.setTabOrder(self.fieldqT, self.fieldD)
+        AdjustmentDialogUI.setTabOrder(self.fieldD, self.fieldMBK)
+        AdjustmentDialogUI.setTabOrder(self.fieldMBK, self.fieldqZ)
+        AdjustmentDialogUI.setTabOrder(self.fieldqZ, self.fieldqR)
+        AdjustmentDialogUI.setTabOrder(self.fieldqR, self.fieldVorsp)
+        AdjustmentDialogUI.setTabOrder(self.fieldVorsp, self.fieldBabstMin)
+        AdjustmentDialogUI.setTabOrder(self.fieldBabstMin, self.tableThresholds)
+        AdjustmentDialogUI.setTabOrder(self.tableThresholds, self.fieldComment)
+        AdjustmentDialogUI.setTabOrder(self.fieldComment, self.btnBackToStart)
+        AdjustmentDialogUI.setTabOrder(self.btnBackToStart, self.btnClose)
+        AdjustmentDialogUI.setTabOrder(self.btnClose, self.btnSave)
+        AdjustmentDialogUI.setTabOrder(self.btnSave, self.tabWidget)
 
     def retranslateUi(self, AdjustmentDialogUI):
         _translate = QtCore.QCoreApplication.translate
@@ -403,10 +417,10 @@ class Ui_AdjustmentDialogUI(object):
         self.label_2.setText(_translate("AdjustmentDialogUI", "Gewicht der Last inkl. Laufwagen"))
         self.label_3.setText(_translate("AdjustmentDialogUI", "kN"))
         self.label_9.setText(_translate("AdjustmentDialogUI", "Gewicht Rueckholseil"))
-        self.label_11.setText(_translate("AdjustmentDialogUI", "mm2"))
+        self.label_11.setText(_translate("AdjustmentDialogUI", "mm"))
         self.label_10.setText(_translate("AdjustmentDialogUI", "Vorspannung Tragseil"))
         self.label_4.setText(_translate("AdjustmentDialogUI", "Gewicht Tragseil"))
-        self.label_6.setText(_translate("AdjustmentDialogUI", "Querschnittsflaeche Tragseil"))
+        self.label_6.setText(_translate("AdjustmentDialogUI", "Durchmesser Tragseil"))
         self.label_5.setText(_translate("AdjustmentDialogUI", "kN/m"))
         self.label_13.setText(_translate("AdjustmentDialogUI", "kN/m"))
         self.label.setText(_translate("AdjustmentDialogUI", "Minimaler Abstand Tragseil - Boden"))

@@ -8,7 +8,7 @@ Bodenabst_A		einzuhalten ab (vom Startpunkt)	m	field	int	0	200	einzuhalten ab ..
 Bodenabst_E		einzuhalten bis (vor dem Endpunkt)	m	field	int	0	200	einzuhalten bis ... Meter vor dem Endpunkt	16
 Q		Gewicht der Last inkl. Laufwagen	kN	field	float	1	100	Gewicht der Last inkl. Laufwagen	20
 qT		Gewicht Tragseil	kN/m	field	float	0.001	1	Gewicht des Tragseils	21
-A		Querschnittssfläche Tragseil	mm2	field	float	50	5000	Querschnittssfläche des Tragseils	22
+D		Durchmesser Tragseil	mm	field	float	1	500	Durchmesser des Tragseils	22
 MBK		Mindestbruchkraft Tragseil	kN	field	float	10	1000	Mindestbruchkraft Tragseil	23
 qZ		Gewicht Zugseil	kN/m	field	float	0	1	Gewicht Zugseil	24
 qR		Gewicht Rückholseil	kN/m	field	float	0	1	Gewicht Rückholseil	25
@@ -20,4 +20,5 @@ HM_Delta		Abstufungsinterval	m	field	int	1	5	Abstufungsinterval der möglichen S
 HM_nat		Künstliche Stützen ab Stützenhöhe	m	field	int	0	100	Künstliche Stützen werden ab ... Höhe verwendet	35
 min_SK		Minimal zulässige Seilzugkraft	kN	field	int	10	500	Minimal zulässige Seilzugkraft	36
 E		Elastizitätsmodul Tragseil	kN/mm2	field	float	10	1000	Elastizitätsmodul des Tragseils	37
-SF_T		Sicherheitsfaktor Tragseil		field	float	0	20	Sicherheitsfaktor Tragseil	38
+FuellF		Füllfaktor		field	float	0	1	Füllfaktor	38
+SF_T		Sicherheitsfaktor Tragseil		field	float	0	20	Sicherheitsfaktor Tragseil	39
