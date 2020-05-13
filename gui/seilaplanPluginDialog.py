@@ -163,6 +163,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.infoBodenabstand.clicked.connect(self.onShowInfoImg)
         self.infoStuetzen.clicked.connect(self.onShowInfoImg)
         self.infoFieldE.clicked.connect(self.onShowInfoFieldE)
+        self.infoFieldFuellF.clicked.connect(self.onShowInfoFieldFuellF)
         self.infoFieldSFT.clicked.connect(self.onShowInfoFieldSFT)
         self.infoBerechnung.clicked.connect(self.onShowInfoBerechnung)
         
@@ -894,6 +895,12 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
     def onShowInfoFieldE(self):
         msg = self.tr('Elastizitaetsmodul Tragseil Erklaerung')
         QMessageBox.information(self, self.tr("Elastizitaetsmodul Tragseil"),
+                                msg, QMessageBox.Ok)
+
+    def onShowInfoFieldFuellF(self):
+        msg = self.tr('Fuellfaktor Erklaerung')
+        QMessageBox.information(self,
+                                self.tr("Fuellfaktor"),
                                 msg, QMessageBox.Ok)
     
     def onShowInfoFieldSFT(self):

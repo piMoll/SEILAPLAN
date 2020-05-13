@@ -1391,6 +1391,11 @@ d&apos;après Zweifel</translation>
         <translation>Module d&apos;élasticité du câble porteur</translation>
     </message>
     <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1658"/>
+        <source>Fuellfaktor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../gui/seilaplanDialog.ui" line="1710"/>
         <source>Sicherheitsfaktor</source>
         <translation>Facteur de sécurité</translation>
@@ -1744,6 +1749,16 @@ Types de fichier supportés:
         <location filename="../gui/seilaplanPluginDialog.py" line="898"/>
         <source>Elastizitaetsmodul Tragseil</source>
         <translation>Module d&apos;élastcité</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
+        <source>Fuellfaktor Erklaerung</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
+        <source>Fuellfaktor</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="902"/>
