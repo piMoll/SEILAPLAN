@@ -84,13 +84,12 @@ class CustomPoleWidget(QObject):
 
             # Create layout
             self.poleRows.append(
-                PoleRow(self, self.widget, self.layout, idx,
+                PoleRow(self, self.widget, self.layout, idx, pole['nr'],
                         pole['name'], pole['poleType'], pole['d'],
                         [lowerRange, upperRange], pole['h'], pole['angle'],
                         delBtn, addBtn))
             if not pole['active']:
                 self.poleRows[-1].deactivate()
-        self.updatePoleRowIdx()
 
     def onRowChange(self, newVal=False, idx=False, property_name=False):
         if self.editActive:
@@ -118,21 +117,37 @@ class CustomPoleWidget(QObject):
             self.updateNeighbourDistRange(idx, newVal)
         self.editActive = False
 
-    def addRow(self, idx, name, dist, lowerRange, upperRange, height,
-               angle, poleType='pole', delBtn=True, addBtn=True):
+    def addRow(self, idx, nr, name, dist, lowerRange, upperRange, height,
+               angle, poleType='pole', delBtn=True, addBtn=True, poleLabels=None):
         lowerRange += self.pole_dist_step
         upperRange -= self.pole_dist_step
         # Add pole row layout
-        newRow = PoleRow(self, self.widget, self.layout, idx, name, poleType,
+        newRow = PoleRow(self, self.widget, self.layout, idx, nr, name, poleType,
                          dist, [lowerRange, upperRange], height, angle,
                          delBtn, addBtn)
         self.poleRows.insert(idx, newRow)
         # Update index and distance range of neighbours
-        self.updatePoleRowIdx()
+        self.updatePoleRowIdx(poleLabels)
         self.updateNeighbourDistRange(idx, dist)
         self.editActive = False
+        
+        # TODO: Rewrite like this
+        # # new param
+        # newIdx = 2
+        # newPole = self.poles[idx]
+        # dist = newPole['d']
+        # lowerRange = dist + self.pole_dist_step
+        # upperRange = dist - self.pole_dist_step
+        # newRow = PoleRow(self, self.widget, self.layout, idx, newPole['nr'],
+        #                  newPole['name'], newPole['poleType'], dist,
+        #                  [lowerRange, upperRange], newPole['height'],
+        #                  newPole['angle'], delBtn, addBtn)
+        # self.poleRows.insert(idx, newRow)
+        # # Update index and distance range of neighbours
+        # self.updatePoleRowIdx(poleLabels)
+        # self.editActive = False
     
-    def deleteRow(self, idx, distLower, distUpper):
+    def deleteRow(self, idx, distLower, distUpper, poleLabels=None):
         # If distance range was not defined, take outer ranges
         if not distLower:
             distLower = self.distRange[0]
@@ -147,17 +162,17 @@ class CustomPoleWidget(QObject):
         self.poleRows[idx].remove()
         del self.poleRows[idx]
         # Update index of neighbours
-        self.updatePoleRowIdx()
+        self.updatePoleRowIdx(poleLabels)
         self.editActive = False
         
-    def updatePoleRowIdx(self):
+    def updatePoleRowIdx(self, poleLabels):
         pole: PoleRow
-        label = 1
         for i, pole in enumerate(self.poleRows):
             pole.updateIndex(i)
-            if pole.rowType != 'anchor':
-                pole.updateLabel(label)
-                label += 1
+            nr = i
+            if poleLabels is not None:
+                nr = poleLabels[i]
+            pole.updateLabelNr(nr)
     
     def updateNeighbourDistRange(self, idx, dist):
         if idx > 0:
@@ -210,20 +225,19 @@ class PoleRow(object):
     ICON_ADD_ROW = ":/plugins/SeilaplanPlugin/gui/icons/icon_addrow.png"
     ICON_DEL_ROW = ":/plugins/SeilaplanPlugin/gui/icons/icon_bin.png"
     
-    def __init__(self, parent, widget, layout, idx, name, rowType, dist, distRange,
+    def __init__(self, parent, widget, layout, idx, nr, name, rowType, dist, distRange,
                  height=False, angle=False, delBtn=False, addBtn=False):
         self.parent = parent
         self.widget = widget
         self.layout = layout
         self.index = idx
-        self.label = idx
         self.rowType = rowType
         self.parent.poleCount += 1
 
         self.row = QHBoxLayout()
         self.row.setAlignment(Qt.AlignLeft)
         
-        self.labelIndex = None
+        self.labelNr = None
         self.statusSwitcher = None
         self.fieldName = None
         self.fieldDist = None
@@ -237,7 +251,7 @@ class PoleRow(object):
         if self.rowType == 'anchor':
             self.addSwitcher()
         else:
-            self.addLabelIndex()
+            self.addLabelNr(nr)
         self.addFieldName(name)
         self.addFieldDist(dist, distRange)
         if self.rowType not in ['anchor', 'pole_anchor']:
@@ -264,22 +278,20 @@ class PoleRow(object):
         self.statusSwitcher.stateChanged.connect(
             lambda newVal: self.parent.onRowChange(newVal==2, self.index, 'active'))
     
-    def addLabelIndex(self):
-        self.labelIndex = QLabel(self.widget)
-        self.labelIndex.setFixedWidth(20)
-        self.labelIndex.setAlignment(Qt.AlignVCenter | Qt.AlignRight)
-        self.row.addWidget(self.labelIndex)
-        if self.rowType != 'anchor':
-            self.labelIndex.setText(f"{self.index}:")
+    def addLabelNr(self, nr):
+        self.labelNr = QLabel(self.widget)
+        self.labelNr.setFixedWidth(20)
+        self.labelNr.setAlignment(Qt.AlignVCenter | Qt.AlignRight)
+        self.row.addWidget(self.labelNr)
+        if nr:
+            self.labelNr.setText(f"{nr}:")
     
     def updateIndex(self, idx):
         self.index = idx
-        if self.rowType != 'anchor':
-            self.labelIndex.setText(f"{self.index}:")
     
-    def updateLabel(self, label):
+    def updateLabelNr(self, label):
         if self.rowType != 'anchor':
-            self.labelIndex.setText(f"{label}:")
+            self.labelNr.setText(f"{label}:")
             
     def addFieldName(self, value):
         self.fieldName = QLineEditWithFocus(self.widget)
@@ -348,7 +360,7 @@ class PoleRow(object):
         self.fieldAngle.setFixedWidth(60)
         self.fieldAngle.setRange(-180, 180)
         if value is not None:
-            self.fieldAngle.setValue(value)
+            self.fieldAngle.setValue(int(value))
         self.row.addWidget(self.fieldAngle)
 
         # Connect events

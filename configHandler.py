@@ -67,12 +67,15 @@ class AbstractConfHandler(object):
                                 QMessageBox.Ok)
 
     # noinspection PyMethodMayBeStatic
-    def tr(self, message, **kwargs):
+    def tr(self, message, context=None, **kwargs):
         """Get the translation for a string using Qt translation API.
         We implement this ourselves since we do not inherit QObject.
 
         :param message: String for translation.
         :type message: str, QString
+        
+        :param context: Context to find the translation string.
+        :type context: str, QString
 
         :returns: Translated version of message.
         :rtype: QString
@@ -81,8 +84,10 @@ class AbstractConfHandler(object):
         ----------
         **kwargs
         """
+        if not context:
+            context = type(self).__name__
         # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
-        return QCoreApplication.translate(type(self).__name__, message)
+        return QCoreApplication.translate(context, message)
 
 
 # noinspection PyTypeChecker
@@ -639,13 +644,6 @@ class ParameterConfHandler(AbstractConfHandler):
             value = value[:-2]
         return value
     
-    def getParameterTooltip(self, property_name):
-        p = self._getParameterInfo(property_name)
-        if not p:
-            return ''
-        else:
-            return p['tooltip']
-    
     def setParameter(self, property_name, value):
         p = self._getParameterInfo(property_name)
         if not p:
@@ -708,14 +706,16 @@ class ParameterConfHandler(AbstractConfHandler):
         # Check if value is defined
         if value is None:
             errorMsg = self.tr('Bitte geben Sie im Feld einen Wert ein').format(
-                paramInfo['label'], rangeSet[0], rangeSet[1], paramInfo['unit'])
+                self.tr(paramInfo['label'], '@default'), rangeSet[0],
+                rangeSet[1], paramInfo['unit'])
             self.onError(errorMsg, self.tr('Ungueltige Eingabe'))
             return False
         
         # Finally check range
         if value is None or not rangeSet[0] <= value <= rangeSet[1]:
             errorMsg = self.tr('Der Wert im Feld ist ungueltig').format(
-                value, paramInfo['label'], rangeSet[0], rangeSet[1], paramInfo['unit'])
+                value, self.tr(paramInfo['label'], '@default'), rangeSet[0],
+                rangeSet[1], paramInfo['unit'])
             self.onError(errorMsg, self.tr('Ungueltige Eingabe'))
             return False
         return True
@@ -744,7 +744,8 @@ class ParameterConfHandler(AbstractConfHandler):
             value = self.getParameterAsStr(property_name)
             # Combine label, value and units
             line = '{0: <20}{1: <20}{2: <45}{3: <9}{4}'.format(property_name,
-                                    value, p['label'], p['unit'], '\n')
+                                    value, self.tr(p['label'], '@default'),
+                                    p['unit'], '\n')
             txt.append(line)
         txt.append('{0: <20}{1}'.format('Parameterset:', self.currentSetName))
         return txt

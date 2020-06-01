@@ -624,7 +624,7 @@
             <item row="4" column="0">
              <widget class="QLabel" name="label_63">
               <property name="text">
-               <string>Seillinie befahrbar bis ... vor dem Endpunkt   </string>
+               <string>Seillinie befahrbar bis ... vor dem Endpunkt</string>
               </property>
              </widget>
             </item>

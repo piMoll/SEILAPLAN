@@ -232,7 +232,7 @@ class ProfileDialog(QDialog):
         if idx < len(self.poleData)-1:
             upperRange = self.poleData[idx + 1]['d']
             
-        self.poleLayout.addRow(idx, name, d, lowerRange, upperRange,
+        self.poleLayout.addRow(idx, idx, name, d, lowerRange, upperRange,
                                h, angle, poleType='fixed', delBtn=True,
                                addBtn=False)
         

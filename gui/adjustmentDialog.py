@@ -36,7 +36,7 @@ from .adjustmentDialog_thresholds import AdjustmentDialogThresholds
 from .saveDialog import DialogOutputOptions
 from .mapMarker import MapMarkerTool
 from ..tool.cablelineFinal import preciseCable, updateWithCableCoordinates
-from ..tool.outputReport import generateReportText, generateReport, createOutputFolder
+from ..tool.outputReport import generateReportText, generateReport, createOutputFolder, generateShortReport
 from ..tool.outputGeo import generateGeodata, addToMap, generateCoordTable
 
 
@@ -140,8 +140,6 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         f.close()
         
         self.poles.poles = dump['poles']
-        self.poles.calculateAnchorLength()
-        
         self.initData(dump, 'optiSuccess')
     
     def initData(self, result, status):
@@ -210,6 +208,11 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
     def updatePole(self, idx, property_name, newVal):
         self.poles.update(idx, property_name, newVal)
         
+        if property_name == 'name':
+            return
+        
+        # TODO: pole Nr. should always be updated, better do it in PoleWidget
+        
         # Update markers on map
         if property_name == 'd':
             self.updateMarkerOnMap(idx)
@@ -230,19 +233,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         
         # Anchor was activated
         elif property_name == 'active' and newVal is True:
-            # Update new distance ranges of neighbouring poles
-            if idx == 0:
-                if self.poles.poles[0]['d'] < self.poles.firstPole['d']:
-                    dist = self.poles.poles[0]['d']
-                else:
-                    dist = self.poles.firstPole['d'] - self.poles.POLE_DIST_STEP
-            else:
-                if self.poles.poles[-1]['d'] > self.poles.lastPole['d']:
-                    dist = self.poles.poles[-1]['d']
-                else:
-                    dist = self.poles.lastPole['d'] + self.poles.POLE_DIST_STEP
-            # Update new distance value in Poles class
-            self.poles.update(idx, 'd', dist)
+            # Get updated distance value from pole class
+            dist = self.poles.poles[idx]['d']
             # Update distance of anchor in gui (and distance range of neighbours)
             self.poleLayout.changeRow(idx, 'd', dist)
             # Activate input fields
@@ -266,11 +258,14 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         d = floor(lowerRange + 0.5 * rangeDist)
         
         self.poles.add(newPoleIdx, d, manually=True)
+        # TODO: bei add/remove immer sofort arrays neu berechnen und abspeichern
+        [_, _, _, _, _, poleNr] = self.poles.getAsArray(True, True)
         
         self.poleLayout.addRow(
-            newPoleIdx, self.poles.poles[newPoleIdx]['name'], d, lowerRange,
+            newPoleIdx, self.poles.poles[newPoleIdx]['nr'],
+            self.poles.poles[newPoleIdx]['name'], d, lowerRange,
             upperRange, self.poles.poles[newPoleIdx]['h'],
-            self.poles.poles[newPoleIdx]['angle'])
+            self.poles.poles[newPoleIdx]['angle'], poleNr)
         self.addMarkerToMap(newPoleIdx)
         # self.plot.zoomOut()
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
@@ -284,7 +279,10 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             lowerRange = self.poles.poles[idx - 1]['d']
         if idx < len(self.poles.poles) - 1:
             upperRange = self.poles.poles[idx + 1]['d']
-        self.poleLayout.deleteRow(idx, lowerRange, upperRange)
+
+        # TODO: bei add/remove immer sofort arrays neu berechnen und abspeichern
+        [_, _, _, _, _, poleNr] = self.poles.getAsArray(True, True)
+        self.poleLayout.deleteRow(idx, lowerRange, upperRange, poleNr)
         self.drawTool.removeMarker(idx)
         # self.plot.zoomOut()
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
@@ -407,9 +405,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.profile.updateProfileAnalysis(self.cableline)
         
         # Update Plot
-        [pole_d, pole_z, pole_h, pole_dtop, pole_ztop] = self.poles.getAsArray()
-        self.plot.updatePlot([pole_d, pole_z, pole_h, pole_dtop, pole_ztop],
-                             self.cableline)
+        self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         
         # Update Threshold data
         self.updateThresholds()
@@ -689,9 +685,11 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
 
         # Create report
         if self.confHandler.getOutputOption('report'):
+            generateShortReport(self.confHandler, self.result,
+                                self.fieldComment.toPlainText(), projName, outputLoc)
             reportText = generateReportText(self.confHandler, self.result,
-                                            self.fieldComment.toPlainText())
-            generateReport(reportText, outputLoc, projName)
+                                            self.fieldComment.toPlainText(), projName)
+            generateReport(reportText, outputLoc)
         
         # Create plot
         if self.confHandler.getOutputOption('plot'):

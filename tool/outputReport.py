@@ -27,6 +27,12 @@ import textwrap
 
 from qgis.PyQt.QtCore import QCoreApplication
 
+from reportlab.lib.pagesizes import A4, portrait
+from reportlab.lib.units import cm
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
+from reportlab.graphics.shapes import colors
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+
 p = 21
 nl = os.linesep
 
@@ -67,7 +73,7 @@ def removeTxtElements(text, key):
         return text
 
 
-def generateReportText(confHandler, result, comment):
+def generateReportText(confHandler, result, comment, projname):
     """ Arrange texts and values for report generation.
     
     :type confHandler: configHandler.ConfigHandler
@@ -101,7 +107,7 @@ def generateReportText(confHandler, result, comment):
             str_time.append(['', line])
         str_time.append([])
 
-    str_time.append([tr('Erklaerungen und Diagramme zu den technischen Werten '
+    str_time.append(['', tr('Erklaerungen und Diagramme zu den technischen Werten '
                         'sind in der Dokumentation zu finden.')])
     
     # Section poles
@@ -285,26 +291,302 @@ def generateReportText(confHandler, result, comment):
         sort = param['sort']
         col = int(sort/10) - 1
         row = int(sort % 10)
-        columns[col][row] = ([param['label'], f"{paramStr} {param['unit']}"])
+        columns[col][row] = ([tr(param['label']), f"{paramStr} {param['unit']}"])
 
     for i in range(maxColLen):
         str_para.append(columns[0][i] + [''] + columns[1][i] + [''] + columns[2][i])
 
-    text = [str_time, str_posi, str_abst, str_opti, str_laen, str_durc,
+    # Section headers
+    headers = [
+        [[tr('SEILAPLAN Projekt') + '        ' + projname]],
+        [[tr('Stuetzenpositionen')]],
+        [[tr('Daten fuer Absteckung im Feld (Bodenpunkt)')]],
+        [[tr('Vorspannung der Seilzugkraft')]],
+        [[tr('Seillaenge')]],
+        [[tr('Durchhang')]],
+        [[tr('Auftretende Kraefte am Seil')]],
+        [[tr('Auftretende Kraefte an den Stuetzen')]],
+        [[tr('Seilwinkel an den Stuetzen')]],
+        [[tr('Nachweis, dass Tragseil nicht vom Sattel abhebt')]],
+        [[tr('Annahmen')]],
+    ]
+
+    text = [headers, str_time, str_posi, str_abst, str_opti, str_laen, str_durc,
             str_seil, str_stue, str_wink, str_nach, str_para]
     str_report = removeTxtElements(text, "nan")
 
     return str_report
 
 
-def generateReport(reportText, outputLoc, projname):
+def generateShortReport(confHandler, result, comment, projname, outputLoc):
+
+    styles = getSampleStyleSheet()
+    styles.add(ParagraphStyle(name='disclaimer', fontSize=6,
+                              fontName='Helvetica', leading=9))
+    styles.add(ParagraphStyle(name='comment', fontSize=8,
+                              fontName='Helvetica', leading=9))
+    
+    poles = confHandler.project.poles
+    polesArray = []
+    for pole in poles.poles:
+        if not pole['active']:
+            continue
+        polesArray.append(pole)
+    hmodell = confHandler.project.getHeightSourceAsStr()
+    kraft = result['force']
+    
+    setname = confHandler.params.currentSetName
+    setname = setname if setname else '-'
+    
+    az_grad = math.degrees(poles.azimut)
+    az_gon = az_grad * 1.11111
+
+    # General information
+    ###
+    s_gener = [
+        [],
+        [tr('Datum'), result['duration'][2]],
+        [tr('Hoehendaten'), hmodell],
+        [tr('Azimut'), "{:.2f} {} / {:.2f}°".format(az_gon, tr('gon'), az_grad)]
+    ]
+    
+    # Input values
+    ###
+    param = {}
+    param_list = ['D', 'MBK', 'Q', 'Bodenabst_min', 'Bodenabst_A',
+                  'Bodenabst_E', 'min_SK', 'SF_T']
+    
+    for key in param_list:
+        p = confHandler.params.params[key]
+        formatedVal = confHandler.params.getParameterAsStr(key) + ''
+        param[key] = [tr(p['label']), f"{formatedVal} {p['unit']}"]
+
+    s_input = [
+        [tr('Parameterset'), setname],
+        param['D'] + param['MBK'],
+        param['Q'],
+        param['Bodenabst_min'] + param['Bodenabst_A'],
+        ['', ''] + param['Bodenabst_E'],
+        param['min_SK']
+            + [tr('Grundspannung (Endpunkt)'), f"{kraft['grundspann_E']:.0f} kN"],
+        param['SF_T']]
+    
+    # Pole dimensions
+    ###
+    s_dimen = [[tr('Nr.'), tr('Bezeichnung'), tr('Sattelhoehe'),
+                tr('Neigung'), tr('Min. BHD')]]
+    add_footnote = False
+    for pole in polesArray:
+        if pole['angriff'] > 45:
+            pole['BHD'] = '*'
+            add_footnote = True
+        angle = np.nan if pole['angle'] == 0 else pole['angle']
+        s_dimen.append([pole['nr'], pole['name'], f"{pole['h']:.1f} m",
+                        f"{angle:.0f} °", f"{pole['BHD']} cm"])
+    s_dimen = removeTxtElements(s_dimen, "nan")
+    s_dimen2 = None
+    if add_footnote:
+        s_dimen2 = [[tr('Angabe BDH bei zu steilem Winkel nicht moeglich')]]
+
+    # Forces on poles
+    ###
+    s_force1 = [[tr('Maximal berechnete Seilzugkraft'),
+                 f"{kraft['MaxSeilzugkraft_L'][0]:.0f} kN"], []]
+    
+    s_force2 = [[tr('Nr.'), tr('Bezeichnung'), tr('Max. Kraefte'), '',
+                tr('Leerseil-knickwinkel'), tr('Lastseil-knickwinkel'),
+                tr('Angriffs-winkel')]]
+    i = 0
+    for pole in polesArray:
+        leerseil = np.nan
+        lastseil = np.nan
+        if pole['poleType'] == 'pole':
+            leerseil = kraft['Leerseilknickwinkel'][i]
+            lastseil = kraft['Lastseilknickwinkel'][i]
+            i += 1
+        s_force2.append([pole['nr'], pole['name'],
+                         f"{pole['maxForce'][0]:.0f} kN",
+                         f"({tr(pole['maxForce'][1])})",
+                         f"{leerseil:.1f} °", f"{lastseil:.1f} °",
+                         f"{pole['angriff']:.1f} °"])
+    s_force2 = removeTxtElements(s_force2, "nan")
+    
+    # Fields
+    ###
+    s_field1 = [[tr('Berechnete Seillaenge'), f"{kraft['LaengeSeil'][1]:.1f} m"], []]
+    s_field2 = [
+        [tr('Feld'),
+         tr('Horizontal-distanz'),
+         tr('Schraeg-distanz'),
+         tr('Hoehen-differenz'),
+         tr('Durchhang Leerseil'),
+         tr('Durchhang Lastseil')]]
+    j = 0
+    total_h = 0
+    total_z = 0
+    total_s = 0
+    for i, pole in enumerate(polesArray[:-1]):
+        nextPole = polesArray[i+1]
+        poleName = pole['name'] + (f" ({pole['nr']})" if pole['nr'] else '')
+        nextPoleName = nextPole['name'] + \
+                       (f" ({nextPole['nr']})" if nextPole['nr'] else '')
+        dist_h = nextPole['d'] - pole['d']
+        dist_z = nextPole['z'] - pole['z']
+        dist_s = (dist_h**2 + dist_z**2)**0.5
+        total_h += dist_h
+        total_z += dist_z
+        total_s += dist_s
+        h_diff = nextPole['z'] - pole['z']
+        slack_e = np.nan
+        slack_f = np.nan
+        if pole['poleType'] != 'anchor' and nextPole['poleType'] != 'anchor':
+            slack_e = kraft['Durchhang'][0][j]
+            slack_f = kraft['Durchhang'][1][j]
+            j += 1
+        
+        s_field2.append([
+            "{} -> {}".format(poleName, nextPoleName),
+            f"{dist_h:.0f} m", f"{dist_s:.1f} m", f"{h_diff:.1f} m",
+            f"{slack_e:.1f} m", f"{slack_f:.1f} m"])
+    s_field2.append([tr('Total'), f"{total_h:.1f} m", f"{total_s:.1f} m",
+                     f"{total_z:.1f} m"])
+    s_field2 = removeTxtElements(s_field2, "nan")
+    
+    # Comment
+    ###
+    s_comme = [[Paragraph(comment, style=styles['comment'])]]
+
+    # Disclaimer
+    ###
+    s_discl = [[], [Paragraph(tr('Haftungsausschluss'), style=styles['disclaimer'])]]
+    
+    # Create reportlab element
+    ###
+    
+    savePath = os.path.join(outputLoc, tr('Kurzbericht') + '.pdf')
+    if os.path.exists(savePath):
+        os.remove(savePath)
+
+    width, height = portrait(A4)
+    margin = 1.5 * cm
+    widthT, heightT = [width - 2 * margin, height - 2 * margin]
+    fontSize = 9
+    smallfontSize = 7
+    he_row = 0.42 * cm
+
+    # Table styles
+    font = 'Helvetica'
+    fontBold = 'Helvetica-Bold'
+    
+    style_t = TableStyle([
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('FONT', (0, 0), (-1, -1), fontBold, 13),
+        ('BACKGROUND', (0, 0), (-1, -1), colors.lightgrey),
+        ('LINEBELOW', (0, 0), (-1, -1), 1, colors.black),
+        ])
+    style_h = TableStyle([
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('BACKGROUND', (0, 0), (-1, -1), colors.lightgrey),
+        ('FONT', (0, 0), (-1, -1), fontBold, fontSize),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ])
+    style_gener = [
+        ('FONT', (0, 0), (-1, -1), font, fontSize),
+    ]
+    style_input = [
+        ('FONT', (0, 0), (-1, -1), font, fontSize),
+        ('ALIGN', (1, 0), (1, -1), 'RIGHT'),
+        ('ALIGN', (3, 0), (3, -1), 'RIGHT'),
+    ]
+    style_th = [
+        ('FONT', (0, 0), (-1, 0), fontBold, fontSize),
+        ('TOPPADDING', (0, 0), (-1, 0), 15),
+        ('FONT', (0, 1), (-1, -1), font, fontSize),
+        ('ALIGN', (0, 0), (-1, -1), 'RIGHT'),
+        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.whitesmoke, colors.transparent]),
+        ('VALIGN', (0, 1), (-1, -1), 'MIDDLE'),
+    ]
+    # Align second column left, rest is right aligned
+    style_2cl = style_th + [('ALIGN', (1, 0), (1, -1), 'LEFT')]
+    # Align first column left, rest is right aligned
+    style_fields = style_th + [('ALIGN', (0, 0), (0, -1), 'LEFT')] \
+                   + [('FONT', (0, -1), (-1, -1), fontBold, fontSize)]
+    # Disclaimer style (small font)
+    style_small = [('FONT', (0, 0), (-1, -1), font, smallfontSize),
+                   ]
+
+    # Headers
+    h_titel = Table([[f"{tr('SEILAPLAN Projekt')}: {projname}"]],
+                    colWidths=widthT, style=style_t)
+    h_input = Table([[tr('Eingabewerte')]],
+                    colWidths=widthT, style=style_h)
+    h_dimen = Table([[tr('Stuetzen- und Ankerdimensionen')]],
+                    colWidths=widthT, style=style_h)
+    h_force = Table([[tr('Kraefte und Winkel')]],
+                    colWidths=widthT, style=style_h)
+    h_field = Table([[tr('Anker- und Spannfelder')]],
+                    colWidths=widthT, style=style_h)
+    h_comme = Table([[tr('Bemerkung')]],
+                    colWidths=widthT, style=style_h)
+    
+    # Build paragraphs
+    data = []
+
+    # General information
+    t_gener = Table(s_gener, rowHeights=he_row, style=style_gener)
+    data.append([Table([[h_titel], [t_gener]])])
+
+    # Input values
+    t_input = Table(s_input, rowHeights=he_row, style=style_input)
+    data.append([Table([[h_input], [t_input]])])
+
+    # Pole dimensions
+    t_dimen1 = Table(s_dimen, rowHeights=he_row, style=style_2cl)
+    if s_dimen2:
+        t_dimen2 = Table(s_dimen2, rowHeights=he_row, style=style_small)
+        data.append([Table([[h_dimen], [t_dimen1], [t_dimen2]])])
+    else:
+        data.append([Table([[h_dimen], [t_dimen1]])])
+
+    # Forces on poles
+    t_force1 = Table(s_force1, rowHeights=he_row, style=style_gener)
+    t_force2 = Table(s_force2, rowHeights=he_row, style=style_2cl)
+    data.append([Table([[h_force], [t_force1], [t_force2]])])
+    
+    # Fields
+    t_field1 = Table(s_field1, rowHeights=he_row, style=style_gener)
+    t_field2 = Table(s_field2, rowHeights=he_row, style=style_fields)
+    data.append([Table([[h_field], [t_field1], [t_field2]])])
+    
+    # Comment
+    if comment:
+        t_comme = Table(s_comme, style=style_gener)
+        data.append([Table([[h_comme], [t_comme]])])
+
+    # Disclaimer
+    t_discl = Table(s_discl, style=style_small)
+    data.append(([Table([[t_discl]])]))
+
+    # Create document
+    elements = []
+    elements.append(Table(data))
+    doc_short = SimpleDocTemplate(savePath, encoding='utf8', topMargin=margin,
+                             bottomMargin=margin, leftMargin=margin,
+                             rightMargin=margin, pageBreakQuick=1,
+                             pagesize=portrait(A4))
+    doc_short.build(elements)
+    del elements
+    
+
+def generateReport(reportText, outputLoc):
     """Generate PDF report with reprotlab"""
     from reportlab.lib.pagesizes import A4, landscape
     from reportlab.lib.units import cm
     from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
     from reportlab.graphics.shapes import colors
 
-    savePath = os.path.join(outputLoc, tr('Bericht.pdf'))
+    savePath = os.path.join(outputLoc, tr('Bericht') + '.pdf')
     if os.path.exists(savePath):
         os.remove(savePath)
 
@@ -316,9 +598,12 @@ def generateReport(reportText, outputLoc, projname):
                              pagesize=landscape(A4))
     elements = []
 
-    [str_time, str_posi, str_abst, str_opti, str_laen,
+    [headers, str_time, str_posi, str_abst, str_opti, str_laen,
      str_durc, [str_seil1, str_seil2, str_seil3, str_seil4],
      [str_stue1, str_stue2], str_wink, str_nach, str_para] = reportText
+
+    [h_tite, h_posi, h_abst, h_opti, h_leng,
+     h_durc, h_seil, h_stue, h_wink, h_nach, h_anna] = headers
 
     widthT, heightT = [width-2*margin, height-2*margin]
     wi_doc = [widthT]
@@ -331,19 +616,6 @@ def generateReport(reportText, outputLoc, projname):
     lPadd = 6
     fontSize = 8
     smallfontSize = 6
-    
-    # Title definition
-    h_tite = [[tr('Seilbahnprojekt') + '        '+projname]]
-    h_posi = [[tr('Stuetzenpositionen')]]
-    h_abst = [[tr('Daten fuer Absteckung im Feld (Bodenpunkt)')]]
-    h_opti = [[tr('Vorspannung der Seilzugkraft')]]
-    h_leng = [[tr('Seillaenge')]]
-    h_durc = [[tr('Durchhang')]]
-    h_seil = [[tr('Auftretende Kraefte am Seil')]]
-    h_stue = [[tr('Auftretende Kraefte an den Stuetzen')]]
-    h_wink = [[tr('Seilwinkel an den Stuetzen')]]
-    h_nach = [[tr('Nachweis, dass Tragseil nicht vom Sattel abhebt')]]
-    h_anna = [[tr('Annahmen')]]
 
     # Table styles
     font = 'Helvetica'
@@ -363,7 +635,7 @@ def generateReport(reportText, outputLoc, projname):
                  ('ALIGN', (2, 0), (-1, -1), 'RIGHT')]
 
     t_tite1 = Table(h_tite, wi_doc, [0.8*cm])
-    t_tite2 = Table(str_time, [2.6*cm, 15.2*cm], len(str_time) * he_row)
+    t_tite2 = Table(str_time, [None, None], len(str_time) * he_row)
     t_tite1.setStyle(TableStyle([
         ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
@@ -375,7 +647,7 @@ def generateReport(reportText, outputLoc, projname):
                                  ('LEFTPADDING', (0, 0), (0, -1), lPadd)]))
 
     t_posi1 = Table(h_posi, wi_doc, he_rowT)
-    t_posi2 = Table(str_posi, [1.7*cm] + 5*[2.5*cm], len(str_posi) * he_row)
+    t_posi2 = Table(str_posi, [None] + 5*wi_clo, len(str_posi) * he_row)
     t_posi1.setStyle(title_style)
     t_posi2.setStyle(TableStyle(stdStyleA + [
         ('FONT', (0, 0), (-1, 0), fontHeader, smallfontSize)]))
@@ -387,28 +659,28 @@ def generateReport(reportText, outputLoc, projname):
         ('FONT', (0, 1), (-1, 1), fontHeader, smallfontSize)]))
 
     t_opti1 = Table(h_opti, wi_doc, he_rowT)
-    t_opti2 = Table(str_opti, [5*cm] + wi_clo, len(str_opti) * he_row)
+    t_opti2 = Table(str_opti, [None] + wi_clo, len(str_opti) * he_row)
     t_opti1.setStyle(title_style)
     t_opti2.setStyle(TableStyle(stdStyleA))
 
     t_laen1 = Table(h_leng, wi_doc, he_rowT)
-    t_laen2 = Table(str_laen, [5.8*cm] + [2*cm] + [1.5*cm]*len_field, 4*he_row)
+    t_laen2 = Table(str_laen, [None] + [2*cm] + [1.5*cm]*len_field, 4*he_row)
     t_laen1.setStyle(title_style)
     t_laen2.setStyle(TableStyle(stdStyleA + [
         ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize)]))  # field headers
 
     t_durc1 = Table(h_durc, wi_doc, he_rowT)
-    t_durc2 = Table(str_durc, wi_abk + [3*cm] + [1.7*cm]*len_field, 3*he_row)
+    t_durc2 = Table(str_durc, wi_abk + [None] + [1.7*cm]*len_field, 3*he_row)
     t_durc1.setStyle(title_style)
     t_durc2.setStyle(TableStyle(stdStyleB + [
         ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),  # field headers
         ('FONT', (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
 
     t_seil1 = Table(h_seil, wi_doc, he_rowT)
-    t_seil2 = Table(str_seil1, wi_abk + [6*cm] + [1*cm] + [1.5*cm]*len_field, len(str_seil1)*he_row)
-    t_seil3 = Table(str_seil2, wi_abk + [7.7*cm] + [1.5*cm]*len_pole, len(str_seil2)*he_row)
-    t_seil4 = Table(str_seil3, wi_abk + [6*cm] + [1*cm], len(str_seil3)*he_row)
-    t_seil5 = Table(str_seil4, wi_abk + [7.7*cm] + [1.5*cm]*len_field, len(str_seil4)*he_row)
+    t_seil2 = Table(str_seil1, wi_abk + [None] + [1*cm] + [1.5*cm]*len_field, len(str_seil1)*he_row)
+    t_seil3 = Table(str_seil2, wi_abk + [None] + [1.5*cm]*len_pole, len(str_seil2)*he_row)
+    t_seil4 = Table(str_seil3, wi_abk + [None] + [1*cm], len(str_seil3)*he_row)
+    t_seil5 = Table(str_seil4, wi_abk + [None] + [1.5*cm]*len_field, len(str_seil4)*he_row)
     t_seil1.setStyle(title_style)
     t_seil2.setStyle(TableStyle(stdStyleB + [
         ('FONT', (0, 0), (-1, 0), fontHeader, fontSize),  # first row = subsection

@@ -418,7 +418,7 @@ class Ui_AdjustmentDialogUI(object):
         self.label_3.setText(_translate("AdjustmentDialogUI", "kN"))
         self.label_9.setText(_translate("AdjustmentDialogUI", "Gewicht Rueckholseil"))
         self.label_11.setText(_translate("AdjustmentDialogUI", "mm"))
-        self.label_10.setText(_translate("AdjustmentDialogUI", "Vorspannung Tragseil"))
+        self.label_10.setText(_translate("AdjustmentDialogUI", "Grundspannung Tragseil (Anfangssp.)"))
         self.label_4.setText(_translate("AdjustmentDialogUI", "Gewicht Tragseil"))
         self.label_6.setText(_translate("AdjustmentDialogUI", "Durchmesser Tragseil"))
         self.label_5.setText(_translate("AdjustmentDialogUI", "kN/m"))

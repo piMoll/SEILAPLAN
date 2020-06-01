@@ -1105,7 +1105,7 @@ class Ui_SeilaplanDialogUI(object):
         self.label_65.setText(_translate("SeilaplanDialogUI", "Seillinie befahrbar ab ... vom Anfangspunkt"))
         self.label_56.setText(_translate("SeilaplanDialogUI", "m"))
         self.label_64.setText(_translate("SeilaplanDialogUI", "m"))
-        self.label_63.setText(_translate("SeilaplanDialogUI", "Seillinie befahrbar bis ... vor dem Endpunkt   "))
+        self.label_63.setText(_translate("SeilaplanDialogUI", "Seillinie befahrbar bis ... vor dem Endpunkt"))
         self.infoBodenabstand.setText(_translate("SeilaplanDialogUI", "?"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("SeilaplanDialogUI", "Seillinie"))
         self.label_36.setText(_translate("SeilaplanDialogUI", "kN/m"))

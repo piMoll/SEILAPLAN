@@ -171,7 +171,7 @@ class AdjustmentPlot(FigureCanvas):
                        color='#910000', linewidth=1*scale)
             
         # Poles
-        [pole_d, pole_z, pole_h, pole_dtop, pole_ztop] = poles
+        [pole_d, pole_z, pole_h, pole_dtop, pole_ztop, pole_nr] = poles
         for i, d in enumerate(pole_d):
             self.axes.plot([pole_d[i], pole_dtop[i]], [pole_z[i], pole_ztop[i]],
                            color='#363432', linewidth=3.0*scale)
@@ -188,7 +188,7 @@ class AdjustmentPlot(FigureCanvas):
         # self.setPlotLimits()
         # Add labels
         if not printPdf:
-            self.placeLabels(pole_dtop, pole_ztop)
+            self.placeLabels(pole_dtop, pole_ztop, pole_nr)
         # Legend
         self.axes.legend(loc='lower center', fontsize=fontSize,
                          bbox_to_anchor=(0.5, 0), ncol=legendCol)
@@ -237,7 +237,7 @@ class AdjustmentPlot(FigureCanvas):
         self.tbar.update()
         self.tbar.push_current()
     
-    def placeLabels(self, xdata, ydata):
+    def placeLabels(self, xdata, ydata, label):
         if self.isZoomed:
             d = self.currentPole['d']
             z = self.currentPole['z']
@@ -255,7 +255,7 @@ class AdjustmentPlot(FigureCanvas):
         else:
             for i in range(len(xdata)):
                 self.axes.text(xdata[i], ydata[i] + self.labelBuffer,
-                               f'{i + 1}', fontsize=12, ha='center')
+                               label[i], fontsize=12, ha='center')
     
     def printToPdf(self, filelocation, title, poles, dpi=300):
         xlen = 11.69  # 11.69 inch = A4 width
@@ -275,7 +275,8 @@ class AdjustmentPlot(FigureCanvas):
         for pole in poles:
             if pole['poleType'] != 'anchor':
                 self.axes.text(pole['dtop'], pole['ztop'] + self.labelBuffer*2,
-                               pole['name'], ha='center', fontsize=8)
+                               f"{pole['name']} ({pole['nr']})", ha='center',
+                               fontsize=8)
         self.print_figure(filelocation, dpi)
 
     def setToolbar(self, tbar):

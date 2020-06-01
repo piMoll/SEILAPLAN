@@ -60,7 +60,6 @@ def preciseCable(IS, poles, STA):
     qz2 = IS["qz2"]     # [kN/m] Zugseilgewicht rechts
 
     # Field dimension
-    poles.calculateAnchorLength()
     b, h = poles.getCableFieldDimension()
     # Round the field dimensions do dm because this is going to be the
     # the resolution of the cable calculation
@@ -423,13 +422,23 @@ def preciseCable(IS, poles, STA):
     feld_max = np.argmax(STfm_Last)
 
     # Auftretende Maximalseilzugkraft...
-    kraft['MaxSeilzugkraft_L'] = np.array([np.nan]*3)
+    kraft['MaxSeilzugkraft_L'] = np.array([np.nan]*5)
     #   am höchsten Punkt
+    # TODO Leo: Die hier berechnete max. Seilzugkraft (siehe Kurzbericht) berücksichtigt die toten Anker nicht --> anpassen?
     kraft['MaxSeilzugkraft_L'][0] = STfm_Last_max + (np.max(z) - zfm[feld_max]) * qT
-    #   an Anker A
+    #   an Startpunkt
     kraft['MaxSeilzugkraft_L'][1] = STfm_Last_max + (z[0] - zfm[feld_max]) * qT
-    #   an Anker E
+    #   an Endpunkt
     kraft['MaxSeilzugkraft_L'][2] = STfm_Last_max + (z[-1] - zfm[feld_max]) * qT
+
+    # Falls tote Anker vorhanden sind
+    # TODO Leo: folgende Zeilen berechnen TmaxA/E für tote Anker, bitte überprüfen
+    if poles.poles[0]['poleType'] == 'anchor' and poles.poles[0]['active']:
+        anchorA = poles.poles[0]
+        kraft['MaxSeilzugkraft_L'][3] = STfm_Last_max + (anchorA['z'] - zfm[feld_max]) * qT
+    if poles.poles[-1]['poleType'] == 'anchor' and poles.poles[-1]['active']:
+        anchorE = poles.poles[-1]
+        kraft['MaxSeilzugkraft_L'][4] = STfm_Last_max + (anchorE['z'] - zfm[feld_max]) * qT
 
     # Auftretende Maximalseilzugkraft...
     kraft['MaxSeilzugkraft'] = np.array([[np.nan]*anzFelder]*3)
@@ -447,7 +456,13 @@ def preciseCable(IS, poles, STA):
 
     kraft['Spannkraft'] = [ST[0], ST[-1]]
     kraft['Seilzugkraft'] = [ST, Hs]
+    
+    # Grundspannung Tragseil am Endpunkt (Formel Ti = To + zi * qs)
+    zi = poles.poles[poles.idxE]['z'] - poles.poles[poles.idxA]['z']
+    kraft['grundspann_E'] = IS['min_SK'] + zi * IS['qT']
 
+    poles.calculateAdvancedProperties(kraft)
+    
     anchorField = poles.getAnchorCable()
     cableline = {
         'xaxis': l_coord + poles.firstPole['dtop'],    # X-data starts at first pole

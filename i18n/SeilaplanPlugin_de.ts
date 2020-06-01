@@ -360,8 +360,8 @@
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="308"/>
-        <source>Bericht.pdf</source>
-        <translation>Bericht.pdf</translation>
+        <source>Bericht</source>
+        <translation>Bericht</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="337"/>
@@ -473,6 +473,269 @@
         <location filename="../tool/outputReport.py" line="263"/>
         <source>Lastseilknickwinkel</source>
         <translation>Lastseilknickwinkel</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Datum</source>
+        <translation>Datum</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Grundspannung (Endpunkt)</source>
+        <translation>Grundspannung (Endpunkt)</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Nr.</source>
+        <translation>Nr.</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Bezeichnung</source>
+        <translation>Bezeichnung</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Sattelhoehe</source>
+        <translation>Sattelhöhe</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Min. BHD</source>
+        <translation>Min. BHD</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Angabe BDH bei zu steilem Winkel nicht moeglich</source>
+        <translation>* Angabe des min. BDH bei zu steilem Angriffswinkel nicht möglich</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Maximal berechnete Seilzugkraft</source>
+        <translation>Maximal berechnete Seilzugkraft</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Max. Kraefte</source>
+        <translation>Max. Kräfte</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Leerseil-knickwinkel</source>
+        <translation>Leerseil-
+knickwinkel</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Lastseil-knickwinkel</source>
+        <translation>Lastseil-
+knickwinkel</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Berechnete Seillaenge</source>
+        <translation>Berechnete Seillänge</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Angriffs-winkel</source>
+        <translation>Angriffs-
+winkel</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Horizontal-distanz</source>
+        <translation>Horizontal
+-distanz</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Schraeg-distanz</source>
+        <translation>Schräg-
+distanz</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Hoehen-differenz</source>
+        <translation>Höhen-
+differenz</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Durchhang Leerseil</source>
+        <translation>Durchhang
+Leerseil</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Durchhang Lastseil</source>
+        <translation>Durchhang
+Lastseil</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Haftungsausschluss</source>
+        <translation>Jegliche Haftung wird im Rahmen der GNU General Public Licence Version 2 oder neuere ausgeschlossen (www.gnu.org/licenses). Die implementierte Berechnungsmethode basiert auf der Methode von Zweifel (1960, Seilbahnberechnung bei beidseitig verankerten Tragseilen). Zur Berechnung der Tragseileigenschaften wurde eine beidseitig fixierte Verankerung angenommen.</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Kurzbericht</source>
+        <translation>Kurzbericht</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>SEILAPLAN Projekt</source>
+        <translation>SEILAPLAN Projekt</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Eingabewerte</source>
+        <translation>Eingabewerte</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Stuetzen- und Ankerdimensionen</source>
+        <translation>Stützen- und Ankerdimensionen</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Kraefte und Winkel</source>
+        <translation>Kräfte und Winkel</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Anker- und Spannfelder</source>
+        <translation>Anker- und Spannfelder</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Seilsystem</source>
+        <translation>Seilsystem</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Hoehe Seilkranmast</source>
+        <translation>Höhe Seilkranmast</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Seillinie befahrbar ab ... vom Anfangspunkt</source>
+        <translation>Tragseil befahrbar ab ... vom Anfangspunkt</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Seillinie befahrbar bis ... vor dem Endpunkt</source>
+        <translation>Tragseil befahrbar bis ... vor dem Endpunkt</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Minimaler Abstand Tragseil - Boden</source>
+        <translation>Minimaler Abstand zwischen Tragseil und Boden</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>einzuhalten ab ... vom Anfangspunkt</source>
+        <translation>einzuhalten ab ... vom Anfangspunkt</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>einzuhalten bis ... vor dem Endpunkt</source>
+        <translation>einzuhalten bis ... vor dem Endpunkt</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Gewicht der Last inkl. Laufwagen</source>
+        <translation>Gewicht der Last inkl. Laufwagen</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Gewicht Tragseil</source>
+        <translation>Gewicht Tragseil</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Durchmesser Tragseil</source>
+        <translation>Durchmesser Tragseil</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Mindestbruchkraft Tragseil</source>
+        <translation>Mindestbruchkraft Tragseil</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Gewicht Zugseil</source>
+        <translation>Gewicht Zugseil</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Gewicht Rueckholseil</source>
+        <translation>Gewicht Rückholseil</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Minimaler Abstand zwischen Stuetzen</source>
+        <translation>Minimaler Abstand zwischen Stützen</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Horiz. Aufloesung moegl. Stuetzenstandorte</source>
+        <translation>Horiz. Auflösung mögl. Stützenstandorte</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Minimale Stuetzenhoehe</source>
+        <translation>Minimale Stützenhöhe</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Maximale Stuetzenhoehe</source>
+        <translation>Maximale Stützenhöhe</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Abstufungsinterval</source>
+        <translation>Abstufungsintervall</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Kuenstliche Stuetze ab Stuetzenhoehe von</source>
+        <translation>Künstliche Stütze ab Stützenhöhe von</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Grundspannung Tragseil (Anfangssp.)</source>
+        <translation>Grundspannung Tragseil (Anfangsspunkt)</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Elastizitaetsmodul Tragseil</source>
+        <translation>Elastizitätsmodul Tragseil</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Fuellfaktor</source>
+        <translation>Füllfaktor</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Sicherheitsfaktor Tragseil</source>
+        <translation>Sicherheitsfaktor Tragseil</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Parameterset</source>
+        <translation>Parameterset</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Sattelkraft</source>
+        <translation>Sattelkraft</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Total</source>
+        <translation>Total</translation>
     </message>
 </context>
 <context>
@@ -745,8 +1008,8 @@ Bei Knickwinkeln zwischen 2° und 4° muss das Tragseil mittels Niederhaltelasch
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="429"/>
-        <source>Vorspannung Tragseil</source>
-        <translation>Grundspannung Tragseil (Anfangssp.)</translation>
+        <source>Grundspannung Tragseil (Anfangssp.)</source>
+        <translation>Grundspannung Tragseil (Anfangsspunkt)</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="436"/>
@@ -988,8 +1251,8 @@ nach Zweifel</translation>
     </message>
     <message>
         <location filename="../tool/poles.py" line="90"/>
-        <source>{}. Stuetze</source>
-        <translation>{}. Stütze</translation>
+        <source>Stuetze</source>
+        <translation>Stütze</translation>
     </message>
     <message>
         <location filename="../tool/poles.py" line="92"/>
@@ -1223,7 +1486,7 @@ nach Zweifel</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="372"/>
-        <source>Seillinie befahrbar bis ... vor dem Endpunkt   </source>
+        <source>Seillinie befahrbar bis ... vor dem Endpunkt</source>
         <translatorcomment>Korrekter: Tragseil befahrbar ...</translatorcomment>
         <translation>Tragseil befahrbar bis ... vor dem Endpunkt</translation>
     </message>

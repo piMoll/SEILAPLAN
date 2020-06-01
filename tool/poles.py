@@ -3,6 +3,37 @@ import numpy as np
 from qgis.PyQt.QtCore import QCoreApplication
 
 
+# Notwendiger BHD [cm]: { Angriffswinkel (kleiner als 10) [°]: Tragkraft Ankerbaum [kn], ...}
+#   Angriffswinkel 0 - 10°: guenstig
+#   Angriffswinkel 10 - 25°: normal
+#   Angriffswinkel 25 - 45°: kritisch
+BHD_ANCHOR = {
+    10: {29: 24, 51: 32, 80: 40, 115: 48, 135: 52, 157: 56, 169: 58, 190: 60, 215: 65},
+    25: {19: 24, 34: 32, 53: 40, 77: 48, 90: 52, 105: 56, 112: 58, 120: 60, 145: 65},
+    45: {15: 24, 25: 32, 40: 40, 55: 48, 65: 52, 80: 56, 85: 58, 90: 60, 110: 65}
+}
+
+# Sattelkraft [kN]: { Hoehe_Stuetze [m]: Durchmesser Bundstelle [cm]}
+BHD_POLE = {
+    10: {5: 11, 6: 12, 7: 13, 8: 13, 9: 14, 10: 14, 11: 15, 12: 15, 13: 16, 14: 16, 15: 16, 16: 16, 17: 17, 18: 17, 19: 17, 20: 17, 22: 18, 24: 18, 26: 18, 28: 18, 30: 18},
+    20: {5: 14, 6: 15, 7: 16, 8: 17, 9: 17, 10: 18, 11: 19, 12: 19, 13: 20, 14: 20, 15: 21, 16: 21, 17: 21, 18: 22, 19: 22, 20: 22, 22: 23, 24: 23, 26: 24, 28: 24, 30: 24},
+    30: {5: 16, 6: 17, 7: 18, 8: 19, 9: 20, 10: 20, 11: 21, 12: 22, 13: 22, 14: 23, 15: 23, 16: 24, 17: 24, 18: 25, 19: 25, 20: 26, 22: 26, 24: 27, 26: 28, 28: 28, 30: 28},
+    40: {5: 17, 6: 18, 7: 19, 8: 20, 9: 21, 10: 22, 11: 23, 12: 24, 13: 24, 14: 25, 15: 26, 16: 26, 17: 27, 18: 27, 19: 28, 20: 28, 22: 29, 24: 30, 26: 31, 28: 31, 30: 31},
+    50: {5: 18, 6: 19, 7: 21, 8: 22, 9: 23, 10: 24, 11: 25, 12: 25, 13: 26, 14: 27, 15: 28, 16: 28, 17: 29, 18: 29, 19: 30, 20: 30, 22: 31, 24: 32, 26: 33, 28: 34, 30: 34},
+    60: {5: None, 6: 20, 7: 22, 8: 23, 9: 24, 10: 25, 11: 26, 12: 27, 13: 28, 14: 29, 15: 29, 16: 30, 17: 31, 18: 31, 19: 32, 20: 32, 22: 33, 24: 34, 26: 35, 28: 36, 30: 36},
+    70: {5: None, 6: 21, 7: 23, 8: 24, 9: 25, 10: 26, 11: 27, 12: 28, 13: 29, 14: 30, 15: 31, 16: 31, 17: 32, 18: 33, 19: 33, 20: 34, 22: 35, 24: 36, 26: 37, 28: 38, 30: 38},
+    80: {5: None, 6: None, 7: 24, 8: 25, 9: 26, 10: 27, 11: 28, 12: 29, 13: 30, 14: 31, 15: 32, 16: 33, 17: 34, 18: 34, 19: 35, 20: 36, 22: 37, 24: 38, 26: 39, 28: 40, 30: 40},
+    90: {5: None, 6: None, 7: 24, 8: 26, 9: 27, 10: 28, 11: 29, 12: 30, 13: 31, 14: 32, 15: 33, 16: 34, 17: 35, 18: 36, 19: 36, 20: 37, 22: 38, 24: 39, 26: 40, 28: 41, 30: 42},
+    100: {5: None, 6: None, 7: 25, 8: 27, 9: 28, 10: 29, 11: 30, 12: 31, 13: 32, 14: 33, 15: 34, 16: 35, 17: 36, 18: 37, 19: 37, 20: 38, 22: 39, 24: 41, 26: 42, 28: 43, 30: 43},
+    110: {5: None, 6: None, 7: None, 8: 27, 9: 29, 10: 30, 11: 31, 12: 32, 13: 33, 14: 34, 15: 35, 16: 36, 17: 37, 18: 38, 19: 39, 20: 39, 22: 41, 24: 42, 26: 43, 28: 44, 30: 45},
+    120: {5: None, 6: None, 7: None, 8: 28, 9: 29, 10: 31, 11: 32, 12: 33, 13: 34, 14: 35, 15: 36, 16: 37, 17: 38, 18: 39, 19: 40, 20: 40, 22: 42, 24: 43, 26: 44, 28: 45, 30: 46},
+    130: {5: None, 6: None, 7: None, 8: 29, 9: 30, 10: 31, 11: 33, 12: 34, 13: 35, 14: 36, 15: 37, 16: 38, 17: 39, 18: 40, 19: 41, 20: 41, 22: 43, 24: 44, 26: 45, 28: 47, 30: 47},
+    140: {5: None, 6: None, 7: None, 8: None, 9: 31, 10: 32, 11: 34, 12: 35, 13: 36, 14: 37, 15: 38, 16: 39, 17: 40, 18: 41, 19: 42, 20: 42, 22: 44, 24: 45, 26: 47, 28: 48, 30: 48},
+    150: {5: None, 6: None, 7: None, 8: None, 9: 31, 10: 33, 11: 34, 12: 35, 13: 36, 14: 38, 15: 39, 16: 40, 17: 41, 18: 41, 19: 42, 20: 43, 22: 45, 24: 46, 26: 48, 28: 49, 30: 49}
+}
+BHD_POLE_Force = np.array(list(BHD_POLE.keys()))
+
+
 class Poles(object):
     
     INIT_POLE_HEIGHT = 12.0
@@ -46,19 +77,19 @@ class Poles(object):
         nameE = self.tr('Endstuetze') if self.E_type == 'pole' else None
         if self.A_type == 'pole':
             # Anchor at start point
-            self.add(idx, -1*self.anchorA, 0, poleType='anchor')
+            self.add(idx, -1*self.anchorA, 0, poleType='anchor', refresh=False)
             idx = 1
         # First pole at 0 m horizontal distance
-        self.add(idx, 0, height[self.A_type], poleType=self.A_type, name=nameA)
+        self.add(idx, 0, height[self.A_type], poleType=self.A_type, name=nameA,
+                 refresh=False)
         # Last pole
         self.add(idx+1, self.profileLength, height[self.E_type],
-                 poleType=self.E_type, name=nameE)
+                 poleType=self.E_type, name=nameE, refresh=False)
         if self.E_type == 'pole':
             # Anchor at end point
             self.add(idx+2, self.profileLength + self.anchorE, 0,
-                     poleType='anchor')
-        self.updateAnchorStatus()
-        self.calculateAnchorLength()
+                     poleType='anchor', refresh=False)
+        self.refresh()
 
     # noinspection PyMethodMayBeStatic
     def tr(self, message, **kwargs):
@@ -79,7 +110,7 @@ class Poles(object):
         return QCoreApplication.translate(type(self).__name__, message)
 
     def add(self, idx, d, h=INIT_POLE_HEIGHT, angle=INIT_POLE_ANGLE,
-            manually=False, poleType='pole', active=True, name=''):
+            manually=False, poleType='pole', active=True, name='', refresh=True):
        
         d = float(d)
         if h == -1:
@@ -87,7 +118,7 @@ class Poles(object):
         h = float(h)
         x, y, z, dtop, ztop = self.derivePoleProperties(d, h, angle)
         if not name:
-            name = self.tr('{}. Stuetze').format(idx)
+            name = self.tr('Stuetze')
             if manually:
                 name = self.tr('neue Stuetze')
             if poleType in ['anchor', 'pole_anchor']:
@@ -97,6 +128,7 @@ class Poles(object):
         
         self.poles.insert(idx, {
             'name': name,
+            'nr': str(idx),
             'poleType': poleType,
             'd': d,
             'z': z,
@@ -109,7 +141,8 @@ class Poles(object):
             'manually': manually,
             'active': active
         })
-        self.updateFirstLastPole()
+        if refresh:
+            self.refresh()
 
     def update(self, idx, property_name, newVal):
         self.poles[idx][property_name] = newVal
@@ -123,8 +156,22 @@ class Poles(object):
             self.poles[idx]['z'] = z
             self.poles[idx]['dtop'] = dtop
             self.poles[idx]['ztop'] = ztop
-        self.updateFirstLastPole()
-    
+        self.refresh()
+
+        if property_name == 'active' and newVal is True:
+            # When an anchor gets reactivated we have to make sure that the
+            #  distance is higher / lower than the neighbouring pole
+            dist = None
+            if idx == 0:
+                if self.firstPole['d'] <= self.poles[0]['d']:
+                    dist = self.firstPole['d'] - self.POLE_DIST_STEP
+            elif idx == len(self.poles)-1:
+                if self.lastPole['d'] >= self.poles[-1]['d']:
+                    dist = self.lastPole['d'] + self.POLE_DIST_STEP
+            if dist:
+                # Update new distance value
+                self.update(idx, 'd', dist)
+        
     def derivePoleProperties(self, d, h, angle):
         x = self.Ax + float(d) * sin(self.azimut)
         y = self.Ay + float(d) * cos(self.azimut)
@@ -164,9 +211,8 @@ class Poles(object):
             # Add the newly calculated poles between start and end point
             idx = self.idxA + 1
             for p in poles[1:-1]:
-                self.add(idx, p['d'], p['h'], name=p['name'])
+                self.add(idx, p['d'], p['h'], name=p['name'], refresh=False)
                 idx += 1
-            self.updateAnchorStatus()
         
         elif status == 'savedFile':
             # User wants to jump over the optimization and has loaded a save
@@ -175,7 +221,7 @@ class Poles(object):
             for p in poles:
                 self.add(p['idx'], p['dist'], p['height'], p['angle'],
                          p['manual'], p['pType'], active=p['active'],
-                         name=p['name'])
+                         name=p['name'], refresh=False)
         
         elif status == 'jumpedOver':
             # User wants to jump over the optimization but has not loaded a
@@ -185,11 +231,9 @@ class Poles(object):
             if self.A_type == 'pole':
                 idx = 2
             for i, p in enumerate(poles):
-                self.add(idx + i, p['d'], p['h'], name=p['name'])
+                self.add(idx + i, p['d'], p['h'], name=p['name'], refresh=False)
 
-        self.updateFirstLastPole()
-        # Recalculate anchor data with updated pole data
-        self.calculateAnchorLength()
+        self.refresh()
     
     def getAsArray(self, withAnchor=False, withDeactivated=False):
         d = []
@@ -197,6 +241,7 @@ class Poles(object):
         h = []
         dtop = []
         ztop = []
+        number = []
         
         for i, pole in enumerate(self.poles):
             if not withAnchor and pole['poleType'] == 'anchor':
@@ -208,13 +253,20 @@ class Poles(object):
             h.append(pole['h'])
             dtop.append(pole['dtop'])
             ztop.append(pole['ztop'])
+            number.append(pole['nr'])
 
         d = np.array(d)
         z = np.array(z)
         h = np.array(h)
         dtop = np.array(dtop)
         ztop = np.array(ztop)
-        return [d, z, h, dtop, ztop]
+        return [d, z, h, dtop, ztop, number]
+
+    def refresh(self):
+        self.updateFirstLastPole()
+        self.updateAnchorStatus()
+        self.numberPoles()
+        self.calculateAnchorLength()
     
     def updateFirstLastPole(self):
         for idx, pole in enumerate(self.poles):
@@ -228,58 +280,76 @@ class Poles(object):
                 self.lastPole = pole
                 self.idxE = len(self.poles) - 1 - idx
                 break
+    
+    def numberPoles(self):
+        i = 1
+        for pole in self.poles:
+            if pole['poleType'] in ['anchor', 'pole_anchor']:
+                pole['nr'] = ''
+            else:
+                pole['nr'] = str(i)
+                i += 1
 
     def delete(self, idx):
         self.poles.pop(idx)
-        self.updateFirstLastPole()
+        self.refresh()
     
     def calculateAnchorLength(self):
-        """ Calculate anchor cable line and interpolate ground points.
+        """ Calculate anchor cable line and interpolate ground points. This
+        values do only have to be calculated when anchors are active
+        (poleType == anchor)
         """
-        # Height difference between anchor point and top of first/last pole
         anchorA = self.poles[0]
         anchorE = self.poles[-1]
-        firstPole = self.poles[1]
-        lastPole = self.poles[-2]
         
         poleA_ztop_diff = 0
-        poleA_dtop_diff = self.anchorA
+        poleA_dtop_diff = 0
         poleE_ztop_diff = 0
-        poleE_dtop_diff = self.anchorE
-        angriffswinkel_A = None
-        angriffswinkel_E = None
-        
-        if anchorA['poleType'] == 'anchor' and anchorA['active']:
-            poleA_ztop_diff = firstPole['ztop'] - anchorA['ztop']
-            poleA_z_diff = firstPole['z'] - anchorA['z']
-            poleA_dtop_diff = firstPole['dtop'] - anchorA['dtop']
-            poleA_d_diff = firstPole['d'] - anchorA['d']
-            
-            angriffswinkel_A = degrees(atan(poleA_ztop_diff / poleA_dtop_diff)
-                                      - atan(poleA_z_diff / poleA_d_diff))
-            
-        if anchorE['poleType'] == 'anchor' and anchorE['active']:
-            poleE_ztop_diff = lastPole['ztop'] - anchorE['ztop']
-            poleE_z_diff = lastPole['z'] - anchorE['z']
-            poleE_dtop_diff = anchorE['dtop'] - lastPole['dtop']
-            poleE_d_diff = anchorE['d'] - lastPole['d']
+        poleE_dtop_diff = 0
 
-            angriffswinkel_E = degrees(atan(poleE_ztop_diff / poleE_dtop_diff)
-                                      - atan(poleE_z_diff / poleE_d_diff))
-    
+        if anchorA['poleType'] == 'anchor' and anchorA['active']:
+            poleA_ztop_diff = self.firstPole['ztop'] - anchorA['ztop']
+            poleA_dtop_diff = self.firstPole['dtop'] - anchorA['dtop']
+
+        if anchorE['poleType'] == 'anchor' and anchorE['active']:
+            poleE_ztop_diff = self.lastPole['ztop'] - anchorE['ztop']
+            poleE_dtop_diff = anchorE['dtop'] - self.lastPole['dtop']
+
         anchor_field = [poleA_dtop_diff, poleA_ztop_diff,
                         poleE_dtop_diff, poleE_ztop_diff]
         anchor_len = (poleA_dtop_diff ** 2 + poleA_ztop_diff ** 2) ** 0.5 + \
                      (poleE_dtop_diff ** 2 + poleE_ztop_diff ** 2) ** 0.5
-    
+
         self.anchor = {
             'field': anchor_field,
-            'len': anchor_len,
-            'angriffwinkel': [angriffswinkel_A, angriffswinkel_E]
+            'len': anchor_len
         }
+    
+    def getAnchorAngle(self, anchor, neighbourPole):
+        """Calculate 'Angriffwinkel' for anchors and pole_anchors"""
+        ztop_diff = neighbourPole['ztop'] - anchor['ztop']
+        z_diff = neighbourPole['z'] - anchor['z']
+        dtop_diff = neighbourPole['dtop'] - anchor['dtop']
+        d_diff = neighbourPole['d'] - anchor['d']
+        
+        # end point
+        if anchor['d'] > neighbourPole['d']:
+            dtop_diff *= -1
+            d_diff *= -1
+        
+        if anchor['poleType'] == 'anchor':
+            # Angle between anchor -> pole top point and anchor -> pole
+            # ground point
+            return degrees(atan(ztop_diff / dtop_diff) - atan(z_diff / d_diff))
+        
+        elif anchor['poleType'] == 'pole_anchor':
+            # Partial angle from horizontal line to ground point line, remaining
+            #  angle between horizontal and cable is added later in function
+            #  calculateAdvancedProperties
+            return degrees(atan(ztop_diff / dtop_diff))
 
     def getCableFieldDimension(self):
-        [_, _, _, dtop, ztop] = self.getAsArray(withAnchor=True, withDeactivated=True)
+        [_, _, _, dtop, ztop, _] = self.getAsArray(withAnchor=True, withDeactivated=True)
 
         b = dtop[self.idxA+1:self.idxE+1] - dtop[self.idxA:self.idxE]
         h = ztop[self.idxA+1:self.idxE+1] - ztop[self.idxA:self.idxE]
@@ -289,7 +359,7 @@ class Poles(object):
     def getAnchorCable(self):
         anchorFieldA = None
         anchorFieldE = None
-        [_, _, _, pole_dtop, pole_ztop] = self.getAsArray(True, False)
+        [_, _, _, pole_dtop, pole_ztop, _] = self.getAsArray(True, False)
         
         if self.poles[0]['poleType'] == 'anchor' and self.poles[0]['active']:
             anchorFieldA = {
@@ -307,8 +377,133 @@ class Poles(object):
         }
 
     def updateAnchorStatus(self):
-        # If first or last pole has height = 0, anchors are deactivated
-        if self.firstPole['h'] == 0 and self.poles[0]['poleType'] == 'anchor':
-            self.update(0, 'active', False)
-        if self.lastPole['h'] == 0 and self.poles[-1]['poleType'] == 'anchor':
-            self.update(self.idxE + 1, 'active', False)
+        # If first or last pole gets height = 0, anchors are deactivated
+        if (self.firstPole['h'] == 0
+                and self.firstPole['poleType'] == 'pole'
+                and self.poles[0]['poleType'] == 'anchor'):
+            self.poles[0]['active'] = False
+            self.poles[self.idxA]['poleType'] = 'pole_anchor'
+        
+        if (self.lastPole['h'] == 0
+                and self.lastPole['poleType'] == 'pole'
+                and self.poles[-1]['poleType'] == 'anchor'):
+            self.poles[-1]['active'] = False
+            self.lastPole[self.idxE]['poleType'] = 'pole_anchor'
+            
+        # If anchor is active there can not be a 'pole_anchor'
+        if (self.poles[0]['poleType'] == 'anchor'
+                and self.firstPole['poleType'] == 'pole_anchor'
+                and self.poles[0]['active']):
+            self.poles[self.idxA]['poleType'] = 'pole'
+            # Necessary to update numbering
+            self.numberPoles()
+        
+        # If anchor is active there can not be a 'pole_anchor'
+        if (self.lastPole['poleType'] == 'pole_anchor'
+                and self.poles[-1]['poleType'] == 'anchor'
+                and self.poles[-1]['active']):
+            self.poles[self.idxE]['poleType'] = 'pole'
+            # Necessary to update numbering
+            self.numberPoles()
+
+    def calculateAdvancedProperties(self, forces):
+        """ Calculates additional pole properties that are used in the report.
+        - Angriffswinkel for anchors
+        - Max force and force type
+        - BHD
+        """
+        for j, pole in enumerate(self.poles):
+            bhd = np.nan
+            angle = np.nan
+            maxForce = np.nan
+            maxForceName = 'Sattelkraft'
+            
+            if not pole['active']:
+                continue
+            
+            # Anchor outside of optimization -> not passable
+            if pole['poleType'] == 'anchor':
+                maxForceName = 'Seilzugkraft'
+                # Anchor next to start point
+                if j < self.idxA:
+                    angle = self.getAnchorAngle(pole, self.poles[j+1])
+                    maxForce = forces['MaxSeilzugkraft_L'][3]
+                # Anchor next to end point
+                else:
+                    angle = self.getAnchorAngle(pole, self.poles[j-1])
+                    maxForce = forces['MaxSeilzugkraft_L'][4]
+                
+                bhd = self.getBhdForAnchor(angle, maxForce)
+
+            # Start or end pole with h == 0 -> not passable
+            elif pole['poleType'] == 'pole_anchor':
+                if pole == self.firstPole:
+                    maxForce = forces['MaxSeilzugkraft_L'][1]       # Tmax,A
+                    angle = self.getAnchorAngle(pole, self.poles[j+1])
+                    # Add alpha LE: outgoing angle (idx=1) of first pole (idx=0)
+                    angle += forces['Anlegewinkel_Lastseil'][1][0]
+                else:
+                    maxForce = forces['MaxSeilzugkraft_L'][2]       # Tmax,E
+                    angle = self.getAnchorAngle(pole, self.poles[j-1])
+                    # Add alpha LA: incoming angle (idx=0) of last pole (idx=-1)
+                    angle += forces['Anlegewinkel_Lastseil'][0][-1]
+    
+                bhd = self.getBhdForAnchor(angle, maxForce)
+
+            # Start or end pole with h > 0 --> not passable
+            elif pole['poleType'] == 'pole' and pole in [self.firstPole, self.lastPole]:
+                if pole == self.firstPole:
+                    # A: Max(F_Sa_NBefRes li/re)
+                    maxForce = np.nanmax(forces['Sattelkraft_beiStuetze'][0][0:2])
+                else:
+                    # E: Max(F_Sa_NBefRes li/re)
+                    maxForce = np.nanmax(forces['Sattelkraft_beiStuetze'][0][-2:])
+    
+                bhd = self.getBhdForPole(pole['h'], maxForce)
+
+            # pole in between --> passable
+            elif pole['poleType'] == 'pole':
+                # Shift index to first pole that is fully passable
+                idx = j - self.idxA
+                # Poles in between start and end
+                # Max(F_Sa_NBefRes, F_Sa_BefRes)
+                maxForceNB = np.nanmax(forces['Sattelkraft_beiStuetze'][0][idx*2:idx*2+2])
+                maxForceB = np.max(forces['Sattelkraft_Total'][0][idx])
+                maxForce = max(maxForceNB, maxForceB)
+                
+                bhd = self.getBhdForPole(pole['h'], maxForce)
+              
+            # Special crane start pole with h: > 0 --> not passable
+            elif pole['poleType'] == 'crane':
+                # Crane is first pole of cable line
+                # A: Max(F_Sa_NBefRes li/re)
+                maxForce = np.nanmax(forces['Sattelkraft_beiStuetze'][0][0:2])
+                bhd = np.nan
+
+            self.poles[j]['BHD'] = bhd
+            self.poles[j]['angriff'] = angle
+            self.poles[j]['maxForce'] = [maxForce, maxForceName]
+    
+    @staticmethod
+    def getBhdForAnchor(angle, max_force):
+        if angle < 10:
+            angle = 10
+        elif angle < 25:
+            angle = 25
+        elif angle < 45:
+            angle = 45
+        else:
+            return np.nan
+        
+        force_array = np.array(list(BHD_ANCHOR[angle].keys()))
+        force_idx = (np.abs(force_array - max_force)).argmin()
+        return BHD_ANCHOR[angle][force_array[force_idx]]
+    
+    @staticmethod
+    def getBhdForPole(height, max_force):
+        idx_force = (np.abs(BHD_POLE_Force - max_force)).argmin()
+        height_array = np.array(list(BHD_POLE[BHD_POLE_Force[idx_force]].keys()))
+        # Bundstelle 1.5m higher than cable
+        height += 1.5
+        idx_height = (np.abs(height_array - height)).argmin()
+        return BHD_POLE[BHD_POLE_Force[idx_force]][height_array[idx_height]]
