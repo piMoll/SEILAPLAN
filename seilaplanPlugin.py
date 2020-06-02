@@ -22,6 +22,12 @@
 
 import os
 import sys
+
+# Add shipped libraries to python path
+libPath = os.path.join(os.path.dirname(__file__), 'lib')
+if libPath not in sys.path:
+    sys.path.insert(0, libPath)
+
 from qgis.PyQt.QtCore import QSettings, QTranslator, qVersion, QCoreApplication
 from qgis.PyQt.QtWidgets import QAction
 from qgis.PyQt.QtGui import QIcon
@@ -35,11 +41,6 @@ from .gui.progressDialog import ProgressDialog
 from .configHandler import ConfigHandler
 from .processingThread import ProcessingTask
 from .gui.adjustmentDialog import AdjustmentDialog
-
-# Add shipped libraries to python path
-libPath = os.path.join(os.path.dirname(__file__), 'lib')
-if libPath not in sys.path:
-    sys.path.append(libPath)
 
 
 class SeilaplanPlugin(object):
