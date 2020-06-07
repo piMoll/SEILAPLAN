@@ -323,8 +323,8 @@ def generateShortReport(confHandler, result, comment, projname, outputLoc):
     styles = getSampleStyleSheet()
     styles.add(ParagraphStyle(name='disclaimer', fontSize=6,
                               fontName='Helvetica', leading=9))
-    styles.add(ParagraphStyle(name='comment', fontSize=8,
-                              fontName='Helvetica', leading=9))
+    styles.add(ParagraphStyle(name='continuousTxt', fontSize=9,
+                              fontName='Helvetica'))
     
     poles = confHandler.project.poles
     polesArray = []
@@ -332,7 +332,8 @@ def generateShortReport(confHandler, result, comment, projname, outputLoc):
         if not pole['active']:
             continue
         polesArray.append(pole)
-    hmodell = confHandler.project.getHeightSourceAsStr()
+    hmPath = textwrap.wrap(confHandler.project.getHeightSourceAsStr(), 85)
+    hmodell = '\n'.join(hmPath)
     kraft = result['force']
     
     setname = confHandler.params.currentSetName
@@ -344,7 +345,6 @@ def generateShortReport(confHandler, result, comment, projname, outputLoc):
     # General information
     ###
     s_gener = [
-        [],
         [tr('Datum'), result['duration'][2]],
         [tr('Hoehendaten'), hmodell],
         [tr('Azimut'), "{:.2f} {} / {:.2f}°".format(az_gon, tr('gon'), az_grad)]
@@ -362,7 +362,7 @@ def generateShortReport(confHandler, result, comment, projname, outputLoc):
         param[key] = [tr(p['label']), f"{formatedVal} {p['unit']}"]
 
     s_input = [
-        [tr('Parameterset'), setname],
+        [tr('Parameterset') + ': ' + setname],
         param['D'] + param['MBK'],
         param['Q'],
         param['Bodenabst_min'] + param['Bodenabst_A'],
@@ -454,7 +454,7 @@ def generateShortReport(confHandler, result, comment, projname, outputLoc):
     
     # Comment
     ###
-    s_comme = [[Paragraph(comment, style=styles['comment'])]]
+    s_comme = [[Paragraph(comment, style=styles['continuousTxt'])]]
 
     # Disclaimer
     ###
@@ -493,6 +493,7 @@ def generateShortReport(confHandler, result, comment, projname, outputLoc):
         ])
     style_gener = [
         ('FONT', (0, 0), (-1, -1), font, fontSize),
+        ('VALIGN', (0, 1), (-1, -1), 'MIDDLE'),
     ]
     style_input = [
         ('FONT', (0, 0), (-1, -1), font, fontSize),
@@ -534,7 +535,7 @@ def generateShortReport(confHandler, result, comment, projname, outputLoc):
     data = []
 
     # General information
-    t_gener = Table(s_gener, rowHeights=he_row, style=style_gener)
+    t_gener = Table(s_gener, rowHeights=[he_row, len(hmPath)*he_row, he_row], style=style_gener)
     data.append([Table([[h_titel], [t_gener]])])
 
     # Input values
