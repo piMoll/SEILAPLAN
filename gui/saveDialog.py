@@ -172,11 +172,14 @@ class DialogOutputOptions(QDialog):
         hbox2.addWidget(openButton)
         # Create checkboxes
         questionLabel = QLabel(self.tr('Welche Produkte sollen erzeugt werden?'))
+        self.checkBoxShortReport = QCheckBox(self.tr('Kurzbericht'))
         self.checkBoxReport = QCheckBox(self.tr('Technischer Bericht'))
         self.checkBoxPlot = QCheckBox(self.tr('Diagramm'))
         self.checkBoxGeodata = QCheckBox(self.tr('Shape-Daten der Stuetzen und Seillinie'))
         self.checkBoxCoords = QCheckBox(self.tr('Koordinaten-Tabellen der Stuetzen und Seillinie'))
+        
         # Set tick correctly
+        self.checkBoxShortReport.setChecked(self.confHandler.outputOptions['shortReport'])
         self.checkBoxReport.setChecked(self.confHandler.outputOptions['report'])
         self.checkBoxPlot.setChecked(self.confHandler.outputOptions['plot'])
         self.checkBoxGeodata.setChecked(self.confHandler.outputOptions['geodata'])
@@ -193,6 +196,7 @@ class DialogOutputOptions(QDialog):
         container.addLayout(hbox2)
         container.addWidget(QLabel(''))
         container.addWidget(questionLabel)
+        container.addWidget(self.checkBoxShortReport)
         container.addWidget(self.checkBoxReport)
         container.addWidget(self.checkBoxPlot)
         container.addWidget(self.checkBoxGeodata)
@@ -245,7 +249,8 @@ class DialogOutputOptions(QDialog):
             'report': int(self.checkBoxReport.isChecked()),
             'plot': int(self.checkBoxPlot.isChecked()),
             'geodata': int(self.checkBoxGeodata.isChecked()),
-            'coords': int(self.checkBoxCoords.isChecked())
+            'coords': int(self.checkBoxCoords.isChecked()),
+            'shortReport': int(self.checkBoxShortReport.isChecked())
         }
         # Update project name
         self.confHandler.project.setProjectName(self.projectField.text())

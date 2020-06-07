@@ -1138,6 +1138,11 @@ dopo Zweifel</translation>
         <translation>Rapporto technico</translation>
     </message>
     <message>
+        <location filename="../gui/saveDialog.py" line="175"/>
+        <source>Kurzbericht</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../gui/saveDialog.py" line="176"/>
         <source>Diagramm</source>
         <translation>Grafico</translation>

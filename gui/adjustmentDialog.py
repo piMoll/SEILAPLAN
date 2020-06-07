@@ -681,10 +681,14 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.confHandler.saveToFile(os.path.join(outputLoc,
                                     self.tr('Projekteinstellungen.txt')))
 
-        # Create report
-        if self.confHandler.getOutputOption('report'):
+        # Create short report
+        if self.confHandler.getOutputOption('shortReport'):
             generateShortReport(self.confHandler, self.result,
-                                self.fieldComment.toPlainText(), projName, outputLoc)
+                                self.fieldComment.toPlainText(), projName,
+                                outputLoc)
+
+        # Create technical report
+        if self.confHandler.getOutputOption('report'):
             reportText = generateReportText(self.confHandler, self.result,
                                             self.fieldComment.toPlainText(), projName)
             generateReport(reportText, outputLoc)
