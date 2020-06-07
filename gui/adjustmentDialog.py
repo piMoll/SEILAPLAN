@@ -208,11 +208,6 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
     def updatePole(self, idx, property_name, newVal):
         self.poles.update(idx, property_name, newVal)
         
-        if property_name == 'name':
-            return
-        
-        # TODO: pole Nr. should always be updated, better do it in PoleWidget
-        
         # Update markers on map
         if property_name == 'd':
             self.updateMarkerOnMap(idx)
@@ -245,6 +240,9 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         
         # self.plot.zoomTo(self.poles.poles[idx])
         self.poleLayout.changeRow(idx, property_name, newVal)
+        if property_name == 'name':
+            # No redraw when user only changes name
+            return
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         self.configurationHasChanged = True
     
