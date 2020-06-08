@@ -489,7 +489,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Datum</source>
-        <translation type="unfinished"></translation>
+        <translation>Date</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -499,22 +499,22 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Nr.</source>
-        <translation type="unfinished"></translation>
+        <translation>No.</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Bezeichnung</source>
-        <translation type="unfinished"></translation>
+        <translation>Denomination</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Sattelhoehe</source>
-        <translation type="unfinished"></translation>
+        <translation>Saddle height</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Min. BHD</source>
-        <translation type="unfinished"></translation>
+        <translation>Min. DBH</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -524,57 +524,65 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Maximal berechnete Seilzugkraft</source>
-        <translation type="unfinished"></translation>
+        <translation>Maximal rope traction force</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Max. Kraefte</source>
-        <translation type="unfinished"></translation>
+        <translation>Max. forces</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Leerseil-knickwinkel</source>
-        <translation type="unfinished"></translation>
+        <translation>Angle of the 
+unloaded cable</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Lastseil-knickwinkel</source>
-        <translation type="unfinished"></translation>
+        <translation>Angle of the 
+loaded cable</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Berechnete Seillaenge</source>
-        <translation type="unfinished"></translation>
+        <translation>Calculated cable length</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Angriffs-winkel</source>
-        <translation type="unfinished"></translation>
+        <translation>Angle of
+attack</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Horizontal-distanz</source>
-        <translation type="unfinished"></translation>
+        <translation>Horizontal 
+distance</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Schraeg-distanz</source>
-        <translation type="unfinished"></translation>
+        <translation>Oblique 
+distance</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Hoehen-differenz</source>
-        <translation type="unfinished"></translation>
+        <translation>Height
+difference</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Durchhang Leerseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Catenary sag
+unloaded cable</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Durchhang Lastseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Catenary sag
+loaded cable</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -584,27 +592,27 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Kurzbericht</source>
-        <translation type="unfinished"></translation>
+        <translation>Short report</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>SEILAPLAN Projekt</source>
-        <translation type="unfinished"></translation>
+        <translation>SEILAPLAN project</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Eingabewerte</source>
-        <translation type="unfinished"></translation>
+        <translation>Input values</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Stuetzen- und Ankerdimensionen</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimensions of supports and anchors</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Kraefte und Winkel</source>
-        <translation type="unfinished"></translation>
+        <translation>Forces and angles</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -614,132 +622,132 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Seilsystem</source>
-        <translation type="unfinished"></translation>
+        <translation>Cable system</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Hoehe Seilkranmast</source>
-        <translation type="unfinished"></translation>
+        <translation>Tower height</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Seillinie befahrbar ab ... vom Anfangspunkt</source>
-        <translation type="unfinished"></translation>
+        <translation>Skyline trafficable from ... of the initial point</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Seillinie befahrbar bis ... vor dem Endpunkt</source>
-        <translation type="unfinished"></translation>
+        <translation>Skyline trafficable up to ... in front of the final point</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Minimaler Abstand Tragseil - Boden</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimal clearance between skyline and ground</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>einzuhalten ab ... vom Anfangspunkt</source>
-        <translation type="unfinished"></translation>
+        <translation>to follow from ... of the initial point</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>einzuhalten bis ... vor dem Endpunkt</source>
-        <translation type="unfinished"></translation>
+        <translation>to follow at ... to the final point</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Gewicht der Last inkl. Laufwagen</source>
-        <translation type="unfinished"></translation>
+        <translation>Load weight including the carriage</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Gewicht Tragseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Skyline weight</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Durchmesser Tragseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Diameter of the skyline</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Mindestbruchkraft Tragseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimal rupture load of the skyline</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Gewicht Zugseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Mainline weight</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Gewicht Rueckholseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Weight of the haulbackline</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Minimaler Abstand zwischen Stuetzen</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimal distance between supports</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Horiz. Aufloesung moegl. Stuetzenstandorte</source>
-        <translation type="unfinished"></translation>
+        <translation>Horizontal resolution of potential support positions</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Minimale Stuetzenhoehe</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimal support height</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Maximale Stuetzenhoehe</source>
-        <translation type="unfinished"></translation>
+        <translation>Maximal support height</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Abstufungsinterval</source>
-        <translation type="unfinished"></translation>
+        <translation>Grading range</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Kuenstliche Stuetze ab Stuetzenhoehe von</source>
-        <translation type="unfinished"></translation>
+        <translation>Artificial support from a saddle height of</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Grundspannung Tragseil (Anfangssp.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Initial skyline traction force (initial point)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Elastizitaetsmodul Tragseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Ealsticity modulus of the skyline</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Fuellfaktor</source>
-        <translation type="unfinished"></translation>
+        <translation>fill factor of the rope</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Sicherheitsfaktor Tragseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Safety factor of the skyline</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Total</source>
-        <translation type="unfinished"></translation>
+        <translation>Total</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Parameterset</source>
-        <translation type="unfinished"></translation>
+        <translation>Set of parameters</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Sattelkraft</source>
-        <translation type="unfinished"></translation>
+        <translation>Saddle force</translation>
     </message>
 </context>
 <context>
@@ -1024,7 +1032,7 @@ With angles between 2° and 4° the skyline has to be locked by a hold-down plat
         <location filename="../gui/adjustmentDialog.ui" line="429"/>
         <source>Grundspannung Tragseil (Anfangssp.)</source>
         <translatorcomment>Basic traction force</translatorcomment>
-        <translation>Initial skyline traction force</translation>
+        <translation>Initial skyline traction force (initial point)</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="436"/>
@@ -1034,7 +1042,7 @@ With angles between 2° and 4° the skyline has to be locked by a hold-down plat
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="443"/>
         <source>Durchmesser Tragseil</source>
-        <translation type="unfinished">Cross sectional area of the skyline</translation>
+        <translation>Diameter of the skyline</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="486"/>
@@ -1399,7 +1407,7 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/progressDialog.py" line="45"/>
         <source>Berechnung der optimale Seillinie...</source>
-        <translation type="unfinished">Calculation of the optimal cable line…</translation>
+        <translation>Calculation of the optimal cable line layout …</translation>
     </message>
 </context>
 <context>
@@ -1481,7 +1489,7 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="254"/>
         <source>Minimaler Abstand Tragseil - Boden</source>
-        <translation>Minimal ground clearance (skyline-ground)</translation>
+        <translation>Minimal clearance between skyline and ground</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2189"/>
@@ -1572,7 +1580,7 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="929"/>
         <source>Durchmesser Tragseil</source>
-        <translation type="unfinished">Cross sectional area of the skyline</translation>
+        <translation>Diameter of the skyline</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="942"/>
@@ -1657,7 +1665,7 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1658"/>
         <source>Fuellfaktor</source>
-        <translation type="unfinished"></translation>
+        <translation>fill factor of the rope</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1710"/>
@@ -2021,12 +2029,12 @@ Supported data types:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
         <source>Fuellfaktor Erklaerung</source>
-        <translation type="unfinished"></translation>
+        <translation>The fill factor is the relation of the metallic cross section of the rope to the area of its circumscribed circle.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
         <source>Fuellfaktor</source>
-        <translation type="unfinished"></translation>
+        <translation>fill factor of the rope</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="902"/>
@@ -2051,7 +2059,7 @@ The algorithm calculates a solution, which in first priority is minimizing the n
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="906"/>
         <source>Naechste Schritte</source>
-        <translation type="unfinished">Next steps</translation>
+        <translation>Next steps</translation>
     </message>
 </context>
 <context>

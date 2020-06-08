@@ -507,11 +507,12 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Angabe BDH bei zu steilem Winkel nicht moeglich</source>
-        <translation>* Angabe des min. BDH bei zu steilem Angriffswinkel nicht möglich</translation>
+        <translation>* Angabe des min. BHD bei zu steilem Angriffswinkel nicht möglich</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Maximal berechnete Seilzugkraft</source>
+        <translatorcomment>evtl. Deutsche Variante ändern (Max. auftretende / berechnete Seilzugkraft)</translatorcomment>
         <translation>Maximal berechnete Seilzugkraft</translation>
     </message>
     <message>
@@ -1385,7 +1386,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/progressDialog.py" line="45"/>
         <source>Berechnung der optimale Seillinie...</source>
-        <translation>Berechnung der optimalen Seillinie...</translation>
+        <translation>Berechnung der optimalen Seillinie ...</translation>
     </message>
 </context>
 <context>

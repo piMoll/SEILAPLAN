@@ -482,7 +482,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Datum</source>
-        <translation type="unfinished"></translation>
+        <translation>Data</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -492,17 +492,17 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Nr.</source>
-        <translation type="unfinished"></translation>
+        <translation>N°</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Bezeichnung</source>
-        <translation type="unfinished"></translation>
+        <translation>Denominazione</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Sattelhoehe</source>
-        <translation type="unfinished"></translation>
+        <translation>Altezza della sella</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -517,57 +517,64 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Maximal berechnete Seilzugkraft</source>
-        <translation type="unfinished"></translation>
+        <translation>Forza di trazione massimale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Max. Kraefte</source>
-        <translation type="unfinished"></translation>
+        <translation>Forze massimale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Leerseil-knickwinkel</source>
-        <translation type="unfinished"></translation>
+        <translation>Angolo della fune 
+non caricata</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Lastseil-knickwinkel</source>
-        <translation type="unfinished"></translation>
+        <translation>Angolo della 
+fune caricata</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Berechnete Seillaenge</source>
-        <translation type="unfinished"></translation>
+        <translation>Lunghezza calcolata della fune</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Angriffs-winkel</source>
-        <translation type="unfinished"></translation>
+        <translation>Angoli di 
+attacco</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Horizontal-distanz</source>
-        <translation type="unfinished"></translation>
+        <translation>Distanza 
+orizzontale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Schraeg-distanz</source>
-        <translation type="unfinished"></translation>
+        <translation>Distanza 
+obliqua</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Hoehen-differenz</source>
-        <translation type="unfinished"></translation>
+        <translation>Differenza di altezza</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Durchhang Leerseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Flessione
+fune non caricata</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Durchhang Lastseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Flessione
+fune caricata</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -577,12 +584,12 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Kurzbericht</source>
-        <translation type="unfinished"></translation>
+        <translation>Rapporto breve</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>SEILAPLAN Projekt</source>
-        <translation type="unfinished"></translation>
+        <translation>SEILAPLAN progetto</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -597,7 +604,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Kraefte und Winkel</source>
-        <translation type="unfinished"></translation>
+        <translation>Forze e angoli</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -607,132 +614,132 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Seilsystem</source>
-        <translation type="unfinished"></translation>
+        <translation>Sistema di gru a cavo</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Hoehe Seilkranmast</source>
-        <translation type="unfinished"></translation>
+        <translation>Altezza della torretta</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Seillinie befahrbar ab ... vom Anfangspunkt</source>
-        <translation type="unfinished"></translation>
+        <translation>Fune portante carrabile a partire da ... dal punto iniziale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Seillinie befahrbar bis ... vor dem Endpunkt</source>
-        <translation type="unfinished"></translation>
+        <translation>Fune portante carrabile fino a ...davanti al punto finale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Minimaler Abstand Tragseil - Boden</source>
-        <translation type="unfinished"></translation>
+        <translation>Spazio minimale tra fune portante e suolo</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>einzuhalten ab ... vom Anfangspunkt</source>
-        <translation type="unfinished"></translation>
+        <translation>Da rispettare a partire da ... dal punto iniziale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>einzuhalten bis ... vor dem Endpunkt</source>
-        <translation type="unfinished"></translation>
+        <translation>Da rispettare fino ... davanti al punto finale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Gewicht der Last inkl. Laufwagen</source>
-        <translation type="unfinished"></translation>
+        <translation>Peso del carico, carrello compreso</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Gewicht Tragseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Peso della fune portante</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Durchmesser Tragseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Diametro della fune portante</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Mindestbruchkraft Tragseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Carico di rottura minimale della fune portante</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Gewicht Zugseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Peso della fune traente</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Gewicht Rueckholseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Peso della fune di ritorno</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Minimaler Abstand zwischen Stuetzen</source>
-        <translation type="unfinished"></translation>
+        <translation>Distanza minimale tra i cavalletti</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Horiz. Aufloesung moegl. Stuetzenstandorte</source>
-        <translation type="unfinished"></translation>
+        <translation>Risoluzione orizzontale di potenziali posizioni di cavalletti</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Minimale Stuetzenhoehe</source>
-        <translation type="unfinished"></translation>
+        <translation>Altezza minimale dei cavalletti</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Maximale Stuetzenhoehe</source>
-        <translation type="unfinished"></translation>
+        <translation>Altezza massimale dei cavalletti</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Abstufungsinterval</source>
-        <translation type="unfinished"></translation>
+        <translation>Intervallo di graduazione</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Kuenstliche Stuetze ab Stuetzenhoehe von</source>
-        <translation type="unfinished"></translation>
+        <translation>Cavalletto artificiale a partire d&apos;un altezza della sella di</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Grundspannung Tragseil (Anfangssp.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Forza di trazione iniziale (punto d&apos;inizio)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Elastizitaetsmodul Tragseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Coefficiente del potere elastico della fune portante</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Fuellfaktor</source>
-        <translation type="unfinished"></translation>
+        <translation>coefficiente di riempimento della fune</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Sicherheitsfaktor Tragseil</source>
-        <translation type="unfinished"></translation>
+        <translation>Fattore di sicurezza della fune portante</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Total</source>
-        <translation type="unfinished"></translation>
+        <translation>Somma finale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Parameterset</source>
-        <translation type="unfinished"></translation>
+        <translation>Serie di parametri</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Sattelkraft</source>
-        <translation type="unfinished"></translation>
+        <translation>Forza sulla sella</translation>
     </message>
 </context>
 <context>
@@ -1012,7 +1019,7 @@ Nel caso di un angolo tra 2° e 4° la fune portante deve essere atrezzato con u
         <location filename="../gui/adjustmentDialog.ui" line="429"/>
         <source>Grundspannung Tragseil (Anfangssp.)</source>
         <translatorcomment>di base</translatorcomment>
-        <translation>Forza di trazione iniziale</translation>
+        <translation>Forza di trazione iniziale (punto d&apos;inizio)</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="436"/>
@@ -1022,7 +1029,7 @@ Nel caso di un angolo tra 2° e 4° la fune portante deve essere atrezzato con u
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="443"/>
         <source>Durchmesser Tragseil</source>
-        <translation type="unfinished">Area della sezione trasversale della fune portante</translation>
+        <translation>Diametro della fune portante</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="486"/>
@@ -1383,7 +1390,7 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/progressDialog.py" line="45"/>
         <source>Berechnung der optimale Seillinie...</source>
-        <translation type="unfinished">Calcolo della linea di gru a cavo ottimale…</translation>
+        <translation>Calcolo della linea teleferica ottimale …</translation>
     </message>
 </context>
 <context>
@@ -1465,7 +1472,8 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="254"/>
         <source>Minimaler Abstand Tragseil - Boden</source>
-        <translation>Altezza da terra minimale (fune portante-suolo)</translation>
+        <translatorcomment>Altezza da terra minimale (fune portante-suolo)</translatorcomment>
+        <translation>Spazio minimale tra fune portante e suolo</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2189"/>
@@ -1558,7 +1566,7 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="929"/>
         <source>Durchmesser Tragseil</source>
-        <translation type="unfinished">Area della sezione trasversale della fune portante</translation>
+        <translation>Diametro della fune portante</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="942"/>
@@ -1643,7 +1651,7 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1658"/>
         <source>Fuellfaktor</source>
-        <translation type="unfinished"></translation>
+        <translation>coefficiente di riempimento della fune</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1710"/>
@@ -2011,7 +2019,7 @@ Tipi di file supportati:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
         <source>Fuellfaktor</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">coefficiente di riempimento della fune</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="902"/>
@@ -2036,8 +2044,7 @@ C&apos;è cercato la soluzione che, in prima priorità, minimizza il numero dei 
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="906"/>
         <source>Naechste Schritte</source>
-        <translatorcomment>??</translatorcomment>
-        <translation type="unfinished">Prossime tappe</translation>
+        <translation>Prossimi passi</translation>
     </message>
 </context>
 <context>
