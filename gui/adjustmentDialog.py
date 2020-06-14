@@ -37,7 +37,8 @@ from .saveDialog import DialogOutputOptions
 from .mapMarker import MapMarkerTool
 from ..tool.cablelineFinal import preciseCable, updateWithCableCoordinates
 from ..tool.outputReport import generateReportText, generateReport, createOutputFolder, generateShortReport
-from ..tool.outputGeo import generateGeodata, addToMap, generateCoordTable
+from ..tool.outputGeo import organizeDataForExport, addToMap, \
+    generateCoordTable, exportToShape, exportToKML
 
 
 class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
@@ -704,10 +705,19 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             printPlot.printToPdf(plotSavePath, projName, self.poles.poles)
         
         # Generate geo data
-        if self.confHandler.getOutputOption('geodata'):
-            geodata = generateGeodata(project, self.poles.poles,
-                                      self.cableline, outputLoc)
-            addToMap(geodata, projName)
+        if self.confHandler.getOutputOption('geodata') \
+                or self.confHandler.getOutputOption('kml'):
+            # Put geo data in separate sub folder
+            savePath = os.path.join(outputLoc, 'geodata')
+            os.makedirs(savePath)
+            epsg = project.heightSource.spatialRef
+            geodata = organizeDataForExport(self.poles.poles, self.cableline)
+            
+            if self.confHandler.getOutputOption('geodata'):
+                shapeFiles = exportToShape(geodata, epsg, savePath)
+                addToMap(shapeFiles, projName)
+            if self.confHandler.getOutputOption('kml'):
+                exportToKML(geodata, epsg, savePath)
         
         # Generate coordinate tables
         if self.confHandler.getOutputOption('coords'):

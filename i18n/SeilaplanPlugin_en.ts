@@ -27,26 +27,26 @@
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="58"/>
-        <source>stuetzen.shp</source>
+        <source>stuetzen</source>
         <translatorcomment>HeProMo</translatorcomment>
-        <translation>supports.shp</translation>
+        <translation>supports</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="63"/>
-        <source>leerseil.shp</source>
-        <translation>unloadedcable.shp</translation>
+        <source>leerseil</source>
+        <translation>unloadedcable</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="68"/>
-        <source>lastseil.shp</source>
+        <source>lastseil</source>
         <translatorcomment>Leo</translatorcomment>
-        <translation>loadedcable.shp</translation>
+        <translation>loadedcable</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="87"/>
-        <source>StuetzenNr</source>
+        <source>bezeichnung</source>
         <translatorcomment>Internet</translatorcomment>
-        <translation>Support number</translation>
+        <translation>label</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="163"/>
@@ -1174,6 +1174,11 @@ by Zweifel</translation>
         <location filename="../gui/saveDialog.py" line="177"/>
         <source>Shape-Daten der Stuetzen und Seillinie</source>
         <translation>Shape data of supports and cable line</translation>
+    </message>
+    <message>
+        <location filename="../gui/saveDialog.py" line="177"/>
+        <source>KML-Daten der Stuetzen und Seillinie</source>
+        <translation>KML data of supports and cable line</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="178"/>

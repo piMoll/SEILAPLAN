@@ -5,23 +5,23 @@
     <name>@default</name>
     <message>
         <location filename="../tool/outputGeo.py" line="58"/>
-        <source>stuetzen.shp</source>
-        <translation>stuetzen.shp</translation>
+        <source>stuetzen</source>
+        <translation>stuetzen</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="63"/>
-        <source>leerseil.shp</source>
-        <translation>leerseil.shp</translation>
+        <source>leerseil</source>
+        <translation>leerseil</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="68"/>
-        <source>lastseil.shp</source>
-        <translation>lastseil.shp</translation>
+        <source>lastseil</source>
+        <translation>lastseil</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="87"/>
-        <source>StuetzenNr</source>
-        <translation>Stuetzen Nr</translation>
+        <source>bezeichnung</source>
+        <translation>bez</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="163"/>
@@ -1150,6 +1150,11 @@ nach Zweifel</translation>
         <location filename="../gui/saveDialog.py" line="177"/>
         <source>Shape-Daten der Stuetzen und Seillinie</source>
         <translation>Shape-Daten der Stützen und Seillinie</translation>
+    </message>
+    <message>
+        <location filename="../gui/saveDialog.py" line="177"/>
+        <source>KML-Daten der Stuetzen und Seillinie</source>
+        <translation>KML-Daten der Stützen und Seillinie</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="178"/>
