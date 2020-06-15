@@ -576,7 +576,7 @@ Lastseil</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Haftungsausschluss</source>
-        <translation>Jegliche Haftung wird im Rahmen der GNU General Public Licence Version 2 oder neuere ausgeschlossen (www.gnu.org/licenses). Die implementierte Berechnungsmethode basiert auf der Methode von Zweifel (1960, Seilbahnberechnung bei beidseitig verankerten Tragseilen). Zur Berechnung der Tragseileigenschaften wurde eine beidseitig fixierte Verankerung angenommen.</translation>
+        <translation>Jegliche Haftung wird im Rahmen der GNU General Public Licence Version 2 oder neuere ausgeschlossen (www.gnu.org/licenses). Die implementierte Berechnungsmethode basiert auf der Methode von Zweifel (1960). Zur Berechnung der Seillinie wurde eine beidseitig fixierte Verankerung angenommen.</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -1950,7 +1950,7 @@ Unterstützte Dateitypen:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
         <source>Fuellfaktor Erklaerung</source>
-        <translation>Der Füllfaktor entspricht dem Verhältnis der metallischen Querschnittsfläche des Seils zum Flächeninhalt seines Umkreises.</translation>
+        <translation>Der Füllfaktor ist das Verhältnis der metallischen Querschnittsfläche des Seils zum Flächeninhalt seines Umkreises.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
