@@ -23,7 +23,7 @@
 import os
 
 # GUI and QGIS libraries
-from qgis.PyQt.QtCore import QFileInfo, QCoreApplication
+from qgis.PyQt.QtCore import QFileInfo, QCoreApplication, QSettings
 from qgis.PyQt.QtWidgets import QDialog, QMessageBox, QFileDialog, QComboBox
 from qgis.PyQt.QtGui import QPixmap
 from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject,
@@ -65,6 +65,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         
         # Setup GUI of SEILAPLAN (import from ui_seilaplanDialog.py)
         self.setupUi(self)
+        
+        # Language
+        self.locale = QSettings().value("locale/userLocale")[0:2]
         
         # Interaction with canvas, is used to draw onto map canvas
         self.drawTool = MapMarkerTool(self.canvas)
@@ -860,7 +863,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
                                 QMessageBox.Ok)
     
     def onPointAInfoShow(self):
-        imgPath = os.path.join(self.homePath, 'img', 'Anfangspunkt.png')
+        imgPath = os.path.join(self.homePath, 'img', self.locale + '_Anfangspunkt.png')
+        if not os.path.exists(imgPath):
+            imgPath = os.path.join(self.homePath, 'img', 'de_Anfangspunkt.png')
         self.imgBox.setWindowTitle(self.tr('Anfangspunkt'))
         # Load image
         myPixmap = QPixmap(imgPath)
@@ -869,7 +874,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.imgBox.show()
 
     def onPointEInfoShow(self):
-        imgPath = os.path.join(self.homePath, 'img', 'Endpunkt.png')
+        imgPath = os.path.join(self.homePath, 'img', self.locale + '_Endpunkt.png')
+        if not os.path.exists(imgPath):
+            imgPath = os.path.join(self.homePath, 'img', 'de_Endpunkt.png')
         self.imgBox.setWindowTitle(self.tr('Endpunkt'))
         # Load image
         myPixmap = QPixmap(imgPath)
@@ -884,7 +891,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         infImg = {'Bodenabstand': self.tr('Erklaerungen zum Bodenabstand'),
                   'Stuetzen': self.tr('Erklaerungen zu den Zwischenstuetzen')}
         infoTitle = infImg[infoType]
-        imgPath = os.path.join(self.homePath, 'img', infoType + '.png')
+        imgPath = os.path.join(self.homePath, 'img', f"{self.locale}_{infoType}.png")
+        if not os.path.exists(imgPath):
+            imgPath = os.path.join(self.homePath, 'img', f"de_{infoType}.png")
         self.imgBox.setWindowTitle(infoTitle)
         # Load image
         myPixmap = QPixmap(imgPath)

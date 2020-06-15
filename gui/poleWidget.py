@@ -91,9 +91,14 @@ class CustomPoleWidget(QObject):
             if not pole['active']:
                 self.poleRows[-1].deactivate()
 
-    def onRowChange(self, newVal=False, idx=False, property_name=False):
+    def onRowChange(self, newVal=None, idx=None, property_name=None):
         if self.editActive:
             return
+        if property_name == 'name' and len(newVal) > Poles.POLE_NAME_MAX_LENGTH:
+            text = newVal[:Poles.POLE_NAME_MAX_LENGTH]
+            self.poleRows[idx].fieldName.setText(text)
+            return
+
         self.editActive = True
         # Emit signal
         self.sig_updatePole.emit(idx, property_name, newVal)

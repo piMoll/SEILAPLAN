@@ -27,22 +27,15 @@ from qgis.core import QgsWkbTypes, QgsFields, QgsField, QgsVectorFileWriter, \
     QgsFeature, QgsGeometry, QgsPoint, QgsCoordinateReferenceSystem
 
 
-def generateGeodata(project, poles, cableline, savePath):
+def organizeDataForExport(poles, cableline):
     """Creates 3D shapefiles containing the pole positions, the empty cable
     line and the cable line under load.
-    :type project: configHandler.ProjectConfHandler
     """
-    # Put geodata in separate sub folder
-    savePath = os.path.join(savePath, 'geodata')
-    os.makedirs(savePath)
-    epsg = project.heightSource.spatialRef
-    spatialRef = QgsCoordinateReferenceSystem(epsg)
-
     # Calculate x and y coordinate in reference system
-    lineEmptyGeo = np.swapaxes(np.array([cableline['coordx'],
-                                         cableline['coordy'],
-                                         cableline['empty']]), 1, 0)
-    lineLoadGeo = np.swapaxes(np.array([cableline['coordx'],
+    emptyLine = np.swapaxes(np.array([cableline['coordx'],
+                                      cableline['coordy'],
+                                      cableline['empty']]), 1, 0)
+    loadLine = np.swapaxes(np.array([cableline['coordx'],
                                         cableline['coordy'],
                                         cableline['load']]), 1, 0)
     
@@ -51,23 +44,36 @@ def generateGeodata(project, poles, cableline, savePath):
     poleName = []
     for pole in poles:
         if pole['active']:
-            poleGeo.append([pole['coordx'], pole['coordy'], pole['z']])
+            poleGeo.append([pole['coordx'], pole['coordy'], pole['z'], pole['h']])
             poleName.append(pole['name'])
+    
+    return {
+        'poleGeo': poleGeo,
+        'poleName': poleName,
+        'emptyLine': emptyLine,
+        'loadLine': loadLine
+    }
+
+
+def exportToShape(geodata, epsg, savePath):
+    spatialRef = QgsCoordinateReferenceSystem(epsg)
+    geoFormat = 'ESRI Shapefile'
 
     # Save pole positions
-    stuePath = os.path.join(savePath, tr('stuetzen.shp'))
+    stuePath = os.path.join(savePath, tr('stuetzen') + '.shp')
     checkShpPath(stuePath)
-    save2PointShape(stuePath, poleGeo, poleName, spatialRef)
+    savePointGeometry(stuePath, geodata['poleGeo'], geodata['poleName'],
+                      spatialRef, geoFormat)
     
     # Save empty cable line
-    seilLeerPath = os.path.join(savePath, tr('leerseil.shp'))
+    seilLeerPath = os.path.join(savePath, tr('leerseil') + '.shp')
     checkShpPath(seilLeerPath)
-    save2LineShape(seilLeerPath, lineEmptyGeo, spatialRef)
+    saveLineGeometry(seilLeerPath, geodata['emptyLine'], spatialRef, geoFormat)
 
     # Save cable line under load
-    seilLastPath = os.path.join(savePath, tr('lastseil.shp'))
+    seilLastPath = os.path.join(savePath, tr('lastseil') + '.shp')
     checkShpPath(seilLastPath)
-    save2LineShape(seilLastPath, lineLoadGeo, spatialRef)
+    saveLineGeometry(seilLastPath, geodata['loadLine'], spatialRef, geoFormat)
 
     geoOutput = {'stuetzen': stuePath,
                  'leerseil': seilLeerPath,
@@ -75,27 +81,47 @@ def generateGeodata(project, poles, cableline, savePath):
     return geoOutput
 
 
-def save2PointShape(shapePath, geodata, label, spatialRef):
+def exportToKML(geodata, epsg, savePath):
+    spatialRef = QgsCoordinateReferenceSystem(epsg)
+    geoFormat = 'KML'
+    
+    # Save pole positions
+    stuePath = os.path.join(savePath, 'kml_' + tr('stuetzen') + '.kml')
+    savePointGeometry(stuePath, geodata['poleGeo'], geodata['poleName'],
+                      spatialRef, geoFormat)
+    
+    # Save empty cable line
+    seilLeerPath = os.path.join(savePath, 'kml_' + tr('leerseil') + '.kml')
+    saveLineGeometry(seilLeerPath, geodata['emptyLine'], spatialRef, geoFormat)
+    
+    # Save cable line under load
+    seilLastPath = os.path.join(savePath, 'kml_' + tr('lastseil') + '.kml')
+    saveLineGeometry(seilLastPath, geodata['loadLine'], spatialRef, geoFormat)
+
+
+def savePointGeometry(path, geodata, label, spatialRef, geoFormat):
     """
     :param label: Name of poles
-    :param shapePath: Location of shape file
+    :param path: Location of shape file
     :param geodata: x, y and z coordinate of poles
     :param spatialRef: current spatial reference of qgis project
+    :param geoFormat: Geodata export format
     """
 
     # Define fields for feature attributes. A QgsFields object is needed
-    stueNrName = tr('StuetzenNr')
+    stueNrName = tr('bezeichnung')
     fields = QgsFields()
     fields.append(QgsField(stueNrName, QVariant.String, 'text', 254))
-    fields.append(QgsField("x", QVariant.Double))
-    fields.append(QgsField("y", QVariant.Double))
-    fields.append(QgsField("h", QVariant.Double))
-    writer = QgsVectorFileWriter(shapePath, "UTF-8", fields, QgsWkbTypes.PointZ,
-                                 spatialRef, "ESRI Shapefile")
+    fields.append(QgsField('x', QVariant.Double))
+    fields.append(QgsField('y', QVariant.Double))
+    fields.append(QgsField('z', QVariant.Double))
+    fields.append(QgsField('h', QVariant.Double))
+    writer = QgsVectorFileWriter(path, 'UTF-8', fields, QgsWkbTypes.PointZ,
+                                 spatialRef, geoFormat)
 
     if writer.hasError() != QgsVectorFileWriter.NoError:
         # TODO
-        raise Exception("Vector Writer")
+        raise Exception('Vector Writer')
     
     features = []
     for idx, coords in enumerate(geodata):
@@ -104,9 +130,10 @@ def save2PointShape(shapePath, geodata, label, spatialRef):
         feature.setGeometry(QgsPoint(coords[0], coords[1], coords[2]))
         feature.setId(idx)
         feature.setAttribute(stueNrName, label[idx])
-        feature.setAttribute("x", float(coords[0]))
-        feature.setAttribute("y", float(coords[1]))
-        feature.setAttribute("h", float(coords[2]))
+        feature.setAttribute('x', float(coords[0]))
+        feature.setAttribute('y', float(coords[1]))
+        feature.setAttribute('z', float(coords[2]))
+        feature.setAttribute('h', float(coords[3]))
         features.append(feature)
 
     writer.addFeatures(features)
@@ -114,20 +141,21 @@ def save2PointShape(shapePath, geodata, label, spatialRef):
     del writer
 
 
-def save2LineShape(shapePath, geodata, spatialRef):
+def saveLineGeometry(shapePath, geodata, spatialRef, geoFormat):
     """
     :param shapePath: Location of shape file
     :param geodata: x, y and z coordinate of line
     :param spatialRef: current spatial reference of qgis project
+    :param geoFormat: Geodata export format
     """
     # Define fields for feature attributes. A QgsFields object is needed
     fields = QgsFields()
-    writer = QgsVectorFileWriter(shapePath, "UTF-8", fields, QgsWkbTypes.LineStringZ,
-                                 spatialRef, "ESRI Shapefile")
+    writer = QgsVectorFileWriter(shapePath, 'UTF-8', fields, QgsWkbTypes.LineStringZ,
+                                 spatialRef, geoFormat)
 
     if writer.hasError() != QgsVectorFileWriter.NoError:
         # TODO
-        raise Exception("Vector Writer")
+        raise Exception('Vector Writer')
 
     lineVertices = []
     for coords in geodata:
@@ -160,9 +188,9 @@ def addToMap(geodata, projName):
     root = QgsProject.instance().layerTreeRoot()
     projGroup = root.insertGroup(0, projName)
     
-    polesLyr = QgsVectorLayer(geodata['stuetzen'], tr("Stuetzen"), "ogr")
-    emptyLineLyr = QgsVectorLayer(geodata['leerseil'], tr("Leerseil"), "ogr")
-    loadLineLyar = QgsVectorLayer(geodata['lastseil'], tr("Lastseil"), "ogr")
+    polesLyr = QgsVectorLayer(geodata['stuetzen'], tr('stuetzen'), 'ogr')
+    emptyLineLyr = QgsVectorLayer(geodata['leerseil'], tr('leerseil'), 'ogr')
+    loadLineLyar = QgsVectorLayer(geodata['lastseil'], tr('lastseil'), 'ogr')
     
     for layer in [polesLyr, emptyLineLyr, loadLineLyar]:
         layer.setProviderEncoding('UTF-8')
@@ -189,8 +217,8 @@ def generateCoordTable(cableline, profile, poles, outputLoc):
     seilDataMatrix = seilDataMatrix.transpose()
 
     # Txt header
-    header = [tr("Horizontaldistanz"), "X", "Y", tr("Z Lastseil"),
-              tr("Z Leerseil"), tr("Z Gelaende"), tr("Abstand Lastseil-Boden")]
+    header = [tr('Horizontaldistanz'), 'X', 'Y', tr('Z Lastseil'),
+              tr('Z Leerseil'), tr('Z Gelaende'), tr('Abstand Lastseil-Boden')]
     
     # Write to file
     with open(savePathSeil, 'w') as f:
@@ -202,8 +230,8 @@ def generateCoordTable(cableline, profile, poles, outputLoc):
     # Pole data
     with open(savePathStue, 'w') as f:
         fi = csv.writer(f, delimiter=';', dialect='excel', lineterminator='\n')
-        fi.writerow([tr("Stuetze"), "X", "Y", tr("Z Stuetze Boden"),
-                     tr("Z Stuetze Spitze"), tr("Stuetzenhoehe"), tr("Neigung")])
+        fi.writerow([tr('Stuetze'), 'X', 'Y', tr('Z Stuetze Boden'),
+                     tr('Z Stuetze Spitze'), tr('Stuetzenhoehe'), tr('Neigung')])
         for pole in poles:
             name = [unicode2acii(pole['name'])]
             coords = ([round(e, 3) for e in [pole['coordx'], pole['coordy'],

@@ -910,10 +910,12 @@ class ConfigHandler(object):
         # User settings
         self.commonPaths = []
         self.outputOptions = {
-            'report': 1,
+            'report': 0,
             'plot': 1,
             'geodata': 0,
-            'coords': 0
+            'coords': 0,
+            'shortReport': 1,
+            'kml': 0
         }
         self.userSettingsHaveChanged = False
         
@@ -1039,10 +1041,12 @@ class ConfigHandler(object):
                     outputOpts = lines[0].split()
                     outputOpts = [int(x) for x in outputOpts]
                     self.outputOptions = {
-                        'report': outputOpts[0],
-                        'plot': outputOpts[1],
-                        'geodata': outputOpts[2],
-                        'coords': outputOpts[3],
+                        'report': (outputOpts[0] if len(outputOpts) >= 0 else 0),
+                        'plot': (outputOpts[1] if len(outputOpts) >= 1 else 1),
+                        'geodata': (outputOpts[2] if len(outputOpts) >= 2 else 0),
+                        'coords': (outputOpts[3] if len(outputOpts) >= 3 else 0),
+                        'shortReport': (outputOpts[4] if len(outputOpts) >= 4 else 1),
+                        'kml': (outputOpts[5] if len(outputOpts) >= 5 else 0),
                     }
                 except IndexError:  # if file/fist line is empty
                     pass
@@ -1080,10 +1084,12 @@ class ConfigHandler(object):
         
         with io.open(self.SETTINGS_FILE, encoding='utf-8', mode='w+') as f:
             f.writelines(
-                "{} {} {} {} {}".format(self.outputOptions['report'],
+                "{} {} {} {} {} {} {}".format(self.outputOptions['report'],
                                         self.outputOptions['plot'],
                                         self.outputOptions['geodata'],
                                         self.outputOptions['coords'],
+                                        self.outputOptions['shortReport'],
+                                        self.outputOptions['kml'],
                                         '\n'))
             for path in self.commonPaths:
                 f.writelines(path + '\n')

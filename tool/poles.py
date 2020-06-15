@@ -40,6 +40,7 @@ class Poles(object):
     INIT_POLE_ANGLE = 0.0
     POLE_DIST_STEP = 1.0
     POLE_HEIGHT_STEP = 0.1
+    POLE_NAME_MAX_LENGTH = 22
     
     def __init__(self, project):
         """
@@ -503,7 +504,10 @@ class Poles(object):
     def getBhdForPole(height, max_force):
         idx_force = (np.abs(BHD_POLE_Force - max_force)).argmin()
         height_array = np.array(list(BHD_POLE[BHD_POLE_Force[idx_force]].keys()))
-        # Bundstelle 1.5m higher than cable
+        # Abbundstelle 1.5m higher than cable
         height += 1.5
         idx_height = (np.abs(height_array - height)).argmin()
-        return BHD_POLE[BHD_POLE_Force[idx_force]][height_array[idx_height]]
+        # Diameter of tree next to cable
+        abbundst = BHD_POLE[BHD_POLE_Force[idx_force]][height_array[idx_height]]
+        # Diameter at 1.3m over ground
+        return int(round(abbundst + (height - 1.5), 0))

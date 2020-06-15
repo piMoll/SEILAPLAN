@@ -37,7 +37,8 @@ from .saveDialog import DialogOutputOptions
 from .mapMarker import MapMarkerTool
 from ..tool.cablelineFinal import preciseCable, updateWithCableCoordinates
 from ..tool.outputReport import generateReportText, generateReport, createOutputFolder, generateShortReport
-from ..tool.outputGeo import generateGeodata, addToMap, generateCoordTable
+from ..tool.outputGeo import organizeDataForExport, addToMap, \
+    generateCoordTable, exportToShape, exportToKML
 
 
 class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
@@ -208,11 +209,6 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
     def updatePole(self, idx, property_name, newVal):
         self.poles.update(idx, property_name, newVal)
         
-        if property_name == 'name':
-            return
-        
-        # TODO: pole Nr. should always be updated, better do it in PoleWidget
-        
         # Update markers on map
         if property_name == 'd':
             self.updateMarkerOnMap(idx)
@@ -245,6 +241,9 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         
         # self.plot.zoomTo(self.poles.poles[idx])
         self.poleLayout.changeRow(idx, property_name, newVal)
+        if property_name == 'name':
+            # No redraw when user only changes name
+            return
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         self.configurationHasChanged = True
     
@@ -683,10 +682,14 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.confHandler.saveToFile(os.path.join(outputLoc,
                                     self.tr('Projekteinstellungen.txt')))
 
-        # Create report
-        if self.confHandler.getOutputOption('report'):
+        # Create short report
+        if self.confHandler.getOutputOption('shortReport'):
             generateShortReport(self.confHandler, self.result,
-                                self.fieldComment.toPlainText(), projName, outputLoc)
+                                self.fieldComment.toPlainText(), projName,
+                                outputLoc)
+
+        # Create technical report
+        if self.confHandler.getOutputOption('report'):
             reportText = generateReportText(self.confHandler, self.result,
                                             self.fieldComment.toPlainText(), projName)
             generateReport(reportText, outputLoc)
@@ -702,10 +705,19 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             printPlot.printToPdf(plotSavePath, projName, self.poles.poles)
         
         # Generate geo data
-        if self.confHandler.getOutputOption('geodata'):
-            geodata = generateGeodata(project, self.poles.poles,
-                                      self.cableline, outputLoc)
-            addToMap(geodata, projName)
+        if self.confHandler.getOutputOption('geodata') \
+                or self.confHandler.getOutputOption('kml'):
+            # Put geo data in separate sub folder
+            savePath = os.path.join(outputLoc, 'geodata')
+            os.makedirs(savePath)
+            epsg = project.heightSource.spatialRef
+            geodata = organizeDataForExport(self.poles.poles, self.cableline)
+            
+            if self.confHandler.getOutputOption('geodata'):
+                shapeFiles = exportToShape(geodata, epsg, savePath)
+                addToMap(shapeFiles, projName)
+            if self.confHandler.getOutputOption('kml'):
+                exportToKML(geodata, epsg, savePath)
         
         # Generate coordinate tables
         if self.confHandler.getOutputOption('coords'):

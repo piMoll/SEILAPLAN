@@ -26,25 +26,25 @@
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="58"/>
-        <source>stuetzen.shp</source>
+        <source>stuetzen</source>
         <translatorcomment>HeProMo</translatorcomment>
-        <translation>cavalletti.shp</translation>
+        <translation>cavalletti</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="63"/>
-        <source>leerseil.shp</source>
-        <translation>funenoncaricata.shp</translation>
+        <source>leerseil</source>
+        <translation>funenoncaricata</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="68"/>
-        <source>lastseil.shp</source>
-        <translation>funecaricata.shp</translation>
+        <source>lastseil</source>
+        <translation>funecaricata</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="87"/>
-        <source>StuetzenNr</source>
+        <source>bezeichnung</source>
         <translatorcomment>Fritz</translatorcomment>
-        <translation>Numero del cavalletto</translation>
+        <translation>nome</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="163"/>
@@ -1145,6 +1145,11 @@ dopo Zweifel</translation>
         <translation>Rapporto technico</translation>
     </message>
     <message>
+        <location filename="../gui/saveDialog.py" line="175"/>
+        <source>Kurzbericht</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../gui/saveDialog.py" line="176"/>
         <source>Diagramm</source>
         <translation>Grafico</translation>
@@ -1153,6 +1158,11 @@ dopo Zweifel</translation>
         <location filename="../gui/saveDialog.py" line="177"/>
         <source>Shape-Daten der Stuetzen und Seillinie</source>
         <translation>Dati dei cavalletti e della linea di gru a cavo nel formato shape</translation>
+    </message>
+    <message>
+        <location filename="../gui/saveDialog.py" line="177"/>
+        <source>KML-Daten der Stuetzen und Seillinie</source>
+        <translation>Dati dei cavalletti e della linea di gru a cavo nel formato KML</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="178"/>
