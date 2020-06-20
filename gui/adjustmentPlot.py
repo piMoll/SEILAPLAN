@@ -24,6 +24,7 @@ from qgis.PyQt.QtWidgets import QSizePolicy
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
+from matplotlib.patches import Rectangle
 from .plotting_tools import zoom_with_wheel
 
 
@@ -171,10 +172,16 @@ class AdjustmentPlot(FigureCanvas):
                        color='#910000', linewidth=1*scale)
             
         # Poles
-        [pole_d, pole_z, pole_h, pole_dtop, pole_ztop, pole_nr] = poles
+        [pole_d, pole_z, pole_h, pole_dtop, pole_ztop, pole_nr, poleType] = poles
         for i, d in enumerate(pole_d):
             self.axes.plot([pole_d[i], pole_dtop[i]], [pole_z[i], pole_ztop[i]],
                            color='#363432', linewidth=3.0*scale)
+            if poleType[i] == 'crane':
+                h = 3.5
+                w = h * 1.8
+                rect = Rectangle((pole_d[i] - w/2, pole_z[i]), w, h, ls='-',
+                                 lw=3.0*scale, facecolor='black', ec='black', zorder=5)
+                self.axes.add_patch(rect)
         # Vertical guide lines
         if self.isZoomed:
             d = self.currentPole['d']
@@ -274,9 +281,9 @@ class AdjustmentPlot(FigureCanvas):
         # Label poles
         for pole in poles:
             if pole['poleType'] != 'anchor':
-                self.axes.text(pole['dtop'], pole['ztop'] + self.labelBuffer*2,
-                               f"{pole['name']} ({pole['nr']})", ha='center',
-                               fontsize=8)
+                self.axes.text(pole['dtop'], pole['ztop'] + self.labelBuffer*4,
+                               f"{pole['name']} ({pole['nr']})\nH = {pole['h']:.1f} m",
+                               ha='center', fontsize=8)
         self.print_figure(filelocation, dpi)
 
     def setToolbar(self, tbar):
