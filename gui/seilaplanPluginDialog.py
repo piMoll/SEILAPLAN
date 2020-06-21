@@ -103,8 +103,6 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         # Dialog window with height profile
         self.profileWin = ProfileDialog(self, self.iface, self.drawTool,
                                         self.projectHandler)
-        # Control variable for setting new data in profile window
-        self.resetProfileWin = True
 
         # Dialog windows for saving parameter and cable sets
         self.paramSetWindow = DialogSaveParamset(self)
@@ -368,9 +366,6 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         
         # Update start and end point
         self.checkPoints()
-        
-        # Tell profile window to update its content on next show
-        self.resetProfileWin = True
         
         # Load all predefined and user-defined parameter sets from the
         # config folder (maybe a new set was added when project was opened)
@@ -726,7 +721,6 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
     
     def updateLineByCoordFields(self):
         self.drawTool.reset()
-        self.resetProfileWin = True
         if self.projectHandler.profileIsValid():
             self.drawTool.updateLine(list(self.linePoints.values()))
     
@@ -776,23 +770,18 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
     
     def onFinishedLineDraw(self, linecoord):
         self.projectHandler.resetProfile()
-        self.resetProfileWin = True
         self.updateLineByMapDraw(linecoord[0], 'A')
         self.updateLineByMapDraw(linecoord[1], 'E')
         # Stop pressing down button
         self.draw.setChecked(False)
     
-    def updateProfileWinContent(self):
+    def onShowProfile(self):
         profile = self.projectHandler.preparePreviewProfile()
         if profile:
             self.profileWin.setProfile(profile)
-            self.profileWin.setPoleData(self.projectHandler.fixedPoles['poles'],
-                                        self.projectHandler.noPoleSection)
-            self.resetProfileWin = False
-    
-    def onShowProfile(self):
-        if self.resetProfileWin:
-            self.updateProfileWinContent()
+            self.profileWin.setPoleData(
+                self.projectHandler.fixedPoles['poles'],
+                self.projectHandler.noPoleSection)
         self.profileWin.exec()
     
     def onLoadProjects(self):

@@ -121,7 +121,7 @@ class ProfileDialog(QDialog):
         
         # Gui functionality for fixed pole gui fields
         self.buildPoleHeader()
-        self.poleLayout = CustomPoleWidget(self, self.outerLayout)
+        self.poleLayout = CustomPoleWidget(self, self.outerLayout, self.poleData)
         self.poleLayout.sig_updatePole.connect(self.updatePole)
         self.poleLayout.sig_deletePole.connect(self.deletePole)
 
@@ -160,10 +160,14 @@ class ProfileDialog(QDialog):
         self.poleData = []
         self.noPoleSection = []
         self.profileMax = None
+        self.sc.reset()
 
     def setPoleData(self, poles, sections):
         """Fills gui, plot and map with data of fixed poles and pole
         sections."""
+        # Make sure the pole layout has the correct reference to the pole data
+        self.poleLayout.poleArr = self.poleData
+        # Set the max ranges
         self.poleLayout.setInitialGui([self.profileMin, self.profileMax])
         for pole in poles:
             self.addPole(pole['d'], pole['z'], pole['h'], name=pole['name'])
@@ -217,6 +221,7 @@ class ProfileDialog(QDialog):
         # Save new fixed pole in list
         self.poleData.insert(idx, {
             'name': name,
+            'nr': idx+1,
             'poleType': 'fixed',
             'd': d,
             'z': z,
@@ -224,17 +229,7 @@ class ProfileDialog(QDialog):
             'angle': angle,
             'plotPoint': drawnPoint
         })
-        # Add layout row to gui
-        lowerRange = self.profileMin
-        upperRange = self.profileMax
-        if idx > 0:
-            lowerRange = self.poleData[idx - 1]['d']
-        if idx < len(self.poleData)-1:
-            upperRange = self.poleData[idx + 1]['d']
-            
-        self.poleLayout.addRow(idx, idx, name, d, lowerRange, upperRange,
-                               h, angle, poleType='fixed', delBtn=True,
-                               addBtn=False)
+        self.poleLayout.addRow(idx, addBtn=False)
         
     def updatePole(self, idx, property_name, val):
         """Called when user manually changes distance or height values in
@@ -263,13 +258,7 @@ class ProfileDialog(QDialog):
         removes point in plot, marker on map and row in gui."""
         self.sc.deletePoint(self.poleData[idx]['plotPoint'])
         self.drawTool.removeMarker(idx+1)
-        distLower = self.profileMin
-        distUpper = self.profileMax
-        if idx > 0:
-            distLower = self.poleData[idx - 1]['d']
-        if idx < len(self.poleData) - 1:
-            distUpper = self.poleData[idx + 1]['d']
-        self.poleLayout.deleteRow(idx, distLower, distUpper)
+        self.poleLayout.deleteRow(idx)
         self.poleData.pop(idx)
     
     def getZValue(self, dist):

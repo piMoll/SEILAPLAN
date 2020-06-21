@@ -38,14 +38,21 @@ class CustomPoleWidget(QObject):
     sig_updatePole = pyqtSignal(int, str, object)
     sig_deletePole = pyqtSignal(int)
     
-    def __init__(self, widget, layout):
+    def __init__(self, widget, layout, poles):
         """
         :type widget: qgis.PyQt.QtWidgets.QWidget
         :type layout: qgis.PyQt.QtWidgets.QLayout
+        :type poles: Poles|Array
         """
         super().__init__()
         self.widget = widget
         self.layout = layout
+        self.poles = None
+        if isinstance(poles, Poles):
+            self.poles = poles
+            self.poleArr = poles.poles
+        else:
+            self.poleArr = poles
         self.poleRows = []
         self.editActive = False
         self.pole_dist_step = Poles.POLE_DIST_STEP
@@ -53,33 +60,24 @@ class CustomPoleWidget(QObject):
         self.distRange = []
         self.poleCount = 0
     
-    def setInitialGui(self, distRange, poles=None):
+    def setInitialGui(self, distRange):
         """
-        :type poles: tool.poles.Poles
         :type distRange: list
         """
         self.distRange = distRange
         self.layout.setAlignment(Qt.AlignTop)
-        if not poles:
-            return
 
-        for idx, pole in enumerate(poles.poles):
+        for idx, pole in enumerate(self.poleArr):
             delBtn = False
             addBtn = False
             
             # Distance input field: ranges are defined by neighbouring poles
-            lowerRange = self.distRange[0]
-            upperRange = self.distRange[1]
-            if idx > 0:
-                lowerRange = poles.poles[idx - 1]['d'] + self.pole_dist_step
-            if idx < len(poles.poles) - 1:
-                upperRange = poles.poles[idx + 1]['d'] - self.pole_dist_step
-                
+            [lowerRange, upperRange] = self.getDistanceRange(idx)
             # Delete button: anchor and first and last pole cannot be deleted
-            if poles.idxA < idx < poles.idxE:
+            if self.poles.idxA < idx < self.poles.idxE:
                 delBtn = True
             # Add button: Pole can only be added between first and last pole
-            if poles.idxA <= idx < poles.idxE:
+            if self.poles.idxA <= idx < self.poles.idxE:
                 addBtn = True
 
             # Create layout
@@ -117,96 +115,116 @@ class CustomPoleWidget(QObject):
         # Emit signal
         self.sig_deletePole.emit(idx)
     
-    def changeRow(self, idx, property_name, newVal):
+    def changeRow(self, idx, property_name, newVal, prevAnchorA=None, prevAnchorE=None):
+        self.updateAnchorState(prevAnchorA, prevAnchorE)
+        
         if property_name == 'd':
-            self.updateNeighbourDistRange(idx, newVal)
+            self.updateNeighbourDistRange(idx, newVal, newVal)
+        elif property_name == 'h':
+            self.updatePoleRowIdx()
         self.editActive = False
 
-    def addRow(self, idx, nr, name, dist, lowerRange, upperRange, height,
-               angle, poleType='pole', delBtn=True, addBtn=True, poleLabels=None):
+    def addRow(self, idx, delBtn=True, addBtn=True):
+        newPole = self.poleArr[idx]
+        [lowerRange, upperRange] = self.getDistanceRange(idx)
         lowerRange += self.pole_dist_step
         upperRange -= self.pole_dist_step
         # Add pole row layout
-        newRow = PoleRow(self, self.widget, self.layout, idx, nr, name, poleType,
-                         dist, [lowerRange, upperRange], height, angle,
-                         delBtn, addBtn)
+        newRow = PoleRow(self, self.widget, self.layout, idx, newPole['nr'],
+                         newPole['name'], newPole['poleType'], newPole['d'],
+                         [lowerRange, upperRange], newPole['h'],
+                         newPole['angle'], delBtn, addBtn)
         self.poleRows.insert(idx, newRow)
         # Update index and distance range of neighbours
-        self.updatePoleRowIdx(poleLabels)
-        self.updateNeighbourDistRange(idx, dist)
+        self.updatePoleRowIdx()
+        self.updateNeighbourDistRange(idx, newPole['d'], newPole['d'])
         self.editActive = False
-        
-        # TODO: Rewrite like this
-        # # new param
-        # newIdx = 2
-        # newPole = self.poles[idx]
-        # dist = newPole['d']
-        # lowerRange = dist + self.pole_dist_step
-        # upperRange = dist - self.pole_dist_step
-        # newRow = PoleRow(self, self.widget, self.layout, idx, newPole['nr'],
-        #                  newPole['name'], newPole['poleType'], dist,
-        #                  [lowerRange, upperRange], newPole['height'],
-        #                  newPole['angle'], delBtn, addBtn)
-        # self.poleRows.insert(idx, newRow)
-        # # Update index and distance range of neighbours
-        # self.updatePoleRowIdx(poleLabels)
-        # self.editActive = False
     
-    def deleteRow(self, idx, distLower, distUpper, poleLabels=None):
-        # If distance range was not defined, take outer ranges
-        if not distLower:
-            distLower = self.distRange[0]
-        if not distUpper:
-            distUpper = self.distRange[1]
-        # Update distance range of neighbours
+    def deleteRow(self, idx):
+        leftLimit = self.distRange[0]
+        rightLimit = self.distRange[1]
         if idx > 0:
-            self.poleRows[idx-1].updateUpperDistRange(distUpper - self.pole_dist_step)
-        if idx < self.poleCount - 1:
-            self.poleRows[idx+1].updateLowerDistRange(distLower + self.pole_dist_step)
+            leftLimit = self.poleArr[idx - 1]['d']
+        if idx < len(self.poleRows) - 1:
+            rightLimit = self.poleArr[idx]['d']
+        # Update distance range of neighbours
+        self.updateNeighbourDistRange(idx, leftLimit, rightLimit)
         # Remove pole row layout
         self.poleRows[idx].remove()
         del self.poleRows[idx]
         # Update index of neighbours
-        self.updatePoleRowIdx(poleLabels)
+        self.updatePoleRowIdx()
         self.editActive = False
         
-    def updatePoleRowIdx(self, poleLabels):
+    def updatePoleRowIdx(self):
+        labels = None
+        if self.poles:
+            [_, _, _, _, _, labels, _] = self.poles.getAsArray(True, True)
+        
+            if len(self.poleRows) != len(labels):
+                print('Error: More/Less PoleRows than actual poles')
+        
         pole: PoleRow
         for i, pole in enumerate(self.poleRows):
             pole.updateIndex(i)
-            nr = i
-            if poleLabels is not None:
-                nr = poleLabels[i]
+            nr = i + 1
+            if labels:
+                nr = labels[i]
             pole.updateLabelNr(nr)
     
-    def updateNeighbourDistRange(self, idx, dist):
+    def updateNeighbourDistRange(self, idx, rightLimit, leftLimit):
         if idx > 0:
-            # Left neighbour
+            # Left neighbour: update its upper range
             self.poleRows[idx-1].updateUpperDistRange(
-                dist - self.pole_dist_step)
+                leftLimit - self.pole_dist_step)
         if idx < self.poleCount - 1:
-            # Right neighbour
+            # Right neighbour: update its lower range
             self.poleRows[idx+1].updateLowerDistRange(
-                dist + self.pole_dist_step)
+                rightLimit + self.pole_dist_step)
+
+    def updateAnchorState(self, prevAnchorA, prevAnchorE):
+        """Check new anchor state and activate / deactivate anchor row
+        accordingly."""
+        if not self.poles or prevAnchorA is None or prevAnchorE is None:
+            return
+        if prevAnchorA is not self.poles.hasAnchorA:
+            idxA = 0
+            if self.poles.hasAnchorA:
+                # Anchor A was activated
+                self.activateRow(idxA, float(self.poleArr[idxA]['d']))
+            else:
+                # Anchor A was deactivated
+                self.deactivateRow(idxA, self.distRange[0], self.poleArr[idxA + 1]['d'])
+
+        if prevAnchorE is not self.poles.hasAnchorE:
+            idxE = len(self.poles.poles) - 1
+            if self.poles.hasAnchorE:
+                # Anchor E was activated
+                self.activateRow(idxE, float(self.poleArr[idxE]['d']))
+            else:
+                # Anchor E was deactivated
+                self.deactivateRow(idxE, float(self.poleArr[idxE - 1]['d']), self.distRange[1])
     
-    def deactivateRow(self, idx, distLower, distUpper):
-        if not distLower:
-            distLower = self.distRange[0]
-        if not distUpper:
-            distUpper = self.distRange[1]
-        distUpper -= self.pole_dist_step
-        distLower += self.pole_dist_step
+    def deactivateRow(self, idx, leftLimit, rightLimit):
         # Update distance range of neighbours
-        if idx > 0:
-            self.poleRows[idx-1].updateUpperDistRange(distUpper)
-        if idx < self.poleCount - 1:
-            self.poleRows[idx+1].updateLowerDistRange(distLower)
+        self.updateNeighbourDistRange(idx, leftLimit, rightLimit)
         self.poleRows[idx].deactivate()
-        self.editActive = False
+        self.updatePoleRowIdx()
     
     def activateRow(self, idx, dist):
         self.poleRows[idx].activate()
-        self.poleRows[idx].fieldDist.setValue(float(dist))
+        self.poleRows[idx].fieldDist.setValue(dist)
+        self.updateNeighbourDistRange(idx, dist, dist)
+        self.updatePoleRowIdx()
+    
+    def getDistanceRange(self, idx):
+        lowerRange = self.distRange[0]
+        upperRange = self.distRange[1]
+        if idx > 0:
+            lowerRange = self.poleArr[idx - 1]['d']
+        if idx < len(self.poleArr) - 1:
+            upperRange = self.poleArr[idx + 1]['d']
+        return [lowerRange, upperRange]
 
     def zoomIn(self, idx):
         self.sig_zoomIn.emit(idx)
@@ -295,8 +313,11 @@ class PoleRow(object):
         self.index = idx
     
     def updateLabelNr(self, label):
-        if self.rowType != 'anchor':
-            self.labelNr.setText(f"{label}:")
+        if self.labelNr:
+            if label:
+                self.labelNr.setText(f"{label}:")
+            else:
+                self.labelNr.setText("")
             
     def addFieldName(self, value):
         self.fieldName = QLineEditWithFocus(self.widget)

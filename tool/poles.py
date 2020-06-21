@@ -59,6 +59,8 @@ class Poles(object):
         self.lastPole = None
         self.idxA = None
         self.idxE = None
+        self.hasAnchorA = False
+        self.hasAnchorE = False
         
         # Default height for different pole types
         height = {
@@ -113,10 +115,17 @@ class Poles(object):
     def add(self, idx, d, h=INIT_POLE_HEIGHT, angle=INIT_POLE_ANGLE,
             manually=False, poleType='pole', active=True, name='', refresh=True):
        
+        if d is None:
+            leftPole = self.poles[idx-1]['d']
+            rightPole = self.poles[idx]['d']
+            distRange = rightPole - leftPole
+            d = floor(leftPole + 0.5 * distRange)
         d = float(d)
+        
         if h == -1:
             h = self.INIT_POLE_HEIGHT
         h = float(h)
+        
         x, y, z, dtop, ztop = self.derivePoleProperties(d, h, angle)
         if not name:
             name = self.tr('Stuetze')
@@ -157,11 +166,19 @@ class Poles(object):
             self.poles[idx]['z'] = z
             self.poles[idx]['dtop'] = dtop
             self.poles[idx]['ztop'] = ztop
+        
+        # Deactivate anchor if first/last pole's height becomes 0
+        if property_name == 'h' and newVal == 0:
+            if idx == self.idxA and self.hasAnchorA:
+                self.poles[0]['active'] = False
+            elif idx == self.idxE and self.hasAnchorE:
+                self.poles[-1]['active'] = False
+        
         self.refresh()
 
+        # When an anchor gets reactivated we have to make sure that the
+        #  distance is higher / lower than the neighbouring pole
         if property_name == 'active' and newVal is True:
-            # When an anchor gets reactivated we have to make sure that the
-            #  distance is higher / lower than the neighbouring pole
             dist = None
             if idx == 0:
                 if self.firstPole['d'] <= self.poles[0]['d']:
@@ -203,10 +220,14 @@ class Poles(object):
                 self.update(self.idxE, 'h', poles[-1]['h'])
             # Optimization was not successful, last pole is not at end point
             else:
-                # Delete former end point
-                self.delete(self.idxE)
-                # Add dummy entry so that all relevant poles get added in next
-                #  for loop
+                if self.lastPole['poleType'] == 'pole':
+                    # Delete former end point (dont delete if its a pole_anchor)
+                    self.poles.pop(self.idxE)
+                # Deactivate anchor next to end point
+                if self.hasAnchorE:
+                    self.poles[-1]['active'] = False
+                # Add dummy entry so that all relevant poles get added in the
+                #  following for loop
                 poles.append({})
             
             # Add the newly calculated poles between start and end point
@@ -243,6 +264,7 @@ class Poles(object):
         dtop = []
         ztop = []
         number = []
+        types = []
         
         for i, pole in enumerate(self.poles):
             if not withAnchor and pole['poleType'] == 'anchor':
@@ -255,17 +277,19 @@ class Poles(object):
             dtop.append(pole['dtop'])
             ztop.append(pole['ztop'])
             number.append(pole['nr'])
+            types.append(pole['poleType'])
 
         d = np.array(d)
         z = np.array(z)
         h = np.array(h)
         dtop = np.array(dtop)
         ztop = np.array(ztop)
-        return [d, z, h, dtop, ztop, number]
+        return [d, z, h, dtop, ztop, number, types]
 
     def refresh(self):
         self.updateFirstLastPole()
-        self.updateAnchorStatus()
+        self.updateAnchorState()
+        self.updateAnchorType()
         self.numberPoles()
         self.calculateAnchorLength()
     
@@ -284,11 +308,11 @@ class Poles(object):
     
     def numberPoles(self):
         i = 1
-        for pole in self.poles:
+        for idx, pole in enumerate(self.poles):
             if pole['poleType'] in ['anchor', 'pole_anchor']:
-                pole['nr'] = ''
+                self.poles[idx]['nr'] = ''
             else:
-                pole['nr'] = str(i)
+                self.poles[idx]['nr'] = str(i)
                 i += 1
 
     def delete(self, idx):
@@ -308,11 +332,11 @@ class Poles(object):
         poleE_ztop_diff = 0
         poleE_dtop_diff = 0
 
-        if anchorA['poleType'] == 'anchor' and anchorA['active']:
+        if self.hasAnchorA:
             poleA_ztop_diff = self.firstPole['ztop'] - anchorA['ztop']
             poleA_dtop_diff = self.firstPole['dtop'] - anchorA['dtop']
 
-        if anchorE['poleType'] == 'anchor' and anchorE['active']:
+        if self.hasAnchorE:
             poleE_ztop_diff = self.lastPole['ztop'] - anchorE['ztop']
             poleE_dtop_diff = anchorE['dtop'] - self.lastPole['dtop']
 
@@ -350,7 +374,7 @@ class Poles(object):
             return degrees(atan(ztop_diff / dtop_diff))
 
     def getCableFieldDimension(self):
-        [_, _, _, dtop, ztop, _] = self.getAsArray(withAnchor=True, withDeactivated=True)
+        [_, _, _, dtop, ztop, _, _] = self.getAsArray(withAnchor=True, withDeactivated=True)
 
         b = dtop[self.idxA+1:self.idxE+1] - dtop[self.idxA:self.idxE]
         h = ztop[self.idxA+1:self.idxE+1] - ztop[self.idxA:self.idxE]
@@ -360,14 +384,14 @@ class Poles(object):
     def getAnchorCable(self):
         anchorFieldA = None
         anchorFieldE = None
-        [_, _, _, pole_dtop, pole_ztop, _] = self.getAsArray(True, False)
+        [_, _, _, pole_dtop, pole_ztop, _, _] = self.getAsArray(True, False)
         
-        if self.poles[0]['poleType'] == 'anchor' and self.poles[0]['active']:
+        if self.hasAnchorA:
             anchorFieldA = {
                 'd': pole_dtop[:2],
                 'z': pole_ztop[:2]
             }
-        if self.poles[-1]['poleType'] == 'anchor' and self.poles[-1]['active']:
+        if self.hasAnchorE:
             anchorFieldE = {
                 'd': pole_dtop[-2:],
                 'z': pole_ztop[-2:]
@@ -376,36 +400,33 @@ class Poles(object):
             'A': anchorFieldA,
             'E': anchorFieldE
         }
+    
+    def updateAnchorState(self):
+        self.hasAnchorA = self.poles[0]['poleType'] == 'anchor' and \
+                          self.poles[0]['active']
+        self.hasAnchorE = self.poles[-1]['poleType'] == 'anchor' and \
+                          self.poles[-1]['active']
 
-    def updateAnchorStatus(self):
-        # If first or last pole gets height = 0, anchors are deactivated
-        if (self.firstPole['h'] == 0
-                and self.firstPole['poleType'] == 'pole'
-                and self.poles[0]['poleType'] == 'anchor'):
-            self.poles[0]['active'] = False
+    def updateAnchorType(self):
+        # If anchor is active, there can be no pole_anchor
+        if self.hasAnchorA:
+            self.poles[self.idxA]['poleType'] = 'pole'
+        # If first pole has not height = 0, there can be no pole_anchor
+        elif self.firstPole['h'] != 0 and self.firstPole['poleType'] != 'crane':
+            self.poles[self.idxA]['poleType'] = 'pole'
+        # Only if anchor is deactivated AND pole height = 0 it's a pole_anchor
+        elif (not self.hasAnchorA) and self.firstPole['h'] == 0:
             self.poles[self.idxA]['poleType'] = 'pole_anchor'
         
-        if (self.lastPole['h'] == 0
-                and self.lastPole['poleType'] == 'pole'
-                and self.poles[-1]['poleType'] == 'anchor'):
-            self.poles[-1]['active'] = False
-            self.lastPole[self.idxE]['poleType'] = 'pole_anchor'
-            
-        # If anchor is active there can not be a 'pole_anchor'
-        if (self.poles[0]['poleType'] == 'anchor'
-                and self.firstPole['poleType'] == 'pole_anchor'
-                and self.poles[0]['active']):
-            self.poles[self.idxA]['poleType'] = 'pole'
-            # Necessary to update numbering
-            self.numberPoles()
-        
-        # If anchor is active there can not be a 'pole_anchor'
-        if (self.lastPole['poleType'] == 'pole_anchor'
-                and self.poles[-1]['poleType'] == 'anchor'
-                and self.poles[-1]['active']):
+        # If anchor is active, there can be no pole_anchor
+        if self.hasAnchorE:
             self.poles[self.idxE]['poleType'] = 'pole'
-            # Necessary to update numbering
-            self.numberPoles()
+        # If last pole has not height = 0, there can be no pole_anchor
+        elif self.lastPole['h'] != 0:
+            self.poles[self.idxE]['poleType'] = 'pole'
+        # Only if anchor is deactivated AND pole height = 0 it's a pole_anchor
+        elif not self.hasAnchorE and self.lastPole['h'] == 0:
+            self.poles[self.idxE]['poleType'] = 'pole_anchor'
 
     def calculateAdvancedProperties(self, forces):
         """ Calculates additional pole properties that are used in the report.
