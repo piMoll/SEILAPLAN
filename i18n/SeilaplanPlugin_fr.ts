@@ -744,6 +744,12 @@ câble chargé</translation>
         <source>Sattelkraft</source>
         <translation>Force sur l&apos;étrier</translation>
     </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Zweiseil-System</source>
+        <translatorcomment>HeProMo</translatorcomment>
+        <translation>Système à 2 câbles</translation>
+    </message>
 </context>
 <context>
     <name>AbstractConfHandler</name>

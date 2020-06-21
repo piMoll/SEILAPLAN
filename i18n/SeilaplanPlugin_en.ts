@@ -749,6 +749,12 @@ loaded cable</translation>
         <source>Sattelkraft</source>
         <translation>Saddle force</translation>
     </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Zweiseil-System</source>
+        <translatorcomment>HeProMo</translatorcomment>
+        <translation>Two-cable system</translation>
+    </message>
 </context>
 <context>
     <name>AbstractConfHandler</name>

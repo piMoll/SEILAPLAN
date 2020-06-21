@@ -738,6 +738,11 @@ Lastseil</translation>
         <source>Total</source>
         <translation>Total</translation>
     </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Zweiseil-System</source>
+        <translation>Zweiseil-System</translation>
+    </message>
 </context>
 <context>
     <name>AbstractConfHandler</name>

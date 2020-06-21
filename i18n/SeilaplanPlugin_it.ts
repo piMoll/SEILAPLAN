@@ -741,6 +741,12 @@ fune caricata</translation>
         <source>Sattelkraft</source>
         <translation>Forza sulla sella</translation>
     </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Zweiseil-System</source>
+        <translatorcomment>HeProMo</translatorcomment>
+        <translation>Sistema a due funi</translation>
+    </message>
 </context>
 <context>
     <name>AbstractConfHandler</name>
