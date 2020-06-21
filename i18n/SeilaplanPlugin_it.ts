@@ -808,7 +808,8 @@ fune caricata</translation>
         <location filename="../gui/adjustmentDialog.py" line="461"/>
         <source>Grenzwert</source>
         <translatorcomment>BAFU</translatorcomment>
-        <translation>Valore limite</translation>
+        <translation>Valore
+limite</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="462"/>
@@ -1391,6 +1392,16 @@ dopo Zweifel</translation>
         <location filename="../gui/progressDialog.py" line="163"/>
         <source>Ein Fehler ist aufgetreten:</source>
         <translation>E avvenuto un errore:</translation>
+    </message>
+    <message>
+        <location filename="../gui/progressDialog.py" line="168"/>
+        <source>Aufgrund der Gelaendeform oder der Eingabeparameter konnten keine Stuetzenstandorte bestimmt werden.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/progressDialog.py" line="168"/>
+        <source>Fehler in Optimierungsalgorithmus.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="44"/>

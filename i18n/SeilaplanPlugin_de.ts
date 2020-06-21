@@ -1389,6 +1389,16 @@ nach Zweifel</translation>
         <translation>Ein Fehler ist aufgetreten:</translation>
     </message>
     <message>
+        <location filename="../gui/progressDialog.py" line="168"/>
+        <source>Aufgrund der Gelaendeform oder der Eingabeparameter konnten keine Stuetzenstandorte bestimmt werden.</source>
+        <translation>Aufgrund der Geländeform oder der Eingabeparameter konnten keine Stützenstandorte bestimmt werden.</translation>
+    </message>
+    <message>
+        <location filename="../gui/progressDialog.py" line="168"/>
+        <source>Fehler in Optimierungsalgorithmus.</source>
+        <translation>Fehler in Optimierungsalgorithmus.</translation>
+    </message>
+    <message>
         <location filename="../gui/progressDialog.py" line="44"/>
         <source>Berechnung der optimalen Stuetzenpositionen...</source>
         <translation>Berechnung der optimalen Stützenpositionen...</translation>
