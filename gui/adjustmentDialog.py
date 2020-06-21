@@ -415,8 +415,13 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             # Cable was recalculated, update threshold values
             self.thData['plotLabels'] = []
             for i in range(len(self.thData['rows'])):
-                val, location, color, \
-                plotLabels = self.checkThresholdAndLocation(i, resultData[i])
+                thresholdData = self.checkThresholdAndLocation(i, resultData[i])
+                val = ''
+                color = 1
+                location = []
+                plotLabels = []
+                if len(thresholdData) == 4:
+                    val, location, color, plotLabels = thresholdData
                 self.thresholdLayout.updateData(i, 4, val)
                 self.thresholdLayout.updateData(i, 5, {'loc': location, 'col': color})
                 self.thData['rows'][i][4] = val
@@ -504,8 +509,13 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             emptyColumn = 3
         
         for i in range(self.thSize[0]):
-            val, location, color, \
-                plotLabels = self.checkThresholdAndLocation(i, resultData[i])
+            thresholdData = self.checkThresholdAndLocation(i, resultData[i])
+            val = ''
+            color = 1
+            location = []
+            plotLabels = []
+            if len(thresholdData) == 4:
+                val, location, color, plotLabels = thresholdData
             self.thData['rows'][i][0] = infoText[i]
             self.thData['rows'][i][1] = label[i]
             self.thData['rows'][i][2] = thresholdStr[i]
