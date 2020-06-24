@@ -749,6 +749,12 @@ loaded cable</translation>
         <source>Sattelkraft</source>
         <translation>Saddle force</translation>
     </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Zweiseil-System</source>
+        <translatorcomment>HeProMo</translatorcomment>
+        <translation>Two-cable system</translation>
+    </message>
 </context>
 <context>
     <name>AbstractConfHandler</name>
@@ -815,7 +821,8 @@ loaded cable</translation>
         <location filename="../gui/adjustmentDialog.py" line="461"/>
         <source>Grenzwert</source>
         <translatorcomment>Internet, nur &quot;threshold&quot; wäre auch möglich</translatorcomment>
-        <translation>Threshold value</translation>
+        <translation>Threshold
+value</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="462"/>
@@ -1408,6 +1415,16 @@ by Zweifel</translation>
         <location filename="../gui/progressDialog.py" line="163"/>
         <source>Ein Fehler ist aufgetreten:</source>
         <translation>An error occured:</translation>
+    </message>
+    <message>
+        <location filename="../gui/progressDialog.py" line="168"/>
+        <source>Aufgrund der Gelaendeform oder der Eingabeparameter konnten keine Stuetzenstandorte bestimmt werden.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/progressDialog.py" line="168"/>
+        <source>Fehler in Optimierungsalgorithmus.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="44"/>

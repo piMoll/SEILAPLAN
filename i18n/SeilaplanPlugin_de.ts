@@ -738,6 +738,11 @@ Lastseil</translation>
         <source>Total</source>
         <translation>Total</translation>
     </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Zweiseil-System</source>
+        <translation>Zweiseil-System</translation>
+    </message>
 </context>
 <context>
     <name>AbstractConfHandler</name>
@@ -1387,6 +1392,16 @@ nach Zweifel</translation>
         <location filename="../gui/progressDialog.py" line="163"/>
         <source>Ein Fehler ist aufgetreten:</source>
         <translation>Ein Fehler ist aufgetreten:</translation>
+    </message>
+    <message>
+        <location filename="../gui/progressDialog.py" line="168"/>
+        <source>Aufgrund der Gelaendeform oder der Eingabeparameter konnten keine Stuetzenstandorte bestimmt werden.</source>
+        <translation>Aufgrund der Geländeform oder der Eingabeparameter konnten keine Stützenstandorte bestimmt werden.</translation>
+    </message>
+    <message>
+        <location filename="../gui/progressDialog.py" line="168"/>
+        <source>Fehler in Optimierungsalgorithmus.</source>
+        <translation>Fehler in Optimierungsalgorithmus.</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="44"/>

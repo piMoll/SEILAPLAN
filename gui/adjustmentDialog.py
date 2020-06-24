@@ -88,7 +88,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.plotLayout.addWidget(tbar, alignment=Qt.AlignHCenter | Qt.AlignTop)
         
         # Fill tab widget with data
-        self.poleLayout = CustomPoleWidget(self.tabPoles, self.poleVGrid)
+        self.poleLayout = CustomPoleWidget(self.tabPoles, self.poleVGrid, self.poles)
         # self.poleLayout.sig_zoomIn.connect(self.zoomToPole)
         # self.poleLayout.sig_zoomOut.connect(self.zoomOut)
         self.poleLayout.sig_createPole.connect(self.addPole)
@@ -179,8 +179,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         
         # Create layout to modify poles
         lowerDistRange = floor(-1 * self.anchorBuffer[0])
-        upperDistRange = floor(self.poles.lastPole['d'] + self.anchorBuffer[1])
-        self.poleLayout.setInitialGui([lowerDistRange, upperDistRange], self.poles)
+        upperDistRange = floor(self.profile.profileLength)
+        self.poleLayout.setInitialGui([lowerDistRange, upperDistRange])
 
         # Fill in cable parameters
         self.paramLayout.fillInParams()
@@ -207,40 +207,18 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
     
     def updatePole(self, idx, property_name, newVal):
+        prevAnchorA = self.poles.hasAnchorA is True
+        prevAnchorE = self.poles.hasAnchorE is True
         self.poles.update(idx, property_name, newVal)
-        
         # Update markers on map
-        if property_name == 'd':
-            self.updateMarkerOnMap(idx)
-            if idx in [self.poles.idxA, self.poles.idxE]:
-                self.updateLineOnMap()
-        
-        # Anchor was deactivated
-        elif property_name == 'active' and newVal is False:
-            # Update range of neighbouring pole
-            lowerRange = None
-            upperRange = None
-            if idx > 0:
-                lowerRange = self.poles.poles[idx - 1]['d']
-            if idx < len(self.poles.poles) - 1:
-                upperRange = self.poles.poles[idx + 1]['d']
-            self.poleLayout.deactivateRow(idx, lowerRange, upperRange)
-            self.drawTool.hideMarker(idx)
-        
-        # Anchor was activated
-        elif property_name == 'active' and newVal is True:
-            # Get updated distance value from pole class
-            dist = self.poles.poles[idx]['d']
-            # Update distance of anchor in gui (and distance range of neighbours)
-            self.poleLayout.changeRow(idx, 'd', dist)
-            # Activate input fields
-            self.poleLayout.activateRow(idx, dist)
-            point = [self.poles.poles[idx]['coordx'],
-                     self.poles.poles[idx]['coordy']]
-            self.drawTool.showMarker(point, idx, 'anchor')
-        
+        for i, pole in enumerate(self.poles.poles):
+            if pole['active']:
+                self.updateMarkerOnMap(i)
+        self.updateLineOnMap()
+        # Update anchors
+        self.updateAnchorState(prevAnchorA, prevAnchorE)
         # self.plot.zoomTo(self.poles.poles[idx])
-        self.poleLayout.changeRow(idx, property_name, newVal)
+        self.poleLayout.changeRow(idx, property_name, newVal, prevAnchorA, prevAnchorE)
         if property_name == 'name':
             # No redraw when user only changes name
             return
@@ -249,22 +227,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
     
     def addPole(self, idx):
         newPoleIdx = idx + 1
-        oldLeftIdx = idx
-        oldRightIdx = idx + 1
-        lowerRange = self.poles.poles[oldLeftIdx]['d']
-        upperRange = self.poles.poles[oldRightIdx]['d']
-        rangeDist = upperRange - lowerRange
-        d = floor(lowerRange + 0.5 * rangeDist)
-        
-        self.poles.add(newPoleIdx, d, manually=True)
-        # TODO: bei add/remove immer sofort arrays neu berechnen und abspeichern
-        [_, _, _, _, _, poleNr] = self.poles.getAsArray(True, True)
-        
-        self.poleLayout.addRow(
-            newPoleIdx, self.poles.poles[newPoleIdx]['nr'],
-            self.poles.poles[newPoleIdx]['name'], d, lowerRange,
-            upperRange, self.poles.poles[newPoleIdx]['h'],
-            self.poles.poles[newPoleIdx]['angle'], poleNr)
+        self.poles.add(newPoleIdx, None, manually=True)
+        self.poleLayout.addRow(newPoleIdx)
         self.addMarkerToMap(newPoleIdx)
         # self.plot.zoomOut()
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
@@ -272,20 +236,36 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
     
     def deletePole(self, idx):
         self.poles.delete(idx)
-        lowerRange = None
-        upperRange = None
-        if idx > 0:
-            lowerRange = self.poles.poles[idx - 1]['d']
-        if idx < len(self.poles.poles) - 1:
-            upperRange = self.poles.poles[idx + 1]['d']
-
-        # TODO: bei add/remove immer sofort arrays neu berechnen und abspeichern
-        [_, _, _, _, _, poleNr] = self.poles.getAsArray(True, True)
-        self.poleLayout.deleteRow(idx, lowerRange, upperRange, poleNr)
+        self.poleLayout.deleteRow(idx)
         self.drawTool.removeMarker(idx)
         # self.plot.zoomOut()
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         self.configurationHasChanged = True
+    
+    def updateAnchorState(self, prevAnchorA, prevAnchorE):
+        """Update anchor markers on map: depending on nature of pole change,
+        anchors can be activated or deactivated in self.poles.update."""
+        if prevAnchorA is not self.poles.hasAnchorA:
+            idxA = 0
+            if self.poles.hasAnchorA:
+                # Anchor A was activated
+                point = [self.poles.poles[0]['coordx'],
+                         self.poles.poles[0]['coordy']]
+                self.drawTool.showMarker(point, idxA, 'anchor')
+            else:
+                # Anchor A was deactivated
+                self.drawTool.hideMarker(idxA)
+
+        if prevAnchorE is not self.poles.hasAnchorE:
+            idxE = len(self.poles.poles)-1
+            if self.poles.hasAnchorE:
+                # Anchor E was activated
+                point = [self.poles.poles[-1]['coordx'],
+                         self.poles.poles[-1]['coordy']]
+                self.drawTool.showMarker(point, idxE, 'anchor')
+            else:
+                # Anchor E was deactivated
+                self.drawTool.hideMarker(idxE)
     
     def updateLineOnMap(self):
         self.drawTool.updateLine(
@@ -435,8 +415,13 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             # Cable was recalculated, update threshold values
             self.thData['plotLabels'] = []
             for i in range(len(self.thData['rows'])):
-                val, location, color, \
-                plotLabels = self.checkThresholdAndLocation(i, resultData[i])
+                thresholdData = self.checkThresholdAndLocation(i, resultData[i])
+                val = ''
+                color = 1
+                location = []
+                plotLabels = []
+                if len(thresholdData) == 4:
+                    val, location, color, plotLabels = thresholdData
                 self.thresholdLayout.updateData(i, 4, val)
                 self.thresholdLayout.updateData(i, 5, {'loc': location, 'col': color})
                 self.thData['rows'][i][4] = val
@@ -524,8 +509,13 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             emptyColumn = 3
         
         for i in range(self.thSize[0]):
-            val, location, color, \
-                plotLabels = self.checkThresholdAndLocation(i, resultData[i])
+            thresholdData = self.checkThresholdAndLocation(i, resultData[i])
+            val = ''
+            color = 1
+            location = []
+            plotLabels = []
+            if len(thresholdData) == 4:
+                val, location, color, plotLabels = thresholdData
             self.thData['rows'][i][0] = infoText[i]
             self.thData['rows'][i][1] = label[i]
             self.thData['rows'][i][2] = thresholdStr[i]

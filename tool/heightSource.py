@@ -287,9 +287,24 @@ class SurveyData(AbstractHeightSource):
             x, y, z = np.genfromtxt(self.path, delimiter=sep, dtype='float64',
                                     usecols=(idxX, idxY, idxZ), unpack=True,
                                     skip_header=1)
-        except Exception as e:
+        except TypeError as e:
             return False
-        self.extent = [np.min(x), np.max(y), np.max(x), np.min(y)]
+        # Check for missing values
+        x_isnan = np.isnan(x)
+        y_isnan = np.isnan(y)
+        z_isnan = np.isnan(z)
+        # Remove whole row
+        x = x[~(x_isnan + y_isnan + z_isnan)]
+        y = y[~(x_isnan + y_isnan + z_isnan)]
+        z = z[~(x_isnan + y_isnan + z_isnan)]
+        
+        if len(x) < 2:
+            return False
+        try:
+            self.extent = [np.min(x), np.max(y), np.max(x), np.min(y)]
+        except TypeError as e:
+            return False
+        
         self.surveyPoints = {
             'x': x,
             'y': y,

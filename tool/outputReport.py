@@ -288,6 +288,8 @@ def generateReportText(confHandler, result, comment, projname):
     for key in orderedParams:
         param = confHandler.params.params[key]
         paramStr = confHandler.params.getParameterAsStr(key) + ''
+        if key == 'Seilsys':
+            paramStr = tr(paramStr)
         sort = param['sort']
         col = int(sort/10) - 1
         row = int(sort % 10)

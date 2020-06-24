@@ -165,8 +165,7 @@ class ProgressDialog(QDialog):
     def onError(self, exception_string):
         self.setWindowTitle(self.tr('SEILAPLAN: Berechnung fehlgeschlagen'))
         self.statusLabel.setText(self.tr('Ein Fehler ist aufgetreten:'))
-        self.resultLabel.setText(textwrap.fill(exception_string, 60)
-                                 .replace('\n', '<br>'))
+        self.resultLabel.setText(self.tr(exception_string))
         self.resultLabel.setHidden(False)
         self.progressBar.setValue(self.progressBar.minimum())
         self.setLayout(self.container)

@@ -56,16 +56,20 @@ def main(progress, project):
 
     progress.sig_text.emit('msg_seillinie')
     [HM, HMidx, optValue, optSTA, optiLen] = out
+    stuetzDist = np.int32(diIdx[HMidx])
 
+    # Check result status
     if not HMidx or HMidx == [0]:
         # Not a single pole location was calculated, no cable line possible
         progress.exception = (
-            "Aufgrund der Geländeform oder der Eingabeparameter konnten keine "
-            "Stützenstandorte bestimmt werden.")
+            "Aufgrund der Gelaendeform oder der Eingabeparameter konnten keine Stuetzenstandorte bestimmt werden.")
         return False
+    # Corresponds last optimized pole with end point?
+    if int(poles.lastPole['d']) != int(stuetzDist[-1]):
+        # It was not possible to calculate poles along the entire profile
+        progress.status.append(3)
     
     # Save optimized poles to Pole() object
-    stuetzDist = np.int32(diIdx[HMidx])
     optiPoles = []
     for idx, d in enumerate(stuetzDist):
         name = ''
@@ -79,10 +83,6 @@ def main(progress, project):
             'name': name
         })
     poles.updateAllPoles('optimization', optiPoles)
-
-    if int(poles.lastPole['d']) != int(profile.di[-1]):
-        # It was not possible to calculate poles along the entire profile
-        progress.status.append(3)
 
     # Calculate precise cable line data
     cableline, force, seil_possible = preciseCable(params, poles, optSTA[0])
