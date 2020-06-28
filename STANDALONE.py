@@ -150,7 +150,7 @@ if __name__ == "__main__":
     # ################## ALL CONFIGURATIONS GO HERE ###########################
     
     # Define the project file you want to load
-    savedProjectFile = "/home/pi/Seilaplan/seilaplan_27.06_1111/Projectsettings.txt"
+    savedProjectFile = r'C:\pfad\zu\Projekteinstellungen.txt'
 
     # Define which functions the code should perform
     #  'optimize':  Run optimization algorithm to define pole positions and
@@ -167,16 +167,6 @@ if __name__ == "__main__":
     outputLocation = '/home/pi/Seilaplan'
     
     # #########################################################################
-
-    # Set language to german
-    print('Initialize QGIS and set language to german...')
-    i18nPath = os.path.join(os.path.dirname(__file__), 'i18n',
-                            'SeilaplanPlugin_de.qm')
-    translator = QTranslator()
-    translator.load(i18nPath)
-    qgs = QgsApplication([], False)
-    qgs.initQgis()
-    QCoreApplication.installTranslator(translator)
     
     # Project settings are loaded
     print('Load configuration from project file...')
