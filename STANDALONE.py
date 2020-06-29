@@ -26,20 +26,22 @@ if 'WIN' in sys.platform.upper():
 # #############################################################################
 
 import os
+# Add shipped libraries to python path (reportlab)
+libPath = os.path.join(os.path.dirname(__file__), 'lib')
+if libPath not in sys.path:
+    sys.path.insert(0, libPath)
+
 import traceback
-from qgis.core import QgsTask
-from qgis.PyQt.QtCore import pyqtSignal
+from qgis.core import QgsTask, QgsApplication
+from qgis.PyQt.QtCore import pyqtSignal, QTranslator, QCoreApplication
 from .configHandler import ConfigHandler
 from .tool.mainSeilaplan import main as mainSeilaplan
 from .tool.cablelineFinal import preciseCable, updateWithCableCoordinates
 from .gui.adjustmentPlot import AdjustmentPlot
-from .tool.outputReport import generateReportText, generateReport, createOutputFolder
-from .tool.outputGeo import generateGeodata, generateCoordTable
-
-# Add plugin library folder to path
-libPath = os.path.join(os.path.dirname(__file__), 'lib')
-if libPath not in sys.path:
-    sys.path.append(libPath)
+from .tool.outputReport import (generateReportText, generateReport,
+    createOutputFolder, generateShortReport)
+from .tool.outputGeo import (organizeDataForExport, generateCoordTable,
+    exportToShape, exportToKML)
 
 
 class ProcessingTask(QgsTask):
@@ -87,19 +89,26 @@ def optimizeCableLine(conf):
     calculates the finale cable line.
     """
     # Ready configuration data from project file
+    print('Set up configuration and input values...')
     success = conf.prepareForCalculation()
     if not success:
-        print('ERROR: Fehler beim vorbereiten der Input Werte')
+        print('ERROR: Error while preparing config data for optimization.')
         exit()
     # Initialize dummy task manager
     task = ProcessingTask(conf)
     res = None
     try:
+        print('Start optimization...')
         # Start optimization
         res = mainSeilaplan(task, conf.project)
     except Exception as e:
         # Catch errors and print them to console
         print(traceback.format_exc())
+        exit()
+        
+    if not res:
+        print('ERROR: Error during optimization algorithm:')
+        print(task.exception)
         exit()
     
     return task.getStatusAsStr(), res['cableline'], res['optSTA'], \
@@ -110,13 +119,16 @@ def calculateFinalCableLine(conf):
     """ This function only calculates the finale cable line. Pole locations
     are read from a project file.
     """
+    print('Set up configuration and input values...')
     success = conf.prepareForCalculation()
     if not success:
-        print('ERROR: Fehler beim vorbereiten der Input Werte')
+        print('ERROR: Error while preparing config data for optimization.')
         exit()
+    print('Load pole setup from file...')
     optiResults, _ = conf.loadCableDataFromFile()
     parameters = conf.params.getSimpleParameterDict()
-    
+
+    print('Calculate precise cable line..')
     cable, force, cable_possible = preciseCable(parameters, conf.project.poles,
                                                 optiResults['optSTA'])
     
@@ -138,8 +150,8 @@ if __name__ == "__main__":
     # ################## ALL CONFIGURATIONS GO HERE ###########################
     
     # Define the project file you want to load
-    #savedProjectFile = r'N:\forema\FPS\Projekte_der_Gruppe\Seillinienplanung\6_Unterlagen_ProgrammierungSeilaplan\Python_Debugging\ProjectFiles\Projekteinstellungen_2_works.txt'
-    savedProjectFile = r'N:\forema\FPS\Projekte_der_Gruppe\Seillinienplanung\2c_Arbeitspaket1_Projekte\Martin_Ammann\Buriwand\buriwand_2.txt'
+    savedProjectFile = r'C:\pfad\zu\Projekteinstellungen.txt'
+
     # Define which functions the code should perform
     #  'optimize':  Run optimization algorithm to define pole positions and
     #               calculate final cable line.
@@ -150,15 +162,19 @@ if __name__ == "__main__":
     perform = 'optimize'
     
     # Do you want do generate output data? (PDFs, CSV, ...)
-    createOutput = False     # or: False
+    createOutput = True     # or: False
     # Where do you want output to be saved?
-    outputLocation = r'N:\forema\FPS\Projekte_der_Gruppe\Seillinienplanung\6_Unterlagen_ProgrammierungSeilaplan\Python_Debugging\BerechneteVersionen'
+    outputLocation = '/home/pi/Seilaplan'
     
     # #########################################################################
-
+    
     # Project settings are loaded
+    print('Load configuration from project file...')
     config = ConfigHandler()
-    config.loadFromFile(savedProjectFile)
+    configLoaded = config.loadFromFile(savedProjectFile)
+    if not configLoaded:
+        print(f"ERROR: Project file does not exist or cannot be loaded.")
+        exit()
     
     if perform == 'optimize':
         
@@ -180,7 +196,7 @@ if __name__ == "__main__":
     # Output creation
     #################
     
-    if createOutput:
+    if createOutput and status != 'notComplete':
         # If you dont want that a certain output type is created, comment out
         #  the related code block below
         
@@ -195,18 +211,26 @@ if __name__ == "__main__":
         # Save project file
         config.saveToFile(os.path.join(outputLoc, 'Projekteinstellungen.txt'))
     
-        # Create report PDF
-        ####
         resultDict = {
             'force': forces,
             'optSTA_arr': [optSTA],
             'duration': ['-', '-', '-'],        # Dummy data for report
         }
-        reportText = generateReportText(config, resultDict, '')
-        generateReport(reportText, outputLoc, projName)
+        
+        # Create short report PDF
+        ####
+        print('Create short report...')
+        generateShortReport(config, resultDict, '', projName, outputLoc)
+        
+        # Create detailed report PDF
+        ####
+        print('Create detailed report...')
+        reportText = generateReportText(config, resultDict, '', projName)
+        generateReport(reportText, outputLoc)
     
         # Create plot PDF
         ###
+        print('Create plot...')
         plotSavePath = os.path.join(outputLoc, 'Diagramm.pdf')
         printPlot = AdjustmentPlot()
         printPlot.initData(profile.di_disp, profile.zi_disp,
@@ -217,10 +241,19 @@ if __name__ == "__main__":
     
         # Generate geo data
         ###
-        generateGeodata(project, poles.poles, cableline, outputLoc)
+        print('Create geo data...')
+        # Put geo data in separate sub folder
+        savePath = os.path.join(outputLoc, 'geodata')
+        os.makedirs(savePath)
+        epsg = project.heightSource.spatialRef
+        geodata = organizeDataForExport(poles.poles, cableline)
+        # Generate shape
+        exportToShape(geodata, epsg, savePath)
+        exportToKML(geodata, epsg, savePath)
     
         # Generate coordinate tables (CSV)
         ###
+        print('Create csv files...')
         generateCoordTable(cableline, profile, poles.poles, outputLoc)
 
     print('STANDALONE finished')

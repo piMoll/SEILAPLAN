@@ -154,8 +154,8 @@ def stuePos(IS, gp, noPoleSection, fixedPoles):
     #   Anfangs- und Endstützenhoehen (0m)
     startBereich = [i for i in range(1, min(5, len(Maststandort)))]
     endBereich = [-1 * (i+1) for i in startBereich]
-    Maststandort[[startBereich]] = 1
-    Maststandort[[endBereich]] = 1
+    Maststandort[tuple([startBereich])] = 1
+    Maststandort[tuple([endBereich])] = 1
 
     # Rückerichtung bestimmen
     #########################
