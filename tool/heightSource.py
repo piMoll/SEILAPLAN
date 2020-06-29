@@ -176,8 +176,15 @@ class Raster(AbstractHeightSource):
     
         xaxis = np.arange(xMin_m, xMax_m, cellsize)
         yaxis = np.arange(yMin_m, yMax_m, cellsize)
-        extent = [xMin_, xMax_, yMin_, yMax_]
+        # Because of floating point issues there are some rare cases where
+        #  numpy.arange() will create one more entry than necessary
+        if len(xaxis) != cols:
+            xaxis = xaxis[:-1]
+        if len(yaxis) != rows:
+            yaxis = yaxis[:-1]
         
+        extent = [xMin_, xMax_, yMin_, yMax_]
+
         self.subraster = {
             'xaxis': xaxis,
             'yaxis': yaxis,
