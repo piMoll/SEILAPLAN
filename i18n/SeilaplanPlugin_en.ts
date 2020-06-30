@@ -1170,7 +1170,7 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/saveDialog.py" line="175"/>
         <source>Kurzbericht</source>
-        <translation type="unfinished"></translation>
+        <translation>Short report</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="176"/>
@@ -1419,12 +1419,12 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/progressDialog.py" line="168"/>
         <source>Aufgrund der Gelaendeform oder der Eingabeparameter konnten keine Stuetzenstandorte bestimmt werden.</source>
-        <translation type="unfinished"></translation>
+        <translation>Due to shape of the terrain or the input values, no support positions could be determined.</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="168"/>
         <source>Fehler in Optimierungsalgorithmus.</source>
-        <translation type="unfinished"></translation>
+        <translation>Error in optimization algorithm.</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="44"/>

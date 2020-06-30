@@ -1154,7 +1154,7 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/saveDialog.py" line="175"/>
         <source>Kurzbericht</source>
-        <translation type="unfinished"></translation>
+        <translation>Relazione breve</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="176"/>
@@ -1402,12 +1402,12 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/progressDialog.py" line="168"/>
         <source>Aufgrund der Gelaendeform oder der Eingabeparameter konnten keine Stuetzenstandorte bestimmt werden.</source>
-        <translation type="unfinished"></translation>
+        <translation>A causa della forma del terreno o dei valori d’input, non è stato possibile determinare la posizioni di cavalletti.</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="168"/>
         <source>Fehler in Optimierungsalgorithmus.</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore nell&apos; algoritmo di ottimizzazione.</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="44"/>
