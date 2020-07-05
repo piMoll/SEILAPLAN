@@ -507,12 +507,12 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Min. BHD</source>
-        <translation type="unfinished"></translation>
+        <translation>DPU minimale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Angabe BDH bei zu steilem Winkel nicht moeglich</source>
-        <translation type="unfinished"></translation>
+        <translation>* l&apos;indicazione del DPU minimale non e possibile in caso di un angolo troppo ripido</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -579,7 +579,7 @@ fune caricata</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Haftungsausschluss</source>
-        <translation type="unfinished"></translation>
+        <translation>E esclusa qualsiasi responsabilità nel cadro della GNU General Public Licence versione 2 e ulteriori (www.gnu.org/licenses). Il metodo di calcolo implementato e basato su Zweifel (1960). Per il calcolo si presume che la fune portante sia fissato delle due parte con un ancoraggio fisso.</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -594,12 +594,12 @@ fune caricata</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Eingabewerte</source>
-        <translation type="unfinished"></translation>
+        <translation>Valori d&apos;input</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Stuetzen- und Ankerdimensionen</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimensione dei cavalletti e dei ancoraggi</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -609,7 +609,7 @@ fune caricata</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Anker- und Spannfelder</source>
-        <translation type="unfinished"></translation>
+        <translation>Campate dei ancoraggi e cavalletti</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -1154,7 +1154,7 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/saveDialog.py" line="175"/>
         <source>Kurzbericht</source>
-        <translation type="unfinished"></translation>
+        <translation>Relazione breve</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="176"/>
@@ -1402,12 +1402,12 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/progressDialog.py" line="168"/>
         <source>Aufgrund der Gelaendeform oder der Eingabeparameter konnten keine Stuetzenstandorte bestimmt werden.</source>
-        <translation type="unfinished"></translation>
+        <translation>A causa della forma del terreno o dei valori d’input, non è stato possibile determinare la posizioni di cavalletti.</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="168"/>
         <source>Fehler in Optimierungsalgorithmus.</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore nell&apos; algoritmo di ottimizzazione.</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="44"/>
@@ -2041,12 +2041,12 @@ Tipi di file supportati:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
         <source>Fuellfaktor Erklaerung</source>
-        <translation type="unfinished"></translation>
+        <translation>Il coefficiente di riempimento e il rapporto tra la superficie metallica della fune et la superficie effetiva. </translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
         <source>Fuellfaktor</source>
-        <translation type="unfinished">coefficiente di riempimento della fune</translation>
+        <translation>coefficiente di riempimento della fune</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="902"/>

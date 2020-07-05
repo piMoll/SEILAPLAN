@@ -514,12 +514,12 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Min. BHD</source>
-        <translation>Min. DBH</translation>
+        <translation>Minimal DBH</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Angabe BDH bei zu steilem Winkel nicht moeglich</source>
-        <translation type="unfinished"></translation>
+        <translation>* specification of the minimal DBH is not possible in case of a too steep angle</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -587,7 +587,7 @@ loaded cable</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Haftungsausschluss</source>
-        <translation type="unfinished"></translation>
+        <translation>All liability is excluded within the framework of the GNU General Public Licence version 2 or later (www.gnu.org/licenses). The implemented mathematical method is based on Zweifel (1960). The calculation is done for cables with fixed anchors on both ends.</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -617,7 +617,7 @@ loaded cable</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Anker- und Spannfelder</source>
-        <translation type="unfinished"></translation>
+        <translation>Span and anchor fields</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -1170,7 +1170,7 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/saveDialog.py" line="175"/>
         <source>Kurzbericht</source>
-        <translation type="unfinished"></translation>
+        <translation>Short report</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="176"/>
@@ -1419,12 +1419,12 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/progressDialog.py" line="168"/>
         <source>Aufgrund der Gelaendeform oder der Eingabeparameter konnten keine Stuetzenstandorte bestimmt werden.</source>
-        <translation type="unfinished"></translation>
+        <translation>Due to shape of the terrain or the input values, no support positions could be determined.</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="168"/>
         <source>Fehler in Optimierungsalgorithmus.</source>
-        <translation type="unfinished"></translation>
+        <translation>Error in optimization algorithm.</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="44"/>
@@ -2056,7 +2056,7 @@ Supported data types:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
         <source>Fuellfaktor Erklaerung</source>
-        <translation>The fill factor is the relation of the metallic cross section of the rope to the area of its circumscribed circle.</translation>
+        <translation>The fill factor is the relation between the metallic cross sectional area of the rope and the area of its circumscribed circle.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="897"/>

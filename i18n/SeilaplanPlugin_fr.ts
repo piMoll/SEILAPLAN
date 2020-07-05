@@ -510,12 +510,12 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Min. BHD</source>
-        <translation>Min. DHP</translation>
+        <translation>DHP minimale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Angabe BDH bei zu steilem Winkel nicht moeglich</source>
-        <translation type="unfinished"></translation>
+        <translation>* l&apos;indication du DHP minimale n&apos;est pas possible en cas d&apos;un angle trop raide</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -582,7 +582,7 @@ câble chargé</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Haftungsausschluss</source>
-        <translation type="unfinished"></translation>
+        <translation>Toute résponsabilité est exclue dans le cadre du GNU General Public Licence version 2 et ultérieures (www.gnu.org/licenses). La méthode de calcul implémentée est basée sur Zweifel (1960). Pour le calcul il est supposé que le câble porteur soit ancré de manière fixe aux deux extrémités.</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -602,7 +602,7 @@ câble chargé</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Stuetzen- und Ankerdimensionen</source>
-        <translation>Dimensions des supports et ancres</translation>
+        <translation>Dimensions des supports et des ancrages</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -612,7 +612,7 @@ câble chargé</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Anker- und Spannfelder</source>
-        <translation type="unfinished"></translation>
+        <translation>Champs d&apos;ancrage et de tension</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -1162,7 +1162,7 @@ d&apos;après Zweifel</translation>
     <message>
         <location filename="../gui/saveDialog.py" line="175"/>
         <source>Kurzbericht</source>
-        <translation type="unfinished"></translation>
+        <translation>Rapport bref</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="176"/>
@@ -1410,12 +1410,12 @@ d&apos;après Zweifel</translation>
     <message>
         <location filename="../gui/progressDialog.py" line="168"/>
         <source>Aufgrund der Gelaendeform oder der Eingabeparameter konnten keine Stuetzenstandorte bestimmt werden.</source>
-        <translation type="unfinished"></translation>
+        <translation>En raison de la forme du terrain ou des valeurs d’entrée, aucun emplacement des supports n’a pu être déterminé.</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="168"/>
         <source>Fehler in Optimierungsalgorithmus.</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur dans l&apos;algorithme d&apos;optimisation.</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="44"/>
@@ -2042,7 +2042,8 @@ Types de fichier supportés:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
         <source>Fuellfaktor Erklaerung</source>
-        <translation>Le rapport entre la somme des sections droites métalliques nominales de tous les fils du câble et la circonférence du câble, fondé sur son diamètre nominal.</translation>
+        <translatorcomment>Le rapport entre la somme des sections droites métalliques nominales de tous les fils du câble et la circonférence du câble, fondé sur son diamètre nominal.</translatorcomment>
+        <translation>Le facteur de remplissage est le rapport entre la surface métallique du câble et la surface en coupe effective.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
