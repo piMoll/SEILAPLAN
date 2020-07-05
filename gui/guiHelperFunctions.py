@@ -50,6 +50,7 @@ def tr(message, **kwargs):
     # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
     return QCoreApplication.translate('@default', message)
 
+
 class DialogWithImage(QDialog):
     def __init__(self):
         QDialog.__init__(self)

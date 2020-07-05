@@ -61,8 +61,6 @@ class SeilaplanPlugin(object):
         localePath = os.path.join(self.plugin_dir, 'i18n',
                                   'SeilaplanPlugin_{}.qm'.format(qgisLocale))
 
-        # TODO: Add more locales to array when translations are ready or
-        #   they need to be tested: ['de', 'en', 'fr', ...]
         if qgisLocale in ['de', 'en', 'fr', 'it'] and os.path.exists(localePath):
             useLocale = localePath
 

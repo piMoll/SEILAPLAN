@@ -67,8 +67,10 @@ class ProgressDialog(QDialog):
         spacer2 = QSpacerItem(40, 20, QSizePolicy.Expanding,
                              QSizePolicy.Minimum)
         self.cancelButton.setStandardButtons(QDialogButtonBox.Cancel)
+        self.cancelButton.button(QDialogButtonBox.Cancel).setText(self.tr("Abbrechen"))
         self.cancelButton.clicked.connect(self.onAbort)
         self.closeButton.setStandardButtons(QDialogButtonBox.Close)
+        self.closeButton.button(QDialogButtonBox.Close).setText(self.tr("Schliessen"))
         self.closeButton.clicked.connect(self.onClose)
         self.hbox.addWidget(self.rerunButton)
         self.hbox.addItem(spacer2)

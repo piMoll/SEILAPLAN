@@ -56,6 +56,8 @@ class DialogSaveParamset(QDialog):
         buttonBox = QDialogButtonBox(main_widget)
         buttonBox.setStandardButtons(QDialogButtonBox.Ok |
                                      QDialogButtonBox.Cancel)
+        buttonBox.button(QDialogButtonBox.Ok).setText(self.tr("OK"))
+        buttonBox.button(QDialogButtonBox.Cancel).setText(self.tr("Abbrechen"))
         buttonBox.accepted.connect(self.apply)
         buttonBox.rejected.connect(self.onCancel)
         
@@ -188,8 +190,10 @@ class DialogOutputOptions(QDialog):
         self.checkBoxCoords.setChecked(self.confHandler.outputOptions['coords'])
         # Create Ok/Cancel Button and connect signal
         buttonBox = QDialogButtonBox(main_widget)
-        buttonBox.setStandardButtons(QDialogButtonBox.Cancel |
-                                     QDialogButtonBox.Save)
+        buttonBox.setStandardButtons(QDialogButtonBox.Save |
+                                     QDialogButtonBox.Cancel)
+        buttonBox.button(QDialogButtonBox.Save).setText(self.tr("Speichern"))
+        buttonBox.button(QDialogButtonBox.Cancel).setText(self.tr("Abbrechen"))
         buttonBox.button(QDialogButtonBox.Cancel).clicked.connect(self.onCancel)
         buttonBox.button(QDialogButtonBox.Save).clicked.connect(self.onSave)
         # Layout

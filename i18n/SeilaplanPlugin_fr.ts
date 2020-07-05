@@ -885,6 +885,21 @@ actuelle</translation>
         <translation>Est-ce que vous désirez d&apos;enregistrer les résultats?</translation>
     </message>
     <message>
+        <location filename="../gui/adjustmentDialog.py" line="729"/>
+        <source>Abbrechen</source>
+        <translation>Annuler</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="730"/>
+        <source>Nein</source>
+        <translation>Non</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="731"/>
+        <source>Ja</source>
+        <translation>Qui</translation>
+    </message>
+    <message>
         <location filename="../gui/adjustmentDialog.py" line="469"/>
         <source>Es wird der im Parameterset definierte minimale Bodenabstand mit einer Aufloesung von 1m getestet.</source>
         <translation>Il est testé la garde au sol, définie dans le bloc de paramètres, avec une résolution de 1m.</translation>
@@ -1185,6 +1200,16 @@ d&apos;après Zweifel</translation>
         <translation>Table des coordonnée des supports et de la ligne de câble</translation>
     </message>
     <message>
+        <location filename="../gui/saveDialog.py" line="195"/>
+        <source>Speichern</source>
+        <translation>Sauvegarder</translation>
+    </message>
+    <message>
+        <location filename="../gui/saveDialog.py" line="196"/>
+        <source>Abbrechen</source>
+        <translation>Annuler</translation>
+    </message>
+    <message>
         <location filename="../gui/saveDialog.py" line="235"/>
         <source>Output Ordner auswaehlen</source>
         <translation>Choisir le classeur de l&apos;output</translation>
@@ -1201,6 +1226,16 @@ d&apos;après Zweifel</translation>
         <location filename="../gui/saveDialog.py" line="45"/>
         <source>Bezeichnung Parameterset</source>
         <translation>Désignation du bloc de paramètres</translation>
+    </message>
+    <message>
+        <location filename="../gui/saveDialog.py" line="59"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../gui/saveDialog.py" line="60"/>
+        <source>Abbrechen</source>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="111"/>
@@ -1386,6 +1421,16 @@ d&apos;après Zweifel</translation>
         <source>zurueck zum Startfenster</source>
         <translatorcomment>Startfenster?</translatorcomment>
         <translation>retour à la masque de saisie</translation>
+    </message>
+    <message>
+        <location filename="../gui/progressDialog.py" line="70"/>
+        <source>Abbrechen</source>
+        <translation>Annuler</translation>
+    </message>
+    <message>
+        <location filename="../gui/progressDialog.py" line="73"/>
+        <source>Schliessen</source>
+        <translation>Fermer</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="131"/>

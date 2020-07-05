@@ -720,16 +720,28 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         if self.isRecalculating or self.configurationHasChanged:
             return
         if self.unsavedChanges:
-            reply = QMessageBox.information(self,
-                self.tr('Nicht gespeicherte Aenderungen'),
-                self.tr('Moechten Sie die Ergebnisse speichern?'),
-                QMessageBox.Cancel | QMessageBox.No | QMessageBox.Yes)
-            if reply == QMessageBox.Yes:
+            msgBox = QMessageBox()
+            msgBox.setIcon(QMessageBox.Information)
+            msgBox.setWindowTitle(self.tr('Nicht gespeicherte Aenderungen'))
+            msgBox.setText(self.tr('Moechten Sie die Ergebnisse speichern?'))
+            msgBox.setStandardButtons(QMessageBox.Cancel |
+                                      QMessageBox.No | QMessageBox.Yes)
+            cancelBtn = msgBox.button(QMessageBox.Cancel)
+            cancelBtn.setText(self.tr("Abbrechen"))
+            noBtn = msgBox.button(QMessageBox.No)
+            noBtn.setText(self.tr("Nein"))
+            yesBtn = msgBox.button(QMessageBox.Yes)
+            yesBtn.setText(self.tr("Ja"))
+            msgBox.show()
+            msgBox.exec()
+            
+            if msgBox.clickedButton() == yesBtn:
                 self.onSave()
                 self.drawTool.reset()
-            elif reply == QMessageBox.Cancel:
+            elif msgBox.clickedButton() == cancelBtn:
                 event.ignore()
-            elif reply == QMessageBox.No:
+                return
+            elif msgBox.clickedButton() == noBtn:
                 self.drawTool.reset()
         else:
             self.drawTool.reset()

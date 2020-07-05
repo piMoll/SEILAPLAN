@@ -906,6 +906,21 @@ Nel caso di un angolo tra 2° e 4° la fune portante deve essere atrezzato con u
         <source>Moechten Sie die Ergebnisse speichern?</source>
         <translation>Desideri salvare i risultati?</translation>
     </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="729"/>
+        <source>Abbrechen</source>
+        <translation>Annullare</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="730"/>
+        <source>Nein</source>
+        <translation>No</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="731"/>
+        <source>Ja</source>
+        <translation>Si</translation>
+    </message>
 </context>
 <context>
     <name>AdjustmentDialogUI</name>
@@ -1177,6 +1192,16 @@ dopo Zweifel</translation>
         <translation>Tabella delle coordinate dei cavalletti et della linea di gru a cavo</translation>
     </message>
     <message>
+        <location filename="../gui/saveDialog.py" line="195"/>
+        <source>Speichern</source>
+        <translation>Salva</translation>
+    </message>
+    <message>
+        <location filename="../gui/saveDialog.py" line="196"/>
+        <source>Abbrechen</source>
+        <translation>Annullare</translation>
+    </message>
+    <message>
         <location filename="../gui/saveDialog.py" line="235"/>
         <source>Output Ordner auswaehlen</source>
         <translation>Scegliere la cartella del output</translation>
@@ -1193,6 +1218,16 @@ dopo Zweifel</translation>
         <location filename="../gui/saveDialog.py" line="45"/>
         <source>Bezeichnung Parameterset</source>
         <translation>Designazione della serie di parametri</translation>
+    </message>
+    <message>
+        <location filename="../gui/saveDialog.py" line="59"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../gui/saveDialog.py" line="60"/>
+        <source>Abbrechen</source>
+        <translation>Annullare</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="111"/>
@@ -1378,6 +1413,16 @@ dopo Zweifel</translation>
         <source>zurueck zum Startfenster</source>
         <translatorcomment>maschera d&apos;inserimento wird syynonym verwendet, wir können die Kurzform nehmen</translatorcomment>
         <translation>ritornare alla maschera</translation>
+    </message>
+    <message>
+        <location filename="../gui/progressDialog.py" line="70"/>
+        <source>Abbrechen</source>
+        <translation>Annullare</translation>
+    </message>
+    <message>
+        <location filename="../gui/progressDialog.py" line="73"/>
+        <source>Schliessen</source>
+        <translation>Chiudere</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="131"/>

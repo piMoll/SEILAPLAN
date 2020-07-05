@@ -889,6 +889,21 @@ solution</translation>
         <translation>Do you like to save the results?</translation>
     </message>
     <message>
+        <location filename="../gui/adjustmentDialog.py" line="729"/>
+        <source>Abbrechen</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="730"/>
+        <source>Nein</source>
+        <translation>No</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="731"/>
+        <source>Ja</source>
+        <translation>Yes</translation>
+    </message>
+    <message>
         <location filename="../gui/adjustmentDialog.py" line="469"/>
         <source>Es wird der im Parameterset definierte minimale Bodenabstand mit einer Aufloesung von 1m getestet.</source>
         <translation>There is tested the minimal clearance to the ground, defined in the parameter set, with a resolution of 1m.</translation>
@@ -1193,6 +1208,16 @@ by Zweifel</translation>
         <translation>Coordinate tables of the supports and of the cable line</translation>
     </message>
     <message>
+        <location filename="../gui/saveDialog.py" line="195"/>
+        <source>Speichern</source>
+        <translation>Save</translation>
+    </message>
+    <message>
+        <location filename="../gui/saveDialog.py" line="196"/>
+        <source>Abbrechen</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
         <location filename="../gui/saveDialog.py" line="235"/>
         <source>Output Ordner auswaehlen</source>
         <translation>Choose output folder</translation>
@@ -1209,6 +1234,16 @@ by Zweifel</translation>
         <location filename="../gui/saveDialog.py" line="45"/>
         <source>Bezeichnung Parameterset</source>
         <translation>Denomination of the parameter set</translation>
+    </message>
+    <message>
+        <location filename="../gui/saveDialog.py" line="59"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../gui/saveDialog.py" line="60"/>
+        <source>Abbrechen</source>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="111"/>
@@ -1395,6 +1430,16 @@ by Zweifel</translation>
         <location filename="../gui/progressDialog.py" line="61"/>
         <source>zurueck zum Startfenster</source>
         <translation>return to the input mask</translation>
+    </message>
+    <message>
+        <location filename="../gui/progressDialog.py" line="70"/>
+        <source>Abbrechen</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <location filename="../gui/progressDialog.py" line="73"/>
+        <source>Schliessen</source>
+        <translation>Close</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="131"/>
