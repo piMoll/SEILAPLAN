@@ -364,6 +364,13 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             # Show data on map and in gui
             self.loadSurveyData()
         
+        else:
+            # Raster could not be loaded correctly
+            self.rasterField.blockSignals(True)
+            self.rasterField.setCurrentIndex(-1)
+            self.rasterField.blockSignals(False)
+            self.fieldSurveyDataPath.setText('')
+        
         # Update start and end point
         self.checkPoints()
         
