@@ -426,17 +426,17 @@ def preciseCable(IS, poles, STA):
     #   am höchsten Punkt
     # TODO Leo: Die hier berechnete max. Seilzugkraft (siehe Kurzbericht) berücksichtigt die toten Anker nicht --> anpassen?
     kraft['MaxSeilzugkraft_L'][0] = STfm_Last_max + (np.max(z) - zfm[feld_max]) * qT
-    #   an Startpunkt
+    #   am Startpunkt der Optimierung (1. Stütze oder befahrbare Verankerung --> pole oder anchor_pole)
     kraft['MaxSeilzugkraft_L'][1] = STfm_Last_max + (z[0] - zfm[feld_max]) * qT
-    #   an Endpunkt
+    #   am Endpunkt der Optimierung (letzte Stütze oder befahrbare Verankerung --> pole oder anchor_pole)
     kraft['MaxSeilzugkraft_L'][2] = STfm_Last_max + (z[-1] - zfm[feld_max]) * qT
 
     # Falls tote Anker vorhanden sind
     # TODO Leo: folgende Zeilen berechnen TmaxA/E für tote Anker, bitte überprüfen
-    if poles.poles[0]['poleType'] == 'anchor' and poles.poles[0]['active']:
+    if poles.hasAnchorA:
         anchorA = poles.poles[0]
         kraft['MaxSeilzugkraft_L'][3] = STfm_Last_max + (anchorA['z'] - zfm[feld_max]) * qT
-    if poles.poles[-1]['poleType'] == 'anchor' and poles.poles[-1]['active']:
+    if poles.hasAnchorE:
         anchorE = poles.poles[-1]
         kraft['MaxSeilzugkraft_L'][4] = STfm_Last_max + (anchorE['z'] - zfm[feld_max]) * qT
 
