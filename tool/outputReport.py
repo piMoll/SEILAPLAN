@@ -402,7 +402,7 @@ def generateShortReport(confHandler, result, comment, projname, outputLoc):
     for pole in polesArray:
         leerseil = np.nan
         lastseil = np.nan
-        if pole['poleType'] == 'pole':
+        if pole['poleType'] != 'anchor':
             leerseil = kraft['Leerseilknickwinkel'][i]
             lastseil = kraft['Lastseilknickwinkel'][i]
             i += 1
