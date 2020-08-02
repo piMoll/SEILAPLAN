@@ -179,7 +179,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         
         # Create layout to modify poles
         lowerDistRange = floor(-1 * self.anchorBuffer[0])
-        upperDistRange = floor(self.profile.profileLength)
+        upperDistRange = floor(self.profile.profileLength + self.anchorBuffer[1])
         self.poleLayout.setInitialGui([lowerDistRange, upperDistRange])
 
         # Fill in cable parameters
