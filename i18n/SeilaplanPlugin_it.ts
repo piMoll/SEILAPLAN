@@ -2126,5 +2126,15 @@ C&apos;è cercato la soluzione che, in prima priorità, minimizza il numero dei 
         <source>Daten in CSV-Datei konnten nicht geladen werden.</source>
         <translation>I dati del file CSV non hanno potuto essere caricato.</translation>
     </message>
+    <message>
+        <location filename="../tool/heightSource.py" line="96"/>
+        <source>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tool/heightSource.py" line="219"/>
+        <source>Interpolation auf Raster nicht moeglich.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

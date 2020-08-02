@@ -2113,5 +2113,15 @@ Pfad zu Dokumentation:
         <source>Daten in CSV-Datei konnten nicht geladen werden.</source>
         <translation>Daten aus CSV-Datei konnten nicht geladen werden.</translation>
     </message>
+    <message>
+        <location filename="../tool/heightSource.py" line="96"/>
+        <source>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</source>
+        <translation>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</translation>
+    </message>
+    <message>
+        <location filename="../tool/heightSource.py" line="219"/>
+        <source>Interpolation auf Raster nicht moeglich.</source>
+        <translation>Interpolation auf Raster nicht möglich.</translation>
+    </message>
 </context>
 </TS>

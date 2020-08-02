@@ -93,8 +93,9 @@ class Raster(AbstractHeightSource):
         # Get raster info from gdal raster object
         elif path:
             if not os.path.exists(path):
-                self.errorMsg = f"Raster-Datei {path} ist nicht vorhanden, " \
-                                f"Raster kann nicht geladen werden."
+                self.errorMsg = self.tr("Raster-Datei _path_ ist nicht vorhanden, "
+                                        "Raster kann nicht geladen werden.")
+                self.errorMsg = self.errorMsg.replace('_path_', path)
                 return
             self.path = path
             ds = gdal.Open(path)
@@ -215,7 +216,7 @@ class Raster(AbstractHeightSource):
         try:
             points_lin = ipol.interpn((y, x), z, coords)
         except ValueError:
-            raise Exception('Interpolation auf Raster nicht möglich.')
+            raise Exception(self.tr('Interpolation auf Raster nicht moeglich.'))
         return points_lin
 
 

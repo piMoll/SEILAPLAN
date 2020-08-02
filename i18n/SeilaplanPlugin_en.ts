@@ -2141,5 +2141,15 @@ The algorithm calculates a solution, which in first priority is minimizing the n
         <source>Daten in CSV-Datei konnten nicht geladen werden.</source>
         <translation>Data from CSV file could not be loaded.</translation>
     </message>
+    <message>
+        <location filename="../tool/heightSource.py" line="96"/>
+        <source>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</source>
+        <translation>Raster file _path_ is not present and cannot be loaded.</translation>
+    </message>
+    <message>
+        <location filename="../tool/heightSource.py" line="219"/>
+        <source>Interpolation auf Raster nicht moeglich.</source>
+        <translation>Interpolation on raster not possible.</translation>
+    </message>
 </context>
 </TS>
