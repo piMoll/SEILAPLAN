@@ -684,7 +684,7 @@ fune caricata</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Horiz. Aufloesung moegl. Stuetzenstandorte</source>
-        <translation>Risoluzione orizzontale di potenziali posizioni di cavalletti</translation>
+        <translation type="unfinished">Risoluzione orizzontale di potenziali posizioni di cavalletti</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -853,7 +853,7 @@ attuale</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="473"/>
         <source>Es wird die maximal auftretende Seilzugkraft am Lastseil mit der Last in Feldmitte berechnet.</source>
-        <translation>C&apos;è calcolato il massimo della forza di trazione alla fune caricata col carico trovandosi in metà della portata.</translation>
+        <translation type="unfinished">C&apos;è calcolato il massimo della forza di trazione alla fune caricata col carico trovandosi in metà della portata.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="513"/>
@@ -1852,7 +1852,7 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2252"/>
         <source>Punktart</source>
-        <translation>Tipo di punto</translation>
+        <translation>elemento di costruzione</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2291"/>
@@ -2106,7 +2106,7 @@ Tipi di file supportati:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="905"/>
         <source>Erklaerungen Berechnungsbuttons</source>
-        <translation>Elaborazione manuale della linea:
+        <translation type="unfinished">Elaborazione manuale della linea:
 Non c&apos;è effetuato un&apos;ottimizzazione né una proposizione per il tracciamento della linea. Il tracciamento può essere fatto direttamente a mano.
 
 Ottimizzare automaticamente la linea:
@@ -2129,12 +2129,13 @@ C&apos;è cercato la soluzione che, in prima priorità, minimizza il numero dei 
     <message>
         <location filename="../tool/heightSource.py" line="96"/>
         <source>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>kontrollieren</translatorcomment>
+        <translation>File della griglia _path_ non esiste, griglia non ha potuto essere caricato.</translation>
     </message>
     <message>
         <location filename="../tool/heightSource.py" line="219"/>
         <source>Interpolation auf Raster nicht moeglich.</source>
-        <translation type="unfinished"></translation>
+        <translation>Interpolazione su griglia non possibile.</translation>
     </message>
 </context>
 </TS>

@@ -687,7 +687,7 @@ câble chargé</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Horiz. Aufloesung moegl. Stuetzenstandorte</source>
-        <translation>Résolution horizontale des emplacements de support possibles</translation>
+        <translation type="unfinished">Résolution horizontale des emplacements de support possibles</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -907,7 +907,7 @@ actuelle</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="473"/>
         <source>Es wird die maximal auftretende Seilzugkraft am Lastseil mit der Last in Feldmitte berechnet.</source>
-        <translation>Il est calculé le maximum de la force de traction au câble chargé avec la charge au milieu de la portée.</translation>
+        <translation type="unfinished">Il est calculé le maximum de la force de traction au câble chargé avec la charge au milieu de la portée.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="477"/>
@@ -1855,7 +1855,7 @@ d&apos;après Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2252"/>
         <source>Punktart</source>
-        <translation>Type de point</translation>
+        <translation>élément de construction</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2291"/>
@@ -2108,7 +2108,7 @@ Types de fichier supportés:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="905"/>
         <source>Erklaerungen Berechnungsbuttons</source>
-        <translation>Elaboration manuelle de la ligne de câble:
+        <translation type="unfinished">Elaboration manuelle de la ligne de câble:
 Il n&apos;y a pas d&apos;optimisation et de proposition du tracement de la ligne de câble. Le tracement peut être fait directement à la main.
 
 Optimiser automatiquement la ligne:
@@ -2131,12 +2131,13 @@ Il est recherché la solution qui, en première priorité, minimalise le nombre 
     <message>
         <location filename="../tool/heightSource.py" line="96"/>
         <source>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>kontrollieren</translatorcomment>
+        <translation>Fichier du grille _path_ n&apos;existe pas, grille n&apos;a pas pu être chargé.</translation>
     </message>
     <message>
         <location filename="../tool/heightSource.py" line="219"/>
         <source>Interpolation auf Raster nicht moeglich.</source>
-        <translation type="unfinished"></translation>
+        <translation>Interpolation sur grille impossible.</translation>
     </message>
 </context>
 </TS>

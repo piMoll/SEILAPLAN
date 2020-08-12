@@ -692,7 +692,7 @@ loaded cable</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Horiz. Aufloesung moegl. Stuetzenstandorte</source>
-        <translation>Horizontal resolution of potential support positions</translation>
+        <translation type="unfinished">Horizontal resolution of potential support positions</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -911,7 +911,7 @@ solution</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="473"/>
         <source>Es wird die maximal auftretende Seilzugkraft am Lastseil mit der Last in Feldmitte berechnet.</source>
-        <translation>There is calculated the maximal occuring rope traction force on the loaded cable with the load in the middle of the span.</translation>
+        <translation type="unfinished">There is calculated the maximal occuring rope traction force on the loaded cable with the load in the middle of the span.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="477"/>
@@ -1865,7 +1865,7 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2252"/>
         <source>Punktart</source>
-        <translation>Point type</translation>
+        <translation>construction element</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2291"/>
@@ -2121,7 +2121,7 @@ Supported data types:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="905"/>
         <source>Erklaerungen Berechnungsbuttons</source>
-        <translation>Manual drafting of the cable line:
+        <translation type="unfinished">Manual drafting of the cable line:
 No optimization is performed and no cable line layout is proposed. The layout can be directly edited manually.
 
 Automatical optimization of the cable line:
@@ -2144,7 +2144,7 @@ The algorithm calculates a solution, which in first priority is minimizing the n
     <message>
         <location filename="../tool/heightSource.py" line="96"/>
         <source>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</source>
-        <translation>Raster file _path_ is not present and cannot be loaded.</translation>
+        <translation>Raster file _path_ is not present, raster cannot be loaded.</translation>
     </message>
     <message>
         <location filename="../tool/heightSource.py" line="219"/>
