@@ -905,13 +905,13 @@ Lösung</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="481"/>
         <source>Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften.</source>
-        <translation type="unfinished">Grössere Knickwinkel reduzieren die Bruchlast des Tragseils und führen zu höheren Sattelkräften.
+        <translation>Grössere Knickwinkel reduzieren die Bruchlast des Tragseils und führen zu höheren Sattelkräften.
 Hinweis: Beim Endmast liegt der Grenzwert höher (ca. 90°).</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="485"/>
         <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
-        <translation type="unfinished">Bei Knickwinkeln unter 2° besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Die Stütze muss erhöht werden.
+        <translation>Bei Knickwinkeln unter 2° besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Die Stütze muss erhöht werden.
 Bei Knickwinkeln zwischen 2° und 4° muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</translation>
     </message>
 </context>
@@ -2045,7 +2045,7 @@ Unterstützte Dateitypen:
 Es wird keine Optimierung durchgeführt und kein Seillinienlayout vorgeschlagen. Das Layout kann direkt manuell bearbeitet werden.
 
 Seillinie automatisch optimieren:
-Es wird diejenige Lösung gesucht, welche in erster Priorität eine minimale Anzahl an Stützen aufweist und in zweiter Priorität die Stützenhöhe minimiert. Ein minimaler Leerseil- bzw. maximaler Lastseilknickwinkel wird in der Optimierung noch nicht beachtet.
+Es wird diejenige Lösung gesucht, welche in erster Priorität eine minimale Anzahl an Stützen aufweist und in zweiter Priorität die Stützenhöhe minimiert. Ein minimaler Leerseil- bzw. maximaler Lastseilknickwinkel wird in der Optimierung noch nicht berücksichtigt.
 </translation>
     </message>
     <message>

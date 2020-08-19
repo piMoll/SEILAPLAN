@@ -211,7 +211,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="132"/>
         <source>gewaehlte Seilzugkraft bei der Anfangsstuetze</source>
-        <translation>Selected rope tension force at the first support</translation>
+        <translation>Selected cable tensile force at the first support</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="137"/>
@@ -221,7 +221,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="139"/>
         <source>Laenge Leerseil bei 0 kN Seilzugkraft</source>
-        <translation>Length of the unloaded cable at the rope tension force of 0 kN</translation>
+        <translation>Length of the unloaded cable at the cable tensile force of 0 kN</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="152"/>
@@ -237,17 +237,17 @@
     <message>
         <location filename="../tool/outputReport.py" line="153"/>
         <source>Seilzugkraft an der Anfangsstuetze</source>
-        <translation>Rope traction force at the first support</translation>
+        <translation>Cable tensile force at the first support</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="155"/>
         <source>Seilzugkraft an der Endstuetze</source>
-        <translation>Rope traction force at the terminal support</translation>
+        <translation>Cable tensile force at the terminal support</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="158"/>
         <source>Seilzugkraft des Leerseils an den Stuetzen</source>
-        <translation>Rope traction force of the unloaded cable at the supports</translation>
+        <translation>Cable tensile force of the unloaded cable at the supports</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="162"/>
@@ -257,7 +257,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="164"/>
         <source>der Seilzugkraft an den Stuetzen</source>
-        <translation>of the cable traction force at the supports</translation>
+        <translation>of the cable tensile force at the supports</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="248"/>
@@ -267,7 +267,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="168"/>
         <source>Max. auftretende Seilzugkraft</source>
-        <translation>Maximal rope traction force</translation>
+        <translation>Maximal cable tensile force</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="169"/>
@@ -292,7 +292,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="178"/>
         <source>Max. auftretende Seilzugkraft gemessen in Feldmitte</source>
-        <translation>Maximal rope traction force measured in the middle of the span</translation>
+        <translation>Maximal cable tensile force measured in the middle of the span</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="181"/>
@@ -368,7 +368,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="224"/>
         <source>Seilzugkraft</source>
-        <translation>Rope traction force</translation>
+        <translation>Cable tensile force</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="249"/>
@@ -524,7 +524,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Maximal berechnete Seilzugkraft</source>
-        <translation>Maximal rope traction force</translation>
+        <translation>Maximal cable tensile force</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -692,7 +692,7 @@ loaded cable</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Horiz. Aufloesung moegl. Stuetzenstandorte</source>
-        <translation type="unfinished">Horizontal resolution of potential support positions</translation>
+        <translation>Minimal distance of potential support positions</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -850,7 +850,7 @@ solution</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="512"/>
         <source>Max. auftretende Seilzugkraft</source>
-        <translation>Maximal rope traction force</translation>
+        <translation>Maximal cable tensile force</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="513"/>
@@ -911,7 +911,7 @@ solution</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="473"/>
         <source>Es wird die maximal auftretende Seilzugkraft am Lastseil mit der Last in Feldmitte berechnet.</source>
-        <translation type="unfinished">There is calculated the maximal occuring rope traction force on the loaded cable with the load in the middle of the span.</translation>
+        <translation>There is calculated the maximal occuring cable tensile force on the loaded cable with the load in the middle of the span. If the admissible value is exceeded (highlighted in red), one or several spans have to be shortened (additional supports).</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="477"/>
@@ -921,12 +921,13 @@ solution</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="481"/>
         <source>Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften.</source>
-        <translation>Bigger angles reduce the rupture load of the skyline and result in higher saddle forces.</translation>
+        <translation>Bigger angles reduce the rupture load of the skyline and result in higher saddle forces.
+Note: At the final support the threshold value is higher (approx. 90°).</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="485"/>
         <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
-        <translation>With angles below 2° there is the risk that the skyline lifts off the saddle (red).
+        <translation>With angles below 2° there is the risk that the skyline lifts off the saddle (red). The support has to be heightened.
 With angles between 2° and 4° the skyline has to be locked by a hold-down plate (orange).</translation>
     </message>
 </context>
@@ -1712,7 +1713,7 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1482"/>
         <source>Minimal gewaehlte Seilzugkraft</source>
-        <translation>Minimal selected rope traction force</translation>
+        <translation>Minimal selected cable tensile force</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1549"/>
@@ -2121,12 +2122,11 @@ Supported data types:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="905"/>
         <source>Erklaerungen Berechnungsbuttons</source>
-        <translation type="unfinished">Manual drafting of the cable line:
+        <translation>Manual drafting of the cable line:
 No optimization is performed and no cable line layout is proposed. The layout can be directly edited manually.
 
 Automatical optimization of the cable line:
-The algorithm calculates a solution, which in first priority is minimizing the number of supports and in second priority the height of the supports.
-</translation>
+The algorithm calculates a solution, which in first priority is minimizing the number of supports and in second priority the height of the supports. The minimal angle of the unloaded cable and the maximal angle of the loaded cable are not considered yet in the optimization.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="906"/>
