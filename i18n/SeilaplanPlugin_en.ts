@@ -922,7 +922,7 @@ solution</translation>
         <location filename="../gui/adjustmentDialog.py" line="481"/>
         <source>Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften.</source>
         <translation>Bigger angles reduce the rupture load of the skyline and result in higher saddle forces.
-Note: At the final support the threshold value is higher (approx. 90°).</translation>
+Note: At the final support the threshold value is higher (approx. 60°).</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="485"/>

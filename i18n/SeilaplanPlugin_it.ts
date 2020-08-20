@@ -874,7 +874,7 @@ attuale</translation>
         <location filename="../gui/adjustmentDialog.py" line="481"/>
         <source>Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften.</source>
         <translation>Angoli più grandi causano un carico di rottura ridotto della fune portante e delle forze aumentate sulle selle.
-Indicazione: Al cavalletto terminale il valore limite è superiore (ca. 90°).</translation>
+Indicazione: Al cavalletto terminale il valore limite è superiore (ca. 60°).</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="515"/>

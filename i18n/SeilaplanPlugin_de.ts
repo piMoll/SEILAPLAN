@@ -906,7 +906,7 @@ Lösung</translation>
         <location filename="../gui/adjustmentDialog.py" line="481"/>
         <source>Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften.</source>
         <translation>Grössere Knickwinkel reduzieren die Bruchlast des Tragseils und führen zu höheren Sattelkräften.
-Hinweis: Beim Endmast liegt der Grenzwert höher (ca. 90°).</translation>
+Hinweis: Beim Endmast liegt der Grenzwert höher (ca. 60°).</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="485"/>

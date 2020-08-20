@@ -918,7 +918,7 @@ actuelle</translation>
         <location filename="../gui/adjustmentDialog.py" line="481"/>
         <source>Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften.</source>
         <translation>Des angles plus grands induisent une réduction de la charge de rupture du câble porteur et une augmentation des forces sur les étriers.
-Notice explicative: Au mât terminal la valeur limite est plus haute (env. 90°).</translation>
+Notice explicative: Au mât terminal la valeur limite est plus haute (env. 60°).</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="485"/>
