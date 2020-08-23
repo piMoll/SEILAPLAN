@@ -684,7 +684,7 @@ fune caricata</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Horiz. Aufloesung moegl. Stuetzenstandorte</source>
-        <translation>Risoluzione orizzontale di potenziali posizioni di cavalletti</translation>
+        <translation>Distanza minimale dei potenziali posizioni di cavalletti</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -853,7 +853,7 @@ attuale</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="473"/>
         <source>Es wird die maximal auftretende Seilzugkraft am Lastseil mit der Last in Feldmitte berechnet.</source>
-        <translation>C&apos;è calcolato il massimo della forza di trazione alla fune caricata col carico trovandosi in metà della portata.</translation>
+        <translation>C&apos;è calcolato il massimo della forza di trazione alla fune caricata col carico trovandosi in metà della portata. Se il valore ammissibile viene trapassato (evidenziato in rosso), una o parecchie portate devono essere accorciate (cavalletti aggiuntivi).</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="513"/>
@@ -873,7 +873,8 @@ attuale</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="481"/>
         <source>Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften.</source>
-        <translation>Angoli più grandi causano un carico di rottura ridotto della fune portante e delle forze aumentate sulle selle.</translation>
+        <translation>Angoli più grandi causano un carico di rottura ridotto della fune portante e delle forze aumentate sulle selle.
+Indicazione: Al cavalletto terminale il valore limite è superiore (ca. 60°).</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="515"/>
@@ -883,7 +884,7 @@ attuale</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="485"/>
         <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
-        <translation>Nel caso di un angolo convesso di 2° c&apos;è il rischio che la fune portante si decolla della sella (rosso).
+        <translation>Nel caso di un angolo convesso di 2° c&apos;è il rischio che la fune portante si decolla della sella (rosso). Il cavalletto deve essere alzato.
 Nel caso di un angolo tra 2° e 4° la fune portante deve essere atrezzato con un coprifune per sella (orange).</translation>
     </message>
     <message>
@@ -1852,7 +1853,7 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2252"/>
         <source>Punktart</source>
-        <translation>Tipo di punto</translation>
+        <translation>elemento di costruzione</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2291"/>
@@ -2150,8 +2151,7 @@ Tipi di file supportati:
 Non c&apos;è effetuato un&apos;ottimizzazione né una proposizione per il tracciamento della linea. Il tracciamento può essere fatto direttamente a mano.
 
 Ottimizzare automaticamente la linea:
-C&apos;è cercato la soluzione che, in prima priorità, minimizza il numero dei cavalletti e, in seconda priorità, l&apos;altezza dei cavalletti.
-</translation>
+C&apos;è cercato la soluzione che, in prima priorità, minimizza il numero dei cavalletti e, in seconda priorità, l&apos;altezza dei cavalletti. L&apos;angolo minimale della fune non caricata et l&apos;angolo massimale della fune caricata non sono ancora considerati nel calcolo d&apos;ottimizzazione.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="906"/>
@@ -2169,12 +2169,13 @@ C&apos;è cercato la soluzione che, in prima priorità, minimizza il numero dei 
     <message>
         <location filename="../tool/heightSource.py" line="96"/>
         <source>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>kontrollieren</translatorcomment>
+        <translation>File della griglia _path_ non esiste, griglia non ha potuto essere caricato.</translation>
     </message>
     <message>
         <location filename="../tool/heightSource.py" line="219"/>
         <source>Interpolation auf Raster nicht moeglich.</source>
-        <translation type="unfinished"></translation>
+        <translation>Interpolazione su griglia non possibile.</translation>
     </message>
 </context>
 </TS>

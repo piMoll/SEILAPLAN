@@ -687,7 +687,7 @@ câble chargé</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Horiz. Aufloesung moegl. Stuetzenstandorte</source>
-        <translation>Résolution horizontale des emplacements de support possibles</translation>
+        <translation>Espacement minimal des emplacements de support possibles</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -907,7 +907,7 @@ actuelle</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="473"/>
         <source>Es wird die maximal auftretende Seilzugkraft am Lastseil mit der Last in Feldmitte berechnet.</source>
-        <translation>Il est calculé le maximum de la force de traction au câble chargé avec la charge au milieu de la portée.</translation>
+        <translation>Il est calculé le maximum de la force de traction au câble chargé avec la charge au milieu de la portée. Si la valeur admissible est dépassée (marquée en rouge), une ou plusieures portées doivent être raccourcies (supports additionnels).</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="477"/>
@@ -917,12 +917,13 @@ actuelle</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="481"/>
         <source>Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften.</source>
-        <translation>Des angles plus grands induisent une réduction de la charge de rupture du câble porteur et une augmentation des forces sur les étriers.</translation>
+        <translation>Des angles plus grands induisent une réduction de la charge de rupture du câble porteur et une augmentation des forces sur les étriers.
+Notice explicative: Au mât terminal la valeur limite est plus haute (env. 60°).</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="485"/>
         <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
-        <translation>En cas des angles inférieurs à 2° il y a le risque que le câble porteur s&apos;enlève de l&apos;étrier (rouge).
+        <translation>En cas des angles inférieurs à 2° il y a le risque que le câble porteur s&apos;enlève de l&apos;étrier (rouge). L&apos; appui doit être surélevé.
 En cas des angles entre 2° et 4° le câble porteur doit être sécurisé par une patte de fixation (orange).</translation>
     </message>
 </context>
@@ -1855,7 +1856,7 @@ d&apos;après Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2252"/>
         <source>Punktart</source>
-        <translation>Type de point</translation>
+        <translation>élément de construction</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2291"/>
@@ -2152,8 +2153,7 @@ Types de fichier supportés:
 Il n&apos;y a pas d&apos;optimisation et de proposition du tracement de la ligne de câble. Le tracement peut être fait directement à la main.
 
 Optimiser automatiquement la ligne:
-Il est recherché la solution qui, en première priorité, minimalise le nombre de supports et, en deuxième priorité, la hauteur des supports.
-</translation>
+Il est recherché la solution qui, en première priorité, minimalise le nombre de supports et, en deuxième priorité, la hauteur des supports. L&apos;angle minimal du câble non chargé et l&apos;angle maximal du câble chargé ne sont pas encore pris en compte dans le calcul d&apos;optimisation.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="906"/>
@@ -2171,12 +2171,13 @@ Il est recherché la solution qui, en première priorité, minimalise le nombre 
     <message>
         <location filename="../tool/heightSource.py" line="96"/>
         <source>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>kontrollieren</translatorcomment>
+        <translation>Fichier du grille _path_ n&apos;existe pas, grille n&apos;a pas pu être chargé.</translation>
     </message>
     <message>
         <location filename="../tool/heightSource.py" line="219"/>
         <source>Interpolation auf Raster nicht moeglich.</source>
-        <translation type="unfinished"></translation>
+        <translation>Interpolation sur grille impossible.</translation>
     </message>
 </context>
 </TS>
