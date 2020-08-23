@@ -2064,6 +2064,16 @@ Tipi di file supportati:
         <translation>Punto terminale</translation>
     </message>
     <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="902"/>
+        <source>Ab dieser Seilzugkraft beginnt die Optimierungsrechnung.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="903"/>
+        <source>Minimal gewaehlte Seilzugkraft</source>
+        <translation>Forza di trazione minimale scegliata</translation>
+    </message>
+    <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="885"/>
         <source>Erklaerungen zum Bodenabstand</source>
         <translation>Nota sull&apos; altezza da terra</translation>

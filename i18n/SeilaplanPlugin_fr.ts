@@ -2065,6 +2065,16 @@ Types de fichier supportés:
         <translation>Point terminal</translation>
     </message>
     <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="902"/>
+        <source>Ab dieser Seilzugkraft beginnt die Optimierungsrechnung.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="903"/>
+        <source>Minimal gewaehlte Seilzugkraft</source>
+        <translation>Force de traction minimale choisie</translation>
+    </message>
+    <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="885"/>
         <source>Erklaerungen zum Bodenabstand</source>
         <translation>Explications à titre de la garde au sol</translation>

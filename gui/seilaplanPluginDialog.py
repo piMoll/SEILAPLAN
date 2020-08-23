@@ -163,6 +163,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.infoPointE.clicked.connect(self.onPointEInfoShow)
         self.infoBodenabstand.clicked.connect(self.onShowInfoImg)
         self.infoStuetzen.clicked.connect(self.onShowInfoImg)
+        self.infoMinSK.clicked.connect(self.onShowInfoFieldMinSK)
         self.infoFieldE.clicked.connect(self.onShowInfoFieldE)
         self.infoFieldFuellF.clicked.connect(self.onShowInfoFieldFuellF)
         self.infoFieldSFT.clicked.connect(self.onShowInfoFieldSFT)
@@ -896,6 +897,11 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.imgBox.label.setPixmap(myPixmap)
         self.imgBox.setLayout(self.imgBox.container)
         self.imgBox.show()
+    
+    def onShowInfoFieldMinSK(self):
+        msg = self.tr('Ab dieser Seilzugkraft beginnt die Optimierungsrechnung.')
+        QMessageBox.information(self, self.tr("Minimal gewaehlte Seilzugkraft"),
+                                msg, QMessageBox.Ok)
     
     def onShowInfoFieldE(self):
         msg = self.tr('Elastizitaetsmodul Tragseil Erklaerung')

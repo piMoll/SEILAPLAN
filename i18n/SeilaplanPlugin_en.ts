@@ -1793,7 +1793,7 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1963"/>
         <source>Seillinie direkt bearbeiten</source>
-        <translation>Manual editing of the cable line</translation>
+        <translation>Manually edit cable line</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1973"/>
@@ -1804,7 +1804,7 @@ by Zweifel</translation>
         <location filename="../gui/seilaplanDialog.ui" line="1976"/>
         <source>Stuetzen optimieren</source>
         <translatorcomment>Abkürzung finden</translatorcomment>
-        <translation>Automatical optimization of the cable line</translation>
+        <translation>Optimize cable line</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1993"/>
@@ -2079,6 +2079,16 @@ Supported data types:
         <translation>End point</translation>
     </message>
     <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="902"/>
+        <source>Ab dieser Seilzugkraft beginnt die Optimierungsrechnung.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="903"/>
+        <source>Minimal gewaehlte Seilzugkraft</source>
+        <translation>Minimal selected rope traction force</translation>
+    </message>
+    <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="885"/>
         <source>Erklaerungen zum Bodenabstand</source>
         <translation>Explications to the ground clearance</translation>
@@ -2121,10 +2131,10 @@ Supported data types:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="905"/>
         <source>Erklaerungen Berechnungsbuttons</source>
-        <translation>Manual drafting of the cable line:
+        <translation>Manually edit cable line:
 No optimization is performed and no cable line layout is proposed. The layout can be directly edited manually.
 
-Automatical optimization of the cable line:
+Optimize cable line:
 The algorithm calculates a solution, which in first priority is minimizing the number of supports and in second priority the height of the supports.
 </translation>
     </message>

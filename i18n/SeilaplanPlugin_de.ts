@@ -2008,6 +2008,16 @@ Unterstützte Dateitypen:
         <translation>Endpunkt</translation>
     </message>
     <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="902"/>
+        <source>Ab dieser Seilzugkraft beginnt die Optimierungsrechnung.</source>
+        <translation>Ab dieser Seilzugkraft beginnt die Optimierungsrechnung.</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="903"/>
+        <source>Minimal gewaehlte Seilzugkraft</source>
+        <translation>Minimal gewählte Seilzugkraft</translation>
+    </message>
+    <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
         <source>Elastizitaetsmodul Tragseil Erklaerung</source>
         <translation>Materialkennwert des Tragseils, welcher den Zusammenhang zwischen Spannung und Dehnung des Seils beschreibt. Der Kennwert variiert kaum, weshalb der Default-Wert für die meisten üblichen Seile übernommen werden kann.</translation>
