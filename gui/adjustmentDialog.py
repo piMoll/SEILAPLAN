@@ -582,7 +582,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             # Replace nan with 0 so that no Runtime Warning is thrown
             localCopy = np.nan_to_num(data)
             maxVal = np.nanmax(localCopy)
-            greaterThan = localCopy > self.thData['thresholds'][idx]
+            # Check if values are over defined threshold. Also ignore NAN values
+            greaterThan = (localCopy > self.thData['thresholds'][idx]) * ~np.isnan(data)
             # Check which pole is affected
             locationPole = np.ravel(np.argwhere(greaterThan))
             for poleIdx in locationPole:
@@ -595,7 +596,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             # Replace nan with 0 so that no Runtime Warning is thrown
             localCopy = np.nan_to_num(data)
             maxVal = np.nanmin(localCopy)
-            smallerThan = localCopy < self.thData['thresholds'][idx][1]
+            # Check if values are under defined threshold. Also ignore NAN values
+            smallerThan = (localCopy < self.thData['thresholds'][idx][1]) * ~np.isnan(data)
             # Angles between 2 and 4 degrees have error level 'attention'
             if self.thData['thresholds'][idx][0] < maxVal < self.thData['thresholds'][idx][1]:
                 color = 2
@@ -623,7 +625,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             self.selectedThresholdRow = None
             return
         # There was no new selection but a redraw of the table was done, so
-        #  current selection has be added to the plot again
+        #  current selection has to be added to the plot again
         if row is None:
             if self.selectedThresholdRow is not None:
                 row = self.selectedThresholdRow
