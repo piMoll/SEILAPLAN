@@ -1913,6 +1913,36 @@ dopo Zweifel</translation>
     <name>SeilaplanPluginDialog</name>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="438"/>
+        <source>Parameterset loeschen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="439"/>
+        <source>Standardparameterset kann nicht geloescht werden.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="439"/>
+        <source>Moechten Sie das Parameterset wirklich loeschen?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="452"/>
+        <source>Nein</source>
+        <translation>No</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="454"/>
+        <source>Ja</source>
+        <translation>Si</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="462"/>
+        <source>Ein Fehler ist aufgetreten. Parameterset kann nicht geloescht werden.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="438"/>
         <source>OSM_Karte</source>
         <translation>mappa_OSM</translation>
     </message>

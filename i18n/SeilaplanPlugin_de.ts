@@ -1531,6 +1531,11 @@ nach Zweifel</translation>
         <translation>Eigenschaften der Seillinie in neuem Parameterset abspeichern</translation>
     </message>
     <message>
+        <location filename="../gui/seilaplanDialog.ui" line="179"/>
+        <source>Parameterset loeschen</source>
+        <translation>Parameterset löschen</translation>
+    </message>
+    <message>
         <location filename="../gui/seilaplanDialog.ui" line="208"/>
         <source>Seillinie</source>
         <translation>Seillinie</translation>
@@ -1900,6 +1905,36 @@ nach Zweifel</translation>
 </context>
 <context>
     <name>SeilaplanPluginDialog</name>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="438"/>
+        <source>Parameterset loeschen</source>
+        <translation>Parameterset löschen</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="439"/>
+        <source>Standardparameterset kann nicht geloescht werden.</source>
+        <translation>Standardparameterset kann nicht gelöscht werden.</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="439"/>
+        <source>Moechten Sie das Parameterset wirklich loeschen?</source>
+        <translation>Möchten Sie das Parameterset wirklich löschen?</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="452"/>
+        <source>Nein</source>
+        <translation>Nein</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="454"/>
+        <source>Ja</source>
+        <translation>Ja</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="462"/>
+        <source>Ein Fehler ist aufgetreten. Parameterset kann nicht geloescht werden.</source>
+        <translation>Ein Fehler ist aufgetreten. Parameterset kann nicht gelöscht werden.</translation>
+    </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="438"/>
         <source>OSM_Karte</source>

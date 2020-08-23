@@ -798,6 +798,17 @@ class ParameterConfHandler(AbstractConfHandler):
             for property_name, value in self.parameterSets[setname].items():
                 f.writelines(f"{property_name}\t{value}\n")
     
+    def removeParameterSet(self, setname):
+        fileName = validateFilename(setname)
+        savePath = os.path.join(self.SETS_PATH, f'{fileName}.txt')
+        if not os.path.isfile(savePath):
+            return False
+        # Remove file on disk
+        os.remove(savePath)
+        # Remove set from parameter handler
+        del self.parameterSets[setname]
+        return True
+    
     def castToNumber(self, dtype, value):
         # Cast value to correct type
         if value == '' and dtype != 'string':

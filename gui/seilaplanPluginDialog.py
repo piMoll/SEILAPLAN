@@ -182,6 +182,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         # Drop down field for parameter set choices
         self.fieldParamSet.currentIndexChanged.connect(self.setParameterSet)
         self.buttonSaveParamset.clicked.connect(self.onSaveParameterSet)
+        self.buttonRemoveParamset.clicked.connect(self.onRemoveParameterSet)
         
         # Action for changed Coordinates (when coordinate is changed by hand)
         self.coordAx.editingFinished.connect(
@@ -328,15 +329,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         
         # Load all predefined and user-defined parameter sets from the
         # config folder
-        parameterSetNames = self.paramHandler.getParametersetNames()
-        # Add set names to drop down
-        self.fieldParamSet.blockSignals(True)
-        self.fieldParamSet.addItems(parameterSetNames)
-        self.fieldParamSet.blockSignals(False)
-        # Set standard parameter set
         self.paramHandler.setParameterSet(self.paramHandler.defaultSet)
-        self.fieldParamSet.setCurrentIndex(
-            self.fieldParamSet.findText(self.paramHandler.defaultSet))
+        self.fillParametersetList()
+        
         self.fillInValues()
         
         # Set point types
@@ -377,16 +372,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         
         # Load all predefined and user-defined parameter sets from the
         # config folder (maybe a new set was added when project was opened)
-        parameterSetNames = self.paramHandler.getParametersetNames()
-        # Add set names to drop down
-        self.fieldParamSet.blockSignals(True)
-        self.fieldParamSet.clear()
-        self.fieldParamSet.addItems(parameterSetNames)
-        self.fieldParamSet.blockSignals(False)
-        if self.paramHandler.currentSetName:
-            self.fieldParamSet.setCurrentText(self.paramHandler.currentSetName)
-        else:
-            self.fieldParamSet.setCurrentIndex(-1)
+        self.fillParametersetList()
         # Fill in parameter values
         self.fillInValues()
         # Emit point type change so that crane value can be removed
@@ -398,6 +384,16 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             self.projectHandler.getPointTypeAsIdx('A'))
         self.fieldTypeE.setCurrentIndex(
             self.projectHandler.getPointTypeAsIdx('E'))
+    
+    def fillParametersetList(self):
+        self.fieldParamSet.blockSignals(True)
+        self.fieldParamSet.clear()
+        self.fieldParamSet.addItems(self.paramHandler.getParametersetNames())
+        self.fieldParamSet.blockSignals(False)
+        if self.paramHandler.currentSetName:
+            self.fieldParamSet.setCurrentText(self.paramHandler.currentSetName)
+        else:
+            self.fieldParamSet.setCurrentIndex(-1)
     
     def setParameterSet(self):
         name = self.fieldParamSet.currentText()
@@ -433,6 +429,46 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             self.fieldParamSet.addItem(setname)
             self.fieldParamSet.setCurrentText(setname)
     
+    def onRemoveParameterSet(self):
+        currParamset = self.fieldParamSet.currentText()
+        # No action if there is no parameter set specified
+        if currParamset == '':
+            return
+        # Standard set cannot be deleted
+        if currParamset == self.paramHandler.defaultSet:
+            QMessageBox.critical(self, self.tr('Parameterset loeschen'),
+                self.tr('Standardparameterset kann nicht geloescht werden.'), QMessageBox.Ok)
+            return
+        
+        # Ask before removing
+        msgBox = QMessageBox()
+        msgBox.setIcon(QMessageBox.Information)
+        msgBox.setWindowTitle(self.tr('Parameterset loeschen'))
+        msgBox.setText(self.tr('Moechten Sie das Parameterset wirklich loeschen?'))
+        msgBox.setStandardButtons(QMessageBox.No | QMessageBox.Yes)
+        noBtn = msgBox.button(QMessageBox.No)
+        noBtn.setText(self.tr("Nein"))
+        yesBtn = msgBox.button(QMessageBox.Yes)
+        yesBtn.setText(self.tr("Ja"))
+        msgBox.show()
+        msgBox.exec()
+        
+        if msgBox.clickedButton() == yesBtn:
+            success = self.paramHandler.removeParameterSet(currParamset)
+            if not success:
+                QMessageBox.critical(self, self.tr('Parameterset loeschen'),
+                    self.tr('Ein Fehler ist aufgetreten. Parameterset kann nicht geloescht werden.'), QMessageBox.Ok)
+            else:
+                # Set default set
+                self.paramHandler.setParameterSet(self.paramHandler.defaultSet)
+                # Update drop down list to remove set
+                self.fillParametersetList()
+                # Fill in values of default set
+                self.fillInValues()
+                # Emit point type change so that crane value can be removed
+                #  from field if point type is not crane
+                self.onTypeAChange()
+            
     def updateRasterList(self):
         rasterlist = self.getAvailableRaster()
         self.addRastersToDropDown(rasterlist)
