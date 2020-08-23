@@ -476,7 +476,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             params.getParameter('Bodenabst_min'),
             float(params.getParameter('zul_SK')),
             None,
-            30,
+            [30, 60],
             [2, 4],
         ]
         self.thData = {
@@ -497,8 +497,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             f"{params.getParameterAsStr('Bodenabst_min')} {units[0]}",
             f"{params.getParameter('zul_SK')} {units[1]}",
             '-',
-            '30 °',
-            '2 / 4 °'
+            '30 / 60 °',
+            '2 ; 4 °'
         ]
         # Where to put the current threshold values
         valColumn = 3
@@ -579,17 +579,33 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         
         # Lastseilknickwinkel
         elif idx == 3 and not np.all(np.isnan(data)):
-            # Replace nan with 0 so that no Runtime Warning is thrown
-            localCopy = np.nan_to_num(data)
-            maxVal = np.nanmax(localCopy)
-            # Check if values are over defined threshold. Also ignore NAN values
-            greaterThan = (localCopy > self.thData['thresholds'][idx]) * ~np.isnan(data)
-            # Check which pole is affected
-            locationPole = np.ravel(np.argwhere(greaterThan))
-            for poleIdx in locationPole:
-                pole = self.poles.poles[self.poles.idxA + poleIdx]
-                location.append(pole['d'])
-                plotLabel.append(self.formatThreshold(localCopy[poleIdx], idx))
+            maxValArr = [np.nan, np.nan]
+            # Loop through all angles and test poles in between start and end
+            #   with threshold 1, start and end pole with threshold 2
+            for poleIdx, angle in enumerate(data):
+                isOverThreshold = False
+                # NAN values will be ignored
+                if angle == np.nan:
+                    continue
+                # Test first and last pole of optimization with second threshold
+                if poleIdx + self.poles.idxA in [self.poles.idxA, self.poles.idxE]:
+                    # Check if current value is new max value
+                    maxValArr[1] = np.nanmax([maxValArr[1], angle])
+                    # Check if angle is higher than second threshold
+                    if angle > self.thData['thresholds'][idx][1]:
+                        isOverThreshold = True
+                else:
+                    # Check if current value is new max value
+                    maxValArr[0] = np.nanmax([maxValArr[0], angle])
+                    if angle > self.thData['thresholds'][idx][0]:
+                        isOverThreshold = True
+                    
+                if isOverThreshold:
+                    pole = self.poles.poles[self.poles.idxA + poleIdx]
+                    location.append(pole['d'])
+                    plotLabel.append(self.formatThreshold(angle, idx))
+            # Format the two max values
+            valStr = ' / '.join([self.formatThreshold(maxVal, idx) for maxVal in maxValArr])
         
         # Leerseilknickwinkel
         elif idx == 4 and not np.all(np.isnan(data)):
@@ -616,6 +632,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
     def formatThreshold(self, val, idx):
         if isinstance(val, float) and val is not np.nan:
             return f"{round(val, 1)} {self.thData['units'][idx]}"
+        else:
+            return '-'
     
     def showThresholdInPlot(self, row=None):
         # Click on row was emitted but row is already selected -> deselect
