@@ -425,6 +425,8 @@ def preciseCable(IS, poles, STA):
     kraft['MaxSeilzugkraft_L'] = np.array([np.nan]*5)
     #   am höchsten Punkt
     # TODO Leo: Die hier berechnete max. Seilzugkraft (siehe Kurzbericht) berücksichtigt die toten Anker nicht --> anpassen?
+    # Comment Leo (24.8.2020), Nein so lassen ist OK, genau genommen, wird die Kraft auf Sattelhöhe ausgegeben, aber
+    # welche Kraft dann am Anker wirkt ist unrealistisch zu berechnen (mehrere Ankerseile)
     kraft['MaxSeilzugkraft_L'][0] = STfm_Last_max + (np.max(z) - zfm[feld_max]) * qT
     #   am Startpunkt der Optimierung (1. Stütze oder befahrbare Verankerung --> pole oder anchor_pole)
     kraft['MaxSeilzugkraft_L'][1] = STfm_Last_max + (z[0] - zfm[feld_max]) * qT
@@ -433,12 +435,14 @@ def preciseCable(IS, poles, STA):
 
     # Falls tote Anker vorhanden sind
     # TODO Leo: folgende Zeilen berechnen TmaxA/E für tote Anker, bitte überprüfen
+    # genau genommen, wird die Kraft auf Sattelhöhe ausgegeben, aber
+    # für die Praxis ist das genügend genau
     if poles.hasAnchorA:
         anchorA = poles.poles[0]
-        kraft['MaxSeilzugkraft_L'][3] = STfm_Last_max + (anchorA['z'] - zfm[feld_max]) * qT
+        kraft['MaxSeilzugkraft_L'][3] = STfm_Last_max + (z[0] - zfm[feld_max]) * qT
     if poles.hasAnchorE:
         anchorE = poles.poles[-1]
-        kraft['MaxSeilzugkraft_L'][4] = STfm_Last_max + (anchorE['z'] - zfm[feld_max]) * qT
+        kraft['MaxSeilzugkraft_L'][4] = STfm_Last_max + (z[-1] - zfm[feld_max]) * qT
 
     # Auftretende Maximalseilzugkraft...
     kraft['MaxSeilzugkraft'] = np.array([[np.nan]*anzFelder]*3)
