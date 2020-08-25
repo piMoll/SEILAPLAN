@@ -1693,7 +1693,7 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1336"/>
         <source>Horiz. Aufloesung moegl. Stuetzenstandorte</source>
-        <translation>Horizontal resolution of potential support positions</translation>
+        <translation>Minimal distance of potential support positions</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1387"/>
@@ -1928,17 +1928,17 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="438"/>
         <source>Parameterset loeschen</source>
-        <translation type="unfinished"></translation>
+        <translation>Delete set of parameters</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="439"/>
         <source>Standardparameterset kann nicht geloescht werden.</source>
-        <translation type="unfinished"></translation>
+        <translation>Standard set of parameters cannot be deleted.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="439"/>
         <source>Moechten Sie das Parameterset wirklich loeschen?</source>
-        <translation type="unfinished"></translation>
+        <translation>Do you really want to delete the set of parameters?</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="452"/>
@@ -1953,7 +1953,7 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="462"/>
         <source>Ein Fehler ist aufgetreten. Parameterset kann nicht geloescht werden.</source>
-        <translation type="unfinished"></translation>
+        <translation>An error has occured. Set of parameters cannot be deleted.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="438"/>
@@ -2112,7 +2112,7 @@ Supported data types:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="902"/>
         <source>Ab dieser Seilzugkraft beginnt die Optimierungsrechnung.</source>
-        <translation type="unfinished"></translation>
+        <translation>The optimization begins at this cable tensile force.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="903"/>

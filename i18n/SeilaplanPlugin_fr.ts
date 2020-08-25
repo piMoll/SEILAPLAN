@@ -1683,7 +1683,7 @@ d&apos;après Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1336"/>
         <source>Horiz. Aufloesung moegl. Stuetzenstandorte</source>
-        <translation>Résolution horizontale des emplacements de support possibles</translation>
+        <translation>Espacement minimal des emplacements de support possibles</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1387"/>

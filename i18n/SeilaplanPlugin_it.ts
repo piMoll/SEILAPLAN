@@ -1679,7 +1679,7 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1336"/>
         <source>Horiz. Aufloesung moegl. Stuetzenstandorte</source>
-        <translation>Risoluzione orizzontale di potenziali posizioni di cavalletti</translation>
+        <translation>Distanza minimale dei potenziali posizioni di cavalletti</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1387"/>
