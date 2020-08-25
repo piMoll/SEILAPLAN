@@ -1918,17 +1918,17 @@ d&apos;après Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="438"/>
         <source>Parameterset loeschen</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer le bloc de paramètres</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="439"/>
         <source>Standardparameterset kann nicht geloescht werden.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le bloc de paramètres ne peut pas être supprimé.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="439"/>
         <source>Moechten Sie das Parameterset wirklich loeschen?</source>
-        <translation type="unfinished"></translation>
+        <translation>Est-ce que vous désirez supprimer le bloc de paramètres?</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="452"/>
@@ -1943,7 +1943,7 @@ d&apos;après Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="462"/>
         <source>Ein Fehler ist aufgetreten. Parameterset kann nicht geloescht werden.</source>
-        <translation type="unfinished"></translation>
+        <translation>Une erreur est survenue. Le bloc de paramètres ne peut pas être supprimé.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="438"/>
@@ -2098,7 +2098,7 @@ Types de fichier supportés:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="902"/>
         <source>Ab dieser Seilzugkraft beginnt die Optimierungsrechnung.</source>
-        <translation type="unfinished"></translation>
+        <translation>L’optimisation commence à cette force de traction.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="903"/>

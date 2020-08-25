@@ -1915,17 +1915,17 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="438"/>
         <source>Parameterset loeschen</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancellare il set di parametri</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="439"/>
         <source>Standardparameterset kann nicht geloescht werden.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il set di parametri standard non può essere cancellato.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="439"/>
         <source>Moechten Sie das Parameterset wirklich loeschen?</source>
-        <translation type="unfinished"></translation>
+        <translation>Vuoi davvero cancellare il set di parametri?</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="452"/>
@@ -1940,7 +1940,7 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="462"/>
         <source>Ein Fehler ist aufgetreten. Parameterset kann nicht geloescht werden.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si è verificato un errore. I parametri impostati non possono essere cancellati.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="438"/>
@@ -2097,7 +2097,7 @@ Tipi di file supportati:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="902"/>
         <source>Ab dieser Seilzugkraft beginnt die Optimierungsrechnung.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il calcolo di ottimizzazione viene calcolato utilizzando questa forza di trasmissione della fune.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="903"/>
