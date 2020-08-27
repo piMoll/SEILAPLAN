@@ -75,8 +75,8 @@ class AdjustmentDialogParams(object):
             lambda: self.paramHasChanged('qZ'))
         self.parent.fieldqR.editingFinished.connect(
             lambda: self.paramHasChanged('qR'))
-        self.parent.fieldqR.editingFinished.connect(
-            lambda: self.paramHasChanged('qR'))
+        self.parent.fieldVorsp.editingFinished.connect(
+            lambda: self.paramHasChanged('Vorsp'))
         self.parent.fieldBabstMin.editingFinished.connect(
             lambda: self.paramHasChanged('Bodenabst_min'))
 
