@@ -1676,7 +1676,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1336"/>
         <source>Horiz. Aufloesung moegl. Stuetzenstandorte</source>
-        <translation>Horiz. Auflösung mögl. Stützenstandorte</translation>
+        <translation>Minimaler Abstand mögl. Stützenstandorte</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1387"/>

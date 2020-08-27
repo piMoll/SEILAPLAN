@@ -150,7 +150,7 @@ if __name__ == "__main__":
     # ################## ALL CONFIGURATIONS GO HERE ###########################
     
     # Define the project file you want to load
-    savedProjectFile = r'C:\pfad\zu\Projekteinstellungen.txt'
+    savedProjectFile = r'N:\forema\FPS\Projekte_der_Gruppe\Seillinienplanung\2c_AP1_Projekte\Martin_Ammann\Ammann_Buriwand\Versuche_Leo\seilaplan_2020_24_08\Projekteinstellungen.txt'
 
     # Define which functions the code should perform
     #  'optimize':  Run optimization algorithm to define pole positions and
