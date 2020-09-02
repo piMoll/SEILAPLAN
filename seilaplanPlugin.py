@@ -29,18 +29,36 @@ if libPath not in sys.path:
     sys.path.insert(0, libPath)
 
 from qgis.PyQt.QtCore import QSettings, QTranslator, qVersion, QCoreApplication
-from qgis.PyQt.QtWidgets import QAction
+from qgis.PyQt.QtWidgets import QAction, QPushButton, QMessageBox
 from qgis.PyQt.QtGui import QIcon
 from qgis.core import QgsApplication, Qgis
 # Initialize Qt resources from file resources.py
 from .gui import resources_rc
-# Main dialog window
-from .gui.seilaplanPluginDialog import SeilaplanPluginDialog
-# Further dialog windows and helpers
-from .gui.progressDialog import ProgressDialog
-from .configHandler import ConfigHandler
-from .processingThread import ProcessingTask
-from .gui.adjustmentDialog import AdjustmentDialog
+
+# Before continuing, we check if scipy and scipy.interpolate can be imported.
+# If not, we will not import the plugin files.
+ERROR = False
+try:
+    import scipy
+except ModuleNotFoundError:
+    # On linux scipy isn't included in the standard qgis python
+    #   interpreter so the user has to add it manually
+    ERROR = 1
+try:
+    import scipy.interpolate
+except ImportError:
+    # On QGIS Version 3.10.9 and 3.14.15 there is a bug that prevents
+    #  importing scipy.interpolate.
+    ERROR = 1 if ERROR == 1 else 2
+    
+if not ERROR:
+    # Main dialog window
+    from .gui.seilaplanPluginDialog import SeilaplanPluginDialog
+    # Further dialog windows and helpers
+    from .gui.progressDialog import ProgressDialog
+    from .configHandler import ConfigHandler
+    from .processingThread import ProcessingTask
+    from .gui.adjustmentDialog import AdjustmentDialog
 
 
 class SeilaplanPlugin(object):
@@ -175,6 +193,32 @@ class SeilaplanPlugin(object):
                 self.tr('&SEILAPLAN'),
                 action)
             self.iface.removeToolBarIcon(action)
+    
+    def handleImportErrors(self):
+        def showError():
+            msgBox = QMessageBox()
+            msgBox.setIcon(QMessageBox.Information)
+            msgBox.setWindowTitle(shortMessage)
+            msgBox.setText(longMessage)
+            msgBox.setStandardButtons(QMessageBox.Ok)
+            msgBox.show()
+            msgBox.exec()
+        
+        if ERROR == 1:
+            barTitle = self.tr('SEILAPLAN Fehler')
+            shortMessage = self.tr('Bibliothek scipy nicht vorhanden.')
+            longMessage = self.tr('Seilaplan benoetigt die Python Bibliothek scipy um Berechnungen durchzufuehren.')
+        else:   # ERROR == 2
+            barTitle = self.tr('SEILAPLAN Fehler')
+            shortMessage = self.tr('Fehlerhafte QGIS Version.')
+            longMessage = self.tr('Aufgrund eines Fehlers in QGIS kann Seilaplan in der aktuell installierten Version nicht ausgefuehrt werden.')
+    
+        widget = self.iface.messageBar().createMessage(barTitle, shortMessage)
+        button = QPushButton(widget)
+        button.setText(self.tr("Weitere Informationen"))
+        button.pressed.connect(showError)
+        widget.layout().addWidget(button)
+        self.iface.messageBar().pushWidget(widget, Qgis.Warning)
 
     def run(self):
         """Run method that performs all the real work"""
@@ -188,14 +232,10 @@ class SeilaplanPlugin(object):
         #     pass
         # except ImportError:
         #     pass
-
-        # Check if library scipy is present. On linux scipy isn't included in
-        #  the standard qgis python interpreter
-        try:
-            import scipy
-        except ModuleNotFoundError:
-            self.iface.messageBar().pushMessage(self.tr('SEILAPLAN Fehler'),
-                self.tr("Fehler mit Bibliothek scipy"), level=Qgis.Critical)
+        
+        # Check for import errors and show messages
+        if ERROR:
+            self.handleImportErrors()
             return
 
         # Check if plugin is already running

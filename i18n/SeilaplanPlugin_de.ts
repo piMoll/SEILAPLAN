@@ -1894,14 +1894,34 @@ nach Zweifel</translation>
         <translation>&amp;SEILAPLAN</translation>
     </message>
     <message>
-        <location filename="../seilaplanPlugin.py" line="198"/>
+        <location filename="../seilaplanPlugin.py" line="208"/>
         <source>SEILAPLAN Fehler</source>
         <translation>SEILAPLAN Fehler</translation>
     </message>
     <message>
-        <location filename="../seilaplanPlugin.py" line="198"/>
-        <source>Fehler mit Bibliothek scipy</source>
-        <translation>Bibliothek scipy ist nicht installiert. Seilaplan kann nicht ausgeführt werden. Bitte installieren Sie die fehlende Bibliothek und starten sie QGIS neu.</translation>
+        <location filename="../seilaplanPlugin.py" line="209"/>
+        <source>Bibliothek scipy nicht vorhanden.</source>
+        <translation>Bibliothek scipy nicht vorhanden.</translation>
+    </message>
+    <message>
+        <location filename="../seilaplanPlugin.py" line="209"/>
+        <source>Seilaplan benoetigt die Python Bibliothek scipy um Berechnungen durchzufuehren.</source>
+        <translation>Seilaplan benötigt die Python Bibliothek scipy um Berechnungen durchzuführen. Bitte installieren Sie die Bibliothek auf Ihrem System.</translation>
+    </message>
+    <message>
+        <location filename="../seilaplanPlugin.py" line="209"/>
+        <source>Fehlerhafte QGIS Version.</source>
+        <translation>Fehlerhafte QGIS Version.</translation>
+    </message>
+    <message>
+        <location filename="../seilaplanPlugin.py" line="209"/>
+        <source>Aufgrund eines Fehlers in QGIS kann Seilaplan in der aktuell installierten Version nicht ausgefuehrt werden.</source>
+        <translation>Aufgrund eines Fehlers in QGIS kann Seilaplan in der aktuell installierten Version (3.10.9 / 3.14.15) nicht ausgeführt werden. Bitte installieren Sie eine neuere oder ältere Version von QGIS um das Problem zu beheben.</translation>
+    </message>
+    <message>
+        <location filename="../seilaplanPlugin.py" line="209"/>
+        <source>Weitere Informationen</source>
+        <translation>Weitere Informationen</translation>
     </message>
 </context>
 <context>

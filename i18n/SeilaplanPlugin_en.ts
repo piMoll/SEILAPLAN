@@ -1918,9 +1918,29 @@ by Zweifel</translation>
         <translation>SEILAPLAN Error</translation>
     </message>
     <message>
-        <location filename="../seilaplanPlugin.py" line="198"/>
-        <source>Fehler mit Bibliothek scipy</source>
-        <translation>The scipy library is not installed. Seilaplan cannot be run. Please install the missing library and restart QGIS.</translation>
+        <location filename="../seilaplanPlugin.py" line="209"/>
+        <source>Bibliothek scipy nicht vorhanden.</source>
+        <translation>Library scipy is missing.</translation>
+    </message>
+    <message>
+        <location filename="../seilaplanPlugin.py" line="209"/>
+        <source>Seilaplan benoetigt die Python Bibliothek scipy um Berechnungen durchzufuehren.</source>
+        <translation>Seilaplan needs the python library scipy to execute its calculations. Please install the library manually on your system.</translation>
+    </message>
+    <message>
+        <location filename="../seilaplanPlugin.py" line="209"/>
+        <source>Fehlerhafte QGIS Version.</source>
+        <translation>Problem with QGIS Version.</translation>
+    </message>
+    <message>
+        <location filename="../seilaplanPlugin.py" line="209"/>
+        <source>Aufgrund eines Fehlers in QGIS kann Seilaplan in der aktuell installierten Version nicht ausgefuehrt werden.</source>
+        <translation>Because of a bug in QGIS, Seilaplan can not be executed on the currently installed version (3.10.9 / 3.14.15). Please install an older or a newer version of QGIS to solve this issue.</translation>
+    </message>
+    <message>
+        <location filename="../seilaplanPlugin.py" line="209"/>
+        <source>Weitere Informationen</source>
+        <translation>More information</translation>
     </message>
 </context>
 <context>

@@ -1908,9 +1908,29 @@ d&apos;après Zweifel</translation>
         <translation>SEILAPLAN Erreur</translation>
     </message>
     <message>
-        <location filename="../seilaplanPlugin.py" line="198"/>
-        <source>Fehler mit Bibliothek scipy</source>
-        <translation>La bibliothèque scipy n&apos;est pas installée. Seilaplan ne peut pas être exécuté. Vous êtes priés d&apos;installer la bibliothèque manquante et de redémarrer QGIS. </translation>
+        <location filename="../seilaplanPlugin.py" line="209"/>
+        <source>Bibliothek scipy nicht vorhanden.</source>
+        <translation>La bibliothèque scipy n&apos;est pas installée.</translation>
+    </message>
+    <message>
+        <location filename="../seilaplanPlugin.py" line="209"/>
+        <source>Seilaplan benoetigt die Python Bibliothek scipy um Berechnungen durchzufuehren.</source>
+        <translation>La bibliothèque scipy n&apos;est pas installée. Seilaplan ne peut pas être exécuté. Vous êtes priés d&apos;installer la bibliothèque manquante et de redémarrer QGIS.</translation>
+    </message>
+    <message>
+        <location filename="../seilaplanPlugin.py" line="209"/>
+        <source>Fehlerhafte QGIS Version.</source>
+        <translation type="unfinished">Fehlerhafte QGIS Version.</translation>
+    </message>
+    <message>
+        <location filename="../seilaplanPlugin.py" line="209"/>
+        <source>Aufgrund eines Fehlers in QGIS kann Seilaplan in der aktuell installierten Version nicht ausgefuehrt werden.</source>
+        <translation type="unfinished">Aufgrund eines Fehlers in QGIS kann Seilaplan in der aktuell installierten Version (3.10.9 / 3.14.15) nicht ausgeführt werden. Bitte installieren Sie eine neuere oder ältere Version von QGIS um das Problem zu beheben.</translation>
+    </message>
+    <message>
+        <location filename="../seilaplanPlugin.py" line="209"/>
+        <source>Weitere Informationen</source>
+        <translation type="unfinished">Weitere Informationen</translation>
     </message>
 </context>
 <context>
