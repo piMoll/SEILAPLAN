@@ -89,8 +89,8 @@ class AdjustmentPlot(FigureCanvas):
         self.peakLoc_y = peakLocation_y
         self.data_xlow = np.min(self.xdata)
         self.data_xhi = np.max(self.xdata)
-        # Add 40m to have space for labels (survey points)
-        self.data_ylow = np.min(self.terrain) - 40
+        # Add 80m to have space for labels and legend
+        self.data_ylow = np.min(self.terrain) - 80
         # Add 40m to have space for poles
         self.data_yhi = np.max(self.terrain) + 40
         self.tPoints = surveyPoints

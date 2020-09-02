@@ -73,7 +73,6 @@ class ProfilePlot(FigureCanvas):
                                    QSizePolicy.Expanding)
         self.setMinimumSize(QSize(600, 400))
         FigureCanvas.updateGeometry(self)
-        self.fig.tight_layout(pad=0.2, w_pad=0.1, h_pad=0.1)
         
     def plotData(self, plotData):
         """
@@ -139,6 +138,9 @@ class ProfilePlot(FigureCanvas):
         # Set new plot extent as home extent (for home button)
         self.tbar.update()
         self.tbar.push_current()
+
+        # Fit plot tightly into window
+        self.fig.tight_layout(pad=0.2, w_pad=0.1, h_pad=0.1)
 
     def acitvateCrosshairPole(self):
         self.evtMovePole = self.mpl_connect('motion_notify_event', self.onMouseMoveP)
