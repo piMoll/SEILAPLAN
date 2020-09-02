@@ -31,6 +31,11 @@ from .plotting_tools import zoom_with_wheel
 class AdjustmentPlot(FigureCanvas):
     
     ZOOM_TO_DISTANCE = 20
+    COLOR_MARKER = {
+        1: '#e06767',   # red = error
+        2: '#e38400',   # orange = attention
+        3: '#787878'    # grey = neutral
+    }
     
     def __init__(self, parent=None, width=5, height=4, dpi=72):
         self.win = parent
@@ -208,19 +213,20 @@ class AdjustmentPlot(FigureCanvas):
             self.tbar.update()
             self.tbar.push_current()
     
-    def showMarkers(self, x, y, label):
+    def showMarkers(self, x, y, label, colorNr=1):
+        color = self.COLOR_MARKER[colorNr]
         # Displays marker for thresholds
         self.removeMarkers()
         y -= self.labelBuffer * 3
         self.arrowMarker = self.axes.scatter(x, y, marker='^', zorder=20,
-                                             c='#e06767', s=100)
+                                             c=color, s=100)
         # Adds a label underneath marker with threshold value
         self.arrowLabel = []
         for i, txt in enumerate(label):
             self.arrowLabel.append(
-                self.axes.text(x[i], y[i] - 2*self.labelBuffer, txt, zorder=30,
+                self.axes.text(x[i], y[i] - 2 * self.labelBuffer, txt, zorder=30,
                                ha='center', backgroundcolor='white', va='top',
-                               color='#e06767'))
+                               color=color))
         self.draw()
     
     def removeMarkers(self):

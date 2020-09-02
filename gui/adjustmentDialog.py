@@ -423,9 +423,9 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
                 if len(thresholdData) == 4:
                     val, location, color, plotLabels = thresholdData
                 self.thresholdLayout.updateData(i, 4, val)
-                self.thresholdLayout.updateData(i, 5, {'loc': location, 'col': color})
+                self.thresholdLayout.updateData(i, 5, {'loc': location, 'color': color})
                 self.thData['rows'][i][4] = val
-                self.thData['rows'][i][5] = {'loc': location, 'col': color}
+                self.thData['rows'][i][5] = {'loc': location, 'color': color}
                 self.thData['plotLabels'].append(plotLabels)
         
         self.showThresholdInPlot()
@@ -521,7 +521,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             self.thData['rows'][i][2] = thresholdStr[i]
             self.thData['rows'][i][valColumn] = val
             self.thData['rows'][i][emptyColumn] = ''
-            self.thData['rows'][i][5] = {'loc': location, 'col': color}
+            self.thData['rows'][i][5] = {'loc': location, 'color': color}
             self.thData['plotLabels'].append(plotLabels)
         
         self.thresholdLayout.populate(header, self.thData['rows'], valColumn)
@@ -534,7 +534,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         #  plotting)
         location = []
         # Color of marked threshold
-        color = 1   # red
+        color = 3   # black
         # Formatted threshold value to show in plot
         plotLabel = []
         
@@ -553,6 +553,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
                 if location:
                     plotLabel = [self.formatThreshold(l, idx) for l in localCopy[location]]
                 location = [int(l + self.poles.firstPole['d']) for l in location]
+                color = 1   # red
         
         # Max force on cable
         elif idx == 1:
@@ -572,10 +573,16 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
                     leftPole = self.poles.poles[self.poles.idxA + field]['d']
                     rightPole = self.poles.poles[self.poles.idxA + field + 1]['d']
                     location.append(int(leftPole + floor((rightPole - leftPole) / 2)))
+                color = 1   # red
         
         elif idx == 2:
             localCopy = np.nan_to_num(data)
             maxVal = np.max(localCopy)
+            color = 3   # neutral
+            for poleIdx, calcVal in enumerate(data):
+                pole = self.poles.poles[self.poles.idxA + poleIdx]
+                location.append(pole['d'])
+                plotLabel.append(self.formatThreshold(calcVal, idx))
         
         # Lastseilknickwinkel
         elif idx == 3 and not np.all(np.isnan(data)):
@@ -594,11 +601,13 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
                     # Check if angle is higher than second threshold
                     if angle > self.thData['thresholds'][idx][1]:
                         isOverThreshold = True
+                        color = 1   # red
                 else:
                     # Check if current value is new max value
                     maxValArr[0] = np.nanmax([maxValArr[0], angle])
                     if angle > self.thData['thresholds'][idx][0]:
                         isOverThreshold = True
+                        color = 1   # red
                     
                 if isOverThreshold:
                     pole = self.poles.poles[self.poles.idxA + poleIdx]
@@ -616,7 +625,9 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             smallerThan = (localCopy < self.thData['thresholds'][idx][1]) * ~np.isnan(data)
             # Angles between 2 and 4 degrees have error level 'attention'
             if self.thData['thresholds'][idx][0] < maxVal < self.thData['thresholds'][idx][1]:
-                color = 2
+                color = 2   # orange
+            elif maxVal < self.thData['thresholds'][idx][0]:
+                color = 1   # red
             # Check which pole is affected
             locationPole = np.ravel(np.argwhere(smallerThan))
             for poleIdx in locationPole:
@@ -652,6 +663,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
                 return
         
         location = self.thData['rows'][row][5]['loc']
+        color = self.thData['rows'][row][5]['color']
         arrIdx = []
         # Get index of horizontal distance so we know which height value to
         #  chose
@@ -663,7 +675,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         else:  # row in [0, 1]
             # For thresholds that correspond to cable
             z = self.cableline['groundclear'][location]
-        self.plot.showMarkers(location, z, self.thData['plotLabels'][row])
+        self.plot.showMarkers(location, z, self.thData['plotLabels'][row], color)
         self.selectedThresholdRow = row
     
     def onClose(self):
