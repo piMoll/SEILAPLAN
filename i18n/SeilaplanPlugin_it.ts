@@ -1283,6 +1283,11 @@ dopo Zweifel</translation>
         <source>Kein Zweiseil-System moeglich</source>
         <translation>Errore: Il sistema a due funi non è possibile se il punto d&apos;inizio (argano/macchina) si trova più basso che il punto finale.</translation>
     </message>
+    <message>
+        <location filename="../configHandler.py" line="739"/>
+        <source>Der Parameter Minimaler Abstand Tragseil Boden darf nicht groesser als der Parameter Minimale Stuetzenhoehe sein.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PoleRow</name>
@@ -1884,6 +1889,11 @@ dopo Zweifel</translation>
         <location filename="../gui/seilaplanDialog.ui" line="2467"/>
         <source>Y-Koordinate</source>
         <translation>Coordinata Y</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="179"/>
+        <source>Parameterset loeschen</source>
+        <translation>Cancellare il set di parametri</translation>
     </message>
 </context>
 <context>

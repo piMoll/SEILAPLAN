@@ -139,7 +139,7 @@ class ProgressDialog(QDialog):
             self.finallyDo()
     
     def valueFromThread(self, value):
-        self.progressBar.setValue(value)
+        self.progressBar.setValue(int(value))
     
     def rangeFromThread(self, range_vals):
         self.progressBar.setRange(range_vals[0], range_vals[1])

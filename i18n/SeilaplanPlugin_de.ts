@@ -1274,6 +1274,12 @@ nach Zweifel</translation>
         <source>Kein Zweiseil-System moeglich</source>
         <translation>Fehler: Kein Zweilseil-System möglich wenn der Anfangspunkt (bei Winde/Maschine) tiefer als der Endpunkt liegt.</translation>
     </message>
+    <message>
+        <location filename="../configHandler.py" line="739"/>
+        <source>Der Parameter Minimaler Abstand Tragseil Boden darf nicht groesser als der Parameter Minimale Stuetzenhoehe sein.</source>
+        <translation>Der Parameter 'Minimaler Abstand Tragseil - Boden' (Reiter Seillinie) darf nicht grösser als der Parameter 'Minimale Stützenhöhe' (Reiter Optional #1) sein.
+Bitte passen Sie die Eingabe an.</translation>
+    </message>
 </context>
 <context>
     <name>PoleRow</name>

@@ -3,7 +3,7 @@ Seilsys		Seilsystem		drop_field	int	0	1	10
 HM_Kran		Hoehe Seilkranmast	m	field	float	0	50	11
 Befahr_A		Seillinie befahrbar ab ... vom Anfangspunkt	m	field	int	0	1000	12
 Befahr_E		Seillinie befahrbar bis ... vor dem Endpunkt	m	field	int	0	1000	13
-Bodenabst_min		Minimaler Abstand Tragseil - Boden	m	field	float	0	HM_min	14
+Bodenabst_min		Minimaler Abstand Tragseil - Boden	m	field	float	0	30	14
 Bodenabst_A		einzuhalten ab ... vom Anfangspunkt	m	field	int	0	200	15
 Bodenabst_E		einzuhalten bis ... vor dem Endpunkt	m	field	int	0	200	16
 Q		Gewicht der Last inkl. Laufwagen	kN	field	float	1	100	20
@@ -14,7 +14,7 @@ qZ		Gewicht Zugseil	kN/m	field	float	0	1	24
 qR		Gewicht Rueckholseil	kN/m	field	float	0	1	25
 Min_Dist_Mast		Minimaler Abstand zwischen Stuetzen	m	field	int	0	200	30
 L_Delta		Horiz. Aufloesung moegl. Stuetzenstandorte	m	field	int	1	20	31
-HM_min		Minimale Stuetzenhoehe	m	field	int	Bodenabst_min	HM_max	32
+HM_min		Minimale Stuetzenhoehe	m	field	int	1	HM_max	32
 HM_max		Maximale Stuetzenhoehe	m	field	int	HM_min	50	33
 HM_Delta		Abstufungsinterval	m	field	int	1	5	34
 HM_nat		Kuenstliche Stuetze ab Stuetzenhoehe von	m	field	int	0	100	35

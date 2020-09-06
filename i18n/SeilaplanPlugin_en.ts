@@ -1299,6 +1299,11 @@ by Zweifel</translation>
         <source>Kein Zweiseil-System moeglich</source>
         <translation>Error: Two-cable system is not possible if the initial point (at winch/machine) is situated lower than the terminal point.</translation>
     </message>
+    <message>
+        <location filename="../configHandler.py" line="739"/>
+        <source>Der Parameter Minimaler Abstand Tragseil Boden darf nicht groesser als der Parameter Minimale Stuetzenhoehe sein.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PoleRow</name>
@@ -1897,6 +1902,11 @@ by Zweifel</translation>
         <location filename="../gui/seilaplanDialog.ui" line="2467"/>
         <source>Y-Koordinate</source>
         <translation>Y coordinate</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="179"/>
+        <source>Parameterset loeschen</source>
+        <translation>Delete set of parameters</translation>
     </message>
 </context>
 <context>

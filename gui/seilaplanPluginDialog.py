@@ -974,6 +974,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
     def apply(self):
         if self.confHandler.checkValidState() \
                 and self.checkEqualSpatialRef \
+                and self.paramHandler.checkBodenabstand() \
                 and self.confHandler.prepareForCalculation():
             self.startAlgorithm = True
             self.goToAdjustment = False

@@ -733,6 +733,14 @@ class ParameterConfHandler(AbstractConfHandler):
                     success = False
         return success
     
+    def checkBodenabstand(self):
+        if self.params['Bodenabst_min']['value'] > self.params['HM_min']['value']:
+            self.onError(self.tr("Der Parameter Minimaler Abstand Tragseil Boden darf nicht groesser als der Parameter Minimale Stuetzenhoehe sein."),
+                         self.tr('Ungueltige Eingabe'))
+            return False
+        else:
+            return True
+    
     def getParametersAsStr(self):
         """ """
         txt = [
