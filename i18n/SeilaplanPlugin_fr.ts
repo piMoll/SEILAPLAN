@@ -208,7 +208,8 @@
     <message>
         <location filename="../tool/outputReport.py" line="132"/>
         <source>gewaehlte Seilzugkraft bei der Anfangsstuetze</source>
-        <translation>Tension du câble choisie au premier support</translation>
+        <translatorcomment>Tension du câble choisie au premier support</translatorcomment>
+        <translation>Force de traction initiale au premier support</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="137"/>
@@ -415,7 +416,8 @@
     <message>
         <location filename="../tool/outputReport.py" line="340"/>
         <source>Vorspannung der Seilzugkraft</source>
-        <translation>Précharge</translation>
+        <translatorcomment>Précharge</translatorcomment>
+        <translation>Force de traction initiale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="341"/>
@@ -490,7 +492,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Grundspannung (Endpunkt)</source>
-        <translation>Force de traction initiale du câble porteur</translation>
+        <translation>Force de traction initiale (point terminal)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -712,7 +714,8 @@ câble chargé</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Grundspannung Tragseil (Anfangssp.)</source>
-        <translation>Force de traction initiale du câble porteur (point de départ)</translation>
+        <translatorcomment>Force de traction initiale du câble porteur (point de départ)</translatorcomment>
+        <translation>Force de traction initiale (point de départ)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -1048,7 +1051,7 @@ En cas des angles entre 2° et 4° le câble porteur doit être sécurisé par u
         <location filename="../gui/adjustmentDialog.ui" line="429"/>
         <source>Grundspannung Tragseil (Anfangssp.)</source>
         <translatorcomment>de base</translatorcomment>
-        <translation>Force de traction initiale du câble porteur (point de départ)</translation>
+        <translation>Force de traction initiale (point de départ)</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="436"/>
@@ -1294,7 +1297,8 @@ d&apos;après Zweifel</translation>
     <message>
         <location filename="../configHandler.py" line="739"/>
         <source>Der Parameter Minimaler Abstand Tragseil Boden darf nicht groesser als der Parameter Minimale Stuetzenhoehe sein.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le paramètre &quot;Espacement minimal entre câble porteur et sol&quot; (onglet Ligne de câble) ne doit pas être supérieur au paramètre &quot;Hauteur minimale des supports&quot; (onglet Optionnel #1). 
+Veuillez adapter la saisie.</translation>
     </message>
 </context>
 <context>
@@ -1708,7 +1712,7 @@ d&apos;après Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1482"/>
         <source>Minimal gewaehlte Seilzugkraft</source>
-        <translation>Force de traction minimale choisie</translation>
+        <translation>Force de traction initiale minimale possible</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1549"/>
@@ -1930,17 +1934,17 @@ d&apos;après Zweifel</translation>
     <message>
         <location filename="../seilaplanPlugin.py" line="209"/>
         <source>Fehlerhafte QGIS Version.</source>
-        <translation type="unfinished">Fehlerhafte QGIS Version.</translation>
+        <translation>Version QGIS défectueuse.</translation>
     </message>
     <message>
         <location filename="../seilaplanPlugin.py" line="209"/>
         <source>Aufgrund eines Fehlers in QGIS kann Seilaplan in der aktuell installierten Version nicht ausgefuehrt werden.</source>
-        <translation type="unfinished">Aufgrund eines Fehlers in QGIS kann Seilaplan in der aktuell installierten Version (3.10.9 / 3.14.15) nicht ausgeführt werden. Bitte installieren Sie eine neuere oder ältere Version von QGIS um das Problem zu beheben.</translation>
+        <translation>En raison d&apos;un problème dans QGIS, Seilaplan ne peut pas fonctionner dans la version actuellement installée (3.10.9 / 3.14.15). Veuillez installer une version plus récente ou plus ancienne de QGIS pour résoudre ce problème.</translation>
     </message>
     <message>
         <location filename="../seilaplanPlugin.py" line="209"/>
         <source>Weitere Informationen</source>
-        <translation type="unfinished">Weitere Informationen</translation>
+        <translation>Informations complémentaires</translation>
     </message>
 </context>
 <context>

@@ -211,7 +211,8 @@
     <message>
         <location filename="../tool/outputReport.py" line="132"/>
         <source>gewaehlte Seilzugkraft bei der Anfangsstuetze</source>
-        <translation>Selected cable tensile force at the first support</translation>
+        <translatorcomment>Selected cable tensile force at the first support</translatorcomment>
+        <translation>Mounting tension force at the first support</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="137"/>
@@ -419,7 +420,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="340"/>
         <source>Vorspannung der Seilzugkraft</source>
-        <translation>Preload</translation>
+        <translation>Mounting tension force</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="341"/>
@@ -494,7 +495,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Grundspannung (Endpunkt)</source>
-        <translation>Initial skyline traction force</translation>
+        <translation>Mounting tension force (end point)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -662,7 +663,7 @@ loaded cable</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Gewicht Tragseil</source>
-        <translation>Skyline weight</translation>
+        <translation>Skyline self weight</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -672,17 +673,17 @@ loaded cable</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Mindestbruchkraft Tragseil</source>
-        <translation>Minimal rupture load of the skyline</translation>
+        <translation>Minimal breaking force of the skyline</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Gewicht Zugseil</source>
-        <translation>Mainline weight</translation>
+        <translation>Mainline self weight</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Gewicht Rueckholseil</source>
-        <translation>Weight of the haulbackline</translation>
+        <translation>Haulback line self weight</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -717,7 +718,7 @@ loaded cable</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Grundspannung Tragseil (Anfangssp.)</source>
-        <translation>Initial skyline traction force (initial point)</translation>
+        <translation>Mounting tension force (initial point)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -1044,7 +1045,7 @@ With angles between 2° and 4° the skyline has to be locked by a hold-down plat
         <location filename="../gui/adjustmentDialog.ui" line="402"/>
         <source>Gewicht Rueckholseil</source>
         <translatorcomment>hier gibt es unterschiedliche Schreibweisen: haul-back line</translatorcomment>
-        <translation>Weight of the haulbackline</translation>
+        <translation>Haulback line self weight</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="422"/>
@@ -1054,13 +1055,13 @@ With angles between 2° and 4° the skyline has to be locked by a hold-down plat
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="429"/>
         <source>Grundspannung Tragseil (Anfangssp.)</source>
-        <translatorcomment>Basic traction force</translatorcomment>
-        <translation>Initial skyline traction force (initial point)</translation>
+        <translatorcomment>Mounting tension force of the skyline (initial point)</translatorcomment>
+        <translation>Mounting tension force (initial point)</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="436"/>
         <source>Gewicht Tragseil</source>
-        <translation>Skyline weight</translation>
+        <translation>Skyline self weight</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="443"/>
@@ -1080,12 +1081,12 @@ With angles between 2° and 4° the skyline has to be locked by a hold-down plat
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="595"/>
         <source>Gewicht Zugseil</source>
-        <translation>Mainline weight</translation>
+        <translation>Mainline self weight</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="646"/>
         <source>Mindestbruchkraft Tragseil</source>
-        <translation>Minimal rupture load of the skyline</translation>
+        <translation>Minimal breaking force of the skyline</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="698"/>
@@ -1302,7 +1303,8 @@ by Zweifel</translation>
     <message>
         <location filename="../configHandler.py" line="739"/>
         <source>Der Parameter Minimaler Abstand Tragseil Boden darf nicht groesser als der Parameter Minimale Stuetzenhoehe sein.</source>
-        <translation type="unfinished"></translation>
+        <translation>The parameter ‘Minimal clearance between skyline and ground’ (tab Cable line) must not be greater than the parameter &apos;Minimal support height&apos; (tab Optional #1).
+Please adapt the input.</translation>
     </message>
 </context>
 <context>
@@ -1648,12 +1650,12 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="802"/>
         <source>Gewicht Rueckholseil</source>
-        <translation>Weight of the haulbackline</translation>
+        <translation>Haulback line self weight</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="916"/>
         <source>Gewicht Zugseil</source>
-        <translation>Mainline weight</translation>
+        <translation>Mainline self weight</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="929"/>
@@ -1663,7 +1665,7 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="942"/>
         <source>Gewicht Tragseil</source>
-        <translation>Skyline weight</translation>
+        <translation>Skyline self weight</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="992"/>
@@ -1673,7 +1675,7 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="999"/>
         <source>Mindestbruchkraft Tragseil</source>
-        <translation>Minimal rupture load of the skyline</translation>
+        <translation>Minimal breaking force of the skyline</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1041"/>
@@ -1718,7 +1720,7 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1482"/>
         <source>Minimal gewaehlte Seilzugkraft</source>
-        <translation>Minimal selected cable tensile force</translation>
+        <translation>Minimal possible mounting tension force</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1549"/>
