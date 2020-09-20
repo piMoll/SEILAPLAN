@@ -277,7 +277,7 @@ class PoleRow(object):
             self.addLabelNr(nr)
         self.addFieldName(name)
         self.addFieldDist(dist, distRange)
-        if self.rowType not in ['anchor', 'pole_anchor']:
+        if self.rowType not in ['anchor']:
             self.addFieldHeight(height)
             self.addFieldAngle(angle)
         self.addBtnDel(delBtn)
