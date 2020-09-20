@@ -581,8 +581,9 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             color = 3   # neutral
             for poleIdx, calcVal in enumerate(data):
                 pole = self.poles.poles[self.poles.idxA + poleIdx]
-                location.append(pole['d'])
-                plotLabel.append(self.formatThreshold(calcVal, idx))
+                if not np.isnan(calcVal):
+                    location.append(pole['d'])
+                    plotLabel.append(self.formatThreshold(calcVal, idx))
         
         # Lastseilknickwinkel
         elif idx == 3 and not np.all(np.isnan(data)):
@@ -635,13 +636,13 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
                 location.append(pole['d'])
                 plotLabel.append(self.formatThreshold(localCopy[poleIdx], idx))
         
-        if isinstance(maxVal, float) and maxVal is not np.nan:
+        if isinstance(maxVal, float) and not np.isnan(maxVal):
             valStr = self.formatThreshold(maxVal, idx)
         
         return valStr, location, color, plotLabel
     
     def formatThreshold(self, val, idx):
-        if isinstance(val, float) and val is not np.nan:
+        if isinstance(val, float) and not np.isnan(val):
             return f"{round(val, 1)} {self.thData['units'][idx]}"
         else:
             return '-'

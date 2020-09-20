@@ -474,14 +474,17 @@ class Poles(object):
 
             # Start or end pole with h > 0 --> not passable
             elif pole['poleType'] == 'pole' and pole in [self.firstPole, self.lastPole]:
-                if pole == self.firstPole:
+                # Check if first pole and array has non nan values
+                if pole == self.firstPole and not np.isnan(np.sum(forces['Sattelkraft_beiStuetze'][0][0:2])):
                     # A: Max(F_Sa_NBefRes li/re)
                     maxForce = np.nanmax(forces['Sattelkraft_beiStuetze'][0][0:2])
-                else:
+                # Check if last pole and array has non nan values
+                elif pole == self.lastPole and not np.isnan(np.sum(forces['Sattelkraft_beiStuetze'][0][-2:])):
                     # E: Max(F_Sa_NBefRes li/re)
                     maxForce = np.nanmax(forces['Sattelkraft_beiStuetze'][0][-2:])
     
-                bhd = self.getBhdForPole(pole['h'], maxForce)
+                if maxForce:
+                    bhd = self.getBhdForPole(pole['h'], maxForce)
 
             # pole in between --> passable
             elif pole['poleType'] == 'pole':

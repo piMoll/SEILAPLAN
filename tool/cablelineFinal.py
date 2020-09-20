@@ -438,10 +438,8 @@ def preciseCable(IS, poles, STA):
     # genau genommen, wird die Kraft auf Sattelhöhe ausgegeben, aber
     # für die Praxis ist das genügend genau
     if poles.hasAnchorA:
-        anchorA = poles.poles[0]
         kraft['MaxSeilzugkraft_L'][3] = STfm_Last_max + (z[0] - zfm[feld_max]) * qT
     if poles.hasAnchorE:
-        anchorE = poles.poles[-1]
         kraft['MaxSeilzugkraft_L'][4] = STfm_Last_max + (z[-1] - zfm[feld_max]) * qT
 
     # Auftretende Maximalseilzugkraft...
