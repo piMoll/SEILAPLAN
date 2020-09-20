@@ -1,9 +1,9 @@
 SEILAPLAN Seilkran-Layoutplaner
 ===============================
 
-De: SEILAPLAN ist ein QGIS Plugin zur Unterstützung der Waldberwirtschaftung und optimiert das Layout einer Seillinie. Das Plugin ist nur in deutscher Sprache vorhanden.
+DE: SEILAPLAN ist ein QGIS Plugin zur Unterstützung der Waldberwirtschaftung und optimiert das Layout einer Seillinie. 
 
-En: SEILAPLAN is a QGIS Plugin to support forest harvest operations by optimizing the layout of cable roads. At the moment the plugin is only available in german.
+EN: SEILAPLAN is a QGIS Plugin to support forest harvest operations by optimizing the layout of cable roads.
 
 Algorithmus
 -----------
