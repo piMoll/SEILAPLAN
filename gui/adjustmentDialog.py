@@ -477,7 +477,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             float(params.getParameter('zul_SK')),
             None,
             [30, 60],
-            [2, 4],
+            [1, 3],
         ]
         self.thData = {
             'header': header,
@@ -498,7 +498,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             f"{params.getParameter('zul_SK')} {units[1]}",
             '-',
             '30 / 60 °',
-            '2 ; 4 °'
+            '1 ; 3 °'
         ]
         # Where to put the current threshold values
         valColumn = 3
