@@ -62,7 +62,7 @@ class AbstractHeightSource(object):
 
 class Raster(AbstractHeightSource):
     
-    BUFFER_DEFAULT = 21
+    BUFFER_DEFAULT = 50
     
     def __init__(self, layer=None, path=None):
         AbstractHeightSource.__init__(self)
