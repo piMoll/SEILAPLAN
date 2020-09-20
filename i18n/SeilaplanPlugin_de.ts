@@ -176,7 +176,8 @@
     <message>
         <location filename="../tool/outputReport.py" line="132"/>
         <source>gewaehlte Seilzugkraft bei der Anfangsstuetze</source>
-        <translation>Gewählte Seilzugkraft bei der Anfangsstütze</translation>
+        <translatorcomment>Gewählte Seilzugkraft bei der Anfangsstütze</translatorcomment>
+        <translation>Grundspannung bei der Anfangsstütze</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="137"/>
@@ -383,7 +384,7 @@
         <location filename="../tool/outputReport.py" line="340"/>
         <source>Vorspannung der Seilzugkraft</source>
         <translatorcomment>Fritz: &quot;Vorspannung der Seilzugkraft&quot; ist meiner Meinung nach kein korrekter Begriff, Vorschlag: Vorspannkraft (des Tragseils)</translatorcomment>
-        <translation>Vorspannkraft</translation>
+        <translation>Grundspannung</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="341"/>
@@ -706,7 +707,7 @@ Lastseil</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Grundspannung Tragseil (Anfangssp.)</source>
-        <translation>Grundspannung Tragseil (Anfangsspunkt)</translation>
+        <translation>Grundspannung (Anfangsspunkt)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -1031,7 +1032,8 @@ Bei Knickwinkeln zwischen 2° und 4° muss das Tragseil mittels Niederhaltelasch
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="429"/>
         <source>Grundspannung Tragseil (Anfangssp.)</source>
-        <translation>Grundspannung Tragseil (Anfangsspunkt)</translation>
+        <translatorcomment>Grundspannung Tragseil (Anfangsspunkt)</translatorcomment>
+        <translation>Grundspannung (Anfangsspunkt)</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="436"/>
@@ -1277,7 +1279,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../configHandler.py" line="739"/>
         <source>Der Parameter Minimaler Abstand Tragseil Boden darf nicht groesser als der Parameter Minimale Stuetzenhoehe sein.</source>
-        <translation>Der Parameter 'Minimaler Abstand Tragseil - Boden' (Reiter Seillinie) darf nicht grösser als der Parameter 'Minimale Stützenhöhe' (Reiter Optional #1) sein.
+        <translation>Der Parameter &apos;Minimaler Abstand Tragseil - Boden&apos; (Reiter Seillinie) darf nicht grösser als der Parameter &apos;Minimale Stützenhöhe&apos; (Reiter Optional #1) sein.
 Bitte passen Sie die Eingabe an.</translation>
     </message>
 </context>
@@ -1702,7 +1704,7 @@ Bitte passen Sie die Eingabe an.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1482"/>
         <source>Minimal gewaehlte Seilzugkraft</source>
-        <translation>Minimal gewählte Seilzugkraft</translation>
+        <translation>Minimal mögl. Grundspannung</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1549"/>
@@ -1922,7 +1924,7 @@ Bitte passen Sie die Eingabe an.</translation>
     <message>
         <location filename="../seilaplanPlugin.py" line="209"/>
         <source>Aufgrund eines Fehlers in QGIS kann Seilaplan in der aktuell installierten Version nicht ausgefuehrt werden.</source>
-        <translation>Aufgrund eines Fehlers in QGIS kann Seilaplan in der aktuell installierten Version (3.10.9 / 3.14.15) nicht ausgeführt werden. Bitte installieren Sie eine neuere oder ältere Version von QGIS um das Problem zu beheben.</translation>
+        <translation>Aufgrund eines Fehlers in QGIS kann Seilaplan in der aktuell installierten Version (3.10.9 / 3.14.15) nicht ausgeführt werden. Bitte installieren Sie eine neuere oder ältere Version von QGIS, um das Problem zu beheben.</translation>
     </message>
     <message>
         <location filename="../seilaplanPlugin.py" line="209"/>

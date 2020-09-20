@@ -209,7 +209,8 @@
     <message>
         <location filename="../tool/outputReport.py" line="132"/>
         <source>gewaehlte Seilzugkraft bei der Anfangsstuetze</source>
-        <translation>Tensione della fune scelta al primo cavalletto</translation>
+        <translatorcomment>Tensione della fune scelta al primo cavalletto</translatorcomment>
+        <translation>Forza di trazione iniziale al primo cavalletto</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="137"/>
@@ -442,7 +443,8 @@
     <message>
         <location filename="../tool/outputReport.py" line="340"/>
         <source>Vorspannung der Seilzugkraft</source>
-        <translation>Forza di precarico</translation>
+        <translatorcomment>Forza di precarico</translatorcomment>
+        <translation>Forza di trazione iniziale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="341"/>
@@ -487,7 +489,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Grundspannung (Endpunkt)</source>
-        <translation>Forza di trazione iniziale</translation>
+        <translation>Forza di trazione iniziale (punkto terminale)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -1286,7 +1288,8 @@ dopo Zweifel</translation>
     <message>
         <location filename="../configHandler.py" line="739"/>
         <source>Der Parameter Minimaler Abstand Tragseil Boden darf nicht groesser als der Parameter Minimale Stuetzenhoehe sein.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il parametro &quot;Spazio minimale tra fune portante e suolo&quot; (tab Linea di gru a cavo) non deve essere maggiore del parametro &quot; Altezza minimale dei cavalletti&quot; (tab Opzionale #1).
+Si prega di adattare l&apos;input.</translation>
     </message>
 </context>
 <context>
@@ -1704,7 +1707,7 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1482"/>
         <source>Minimal gewaehlte Seilzugkraft</source>
-        <translation>Forza di trazione minimale scegliata</translation>
+        <translation>Minimale forza di transizione iniziale possibile</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1549"/>
@@ -1927,17 +1930,17 @@ dopo Zweifel</translation>
     <message>
         <location filename="../seilaplanPlugin.py" line="209"/>
         <source>Fehlerhafte QGIS Version.</source>
-        <translation type="unfinished">Fehlerhafte QGIS Version.</translation>
+        <translation>Versione QGIS difettosa.</translation>
     </message>
     <message>
         <location filename="../seilaplanPlugin.py" line="209"/>
         <source>Aufgrund eines Fehlers in QGIS kann Seilaplan in der aktuell installierten Version nicht ausgefuehrt werden.</source>
-        <translation type="unfinished">Aufgrund eines Fehlers in QGIS kann Seilaplan in der aktuell installierten Version (3.10.9 / 3.14.15) nicht ausgeführt werden. Bitte installieren Sie eine neuere oder ältere Version von QGIS um das Problem zu beheben.</translation>
+        <translation>A causa di un bug in QGIS, Seilaplan non può funzionare nella versione attualmente installata (3.10.9 / 3.14.15). Si prega di installare una versione più recente o più vecchia di QGIS per risolvere questo problema.</translation>
     </message>
     <message>
         <location filename="../seilaplanPlugin.py" line="209"/>
         <source>Weitere Informationen</source>
-        <translation type="unfinished">Weitere Informationen</translation>
+        <translation>Ulteriori informazioni</translation>
     </message>
 </context>
 <context>
