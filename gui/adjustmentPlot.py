@@ -89,23 +89,24 @@ class AdjustmentPlot(FigureCanvas):
         self.peakLoc_y = peakLocation_y
         self.data_xlow = np.min(self.xdata)
         self.data_xhi = np.max(self.xdata)
-        # Add 80m to have space for labels and legend
-        self.data_ylow = np.min(self.terrain) - 80
+        self.data_ylow = np.min(self.terrain)
         # Add 40m to have space for poles
         self.data_yhi = np.max(self.terrain) + 40
         self.tPoints = surveyPoints
         
-        # Add some buffer from drawn terrain to axis for better look
-        self.data_xlow -= max(10, 10 * ((self.data_xhi - self.data_xlow) / 300))
-        self.data_xhi += max(10, 10 * ((self.data_xhi - self.data_xlow) / 300))
         rangeX = self.data_xhi - self.data_xlow
         rangeY = self.data_yhi - self.data_ylow
         ratio = rangeX / rangeY
         # Update figure size to fit data, height is a minimum of 330 px
-        self.setMinimumSize(QSize(330 * ratio, 330))
+        minHight = 330
+        minLength = min(minHight * ratio, 600)
+        self.setMinimumSize(QSize(minLength, minHight))
         # Set label positioning by taking height of figure into account
         height_m2px = rangeY / self.height()
         self.labelBuffer = 5 * height_m2px
+
+        self.data_ylow -= 8*self.labelBuffer
+        self.data_yhi += 4*self.labelBuffer
 
     def setPlotLimits(self):
         if self.isZoomed:
