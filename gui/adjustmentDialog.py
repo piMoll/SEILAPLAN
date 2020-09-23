@@ -414,6 +414,24 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         else:
             # Cable was recalculated, update threshold values
             self.thData['plotLabels'] = []
+            
+            # Check if Bodenabst_min was changed
+            newBodenAbst = self.confHandler.params.getParameter('Bodenabst_min')
+            if newBodenAbst != self.thData['thresholds'][0]:
+                self.thData['thresholds'][0] = newBodenAbst
+                self.thData['rows'][0][2] = f"{newBodenAbst} {self.thData['units'][0]}"
+                self.thresholdLayout.updateData(0, 2, self.thData['rows'][0][2])
+            
+            # Update threshold for max. Seilzugkraft, this value is changed
+            #  when altering parameter MBK, which updates zul_SK
+            newZulSK = self.confHandler.params.getParameter('zul_SK')
+            if newZulSK != self.thData['thresholds'][1]:
+                # Update threshold
+                self.thData['thresholds'][1] = newZulSK
+                # Update label
+                self.thData['rows'][1][2] = f"{newZulSK} {self.thData['units'][1]}"
+                self.thresholdLayout.updateData(1, 2, self.thData['rows'][1][2])
+            
             for i in range(len(self.thData['rows'])):
                 thresholdData = self.checkThresholdAndLocation(i, resultData[i])
                 val = ''

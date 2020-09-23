@@ -84,10 +84,6 @@ class AdjustmentDialogParams(object):
         newVal = float(self.fields[fieldName].text())
         if fieldName == 'Vorsp':
             newVal = self.parent.updateOptSTA(newVal)
-        elif fieldName == 'Bodenabst_min':
-            self.parent.thData['thresholds'][0] = newVal
-            self.parent.thresholdLayout.updateData(0, 1, newVal)
-            newVal = self.paramHandler.setParameter(fieldName, newVal)
         elif fieldName in ['D', 'MBK']:
             newVal = self.paramHandler.setParameter(fieldName, newVal)
             self.paramHandler.prepareForCalculation()
