@@ -926,8 +926,8 @@ Notice explicative: Au mât terminal la valeur limite est plus haute (env. 60°)
     <message>
         <location filename="../gui/adjustmentDialog.py" line="485"/>
         <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
-        <translation>En cas des angles inférieurs à 2° il y a le risque que le câble porteur s&apos;enlève de l&apos;étrier (rouge). L&apos; appui doit être surélevé.
-En cas des angles entre 2° et 4° le câble porteur doit être sécurisé par une patte de fixation (orange).</translation>
+        <translation>En cas des angles inférieurs à 1° il y a le risque que le câble porteur s&apos;enlève de l&apos;étrier (rouge). L&apos; appui doit être surélevé.
+En cas des angles entre 1° et 3° le câble porteur doit être sécurisé par une patte de fixation (orange).</translation>
     </message>
 </context>
 <context>

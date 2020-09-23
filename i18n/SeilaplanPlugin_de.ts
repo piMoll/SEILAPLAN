@@ -912,8 +912,8 @@ Hinweis: Beim Endmast liegt der Grenzwert höher (ca. 60°).</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="485"/>
         <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
-        <translation>Bei Knickwinkeln unter 2° besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Die Stütze muss erhöht werden.
-Bei Knickwinkeln zwischen 2° und 4° muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</translation>
+        <translation>Bei Knickwinkeln unter 1° besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Die Stütze muss erhöht werden.
+Bei Knickwinkeln zwischen 1° und 3° muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</translation>
     </message>
 </context>
 <context>

@@ -928,8 +928,8 @@ Note: At the final support the threshold value is higher (approx. 60°).</transl
     <message>
         <location filename="../gui/adjustmentDialog.py" line="485"/>
         <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
-        <translation>With angles below 2° there is the risk that the skyline lifts off the saddle (red). The support has to be heightened.
-With angles between 2° and 4° the skyline has to be locked by a hold-down plate (orange).</translation>
+        <translation>With angles below 1° there is the risk that the skyline lifts off the saddle (red). The support has to be heightened.
+With angles between 1° and 3° the skyline has to be locked by a hold-down plate (orange).</translation>
     </message>
 </context>
 <context>

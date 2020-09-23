@@ -886,8 +886,8 @@ Indicazione: Al cavalletto terminale il valore limite è superiore (ca. 60°).</
     <message>
         <location filename="../gui/adjustmentDialog.py" line="485"/>
         <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
-        <translation>Nel caso di un angolo convesso di 2° c&apos;è il rischio che la fune portante si decolla della sella (rosso). Il cavalletto deve essere alzato.
-Nel caso di un angolo tra 2° e 4° la fune portante deve essere atrezzato con un coprifune per sella (orange).</translation>
+        <translation>Nel caso di un angolo convesso di 1° c&apos;è il rischio che la fune portante si decolla della sella (rosso). Il cavalletto deve essere alzato.
+Nel caso di un angolo tra 1° e 3° la fune portante deve essere atrezzato con un coprifune per sella (orange).</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="690"/>
