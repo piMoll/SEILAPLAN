@@ -459,6 +459,7 @@ class Poles(object):
 
             # Start or end pole with h == 0 -> not passable
             elif pole['poleType'] == 'pole_anchor':
+                maxForceName = 'Seilzugkraft'
                 if pole == self.firstPole:
                     maxForce = forces['MaxSeilzugkraft_L'][1]       # Tmax,A
                     angle = self.getAnchorAngle(pole, self.poles[j+1])
@@ -475,11 +476,11 @@ class Poles(object):
             # Start or end pole with h > 0 --> not passable
             elif pole['poleType'] == 'pole' and pole in [self.firstPole, self.lastPole]:
                 # Check if first pole and array has non nan values
-                if pole == self.firstPole and not np.isnan(np.sum(forces['Sattelkraft_beiStuetze'][0][0:2])):
+                if pole == self.firstPole and not np.all(np.isnan(forces['Sattelkraft_beiStuetze'][0][0:2])):
                     # A: Max(F_Sa_NBefRes li/re)
                     maxForce = np.nanmax(forces['Sattelkraft_beiStuetze'][0][0:2])
                 # Check if last pole and array has non nan values
-                elif pole == self.lastPole and not np.isnan(np.sum(forces['Sattelkraft_beiStuetze'][0][-2:])):
+                elif pole == self.lastPole and not np.all(np.isnan(forces['Sattelkraft_beiStuetze'][0][-2:])):
                     # E: Max(F_Sa_NBefRes li/re)
                     maxForce = np.nanmax(forces['Sattelkraft_beiStuetze'][0][-2:])
     
