@@ -468,7 +468,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="270"/>
         <source>(Leerseilknickwinkel 2)</source>
-        <translation>(Leerseilknickwinkel &gt; 2°)</translation>
+        <translation>(Leerseilknickwinkel &gt; 1°)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="263"/>

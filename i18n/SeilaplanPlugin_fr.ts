@@ -129,7 +129,8 @@
     <message>
         <location filename="../tool/outputReport.py" line="86"/>
         <source>Feld</source>
-        <translation>Champs de tension</translation>
+        <translatorcomment>Champs de tension</translatorcomment>
+        <translation>Champs</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="91"/>
@@ -309,38 +310,43 @@
     <message>
         <location filename="../tool/outputReport.py" line="227"/>
         <source>Sattelkraft, resultierend</source>
-        <translation>Force sur l&apos;étrier, résultante</translation>
+        <translation>Force sur l&apos;étrier (FSE), résultante</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="230"/>
         <source>Sattelkraft, vertikale Komponente</source>
-        <translatorcomment>Technique du câble-grue, IFM</translatorcomment>
-        <translation>Force sur l&apos;étrier, composant vertical</translation>
+        <translatorcomment>Force sur l&apos;étrier, composant vertical - Technique du câble-grue, IFM</translatorcomment>
+        <translation>FSE, composant vertical</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="233"/>
         <source>Sattelkraft, horizontale Komponente</source>
-        <translation>Force sur l&apos;étrier, composant horizontal</translation>
+        <translatorcomment>Force sur l&apos;étrier, composant horizontal</translatorcomment>
+        <translation>FSE, composant horizontal</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="202"/>
         <source>Sattelkraft (Anteil von Tragseil), resultierend</source>
-        <translation>Force sur l&apos;étrier (proportion du câble porteur), résultante</translation>
+        <translatorcomment>Force sur l&apos;étrier (proportion du câble porteur), résultante</translatorcomment>
+        <translation>FSE (proportion du câble porteur), résultante</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="205"/>
         <source>Sattelkraft (Anteil von Tragseil), vertikale Komponente</source>
-        <translation>Force sur l&apos;étrier (proportion du câble porteur), composant vertical</translation>
+        <translatorcomment>Force sur l&apos;étrier (proportion du câble porteur), composant vertical</translatorcomment>
+        <translation>FSE (proportion du câble porteur), composant vertical</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="208"/>
         <source>Sattelkraft (Anteil von Tragseil), horizontale Komponente</source>
-        <translation>Force sur l&apos;étrier (proportion du câble porteur), composant horizontal</translation>
+        <translatorcomment>Force sur l&apos;étrier (proportion du câble porteur), composant horizontal</translatorcomment>
+        <translation>FSE (proportion du câble porteur), composant horizontal</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="211"/>
         <source>Einwirkung auf Stuetze aus Last, Gewicht Zug- Tragseil</source>
-        <translation>Impact sur le support par la charge et le poids du câble porteur et du câble tracteur</translation>
+        <translatorcomment>Impact sur le support par la charge et le poids du câble porteur et du câble tracteur</translatorcomment>
+        <translation>Impact par la charge et le poids du câble porteur et tracteur</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="220"/>
@@ -477,7 +483,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="270"/>
         <source>(Leerseilknickwinkel 2)</source>
-        <translation>(Angle du câble non chargé &gt; 2°)</translation>
+        <translation>(Angle du câble non chargé &gt; 1°)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="263"/>
@@ -689,7 +695,8 @@ câble chargé</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Horiz. Aufloesung moegl. Stuetzenstandorte</source>
-        <translation>Espacement minimal des emplacements de support possibles</translation>
+        <translatorcomment>Espacement minimal des emplacements de support possibles</translatorcomment>
+        <translation>Espacement min. emplacements de support possibles</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -725,7 +732,7 @@ câble chargé</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Fuellfaktor</source>
-        <translation>coefficient de remplissage du câble</translation>
+        <translation>Coefficient de remplissage du câble</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -1737,7 +1744,7 @@ Veuillez adapter la saisie.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1658"/>
         <source>Fuellfaktor</source>
-        <translation>coefficient de remplissage du câble</translation>
+        <translation>Coefficient de remplissage du câble</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1710"/>
@@ -2168,7 +2175,7 @@ Types de fichier supportés:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
         <source>Fuellfaktor</source>
-        <translation>coefficient de remplissage du câble</translation>
+        <translation>Coefficient de remplissage du câble</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="902"/>

@@ -316,38 +316,43 @@
     <message>
         <location filename="../tool/outputReport.py" line="227"/>
         <source>Sattelkraft, resultierend</source>
-        <translation>Forza sulla sella, risultante</translation>
+        <translation>Forza sulla sella (FSS), risultante</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="230"/>
         <source>Sattelkraft, vertikale Komponente</source>
-        <translatorcomment>habe noch nichts Besseres als &quot;sella&quot; gefunden</translatorcomment>
-        <translation>Forza sulla sella, componente verticale</translation>
+        <translatorcomment>Forza sulla sella, componente verticale - habe noch nichts Besseres als &quot;sella&quot; gefunden</translatorcomment>
+        <translation>FSS, componente verticale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="233"/>
         <source>Sattelkraft, horizontale Komponente</source>
-        <translation>Forza sulla sella, componente orrizontale</translation>
+        <translatorcomment>Forza sulla sella, componente orrizontale</translatorcomment>
+        <translation>FSS, componente orrizontale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="202"/>
         <source>Sattelkraft (Anteil von Tragseil), resultierend</source>
-        <translation>Forza sulla sella (quota della fune portante), risultante</translation>
+        <translatorcomment>Forza sulla sella (quota della fune portante), risultante</translatorcomment>
+        <translation>FSS (quota della fune portante), risultante</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="205"/>
         <source>Sattelkraft (Anteil von Tragseil), vertikale Komponente</source>
-        <translation>Forza sulla sella (quota della fune portante), componente verticale</translation>
+        <translatorcomment>Forza sulla sella (quota della fune portante), componente verticale</translatorcomment>
+        <translation>FSS (quota della fune portante), componente verticale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="208"/>
         <source>Sattelkraft (Anteil von Tragseil), horizontale Komponente</source>
-        <translation>Forza sulla sella (quota della fune portante), componente orizzontale</translation>
+        <translatorcomment>Forza sulla sella (quota della fune portante), componente orizzontale</translatorcomment>
+        <translation>FSS (quota della fune portante), componente orizzontale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="211"/>
         <source>Einwirkung auf Stuetze aus Last, Gewicht Zug- Tragseil</source>
-        <translation>Impatto sul cavalletto dal carico e dal peso della fune portante e della fune traente</translation>
+        <translatorcomment>Impatto sul cavalletto dal carico e dal peso della fune portante e della fune traente</translatorcomment>
+        <translation>Impatto dal carico e dal peso della fune portante e traente</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="220"/>
@@ -357,7 +362,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="221"/>
         <source>Laufwagen unmittelbar links/rechts bei Stuetze</source>
-        <translation>carello immediatamente a sinistra/a destra del cavalletto</translation>
+        <translation>carello immed. a sinistra/a destra del cavalletto</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="222"/>
@@ -413,7 +418,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="270"/>
         <source>(Leerseilknickwinkel 2)</source>
-        <translation>(Angolo della fune non caricata &gt; 2°)</translation>
+        <translation>(Angolo della fune non caricata &gt; 1°)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="277"/>
@@ -716,12 +721,12 @@ fune caricata</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Elastizitaetsmodul Tragseil</source>
-        <translation>Coefficiente del potere elastico della fune portante</translation>
+        <translation>Coeff. del potere elastico della fune portante</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Fuellfaktor</source>
-        <translation>coefficiente di riempimento della fune</translation>
+        <translation>Coefficiente di riempimento della fune</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -1732,7 +1737,7 @@ Si prega di adattare l&apos;input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1658"/>
         <source>Fuellfaktor</source>
-        <translation>coefficiente di riempimento della fune</translation>
+        <translation>Coefficiente di riempimento della fune</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1710"/>
@@ -2165,7 +2170,7 @@ Tipi di file supportati:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
         <source>Fuellfaktor</source>
-        <translation>coefficiente di riempimento della fune</translation>
+        <translation>Coefficiente di riempimento della fune</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="902"/>

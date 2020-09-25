@@ -480,7 +480,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="270"/>
         <source>(Leerseilknickwinkel 2)</source>
-        <translation>(Angle of the unloaded cable &gt; 2°)</translation>
+        <translation>(Angle of the unloaded cable &gt; 1°)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="263"/>
@@ -728,7 +728,7 @@ loaded cable</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Fuellfaktor</source>
-        <translation>fill factor of the rope</translation>
+        <translation>Fill factor of the rope</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -1745,7 +1745,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1658"/>
         <source>Fuellfaktor</source>
-        <translation>fill factor of the rope</translation>
+        <translation>Fill factor of the rope</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1710"/>
@@ -2179,7 +2179,7 @@ Supported data types:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
         <source>Fuellfaktor</source>
-        <translation>fill factor of the rope</translation>
+        <translation>Fill factor of the rope</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="902"/>
