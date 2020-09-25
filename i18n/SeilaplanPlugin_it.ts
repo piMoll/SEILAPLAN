@@ -378,7 +378,8 @@
     <message>
         <location filename="../tool/outputReport.py" line="224"/>
         <source>Seilzugkraft</source>
-        <translation>Forza di trazione della fune</translation>
+        <translatorcomment>Forza di trazione della fune</translatorcomment>
+        <translation>F. trazione della fune</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="249"/>
