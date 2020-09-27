@@ -1002,6 +1002,7 @@ class ConfigHandler(object):
                     'name': parts[7]
                 })
 
+        self.polesFromTxt = []
         lineCount = 0
         if os.path.exists(filename):
             with io.open(filename, encoding='utf-8') as f:
