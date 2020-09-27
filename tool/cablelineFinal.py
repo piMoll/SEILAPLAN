@@ -345,7 +345,7 @@ def preciseCable(IS, poles, STA):
     ST = STA + zqT
     Vi = ST * (np.sin(phi_o) - np.sin(phi_u))      # Vi darf nicht negativ sein
     # Nachweis basierend auf Leerseilknickwinkel
-    kraft['Nachweis'] = np.where(phi_leer_knick >= 2, ['Ja'], ['Nein'])
+    kraft['Nachweis'] = np.where(phi_leer_knick >= 1, ['Ja'], ['Nein'])
     if 'Nein' in kraft['Nachweis'][1:-1]:  # Test für die Zwischenstützen
         seil_possible = False
 
