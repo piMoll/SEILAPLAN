@@ -87,6 +87,9 @@ class AdjustmentDialogParams(object):
         elif fieldName in ['D', 'MBK']:
             newVal = self.paramHandler.setParameter(fieldName, newVal)
             self.paramHandler.prepareForCalculation()
+        elif fieldName in ['qZ', 'qR']:
+            newVal = self.paramHandler.setParameter(fieldName, newVal)
+            self.paramHandler.setPullRope(self.parent.profile.direction)
         else:
             newVal = self.paramHandler.setParameter(fieldName, newVal)
         
