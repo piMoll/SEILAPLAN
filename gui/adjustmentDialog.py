@@ -637,12 +637,11 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         
         # Leerseilknickwinkel
         elif idx == 4 and not np.all(np.isnan(data)):
-            # Replace nan with 0 so that no Runtime Warning is thrown
-            localCopy = np.nan_to_num(data)
-            maxVal = np.nanmin(localCopy)
+            # Get lowest value, ignore any nan values
+            maxVal = np.nanmin(data)
             # Check if values are under defined threshold. Also ignore NAN values
-            smallerThan = (localCopy < self.thData['thresholds'][idx][1]) * ~np.isnan(data)
-            # Angles between 2 and 4 degrees have error level 'attention'
+            smallerThan = (data < self.thData['thresholds'][idx][1]) * ~np.isnan(data)
+            # Angles between 1 and 3 degrees have error level 'attention'
             if self.thData['thresholds'][idx][0] < maxVal < self.thData['thresholds'][idx][1]:
                 color = 2   # orange
             elif maxVal < self.thData['thresholds'][idx][0]:
@@ -652,7 +651,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             for poleIdx in locationPole:
                 pole = self.poles.poles[self.poles.idxA + poleIdx]
                 location.append(pole['d'])
-                plotLabel.append(self.formatThreshold(localCopy[poleIdx], idx))
+                plotLabel.append(self.formatThreshold(data[poleIdx], idx))
         
         if isinstance(maxVal, float) and not np.isnan(maxVal):
             valStr = self.formatThreshold(maxVal, idx)
