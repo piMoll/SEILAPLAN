@@ -7,6 +7,7 @@ from qgis.core import (QgsCoordinateTransform, QgsRasterLayer, QgsPoint,
                        QgsCoordinateReferenceSystem, QgsProject)
 from math import sin, cos, pi
 import csv
+import copy
 # Check if library scipy is present. On linux scipy isn't included in
 #  the standard qgis python interpreter
 try:
@@ -243,6 +244,7 @@ class SurveyData(AbstractHeightSource):
         self.pointInPlane = None
         self.interpolFunc = None
         self.plotPoints = None
+        self.origData = {}
         self.valid = False
         self.errorMsg = ''
         self.openFile()
@@ -385,9 +387,9 @@ class SurveyData(AbstractHeightSource):
             'A': self.getFirstPoint(),
             'E': self.getLastPoint()
         }
-        self.prepareData(points)
+        self.prepareData(points, orig=True)
 
-    def prepareData(self, points, azimut=None, anchorLen=None):
+    def prepareData(self, points, azimut=None, anchorLen=None, orig=False):
         [Ax, Ay] = points['A']
         [Ex, Ey] = points['E']
         # Switch sorting of points if cable line goes in opposite direction
@@ -420,8 +422,20 @@ class SurveyData(AbstractHeightSource):
         #  meter and numbered
         surveyPnts_d = self.dist - distToStart
         # surveyPnts_d[1:-1] = np.round(surveyPnts_d[1:-1])
-        surveyPnts_z = self.interpolFunc(surveyPnts_d + distToStart)
-        self.plotPoints = np.column_stack([surveyPnts_d, surveyPnts_z, self.nr])
+        try:
+            surveyPnts_z = self.interpolFunc(surveyPnts_d + distToStart)
+            self.plotPoints = np.column_stack([surveyPnts_d, surveyPnts_z, self.nr])
+        except ValueError:
+            self.plotPoints = None
+        
+        if orig:
+            # Save initial profile (full length) so it can be used to calculate
+            #  cursor position in function projectPositionOnToLine()
+            self.origData = {
+                'x': copy.deepcopy(self.x),
+                'y': copy.deepcopy(self.y),
+                'plotPoints': copy.deepcopy(self.plotPoints)
+            }
 
     def getFirstPoint(self):
         return [self.x[0].item(), self.y[0].item()]
@@ -458,8 +472,8 @@ class SurveyData(AbstractHeightSource):
         yOnLine = res[0][1]
         
         # Check that point never leaves profile between first and last point
-        [x0, y0] = self.getFirstPoint()
-        [x1, y1] = self.getLastPoint()
+        [x0, y0] = [self.origData['x'][0].item(), self.origData['y'][0].item()]
+        [x1, y1] = [self.origData['x'][-1].item(), self.origData['y'][-1].item()]
         if xOnLine < x0 < x1 or xOnLine > x0 > x1:
             xOnLine = x0
         if xOnLine < x1 < x0 or xOnLine > x1 > x0:
@@ -473,20 +487,20 @@ class SurveyData(AbstractHeightSource):
         snapDist = 2
         distToFirst = np.hypot(x0 - xOnLine, y0 - yOnLine)
         # Get neighbouring survey points
-        idx = np.argwhere(self.plotPoints[:, 0] > distToFirst)
+        idx = np.argwhere(self.origData['plotPoints'][:, 0] > distToFirst)
         if len(idx > 0):
             nextIdx = idx[0][0]
         else:
-            nextIdx = len(self.plotPoints[:, 0])-1
+            nextIdx = len(self.origData['plotPoints'][:, 0])-1
         lastIdx = nextIdx - 1
-        distNext = self.plotPoints[:, 0][nextIdx] - distToFirst
-        distLast = distToFirst - self.plotPoints[:, 0][lastIdx]
+        distNext = self.origData['plotPoints'][:, 0][nextIdx] - distToFirst
+        distLast = distToFirst - self.origData['plotPoints'][:, 0][lastIdx]
         # Check if cursor is near a survey point
         if distNext < snapDist and distNext < distLast:
-            xOnLine = self.x[nextIdx]
-            yOnLine = self.y[nextIdx]
+            xOnLine = self.origData['x'][nextIdx]
+            yOnLine = self.origData['y'][nextIdx]
         elif distLast < snapDist and distLast < distNext:
-            xOnLine = self.x[lastIdx]
-            yOnLine = self.y[lastIdx]
+            xOnLine = self.origData['x'][lastIdx]
+            yOnLine = self.origData['y'][lastIdx]
 
         return [xOnLine, yOnLine]
