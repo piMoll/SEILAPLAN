@@ -616,14 +616,22 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
                 # Test first and last pole of optimization with second threshold
                 if poleIdx + self.poles.idxA in [self.poles.idxA, self.poles.idxE]:
                     # Check if current value is new max value
-                    maxValArr[1] = np.nanmax([maxValArr[1], angle])
+                    try:
+                        maxValArr[1] = np.nanmax([maxValArr[1], angle])
+                    except RuntimeWarning:
+                        # Warning is thrown when np.nanmax encounters all nan array
+                        pass
                     # Check if angle is higher than second threshold
                     if angle > self.thData['thresholds'][idx][1]:
                         isOverThreshold = True
                         color = 1   # red
                 else:
                     # Check if current value is new max value
-                    maxValArr[0] = np.nanmax([maxValArr[0], angle])
+                    try:
+                        maxValArr[0] = np.nanmax([maxValArr[0], angle])
+                    except RuntimeWarning:
+                        # Warning is thrown when np.nanmax encounters all nan array
+                        pass
                     if angle > self.thData['thresholds'][idx][0]:
                         isOverThreshold = True
                         color = 1   # red
@@ -640,7 +648,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             # Get lowest value, ignore any nan values
             maxVal = np.nanmin(data)
             # Check if values are under defined threshold. Also ignore NAN values
-            smallerThan = (data < self.thData['thresholds'][idx][1]) * ~np.isnan(data)
+            smallerThan = (np.nan_to_num(data) < self.thData['thresholds'][idx][1]) * ~np.isnan(data)
             # Angles between 1 and 3 degrees have error level 'attention'
             if self.thData['thresholds'][idx][0] < maxVal < self.thData['thresholds'][idx][1]:
                 color = 2   # orange

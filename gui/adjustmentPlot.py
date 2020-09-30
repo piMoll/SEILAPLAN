@@ -99,7 +99,7 @@ class AdjustmentPlot(FigureCanvas):
         ratio = rangeX / rangeY
         # Update figure size to fit data, height is a minimum of 330 px
         minHight = 330
-        minLength = min(minHight * ratio, 600)
+        minLength = int(round(min(minHight * ratio, 600)))
         self.setMinimumSize(QSize(minLength, minHight))
         # Set label positioning by taking height of figure into account
         height_m2px = rangeY / self.height()

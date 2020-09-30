@@ -142,7 +142,7 @@ class ProgressDialog(QDialog):
         self.progressBar.setValue(int(value))
     
     def rangeFromThread(self, range_vals):
-        self.progressBar.setRange(range_vals[0], range_vals[1])
+        self.progressBar.setRange(int(round(range_vals[0])), int(round(range_vals[1])))
     
     def maxFromThread(self, max):
         self.progressBar.setValue(self.progressBar.maximum())
