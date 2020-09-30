@@ -616,22 +616,16 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
                 # Test first and last pole of optimization with second threshold
                 if poleIdx + self.poles.idxA in [self.poles.idxA, self.poles.idxE]:
                     # Check if current value is new max value
-                    try:
+                    if not np.all(np.isnan([maxValArr[1], angle])):
                         maxValArr[1] = np.nanmax([maxValArr[1], angle])
-                    except RuntimeWarning:
-                        # Warning is thrown when np.nanmax encounters all nan array
-                        pass
                     # Check if angle is higher than second threshold
                     if angle > self.thData['thresholds'][idx][1]:
                         isOverThreshold = True
                         color = 1   # red
                 else:
                     # Check if current value is new max value
-                    try:
+                    if not np.all(np.isnan([maxValArr[0], angle])):
                         maxValArr[0] = np.nanmax([maxValArr[0], angle])
-                    except RuntimeWarning:
-                        # Warning is thrown when np.nanmax encounters all nan array
-                        pass
                     if angle > self.thData['thresholds'][idx][0]:
                         isOverThreshold = True
                         color = 1   # red

@@ -123,6 +123,9 @@ class AdjustmentDialogThresholds(QObject):
         mark depending on presents of exceeded thresholds."""
         thresholdExceeded = False
         for i in range(0, self.model.rowCount()):
+            if i == 2:
+                # Dont check thresholds for 'Sattelkraft'
+                continue
             data = self.model.data(self.model.index(i, 5))
             if data and data > 0:
                 thresholdExceeded = True

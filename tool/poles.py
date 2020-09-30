@@ -478,19 +478,15 @@ class Poles(object):
                 # Check if first pole and array has non nan values
                 if pole == self.firstPole:
                     # A: Max(F_Sa_NBefRes li/re)
-                    try:
+                    # Check if array only contains nan values
+                    if not np.all(np.isnan(forces['Sattelkraft_beiStuetze'][0][0:2])):
                         maxForce = np.nanmax(forces['Sattelkraft_beiStuetze'][0][0:2])
-                    except RuntimeWarning:
-                        # Warning is thrown when np.nanmax encounters all nan array
-                        pass
                 # Check if last pole and array has non nan values
                 elif pole == self.lastPole:
                     # E: Max(F_Sa_NBefRes li/re)
-                    try:
+                    # Check if array only contains nan values
+                    if not np.all(np.isnan(forces['Sattelkraft_beiStuetze'][0][-2:])):
                         maxForce = np.nanmax(forces['Sattelkraft_beiStuetze'][0][-2:])
-                    except RuntimeWarning:
-                        # Warning is thrown when np.nanmax encounters all nan array
-                        pass
                 if maxForce:
                     bhd = self.getBhdForPole(pole['h'], maxForce)
 
@@ -500,13 +496,13 @@ class Poles(object):
                 idx = j - self.idxA
                 # Poles in between start and end
                 # Max(F_Sa_NBefRes, F_Sa_BefRes)
-                try:
+                maxForceB = np.max(forces['Sattelkraft_Total'][0][idx])
+                # Check if array only contains nan values
+                if not np.all(np.isnan(forces['Sattelkraft_beiStuetze'][0][idx*2:idx*2+2])):
                     maxForceNB = np.nanmax(forces['Sattelkraft_beiStuetze'][0][idx*2:idx*2+2])
-                    maxForceB = np.max(forces['Sattelkraft_Total'][0][idx])
                     maxForce = max(maxForceNB, maxForceB)
-                except RuntimeWarning:
-                    # Warning is thrown when np.nanmax encounters all nan array
-                    maxForce = np.max(forces['Sattelkraft_Total'][0][idx])
+                else:
+                    maxForce = maxForceB
                 
                 bhd = self.getBhdForPole(pole['h'], maxForce)
               
@@ -514,11 +510,8 @@ class Poles(object):
             elif pole['poleType'] == 'crane':
                 # Crane is first pole of cable line
                 # A: Max(F_Sa_NBefRes li/re)
-                try:
+                if not np.all(np.isnan(forces['Sattelkraft_beiStuetze'][0][0:2])):
                     maxForce = np.nanmax(forces['Sattelkraft_beiStuetze'][0][0:2])
-                except RuntimeWarning:
-                    # Warning is thrown when np.nanmax encounters all nan array
-                    pass
                 bhd = np.nan
 
             self.poles[j]['BHD'] = bhd

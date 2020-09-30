@@ -308,13 +308,13 @@ def preciseCable(IS, poles, STA):
     dAnkerE = poles.anchor['field'][2]
     zAnkerE = poles.anchor['field'][3]
 
-    try:
+    if dAnkerA != 0:
         phi_oA = np.arctan(zAnkerA/dAnkerA)
-    except ZeroDivisionError:
+    else:
         phi_oA = np.nan
-    try:
+    if dAnkerE != 0:
         phi_oE = np.arctan((-1*zAnkerE)/dAnkerE)
-    except ZeroDivisionError:
+    else:
         phi_oE = np.nan
     oldsettings = np.geterr()
     j = np.seterr(all='ignore')
@@ -527,13 +527,13 @@ def preciseCableLight(zi, di, IS, STA, HM, LP):
     zAnkerA = IS['Ank'][0][1]
     dAnkerE = IS['Ank'][0][2]
     zAnkerE = IS['Ank'][0][3]
-    try:
+    if dAnkerA != 0:
         phi_oA = np.arctan(zAnkerA/dAnkerA)
-    except ZeroDivisionError:
+    else:
         phi_oA = np.nan
-    try:
+    if dAnkerE != 0:
         phi_oE = np.arctan((-1*zAnkerE)/dAnkerE)
-    except ZeroDivisionError:
+    else:
         phi_oE = np.nan
     # oldsettings = np.geterr()
     # j = np.seterr(all='ignore')
