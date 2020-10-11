@@ -294,8 +294,9 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.drawTool.updateMarker(point, idx)
     
     def updateOptSTA(self, newVal):
-        self.result['optSTA'] = float(newVal)
-        return str(newVal)
+        # Save new value to config Handler
+        self.confHandler.params.setOptSTA(newVal)
+        return str(self.confHandler.params.optSTA)
     
     def updateCableParam(self):
         self.configurationHasChanged = True
@@ -367,7 +368,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         try:
             params = self.confHandler.params.getSimpleParameterDict()
             cableline, force, seil_possible = preciseCable(params, self.poles,
-                                                           self.result['optSTA'])
+                                                           self.confHandler.params.optSTA)
         except Exception as e:
             self.updateRecalcStatus('cableError')
             self.isRecalculating = False
@@ -485,8 +486,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         
         units = [
             params.params['Bodenabst_min']['unit'],
-            params.params['min_SK']['unit'],
-            params.params['min_SK']['unit'],
+            params.params['SK']['unit'],
+            params.params['SK']['unit'],
             '°',
             '°'
         ]

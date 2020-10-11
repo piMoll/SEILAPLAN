@@ -341,8 +341,7 @@ def preciseCable(IS, poles, STA):
     phi_last_knick = np.fmax(phi_last_knick_un, phi_last_knick_ob)
     kraft['Lastseilknickwinkel'] = phi_last_knick
 
-    zqT = z*qT
-    ST = STA + zqT
+    ST = STA + z*qT
     Vi = ST * (np.sin(phi_o) - np.sin(phi_u))      # Vi darf nicht negativ sein
     # Nachweis basierend auf Leerseilknickwinkel
     kraft['Nachweis'] = np.where(phi_leer_knick >= 1, ['Ja'], ['Nein'])
@@ -458,10 +457,6 @@ def preciseCable(IS, poles, STA):
 
     kraft['Spannkraft'] = [ST[0], ST[-1]]
     kraft['Seilzugkraft'] = [ST, Hs]
-    
-    # Grundspannung Tragseil am Endpunkt (Formel Ti = To + zi * qs)
-    zi = poles.poles[poles.idxE]['z'] - poles.poles[poles.idxA]['z']
-    kraft['grundspann_E'] = IS['min_SK'] + zi * IS['qT']
 
     poles.calculateAdvancedProperties(kraft)
     

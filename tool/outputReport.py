@@ -135,8 +135,8 @@ def generateReportText(confHandler, result, comment, projname):
                          f"{dist_h:.1f} m", f"{dist_s:.2f} m"])
 
     # Section cable pull strength
-    str_opti = [[tr('gewaehlte Seilzugkraft bei der Anfangsstuetze'),
-                 f"{kraft['Spannkraft'][0]:.0f} kN"]]
+    str_opti = [[tr('gewaehlte Grundspannung bei der Anfangsstuetze'),
+                 f"{confHandler.params.optSTA:.0f} kN"]]
 
     # Section cable length
     str_laen = [['']*2 + fHeader,
@@ -356,7 +356,7 @@ def generateShortReport(confHandler, result, comment, projname, outputLoc):
     ###
     param = {}
     param_list = ['D', 'MBK', 'Q', 'Bodenabst_min', 'Bodenabst_A',
-                  'Bodenabst_E', 'min_SK', 'SF_T']
+                  'Bodenabst_E', 'SF_T']
     
     for key in param_list:
         p = confHandler.params.params[key]
@@ -369,8 +369,8 @@ def generateShortReport(confHandler, result, comment, projname, outputLoc):
         param['Q'],
         param['Bodenabst_min'] + param['Bodenabst_A'],
         ['', ''] + param['Bodenabst_E'],
-        param['min_SK']
-            + [tr('Grundspannung (Endpunkt)'), f"{kraft['grundspann_E']:.0f} kN"],
+        [tr('Grundspannung Tragseil (Anfangssp.)'), f"{confHandler.params.optSTA:.0f}kN"]
+            + [tr('Grundspannung (Endpunkt)'), f"{kraft['Spannkraft'][1]:.0f} kN"],
         param['SF_T']]
     
     # Pole dimensions

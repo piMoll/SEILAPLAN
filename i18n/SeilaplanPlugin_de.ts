@@ -175,7 +175,7 @@
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="132"/>
-        <source>gewaehlte Seilzugkraft bei der Anfangsstuetze</source>
+        <source>gewaehlte Grundspannung bei der Anfangsstuetze</source>
         <translatorcomment>Gewählte Seilzugkraft bei der Anfangsstütze</translatorcomment>
         <translation>Grundspannung bei der Anfangsstütze</translation>
     </message>
@@ -1703,8 +1703,8 @@ Bitte passen Sie die Eingabe an.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1482"/>
-        <source>Minimal gewaehlte Seilzugkraft</source>
-        <translation>Minimal mögl. Grundspannung</translation>
+        <source>Grundspannung</source>
+        <translation>Grundspannung</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1549"/>
@@ -2072,14 +2072,14 @@ Unterstützte Dateitypen:
         <translation>Endpunkt</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="902"/>
-        <source>Ab dieser Seilzugkraft beginnt die Optimierungsrechnung.</source>
-        <translation>Ab dieser Seilzugkraft beginnt die Optimierungsrechnung.</translation>
+        <location filename="../gui/seilaplanPluginDialog.py" line="940"/>
+        <source>Erklaerung Grundspannung</source>
+        <translation type="unfinished">TODO</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="903"/>
-        <source>Minimal gewaehlte Seilzugkraft</source>
-        <translation>Minimal gewählte Seilzugkraft</translation>
+        <location filename="../gui/seilaplanPluginDialog.py" line="941"/>
+        <source>Grundspannung</source>
+        <translation>Grundspannung</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="897"/>

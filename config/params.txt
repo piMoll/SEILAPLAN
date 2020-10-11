@@ -18,7 +18,7 @@ HM_min		Minimale Stuetzenhoehe	m	field	int	1	HM_max	32
 HM_max		Maximale Stuetzenhoehe	m	field	int	HM_min	50	33
 HM_Delta		Abstufungsinterval	m	field	int	1	5	34
 HM_nat		Kuenstliche Stuetze ab Stuetzenhoehe von	m	field	int	0	100	35
-min_SK		Grundspannung Tragseil (Anfangssp.)	kN	field	int	10	500	36
+SK		Grundspannung Tragseil (Anfangssp.)	kN	field	int	10	500	36
 E		Elastizitaetsmodul Tragseil	kN/mm2	field	float	10	1000	37
 FuellF		Fuellfaktor		field	float	0	1	38
 SF_T		Sicherheitsfaktor Tragseil		field	float	0	20	39

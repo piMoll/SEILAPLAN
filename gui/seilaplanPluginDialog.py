@@ -163,7 +163,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.infoPointE.clicked.connect(self.onPointEInfoShow)
         self.infoBodenabstand.clicked.connect(self.onShowInfoImg)
         self.infoStuetzen.clicked.connect(self.onShowInfoImg)
-        self.infoMinSK.clicked.connect(self.onShowInfoFieldMinSK)
+        self.infoSK.clicked.connect(self.onShowInfoFieldSK)
         self.infoFieldE.clicked.connect(self.onShowInfoFieldE)
         self.infoFieldFuellF.clicked.connect(self.onShowInfoFieldFuellF)
         self.infoFieldSFT.clicked.connect(self.onShowInfoFieldSFT)
@@ -223,6 +223,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             'MBK': self.fieldMBK,
             'qZ': self.fieldqZ,
             'qR': self.fieldqR,
+            'SK': self.fieldSK,
             
             'Min_Dist_Mast': self.fieldMinDist,
             'L_Delta': self.fieldLdelta,
@@ -230,7 +231,6 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             'HM_max': self.fieldHMmax,
             'HM_Delta': self.fieldHMdelta,
             'HM_nat': self.fieldHMnat,
-            'min_SK': self.fieldminSK,
             
             'E': self.fieldE,
             'FuellF': self.fieldFuellF,
@@ -835,6 +835,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
                                                   self.confHandler.getCurrentPath(),
                                                   fFilter)
         if filename:
+            self.confHandler.reset()
             success = self.confHandler.loadFromFile(filename)
             if success:
                 self.setupContent()
@@ -934,9 +935,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.imgBox.setLayout(self.imgBox.container)
         self.imgBox.show()
     
-    def onShowInfoFieldMinSK(self):
-        msg = self.tr('Ab dieser Seilzugkraft beginnt die Optimierungsrechnung.')
-        QMessageBox.information(self, self.tr("Minimal gewaehlte Seilzugkraft"),
+    def onShowInfoFieldSK(self):
+        msg = self.tr('Erklaerung Grundspannung')
+        QMessageBox.information(self, self.tr("Grundspannung"),
                                 msg, QMessageBox.Ok)
     
     def onShowInfoFieldE(self):

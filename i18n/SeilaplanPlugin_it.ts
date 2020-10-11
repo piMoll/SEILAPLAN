@@ -208,7 +208,7 @@
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="132"/>
-        <source>gewaehlte Seilzugkraft bei der Anfangsstuetze</source>
+        <source>gewaehlte Grundspannung bei der Anfangsstuetze</source>
         <translatorcomment>Tensione della fune scelta al primo cavalletto</translatorcomment>
         <translation>Forza di trazione iniziale al primo cavalletto</translation>
     </message>
@@ -1712,8 +1712,8 @@ Si prega di adattare l&apos;input.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1482"/>
-        <source>Minimal gewaehlte Seilzugkraft</source>
-        <translation>Minimale forza di transizione iniziale possibile</translation>
+        <source>Grundspannung</source>
+        <translation type="unfinished">Minimale forza di transizione iniziale possibile</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1549"/>
@@ -2134,14 +2134,14 @@ Tipi di file supportati:
         <translation>Punto terminale</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="902"/>
-        <source>Ab dieser Seilzugkraft beginnt die Optimierungsrechnung.</source>
-        <translation>Il calcolo di ottimizzazione viene calcolato utilizzando questa forza di trasmissione della fune.</translation>
+        <location filename="../gui/seilaplanPluginDialog.py" line="940"/>
+        <source>Erklaerung Grundspannung</source>
+        <translation type="unfinished">TODO</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="903"/>
-        <source>Minimal gewaehlte Seilzugkraft</source>
-        <translation>Forza di trazione minimale scegliata</translation>
+        <location filename="../gui/seilaplanPluginDialog.py" line="941"/>
+        <source>Grundspannung</source>
+        <translation type="unfinished">TODO</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="885"/>

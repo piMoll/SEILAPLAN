@@ -56,6 +56,9 @@ def main(progress, project):
 
     progress.sig_text.emit('msg_seillinie')
     [HM, HMidx, optValue, optSTA, optiLen] = out
+
+    project.params.setOptSTA(optSTA[0])
+    
     stuetzDist = np.int32(diIdx[HMidx])
 
     # Check result status

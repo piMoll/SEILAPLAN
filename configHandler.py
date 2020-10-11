@@ -542,6 +542,8 @@ class ParameterConfHandler(AbstractConfHandler):
         self.paramOrder = []
         # Short-hand dictionary for use in algorithm
         self.p = {}
+        # Optimal cable tension (result of optimization or user input)
+        self.optSTA = None
         
         # Parameter sets
         self.currentSetName = ''
@@ -755,6 +757,10 @@ class ParameterConfHandler(AbstractConfHandler):
                                     value, self.tr(p['label'], '@default'),
                                     p['unit'], '\n')
             txt.append(line)
+        # Add optimized cable tension if calculated
+        if self.optSTA:
+            txt.append('{0: <20}{1}\n'.format('optSTA', self.optSTA))
+        # Add name of parameter set
         txt.append('{0: <20}{1}'.format('Parameterset:', self.currentSetName))
         return txt
     
@@ -843,11 +849,20 @@ class ParameterConfHandler(AbstractConfHandler):
                     return key
         else:
             return sysStr
+
+    def setOptSTA(self, optSTA):
+        self.optSTA = int(round(float(optSTA)))
     
     def prepareForCalculation(self):
-        # Derive min_SK from parameters MBK and SF_T
+        # Define min_SK as 15% lower as the machine parameter 'SK'
+        SK = self.getParameter('SK')
+        self.derievedParams['min_SK'] = {
+            'value': int(round(SK * 0.85))
+        }
+        # Derive zul_SK from parameters MBK and SF_T
         mbk = self.getParameter('MBK')
         sft = self.getParameter('SF_T')
+        # 'maximal zulaessige Seilzugkraft'
         self.derievedParams['zul_SK'] = {
             'value': int(round(mbk / sft))
         }
@@ -915,7 +930,7 @@ class ParameterConfHandler(AbstractConfHandler):
         return self.p
     
     def reset(self):
-        pass
+        self.optSTA = None
 
 
 class ConfigHandler(object):
@@ -973,6 +988,12 @@ class ConfigHandler(object):
                     continue
                 if part[1] == '-':
                     part[1] = ''
+                # Backwards compatibility to load older project files
+                if part[0] == 'min_SK':
+                    part[0] = 'SK'
+                elif part[0] == 'optSTA':
+                    self.params.setOptSTA(part[1])
+                    continue
                 key = part[0]
                 if key == 'Parameterset:':
                     setname = part[1]
@@ -1166,9 +1187,14 @@ class ConfigHandler(object):
         elif len(self.project.fixedPoles['poles']) > 0:
             self.project.poles.updateAllPoles(status, self.project.fixedPoles['poles'])
         
-        zulSK = self.params.getParameter('zul_SK')
-        minSK = self.params.getParameter('min_SK')
-        optSTA = int(minSK + (zulSK - minSK) / 2)
+        # Set optimized cable tension
+        if status == 'savedFile' and self.params.optSTA:
+            # Use the saved parameter from save file
+            optSTA = self.params.optSTA
+        else:
+            # Use machine parameter 'SK'
+            optSTA = self.params.getParameter('SK')
+            self.params.setOptSTA(optSTA)
         
         return {
             'cableline': None,

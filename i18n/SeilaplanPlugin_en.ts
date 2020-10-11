@@ -210,7 +210,7 @@
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="132"/>
-        <source>gewaehlte Seilzugkraft bei der Anfangsstuetze</source>
+        <source>gewaehlte Grundspannung bei der Anfangsstuetze</source>
         <translatorcomment>Selected cable tensile force at the first support</translatorcomment>
         <translation>Mounting tension force at the first support</translation>
     </message>
@@ -1719,8 +1719,8 @@ Please adapt the input.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1482"/>
-        <source>Minimal gewaehlte Seilzugkraft</source>
-        <translation>Minimal possible mounting tension force</translation>
+        <source>Grundspannung</source>
+        <translation type="unfinished">Minimal possible mounting tension force</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1549"/>
@@ -2142,14 +2142,14 @@ Supported data types:
         <translation>End point</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="902"/>
-        <source>Ab dieser Seilzugkraft beginnt die Optimierungsrechnung.</source>
-        <translation>The optimization begins at this cable tensile force.</translation>
+        <location filename="../gui/seilaplanPluginDialog.py" line="940"/>
+        <source>Erklaerung Grundspannung</source>
+        <translation type="unfinished">TODO</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="903"/>
-        <source>Minimal gewaehlte Seilzugkraft</source>
-        <translation>Minimal selected rope traction force</translation>
+        <location filename="../gui/seilaplanPluginDialog.py" line="941"/>
+        <source>Grundspannung</source>
+        <translation type="unfinished">TODO</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="885"/>

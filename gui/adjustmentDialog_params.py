@@ -55,7 +55,7 @@ class AdjustmentDialogParams(object):
             'qZ': self.paramHandler.getParameterAsStr('qZ'),
             'qR': self.paramHandler.getParameterAsStr('qR'),
             'Bodenabst_min': self.paramHandler.getParameterAsStr('Bodenabst_min'),
-            'Vorsp': str(self.parent.result['optSTA']),
+            'Vorsp': str(self.paramHandler.optSTA),
         }
         for key, field in self.fields.items():
             field.blockSignals(True)

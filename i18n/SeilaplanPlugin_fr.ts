@@ -208,7 +208,7 @@
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="132"/>
-        <source>gewaehlte Seilzugkraft bei der Anfangsstuetze</source>
+        <source>gewaehlte Grundspannung bei der Anfangsstuetze</source>
         <translatorcomment>Tension du câble choisie au premier support</translatorcomment>
         <translation>Force de traction initiale au premier support</translation>
     </message>
@@ -1718,8 +1718,8 @@ Veuillez adapter la saisie.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1482"/>
-        <source>Minimal gewaehlte Seilzugkraft</source>
-        <translation>Force de traction initiale minimale possible</translation>
+        <source>Grundspannung</source>
+        <translation type="unfinished">Force de traction initiale minimale possible</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1549"/>
@@ -2137,14 +2137,14 @@ Types de fichier supportés:
         <translation>Point terminal</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="902"/>
-        <source>Ab dieser Seilzugkraft beginnt die Optimierungsrechnung.</source>
-        <translation>L’optimisation commence à cette force de traction.</translation>
+        <location filename="../gui/seilaplanPluginDialog.py" line="940"/>
+        <source>Erklaerung Grundspannung</source>
+        <translation type="unfinished">TODO</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="903"/>
-        <source>Minimal gewaehlte Seilzugkraft</source>
-        <translation>Force de traction minimale choisie</translation>
+        <location filename="../gui/seilaplanPluginDialog.py" line="941"/>
+        <source>Grundspannung</source>
+        <translation type="unfinished">TODO</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="885"/>
