@@ -519,6 +519,11 @@
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
+        <source>Bundstelle</source>
+        <translation type="unfinished">Ø Bundstelle</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
         <source>Angabe BDH bei zu steilem Winkel nicht moeglich</source>
         <translation>* l&apos;indicazione del DPU minimale non e possibile in caso di un angolo troppo ripido</translation>
     </message>

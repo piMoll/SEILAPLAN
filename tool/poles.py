@@ -436,6 +436,7 @@ class Poles(object):
         """
         for j, pole in enumerate(self.poles):
             bhd = np.nan
+            bundst = np.nan
             angle = np.nan
             maxForce = np.nan
             maxForceName = 'Sattelkraft'
@@ -488,7 +489,7 @@ class Poles(object):
                     if not np.all(np.isnan(forces['Sattelkraft_beiStuetze'][0][-2:])):
                         maxForce = np.nanmax(forces['Sattelkraft_beiStuetze'][0][-2:])
                 if maxForce:
-                    bhd = self.getBhdForPole(pole['h'], maxForce)
+                    [bhd, bundst] = self.getBhdForPole(pole['h'], maxForce)
 
             # pole in between --> passable
             elif pole['poleType'] == 'pole':
@@ -504,7 +505,7 @@ class Poles(object):
                 else:
                     maxForce = maxForceB
                 
-                bhd = self.getBhdForPole(pole['h'], maxForce)
+                [bhd, bundst] = self.getBhdForPole(pole['h'], maxForce)
               
             # Special crane start pole with h: > 0 --> not passable
             elif pole['poleType'] == 'crane':
@@ -515,6 +516,7 @@ class Poles(object):
                 bhd = np.nan
 
             self.poles[j]['BHD'] = bhd
+            self.poles[j]['bundstelle'] = bundst
             self.poles[j]['angriff'] = angle
             self.poles[j]['maxForce'] = [maxForce, maxForceName]
     
@@ -541,6 +543,6 @@ class Poles(object):
         height += 1.5
         idx_height = (np.abs(height_array - height)).argmin()
         # Diameter of tree next to cable
-        abbundst = BHD_POLE[BHD_POLE_Force[idx_force]][height_array[idx_height]]
+        bundst = BHD_POLE[BHD_POLE_Force[idx_force]][height_array[idx_height]]
         # Diameter at 1.3m over ground
-        return int(round(abbundst + (height - 1.5), 0))
+        return [int(round(bundst + (height - 1.5), 0)), bundst]

@@ -378,7 +378,7 @@ def generateShortReport(confHandler, result, comment, projname, outputLoc):
     # Pole dimensions
     ###
     s_dimen = [[tr('Nr.'), tr('Bezeichnung'), tr('Sattelhoehe'),
-                tr('Neigung'), tr('Min. BHD')]]
+                tr('Neigung'), tr('Min. BHD'), tr('Bundstelle')]]
     add_footnote = False
     for pole in polesArray:
         if pole['angriff'] > 45:
@@ -386,7 +386,8 @@ def generateShortReport(confHandler, result, comment, projname, outputLoc):
             add_footnote = True
         angle = np.nan if pole['angle'] == 0 else pole['angle']
         s_dimen.append([pole['nr'], pole['name'], f"{pole['h']:.1f} m",
-                        f"{angle:.0f} °", f"{pole['BHD']} cm"])
+                        f"{angle:.0f} °", f"{pole['BHD']} cm",
+                        f"{pole['bundstelle']} cm"])
     s_dimen = removeTxtElements(s_dimen, "nan")
     s_dimen2 = None
     if add_footnote:

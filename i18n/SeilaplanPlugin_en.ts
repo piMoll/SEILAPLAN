@@ -515,7 +515,12 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Min. BHD</source>
-        <translation>Minimal DBH</translation>
+        <translation>Min. DBH</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
+        <source>Bundstelle</source>
+        <translation type="unfinished">Ø Bundstelle</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>

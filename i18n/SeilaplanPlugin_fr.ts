@@ -522,6 +522,11 @@
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
+        <source>Bundstelle</source>
+        <translation type="unfinished">Ø Bundstelle</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
         <source>Angabe BDH bei zu steilem Winkel nicht moeglich</source>
         <translation>* l&apos;indication du DHP minimale n&apos;est pas possible en cas d&apos;un angle trop raide</translation>
     </message>

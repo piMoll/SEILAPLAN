@@ -507,6 +507,11 @@
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
+        <source>Bundstelle</source>
+        <translation>Ø Bundstelle</translation>
+    </message>
+    <message>
+        <location filename="../tool/outputReport.py" line="111"/>
         <source>Angabe BDH bei zu steilem Winkel nicht moeglich</source>
         <translation>* Angabe des min. BHD bei zu steilem Angriffswinkel nicht möglich</translation>
     </message>
