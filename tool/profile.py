@@ -196,10 +196,14 @@ class Profile(object):
             pass
         gclear_rel[self.sc == 0] = np.nan
 
+        # Calculate distance between cable and ground
+        maxDistToGround = np.nanmax(cableline['empty'][::10] - self.zi)
+
         cableline['groundclear_di'] = gclear_xaxis
         cableline['groundclear'] = gclear_cable
         cableline['groundclear_under'] = gclear_abs
         cableline['groundclear_rel'] = gclear_rel
+        cableline['maxDistToGround'] = maxDistToGround
     
     def setPeakLocations(self, peakLoc):
         self.peakLoc_x = peakLoc

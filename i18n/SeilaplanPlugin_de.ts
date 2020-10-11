@@ -539,6 +539,11 @@ knickwinkel</translation>
         <translation>Berechnete Seillänge</translation>
     </message>
     <message>
+        <location filename="../tool/outputReport.py" line="419"/>
+        <source>Max. Abstand Leerseil - Boden</source>
+        <translation type="unfinished">Max. Abstand Leerseil - Boden</translation>
+    </message>
+    <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Angriffs-winkel</source>
         <translation>Angriffs-

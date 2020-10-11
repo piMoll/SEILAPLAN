@@ -152,7 +152,9 @@ def generateReportText(confHandler, result, comment, projname):
                 ['yLE', tr('Leerseil')] + ("{:.1f} m," * fieldCount).format(
                     *tuple(kraft['Durchhang'][0])).rstrip(',').split(',', fieldCount),
                 ['yLA', tr('Lastseil')] + ("{:.1f} m," * fieldCount).format(
-                    *tuple(kraft['Durchhang'][1])).rstrip(',').split(',', fieldCount)]
+                    *tuple(kraft['Durchhang'][1])).rstrip(',').split(',', fieldCount),
+                ['', tr('Max. Abstand Leerseil - Boden'), f"{result['cableline']['maxDistToGround']:.1f} m"]
+    ]
 
     str_seil1 = [
         [tr('Abk.'), tr('am Leerseil')] + [''] * (poleCount + 1),
@@ -415,7 +417,10 @@ def generateShortReport(confHandler, result, comment, projname, outputLoc):
     
     # Fields
     ###
-    s_field1 = [[tr('Berechnete Seillaenge'), f"{kraft['LaengeSeil'][1]:.1f} m"], []]
+    s_field1 = [[tr('Berechnete Seillaenge'), f"{kraft['LaengeSeil'][1]:.1f} m"],
+                [tr('Max. Abstand Leerseil - Boden'),
+                 f"{result['cableline']['maxDistToGround']:.1f} m"],
+                []]
     s_field2 = [
         [tr('Feld'),
          tr('Horizontal-distanz'),
@@ -497,6 +502,11 @@ def generateShortReport(confHandler, result, comment, projname, outputLoc):
         ('FONT', (0, 0), (-1, -1), font, fontSize),
         ('VALIGN', (0, 1), (-1, -1), 'MIDDLE'),
     ]
+    style_gener_right = [
+        ('FONT', (0, 0), (-1, -1), font, fontSize),
+        ('VALIGN', (0, 1), (-1, -1), 'MIDDLE'),
+        ('ALIGN', (1, 0), (1, -1), 'RIGHT'),
+    ]
     style_input = [
         ('FONT', (0, 0), (-1, -1), font, fontSize),
         ('ALIGN', (1, 0), (1, -1), 'RIGHT'),
@@ -558,7 +568,7 @@ def generateShortReport(confHandler, result, comment, projname, outputLoc):
     data.append([Table([[h_force], [t_force1], [t_force2]])])
     
     # Fields
-    t_field1 = Table(s_field1, rowHeights=he_row, style=style_gener)
+    t_field1 = Table(s_field1, rowHeights=he_row, style=style_gener_right)
     t_field2 = Table(s_field2, rowHeights=he_row, style=style_fields)
     data.append([Table([[h_field], [t_field1], [t_field2]])])
     
@@ -673,7 +683,7 @@ def generateReport(reportText, outputLoc):
         ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize)]))  # field headers
 
     t_durc1 = Table(h_durc, wi_doc, he_rowT)
-    t_durc2 = Table(str_durc, wi_abk + [None] + [1.7*cm]*len_field, 3*he_row)
+    t_durc2 = Table(str_durc, wi_abk + [None] + [1.7*cm]*len_field, 4*he_row)
     t_durc1.setStyle(title_style)
     t_durc2.setStyle(TableStyle(stdStyleB + [
         ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),  # field headers
