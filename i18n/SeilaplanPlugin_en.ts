@@ -520,7 +520,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Bundstelle</source>
-        <translation type="unfinished">Ø Bundstelle</translation>
+        <translation>Ø attachement point</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -552,12 +552,12 @@ loaded cable</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Berechnete Seillaenge</source>
-        <translation>Calculated cable length</translation>
+        <translation>Length of tensioned and unloaded cable (from initial to final point)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="419"/>
         <source>Max. Abstand Leerseil - Boden</source>
-        <translation type="unfinished">Max. Abstand Leerseil - Boden</translation>
+        <translation>Maximal clearance between unloaded cable and ground</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -1730,7 +1730,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1482"/>
         <source>Grundspannung</source>
-        <translation type="unfinished">Minimal possible mounting tension force</translation>
+        <translation>Mounting tension force</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1549"/>
@@ -1811,7 +1811,8 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1963"/>
         <source>Seillinie direkt bearbeiten</source>
-        <translation>Manually edit cable line</translation>
+        <translatorcomment>Manually edit cable line</translatorcomment>
+        <translation>Edit cable line manually</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1973"/>
@@ -1821,7 +1822,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1976"/>
         <source>Stuetzen optimieren</source>
-        <translatorcomment>Abkürzung finden</translatorcomment>
+        <translatorcomment>Optimize cable line automatically</translatorcomment>
         <translation>Optimize cable line</translation>
     </message>
     <message>
@@ -2154,12 +2155,16 @@ Supported data types:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="940"/>
         <source>Erklaerung Grundspannung</source>
-        <translation type="unfinished">TODO</translation>
+        <translation>Edit cable line manually:
+The calculation is done with the entered mounting tension force.
+
+Optimize cable line:
+The optimal mounting tension force is calculated. The optimization is starting at 75 percent of the entered value.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="941"/>
         <source>Grundspannung</source>
-        <translation type="unfinished">TODO</translation>
+        <translation>Mounting tension force</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="885"/>

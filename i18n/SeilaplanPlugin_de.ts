@@ -541,12 +541,12 @@ knickwinkel</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Berechnete Seillaenge</source>
-        <translation>Berechnete Seillänge</translation>
+        <translation>Länge Leerseil gespannt (Anfangs- bis Endpunkt)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="419"/>
         <source>Max. Abstand Leerseil - Boden</source>
-        <translation type="unfinished">Max. Abstand Leerseil - Boden</translation>
+        <translation>Maximaler Abstand Leerseil - Boden</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -2084,7 +2084,11 @@ Unterstützte Dateitypen:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="940"/>
         <source>Erklaerung Grundspannung</source>
-        <translation type="unfinished">TODO</translation>
+        <translation>Seillinie manuell bearbeiten:
+Es wird mit der eingegebenen Grundspannung gerechnet.
+
+Seillinie automatisch optimieren:
+Die optimale Grundspannung wird berechnet.&#xa0;Die Optimierung wird bei 75 Prozent des eingegebenen Werts gestartet.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="941"/>

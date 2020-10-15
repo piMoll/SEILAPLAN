@@ -520,7 +520,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Bundstelle</source>
-        <translation type="unfinished">Ø Bundstelle</translation>
+        <translation>Ø punto di attaco</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -552,12 +552,12 @@ fune caricata</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Berechnete Seillaenge</source>
-        <translation>Lunghezza calcolata della fune</translation>
+        <translation>Lunghezza della fune non caricata e tesa (dal punto iniziale al punto finale)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="419"/>
         <source>Max. Abstand Leerseil - Boden</source>
-        <translation type="unfinished">Max. Abstand Leerseil - Boden</translation>
+        <translation>Spazio maximal tra fune non caricata e suolo</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -1723,7 +1723,7 @@ Si prega di adattare l&apos;input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1482"/>
         <source>Grundspannung</source>
-        <translation type="unfinished">Minimale forza di transizione iniziale possibile</translation>
+        <translation>Forza di trazione iniziale</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1549"/>
@@ -2146,12 +2146,16 @@ Tipi di file supportati:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="940"/>
         <source>Erklaerung Grundspannung</source>
-        <translation type="unfinished">TODO</translation>
+        <translation>Elaborazione manuale della linea:
+La forza di trazione iniziale inserita viene utilizzata per il calcolo.
+
+Ottimizzare automaticamente la linea:
+Viene calcolata la forza di trazione iniziale ottimale. L&apos;ottimizzazione avvia al 75 percento del valore inserito.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="941"/>
         <source>Grundspannung</source>
-        <translation type="unfinished">TODO</translation>
+        <translation>Forza di trazione iniziale</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="885"/>
