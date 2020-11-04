@@ -546,7 +546,6 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
                     self.rasterField.blockSignals(False)
                     break
                 self.iface.setActiveLayer(rlyr['lyr'])
-                self.iface.zoomToActiveLayer()
                 rasterFound = True
                 break
         if not rasterFound:
