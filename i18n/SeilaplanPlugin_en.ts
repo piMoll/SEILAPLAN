@@ -2126,8 +2126,8 @@ Path to the documentation:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="857"/>
         <source>Hoeheninformation - Erklaerung Raster</source>
-        <translation>The height information could not be read out of the height raster. The list incorporates all the existing rasters in the actual QGIS project.
-If a new raster is added to QGIS, the list may be completed by clicking on the update button.</translation>
+        <translation>Height information is extracted from an elevation raster. The list incorporates all the existing rasters in the current QGIS project.
+When a new raster is added to QGIS, the list can be updated by clicking on the update button.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="859"/>
