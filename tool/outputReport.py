@@ -452,8 +452,9 @@ def generateShortReport(confHandler, result, comment, projname, outputLoc):
             slack_f = kraft['Durchhang'][1][j]
             j += 1
         
+        fieldIdent = "{} -> {}".format(poleName, nextPoleName)
         s_field2.append([
-            "{} -> {}".format(poleName, nextPoleName),
+            (fieldIdent[:42] + '...') if len(fieldIdent) > 42 else fieldIdent,
             f"{dist_h:.0f} m", f"{dist_s:.1f} m", f"{h_diff:.1f} m",
             f"{slack_e:.1f} m", f"{slack_f:.1f} m"])
     s_field2.append([tr('Total'), f"{total_h:.1f} m", f"{total_s:.1f} m",
@@ -667,7 +668,7 @@ def generateReport(reportText, outputLoc):
         ('FONT', (0, 0), (-1, 0), fontHeader, smallfontSize)]))
 
     t_abst1 = Table(h_abst, wi_doc, he_rowT)
-    t_abst2 = Table(str_abst, [5*cm] + 2*wi_clo, len(str_abst) * he_row)
+    t_abst2 = Table(str_abst, [None] + 2*wi_clo, len(str_abst) * he_row)
     t_abst1.setStyle(title_style)
     t_abst2.setStyle(TableStyle(stdStyleA + [
         ('FONT', (0, 1), (-1, 1), fontHeader, smallfontSize)]))
@@ -691,10 +692,10 @@ def generateReport(reportText, outputLoc):
         ('FONT', (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
 
     t_seil1 = Table(h_seil, wi_doc, he_rowT)
-    t_seil2 = Table(str_seil1, wi_abk + [None] + [1*cm] + [1.5*cm]*len_field, len(str_seil1)*he_row)
-    t_seil3 = Table(str_seil2, wi_abk + [None] + [1.5*cm]*len_pole, len(str_seil2)*he_row)
+    t_seil2 = Table(str_seil1, wi_abk + [None] + [1*cm] + [None]*len_field, len(str_seil1)*he_row)
+    t_seil3 = Table(str_seil2, wi_abk + [None] + [None]*len_pole, len(str_seil2)*he_row)
     t_seil4 = Table(str_seil3, wi_abk + [None] + [1*cm], len(str_seil3)*he_row)
-    t_seil5 = Table(str_seil4, wi_abk + [None] + [1.5*cm]*len_field, len(str_seil4)*he_row)
+    t_seil5 = Table(str_seil4, wi_abk + [None] + [None]*len_field, len(str_seil4)*he_row)
     t_seil1.setStyle(title_style)
     t_seil2.setStyle(TableStyle(stdStyleB + [
         ('FONT', (0, 0), (-1, 0), fontHeader, fontSize),  # first row = subsection
@@ -714,8 +715,8 @@ def generateReport(reportText, outputLoc):
         ('FONT', (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
 
     t_stue1 = Table(h_stue, wi_doc, he_rowT)
-    t_stue2 = Table(str_stue1, wi_abk + [6.8*cm] + [2.2*cm]*len_pole, len(str_stue1)*he_row)
-    t_stue3 = Table(str_stue2, wi_abk + [6.8*cm] + [1.1*cm]*len_pole, len(str_stue2)*he_row)
+    t_stue2 = Table(str_stue1, wi_abk + [6.8*cm] + [2.4*cm]*len_pole, len(str_stue1)*he_row)
+    t_stue3 = Table(str_stue2, wi_abk + [6.8*cm] + [1.2*cm]*len_pole, len(str_stue2)*he_row)
     t_stue1.setStyle(title_style)
     t_stue2.setStyle(TableStyle(stdStyleB + [
         ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),  # field header
@@ -733,7 +734,7 @@ def generateReport(reportText, outputLoc):
     t_stue3.setStyle(TableStyle(stdStyleStue))
 
     t_wink1 = Table(h_wink, wi_doc, he_rowT)
-    t_wink2 = Table(str_wink, wi_abk + [4*cm] + [1.7*cm]*len_field, 7*he_row)
+    t_wink2 = Table(str_wink, wi_abk + [4*cm] + [None]*len_field, 7*he_row)
     t_wink1.setStyle(title_style)
     t_wink2.setStyle(TableStyle(stdStyleB + [
         ('FONT', (1, 0), (1, 0), fontHeader, fontSize),  # heading empty cable
@@ -743,7 +744,7 @@ def generateReport(reportText, outputLoc):
         ('FONT', (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
 
     t_nach1 = Table(h_nach, wi_doc, he_rowT)
-    t_nach2 = Table(str_nach, wi_abk + [4*cm] + [1.7*cm]*len_field, len(str_nach) * he_row)
+    t_nach2 = Table(str_nach, wi_abk + [4*cm] + [None]*len_field, len(str_nach) * he_row)
     t_nach1.setStyle(title_style)
     t_nach2.setStyle(TableStyle(stdStyleB + [
         ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),  # field header
@@ -751,7 +752,7 @@ def generateReport(reportText, outputLoc):
         ('FONT', (0, len(str_nach)-1), (-1, len(str_nach)-1), font, 7)]))  # Comment
 
     t_anna1 = Table(h_anna, wi_doc, he_rowT)
-    t_anna2 = Table(str_para, [5*cm, 3*cm, 1*cm, 5*cm, 3*cm, 1*cm, 5*cm, 3*cm], len(str_para) * [0.35*cm])
+    t_anna2 = Table(str_para, [5*cm, 3*cm, 0.5*cm, 5*cm, 3*cm, 0.5*cm, 6.5*cm, 3*cm], len(str_para) * [0.35*cm])
     t_anna1.setStyle(title_style)
     t_anna2.setStyle(TableStyle([
         ('ALIGN', (0, 0), (0, -1), 'LEFT'),
