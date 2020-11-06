@@ -538,7 +538,8 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Max. Kraefte</source>
-        <translation>Forces maximales</translation>
+        <translation>Forces 
+maximales</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -583,7 +584,8 @@ oblique</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Hoehen-differenz</source>
-        <translation>Différence de niveau</translation>
+        <translation>Différence 
+de niveau</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>

@@ -535,7 +535,8 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Max. Kraefte</source>
-        <translation>Forze massimale</translation>
+        <translation>Forze 
+massimale</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -580,7 +581,8 @@ obliqua</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Hoehen-differenz</source>
-        <translation>Differenza di altezza</translation>
+        <translation>Differenza 
+di altezza</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
