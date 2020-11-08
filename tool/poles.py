@@ -545,4 +545,9 @@ class Poles(object):
         # Diameter of tree next to cable
         bundst = BHD_POLE[BHD_POLE_Force[idx_force]][height_array[idx_height]]
         # Diameter at 1.3m over ground
-        return [int(round(bundst + (height - 1.5), 0)), bundst]
+        if bundst:
+            diam = int(round(bundst + (height - 1.5), 0))
+        else:
+            diam = np.nan
+            bundst = np.nan
+        return [diam, bundst]
