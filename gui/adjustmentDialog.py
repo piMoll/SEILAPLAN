@@ -695,7 +695,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             z = self.profile.zi_disp[arrIdx]
         else:  # row in [0, 1]
             # For thresholds that correspond to cable
-            z = self.cableline['groundclear'][location]
+            z = self.cableline['empty'][location]
         self.plot.showMarkers(location, z, self.thData['plotLabels'][row], color)
         self.selectedThresholdRow = row
     
