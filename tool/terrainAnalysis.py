@@ -65,7 +65,10 @@ def stuePos(IS, gp, noPoleSection, fixedPoles):
 
     # Peaks mit Programm peakdetect ermitteln
     peakLoc_raw = peakdetect(diff, di, 1)[0]        # Ergibt nicht die exakt gleichen Resultate wie die Matlab Version
-    peakIdx = np.array(peakLoc_raw, dtype=int)[:,:1].flatten()
+    if len(peakLoc_raw) > 0:
+        peakIdx = np.array(peakLoc_raw, dtype=int)[:,:1].flatten()
+    else:
+        peakIdx = []
     ld = np.where(np.array(diff)>10)[0]
     # Verschneiden
     peakLoc = np.intersect1d(peakIdx, ld)

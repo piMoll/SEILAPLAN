@@ -207,4 +207,7 @@ class Profile(object):
     
     def setPeakLocations(self, peakLoc):
         self.peakLoc_x = peakLoc
-        self.peakLoc_z = self.zi[self.peakLoc_x]
+        if peakLoc.size > 0:
+            self.peakLoc_z = self.zi[self.peakLoc_x]
+        else:
+            self.peakLoc_z = np.array([])
