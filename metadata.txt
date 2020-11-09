@@ -21,7 +21,7 @@ email=leo.bont@gmail.com
 # Recommended items:
 
 # Uncomment the following line and add your changelog:
-changelog=Version 3.0 (September 2020)<br>Überarbeitung des Plugins und Ergänzung von zusätzlichen Eingabeparametern, Erweiterung um manuelle Editiermöglichkeiten der Seillinie, Übersetzung nach EN, IT, FR<br><br>Version 2.0 (Februar 2018)<br>Portierung auf QGIS 3<br><br>Version 1.0 (Mai 2015)<br>Initiale Version
+changelog=Version 3.1.0 (November 2020)<br>Einführung Maschinen-Parameter Grundspannung, Angabe des Durchmessers der Bundstelle in Kurzbericht, diverse Fehlerkorrekturen<br><br>Version 3.0 (September 2020)<br>Überarbeitung des Plugins und Ergänzung von zusätzlichen Eingabeparametern, Erweiterung um manuelle Editiermöglichkeiten der Seillinie, Übersetzung nach EN, IT, FR<br><br>Version 2.0 (Februar 2018)<br>Portierung auf QGIS 3<br><br>Version 1.0 (Mai 2015)<br>Initiale Version
 
 # Tags are comma separated with spaces allowed
 tags=analysis, project, forest, planning, optimization
