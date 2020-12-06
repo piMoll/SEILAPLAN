@@ -1,8 +1,3 @@
-## SEILAPLAN
-_(de) Ein QGIS-Plugin zur Unterstützung der Waldberwirtschaftung, mit welchem sich Seillinien-Layouts optimieren und designen lassen._
-
-_(en) A QGIS Plugin to support forest harvest operations by optimizing and designing the layout of cable roads._
-
 ![Seilaplan Bearbeitungsfenster mit Seillinien-Layout](https://github.com/piMoll/SEILAPLAN/blob/master/docs/gui_preview.png)
 
 ### Installation
