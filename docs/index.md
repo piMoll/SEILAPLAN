@@ -41,7 +41,7 @@ Eidgenössische Forschungsanstalt WSL
 **Beteiligte Personen**  
 Leo Bont, Hansrudolf Heinimann (Konzept, Mechanik)  
 Patricia Moll (Implementation in Python / QGIS)  
-Laura Rammstein (Koordination Weiterentwicklung)
+Laura Ramstein (Koordination Weiterentwicklung)
 
 ## Kontakt
 Für Fragen steht Ihnen Leo Bont zur Verfügung.  

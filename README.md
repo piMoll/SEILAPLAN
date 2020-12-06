@@ -5,6 +5,8 @@ DE: SEILAPLAN ist ein QGIS Plugin zur Unterstützung der Waldberwirtschaftung un
 
 EN: SEILAPLAN is a QGIS Plugin to support forest harvest operations by optimizing the layout of cable roads.
 
+[http://pimoll.github.io/SEILAPLAN](http://pimoll.github.io/SEILAPLAN/)
+
 Algorithmus
 -----------
 
@@ -45,7 +47,8 @@ Eidgenössische Forschungsanstalt WSL
 **Beteiligte Personen**
 
 Leo Bont, Hansrudolf Heinimann (Konzept, Mechanik)  
-Patricia Moll (Implementation in Python / QGIS) 
+Patricia Moll (Implementation in Python / QGIS)  
+Laura Ramstein (Koordination Weiterentwicklung)
 
 Kontakt
 -------
