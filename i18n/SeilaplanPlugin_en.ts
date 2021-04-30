@@ -57,12 +57,12 @@
     <message>
         <location filename="../tool/outputReport.py" line="146"/>
         <source>Leerseil</source>
-        <translation>Unloaded cable</translation>
+        <translation>Unloaded skyline</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="148"/>
         <source>Lastseil</source>
-        <translation>Loaded cable</translation>
+        <translation>Loaded skyline</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="180"/>
@@ -77,18 +77,18 @@
     <message>
         <location filename="../tool/outputReport.py" line="122"/>
         <source>Horizontaldistanz</source>
-        <translation>Horizontal distance</translation>
+        <translation>Location (distance)</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="192"/>
         <source>Z Lastseil</source>
-        <translation>Z loaded cable</translation>
+        <translation>Z loaded skyline</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="193"/>
         <source>Z Leerseil</source>
         <translatorcomment>Leo</translatorcomment>
-        <translation>Z unloaded cable</translation>
+        <translation>Z unloaded skyline</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="193"/>
@@ -98,7 +98,7 @@
     <message>
         <location filename="../tool/outputGeo.py" line="193"/>
         <source>Abstand Lastseil-Boden</source>
-        <translation>Distance loaded cable -ground</translation>
+        <translation>Distance loaded skyline -ground</translation>
     </message>
     <message>
         <location filename="../tool/outputGeo.py" line="205"/>
@@ -212,17 +212,17 @@
         <location filename="../tool/outputReport.py" line="132"/>
         <source>gewaehlte Grundspannung bei der Anfangsstuetze</source>
         <translatorcomment>Selected cable tensile force at the first support</translatorcomment>
-        <translation>Mounting tension force at the first support</translation>
+        <translation>Pre-stress tensile force of unloaded skyline at the first support</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="137"/>
         <source>Laenge Leerseil bei Anfangszugkraft</source>
-        <translation>Length of the unloaded cable at the initial rope tension force</translation>
+        <translation>Length of the unloaded skyline at the initial rope tension force</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="139"/>
         <source>Laenge Leerseil bei 0 kN Seilzugkraft</source>
-        <translation>Length of the unloaded cable at the cable tensile force of 0 kN</translation>
+        <translation>Length of the unloaded skyline at the tensile force (skyline) of 0 kN</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="152"/>
@@ -233,42 +233,42 @@
     <message>
         <location filename="../tool/outputReport.py" line="240"/>
         <source>am Leerseil</source>
-        <translation>at the non loaded cable</translation>
+        <translation>at the unloaded skyline</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="153"/>
         <source>Seilzugkraft an der Anfangsstuetze</source>
-        <translation>Cable tensile force at the first support</translation>
+        <translation>Tensile force at the first support</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="155"/>
         <source>Seilzugkraft an der Endstuetze</source>
-        <translation>Cable tensile force at the terminal support</translation>
+        <translation>Tensile force at the terminal support</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="158"/>
         <source>Seilzugkraft des Leerseils an den Stuetzen</source>
-        <translation>Cable tensile force of the unloaded cable at the supports</translation>
+        <translation>Tensile force of the unloaded skyline at the supports</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="162"/>
         <source>Leerseilverhaeltnis: Horizontalkomponente</source>
-        <translation>Ratio of the unloaded cable: Horizontal component</translation>
+        <translation>Ratio of the unloaded skyline: Horizontal component</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="164"/>
         <source>der Seilzugkraft an den Stuetzen</source>
-        <translation>of the cable tensile force at the supports</translation>
+        <translation>of the tensile force at the supports</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="248"/>
         <source>am Lastseil</source>
-        <translation>at the loaded cable</translation>
+        <translation>at the loaded skyline</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="168"/>
         <source>Max. auftretende Seilzugkraft</source>
-        <translation>Maximal cable tensile force</translation>
+        <translation>Maximum tensile force</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="169"/>
@@ -288,12 +288,12 @@
     <message>
         <location filename="../tool/outputReport.py" line="176"/>
         <source>am Lastseil mit Last in Feldmitte</source>
-        <translation>at the loaded cable with load in the middle of the span</translation>
+        <translation>at the loaded skyline with load in the middle of the span</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="178"/>
         <source>Max. auftretende Seilzugkraft gemessen in Feldmitte</source>
-        <translation>Maximal cable tensile force measured in the middle of the span</translation>
+        <translation>Maximum tensile force measured in the middle of the span</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="181"/>
@@ -369,7 +369,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="224"/>
         <source>Seilzugkraft</source>
-        <translation>Cable tensile force</translation>
+        <translation>Tensile force (skyline)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="249"/>
@@ -384,7 +384,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="266"/>
         <source>Leerseilknickwinkel</source>
-        <translation>Angle of the unloaded cable</translation>
+        <translation>Rope deflection angle of the unloaded skyline</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="269"/>
@@ -420,7 +420,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="340"/>
         <source>Vorspannung der Seilzugkraft</source>
-        <translation>Mounting tension force</translation>
+        <translation>Pre-stress tensile force of unloaded skyline</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="341"/>
@@ -445,12 +445,12 @@
     <message>
         <location filename="../tool/outputReport.py" line="345"/>
         <source>Seilwinkel an den Stuetzen</source>
-        <translation>Angle of the cable at the supports</translation>
+        <translation>Rope deflection angle of the cable at the supports</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="346"/>
         <source>Nachweis, dass Tragseil nicht vom Sattel abhebt</source>
-        <translation>Proof that the skyline does not lift off the sadle</translation>
+        <translation>Proof that the skyline does not lift off the saddle</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="347"/>
@@ -480,12 +480,12 @@
     <message>
         <location filename="../tool/outputReport.py" line="270"/>
         <source>(Leerseilknickwinkel 2)</source>
-        <translation>(Angle of the unloaded cable &gt; 1°)</translation>
+        <translation>(Rope deflection angle of the unloaded skyline &gt; 1°)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="263"/>
         <source>Lastseilknickwinkel</source>
-        <translation>Angle of the loaded cable</translation>
+        <translation>Rope deflection angle of the loaded skyline</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -495,7 +495,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Grundspannung (Endpunkt)</source>
-        <translation>Mounting tension force (end point)</translation>
+        <translation>Pre-stress tensile force of unloaded skyline (end point)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -530,7 +530,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Maximal berechnete Seilzugkraft</source>
-        <translation>Maximal cable tensile force</translation>
+        <translation>Maximum tensile force (skyline)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -540,24 +540,24 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Leerseil-knickwinkel</source>
-        <translation>Angle of the 
-unloaded cable</translation>
+        <translation>Rope deflection angle of the 
+unloaded skyline</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Lastseil-knickwinkel</source>
-        <translation>Angle of the 
-loaded cable</translation>
+        <translation>Rope deflection angle of the 
+loaded skyline</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Berechnete Seillaenge</source>
-        <translation>Length of tensioned and unloaded cable (from initial to final point)</translation>
+        <translation>Length of tensioned and unloaded skyline (from initial to final point)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="419"/>
         <source>Max. Abstand Leerseil - Boden</source>
-        <translation>Maximal clearance between unloaded cable and ground</translation>
+        <translation>Maximal clearance between unloaded skyline and ground</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -568,8 +568,8 @@ attack</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Horizontal-distanz</source>
-        <translation>Horizontal 
-distance</translation>
+        <translation>Location
+(distance)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -587,13 +587,13 @@ difference</translation>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Durchhang Leerseil</source>
         <translation>Catenary sag
-unloaded cable</translation>
+unloaded skyline</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Durchhang Lastseil</source>
         <translation>Catenary sag
-loaded cable</translation>
+loaded skyline</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -673,27 +673,27 @@ loaded cable</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Gewicht Tragseil</source>
-        <translation>Skyline self weight</translation>
+        <translation>Self-weight of skyline</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Durchmesser Tragseil</source>
-        <translation>Diameter of the skyline</translation>
+        <translation>Diameter of skyline</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Mindestbruchkraft Tragseil</source>
-        <translation>Minimal breaking force of the skyline</translation>
+        <translation>Minimum breaking strength of skyline</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Gewicht Zugseil</source>
-        <translation>Mainline self weight</translation>
+        <translation>Self-weight of mainline</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Gewicht Rueckholseil</source>
-        <translation>Haulback line self weight</translation>
+        <translation>Self-weight of haulback line</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -728,7 +728,7 @@ loaded cable</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Grundspannung Tragseil (Anfangssp.)</source>
-        <translation>Mounting tension force (initial point)</translation>
+        <translation>Pre-stress tensile force of unloaded skyline (initial point)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -780,7 +780,7 @@ loaded cable</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="166"/>
         <source>Unerwarteter Fehler bei Berechnung der Seillinie</source>
-        <translation>Unexpected error in the calculation of the cable line</translation>
+        <translation>Unexpected error in the calculation of the cable roadf</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="337"/>
@@ -791,12 +791,12 @@ loaded cable</translation>
         <location filename="../gui/adjustmentDialog.py" line="342"/>
         <source>Tragseil hebt bei mindestens einer Stuetze ab</source>
         <translatorcomment>cable crane line</translatorcomment>
-        <translation>The cable line has been calculated but the skyline lifts off the saddle at one support minimally</translation>
+        <translation>The cable road has been calculated but the skyline lifts off the saddle at one support minimally</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="348"/>
         <source>Nicht genuegend Stuetzenstandorte bestimmbar</source>
-        <translation>The cable line could not be calculated completely, there could not be determined enough support positions.</translation>
+        <translation>The cable road could not be calculated completely, there could not be determined enough support positions.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="354"/>
@@ -811,12 +811,12 @@ loaded cable</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="366"/>
         <source>Seillinie neu berechnet.</source>
-        <translation>Cable line recalculated.</translation>
+        <translation>Cable road recalculated.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="370"/>
         <source>Fehler aufgetreten</source>
-        <translation>An error ocurred at the calculation of the cable line.</translation>
+        <translation>An error ocurred at the calculation of the cable road.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="376"/>
@@ -856,27 +856,27 @@ solution</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="511"/>
         <source>Minimaler Bodenabstand</source>
-        <translation>Minimal ground clearance</translation>
+        <translation>Minimum ground clearance</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="512"/>
         <source>Max. auftretende Seilzugkraft</source>
-        <translation>Maximal cable tensile force</translation>
+        <translation>Maximum tensile force (skyline)</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="513"/>
         <source>Max. resultierende Sattelkraft</source>
-        <translation>Maximal resultant support saddle force</translation>
+        <translation>Maximum resultant support saddle force</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="514"/>
         <source>Max. Lastseilknickwinkel</source>
-        <translation>Maximal angle of the loaded cable</translation>
+        <translation>Maximum rope deflection angle (loaded skyline)</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="515"/>
         <source>Min. Leerseilknickwinkel</source>
-        <translation>Minimal angle of the unloaded cable</translation>
+        <translation>Minimum rope deflection angle (unloaded skyline)</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="690"/>
@@ -922,7 +922,7 @@ solution</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="473"/>
         <source>Es wird die maximal auftretende Seilzugkraft am Lastseil mit der Last in Feldmitte berechnet.</source>
-        <translation>There is calculated the maximal occuring cable tensile force on the loaded cable with the load in the middle of the span. If the admissible value is exceeded (highlighted in red), one or several spans have to be shortened (additional supports).</translation>
+        <translation>There is calculated the maximal occuring tensile force on the loaded skyline with the load in the middle of the span. If the admissible value is exceeded (highlighted in red), one or several spans have to be shortened (additional supports).</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="477"/>
@@ -960,7 +960,7 @@ With angles between 1° and 3° the skyline has to be locked by a hold-down plat
         <location filename="../gui/adjustmentDialog.ui" line="67"/>
         <source>Manuelle Anpassung der Seillinie</source>
         <translatorcomment>HeProMo</translatorcomment>
-        <translation>Manual adjustment of the cable line</translation>
+        <translation>Manual adjustment of the cable road</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="76"/>
@@ -1003,7 +1003,7 @@ With angles between 1° and 3° the skyline has to be locked by a hold-down plat
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="178"/>
         <source>Feinjustierung der Stuetzen</source>
-        <translation>Fine adjustment of the supports</translation>
+        <translation>Location and height adjustment of supports</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="227"/>
@@ -1019,7 +1019,7 @@ With angles between 1° and 3° the skyline has to be locked by a hold-down plat
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="274"/>
         <source>Horiz.distanz</source>
-        <translation>Horiz. distance</translation>
+        <translation>Location (dist.)</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="299"/>
@@ -1034,7 +1034,7 @@ With angles between 1° and 3° the skyline has to be locked by a hold-down plat
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="373"/>
         <source>Tragsystem</source>
-        <translation>Supporting system</translation>
+        <translation>Design parameters</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="479"/>
@@ -1055,7 +1055,7 @@ With angles between 1° and 3° the skyline has to be locked by a hold-down plat
         <location filename="../gui/adjustmentDialog.ui" line="402"/>
         <source>Gewicht Rueckholseil</source>
         <translatorcomment>hier gibt es unterschiedliche Schreibweisen: haul-back line</translatorcomment>
-        <translation>Haulback line self weight</translation>
+        <translation>Self-weight of haulback line</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="422"/>
@@ -1066,17 +1066,17 @@ With angles between 1° and 3° the skyline has to be locked by a hold-down plat
         <location filename="../gui/adjustmentDialog.ui" line="429"/>
         <source>Grundspannung Tragseil (Anfangssp.)</source>
         <translatorcomment>Mounting tension force of the skyline (initial point)</translatorcomment>
-        <translation>Mounting tension force (initial point)</translation>
+        <translation>Pre-stress tensile force of unloaded skyline (initial point)</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="436"/>
         <source>Gewicht Tragseil</source>
-        <translation>Skyline self weight</translation>
+        <translation>Self-weight of skyline</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="443"/>
         <source>Durchmesser Tragseil</source>
-        <translation>Diameter of the skyline</translation>
+        <translation>Diameter of skyline</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="486"/>
@@ -1091,12 +1091,12 @@ With angles between 1° and 3° the skyline has to be locked by a hold-down plat
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="595"/>
         <source>Gewicht Zugseil</source>
-        <translation>Mainline self weight</translation>
+        <translation>Self-weight of mainline</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="646"/>
         <source>Mindestbruchkraft Tragseil</source>
-        <translation>Minimal breaking force of the skyline</translation>
+        <translation>Minimum breaking strength of skyline</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="698"/>
@@ -1106,7 +1106,7 @@ With angles between 1° and 3° the skyline has to be locked by a hold-down plat
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="710"/>
         <source>Kennwerte und Maximalwerte</source>
-        <translation>Specific values and maximum values</translation>
+        <translation>Serviceability and structural safety properties </translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="811"/>
@@ -1135,18 +1135,18 @@ terrain shape</translation>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="155"/>
         <source>Leerseil</source>
-        <translation>Unloaded cable</translation>
+        <translation>Unloaded skyline</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="157"/>
         <source>Lastwegkurve nach Zweifel</source>
-        <translation>Load path curve
-by Zweifel</translation>
+        <translation>Load-path
+(Zweifel method)</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="167"/>
         <source>Min. Bodenabstand</source>
-        <translation>Minimal ground clearance</translation>
+        <translation>Minimum ground clearance</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="267"/>
@@ -1157,7 +1157,7 @@ by Zweifel</translation>
         <location filename="../gui/adjustmentPlot.py" line="269"/>
         <source>Horizontaldistanz [m]</source>
         <translatorcomment>Samset</translatorcomment>
-        <translation>Horizontal distance [m]</translation>
+        <translation>Location (distance) [m]</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="270"/>
@@ -1207,17 +1207,17 @@ by Zweifel</translation>
     <message>
         <location filename="../gui/saveDialog.py" line="177"/>
         <source>Shape-Daten der Stuetzen und Seillinie</source>
-        <translation>Shape data of supports and cable line</translation>
+        <translation>Shape data of supports and cable road</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="177"/>
         <source>KML-Daten der Stuetzen und Seillinie</source>
-        <translation>KML data of supports and cable line</translation>
+        <translation>KML data of supports and cable road</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="178"/>
         <source>Koordinaten-Tabellen der Stuetzen und Seillinie</source>
-        <translation>Coordinate tables of the supports and of the cable line</translation>
+        <translation>Coordinate tables of the supports and of the cable road</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="195"/>
@@ -1313,7 +1313,7 @@ by Zweifel</translation>
     <message>
         <location filename="../configHandler.py" line="739"/>
         <source>Der Parameter Minimaler Abstand Tragseil Boden darf nicht groesser als der Parameter Minimale Stuetzenhoehe sein.</source>
-        <translation>The parameter ‘Minimal clearance between skyline and ground’ (tab Cable line) must not be greater than the parameter &apos;Minimal support height&apos; (tab Optional #1).
+        <translation>The parameter ‘Minimal clearance between skyline and ground’ (tab Cable road) must not be greater than the parameter &apos;Minimal support height&apos; (tab Optional #1).
 Please adapt the input.</translation>
     </message>
 </context>
@@ -1369,7 +1369,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/profileDialog.py" line="48"/>
         <source>Gelaendelinie</source>
-        <translation>Terrain line</translation>
+        <translation>Terrain profile</translation>
     </message>
     <message>
         <location filename="../gui/profileDialog.py" line="75"/>
@@ -1409,7 +1409,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/profileDialog.py" line="188"/>
         <source>Hori.distanz</source>
-        <translation>Horiz. distance</translation>
+        <translation>Location (dist.)</translation>
     </message>
     <message>
         <location filename="../gui/profileDialog.py" line="190"/>
@@ -1428,7 +1428,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/profilePlot.py" line="271"/>
         <source>Horizontaldistanz [m]</source>
-        <translation>Horizontal distance [m]</translation>
+        <translation>Location (distance) [m]</translation>
     </message>
     <message>
         <location filename="../gui/profilePlot.py" line="272"/>
@@ -1497,7 +1497,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/progressDialog.py" line="45"/>
         <source>Berechnung der optimale Seillinie...</source>
-        <translation>Calculation of the optimal cable line layout …</translation>
+        <translation>Calculation of the optimal cable road layout …</translation>
     </message>
 </context>
 <context>
@@ -1533,7 +1533,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="17"/>
         <source>SEILAPLAN - Seilkran-Layoutplaner</source>
-        <translation>SEILAPLAN - Cable line layout planning</translation>
+        <translation>SEILAPLAN - Cable road layout planning</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="32"/>
@@ -1559,7 +1559,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="139"/>
         <source>Eigenschaften der Seillinie</source>
-        <translation>Caracteristics of the cable line</translation>
+        <translation>Cable road design parameter specifications</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="147"/>
@@ -1569,12 +1569,12 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="179"/>
         <source>Eigenschaften der Seillinie in neuem Parameterset abspeichern</source>
-        <translation>Save the caracteristics of the cable line in a new parameter set</translation>
+        <translation>Save the cable road design parameter specifications in a new parameter set</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="208"/>
         <source>Seillinie</source>
-        <translation>Cable line</translation>
+        <translation>Cable road</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="254"/>
@@ -1640,7 +1640,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="671"/>
         <source>Maschinendaten</source>
-        <translation>Machine data</translation>
+        <translation>Design parameters</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="967"/>
@@ -1650,7 +1650,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="719"/>
         <source>Gewicht der Last inkl. Laufwagen</source>
-        <translation>Load weight including the carriage</translation>
+        <translation>Weight of the load incl. carriage</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1526"/>
@@ -1660,22 +1660,22 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="802"/>
         <source>Gewicht Rueckholseil</source>
-        <translation>Haulback line self weight</translation>
+        <translation>Self-weight of haulback line</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="916"/>
         <source>Gewicht Zugseil</source>
-        <translation>Mainline self weight</translation>
+        <translation>Self-weight of mainline</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="929"/>
         <source>Durchmesser Tragseil</source>
-        <translation>Diameter of the skyline</translation>
+        <translation>Diameter of skyline</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="942"/>
         <source>Gewicht Tragseil</source>
-        <translation>Skyline self weight</translation>
+        <translation>Self-weight of skyline</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="992"/>
@@ -1685,7 +1685,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="999"/>
         <source>Mindestbruchkraft Tragseil</source>
-        <translation>Minimal breaking force of the skyline</translation>
+        <translation>Minimum breaking strength of skyline</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1041"/>
@@ -1730,7 +1730,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1482"/>
         <source>Grundspannung</source>
-        <translation>Mounting tension force</translation>
+        <translation>Pre-stress tensile force of unloaded skyline</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1549"/>
@@ -1806,13 +1806,13 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1960"/>
         <source>Stuetzenoptimierung ueberspringen und direkt zur manuellen Bearbeitung der Seillinie uebergehen</source>
-        <translation>Skip the support optimization and pass directly to the manual conditioning of the cable line</translation>
+        <translation>Skip the support optimization and pass directly to the manual conditioning of the cable road</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1963"/>
         <source>Seillinie direkt bearbeiten</source>
-        <translatorcomment>Manually edit cable line</translatorcomment>
-        <translation>Edit cable line manually</translation>
+        <translatorcomment>Manually edit cable road</translatorcomment>
+        <translation>Edit cable road manually</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1973"/>
@@ -1822,23 +1822,23 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1976"/>
         <source>Stuetzen optimieren</source>
-        <translatorcomment>Optimize cable line automatically</translatorcomment>
-        <translation>Optimize cable line</translation>
+        <translatorcomment>Optimize cable road automatically</translatorcomment>
+        <translation>Optimize cable road</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1993"/>
         <source>Verlauf der Seillinie</source>
-        <translation>Cable line layout</translation>
+        <translation>Cable road layout</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2013"/>
         <source>oder Koordinaten der Seillinie manuell angeben:</source>
-        <translation>or insert the coordinates of the cable line manually:</translation>
+        <translation>or insert the coordinates of the cable road manually:</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2046"/>
         <source>zeichnen</source>
-        <translation>trace</translation>
+        <translation>draw</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2046"/>
@@ -1848,7 +1848,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2079"/>
         <source>Seillinie in Karte einzeichnen</source>
-        <translation>Trace the cable line onto the map</translation>
+        <translation>Draw the cable road onto the map</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2105"/>
@@ -1884,7 +1884,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2252"/>
         <source>Punktart</source>
-        <translation>construction element</translation>
+        <translation>Structural element</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2291"/>
@@ -1899,17 +1899,17 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2345"/>
         <source>Horizontaldistanz</source>
-        <translation>Horizontal distance [m]</translation>
+        <translation>Location (distance) [m]</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2389"/>
         <source>Gelaendelinie in Diagramm darstellen und fixe Stuetzen definieren</source>
-        <translation>Display the terrain line in the diagram and define the fix supports</translation>
+        <translation>Display the terrain profile in the diagram and define the fix supports</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2392"/>
         <source>Gelaendelinie</source>
-        <translation>Terrain line</translation>
+        <translation>Terrain profile</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2467"/>
@@ -2155,16 +2155,16 @@ Supported data types:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="940"/>
         <source>Erklaerung Grundspannung</source>
-        <translation>Edit cable line manually:
-The calculation is done with the entered mounting tension force.
+        <translation>Edit cable road manually:
+The calculation is done with the entered pre-stress tensile force (unloaded skyline).
 
-Optimize cable line:
-The optimal mounting tension force is calculated. The optimization is starting at 75 percent of the entered value.</translation>
+Optimize cable road:
+The optimal pre-stress tensile force (unloaded skyline) is calculated. The optimization is starting at 75 percent of the entered value.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="941"/>
         <source>Grundspannung</source>
-        <translation>Mounting tension force</translation>
+        <translation>Pre-stress tensile force of unloaded skyline</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="885"/>
@@ -2209,12 +2209,11 @@ The optimal mounting tension force is calculated. The optimization is starting a
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="905"/>
         <source>Erklaerungen Berechnungsbuttons</source>
-        <translation>Manually edit cable line:
-No optimization is performed and no cable line layout is proposed. The layout can be directly edited manually.
+        <translation>Manually edit cable road:
+No optimization is performed and no cable road layout is proposed. The layout can be directly edited manually.
 
-Optimize cable line:
-The algorithm calculates a solution, which in first priority is minimizing the number of supports and in second priority the height of the supports. The minimal angle of the unloaded cable and the maximal angle of the loaded cable are not considered yet in the optimization.
-</translation>
+Optimize cable road:
+The algorithm calculates a solution, which in first priority is minimizing the number of supports and in second priority the height of the supports. The minimum rope deflection angle of the unloaded skyline and the maximum rope deflection angle of the loaded skyline are not considered yet in the optimization.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="906"/>
