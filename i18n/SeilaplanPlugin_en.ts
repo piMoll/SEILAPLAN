@@ -430,7 +430,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="342"/>
         <source>Durchhang</source>
-        <translation>Catenary sag</translation>
+        <translation>Sag</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="343"/>
@@ -540,19 +540,19 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Leerseil-knickwinkel</source>
-        <translation>Rope deflection angle of the 
+        <translation>Angle of the 
 unloaded skyline</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Lastseil-knickwinkel</source>
-        <translation>Rope deflection angle of the 
+        <translation>Angle of the 
 loaded skyline</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Berechnete Seillaenge</source>
-        <translation>Length of tensioned and unloaded skyline (from initial to final point)</translation>
+        <translation>Length of tensioned and unloaded skyline (from start to end point)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="419"/>
@@ -586,13 +586,13 @@ difference</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Durchhang Leerseil</source>
-        <translation>Catenary sag
+        <translation>Sag
 unloaded skyline</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Durchhang Lastseil</source>
-        <translation>Catenary sag
+        <translation>Sag
 loaded skyline</translation>
     </message>
     <message>
@@ -643,12 +643,12 @@ loaded skyline</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Seillinie befahrbar ab ... vom Anfangspunkt</source>
-        <translation>Skyline trafficable from ... of the initial point</translation>
+        <translation>Skyline trafficable from ... of the start point</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Seillinie befahrbar bis ... vor dem Endpunkt</source>
-        <translation>Skyline trafficable up to ... in front of the final point</translation>
+        <translation>Skyline trafficable up to ... in front of the end point</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -658,12 +658,12 @@ loaded skyline</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>einzuhalten ab ... vom Anfangspunkt</source>
-        <translation>to follow from ... of the initial point</translation>
+        <translation>to follow from ... of the start point</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>einzuhalten bis ... vor dem Endpunkt</source>
-        <translation>to follow at ... to the final point</translation>
+        <translation>to follow at ... to the end point</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -728,7 +728,7 @@ loaded skyline</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Grundspannung Tragseil (Anfangssp.)</source>
-        <translation>Pre-stress tensile force of unloaded skyline (initial point)</translation>
+        <translation>Pre-stress tensile force of unloaded skyline (start point)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -826,7 +826,7 @@ loaded skyline</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="460"/>
         <source>Kennwert</source>
-        <translation>Specific value</translation>
+        <translation>Structural design criteria</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="461"/>
@@ -970,7 +970,7 @@ With angles between 1° and 3° the skyline has to be locked by a hold-down plat
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="79"/>
         <source>zurueck zum Startfenster</source>
-        <translation>return to the start window</translation>
+        <translation>Return to the start window</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="102"/>
@@ -1065,8 +1065,7 @@ With angles between 1° and 3° the skyline has to be locked by a hold-down plat
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="429"/>
         <source>Grundspannung Tragseil (Anfangssp.)</source>
-        <translatorcomment>Mounting tension force of the skyline (initial point)</translatorcomment>
-        <translation>Pre-stress tensile force of unloaded skyline (initial point)</translation>
+        <translation>Pre-stress tensile force of unloaded skyline (start point)</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="436"/>
@@ -1101,17 +1100,17 @@ With angles between 1° and 3° the skyline has to be locked by a hold-down plat
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="698"/>
         <source>Kennwerte</source>
-        <translation>Specific values</translation>
+        <translation>Structural design</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="710"/>
         <source>Kennwerte und Maximalwerte</source>
-        <translation>Serviceability and structural safety properties </translation>
+        <translation>Threshold and current values for structural design criteria</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="811"/>
         <source>Klick auf Zeile markiert Position der Grenzwert-Ueberschreitung im Diagramm.</source>
-        <translation>By clicking on the line the position of the threshold value exceeding is marked in the diagram.</translation>
+        <translation>By clicking on the row, the corresponding values are displayed in the diagram.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="834"/>
@@ -1308,7 +1307,7 @@ terrain shape</translation>
     <message>
         <location filename="../configHandler.py" line="874"/>
         <source>Kein Zweiseil-System moeglich</source>
-        <translation>Error: Two-cable system is not possible if the initial point (at winch/machine) is situated lower than the terminal point.</translation>
+        <translation>Error: Two-cable system is not possible if the start point (at winch/machine) is situated lower than the end point.</translation>
     </message>
     <message>
         <location filename="../configHandler.py" line="739"/>
@@ -1351,7 +1350,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../tool/poles.py" line="92"/>
         <source>neue Stuetze</source>
-        <translation>new support</translation>
+        <translation>New support</translation>
     </message>
     <message>
         <location filename="../tool/poles.py" line="94"/>
@@ -1589,7 +1588,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="317"/>
         <source>einzuhalten bis ... vor dem Endpunkt</source>
-        <translation>to follow at ... to the final point</translation>
+        <translation>to follow at ... to the end point</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="365"/>
@@ -1599,7 +1598,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="372"/>
         <source>Seillinie befahrbar bis ... vor dem Endpunkt</source>
-        <translation>Skyline trafficable up to ... in front of the final point</translation>
+        <translation>Skyline trafficable up to ... in front of the end point</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="379"/>
@@ -1620,12 +1619,12 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="535"/>
         <source>einzuhalten ab ... vom Anfangspunkt</source>
-        <translation>to follow from ... of the initial point</translation>
+        <translation>to follow from ... of the start point</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="567"/>
         <source>Seillinie befahrbar ab ... vom Anfangspunkt</source>
-        <translation>Skyline trafficable from ... of the initial point</translation>
+        <translation>Skyline trafficable from ... of the start point</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="580"/>
