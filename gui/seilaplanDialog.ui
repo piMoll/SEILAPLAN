@@ -1924,22 +1924,6 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="2">
-         <widget class="QComboBox" name="rasterField">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>220</width>
-            <height>0</height>
-           </size>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="3">
          <widget class="QPushButton" name="buttonLoadSurveyData">
           <property name="maximumSize">
@@ -2715,7 +2699,6 @@
   <tabstop>buttonSavePr</tabstop>
   <tabstop>buttonOpenPr</tabstop>
   <tabstop>radioRaster</tabstop>
-  <tabstop>rasterField</tabstop>
   <tabstop>buttonRefreshRa</tabstop>
   <tabstop>radioSurveyData</tabstop>
   <tabstop>fieldSurveyDataPath</tabstop>
