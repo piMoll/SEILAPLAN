@@ -747,7 +747,7 @@ def generateReport(reportText, outputLoc):
         ('FONT', (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
 
     t_nach1 = Table(h_nach, wi_doc, he_rowT)
-    t_nach2 = Table(str_nach, wi_abk + [4*cm] + [None]*len_field, len(str_nach) * he_row)
+    t_nach2 = Table(str_nach, wi_abk + [6.8*cm] + [None]*len_field, len(str_nach) * he_row)
     t_nach1.setStyle(title_style)
     t_nach2.setStyle(TableStyle(stdStyleB + [
         ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),  # field header

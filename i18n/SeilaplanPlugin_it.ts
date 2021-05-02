@@ -1519,6 +1519,11 @@ Si prega di adattare l&apos;input.</translation>
         <source>Unerwarteter Fehler bei Erstellung des Profils</source>
         <translation>Errore inaspettato alla realizzazione del profilo</translation>
     </message>
+    <message>
+        <location filename="../gui/configHandler.py" line="168"/>
+        <source>Fehler beim Laden des Rasters</source>
+        <translation>Errore al carico della griglia</translation>
+    </message>
 </context>
 <context>
     <name>SeilaplanDialogUI</name>

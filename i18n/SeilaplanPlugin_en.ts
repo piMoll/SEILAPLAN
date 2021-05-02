@@ -495,7 +495,7 @@
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Grundspannung (Endpunkt)</source>
-        <translation>Pre-stress tensile force of unloaded skyline (end point)</translation>
+        <translation>Pre-stress tensile force of unloaded skyline (end p.)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -728,7 +728,7 @@ loaded skyline</translation>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
         <source>Grundspannung Tragseil (Anfangssp.)</source>
-        <translation>Pre-stress tensile force of unloaded skyline (start point)</translation>
+        <translation>Pre-stress tensile force of unloaded skyline (start p.)</translation>
     </message>
     <message>
         <location filename="../tool/outputReport.py" line="111"/>
@@ -1526,6 +1526,11 @@ Please adapt the input.</translation>
         <source>Unerwarteter Fehler bei Erstellung des Profils</source>
         <translation>Unexpected error in generating the profile</translation>
     </message>
+    <message>
+        <location filename="../gui/configHandler.py" line="168"/>
+        <source>Fehler beim Laden des Rasters</source>
+        <translation>Error when loading raster file</translation>
+    </message>
 </context>
 <context>
     <name>SeilaplanDialogUI</name>
@@ -2011,7 +2016,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="545"/>
         <source>Fehler beim Laden des Rasters</source>
-        <translation>Error in loading the raster</translation>
+        <translation>Error when loading raster file</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="558"/>

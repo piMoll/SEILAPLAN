@@ -71,7 +71,6 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.rasterField = QgsCheckableComboBoxOwn(self.groupBox_2)
         self.rasterField.setObjectName("rasterField2")
         self.gridLayout_15.addWidget(self.rasterField, 0, 2, 1, 1)
-        self.rasterField.setCurrentText(self.tr("Rasterlayer auswählen"))
         self.virtRaster = None
         
         # Language
@@ -509,7 +508,6 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
     
     def setRaster(self, selectedRasters: list = None):
         """Sets selected raster in project handler"""
-        # TODO: disable gui so user cannot click around while virtual raster is made
         if not selectedRasters:
             selectedRasters = self.rasterField.checkedItems()
         rasterlist = self.getAvailableRaster()

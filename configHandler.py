@@ -165,7 +165,7 @@ class ProjectConfHandler(AbstractConfHandler):
             try:
                 layerList = json.loads(value)
             except:
-                self.onError('Konnte Raster nicht laden')
+                self.onError(self.tr('Fehler beim Laden des Rasters'))
             else:
                 self.setHeightSource(None, sourceType='dhm_list', sourcePath=layerList)
         

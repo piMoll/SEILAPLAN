@@ -1505,6 +1505,11 @@ Bitte passen Sie die Eingabe an.</translation>
         <source>Unerwarteter Fehler bei Erstellung des Profils</source>
         <translation>Unerwarteter Fehler bei Erstellung des Profils</translation>
     </message>
+    <message>
+        <location filename="../gui/configHandler.py" line="168"/>
+        <source>Fehler beim Laden des Rasters</source>
+        <translation>Fehler beim Laden des Rasters</translation>
+    </message>
 </context>
 <context>
     <name>SeilaplanDialogUI</name>
