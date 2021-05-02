@@ -23,7 +23,7 @@
 import os
 
 # GUI and QGIS libraries
-from qgis.PyQt.QtCore import QFileInfo, QCoreApplication, QSettings
+from qgis.PyQt.QtCore import QFileInfo, QCoreApplication, QSettings, Qt
 from qgis.PyQt.QtWidgets import QDialog, QMessageBox, QFileDialog, QComboBox
 from qgis.PyQt.QtGui import QPixmap
 from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject,
@@ -32,7 +32,7 @@ from processing.core.Processing import Processing
 
 # Further GUI modules for functionality
 from .guiHelperFunctions import (DialogWithImage, createContours,
-    loadOsmLayer, createProfileLayers, createVirtualRaster, removeVirtualRaster)
+    loadOsmLayer, createProfileLayers)
 from ..configHandler import ConfigHandler, castToNum
 # GUI elements
 from .checkableComboBoxOwn import QgsCheckableComboBoxOwn
@@ -40,8 +40,6 @@ from .saveDialog import DialogSaveParamset
 from .mapMarker import MapMarkerTool
 from .ui_seilaplanDialog import Ui_SeilaplanDialogUI
 from .profileDialog import ProfileDialog
-
-VIRTUALRASTER = 'SEILAPLAN Virtuelles Raster'
 
 
 class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
@@ -329,15 +327,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         # Generate project name
         self.fieldProjName.setText(self.projectHandler.generateProjectName())
         # Check QGIS table of content for raster layer
-        rasterlist = self.updateRasterList()
-        # Select first raster that has the word "dhm" in it, else select first
-        # layer
-        # TODO: Do we still want this?
-        # dhm = self.searchForDhm(rasterlist)
-        # if dhm:
-        #     self.setRaster(dhm)
-        #     self.checkPoints()
-        
+        self.updateRasterList()
         # Load all predefined and user-defined parameter sets from the
         # config folder
         self.paramHandler.setParameterSet(self.paramHandler.defaultSet)
@@ -357,14 +347,13 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         # Generate project name
         self.fieldProjName.setText(self.projectHandler.getProjectName())
         
-        if self.projectHandler.heightSourceType == 'dhm':
+        if self.projectHandler.heightSourceType in ['dhm', 'dhm_list']:
             # Enable gui elements
             self.enableRasterHeightSource()
-            # Search raster and if necessary load it from disk
-            rastername = self.searchForRaster(
-                self.projectHandler.getHeightSourceAsStr())
-            # TODO: We have to differentiate between one raster and list of rasters
-            self.setRaster([rastername])
+            # Search raster and if necessary load from disk
+            rasternames = self.searchForRaster(
+                self.projectHandler.getHeightSourceAsStr(source=True))
+            self.setRaster(rasternames)
     
         elif self.projectHandler.heightSourceType == 'survey':
             # Enable gui elements
@@ -492,8 +481,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         rColl = []
         for item in QgsProject.instance().layerTreeRoot().findLayers():
             lyr = item.layer()
-            if lyr.type() == 1 and lyr.name() != self.tr('OSM_Karte') \
-                    and lyr.name() != VIRTUALRASTER:
+            if lyr.type() == 1 and lyr.name() != self.tr('OSM_Karte'):
                 lyrName = lyr.name()
                 r = {
                     'lyr': lyr,
@@ -513,109 +501,95 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.rasterField.setCheckedItems(selectedRastersNew)
         self.rasterField.blockSignals(False)
     
-    # TODO: Remove or stay?
-    # def searchForDhm(self, rasterlist):
-    #     """ Search for a dhm to set as initial raster when the plugin is
-    #     opened."""
-    #     self.rasterField.blockSignals(True)
-    #     dhmName = ''
-    #     searchStr = ['dhm', 'Dhm', 'DHM', 'dtm', 'DTM', 'Dtm']
-    #     for rLyr in rasterlist:
-    #         if sum([item in rLyr['name'] for item in searchStr]) > 0:
-    #             dhmName = rLyr['name']
-    #             self.rasterField.setCurrentText(dhmName)
-    #             break
-    #     if not dhmName and len(rasterlist) > 0:
-    #         dhmName = rasterlist[0]['name']
-    #         self.rasterField.setCurrentText(dhmName)
-    #     self.rasterField.blockSignals(False)
-    #     return dhmName
-    
     def onChangeRaster(self):
         """Triggered by choosing a raster from the drop down menu."""
         self.setRaster()
         # Update start and end point
         self.checkPoints()
     
-    def setRaster(self, selectedRasters=None):
+    def setRaster(self, selectedRasters: list = None):
+        """Sets selected raster in project handler"""
         # TODO: disable gui so user cannot click around while virtual raster is made
         if not selectedRasters:
             selectedRasters = self.rasterField.checkedItems()
         rasterlist = self.getAvailableRaster()
         rasterLyrList = []
+        singleRasterLayer = None
+        
         for rlyr in rasterlist:
             if rlyr['name'] in selectedRasters:
                 rasterLyrList.append(rlyr['lyr'])
 
-        removeVirtualRaster(self.virtRaster)
         if len(rasterLyrList) == 1:
-            rasterLayer = rasterLyrList[0]
+            singleRasterLayer = rasterLyrList[0]
+            self.projectHandler.setHeightSource(rasterLyrList[0], 'dhm')
+            rasterValid = True
         elif len(rasterLyrList) > 1:
-            # Create a virtual raster from selected raster layer
-            rasterLayer = createVirtualRaster(self.canvas, rasterLyrList, VIRTUALRASTER)
-            if not rasterLayer:
-                QMessageBox.information(self, 'Fehler bei Raster-Kombination',
-                    'Die ausgewählten Rasterlayer konnten nicht zu einem virtuellen Raster kombiniert werden, Verarbeitung in Seilaplan nicht möglich.')
-            # Save so we can replace later
-            self.virtRaster = rasterLayer
+            self.projectHandler.setHeightSource(rasterLyrList, 'dhm_list')
+            rasterValid = True
         else:
-            # Raster was not found in layer list
             self.projectHandler.setHeightSource(None)
-            return
+            rasterValid = False
 
-        # Set raster as new plugin height source
-        if rasterLayer:
-            self.projectHandler.setHeightSource(rasterLayer, 'dhm')
-        else:
-            self.projectHandler.setHeightSource(None)
-            return
-        
         # Check spatial reference of raster and show message
-        if not self.checkEqualSpatialRef():
+        if not rasterValid or not self.checkEqualSpatialRef():
+            # Unset raster
+            self.projectHandler.setHeightSource(None)
             # Remove raster selection
             self.rasterField.blockSignals(True)
             self.rasterField.deselectAllOptions()
             self.rasterField.blockSignals(False)
-        else:
-            self.iface.setActiveLayer(rasterLayer)
-            # If a raster was selected, OSM and Contour Layers can be generated
-            self.osmLyrButton.setEnabled(bool(rasterLayer))
-            self.contourLyrButton.setEnabled(bool(rasterLayer))
-            self.draw.setEnabled(bool(rasterLayer))
+            rasterValid = False
+
+        # Select layer in panel if it's only one
+        if rasterValid and singleRasterLayer:
+            self.iface.setActiveLayer(singleRasterLayer)
+            
+        # If a raster was selected, OSM and Contour Layers can be generated,
+        #  else buttons are disabled
+        self.osmLyrButton.setEnabled(rasterValid)
+        self.contourLyrButton.setEnabled(rasterValid)
+        self.draw.setEnabled(rasterValid)
     
-    def searchForRaster(self, path):
+    def searchForRaster(self, rasterpaths):
         """ Checks if a raster from a saved project is present in the table
         of content or exists at the given location (path).
         """
+        if isinstance(rasterpaths, str):
+            rasterpaths = [rasterpaths]
+            
         availRaster = self.getAvailableRaster()
-        rasterName = None
+        rasterNameList = []
         self.rasterField.blockSignals(True)
-        for i, rlyr in enumerate(availRaster):
-            lyrPath = rlyr['lyr'].dataProvider().dataSourceUri()
-            # Raster has been loaded in QGIS project already
-            if lyrPath == path:
-                # Sets the dhm name in the drop down
-                self.rasterField.setItemCheckState(i, True)
-                rasterName = rlyr['name']
-                break
-        if not rasterName:
-            # Raster is still at same location in file system
-            if os.path.exists(path):
-                # Load raster
-                rasterName = QFileInfo(path).baseName()
-                rasterLyr = QgsRasterLayer(path, rasterName)
-                QgsProject.instance().addMapLayer(rasterLyr)
-                # Update drop down menu
-                rasterNameList = self.updateRasterList()
-                self.rasterField.blockSignals(True)
-                self.rasterField.setItemCheckState(rasterNameList.index(rasterName), True)
-            else:
-                self.rasterField.deselectAllOptions()
-                txt = self.tr("Raster '{}' nicht vorhanden".format(path))
-                title = self.tr("Fehler beim Laden des Rasters")
-                QMessageBox.information(self, title, txt)
+        for path in rasterpaths:
+            rasterinQGIS = False
+            for i, rlyr in enumerate(availRaster):
+                lyrPath = rlyr['lyr'].dataProvider().dataSourceUri()
+                # Raster has been loaded in QGIS project already
+                if lyrPath == path:
+                    # Sets the dhm name in the drop down
+                    self.rasterField.setItemCheckState(i, Qt.Checked)
+                    rasterNameList.append(rlyr['name'])
+                    rasterinQGIS = True
+                    break
+            if not rasterinQGIS:
+                # Raster is still at same location in file system
+                if os.path.exists(path):
+                    # Load raster
+                    newRaster = QFileInfo(path).baseName()
+                    rasterLyr = QgsRasterLayer(path, newRaster)
+                    QgsProject.instance().addMapLayer(rasterLyr)
+                    # Update drop down menu
+                    dropdownItems = self.updateRasterList()
+                    self.rasterField.setItemCheckState(dropdownItems.index(newRaster), Qt.Checked)
+                    rasterNameList.append(newRaster)
+        if not rasterNameList:
+            self.rasterField.deselectAllOptions()
+            txt = self.tr("Raster '{}' nicht vorhanden".format(', '.join(rasterpaths)))
+            title = self.tr("Fehler beim Laden des Rasters")
+            QMessageBox.information(self, title, txt)
         self.rasterField.blockSignals(False)
-        return rasterName
+        return rasterNameList
     
     def checkEqualSpatialRef(self):
         # Check spatial reference of newly added raster
@@ -639,7 +613,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         elif lyrCrs.isValid() and lyrCrs.isGeographic():
             # Raster is in geographic coordinates --> automatic transformation
             # not possible
-            if hsType == 'dhm':
+            if hsType in ['dhm', 'dhm_list']:
                 msg = self.tr('KBS-Fehler - Raster kann nicht verarbeitet werden')\
                     .format(lyrCrs.description(), lyrCrs.authid())
                 success = False
@@ -707,7 +681,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             self.iface.zoomToActiveLayer()
 
             # Set path to csv in read only lineEdit
-            self.fieldSurveyDataPath.setText(heightSource.getAsStr())
+            self.fieldSurveyDataPath.setText(self.projectHandler.getHeightSourceAsStr())
             # Activate draw tool
             self.drawTool.surveyDataMode = True
             self.draw.setEnabled(True)
@@ -738,7 +712,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
     #     QtGui.QDialog.mousePressEvent(self, event)
 
     def drawLine(self):
-        if self.projectHandler.heightSourceType == 'dhm':
+        if self.projectHandler.heightSourceType in ['dhm', 'dhm_list']:
             self.drawTool.drawLine()
         elif self.projectHandler.heightSourceType == 'survey':
             self.drawTool.drawLine(self.projectToProfileLine)

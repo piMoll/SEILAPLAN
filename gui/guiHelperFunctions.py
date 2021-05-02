@@ -28,8 +28,7 @@ from qgis.PyQt.QtWidgets import (QDialog, QWidget, QLabel, QDialogButtonBox,
     QLayout, QVBoxLayout)
 from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject, QgsPoint,
     QgsFeature, QgsGeometry, QgsVectorLayer, QgsField, QgsPalLayerSettings,
-    QgsTextFormat, QgsTextBufferSettings,  QgsVectorLayerSimpleLabeling,
-    QgsHillshadeRenderer)
+    QgsTextFormat, QgsTextBufferSettings,  QgsVectorLayerSimpleLabeling)
 from processing import run
 
 
@@ -177,44 +176,3 @@ def validateFilename(name):
     """ Replace all prohibited chars with underline."""
     valid_chars = '-_.() abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
     return ''.join(c if c in valid_chars else '_' for c in name)
-
-
-def removeVirtualRaster(virtualRasterLyr):
-    # First remove the old virtual raster
-    try:
-        if virtualRasterLyr and QgsProject.instance().mapLayersByName(virtualRasterLyr.name()):
-            QgsProject.instance().removeMapLayer(virtualRasterLyr)
-    except RuntimeError:
-        pass
-
-    
-def createVirtualRaster(canvas, rasterList, rasterName):
-    """If more than one rater is selected, they are combined to a virtual raster."""
-    # Create a new virtual raster
-    processingParams = {
-        'ADD_ALPHA': False,
-        'ASSIGN_CRS': None,
-        'EXTRA': '',
-        'INPUT': rasterList,
-        'OUTPUT': 'TEMPORARY_OUTPUT',
-        'PROJ_DIFFERENCE': False,
-        'RESAMPLING': 0,
-        'RESOLUTION': 0,
-        'SEPARATE': False,
-        'SRC_NODATA': ''
-    }
-    try:
-        algOutput = run("gdal:buildvirtualraster", processingParams)
-    except RuntimeError:
-        return None
-    else:
-        rasterLyr = QgsRasterLayer(algOutput['OUTPUT'], rasterName)
-        # contourLyr the same CRS as qgis project
-        # rasterLyr.setCrs(canvas.mapSettings().destinationCrs())
-        if rasterLyr.isValid():
-            QgsProject.instance().addMapLayer(rasterLyr)
-            rasterLyr.setRenderer(QgsHillshadeRenderer(rasterLyr.dataProvider(), 1, 315.00, 45))
-            canvas.refresh()
-            return rasterLyr
-        else:
-            return None

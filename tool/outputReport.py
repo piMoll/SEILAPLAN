@@ -81,7 +81,8 @@ def generateReportText(confHandler, result, comment, projname):
     poles = confHandler.project.poles
     polesWithAnchors = poles.poles
     polesWithoutAnchors = polesWithAnchors[poles.idxA:poles.idxE+1]
-    hmodell = confHandler.project.getHeightSourceAsStr()
+    hmpath = textwrap.wrap(confHandler.project.getHeightSourceAsStr(source=True, formatting='comma'), 120)
+    hmodell = '\n'.join(hmpath)
     kraft = result['force']
     az_grad = math.degrees(poles.azimut)
     az_gon = az_grad * 1.11111
@@ -336,7 +337,7 @@ def generateShortReport(confHandler, result, comment, projname, outputLoc):
         if not pole['active']:
             continue
         polesArray.append(pole)
-    hmPath = textwrap.wrap(confHandler.project.getHeightSourceAsStr(), 85)
+    hmPath = textwrap.wrap(confHandler.project.getHeightSourceAsStr(source=True, formatting='comma'), 85)
     hmodell = '\n'.join(hmPath)
     kraft = result['force']
     
@@ -650,7 +651,9 @@ def generateReport(reportText, outputLoc):
                  ('ALIGN', (2, 0), (-1, -1), 'RIGHT')]
 
     t_tite1 = Table(h_tite, wi_doc, [0.8*cm])
-    t_tite2 = Table(str_time, [None, None], len(str_time) * he_row)
+    rowheights = len(str_time) * he_row
+    rowheights[2] = str_time[2][1].count('\n') * he_row[0]
+    t_tite2 = Table(str_time, [None, None], rowHeights=rowheights)
     t_tite1.setStyle(TableStyle([
         ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),

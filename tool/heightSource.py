@@ -5,6 +5,7 @@ from osgeo import gdal
 from qgis.PyQt.QtCore import QCoreApplication
 from qgis.core import (QgsCoordinateTransform, QgsRasterLayer, QgsPoint,
                        QgsCoordinateReferenceSystem, QgsProject)
+from processing import run
 from math import sin, cos, pi
 import csv
 import copy
@@ -15,6 +16,9 @@ try:
 except ModuleNotFoundError:
     # Import error is handled in seilaplanPlugin.py run() function
     pass
+
+
+VIRTUALRASTER = 'SEILAPLAN Virtuelles Raster'
 
 
 class AbstractHeightSource(object):
@@ -504,3 +508,36 @@ class SurveyData(AbstractHeightSource):
             yOnLine = self.origData['y'][lastIdx]
 
         return [xOnLine, yOnLine]
+
+
+def createVirtualRaster(rasterList):
+    """If more than one raster is selected, they are combined to a virtual raster."""
+    # Create a new virtual raster
+    processingParams = {
+        'ADD_ALPHA': False,
+        'ASSIGN_CRS': None,
+        'EXTRA': '',
+        'INPUT': rasterList,
+        'OUTPUT': 'TEMPORARY_OUTPUT',
+        'PROJ_DIFFERENCE': False,
+        'RESAMPLING': 0,
+        'RESOLUTION': 0,
+        'SEPARATE': False,
+        'SRC_NODATA': ''
+    }
+    try:
+        algOutput = run("gdal:buildvirtualraster", processingParams)
+    except RuntimeError:
+        return None
+    else:
+        rasterLyr = QgsRasterLayer(algOutput['OUTPUT'], VIRTUALRASTER)
+        # contourLyr the same CRS as qgis project
+        # rasterLyr.setCrs(canvas.mapSettings().destinationCrs())
+        if rasterLyr.isValid():
+            # Add raster to qgis (not necessary anymore)
+            # QgsProject.instance().addMapLayer(rasterLyr)
+            # rasterLyr.setRenderer(QgsHillshadeRenderer(rasterLyr.dataProvider(), 1, 315.00, 45))
+            # canvas.refresh()
+            return rasterLyr
+        else:
+            return None

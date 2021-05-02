@@ -25,12 +25,14 @@ from operator import itemgetter
 import traceback
 from math import atan2, pi, cos, sin
 import time
+import json
 
 from qgis.PyQt.QtCore import QCoreApplication
 from qgis.PyQt.QtWidgets import QMessageBox
-from qgis.core import QgsPointXY, QgsDistanceArea
+from qgis.core import QgsPointXY, QgsDistanceArea, QgsRasterLayer
 
-from .tool.heightSource import AbstractHeightSource, Raster, SurveyData
+from .tool.heightSource import AbstractHeightSource, Raster, SurveyData, \
+    createVirtualRaster
 from .tool.profile import Profile
 from .tool.poles import Poles
 from .tool.outputReport import getTimestamp
@@ -114,6 +116,7 @@ class ProjectConfHandler(AbstractConfHandler):
         self.projectName = None
         self.heightSource = None
         self.heightSourceType = None
+        self.virtRasterSource = []
         self.points = {
             'A': [None, None],
             'E': [None, None]
@@ -137,6 +140,7 @@ class ProjectConfHandler(AbstractConfHandler):
         self.header = {
             'projectname': 'Projektname',
             'dhm': 'Hoehenmodell',
+            'dhm_list': 'Hoehnmodell-Liste',
             'survey': 'Laengsprofil',
             'CRS': 'KBS',
             'A': 'Anfangspunkt',
@@ -155,6 +159,15 @@ class ProjectConfHandler(AbstractConfHandler):
         
         elif property_name == self.header['dhm']:
             self.setHeightSource(None, sourceType='dhm', sourcePath=value)
+            
+        elif property_name == self.header['dhm_list']:
+            # More than one layer, saved as json array
+            try:
+                layerList = json.loads(value)
+            except:
+                self.onError('Konnte Raster nicht laden')
+            else:
+                self.setHeightSource(None, sourceType='dhm_list', sourcePath=layerList)
         
         elif property_name == self.header['survey']:
             self.setHeightSource(None, sourceType='survey', sourcePath=value)
@@ -218,8 +231,18 @@ class ProjectConfHandler(AbstractConfHandler):
         self.projectName = "seilaplan_{}".format(timestamp)
         return self.projectName
     
-    def getHeightSourceAsStr(self):
-        return self.heightSource.getAsStr()
+    def getHeightSourceAsStr(self, source=False, formatting=None):
+        """Get path of height model. If source is requested, return original
+        raster files of virtual raster instead."""
+        if source and self.virtRasterSource:
+            if formatting == 'comma':
+                return ', '.join(self.virtRasterSource)
+            elif formatting == 'json':
+                return json.dumps(self.virtRasterSource)
+            else:
+                return self.virtRasterSource
+        else:
+            return self.heightSource.getAsStr()
     
     def setHeightSource(self, layer, sourceType='dhm', sourcePath=None):
         """Raster can be set by providing the QGIS Raster Layer or by giving
@@ -230,9 +253,28 @@ class ProjectConfHandler(AbstractConfHandler):
          """
         self.heightSource = None
         self.heightSourceType = None
+        self.virtRasterSource = None
         srs = None
         if sourceType == 'dhm':
             srs = Raster(layer, sourcePath)
+        elif sourceType == 'dhm_list':
+            if layer:
+                rasterList = layer
+            else:
+                rasterList = sourcePath
+            if isinstance(rasterList, list):
+                virtLayer = None
+                if isinstance(rasterList[0], QgsRasterLayer):
+                    # List of QGIS raster layers is provided
+                    virtLayer = createVirtualRaster(rasterList)
+                    self.virtRasterSource = [lyr.dataProvider().dataSourceUri() for lyr in rasterList]
+                elif isinstance(rasterList[0], str):
+                    # List of paths is provided because a project file is
+                    #  loaded. We create layers first, then create virtual layer
+                    layerlist = [QgsRasterLayer(path, f'Raster {i}') for i, path in enumerate(rasterList)]
+                    virtLayer = createVirtualRaster(layerlist)
+                    self.virtRasterSource = rasterList
+                srs = Raster(virtLayer)
         elif sourceType == 'survey':
             srs = SurveyData(sourcePath)
             if srs.valid:
@@ -243,7 +285,7 @@ class ProjectConfHandler(AbstractConfHandler):
         if srs and srs.valid:
             self.heightSource = srs
             self.heightSourceType = sourceType
-        elif srs.errorMsg:
+        elif srs and srs.errorMsg:
             self.onError(srs.errorMsg)
         
         # Points are ether empty (raster) or they are the first and last point
@@ -383,7 +425,7 @@ class ProjectConfHandler(AbstractConfHandler):
         
         txt = [
             [self.header['projectname'], self.getProjectName()],
-            [self.header[self.heightSourceType], self.heightSource.getAsStr()],
+            [self.header[self.heightSourceType], self.getHeightSourceAsStr(source=True, formatting='json')],
             [self.header['CRS'], self.heightSource.spatialRef.authid()],
             [self.header['A'], '{0} / {1}'.format(*tuple(self.points['A']))],
             [self.header['A_Type'], self.A_type],
