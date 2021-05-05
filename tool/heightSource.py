@@ -4,7 +4,7 @@ import numpy as np
 from osgeo import gdal
 from qgis.PyQt.QtCore import QCoreApplication
 from qgis.core import (QgsCoordinateTransform, QgsRasterLayer, QgsPoint,
-                       QgsCoordinateReferenceSystem, QgsProject)
+                       QgsCoordinateReferenceSystem, QgsProject, QgsProcessing)
 from processing import run
 from math import sin, cos, pi
 import csv
@@ -518,7 +518,7 @@ def createVirtualRaster(rasterList):
         'ASSIGN_CRS': None,
         'EXTRA': '',
         'INPUT': rasterList,
-        'OUTPUT': 'TEMPORARY_OUTPUT',
+        'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT,
         'PROJ_DIFFERENCE': False,
         'RESAMPLING': 0,
         'RESOLUTION': 0,
