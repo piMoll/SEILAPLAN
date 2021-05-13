@@ -1524,6 +1524,11 @@ Si prega di adattare l&apos;input.</translation>
         <source>Fehler beim Laden des Rasters</source>
         <translation>Errore al carico della griglia</translation>
     </message>
+    <message>
+        <location filename="../gui/configHandler.py" line="276"/>
+        <source>Fehler beim Kombinieren der Rasterkacheln</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SeilaplanDialogUI</name>

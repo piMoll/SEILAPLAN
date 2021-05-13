@@ -29,7 +29,8 @@ import json
 
 from qgis.PyQt.QtCore import QCoreApplication
 from qgis.PyQt.QtWidgets import QMessageBox
-from qgis.core import QgsPointXY, QgsDistanceArea, QgsRasterLayer
+from qgis.core import (QgsPointXY, QgsDistanceArea, QgsRasterLayer,
+                       QgsProcessingException)
 
 from .tool.heightSource import AbstractHeightSource, Raster, SurveyData, \
     createVirtualRaster
@@ -266,14 +267,22 @@ class ProjectConfHandler(AbstractConfHandler):
                 virtLayer = None
                 if isinstance(rasterList[0], QgsRasterLayer):
                     # List of QGIS raster layers is provided
-                    virtLayer = createVirtualRaster(rasterList)
-                    self.virtRasterSource = [lyr.dataProvider().dataSourceUri() for lyr in rasterList]
+                    try:
+                        virtLayer = createVirtualRaster(rasterList)
+                        self.virtRasterSource = [
+                            lyr.dataProvider().dataSourceUri() for lyr in
+                            rasterList]
+                    except RuntimeError and QgsProcessingException:
+                        self.onError(self.tr('Fehler beim Kombinieren der Rasterkacheln'))
                 elif isinstance(rasterList[0], str):
                     # List of paths is provided because a project file is
                     #  loaded. We create layers first, then create virtual layer
                     layerlist = [QgsRasterLayer(path, f'Raster {i}') for i, path in enumerate(rasterList)]
-                    virtLayer = createVirtualRaster(layerlist)
-                    self.virtRasterSource = rasterList
+                    try:
+                        virtLayer = createVirtualRaster(layerlist)
+                        self.virtRasterSource = rasterList
+                    except RuntimeError and QgsProcessingException:
+                        self.onError(self.tr('Fehler beim Kombinieren der Rasterkacheln.'))
                 srs = Raster(virtLayer)
         elif sourceType == 'survey':
             srs = SurveyData(sourcePath)

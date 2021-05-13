@@ -4,7 +4,8 @@ import numpy as np
 from osgeo import gdal
 from qgis.PyQt.QtCore import QCoreApplication
 from qgis.core import (QgsCoordinateTransform, QgsRasterLayer, QgsPoint,
-                       QgsCoordinateReferenceSystem, QgsProject, QgsProcessing)
+                       QgsCoordinateReferenceSystem, QgsProject, QgsProcessing,
+                       QgsProcessingException)
 from processing import run
 from math import sin, cos, pi
 import csv
@@ -512,13 +513,19 @@ class SurveyData(AbstractHeightSource):
 
 def createVirtualRaster(rasterList):
     """If more than one raster is selected, they are combined to a virtual raster."""
+    try:
+        output = QgsProcessing.TEMPORARY_OUTPUT
+    except AttributeError:
+        # For QGIS < 3.6
+        output = 'memory:virtRaster'
+    
     # Create a new virtual raster
     processingParams = {
         'ADD_ALPHA': False,
         'ASSIGN_CRS': None,
         'EXTRA': '',
         'INPUT': rasterList,
-        'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT,
+        'OUTPUT': output,
         'PROJ_DIFFERENCE': False,
         'RESAMPLING': 0,
         'RESOLUTION': 0,
@@ -527,17 +534,11 @@ def createVirtualRaster(rasterList):
     }
     try:
         algOutput = run("gdal:buildvirtualraster", processingParams)
-    except RuntimeError:
-        return None
+    except RuntimeError and QgsProcessingException:
+        raise
     else:
         rasterLyr = QgsRasterLayer(algOutput['OUTPUT'], VIRTUALRASTER)
-        # contourLyr the same CRS as qgis project
-        # rasterLyr.setCrs(canvas.mapSettings().destinationCrs())
         if rasterLyr.isValid():
-            # Add raster to qgis (not necessary anymore)
-            # QgsProject.instance().addMapLayer(rasterLyr)
-            # rasterLyr.setRenderer(QgsHillshadeRenderer(rasterLyr.dataProvider(), 1, 315.00, 45))
-            # canvas.refresh()
             return rasterLyr
         else:
             return None

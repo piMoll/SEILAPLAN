@@ -1531,6 +1531,11 @@ Please adapt the input.</translation>
         <source>Fehler beim Laden des Rasters</source>
         <translation>Error when loading raster file</translation>
     </message>
+    <message>
+        <location filename="../gui/configHandler.py" line="276"/>
+        <source>Fehler beim Kombinieren der Rasterkacheln</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SeilaplanDialogUI</name>

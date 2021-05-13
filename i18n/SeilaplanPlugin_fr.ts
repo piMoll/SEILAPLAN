@@ -1529,10 +1529,15 @@ Veuillez adapter la saisie.</translation>
         <source>Unerwarteter Fehler bei Erstellung des Profils</source>
         <translation>Erreur inattendu à l&apos;élaboration du profil</translation>
     </message>
-        <message>
+    <message>
         <location filename="../gui/configHandler.py" line="168"/>
         <source>Fehler beim Laden des Rasters</source>
         <translation>Erreur au chargement de la grille</translation>
+    </message>
+    <message>
+        <location filename="../gui/configHandler.py" line="276"/>
+        <source>Fehler beim Kombinieren der Rasterkacheln</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
