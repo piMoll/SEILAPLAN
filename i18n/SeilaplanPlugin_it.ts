@@ -2231,16 +2231,24 @@ C&apos;è cercato la soluzione che, in prima priorità, minimizza il numero dei 
         <source>Daten in CSV-Datei konnten nicht geladen werden.</source>
         <translation>I dati del file CSV non hanno potuto essere caricato.</translation>
     </message>
+</context>
+<context>
+    <name>Raster</name>
     <message>
-        <location filename="../tool/heightSource.py" line="96"/>
+        <location filename="../tool/heightSource.py" line="104"/>
         <source>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</source>
         <translatorcomment>kontrollieren</translatorcomment>
         <translation>File della griglia _path_ non esiste, griglia non ha potuto essere caricato.</translation>
     </message>
     <message>
-        <location filename="../tool/heightSource.py" line="219"/>
+        <location filename="../tool/heightSource.py" line="232"/>
         <source>Interpolation auf Raster nicht moeglich.</source>
         <translation>Interpolazione su griglia non possibile.</translation>
+    </message>
+    <message>
+        <location filename="../tool/heightSource.py" line="236"/>
+        <source>Profillinie enthaelt Datenluecken, bitte Start-/ Endpunkt anpassen.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

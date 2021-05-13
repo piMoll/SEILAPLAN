@@ -521,6 +521,8 @@ class ProjectConfHandler(AbstractConfHandler):
         except ValueError:
             self.onError(self.tr('Unerwarteter Fehler bei der Erstellung des Profils.'))
             return False
+        if self.heightSource.errorMsg:
+            self.onError(self.heightSource.errorMsg)
         return profile
     
     def prepareForCalculation(self):
@@ -539,6 +541,9 @@ class ProjectConfHandler(AbstractConfHandler):
             self.profile = Profile(self)
         except ValueError:
             self.onError(self.tr('Unerwarteter Fehler bei Erstellung des Profils'))
+            return False
+        if self.heightSource.errorMsg:
+            self.onError(self.heightSource.errorMsg)
             return False
         # Now that height of point A and B is known, pull rope forces are
         #  calculated

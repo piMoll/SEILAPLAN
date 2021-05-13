@@ -2235,16 +2235,24 @@ Il est recherché la solution qui, en première priorité, minimalise le nombre 
         <source>Daten in CSV-Datei konnten nicht geladen werden.</source>
         <translation>Les données du fichier CSV n&apos; ont pas pu être chargé.</translation>
     </message>
+</context>
+<context>
+    <name>Raster</name>
     <message>
-        <location filename="../tool/heightSource.py" line="96"/>
+        <location filename="../tool/heightSource.py" line="104"/>
         <source>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</source>
         <translatorcomment>kontrollieren</translatorcomment>
         <translation>Fichier du grille _path_ n&apos;existe pas, grille n&apos;a pas pu être chargé.</translation>
     </message>
     <message>
-        <location filename="../tool/heightSource.py" line="219"/>
+        <location filename="../tool/heightSource.py" line="232"/>
         <source>Interpolation auf Raster nicht moeglich.</source>
         <translation>Interpolation sur grille impossible.</translation>
+    </message>
+    <message>
+        <location filename="../tool/heightSource.py" line="236"/>
+        <source>Profillinie enthaelt Datenluecken, bitte Start-/ Endpunkt anpassen.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

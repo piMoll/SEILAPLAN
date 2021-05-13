@@ -780,7 +780,7 @@ loaded skyline</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="166"/>
         <source>Unerwarteter Fehler bei Berechnung der Seillinie</source>
-        <translation>Unexpected error in the calculation of the cable roadf</translation>
+        <translation>Unexpected error in the calculation of the cable road</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="337"/>
@@ -1519,12 +1519,12 @@ Please adapt the input.</translation>
     <message>
         <location filename="../configHandler.py" line="473"/>
         <source>Unerwarteter Fehler bei der Erstellung des Profils.</source>
-        <translation>Unexpected error in generating the profile.</translation>
+        <translation>Unexpected error when generating the profile.</translation>
     </message>
     <message>
         <location filename="../configHandler.py" line="503"/>
         <source>Unerwarteter Fehler bei Erstellung des Profils</source>
-        <translation>Unexpected error in generating the profile</translation>
+        <translation>Unexpected error when generating the profile</translation>
     </message>
     <message>
         <location filename="../gui/configHandler.py" line="168"/>
@@ -1534,7 +1534,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/configHandler.py" line="276"/>
         <source>Fehler beim Kombinieren der Rasterkacheln</source>
-        <translation type="unfinished"></translation>
+        <translation>Error when combining raster tiles</translation>
     </message>
 </context>
 <context>
@@ -2237,15 +2237,23 @@ The algorithm calculates a solution, which in first priority is minimizing the n
         <source>Daten in CSV-Datei konnten nicht geladen werden.</source>
         <translation>Data from CSV file could not be loaded.</translation>
     </message>
+</context>
+<context>
+    <name>Raster</name>
     <message>
-        <location filename="../tool/heightSource.py" line="96"/>
+        <location filename="../tool/heightSource.py" line="104"/>
         <source>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</source>
         <translation>Raster file _path_ is not present, raster cannot be loaded.</translation>
     </message>
     <message>
-        <location filename="../tool/heightSource.py" line="219"/>
+        <location filename="../tool/heightSource.py" line="232"/>
         <source>Interpolation auf Raster nicht moeglich.</source>
         <translation>Interpolation on raster not possible.</translation>
+    </message>
+    <message>
+        <location filename="../tool/heightSource.py" line="236"/>
+        <source>Profillinie enthaelt Datenluecken, bitte Start-/ Endpunkt anpassen.</source>
+        <translation>Profile contains data gaps, please consider changing start or end point.</translation>
     </message>
 </context>
 </TS>

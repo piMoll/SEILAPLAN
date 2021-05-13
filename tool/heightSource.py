@@ -29,6 +29,7 @@ class AbstractHeightSource(object):
         self.spatialRef = None
         self.contourLayer = None
         self.extent = []
+        self.errorMsg = ''
         self.buffer = (None, None)
     
     def getAsStr(self):
@@ -79,6 +80,7 @@ class Raster(AbstractHeightSource):
         self.buffer = [None, None]
         self.valid = False
         self.errorMsg = ''
+        self.noDataValue = None
         
         # Get raster info from QGIS layer
         if layer and isinstance(layer, QgsRasterLayer):
@@ -163,7 +165,12 @@ class Raster(AbstractHeightSource):
             # Assumption: Height information is in first raster band
             z = z[:][:][0]
         z = np.flip(z, 0)
-    
+        
+        try:
+            self.noDataValue = ds.GetRasterBand(1).GetNoDataValue()
+        except Exception:
+            pass
+
         upx, xres, xskew, upy, yskew, yres = subraster.GetGeoTransform()
         # This raster has its origin in the upper left corner, so y axis is
         #  always descending
@@ -223,6 +230,10 @@ class Raster(AbstractHeightSource):
             points_lin = ipol.interpn((y, x), z, coords)
         except ValueError:
             raise Exception(self.tr('Interpolation auf Raster nicht moeglich.'))
+        # Check if z values contain NoData
+        noDataCount = np.count_nonzero(points_lin == self.noDataValue)
+        if noDataCount > 0:
+            self.errorMsg = self.tr('Profillinie enthaelt Datenluecken, bitte Start-/ Endpunkt anpassen.')
         return points_lin
 
 
