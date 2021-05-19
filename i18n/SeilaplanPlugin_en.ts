@@ -2253,7 +2253,7 @@ The algorithm calculates a solution, which in first priority is minimizing the n
     <message>
         <location filename="../tool/heightSource.py" line="236"/>
         <source>Profillinie enthaelt Datenluecken, bitte Start-/ Endpunkt anpassen.</source>
-        <translation>Profile contains data gaps, please consider changing start or end point.</translation>
+        <translation>Terrain profile contains data gaps, please adjust start or end point.</translation>
     </message>
 </context>
 </TS>

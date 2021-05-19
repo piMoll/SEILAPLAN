@@ -2227,7 +2227,7 @@ Pfad zu Dokumentation:
     <message>
         <location filename="../tool/heightSource.py" line="236"/>
         <source>Profillinie enthaelt Datenluecken, bitte Start-/ Endpunkt anpassen.</source>
-        <translation>Profillinie enthält Datenlücken, bitte Start-/ Endpunkt anpassen.</translation>
+        <translation>Geländelinie enthält Datenlücken, bitte Start-/ Endpunkt anpassen.</translation>
     </message>
 </context>
 </TS>

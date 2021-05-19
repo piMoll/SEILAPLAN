@@ -1537,7 +1537,7 @@ Veuillez adapter la saisie.</translation>
     <message>
         <location filename="../gui/configHandler.py" line="276"/>
         <source>Fehler beim Kombinieren der Rasterkacheln</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur à la combinaison des différents secteurs de la grille</translation>
     </message>
 </context>
 <context>
@@ -2252,7 +2252,7 @@ Il est recherché la solution qui, en première priorité, minimalise le nombre 
     <message>
         <location filename="../tool/heightSource.py" line="236"/>
         <source>Profillinie enthaelt Datenluecken, bitte Start-/ Endpunkt anpassen.</source>
-        <translation type="unfinished"></translation>
+        <translation>La ligne de terrain a des lacunes dans les données, veuillez ajuster le point initial ou final.</translation>
     </message>
 </context>
 </TS>
