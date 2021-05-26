@@ -272,7 +272,7 @@ class ProjectConfHandler(AbstractConfHandler):
                         self.virtRasterSource = [
                             lyr.dataProvider().dataSourceUri() for lyr in
                             rasterList]
-                    except RuntimeError and QgsProcessingException:
+                    except RuntimeError:
                         self.onError(self.tr('Fehler beim Kombinieren der Rasterkacheln'))
                 elif isinstance(rasterList[0], str):
                     # List of paths is provided because a project file is
@@ -281,7 +281,7 @@ class ProjectConfHandler(AbstractConfHandler):
                     try:
                         virtLayer = createVirtualRaster(layerlist)
                         self.virtRasterSource = rasterList
-                    except RuntimeError and QgsProcessingException:
+                    except RuntimeError:
                         self.onError(self.tr('Fehler beim Kombinieren der Rasterkacheln.'))
                 srs = Raster(virtLayer)
         elif sourceType == 'survey':
