@@ -368,10 +368,10 @@ class Poles(object):
             return degrees(atan(ztop_diff / dtop_diff) - atan(z_diff / d_diff))
         
         elif anchor['poleType'] == 'pole_anchor':
-            # Partial angle from horizontal line to ground point line, remaining
-            #  angle between horizontal and cable is added later in function
-            #  calculateAdvancedProperties
-            return degrees(atan(ztop_diff / dtop_diff))
+            # Partial angle from horizontal line to terrain line, this will be
+            #  used to correct the already calculated outgoing angle that
+            #  is calculated from horizontal line to cable.
+            return degrees(atan(z_diff / d_diff))
 
     def getCableFieldDimension(self):
         [_, _, _, dtop, ztop, _, _] = self.getAsArray(withAnchor=True, withDeactivated=True)
@@ -463,14 +463,14 @@ class Poles(object):
                 maxForceName = 'Seilzugkraft'
                 if pole == self.firstPole:
                     maxForce = forces['MaxSeilzugkraft_L'][1]       # Tmax,A
-                    angle = self.getAnchorAngle(pole, self.poles[j+1])
+                    angleTerrain = self.getAnchorAngle(pole, self.poles[j+1])
                     # Add alpha LE: outgoing angle (idx=1) of first pole (idx=0)
-                    angle += forces['Anlegewinkel_Lastseil'][1][0]
+                    angle = forces['Anlegewinkel_Leerseil'][1][0] - angleTerrain
                 else:
                     maxForce = forces['MaxSeilzugkraft_L'][2]       # Tmax,E
-                    angle = self.getAnchorAngle(pole, self.poles[j-1])
+                    angleTerrain = self.getAnchorAngle(pole, self.poles[j-1])
                     # Add alpha LA: incoming angle (idx=0) of last pole (idx=-1)
-                    angle += forces['Anlegewinkel_Lastseil'][0][-1]
+                    angle = forces['Anlegewinkel_Leerseil'][0][-1] - angleTerrain
     
                 bhd = self.getBhdForAnchor(angle, maxForce)
 
