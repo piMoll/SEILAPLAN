@@ -2169,19 +2169,15 @@ Eidg. Forschungsanstalt für Wald, Schnee und Landschaft WSL
 8903 Birmensdorf
 (Realisierung Version 2.x für QGIS 3)
 
-
 Beteiligte Personen:
 
 Leo Bont, Hans Rudolf Heinimann (Konzept, Mechanik)
 Patricia Moll (Implementation in Python / QGIS)
 
-
-SEILAPLAN ist freie Software: Sie können sie unter den Bedingungen der GNU General Public License, publiziert durch die Free Software Foundation, Version 2 der Lizenz oder (nach Ihrer Wahl) jeder neueren veröffentlichten Version,
- weiterverbreiten und/oder modifizieren (www.gnu.org/licenses).
+SEILAPLAN ist freie Software: Sie können sie unter den Bedingungen der GNU General Public License, publiziert durch die Free Software Foundation, Version 2 der Lizenz oder (nach Ihrer Wahl) jeder neueren veröffentlichten Version, weiterverbreiten und/oder modifizieren (www.gnu.org/licenses).
 
 Pfad zu Dokumentation:
-{}
-</translation>
+{}</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="739"/>

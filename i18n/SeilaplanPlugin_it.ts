@@ -2113,12 +2113,10 @@ Istituto federale di ricerca per la foresta, la neve e il paesaggio WSL
 8903 Birmensdorf
 (Realizzazione versione 2.x per QGIS 3)
 
-
 Persone implicate:
 
 Leo Bont, Hans Rudolf Heinimann (concetto, meccanica)
 Patricia Moll (implementazione in Python / QGIS)
-
 
 SEILAPLAN è un software gratuito: Può distribuirlo e/o modificarlo secondo le normative della GNU General Public License, publicata dalla Free Software Foundation, versione 2 della licenza o (alla vostra scelta) delle versione ulteriori (www.gnu.org/licenses).
 .
