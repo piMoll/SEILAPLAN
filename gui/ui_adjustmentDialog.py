@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_AdjustmentDialogUI(object):
     def setupUi(self, AdjustmentDialogUI):
         AdjustmentDialogUI.setObjectName("AdjustmentDialogUI")
-        AdjustmentDialogUI.resize(645, 907)
+        AdjustmentDialogUI.resize(702, 907)
         AdjustmentDialogUI.setFocusPolicy(QtCore.Qt.ClickFocus)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/plugins/SeilaplanPlugin/gui/icons/icon_app.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -28,7 +28,7 @@ class Ui_AdjustmentDialogUI(object):
         self.scrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 627, 856))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 684, 856))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
