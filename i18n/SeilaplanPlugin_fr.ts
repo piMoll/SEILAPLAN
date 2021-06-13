@@ -2131,7 +2131,9 @@ Chemin d&apos;accès à la documentation:
         <source>Hoeheninformation - Erklaerung Raster</source>
         <translation>L&apos;information sur les altitudes est cherchée dans une grille d&apos;altitude. La liste englobe toutes les grilles existantes du projet QGIS actuel.
 Si une nouvelle grille est ajoutée à QGIS, la liste peut être complétée en cliquant sur le bouton d&apos;actualisation.
-</translation>
+
+Le modèle altimétrique numérique précis de la Suisse peut être télécharge avec le plugin QGIS &apos;Swiss Geo Downloader&apos;. Plus d&apos;information (de):
+http://pimoll.github.io/SEILAPLAN/</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="859"/>

@@ -2133,7 +2133,10 @@ Path to the documentation:
         <location filename="../gui/seilaplanPluginDialog.py" line="857"/>
         <source>Hoeheninformation - Erklaerung Raster</source>
         <translation>Height information is extracted from an elevation raster. The list incorporates all the existing rasters in the current QGIS project.
-When a new raster is added to QGIS, the list can be updated by clicking on the update button.</translation>
+When a new raster is added to QGIS, the list can be updated by clicking on the update button.
+
+Precise elevation data for Switzerland can be downloaded with the QGIS plugin &apos;Swiss Geo Downloader&apos;. More information (de):
+http://pimoll.github.io/SEILAPLAN/</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="859"/>

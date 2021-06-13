@@ -2066,7 +2066,10 @@ Das Raster wird im Schweizer KBS &apos;LV95&apos; (EPSG:2056) dargestellt. Soll 
         <location filename="../gui/seilaplanPluginDialog.py" line="857"/>
         <source>Hoeheninformation - Erklaerung Raster</source>
         <translation>Höheninformation aus einem Höhenraster auslesen. Die Liste beinhaltet alle im aktuellen QGIS-Projekt vorhanden Raster.
-Wird ein neuer Raster zu QGIS hinzugefügt, kann die Liste per Aktualisieren-Schaltfläche ergänzt werden.</translation>
+Wird ein neuer Raster zu QGIS hinzugefügt, kann die Liste per Aktualisieren-Schaltfläche ergänzt werden.
+
+Hochaufgelöste Schweizer Höhendaten können mit dem QGIS Plugin &apos;Swiss Geo Downloader&apos; heruntergeladen werden. Weitere Informationen:
+http://pimoll.github.io/SEILAPLAN/</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="859"/>

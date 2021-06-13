@@ -2127,7 +2127,10 @@ Percorso alla documentazione:
         <location filename="../gui/seilaplanPluginDialog.py" line="857"/>
         <source>Hoeheninformation - Erklaerung Raster</source>
         <translation>Le informazioni d&apos;altezza sono selezionati in una griglia d&apos;altezza. La lista contiene tutte le griglie esistenti del progetto QGIS attuale.
-Se una nuova griglia viene aggiunta a QGIS, la lista può essere completata cliccando sul bottone d&apos;attualizzazione.</translation>
+Se una nuova griglia viene aggiunta a QGIS, la lista può essere completata cliccando sul bottone d&apos;attualizzazione.
+
+Il modello di altimetrico digitale precisio della Svizzera può essere scaricato con il plugin QGIS &apos;Swiss Geo Downloader&apos;. Ulteriori informazioni (de):
+http://pimoll.github.io/SEILAPLAN/</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="859"/>
