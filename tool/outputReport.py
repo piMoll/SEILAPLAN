@@ -652,7 +652,7 @@ def generateReport(reportText, outputLoc):
 
     t_tite1 = Table(h_tite, wi_doc, [0.8*cm])
     rowheights = len(str_time) * he_row
-    rowheights[2] = str_time[2][1].count('\n') * he_row[0]
+    rowheights[2] = (str_time[2][1].count('\n') + 1) * he_row[0]
     t_tite2 = Table(str_time, [None, None], rowHeights=rowheights)
     t_tite1.setStyle(TableStyle([
         ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
@@ -662,6 +662,7 @@ def generateReport(reportText, outputLoc):
         ('LINEBELOW', (0,0), (-1,-1), 1, colors.black),
         ]))
     t_tite2.setStyle(TableStyle([('FONT', (0, 0), (-1, -1), font, fontSize),
+                                 ('VALIGN', (0, 1), (0, -1), 'MIDDLE'),
                                  ('LEFTPADDING', (0, 0), (0, -1), lPadd)]))
 
     t_posi1 = Table(h_posi, wi_doc, he_rowT)
