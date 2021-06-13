@@ -12,7 +12,7 @@ name=SEILAPLAN
 qgisMinimumVersion=3.0
 description=Seilkran-Layoutplaner
 about=SEILAPLAN berechnet auf Grund eines digitalen Höhenmodells zwischen definierten Anfangs- und Endkoordinaten sowie technischen Parametern das optimale Seillinienlayout. Es werden Position und Höhe der Stütze, sowie die wichtigsten Kennwerte der Seillinie bestimmt.
-version=3.1
+version=3.2
 author=Leo Bont, Hans Rudolf Heinimann, Patricia Moll
 email=leo.bont@gmail.com
 
@@ -21,13 +21,27 @@ email=leo.bont@gmail.com
 # Recommended items:
 
 # Uncomment the following line and add your changelog:
-changelog=Version 3.1.0 (November 2020)<br>Einführung Maschinen-Parameter Grundspannung, Angabe des Durchmessers der Bundstelle in Kurzbericht, diverse Fehlerkorrekturen<br><br>Version 3.0 (September 2020)<br>Überarbeitung des Plugins und Ergänzung von zusätzlichen Eingabeparametern, Erweiterung um manuelle Editiermöglichkeiten der Seillinie, Übersetzung nach EN, IT, FR<br><br>Version 2.0 (Februar 2018)<br>Portierung auf QGIS 3<br><br>Version 1.0 (Mai 2015)<br>Initiale Version
+changelog=
+    Version 3.2 (Juni 2021)
+    Mehrfachauswahl von Raster-Kacheln: Erlaubt Seillinien über Kachelgrenzen hinweg zu konstruieren. Korrektur der Berechnung für Angriffswinkel bei 0 Meter Stützen
+
+    Version 3.1 (November 2020)
+    Einführung Maschinen-Parameter Grundspannung, Angabe des Durchmessers der Bundstelle in Kurzbericht, diverse Fehlerkorrekturen
+
+    Version 3.0 (September 2020)
+    Überarbeitung des Plugins und Ergänzung von zusätzlichen Eingabeparametern, Erweiterung um manuelle Editiermöglichkeiten der Seillinie, Übersetzung nach EN, IT, FR
+
+    Version 2.0 (Februar 2018)
+    Portierung auf QGIS 3
+
+    Version 1.0 (Mai 2015)
+    Initiale Version
 
 # Tags are comma separated with spaces allowed
-tags=analysis, project, forest, planning, optimization
+tags=analysis,forest,planning,design,optimization
 
-homepage=
-tracker=
+homepage=http://pimoll.github.io/SEILAPLAN/
+tracker=https://github.com/piMoll/SEILAPLAN/issues
 repository=https://github.com/piMoll/SEILAPLAN
 category=Plugins
 icon=gui/icons/icon_app.png
