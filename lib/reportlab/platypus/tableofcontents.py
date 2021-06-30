@@ -1,8 +1,8 @@
-#Copyright ReportLab Europe Ltd. 2000-2012
+#Copyright ReportLab Europe Ltd. 2000-2017
 #see license.txt for license details
-#history http://www.reportlab.co.uk/cgi-bin/viewcvs.cgi/public/reportlab/trunk/reportlab/platypus/tableofcontents.py
+#history https://hg.reportlab.com/hg-public/reportlab/log/tip/src/reportlab/platypus/tableofcontents.py
 
-__version__=''' $Id$ '''
+__version__='3.5.32'
 __doc__="""Experimental class to generate Tables of Contents easily
 
 This module defines a single TableOfContents() class that can be used to
@@ -34,7 +34,7 @@ with this key needs to be created first like this:
     self.notify('TOCEntry', (level, text, pageNum, key))
 
 As the table of contents need at least two passes over the Platypus
-story which is why the moultiBuild0() method must be called.
+story which is why the multiBuild() method must be called.
 
 The level<NUMBER>ParaStyle variables are the paragraph styles used
 to format the entries in the table of contents. Their indentation
@@ -46,14 +46,17 @@ epsilon.
 
 from reportlab.lib import enums
 from reportlab.lib.units import cm
-from reportlab.lib.utils import commasplit, escapeOnce, encode_label, decode_label, strTypes
+from reportlab.lib.utils import commasplit, escapeOnce, encode_label, decode_label, strTypes, asUnicode, asNative
 from reportlab.lib.styles import ParagraphStyle, _baseFontName
+from reportlab.lib import sequencer as rl_sequencer
 from reportlab.platypus.paragraph import Paragraph
 from reportlab.platypus.doctemplate import IndexingFlowable
 from reportlab.platypus.tables import TableStyle, Table
 from reportlab.platypus.flowables import Spacer, Flowable
 from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.pdfgen import canvas
+import unicodedata
+from ast import literal_eval
 
 def unquote(txt):
     from xml.sax.saxutils import unescape
@@ -67,7 +70,7 @@ except:
             if x not in self:
                 list.append(self,x)
 
-def drawPageNumbers(canvas, style, pages, availWidth, availHeight, dot=' . '):
+def drawPageNumbers(canvas, style, pages, availWidth, availHeight, dot=' . ', formatter=None):
     '''
     Draws pagestr on the canvas using the given style.
     If dot is None, pagestr is drawn at the current position in the canvas.
@@ -157,11 +160,13 @@ class TableOfContents(IndexingFlowable):
     If dotsMinLevel is set to a negative value, no dotted lines are drawn.
     """
 
-    def __init__(self):
-        self.rightColumnWidth = 72
-        self.levelStyles = defaultLevelStyles
-        self.tableStyle = defaultTableStyle
-        self.dotsMinLevel = 1
+    def __init__(self,**kwds):
+        self.rightColumnWidth = kwds.pop('rightColumnWidth',72)
+        self.levelStyles = kwds.pop('levelStyles',defaultLevelStyles)
+        self.tableStyle = kwds.pop('tableStyle',defaultTableStyle)
+        self.dotsMinLevel = kwds.pop('dotsMinLevel',1)
+        self.formatter = kwds.pop('formatter',None)
+        if kwds: raise ValueError('unexpected keyword arguments %s' % ', '.join(kwds.keys()))
         self._table = None
         self._entries = []
         self._lastEntries = []
@@ -236,12 +241,13 @@ class TableOfContents(IndexingFlowable):
         def drawTOCEntryEnd(canvas, kind, label):
             '''Callback to draw dots and page numbers after each entry.'''
             label = label.split(',')
-            page, level, key = int(label[0]), int(label[1]), eval(label[2],{})
+            page, level, key = int(label[0]), int(label[1]), literal_eval(label[2])
             style = self.getLevelStyle(level)
             if self.dotsMinLevel >= 0 and level >= self.dotsMinLevel:
                 dot = ' . '
             else:
                 dot = ''
+            if self.formatter: page = self.formatter(page)
             drawPageNumbers(canvas, style, [(page, key)], availWidth, availHeight, dot)
         self.canv.drawTOCEntryEnd = drawTOCEntryEnd
 
@@ -281,7 +287,7 @@ class TableOfContents(IndexingFlowable):
         self._table.drawOn(canvas, x, y, _sW)
 
 def makeTuple(x):
-    if hasattr(x, '__iter__'):
+    if isinstance(x,(list,tuple)):
         return tuple(x)
     return (x,)
 
@@ -301,13 +307,11 @@ class SimpleIndex(IndexingFlowable):
         self._flowable = None
         self.setup(**kwargs)
 
-    def getFormatFunc(self,format):
+    def getFormatFunc(self,formatName):
         try:
-            D = {}
-            exec('from reportlab.lib.sequencer import _format_%s as formatFunc' % format, D)
-            return D['formatFunc']
+            return getattr(rl_sequencer,'_format_%s' % formatName)
         except ImportError:
-            raise ValueError('Unknown format %r' % format)
+            raise ValueError('Unknown sequencer format %r' % formatName)
 
     def setup(self, style=None, dot=None, tableStyle=None, headers=True, name=None, format='123', offset=0):
         """
@@ -345,6 +349,7 @@ class SimpleIndex(IndexingFlowable):
         self.offset = offset
 
     def __call__(self,canv,kind,label):
+        label = asNative(label,'latin1')
         try:
             terms, format, offset = decode_label(label)
         except:
@@ -413,16 +418,16 @@ class SimpleIndex(IndexingFlowable):
 
     def _getlastEntries(self, dummy=[(['Placeholder for index'],enumerate((None,)*3))]):
         '''Return the last run's entries!  If there are none, returns dummy.'''
-        if not self._lastEntries:
-            if self._entries:
-                return list(self._entries.items())
+        lE = self._lastEntries or self._entries
+        if not lE:
             return dummy
-        return list(self._lastEntries.items())
+        return list(sorted(lE.items()))
 
     def _build(self,availWidth,availHeight):
-        _tempEntries = self._getlastEntries()
+        _tempEntries = [(tuple(asUnicode(t) for t in texts),pageNumbers)
+                            for texts, pageNumbers in self._getlastEntries()]
         def getkey(seq):
-            return [x.upper() for x in seq[0]]
+            return [''.join((c for c in unicodedata.normalize('NFD', x.upper()) if unicodedata.category(c) != 'Mn')) for x in seq[0]]
         _tempEntries.sort(key=getkey)
         leveloffset = self.headers and 1 or 0
 
@@ -442,7 +447,7 @@ class SimpleIndex(IndexingFlowable):
             #track when the first character changes; either output some extra
             #space, or the first letter on a row of its own.  We cannot do
             #widow/orphan control, sadly.
-            nalpha = texts[0][0].upper()
+            nalpha = ''.join((c for c in unicodedata.normalize('NFD', texts[0][0].upper()) if unicodedata.category(c) != 'Mn'))
             if alpha != nalpha:
                 alpha = nalpha
                 if self.headers:
