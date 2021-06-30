@@ -7,6 +7,6 @@
   <homepage><![CDATA[http://pimoll.github.io/SEILAPLAN]]></homepage>
   <file_name>SEILAPLAN.zip</file_name>
   <author_name>Leo Bont, Hans Rudolf Heinimann (Konzept, Mechanik) und Patricia Moll (Implementation in Python / QGIS)</author_name>
-  <download_url><![CDATA[https://github.com/piMoll/SEILAPLAN/releases/download/v3.2.0/SEILAPLAN.zip]]></download_url>
+  <download_url><![CDATA[https://github.com/piMoll/SEILAPLAN/releases/download/v3.2.1/SEILAPLAN.zip]]></download_url>
  </pyqgis_plugin>
 </plugins>
