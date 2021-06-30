@@ -279,7 +279,7 @@ class AdjustmentPlot(FigureCanvas):
         self.setPlotLimits()
         # Layout plot
         self.axes.set_title(self.tr('Seilaplan Plot  -  {}').format(title),
-                            fontsize=10, multialignment='center', y=1.05)
+                            fontsize=10, multialignment='center')
         self.axes.set_xlabel(self.tr('Horizontaldistanz [m]'), fontsize=9)
         self.axes.set_ylabel(self.tr("Hoehe [m.ue.M]"), fontsize=9)
         self.axes.tick_params(labelsize=8)
@@ -291,7 +291,7 @@ class AdjustmentPlot(FigureCanvas):
                 self.axes.text(pole['dtop'], pole['ztop'] + self.labelBuffer*4,
                                f"{pole['name']} ({pole['nr']})\nH = {pole['h']:.1f} m",
                                ha='center', fontsize=8)
-        self.print_figure(filelocation, dpi)
+        self.print_figure(filelocation, dpi, facecolor='white')
 
     def setToolbar(self, tbar):
         self.tbar = tbar
