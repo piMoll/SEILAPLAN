@@ -578,8 +578,12 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
                     rasterLyr = QgsRasterLayer(path, newRaster)
                     QgsProject.instance().addMapLayer(rasterLyr)
                     # Update drop down menu
+                    
                     dropdownItems = self.updateRasterList()
-                    self.rasterField.setItemCheckState(dropdownItems.index(newRaster), Qt.Checked)
+                    for idx, item in enumerate(dropdownItems):
+                        if item['name'] == newRaster:
+                            self.rasterField.setItemCheckState(idx, Qt.Checked)
+                            break
                     rasterNameList.append(newRaster)
         if not rasterNameList:
             self.rasterField.deselectAllOptions()
