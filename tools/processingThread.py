@@ -26,8 +26,8 @@ from qgis.core import QgsTask
 from qgis.PyQt.QtCore import pyqtSignal
 
 # Import Tool Scripts
-from .tool.mainSeilaplan import main
-from .tool.outputReport import getTimestamp
+from ..core.mainSeilaplan import main
+from .outputReport import getTimestamp
 
 
 class ProcessingTask(QgsTask):

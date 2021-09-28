@@ -56,8 +56,8 @@ if not ERROR:
     from .gui.seilaplanPluginDialog import SeilaplanPluginDialog
     # Further dialog windows and helpers
     from .gui.progressDialog import ProgressDialog
-    from .configHandler import ConfigHandler
-    from .processingThread import ProcessingTask
+    from .tools.configHandler import ConfigHandler
+    from .tools.processingThread import ProcessingTask
     from .gui.adjustmentDialog import AdjustmentDialog
 
 

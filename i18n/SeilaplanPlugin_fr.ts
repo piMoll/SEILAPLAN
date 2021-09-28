@@ -26,748 +26,748 @@
         <translation>Points relevés sur le terrain</translation>
     </message>
     <message>
-        <location filename="../tool/outputGeo.py" line="58"/>
+        <location filename="../tools/outputGeo.py" line="58"/>
         <source>stuetzen</source>
         <translatorcomment>HeProMo</translatorcomment>
         <translation>supports</translation>
     </message>
     <message>
-        <location filename="../tool/outputGeo.py" line="63"/>
+        <location filename="../tools/outputGeo.py" line="63"/>
         <source>leerseil</source>
         <translation>cablenoncharge</translation>
     </message>
     <message>
-        <location filename="../tool/outputGeo.py" line="68"/>
+        <location filename="../tools/outputGeo.py" line="68"/>
         <source>lastseil</source>
         <translation>cablecharge</translation>
     </message>
     <message>
-        <location filename="../tool/outputGeo.py" line="87"/>
+        <location filename="../tools/outputGeo.py" line="87"/>
         <source>bezeichnung</source>
         <translatorcomment>Fritz</translatorcomment>
         <translation>nom</translation>
     </message>
     <message>
-        <location filename="../tool/outputGeo.py" line="163"/>
+        <location filename="../tools/outputGeo.py" line="163"/>
         <source>Stuetzen</source>
         <translatorcomment>HeProMo</translatorcomment>
         <translation>Supports</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="146"/>
+        <location filename="../tools/outputReport.py" line="146"/>
         <source>Leerseil</source>
         <translation>Câble non chargé</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="148"/>
+        <location filename="../tools/outputReport.py" line="148"/>
         <source>Lastseil</source>
         <translation>Câble chargé</translation>
     </message>
     <message>
-        <location filename="../tool/outputGeo.py" line="180"/>
+        <location filename="../tools/outputGeo.py" line="180"/>
         <source>Koordinaten Stuetzen.csv</source>
         <translation>Coordonnees_Supports.csv</translation>
     </message>
     <message>
-        <location filename="../tool/outputGeo.py" line="181"/>
+        <location filename="../tools/outputGeo.py" line="181"/>
         <source>Koordinaten Seil.csv</source>
         <translation>Coordonnees_Cable.csv</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="122"/>
+        <location filename="../tools/outputReport.py" line="122"/>
         <source>Horizontaldistanz</source>
         <translation>Distance horizontale</translation>
     </message>
     <message>
-        <location filename="../tool/outputGeo.py" line="192"/>
+        <location filename="../tools/outputGeo.py" line="192"/>
         <source>Z Lastseil</source>
         <translation>Z câble chargé</translation>
     </message>
     <message>
-        <location filename="../tool/outputGeo.py" line="193"/>
+        <location filename="../tools/outputGeo.py" line="193"/>
         <source>Z Leerseil</source>
         <translatorcomment>Fritz</translatorcomment>
         <translation>Z câble non chargé</translation>
     </message>
     <message>
-        <location filename="../tool/outputGeo.py" line="193"/>
+        <location filename="../tools/outputGeo.py" line="193"/>
         <source>Z Gelaende</source>
         <translation>Z terrain</translation>
     </message>
     <message>
-        <location filename="../tool/outputGeo.py" line="193"/>
+        <location filename="../tools/outputGeo.py" line="193"/>
         <source>Abstand Lastseil-Boden</source>
         <translation>Distance câble chargé - sol</translation>
     </message>
     <message>
-        <location filename="../tool/outputGeo.py" line="205"/>
+        <location filename="../tools/outputGeo.py" line="205"/>
         <source>Stuetze</source>
         <translatorcomment>HeProMo</translatorcomment>
         <translation>Support</translation>
     </message>
     <message>
-        <location filename="../tool/outputGeo.py" line="205"/>
+        <location filename="../tools/outputGeo.py" line="205"/>
         <source>Z Stuetze Boden</source>
         <translatorcomment>Internet</translatorcomment>
         <translation>Z support sol</translation>
     </message>
     <message>
-        <location filename="../tool/outputGeo.py" line="205"/>
+        <location filename="../tools/outputGeo.py" line="205"/>
         <source>Z Stuetze Spitze</source>
         <translation>Z cime du support</translation>
     </message>
     <message>
-        <location filename="../tool/outputGeo.py" line="205"/>
+        <location filename="../tools/outputGeo.py" line="205"/>
         <source>Stuetzenhoehe</source>
         <translation>Hauteur du support</translation>
     </message>
     <message>
-        <location filename="../tool/outputGeo.py" line="205"/>
+        <location filename="../tools/outputGeo.py" line="205"/>
         <source>Neigung</source>
         <translation>Inclinaison</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="86"/>
+        <location filename="../tools/outputReport.py" line="86"/>
         <source>Feld</source>
         <translatorcomment>Champs de tension</translatorcomment>
         <translation>Champs</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="91"/>
+        <location filename="../tools/outputReport.py" line="91"/>
         <source>Zeitpunkt</source>
         <translatorcomment>Internet</translatorcomment>
         <translation>Date</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="91"/>
+        <location filename="../tools/outputReport.py" line="91"/>
         <source>Berechnungsdauer</source>
         <translatorcomment>Internet</translatorcomment>
         <translation>Temps de calcul</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="94"/>
+        <location filename="../tools/outputReport.py" line="94"/>
         <source>Hoehendaten</source>
         <translation>Dates d&apos;altidude</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="98"/>
+        <location filename="../tools/outputReport.py" line="98"/>
         <source>Bemerkung</source>
         <translatorcomment>Internet</translatorcomment>
         <translation>Remarque</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="104"/>
+        <location filename="../tools/outputReport.py" line="104"/>
         <source>Erklaerungen und Diagramme zu den technischen Werten sind in der Dokumentation zu finden.</source>
         <translation>Des explications et diagrammes portant sur les données techniques se trouvent dans la documentation.</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="108"/>
+        <location filename="../tools/outputReport.py" line="108"/>
         <source>Neigung []</source>
         <translation>Inclinaison [°]</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="108"/>
+        <location filename="../tools/outputReport.py" line="108"/>
         <source>X-Koordinate</source>
         <translation>Coordonnée X</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="109"/>
+        <location filename="../tools/outputReport.py" line="109"/>
         <source>Y-Koordinate</source>
         <translation>Coordonnée Y</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="109"/>
+        <location filename="../tools/outputReport.py" line="109"/>
         <source>Z-Koordinate [m.ue.M.]</source>
         <translation>Coordonnée Z [m/mer]</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="121"/>
+        <location filename="../tools/outputReport.py" line="121"/>
         <source>Azimut</source>
         <translation>Azimut</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="121"/>
+        <location filename="../tools/outputReport.py" line="121"/>
         <source>gon</source>
         <translatorcomment>Internet</translatorcomment>
         <translation>gon</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="122"/>
+        <location filename="../tools/outputReport.py" line="122"/>
         <source>Schraegdistanz</source>
         <translation>Distance oblique</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="128"/>
+        <location filename="../tools/outputReport.py" line="128"/>
         <source>von</source>
         <translation>du</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="128"/>
+        <location filename="../tools/outputReport.py" line="128"/>
         <source>zu</source>
         <translation>au</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="132"/>
+        <location filename="../tools/outputReport.py" line="132"/>
         <source>gewaehlte Grundspannung bei der Anfangsstuetze</source>
         <translatorcomment>Tension du câble choisie au premier support</translatorcomment>
         <translation>Force de traction initiale au premier support</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="137"/>
+        <location filename="../tools/outputReport.py" line="137"/>
         <source>Laenge Leerseil bei Anfangszugkraft</source>
         <translation>Longueur du câble non chargé à la tension initiale</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="139"/>
+        <location filename="../tools/outputReport.py" line="139"/>
         <source>Laenge Leerseil bei 0 kN Seilzugkraft</source>
         <translation>Longueur du câble non chargé à la tension de 0 kN</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="152"/>
+        <location filename="../tools/outputReport.py" line="152"/>
         <source>Abk.</source>
         <translation>Abr.</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="240"/>
+        <location filename="../tools/outputReport.py" line="240"/>
         <source>am Leerseil</source>
         <translation>au câble non chargé</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="153"/>
+        <location filename="../tools/outputReport.py" line="153"/>
         <source>Seilzugkraft an der Anfangsstuetze</source>
         <translation>Force de traction du câble au premier support</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="155"/>
+        <location filename="../tools/outputReport.py" line="155"/>
         <source>Seilzugkraft an der Endstuetze</source>
         <translation>Force de traction du câble au mât terminal</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="158"/>
+        <location filename="../tools/outputReport.py" line="158"/>
         <source>Seilzugkraft des Leerseils an den Stuetzen</source>
         <translation>Force de traction du câble non chargé aux supports</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="162"/>
+        <location filename="../tools/outputReport.py" line="162"/>
         <source>Leerseilverhaeltnis: Horizontalkomponente</source>
         <translation>Rapport du câble non chargé: Composant horizontal</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="164"/>
+        <location filename="../tools/outputReport.py" line="164"/>
         <source>der Seilzugkraft an den Stuetzen</source>
         <translation>de la force de traction du câble aux supports</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="248"/>
+        <location filename="../tools/outputReport.py" line="248"/>
         <source>am Lastseil</source>
         <translation>au câble chargé</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="168"/>
+        <location filename="../tools/outputReport.py" line="168"/>
         <source>Max. auftretende Seilzugkraft</source>
         <translation>Force de traction maximale</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="169"/>
+        <location filename="../tools/outputReport.py" line="169"/>
         <source>am hoechsten Punkt im Seilsystem</source>
         <translation>au point le plus haut du système à câble</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="171"/>
+        <location filename="../tools/outputReport.py" line="171"/>
         <source>am Anfangsanker</source>
         <translation>à l&apos;ancrage initial</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="173"/>
+        <location filename="../tools/outputReport.py" line="173"/>
         <source>am Endanker</source>
         <translation>à l&apos;ancrage terminal</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="176"/>
+        <location filename="../tools/outputReport.py" line="176"/>
         <source>am Lastseil mit Last in Feldmitte</source>
         <translation>au câble chargé avec charge au milieu de la portée</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="178"/>
+        <location filename="../tools/outputReport.py" line="178"/>
         <source>Max. auftretende Seilzugkraft gemessen in Feldmitte</source>
         <translation>Force de traction maximale mesurée au milieu de la portée</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="181"/>
+        <location filename="../tools/outputReport.py" line="181"/>
         <source>davon horizontale Komponente</source>
         <translation>de celle-ci composant horizontal</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="184"/>
+        <location filename="../tools/outputReport.py" line="184"/>
         <source>gemessen am hoechsten Punkt im Seilsystem</source>
         <translation>mesurée au point le plus haut du système à câble</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="191"/>
+        <location filename="../tools/outputReport.py" line="191"/>
         <source>an befahrbarer Stuetze, Laufwagen auf Stuetze</source>
         <translation>sur un support praticable, chariot sur l&apos;étrier</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="227"/>
+        <location filename="../tools/outputReport.py" line="227"/>
         <source>Sattelkraft, resultierend</source>
         <translation>Force sur l&apos;étrier (FSE), résultante</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="230"/>
+        <location filename="../tools/outputReport.py" line="230"/>
         <source>Sattelkraft, vertikale Komponente</source>
         <translatorcomment>Force sur l&apos;étrier, composant vertical - Technique du câble-grue, IFM</translatorcomment>
         <translation>FSE, composant vertical</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="233"/>
+        <location filename="../tools/outputReport.py" line="233"/>
         <source>Sattelkraft, horizontale Komponente</source>
         <translatorcomment>Force sur l&apos;étrier, composant horizontal</translatorcomment>
         <translation>FSE, composant horizontal</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="202"/>
+        <location filename="../tools/outputReport.py" line="202"/>
         <source>Sattelkraft (Anteil von Tragseil), resultierend</source>
         <translatorcomment>Force sur l&apos;étrier (proportion du câble porteur), résultante</translatorcomment>
         <translation>FSE (proportion du câble porteur), résultante</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="205"/>
+        <location filename="../tools/outputReport.py" line="205"/>
         <source>Sattelkraft (Anteil von Tragseil), vertikale Komponente</source>
         <translatorcomment>Force sur l&apos;étrier (proportion du câble porteur), composant vertical</translatorcomment>
         <translation>FSE (proportion du câble porteur), composant vertical</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="208"/>
+        <location filename="../tools/outputReport.py" line="208"/>
         <source>Sattelkraft (Anteil von Tragseil), horizontale Komponente</source>
         <translatorcomment>Force sur l&apos;étrier (proportion du câble porteur), composant horizontal</translatorcomment>
         <translation>FSE (proportion du câble porteur), composant horizontal</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="211"/>
+        <location filename="../tools/outputReport.py" line="211"/>
         <source>Einwirkung auf Stuetze aus Last, Gewicht Zug- Tragseil</source>
         <translatorcomment>Impact sur le support par la charge et le poids du câble porteur et du câble tracteur</translatorcomment>
         <translation>Impact par la charge et le poids du câble porteur et tracteur</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="220"/>
+        <location filename="../tools/outputReport.py" line="220"/>
         <source>an nicht befahrbarer Stuetze,</source>
         <translation>sur un support non praticable,</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="221"/>
+        <location filename="../tools/outputReport.py" line="221"/>
         <source>Laufwagen unmittelbar links/rechts bei Stuetze</source>
         <translation>chariot directement à gauche/à droite du support</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="222"/>
+        <location filename="../tools/outputReport.py" line="222"/>
         <source>links</source>
         <translation>à gauche</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="222"/>
+        <location filename="../tools/outputReport.py" line="222"/>
         <source>rechts</source>
         <translatorcomment>Internet</translatorcomment>
         <translation>à droite</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="224"/>
+        <location filename="../tools/outputReport.py" line="224"/>
         <source>Seilzugkraft</source>
         <translation>Force de traction du câble</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="249"/>
+        <location filename="../tools/outputReport.py" line="249"/>
         <source>eingehender Winkel</source>
         <translation>angle entrant</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="253"/>
+        <location filename="../tools/outputReport.py" line="253"/>
         <source>ausgehender Winkel</source>
         <translation>angle sortant</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="266"/>
+        <location filename="../tools/outputReport.py" line="266"/>
         <source>Leerseilknickwinkel</source>
         <translation>Angle du câble non chargé</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="269"/>
+        <location filename="../tools/outputReport.py" line="269"/>
         <source>Nachweis erfuellt</source>
         <translation>Preuve accomplie</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="277"/>
+        <location filename="../tools/outputReport.py" line="277"/>
         <source>Parameterset:</source>
         <translation>Bloc de paramètres:</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="308"/>
+        <location filename="../tools/outputReport.py" line="308"/>
         <source>Bericht</source>
         <translation>Rapport</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="337"/>
+        <location filename="../tools/outputReport.py" line="337"/>
         <source>Seilbahnprojekt</source>
         <translation>Projet de ligne de câble grue</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="338"/>
+        <location filename="../tools/outputReport.py" line="338"/>
         <source>Stuetzenpositionen</source>
         <translation>Positions des supports</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="339"/>
+        <location filename="../tools/outputReport.py" line="339"/>
         <source>Daten fuer Absteckung im Feld (Bodenpunkt)</source>
         <translation>Dates pour le piquetage de la ligne (point au sol)</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="340"/>
+        <location filename="../tools/outputReport.py" line="340"/>
         <source>Vorspannung der Seilzugkraft</source>
         <translatorcomment>Précharge</translatorcomment>
         <translation>Force de traction initiale</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="341"/>
+        <location filename="../tools/outputReport.py" line="341"/>
         <source>Seillaenge</source>
         <translation>Longeur du câble</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="342"/>
+        <location filename="../tools/outputReport.py" line="342"/>
         <source>Durchhang</source>
         <translation>Flexion</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="343"/>
+        <location filename="../tools/outputReport.py" line="343"/>
         <source>Auftretende Kraefte am Seil</source>
         <translation>Forces agissant sur le câble porteur</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="344"/>
+        <location filename="../tools/outputReport.py" line="344"/>
         <source>Auftretende Kraefte an den Stuetzen</source>
         <translation>Forces agissant sur les supports</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="345"/>
+        <location filename="../tools/outputReport.py" line="345"/>
         <source>Seilwinkel an den Stuetzen</source>
         <translation>Angle du câble aux supports</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="346"/>
+        <location filename="../tools/outputReport.py" line="346"/>
         <source>Nachweis, dass Tragseil nicht vom Sattel abhebt</source>
         <translation>Preuve que le câble porteur ne s&apos;enlève pas de l&apos;étrier</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="347"/>
+        <location filename="../tools/outputReport.py" line="347"/>
         <source>Annahmen</source>
         <translation>Suppositions</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="141"/>
+        <location filename="../tools/outputReport.py" line="141"/>
         <source>Laenge der Spannfelder (Schraegdistanz)</source>
         <translation>Longueur des portées (distance oblique)</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="258"/>
+        <location filename="../tools/outputReport.py" line="258"/>
         <source>Ja</source>
         <translation>Oui</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="258"/>
+        <location filename="../tools/outputReport.py" line="258"/>
         <source>Nein</source>
         <translation>Non</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="108"/>
+        <location filename="../tools/outputReport.py" line="108"/>
         <source>Hoehe Sattel [m]</source>
         <translation>Hauteur de l&apos;étrier [m]</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="270"/>
+        <location filename="../tools/outputReport.py" line="270"/>
         <source>(Leerseilknickwinkel 2)</source>
         <translation>(Angle du câble non chargé &gt; 1°)</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="263"/>
+        <location filename="../tools/outputReport.py" line="263"/>
         <source>Lastseilknickwinkel</source>
         <translation>Angle du câble chargé</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Datum</source>
         <translation>Date</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Grundspannung (Endpunkt)</source>
         <translation>Force de traction initiale (point terminal)</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Nr.</source>
         <translation>No.</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Bezeichnung</source>
         <translation>Dénomination</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Sattelhoehe</source>
         <translation>Hauteur de l&apos;étrier</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Min. BHD</source>
         <translation>DHP minimale</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Bundstelle</source>
         <translation>Ø point de fixation</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Angabe BDH bei zu steilem Winkel nicht moeglich</source>
         <translation>* l&apos;indication du DHP minimale n&apos;est pas possible en cas d&apos;un angle trop raide</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Maximal berechnete Seilzugkraft</source>
         <translation>Force de traction maximale</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Max. Kraefte</source>
         <translation>Forces 
 maximales</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Leerseil-knickwinkel</source>
         <translation>Angle du câble 
 non chargé</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Lastseil-knickwinkel</source>
         <translation>Angle du 
 câble chargé</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Berechnete Seillaenge</source>
         <translation>Longueur du câble non chargé et tendu (du point initial au point final)</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="419"/>
+        <location filename="../tools/outputReport.py" line="419"/>
         <source>Max. Abstand Leerseil - Boden</source>
         <translation>Espacement maximal entre câble non chargé et sol</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Angriffs-winkel</source>
         <translation>Angle
 d&apos;attaque</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Horizontal-distanz</source>
         <translation>Distance 
 horizontale</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Schraeg-distanz</source>
         <translation>Distance 
 oblique</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Hoehen-differenz</source>
         <translation>Différence 
 de niveau</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Durchhang Leerseil</source>
         <translation>Flexion
 câble non chargé</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Durchhang Lastseil</source>
         <translation>Flexion
 câble chargé</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Haftungsausschluss</source>
         <translation>Toute résponsabilité est exclue dans le cadre du GNU General Public Licence version 2 et ultérieures (www.gnu.org/licenses). La méthode de calcul implémentée est basée sur Zweifel (1960). Pour le calcul il est supposé que le câble porteur soit ancré de manière fixe aux deux extrémités.</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Kurzbericht</source>
         <translation>Rapport bref</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>SEILAPLAN Projekt</source>
         <translation>SEILAPLAN projet</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Eingabewerte</source>
         <translation>Valeurs d&apos;entrée</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Stuetzen- und Ankerdimensionen</source>
         <translation>Dimensions des supports et des ancrages</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Kraefte und Winkel</source>
         <translation>Forces et angles</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Anker- und Spannfelder</source>
         <translation>Champs d&apos;ancrage et de tension</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Seilsystem</source>
         <translation>Système de câble</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Hoehe Seilkranmast</source>
         <translation>Hauteur du mât</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Seillinie befahrbar ab ... vom Anfangspunkt</source>
         <translation>Câble porteur praticable à partir de ...du point initial</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Seillinie befahrbar bis ... vor dem Endpunkt</source>
         <translation>Câble porteur praticable jusqu&apos;à ...devant le point final</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Minimaler Abstand Tragseil - Boden</source>
         <translation>Espacement minimal entre câble porteur et sol</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>einzuhalten ab ... vom Anfangspunkt</source>
         <translation>A respecter à partir de ... du point initial</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>einzuhalten bis ... vor dem Endpunkt</source>
         <translation>A respecter jusqu&apos;à ... devant le point final</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Gewicht der Last inkl. Laufwagen</source>
         <translation>Poids de la charge y.c. le chariot</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Gewicht Tragseil</source>
         <translation>Poids du câble porteur</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Durchmesser Tragseil</source>
         <translation>Diamètre du câble porteur</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Mindestbruchkraft Tragseil</source>
         <translation>Charge de rupture minimale du câble porteur</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Gewicht Zugseil</source>
         <translation>Poids du câble tracteur</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Gewicht Rueckholseil</source>
         <translation>Poids du câble de retour</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Minimaler Abstand zwischen Stuetzen</source>
         <translation>Distance minimale entre les supports</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Horiz. Aufloesung moegl. Stuetzenstandorte</source>
         <translatorcomment>Espacement minimal des emplacements de support possibles</translatorcomment>
         <translation>Espacement min. emplacements de support possibles</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Minimale Stuetzenhoehe</source>
         <translation>Hauteur minimale des supports</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Maximale Stuetzenhoehe</source>
         <translation>Hauteur maximal des supports</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Abstufungsinterval</source>
         <translation>Intervalle de gradation</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Kuenstliche Stuetze ab Stuetzenhoehe von</source>
         <translation>Support artificiel à partir d&apos;une altitude de l&apos;étrier de</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Grundspannung Tragseil (Anfangssp.)</source>
         <translatorcomment>Force de traction initiale du câble porteur (point de départ)</translatorcomment>
         <translation>Force de traction initiale (point de départ)</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Elastizitaetsmodul Tragseil</source>
         <translation>Module d&apos;élasticité du câble porteur</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Fuellfaktor</source>
         <translation>Coefficient de remplissage du câble</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Sicherheitsfaktor Tragseil</source>
         <translation>Facteur de sécurité du câble porteur</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Total</source>
         <translation>Total</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Parameterset</source>
         <translation>Bloc de paramètres</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Sattelkraft</source>
         <translation>Force sur l&apos;étrier</translation>
     </message>
     <message>
-        <location filename="../tool/outputReport.py" line="111"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Zweiseil-System</source>
         <translatorcomment>HeProMo</translatorcomment>
         <translation>Système à 2 câbles</translation>
@@ -776,7 +776,7 @@ câble chargé</translation>
 <context>
     <name>AbstractConfHandler</name>
     <message>
-        <location filename="../configHandler.py" line="63"/>
+        <location filename="../tools/configHandler.py" line="63"/>
         <source>Fehler</source>
         <translation>Erreur</translation>
     </message>
@@ -1274,47 +1274,47 @@ d&apos;après Zweifel</translation>
 <context>
     <name>ParameterConfHandler</name>
     <message>
-        <location filename="../configHandler.py" line="552"/>
+        <location filename="../tools/configHandler.py" line="552"/>
         <source>Standardparameter</source>
         <translation>Paramètres standard</translation>
     </message>
     <message>
-        <location filename="../configHandler.py" line="594"/>
+        <location filename="../tools/configHandler.py" line="594"/>
         <source>Fehler in Parameterset &apos;{}&apos; gefunden. Set kann nicht geladen werden.</source>
         <translation>Erreur dans le bloc de paramètres &apos;{}&apos;. Le bloc ne peut pas être chargé.</translation>
     </message>
     <message>
-        <location filename="../configHandler.py" line="722"/>
+        <location filename="../tools/configHandler.py" line="722"/>
         <source>Bitte geben Sie im Feld einen Wert ein</source>
         <translation>Entrez une valeur entre {} et {} {}, s.v.p.</translation>
     </message>
     <message>
-        <location filename="../configHandler.py" line="731"/>
+        <location filename="../tools/configHandler.py" line="731"/>
         <source>Ungueltige Eingabe</source>
         <translation>Input invalid</translation>
     </message>
     <message>
-        <location filename="../configHandler.py" line="729"/>
+        <location filename="../tools/configHandler.py" line="729"/>
         <source>Der Wert im Feld ist ungueltig</source>
         <translation>La valeur {} dans le cadre {} est invalide. Choisissez une valeur entre {} et {} {}, s.v.p.</translation>
     </message>
     <message>
-        <location filename="../configHandler.py" line="784"/>
+        <location filename="../tools/configHandler.py" line="784"/>
         <source>Fehler in Parameterset gefunden</source>
         <translation>Erreur dans le bloc de paramètres &apos;{}&apos;. Le bloc ne peut pas être chargé.</translation>
     </message>
     <message>
-        <location filename="../configHandler.py" line="825"/>
+        <location filename="../tools/configHandler.py" line="825"/>
         <source>Bitte geben Sie eine gueltige Zahl ein.</source>
         <translation>Entrez un chiffre valide s.v.p.</translation>
     </message>
     <message>
-        <location filename="../configHandler.py" line="874"/>
+        <location filename="../tools/configHandler.py" line="874"/>
         <source>Kein Zweiseil-System moeglich</source>
         <translation>Erreur: Le système à 2 câbles n&apos;est pas possible si le point de départ (treuil/engin) est situé plus bas que le point final.</translation>
     </message>
     <message>
-        <location filename="../configHandler.py" line="739"/>
+        <location filename="../tools/configHandler.py" line="739"/>
         <source>Der Parameter Minimaler Abstand Tragseil Boden darf nicht groesser als der Parameter Minimale Stuetzenhoehe sein.</source>
         <translation>Le paramètre &quot;Espacement minimal entre câble porteur et sol&quot; (onglet Ligne de câble) ne doit pas être supérieur au paramètre &quot;Hauteur minimale des supports&quot; (onglet Optionnel #1). 
 Veuillez adapter la saisie.</translation>
@@ -1336,33 +1336,33 @@ Veuillez adapter la saisie.</translation>
 <context>
     <name>Poles</name>
     <message>
-        <location filename="../tool/poles.py" line="45"/>
+        <location filename="../tools/poles.py" line="45"/>
         <source>Anfangsstuetze</source>
         <translation>Support initial</translation>
     </message>
     <message>
-        <location filename="../tool/poles.py" line="46"/>
+        <location filename="../tools/poles.py" line="46"/>
         <source>Endstuetze</source>
         <translation>Support terminal</translation>
     </message>
     <message>
-        <location filename="../tool/poles.py" line="90"/>
+        <location filename="../tools/poles.py" line="90"/>
         <source>Stuetze</source>
         <translatorcomment>HeProMo</translatorcomment>
         <translation>Support</translation>
     </message>
     <message>
-        <location filename="../tool/poles.py" line="92"/>
+        <location filename="../tools/poles.py" line="92"/>
         <source>neue Stuetze</source>
         <translation>nouveau support</translation>
     </message>
     <message>
-        <location filename="../tool/poles.py" line="94"/>
+        <location filename="../tools/poles.py" line="94"/>
         <source>Verankerung</source>
         <translation>Ancrage</translation>
     </message>
     <message>
-        <location filename="../tool/poles.py" line="96"/>
+        <location filename="../tools/poles.py" line="96"/>
         <source>Seilkran</source>
         <translation>Câble-grue</translation>
     </message>
@@ -1505,37 +1505,37 @@ Veuillez adapter la saisie.</translation>
 <context>
     <name>ProjectConfHandler</name>
     <message>
-        <location filename="../configHandler.py" line="426"/>
+        <location filename="../tools/configHandler.py" line="426"/>
         <source>Bitte definieren Sie gueltige Start- und Endkoordinaten</source>
         <translation>Veuillez définir des coordonées de départ et de fin valables s.v.p.</translation>
     </message>
     <message>
-        <location filename="../configHandler.py" line="428"/>
+        <location filename="../tools/configHandler.py" line="428"/>
         <source>Bitte definieren Sie einen Projektnamen</source>
         <translation>Veuillez définir un nom du projet, s.v.p.</translation>
     </message>
     <message>
-        <location filename="../configHandler.py" line="430"/>
+        <location filename="../tools/configHandler.py" line="430"/>
         <source>Ungueltige Daten</source>
         <translation>Dates invalides</translation>
     </message>
     <message>
-        <location filename="../configHandler.py" line="473"/>
+        <location filename="../tools/configHandler.py" line="473"/>
         <source>Unerwarteter Fehler bei der Erstellung des Profils.</source>
         <translation>Erreur inattendu à l&apos;élaboration du profil.</translation>
     </message>
     <message>
-        <location filename="../configHandler.py" line="503"/>
+        <location filename="../tools/configHandler.py" line="503"/>
         <source>Unerwarteter Fehler bei Erstellung des Profils</source>
         <translation>Erreur inattendu à l&apos;élaboration du profil</translation>
     </message>
     <message>
-        <location filename="../gui/configHandler.py" line="168"/>
+        <location filename="../tools/configHandler.py" line="168"/>
         <source>Fehler beim Laden des Rasters</source>
         <translation>Erreur au chargement de la grille</translation>
     </message>
     <message>
-        <location filename="../gui/configHandler.py" line="276"/>
+        <location filename="../tools/configHandler.py" line="276"/>
         <source>Fehler beim Kombinieren der Rasterkacheln</source>
         <translation>Erreur à la combinaison des différents secteurs de la grille</translation>
     </message>
@@ -2231,7 +2231,7 @@ Il est recherché la solution qui, en première priorité, minimalise le nombre 
 <context>
     <name>SurveyData</name>
     <message>
-        <location filename="../tool/heightSource.py" line="286"/>
+        <location filename="../tools/heightSource.py" line="286"/>
         <source>Daten in CSV-Datei konnten nicht geladen werden.</source>
         <translation>Les données du fichier CSV n&apos; ont pas pu être chargé.</translation>
     </message>
@@ -2239,18 +2239,18 @@ Il est recherché la solution qui, en première priorité, minimalise le nombre 
 <context>
     <name>Raster</name>
     <message>
-        <location filename="../tool/heightSource.py" line="104"/>
+        <location filename="../tools/heightSource.py" line="104"/>
         <source>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</source>
         <translatorcomment>kontrollieren</translatorcomment>
         <translation>Fichier du grille _path_ n&apos;existe pas, grille n&apos;a pas pu être chargé.</translation>
     </message>
     <message>
-        <location filename="../tool/heightSource.py" line="232"/>
+        <location filename="../tools/heightSource.py" line="232"/>
         <source>Interpolation auf Raster nicht moeglich.</source>
         <translation>Interpolation sur grille impossible.</translation>
     </message>
     <message>
-        <location filename="../tool/heightSource.py" line="236"/>
+        <location filename="../tools/heightSource.py" line="236"/>
         <source>Profillinie enthaelt Datenluecken, bitte Start-/ Endpunkt anpassen.</source>
         <translation>La ligne de terrain a des lacunes dans les données, veuillez ajuster le point initial ou final.</translation>
     </message>

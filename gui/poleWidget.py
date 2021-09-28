@@ -23,7 +23,7 @@ from qgis.PyQt.QtWidgets import (QDoubleSpinBox, QSpinBox, QPushButton,
                                  QLineEdit, QHBoxLayout, QLabel, QCheckBox)
 from qgis.PyQt.QtGui import QIcon, QPixmap
 
-from ..tool.poles import Poles
+from ..tools.poles import Poles
 
 
 class CustomPoleWidget(QObject):

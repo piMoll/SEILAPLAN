@@ -5,7 +5,7 @@ import sys
 from qgis.core import QgsApplication
 
 from . import PROJECT_FILE
-from ..configHandler import ConfigHandler
+from ..tools.configHandler import ConfigHandler
 from ..tool_.mainSeilaplan import checkInputParams
 from ..tool_.geoExtract import (generateDhm, calcProfile, calcAnker, updateAnker)
 
@@ -22,8 +22,7 @@ class TestCalcProfile(unittest.TestCase):
     
         cls.qgs = QgsApplication([], False)
         cls.qgs.initQgis()
-    
-        import processing
+
         from processing.core.Processing import Processing
         Processing.initialize()
 

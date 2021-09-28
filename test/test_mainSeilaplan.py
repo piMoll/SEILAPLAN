@@ -6,9 +6,9 @@ from qgis.core import QgsApplication
 from qgis.PyQt.QtCore import pyqtSignal
 
 from . import PROJECT_FILE
-from ..configHandler import ConfigHandler
+from ..tools.configHandler import ConfigHandler
 from ..tool_.mainSeilaplan import main as main_
-from ..tool.mainSeilaplan import main as main
+from ..core.mainSeilaplan import main as main
 
 
 class ProcessingTask(QgsTask):

@@ -29,15 +29,14 @@ import json
 
 from qgis.PyQt.QtCore import QCoreApplication
 from qgis.PyQt.QtWidgets import QMessageBox
-from qgis.core import (QgsPointXY, QgsDistanceArea, QgsRasterLayer,
-                       QgsProcessingException)
+from qgis.core import (QgsPointXY, QgsDistanceArea, QgsRasterLayer)
 
-from .tool.heightSource import AbstractHeightSource, Raster, SurveyData, \
+from .heightSource import AbstractHeightSource, Raster, SurveyData, \
     createVirtualRaster
-from .tool.profile import Profile
-from .tool.poles import Poles
-from .tool.outputReport import getTimestamp
-from .gui.guiHelperFunctions import validateFilename
+from .profile import Profile
+from .poles import Poles
+from .outputReport import getTimestamp
+from ..gui.guiHelperFunctions import validateFilename
 
 # Constants
 HOMEPATH = os.path.join(os.path.dirname(__file__))
@@ -587,7 +586,7 @@ class ParameterConfHandler(AbstractConfHandler):
         1: 'Mehrseil-System'
     }
     ANCHOR_LEN = 20
-    SETS_PATH = os.path.join(HOMEPATH, 'config', 'parametersets')
+    SETS_PATH = os.path.join(HOMEPATH, '../config', 'parametersets')
     
     def __init__(self):
         AbstractConfHandler.__init__(self)
@@ -609,7 +608,7 @@ class ParameterConfHandler(AbstractConfHandler):
     def initParameters(self):
         # Load parameter definitions and rules from text file
         parameterDef = self.readParamsFromTxt(
-            os.path.join(HOMEPATH, 'config', 'params.txt'))
+            os.path.join(HOMEPATH, '../config', 'params.txt'))
         
         for key, pDef in parameterDef.items():
             parameterDef[key]['value'] = None
@@ -991,7 +990,7 @@ class ParameterConfHandler(AbstractConfHandler):
 
 class ConfigHandler(object):
     
-    SETTINGS_FILE = os.path.join(HOMEPATH, 'config', 'commonPaths.txt')
+    SETTINGS_FILE = os.path.join(HOMEPATH, '../config', 'commonPaths.txt')
     DEFAULT_SAVE_PATH = os.path.join(os.path.expanduser('~'), 'Seilaplan')
     
     def __init__(self):

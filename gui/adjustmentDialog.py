@@ -35,9 +35,10 @@ from .adjustmentDialog_params import AdjustmentDialogParams
 from .adjustmentDialog_thresholds import AdjustmentDialogThresholds
 from .saveDialog import DialogOutputOptions
 from .mapMarker import MapMarkerTool
-from ..tool.cablelineFinal import preciseCable, updateWithCableCoordinates
-from ..tool.outputReport import generateReportText, generateReport, createOutputFolder, generateShortReport
-from ..tool.outputGeo import organizeDataForExport, addToMap, \
+from ..core.cablelineFinal import preciseCable, updateWithCableCoordinates
+from ..tools.outputReport import generateReportText, generateReport, \
+    createOutputFolder, generateShortReport
+from ..tools.outputGeo import organizeDataForExport, addToMap, \
     generateCoordTable, exportToShape, exportToKML
 
 

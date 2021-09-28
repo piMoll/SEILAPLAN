@@ -33,7 +33,7 @@ from processing.core.Processing import Processing
 # Further GUI modules for functionality
 from .guiHelperFunctions import (DialogWithImage, createContours,
     loadOsmLayer, createProfileLayers)
-from ..configHandler import ConfigHandler, castToNum
+from ..tools.configHandler import ConfigHandler, castToNum
 # GUI elements
 from .checkableComboBoxOwn import QgsCheckableComboBoxOwn
 from .saveDialog import DialogSaveParamset

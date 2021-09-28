@@ -32,16 +32,16 @@ if libPath not in sys.path:
     sys.path.insert(0, libPath)
 
 import traceback
-from qgis.core import QgsTask, QgsApplication
-from qgis.PyQt.QtCore import pyqtSignal, QTranslator, QCoreApplication
-from .configHandler import ConfigHandler
-from .tool.mainSeilaplan import main as mainSeilaplan
-from .tool.cablelineFinal import preciseCable, updateWithCableCoordinates
+from qgis.core import QgsTask
+from qgis.PyQt.QtCore import pyqtSignal
+from .tools.configHandler import ConfigHandler
+from .core.mainSeilaplan import main as mainSeilaplan
+from .core.cablelineFinal import preciseCable, updateWithCableCoordinates
 from .gui.adjustmentPlot import AdjustmentPlot
-from .tool.outputReport import (generateReportText, generateReport,
-    createOutputFolder, generateShortReport)
-from .tool.outputGeo import (organizeDataForExport, generateCoordTable,
-    exportToShape, exportToKML)
+from .tools.outputReport import (generateReportText, generateReport,
+                                createOutputFolder, generateShortReport)
+from .tools.outputGeo import (organizeDataForExport, generateCoordTable,
+                             exportToShape, exportToKML)
 
 
 class ProcessingTask(QgsTask):
