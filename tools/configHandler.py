@@ -31,11 +31,13 @@ from qgis.PyQt.QtCore import QCoreApplication
 from qgis.PyQt.QtWidgets import QMessageBox
 from qgis.core import (QgsPointXY, QgsDistanceArea, QgsRasterLayer)
 
-from .heightSource import AbstractHeightSource, Raster, SurveyData, \
-    createVirtualRaster
+from .heightSource import AbstractHeightSource
+from .raster import Raster
+from .survey import SurveyData
 from .profile import Profile
 from .poles import Poles
 from .outputReport import getTimestamp
+from .outputGeo import createVirtualRaster
 from ..gui.guiHelperFunctions import validateFilename
 
 # Constants

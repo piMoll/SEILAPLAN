@@ -23,8 +23,14 @@ import os
 import csv
 
 from qgis.PyQt.QtCore import QVariant, QCoreApplication
-from qgis.core import QgsWkbTypes, QgsFields, QgsField, QgsVectorFileWriter, \
-    QgsFeature, QgsGeometry, QgsPoint, QgsCoordinateReferenceSystem
+from qgis.core import (QgsRasterLayer, QgsProcessing, QgsProcessingException,
+                       QgsWkbTypes, QgsFields, QgsField, QgsVectorFileWriter,
+                       QgsFeature, QgsGeometry, QgsPoint,
+                       QgsCoordinateReferenceSystem)
+from processing import run
+
+
+VIRTUALRASTER = 'SEILAPLAN Virtuelles Raster'
 
 
 def organizeDataForExport(poles, cableline):
@@ -201,6 +207,39 @@ def addToMap(geodata, projName):
         
         # Add to group
         projGroup.addLayer(layer)
+
+
+def createVirtualRaster(rasterList):
+    """If more than one raster is selected, they are combined to a virtual raster."""
+    try:
+        output = QgsProcessing.TEMPORARY_OUTPUT
+    except AttributeError:
+        # For QGIS < 3.6
+        output = 'memory:virtRaster'
+    
+    # Create a new virtual raster
+    processingParams = {
+        'ADD_ALPHA': False,
+        'ASSIGN_CRS': None,
+        'EXTRA': '',
+        'INPUT': rasterList,
+        'OUTPUT': output,
+        'PROJ_DIFFERENCE': False,
+        'RESAMPLING': 0,
+        'RESOLUTION': 0,
+        'SEPARATE': False,
+        'SRC_NODATA': ''
+    }
+    try:
+        algOutput = run("gdal:buildvirtualraster", processingParams)
+    except (RuntimeError, QgsProcessingException) as e:
+        raise RuntimeError
+    else:
+        rasterLyr = QgsRasterLayer(algOutput['OUTPUT'], VIRTUALRASTER)
+        if rasterLyr.isValid():
+            return rasterLyr
+        else:
+            return None
 
 
 def generateCoordTable(cableline, profile, poles, outputLoc):
