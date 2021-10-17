@@ -39,6 +39,7 @@ from .poles import Poles
 from .outputReport import getTimestamp
 from .outputGeo import createVirtualRaster
 from ..gui.guiHelperFunctions import validateFilename
+from .. import __version__ as version
 
 # Constants
 HOMEPATH = os.path.join(os.path.dirname(__file__))
@@ -138,31 +139,37 @@ class ProjectConfHandler(AbstractConfHandler):
         }
         self.noPoleSection = []
         
-        # TODO: Translate
-        self.header = {
-            'projectname': 'Projektname',
-            'dhm': 'Hoehenmodell',
-            'dhm_list': 'Hoehnmodell-Liste',
-            'survey': 'Laengsprofil',
-            'CRS': 'KBS',
-            'A': 'Anfangspunkt',
-            'A_Type': 'Anfangspunkt-Typ',
-            'E': 'Endpunkt',
-            'E_Type': 'Endpunkt-Typ',
-            'fixedPoles': 'Fixe Stuetzen',
-            'noPoleSection': 'Keine Stuetzen'
-        }
         self.profile = None
         self.poles = None
     
-    def setConfigFromFile(self, property_name, value):
-        if property_name == self.header['projectname']:
+    def setConfigFromFile(self, settings):
+        """Load configuration from json file."""
+        self.setProjectName(settings['projectname'])
+        
+        heightSource = settings['heightsource']
+        self.setHeightSource(None, sourceType=heightSource['type'],
+                             sourcePath=heightSource['source'])
+
+        if self.heightSource and self.heightSourceType == 'survey':
+            self.heightSource.reprojectToCrs(heightSource['crs'])
+
+        self.setPoint('A', settings['profile']['start']['coordinates'])
+        self.setPoint('E', settings['profile']['end']['coordinates'])
+        self.A_type = settings['profile']['start']['type']
+        self.E_type = settings['profile']['end']['type']
+
+        self.setFixedPoles(settings['profile']['fixedPoles'])
+        self.setNoPoleSection(settings['profile']['noPoleSection'])
+    
+    def setConfigFromFileOld(self, property_name, value):
+        """Load settings from old style text file."""
+        if property_name == 'Projektname':
             self.setProjectName(value)
         
-        elif property_name == self.header['dhm']:
+        elif property_name == 'Hoehenmodell':
             self.setHeightSource(None, sourceType='dhm', sourcePath=value)
             
-        elif property_name == self.header['dhm_list']:
+        elif property_name == 'Hoehnmodell-Liste':
             # More than one layer, saved as json array
             try:
                 layerList = json.loads(value)
@@ -171,27 +178,27 @@ class ProjectConfHandler(AbstractConfHandler):
             else:
                 self.setHeightSource(None, sourceType='dhm_list', sourcePath=layerList)
         
-        elif property_name == self.header['survey']:
+        elif property_name == 'Laengsprofil':
             self.setHeightSource(None, sourceType='survey', sourcePath=value)
         
-        elif property_name == self.header['CRS']:
+        elif property_name == 'KBS':
             if self.heightSource and self.heightSourceType == 'survey':
                 self.heightSource.reprojectToCrs(value)
         
-        elif property_name in [self.header['A'], self.header['E']]:
+        elif property_name in ['Anfangspunkt', 'Endpunkt']:
             point = property_name[0]
             [x, y] = value.split('/')
             self.setPoint(point, [x, y])
         
-        elif property_name == self.header['A_Type']:
+        elif property_name == 'Anfangspunkt-Typ':
             if value in self.POINT_TYPE.values():
                 self.A_type = value
         
-        elif property_name == self.header['E_Type']:
+        elif property_name == 'Endpunkt-Typ':
             if value in self.POINT_TYPE.values():
                 self.E_type = value
         
-        elif property_name == self.header['fixedPoles']:
+        elif property_name == 'Fixe Stuetzen':
             polesStr = value.split('/')[:-1]
             poleArray = []
             for stue in polesStr:
@@ -207,7 +214,7 @@ class ProjectConfHandler(AbstractConfHandler):
             
             self.setFixedPoles(poleArray)
         
-        elif property_name == self.header['noPoleSection']:
+        elif property_name == 'Keine Stuetzen':
             sections = value.split(';')
             sectionsArray = []
             for section in sections:
@@ -240,7 +247,7 @@ class ProjectConfHandler(AbstractConfHandler):
             if formatting == 'comma':
                 return ', '.join(self.virtRasterSource)
             elif formatting == 'json':
-                return json.dumps(self.virtRasterSource)
+                return self.virtRasterSource
             else:
                 return self.virtRasterSource
         else:
@@ -421,55 +428,31 @@ class ProjectConfHandler(AbstractConfHandler):
     
     def setNoPoleSection(self, noPoles):
         self.noPoleSection = noPoles
-    
-    def getConfigAsStr(self):
-        # Reformat fixed poles
-        fixPolesStr = ''
-        for pole in self.fixedPoles['poles']:
-            fixPolesStr += f"{pole['name']}: {pole['d']}, {pole['z']}, " \
-                           f"{pole['h']}  /  "
-        # Reformat sections without poles
-        noPoleSectionStr = ''
-        for section in self.noPoleSection:
-            noPoleSectionStr += f"{section[0]} - {section[1]};"
-        
-        txt = [
-            [self.header['projectname'], self.getProjectName()],
-            [self.header[self.heightSourceType], self.getHeightSourceAsStr(source=True, formatting='json')],
-            [self.header['CRS'], self.heightSource.spatialRef.authid()],
-            [self.header['A'], '{0} / {1}'.format(*tuple(self.points['A']))],
-            [self.header['A_Type'], self.A_type],
-            [self.header['E'], '{0} / {1}'.format(*tuple(self.points['E']))],
-            [self.header['E_Type'], self.E_type],
-            [self.header['fixedPoles'], fixPolesStr],
-            [self.header['noPoleSection'], noPoleSectionStr]
-        ]
-        formattedProjectInfo = []
-        for title, info in txt:
-            line = '{0: <20}{1}'.format(title, info)
-            formattedProjectInfo += line + '\n'
-        
-        # Pole data
-        formattedPoleData = ''
-        if self.poles:
-            formattedPoleData = [
-                4 * '\n',
-                'Stützendaten:\n',
-                '\t'.join(['Nr.', 'Dist.', 'Höhe', 'Neigung', 'man.', 'Typ',
-                           'aktiv', 'Name']) + '\n',
-                '-'*70 + '\n'
-            ]
-            idx = 0
-            for p in self.poles.poles:
-                poleData = [idx, round(p['d'], 1), round(p['h'], 1),
-                            round(p['angle'], 1),
-                            1 if p['manually'] else 0, p['poleType'],
-                            1 if p['active'] else 0, p['name']]
-                poleStr = [str(m) for m in poleData]
-                formattedPoleData.append('\t'.join(poleStr) + '\n')
-                idx += 1
-        
-        return formattedProjectInfo, formattedPoleData
+
+    def getSettings(self):
+        """Return settings in a dictionary form to save to json file."""
+        return {
+            'projectname': self.getProjectName(),
+            'version': version,
+            'heightsource': {
+                'type': self.heightSourceType,
+                'source': self.getHeightSourceAsStr(source=True, formatting='json'),
+                'crs': self.heightSource.spatialRef.authid()
+            },
+            'profile': {
+                'start': {
+                    'coordinates': self.points['A'],
+                    'type': self.A_type
+                },
+                'end': {
+                    'coordinates': self.points['E'],
+                    'type': self.E_type
+                },
+                'fixedPoles': self.fixedPoles['poles'],
+                'noPoleSection': self.noPoleSection
+            },
+            'poles': self.poles.getSettings() if self.poles else []
+        }
     
     def checkValidState(self):
         msg = ''
@@ -799,27 +782,25 @@ class ParameterConfHandler(AbstractConfHandler):
             return False
         else:
             return True
-    
-    def getParametersAsStr(self):
-        """ """
-        txt = [
-            '{5}{5}{0}{5}{1: <20}{2: <20}{3: <45}{4: <9} {5:-<94}{5}'.format(
-                'Parameter:', 'Name', 'Wert', 'Label', 'Einheit', '\n')]
+
+    def getSettings(self):
+        """Return settings in a structured dictionary to save to json file."""
+        params = []
         for property_name in self.paramOrder:
             p = self.params[property_name]
-            # Get correctly formatted string of value
-            value = self.getParameterAsStr(property_name)
-            # Combine label, value and units
-            line = '{0: <20}{1: <20}{2: <45}{3: <9}{4}'.format(property_name,
-                                    value, self.tr(p['label'], '@default'),
-                                    p['unit'], '\n')
-            txt.append(line)
-        # Add optimized cable tension if calculated
-        if self.optSTA:
-            txt.append('{0: <20}{1}\n'.format('optSTA', self.optSTA))
-        # Add name of parameter set
-        txt.append('{0: <20}{1}'.format('Parameterset:', self.currentSetName))
-        return txt
+            params.append({
+                'name': property_name,
+                'label': self.tr(p['label'], '@default'),
+                'value': self.getParameterAsStr(property_name),
+                'unit': p['unit']
+            })
+        return {
+            'params': {
+                'setname': self.currentSetName,
+                'optSTA': self.optSTA,
+                'parameterList': params
+            }
+        }
     
     def loadPredefinedParametersets(self):
         for f in os.listdir(self.SETS_PATH):
@@ -908,7 +889,8 @@ class ParameterConfHandler(AbstractConfHandler):
             return sysStr
 
     def setOptSTA(self, optSTA):
-        self.optSTA = int(round(float(optSTA)))
+        if optSTA:
+            self.optSTA = int(round(float(optSTA)))
     
     def prepareForCalculation(self):
         # Define min_SK as 15% lower as the machine parameter 'SK'
@@ -1024,7 +1006,54 @@ class ConfigHandler(object):
         self.project.setDialog(dialog)
         self.params.setDialog(dialog)
     
-    def loadFromFile(self, filename):
+    def loadSettings(self, filename):
+        """ Load settings from a json file (new since version 3.3) or an
+        old-style text file."""
+        success = False
+        if filename.endswith('.txt'):
+            # Backwards compatibility
+            success = self.loadFromTxtFile(filename)
+        elif filename.endswith('.json'):
+            success = self.loadFromJsonFile(filename)
+        return success
+    
+    def loadFromJsonFile(self, filename):
+        """Read out settings from a strucutred json file."""
+        if not os.path.exists(filename):
+            return False
+        
+        with open(filename) as f:
+            try:
+                settings = json.load(f)
+            except ValueError:
+                return False
+            
+            # Projekt
+            self.project.setConfigFromFile(settings)
+            
+            # Parameters
+            ##
+            params = settings['params']
+            
+            # Set name
+            if params['setname'] not in self.params.parameterSets.keys():
+                # Save new parameter set
+                self.params.saveParameterSet(params['setname'])
+                self.params.currentSetName = params['setname']
+            # Opt STA
+            self.params.setOptSTA(params['optSTA'])
+            # Parameter list
+            for p in params['parameterList']:
+                self.params.batchSetParameter(p['name'], p['value'])
+                
+            # Poles
+            self.polesFromTxt = settings['poles']
+        
+        success = self.params.checkValidState()
+        return success
+
+    def loadFromTxtFile(self, filename):
+        """Old way of reading out settings from a text file."""
         
         def readOutProjectData(lines, lineNr):
             for line in lines[lineNr:]:
@@ -1033,7 +1062,7 @@ class ConfigHandler(object):
                     return lineNr
                 parts = re.split(r'\s{3,}', line)
                 [property_name, data] = parts
-                self.project.setConfigFromFile(property_name, data)
+                self.project.setConfigFromFileOld(property_name, data)
         
         def readOutParamData(lines, lineNr):
             for line in lines[lineNr:]:
@@ -1071,11 +1100,11 @@ class ConfigHandler(object):
                     continue
                 self.polesFromTxt.append({
                     'idx': int(parts[0]),
-                    'dist': int(float(parts[1])),
-                    'height': float(parts[2]),
+                    'd': int(float(parts[1])),
+                    'h': float(parts[2]),
                     'angle': float(parts[3]),
-                    'manual': True if int(parts[4]) == 1 else False,
-                    'pType': parts[5],
+                    'manually': True if int(parts[4]) == 1 else False,
+                    'poleType': parts[5],
                     'active': True if int(parts[6]) == 1 else False,
                     'name': parts[7]
                 })
@@ -1112,20 +1141,17 @@ class ConfigHandler(object):
         else:
             return False
     
-    def saveToFile(self, filename):
-        projectStr, poleStr = self.project.getConfigAsStr()
-        paramsStr = self.params.getParametersAsStr()
+    def saveSettings(self, filename):
+        """Save settings to json file."""
+        projectSettings = self.project.getSettings()
+        paramSettings = self.params.getSettings()
+        settings = {**projectSettings, **paramSettings}
         
         if os.path.exists(filename):
             os.remove(filename)
-        with io.open(filename, encoding='utf-8', mode='w') as f:
-            # Write project info
-            f.writelines(projectStr)
-            f.writelines('\n')
-            # Write parameter values
-            f.writelines(paramsStr)
-            # Write pole info
-            f.writelines(poleStr)
+
+        with open(filename, 'w', encoding='utf8') as f:
+            json.dump(settings, f, ensure_ascii=False, indent=4)
     
     def loadUserSettings(self):
         """Gets the output options and earlier used output paths and returns

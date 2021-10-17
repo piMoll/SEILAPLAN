@@ -832,13 +832,13 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
     
     def onLoadProjects(self):
         title = self.tr('Projekt laden')
-        fFilter = self.tr('Txt Dateien (*.txt)')
+        fFilter = self.tr('Json (*.json);; Text - altes Format (*.txt)')
         filename, _ = QFileDialog.getOpenFileName(self, title,
                                                   self.confHandler.getCurrentPath(),
                                                   fFilter)
         if filename:
             self.confHandler.reset()
-            success = self.confHandler.loadFromFile(filename)
+            success = self.confHandler.loadSettings(filename)
             if success:
                 self.setupContent()
             else:
@@ -849,20 +849,17 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
     
     def onSaveProject(self):
         title = self.tr('Projekt speichern')
-        fFilter = self.tr('TXT (*.txt)')
+        fFilter = self.tr('Json (*.json)')
         if not self.confHandler.checkValidState():
             return
-        projname = self.projectHandler.getProjectName()
-        defaultFilename = f'{projname}.txt'
         filename, _ = QFileDialog.getSaveFileName(self, title,
                         os.path.join(self.confHandler.getCurrentPath(),
-                                     defaultFilename), fFilter)
+                                     self.projectHandler.getProjectName() + '.json'), fFilter)
         
         if filename:
-            fileExtention = '.txt'
-            if filename[-4:] != fileExtention:
-                filename += fileExtention
-            self.confHandler.saveToFile(filename)
+            if filename[-5:] != '.json':
+                filename += '.json'
+            self.confHandler.saveSettings(filename)
         else:
             return False
     

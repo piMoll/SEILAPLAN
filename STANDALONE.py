@@ -171,7 +171,7 @@ if __name__ == "__main__":
     # Project settings are loaded
     print('Load configuration from project file...')
     config = ConfigHandler()
-    configLoaded = config.loadFromFile(savedProjectFile)
+    configLoaded = config.loadSettings(savedProjectFile)
     if not configLoaded:
         print(f"ERROR: Project file does not exist or cannot be loaded.")
         exit()
@@ -209,7 +209,7 @@ if __name__ == "__main__":
                                    project.azimut)
     
         # Save project file
-        config.saveToFile(os.path.join(outputLoc, 'Projekteinstellungen.txt'))
+        config.saveSettings(os.path.join(outputLoc, 'Projekteinstellungen.json'))
     
         resultDict = {
             'force': forces,

@@ -909,8 +909,8 @@ Nel caso di un angolo tra 1° e 3° la fune portante deve essere atrezzato con u
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="690"/>
-        <source>Projekteinstellungen.txt</source>
-        <translation>Settagginelprogetto.txt</translation>
+        <source>Projekteinstellungen</source>
+        <translation>Settagginelprogetto</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="701"/>
@@ -1550,12 +1550,12 @@ Si prega di adattare l&apos;input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="73"/>
         <source>Einstellungen in Textdatei abspeichern</source>
-        <translation>Salvare il settaggio in un file testo</translation>
+        <translation>Salvare il settaggio in un file json</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="108"/>
         <source>Projekteinstellungen aus Textdatei laden</source>
-        <translation>Caricare il settaggio del progetto da un file testo</translation>
+        <translation>Caricare il settaggio del progetto da un file json</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="139"/>
@@ -2070,8 +2070,8 @@ La griglia viene figurata nel SCR svizzero &apos;LV95&apos; (EPSG:2056). Se vuol
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="797"/>
-        <source>Txt Dateien (*.txt)</source>
-        <translation>File di testo (*.txt)</translation>
+        <source>Json (*.json);; Text - altes Format (*.txt)</source>
+        <translation>File json (*.json);; File di testo - formato vecchio (*.txt)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="806"/>
@@ -2091,8 +2091,8 @@ La griglia viene figurata nel SCR svizzero &apos;LV95&apos; (EPSG:2056). Se vuol
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="813"/>
-        <source>TXT (*.txt)</source>
-        <translation>TXT (*.txt)</translation>
+        <source>Json (*.json)</source>
+        <translation>File json (*.json)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="849"/>

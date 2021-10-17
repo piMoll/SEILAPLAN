@@ -29,7 +29,7 @@ class TestCalcProfile(unittest.TestCase):
         # Old calc
         ##
         cls.conf_ = ConfigHandler()
-        cls.conf_.loadFromFile(PROJECT_FILE)
+        cls.conf_.loadSettings(PROJECT_FILE)
         cls.conf_.prepareForCalculation()
         proj_ = cls.conf_.project
         param_ = cls.conf_.params.getSimpleParameterDict()
@@ -54,7 +54,7 @@ class TestCalcProfile(unittest.TestCase):
         cls.conf = ConfigHandler()
         cls.params = cls.conf.params
         cls.project = cls.conf.project
-        cls.conf.loadFromFile(PROJECT_FILE)
+        cls.conf.loadSettings(PROJECT_FILE)
         cls.conf.prepareForCalculation()
 
         cls.dhm = cls.project.heightSource

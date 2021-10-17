@@ -865,8 +865,8 @@ Lösung</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="690"/>
-        <source>Projekteinstellungen.txt</source>
-        <translation>Projekteinstellungen.txt</translation>
+        <source>Projekteinstellungen</source>
+        <translation>Projekteinstellungen</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="701"/>
@@ -1537,12 +1537,12 @@ Bitte passen Sie die Eingabe an.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="73"/>
         <source>Einstellungen in Textdatei abspeichern</source>
-        <translation>Einstellungen in Textdatei abspeichern</translation>
+        <translation>Einstellungen in Json-Datei abspeichern</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="108"/>
         <source>Projekteinstellungen aus Textdatei laden</source>
-        <translation>Projekteinstellungen aus Textdatei laden</translation>
+        <translation>Projekteinstellungen aus Json-Datei laden</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="139"/>
@@ -2039,8 +2039,8 @@ Das Raster wird im Schweizer KBS &apos;LV95&apos; (EPSG:2056) dargestellt. Soll 
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="797"/>
-        <source>Txt Dateien (*.txt)</source>
-        <translation>Txt Dateien (*.txt)</translation>
+        <source>Json (*.json);; Text - altes Format (*.txt)</source>
+        <translation>Json Datei (*.json);; Text Datei - altes Format (*.txt)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="806"/>
@@ -2059,8 +2059,8 @@ Das Raster wird im Schweizer KBS &apos;LV95&apos; (EPSG:2056) dargestellt. Soll 
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="813"/>
-        <source>TXT (*.txt)</source>
-        <translation>TXT (*.txt)</translation>
+        <source>Json (*.json)</source>
+        <translation>Json Datei (*.json)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="857"/>

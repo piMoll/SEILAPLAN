@@ -57,7 +57,7 @@ class TestMainResults(unittest.TestCase):
         # Old calc
         ##
         cls.conf_ = ConfigHandler()
-        cls.conf_.loadFromFile(PROJECT_FILE)
+        cls.conf_.loadSettings(PROJECT_FILE)
         cls.conf_.prepareForCalculation()
         proj_ = cls.conf_.project
         param_ = cls.conf_.params.getSimpleParameterDict()
@@ -80,7 +80,7 @@ class TestMainResults(unittest.TestCase):
         # New calc
         ##
         cls.conf = ConfigHandler()
-        cls.conf.loadFromFile(PROJECT_FILE)
+        cls.conf.loadSettings(PROJECT_FILE)
         cls.conf.prepareForCalculation()
     
         # import processing
@@ -103,7 +103,7 @@ class TestMainResults(unittest.TestCase):
         # Old calc
         # Dummy conf
         conf_ = ConfigHandler()
-        conf_.loadFromFile(PROJECT_FILE)
+        conf_.loadSettings(PROJECT_FILE)
         conf_.prepareForCalculation()
         rslt_ = main_(ProcessingTask(conf_), self.inputData_, self.projInfo_)
         result_, resultStatus_ = rslt_

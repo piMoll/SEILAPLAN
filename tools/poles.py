@@ -241,8 +241,8 @@ class Poles(object):
             # file with poles --> all poles are being replaced with new data
             self.poles = []
             for p in poles:
-                self.add(p['idx'], p['dist'], p['height'], p['angle'],
-                         p['manual'], p['pType'], active=p['active'],
+                self.add(p['idx'], p['d'], p['h'], p['angle'],
+                         p['manually'], p['poleType'], active=p['active'],
                          name=p['name'], refresh=False)
         
         elif status == 'jumpedOver':
@@ -551,3 +551,14 @@ class Poles(object):
             diam = np.nan
             bundst = np.nan
         return [diam, bundst]
+    
+    def getSettings(self):
+        propList = ['name', 'poleType', 'd', 'h', 'z', 'angle',
+                    'manually', 'active']
+        settings = []
+        for idx, p in enumerate(self.poles):
+            pole = {'idx': idx}
+            for prop in propList:
+                pole[prop] = p[prop]
+            settings.append(pole)
+        return settings

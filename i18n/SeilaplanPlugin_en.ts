@@ -882,7 +882,7 @@ solution</translation>
         <location filename="../gui/adjustmentDialog.py" line="690"/>
         <source>Projekteinstellungen.txt</source>
         <translatorcomment>Projet</translatorcomment>
-        <translation>Projectsettings.txt</translation>
+        <translation>Projectsettings</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="701"/>
@@ -1558,12 +1558,12 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="73"/>
         <source>Einstellungen in Textdatei abspeichern</source>
-        <translation>Save settings in a text file</translation>
+        <translation>Save settings in a json file</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="108"/>
         <source>Projekteinstellungen aus Textdatei laden</source>
-        <translation>Load the project settings from a text file</translation>
+        <translation>Load the project settings from a json file</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="139"/>
@@ -2076,7 +2076,7 @@ The raster is displayed in the Swiss CRS &apos;LV95&apos; (EPSG:2056). To use an
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="797"/>
         <source>Txt Dateien (*.txt)</source>
-        <translation>Text files (*.txt)</translation>
+        <translation>Json file (*.json);;Text file - old format (*.txt)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="806"/>
@@ -2096,8 +2096,8 @@ The raster is displayed in the Swiss CRS &apos;LV95&apos; (EPSG:2056). To use an
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="813"/>
-        <source>TXT (*.txt)</source>
-        <translation>TXT (*.txt)</translation>
+        <source>Json (*.json)</source>
+        <translation>Json file (*.json)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="849"/>

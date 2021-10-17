@@ -723,8 +723,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         updateWithCableCoordinates(self.cableline, project.points['A'],
                                    project.azimut)
         # Save project file
-        self.confHandler.saveToFile(os.path.join(outputLoc,
-                                    self.tr('Projekteinstellungen.txt')))
+        self.confHandler.saveSettings(os.path.join(outputLoc,
+                                      self.tr('Projekteinstellungen') + '.json'))
 
         # Create short report
         if self.confHandler.getOutputOption('shortReport'):
