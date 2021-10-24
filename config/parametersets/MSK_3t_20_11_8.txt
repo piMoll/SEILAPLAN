@@ -9,7 +9,7 @@ Bodenabst_A	0
 Bodenabst_E	20
 Q	35
 qT	0.0194
-D	22
+D	20
 MBK	356
 qZ	0.0063
 qR	0.0036

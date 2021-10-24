@@ -116,6 +116,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.btnSave.clicked.connect(self.onSave)
         self.btnBackToStart.clicked.connect(self.onReturnToStart)
         self.fieldComment.textChanged.connect(self.onCommentChanged)
+        self.infoQ.clicked.connect(self.onShowInfoFieldQ)
     
     # noinspection PyMethodMayBeStatic
     def tr(self, message, **kwargs):
@@ -298,7 +299,12 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         # Save new value to config Handler
         self.confHandler.params.setOptSTA(newVal)
         return str(self.confHandler.params.optSTA)
-    
+
+    def onShowInfoFieldQ(self):
+        msg = self.tr('Erklaerung Gesamtlast')
+        QMessageBox.information(self, self.tr("Gesamtlast"),
+                                msg, QMessageBox.Ok)
+
     def updateCableParam(self):
         self.configurationHasChanged = True
     

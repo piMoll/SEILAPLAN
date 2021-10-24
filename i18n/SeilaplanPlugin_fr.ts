@@ -671,7 +671,7 @@ câble chargé</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
-        <source>Gewicht der Last inkl. Laufwagen</source>
+       <source>Gesamtlast</source>
         <translation>Poids de la charge y.c. le chariot</translation>
     </message>
     <message>
@@ -787,6 +787,16 @@ câble chargé</translation>
         <location filename="../gui/adjustmentDialog.py" line="166"/>
         <source>Unerwarteter Fehler bei Berechnung der Seillinie</source>
         <translation>Erreur inattendu au calcul de la ligne de câble</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="304"/>
+        <source>Erklaerung Gesamtlast</source>
+        <translation type="unfinished">Die Gesamtlast berechnet sich aus der Anhängelast, dem Laufwagengewicht und dem Anschlagmittel.</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="305"/>
+        <source>Gesamtlast</source>
+        <translation type="unfinished">Gesamtlast</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="337"/>
@@ -1048,7 +1058,7 @@ En cas des angles entre 1° et 3° le câble porteur doit être sécurisé par u
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="388"/>
-        <source>Gewicht der Last inkl. Laufwagen</source>
+       <source>Gesamtlast</source>
         <translation>Poids de la charge y.c. le chariot</translation>
     </message>
     <message>
@@ -1660,7 +1670,7 @@ Veuillez adapter la saisie.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="719"/>
-        <source>Gewicht der Last inkl. Laufwagen</source>
+       <source>Gesamtlast</source>
         <translation>Poids de la charge y.c. le chariot</translation>
     </message>
     <message>
@@ -2157,6 +2167,16 @@ Types de fichier supportés:
         <location filename="../gui/seilaplanPluginDialog.py" line="874"/>
         <source>Endpunkt</source>
         <translation>Point terminal</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="939"/>
+        <source>Erklaerung Gesamtlast</source>
+        <translation type="unfinished">Die Gesamtlast berechnet sich aus der Anhängelast, dem Laufwagengewicht und dem Anschlagmittel.</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="940"/>
+        <source>Gesamtlast</source>
+        <translation type="unfinished">Gesamtlast</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="940"/>

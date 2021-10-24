@@ -170,6 +170,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.infoPointE.clicked.connect(self.onPointEInfoShow)
         self.infoBodenabstand.clicked.connect(self.onShowInfoImg)
         self.infoStuetzen.clicked.connect(self.onShowInfoImg)
+        self.infoQ.clicked.connect(self.onShowInfoFieldQ)
         self.infoSK.clicked.connect(self.onShowInfoFieldSK)
         self.infoFieldE.clicked.connect(self.onShowInfoFieldE)
         self.infoFieldFuellF.clicked.connect(self.onShowInfoFieldFuellF)
@@ -934,6 +935,11 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.imgBox.setLayout(self.imgBox.container)
         self.imgBox.show()
     
+    def onShowInfoFieldQ(self):
+        msg = self.tr('Erklaerung Gesamtlast')
+        QMessageBox.information(self, self.tr("Gesamtlast"),
+                                msg, QMessageBox.Ok)
+        
     def onShowInfoFieldSK(self):
         msg = self.tr('Erklaerung Grundspannung')
         QMessageBox.information(self, self.tr("Grundspannung"),

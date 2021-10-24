@@ -177,7 +177,7 @@
         <location filename="../tools/outputReport.py" line="132"/>
         <source>gewaehlte Grundspannung bei der Anfangsstuetze</source>
         <translatorcomment>Gewählte Seilzugkraft bei der Anfangsstütze</translatorcomment>
-        <translation>Grundspannung bei der Anfangsstütze</translation>
+        <translation>Tragseilspannkraft bei der Anfangsstütze</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="137"/>
@@ -384,7 +384,7 @@
         <location filename="../tools/outputReport.py" line="340"/>
         <source>Vorspannung der Seilzugkraft</source>
         <translatorcomment>Fritz: &quot;Vorspannung der Seilzugkraft&quot; ist meiner Meinung nach kein korrekter Begriff, Vorschlag: Vorspannkraft (des Tragseils)</translatorcomment>
-        <translation>Grundspannung</translation>
+        <translation>Tragseilspannkraft (Grundspannung)</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="341"/>
@@ -483,7 +483,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
         <source>Grundspannung (Endpunkt)</source>
-        <translation>Grundspannung (Endpunkt)</translation>
+        <translation>Tragseilspannkraft (Endpunkt)</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
@@ -627,7 +627,7 @@ Lastseil</translation>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
         <source>Hoehe Seilkranmast</source>
-        <translation>Höhe Seilkranmast</translation>
+        <translation>Höhe Mast Mobilseilkran</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
@@ -642,7 +642,7 @@ Lastseil</translation>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
         <source>Minimaler Abstand Tragseil - Boden</source>
-        <translation>Minimaler Abstand zwischen Tragseil und Boden</translation>
+        <translation>Min. Abstand zwischen Tragseil und Boden</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
@@ -656,13 +656,13 @@ Lastseil</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
-        <source>Gewicht der Last inkl. Laufwagen</source>
-        <translation>Gewicht der Last inkl. Laufwagen</translation>
+        <source>Gesamtlast</source>
+        <translation>Gesamtlast</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
         <source>Gewicht Tragseil</source>
-        <translation>Gewicht Tragseil</translation>
+        <translation>Metergewicht Tragseil</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
@@ -677,12 +677,12 @@ Lastseil</translation>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
         <source>Gewicht Zugseil</source>
-        <translation>Gewicht Zugseil</translation>
+        <translation>Metergewicht Zugseil</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
         <source>Gewicht Rueckholseil</source>
-        <translation>Gewicht Rückholseil</translation>
+        <translation>Metergewicht Rückholseil</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
@@ -697,12 +697,12 @@ Lastseil</translation>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
         <source>Minimale Stuetzenhoehe</source>
-        <translation>Minimale Stützenhöhe</translation>
+        <translation>Minimale Sattelhöhe</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
         <source>Maximale Stuetzenhoehe</source>
-        <translation>Maximale Stützenhöhe</translation>
+        <translation>Maximale Sattelhöhe</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
@@ -712,12 +712,12 @@ Lastseil</translation>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
         <source>Kuenstliche Stuetze ab Stuetzenhoehe von</source>
-        <translation>Künstliche Stütze ab Stützenhöhe von</translation>
+        <translation>Künstliche Stütze ab Sattelhöhe von</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
         <source>Grundspannung Tragseil (Anfangssp.)</source>
-        <translation>Grundspannung (Anfangsspunkt)</translation>
+        <translation>Tragseilspannkraft (Anfangsspunkt)</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
@@ -769,6 +769,16 @@ Lastseil</translation>
         <location filename="../gui/adjustmentDialog.py" line="166"/>
         <source>Unerwarteter Fehler bei Berechnung der Seillinie</source>
         <translation>Unerwarteter Fehler bei Berechnung der Seillinie</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="304"/>
+        <source>Erklaerung Gesamtlast</source>
+        <translation>Die Gesamtlast berechnet sich aus der Anhängelast, dem Laufwagengewicht und dem Anschlagmittel.</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="305"/>
+        <source>Gesamtlast</source>
+        <translation>Gesamtlast</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="337"/>
@@ -906,7 +916,8 @@ Lösung</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="473"/>
         <source>Es wird die maximal auftretende Seilzugkraft am Lastseil mit der Last in Feldmitte berechnet.</source>
-        <translation>Es wird die maximal auftretende Seilzugkraft am Lastseil mit der Last in Feldmitte berechnet. Falls der zulässige Wert überschritten wird (rot hinterlegt), müssen ein oder mehrere Spannfelder verkürzt werden (zusätzliche Stützen).</translation>
+        <translation>In der Praxis oft auch als maximale Betriebsspannung bezeichnet.
+Es wird die maximal auftretende Seilzugkraft am Lastseil mit der Last in Feldmitte berechnet. Falls der zulässige Wert überschritten wird (rot hinterlegt), müssen ein oder mehrere Spannfelder verkürzt werden (zusätzliche Stützen).</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="477"/>
@@ -1001,7 +1012,7 @@ Bei Knickwinkeln zwischen 1° und 3° muss das Tragseil mittels Niederhaltelasch
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="299"/>
         <source>Stuetzenhoehe</source>
-        <translation>Stützenhöhe</translation>
+        <translation>Sattelhöhe</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="324"/>
@@ -1021,8 +1032,8 @@ Bei Knickwinkeln zwischen 1° und 3° muss das Tragseil mittels Niederhaltelasch
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="388"/>
-        <source>Gewicht der Last inkl. Laufwagen</source>
-        <translation>Gewicht der Last inkl. Laufwagen</translation>
+        <source>Gesamtlast</source>
+        <translation>Gesamtlast</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="675"/>
@@ -1032,7 +1043,7 @@ Bei Knickwinkeln zwischen 1° und 3° muss das Tragseil mittels Niederhaltelasch
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="402"/>
         <source>Gewicht Rueckholseil</source>
-        <translation>Gewicht Rückholseil</translation>
+        <translation>Metergewicht Rückholseil</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="422"/>
@@ -1043,12 +1054,12 @@ Bei Knickwinkeln zwischen 1° und 3° muss das Tragseil mittels Niederhaltelasch
         <location filename="../gui/adjustmentDialog.ui" line="429"/>
         <source>Grundspannung Tragseil (Anfangssp.)</source>
         <translatorcomment>Grundspannung Tragseil (Anfangsspunkt)</translatorcomment>
-        <translation>Grundspannung (Anfangsspunkt)</translation>
+        <translation>Tragseilspannkraft (Anfangsspunkt)</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="436"/>
         <source>Gewicht Tragseil</source>
-        <translation>Gewicht Tragseil</translation>
+        <translation>Metergewicht Tragseil</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="443"/>
@@ -1068,7 +1079,7 @@ Bei Knickwinkeln zwischen 1° und 3° muss das Tragseil mittels Niederhaltelasch
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="595"/>
         <source>Gewicht Zugseil</source>
-        <translation>Gewicht Zugseil</translation>
+        <translation>Metergewicht Zugseil</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="646"/>
@@ -1289,7 +1300,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../tools/configHandler.py" line="739"/>
         <source>Der Parameter Minimaler Abstand Tragseil Boden darf nicht groesser als der Parameter Minimale Stuetzenhoehe sein.</source>
-        <translation>Der Parameter &apos;Minimaler Abstand Tragseil - Boden&apos; (Reiter Seillinie) darf nicht grösser als der Parameter &apos;Minimale Stützenhöhe&apos; (Reiter Optional #1) sein.
+        <translation>Der Parameter &apos;Minimaler Abstand Tragseil - Boden&apos; (Reiter Seillinie) darf nicht grösser als der Parameter &apos;Minimale Sattelhöhe&apos; (Reiter Optional #1) sein.
 Bitte passen Sie die Eingabe an.</translation>
     </message>
 </context>
@@ -1587,7 +1598,7 @@ Bitte passen Sie die Eingabe an.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="365"/>
         <source>Hoehe Seilkranmast</source>
-        <translation>Höhe Seilkranmast</translation>
+        <translation>Höhe Mast Mobilseilkran</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="372"/>
@@ -1643,8 +1654,8 @@ Bitte passen Sie die Eingabe an.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="719"/>
-        <source>Gewicht der Last inkl. Laufwagen</source>
-        <translation>Gewicht der Last inkl. Laufwagen</translation>
+        <source>Gesamtlast</source>
+        <translation>Gesamtlast</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1526"/>
@@ -1654,12 +1665,12 @@ Bitte passen Sie die Eingabe an.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="802"/>
         <source>Gewicht Rueckholseil</source>
-        <translation>Gewicht Rückholseil</translation>
+        <translation>Metergewicht Rückholseil</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="916"/>
         <source>Gewicht Zugseil</source>
-        <translation>Gewicht Zugseil</translation>
+        <translation>Metergewicht Zugseil</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="929"/>
@@ -1669,7 +1680,7 @@ Bitte passen Sie die Eingabe an.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="942"/>
         <source>Gewicht Tragseil</source>
-        <translation>Gewicht Tragseil</translation>
+        <translation>Metergewicht Tragseil</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="992"/>
@@ -1689,17 +1700,17 @@ Bitte passen Sie die Eingabe an.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1074"/>
         <source>Kuenstliche Stuetze ab Stuetzenhoehe von</source>
-        <translation>Künstliche Stütze ab Stützenhöhe von</translation>
+        <translation>Künstliche Stütze ab Sattelhöhe von</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1112"/>
         <source>Maximale Stuetzenhoehe</source>
-        <translation>Maximale Stützenhöhe</translation>
+        <translation>Maximale Sattelhöhe</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1298"/>
         <source>Minimale Stuetzenhoehe</source>
-        <translation>Minimale Stützenhöhe</translation>
+        <translation>Minimale Sattelhöhe</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1336"/>
@@ -1724,7 +1735,7 @@ Bitte passen Sie die Eingabe an.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1482"/>
         <source>Grundspannung</source>
-        <translation>Grundspannung</translation>
+        <translation>Tragseilspannkraft (Grundspannung)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1549"/>
@@ -2095,18 +2106,28 @@ Unterstützte Dateitypen:
         <translation>Endpunkt</translation>
     </message>
     <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="939"/>
+        <source>Erklaerung Gesamtlast</source>
+        <translation>Die Gesamtlast berechnet sich aus der Anhängelast, dem Laufwagengewicht und dem Anschlagmittel.</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="940"/>
+        <source>Gesamtlast</source>
+        <translation>Gesamtlast</translation>
+    </message>
+    <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="940"/>
         <source>Erklaerung Grundspannung</source>
         <translation>Seillinie manuell bearbeiten:
-Es wird mit der eingegebenen Grundspannung gerechnet.
+Es wird mit der eingegebenen Tragseilspannkraft gerechnet.
 
 Seillinie automatisch optimieren:
-Die optimale Grundspannung wird berechnet.&#xa0;Die Optimierung wird bei 75 Prozent des eingegebenen Werts gestartet.</translation>
+Die optimale Tragseilspannkraft wird berechnet.&#xa0;Die Optimierung wird bei 75 Prozent des eingegebenen Werts gestartet.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="941"/>
         <source>Grundspannung</source>
-        <translation>Grundspannung</translation>
+        <translation>Tragseilspannkraft (Grundspannung)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
@@ -2145,7 +2166,7 @@ Die optimale Grundspannung wird berechnet.&#xa0;Die Optimierung wird bei 75 Proz
 Es wird keine Optimierung durchgeführt und kein Seillinienlayout vorgeschlagen. Das Layout kann direkt manuell bearbeitet werden.
 
 Seillinie automatisch optimieren:
-Es wird diejenige Lösung gesucht, welche in erster Priorität eine minimale Anzahl an Stützen aufweist und in zweiter Priorität die Stützenhöhe minimiert. Ein minimaler Leerseil- bzw. maximaler Lastseilknickwinkel wird in der Optimierung noch nicht berücksichtigt.
+Es wird diejenige Lösung gesucht, welche in erster Priorität eine minimale Anzahl an Stützen aufweist und in zweiter Priorität die Sattelhöhe minimiert. Ein minimaler Leerseil- bzw. maximaler Lastseilknickwinkel wird in der Optimierung noch nicht berücksichtigt.
 </translation>
     </message>
     <message>

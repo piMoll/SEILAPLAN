@@ -452,12 +452,12 @@
               </property>
               <item>
                <property name="text">
-                <string id="pole">Stuetze</string>
+                <string id="anchor">Verankerung</string>
                </property>
               </item>
               <item>
                <property name="text">
-                <string id="anchor">Verankerung</string>
+                <string id="pole">Stuetze</string>
                </property>
               </item>
               <item>
@@ -490,12 +490,12 @@
               </property>
               <item>
                <property name="text">
-                <string id="pole">Stuetze</string>
+                <string id="anchor">Verankerung</string>
                </property>
               </item>
               <item>
                <property name="text">
-                <string id="anchor">Verankerung</string>
+                <string id="pole">Stuetze</string>
                </property>
               </item>
              </widget>
@@ -1672,7 +1672,7 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string>Gewicht der Last inkl. Laufwagen</string>
+                   <string>Gesamtlast</string>
                   </property>
                  </widget>
                 </item>
@@ -1912,6 +1912,28 @@
                     <width>0</width>
                     <height>0</height>
                    </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>22</width>
+                    <height>22</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>?</string>
+                  </property>
+                  <property name="autoDefault">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="4">
+                 <widget class="QPushButton" name="infoQ">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
                   </property>
                   <property name="maximumSize">
                    <size>
@@ -2737,9 +2759,11 @@
   <tabstop>buttonOpenPr</tabstop>
   <tabstop>radioRaster</tabstop>
   <tabstop>buttonRefreshRa</tabstop>
+  <tabstop>infoRasterlayer</tabstop>
   <tabstop>radioSurveyData</tabstop>
   <tabstop>fieldSurveyDataPath</tabstop>
   <tabstop>buttonLoadSurveyData</tabstop>
+  <tabstop>infoSurveyData</tabstop>
   <tabstop>draw</tabstop>
   <tabstop>contourLyrButton</tabstop>
   <tabstop>osmLyrButton</tabstop>
@@ -2749,10 +2773,10 @@
   <tabstop>coordEx</tabstop>
   <tabstop>coordEy</tabstop>
   <tabstop>fieldTypeE</tabstop>
-  <tabstop>laenge</tabstop>
   <tabstop>buttonShowProf</tabstop>
   <tabstop>fieldParamSet</tabstop>
   <tabstop>buttonSaveParamset</tabstop>
+  <tabstop>buttonRemoveParamset</tabstop>
   <tabstop>tabWidget</tabstop>
   <tabstop>fieldSeilsys</tabstop>
   <tabstop>fieldHMKran</tabstop>
@@ -2767,6 +2791,7 @@
   <tabstop>fieldMBK</tabstop>
   <tabstop>fieldqZ</tabstop>
   <tabstop>fieldqR</tabstop>
+  <tabstop>fieldSK</tabstop>
   <tabstop>fieldMinDist</tabstop>
   <tabstop>fieldLdelta</tabstop>
   <tabstop>fieldHMmin</tabstop>
@@ -2776,19 +2801,22 @@
   <tabstop>fieldE</tabstop>
   <tabstop>fieldFuellF</tabstop>
   <tabstop>fieldSFT</tabstop>
+  <tabstop>buttonInfo</tabstop>
   <tabstop>buttonCancel</tabstop>
   <tabstop>btnAdjustment</tabstop>
   <tabstop>buttonRun</tabstop>
   <tabstop>infoBerechnung</tabstop>
-  <tabstop>buttonInfo</tabstop>
-  <tabstop>infoRasterlayer</tabstop>
-  <tabstop>infoSurveyData</tabstop>
   <tabstop>infoPointA</tabstop>
   <tabstop>infoPointE</tabstop>
   <tabstop>infoBodenabstand</tabstop>
+  <tabstop>infoQ</tabstop>
+  <tabstop>infoSK</tabstop>
   <tabstop>infoStuetzen</tabstop>
   <tabstop>infoFieldE</tabstop>
+  <tabstop>infoFieldFuellF</tabstop>
   <tabstop>infoFieldSFT</tabstop>
+  <tabstop>laenge</tabstop>
+  <tabstop>scrollArea</tabstop>
  </tabstops>
  <resources>
   <include location="resources.qrc"/>
