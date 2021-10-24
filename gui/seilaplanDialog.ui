@@ -509,7 +509,7 @@
                </size>
               </property>
               <property name="text">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Anfangspunkt&lt;br&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;(bei Maschine/Winde)&lt;/span&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Anfangspunkt&lt;br&gt;&lt;span style=&quot; font-size: small;&quot;&gt;(bei Maschine/Winde)&lt;/span&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="wordWrap">
                <bool>false</bool>

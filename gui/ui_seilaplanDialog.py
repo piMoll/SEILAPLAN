@@ -1151,7 +1151,7 @@ class Ui_SeilaplanDialogUI(object):
         self.label_13.setText(_translate("SeilaplanDialogUI", "Punktart"))
         self.fieldTypeE.setItemText(0, _translate("SeilaplanDialogUI", "Verankerung"))
         self.fieldTypeE.setItemText(1, _translate("SeilaplanDialogUI", "Stuetze"))
-        self.label_29.setText(_translate("SeilaplanDialogUI", "<html><head/><body>Anfangspunkt<br><span style=\" font-size:9pt;\">(bei Maschine/Winde)</span></body></html>"))
+        self.label_29.setText(_translate("SeilaplanDialogUI", "<html><head/><body>Anfangspunkt<br><span style=\" font-size: small;\">(bei Maschine/Winde)</span></body></html>"))
         self.label_33.setText(_translate("SeilaplanDialogUI", "Endpunkt"))
         self.label_2.setText(_translate("SeilaplanDialogUI", "Horizontaldistanz"))
         self.buttonShowProf.setToolTip(_translate("SeilaplanDialogUI", "Gelaendelinie in Diagramm darstellen und fixe Stuetzen definieren"))
