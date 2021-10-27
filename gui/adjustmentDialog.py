@@ -443,7 +443,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             for i in range(len(self.thData['rows'])):
                 thresholdData = self.checkThresholdAndLocation(i, resultData[i])
                 val = ''
-                color = 1
+                color = [1]
                 location = []
                 plotLabels = []
                 if len(thresholdData) == 4:
@@ -537,7 +537,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         for i in range(self.thSize[0]):
             thresholdData = self.checkThresholdAndLocation(i, resultData[i])
             val = ''
-            color = 1
+            color = [1]
             location = []
             plotLabels = []
             if len(thresholdData) == 4:
@@ -560,7 +560,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         #  plotting)
         location = []
         # Color of marked threshold
-        color = 3   # black
+        colorList = []
         # Formatted threshold value to show in plot
         plotLabel = []
         
@@ -568,48 +568,48 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         if idx == 0:
             if np.isnan(data).all():
                 return valStr, location
+            color = 1   # neutral
             maxVal = np.nanmin(data)
+            # Replace nan so there is no Runtime Warning in np.argwhere()
+            localCopy = np.copy(data)
+            localCopy[np.isnan(localCopy)] = 100.0
+            # Check where the minimal ground clearance is located
+            location = np.ravel(np.argwhere(localCopy == maxVal))
+            if location:
+                plotLabel = [self.formatThreshold(loc, idx) for loc in localCopy[location]]
+            location = [int(loc + self.poles.firstPole['d']) for loc in location]
             # Check if min value is smaller than ground clearance
             if maxVal < self.thData['thresholds'][idx]:
-                # Replace nan so there is no Runtime Warning in np.argwhere()
-                localCopy = np.copy(data)
-                localCopy[np.isnan(localCopy)] = 100.0
-                # Check where the minimal ground clearance is located
-                location = np.ravel(np.argwhere(localCopy == maxVal))
-                if location:
-                    plotLabel = [self.formatThreshold(l, idx) for l in localCopy[location]]
-                location = [int(l + self.poles.firstPole['d']) for l in location]
-                color = 1   # red
+                color = 3    # red
+            colorList = [color] * len(location)
         
         # Max force on cable
         elif idx == 1:
-            # Replace nan with 0 so that no Runtime Warning is thrown in
-            # np.argwhere()
-            localCopy = np.nan_to_num(data)
-            maxVal = np.max(localCopy)
-            location = np.argwhere(localCopy > self.thData['thresholds'][idx])
-            if len(location) != 0:
-                plotLabel = np.ravel(localCopy[location])
-                plotLabel = [self.formatThreshold(l, idx) for l in plotLabel]
-                locationIdx = np.ravel(location)
+            maxVal = np.nanmax(data)
+            for fieldIdx, force in enumerate(data):
+                # NAN values will be ignored
+                if np.isnan(force):
+                    continue
+                color = 1   # neutral
+                if force > self.thData['thresholds'][idx]:
+                    color = 3   # red
+                plotLabel.append(self.formatThreshold(force, idx))
                 # Force is calculated in the middle of the field, so
                 #  marker should also be in the middle between two poles
-                location = []
-                for field in locationIdx:
-                    leftPole = self.poles.poles[self.poles.idxA + field]['d']
-                    rightPole = self.poles.poles[self.poles.idxA + field + 1]['d']
-                    location.append(int(leftPole + floor((rightPole - leftPole) / 2)))
-                color = 1   # red
+                leftPole = self.poles.poles[self.poles.idxA + fieldIdx]['d']
+                rightPole = self.poles.poles[self.poles.idxA + fieldIdx + 1]['d']
+                location.append(int(leftPole + floor((rightPole - leftPole) / 2)))
+                colorList.append(color)
         
         elif idx == 2:
             localCopy = np.nan_to_num(data)
             maxVal = np.max(localCopy)
-            color = 3   # neutral
             for poleIdx, calcVal in enumerate(data):
                 pole = self.poles.poles[self.poles.idxA + poleIdx]
                 if not np.isnan(calcVal):
                     location.append(pole['d'])
                     plotLabel.append(self.formatThreshold(calcVal, idx))
+                    colorList.append(1)     # neutral
         
         # Lastseilknickwinkel
         elif idx == 3 and not np.all(np.isnan(data)):
@@ -617,10 +617,10 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             # Loop through all angles and test poles in between start and end
             #   with threshold 1, start and end pole with threshold 2
             for poleIdx, angle in enumerate(data):
-                isOverThreshold = False
                 # NAN values will be ignored
-                if angle == np.nan:
+                if np.isnan(angle):
                     continue
+                color = 1  # neutral
                 # Test first and last pole of optimization with second threshold
                 if poleIdx + self.poles.idxA in [self.poles.idxA, self.poles.idxE]:
                     # Check if current value is new max value
@@ -628,20 +628,18 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
                         maxValArr[1] = np.nanmax([maxValArr[1], angle])
                     # Check if angle is higher than second threshold
                     if angle > self.thData['thresholds'][idx][1]:
-                        isOverThreshold = True
-                        color = 1   # red
+                        color = 3   # red
                 else:
                     # Check if current value is new max value
                     if not np.all(np.isnan([maxValArr[0], angle])):
                         maxValArr[0] = np.nanmax([maxValArr[0], angle])
                     if angle > self.thData['thresholds'][idx][0]:
-                        isOverThreshold = True
-                        color = 1   # red
+                        color = 3   # red
                     
-                if isOverThreshold:
-                    pole = self.poles.poles[self.poles.idxA + poleIdx]
-                    location.append(pole['d'])
-                    plotLabel.append(self.formatThreshold(angle, idx))
+                pole = self.poles.poles[self.poles.idxA + poleIdx]
+                location.append(pole['d'])
+                plotLabel.append(self.formatThreshold(angle, idx))
+                colorList.append(color)
             # Format the two max values
             valStr = ' / '.join([self.formatThreshold(maxVal, idx) for maxVal in maxValArr])
         
@@ -649,24 +647,28 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         elif idx == 4 and not np.all(np.isnan(data)):
             # Get lowest value, ignore any nan values
             maxVal = np.nanmin(data)
-            # Check if values are under defined threshold. Also ignore NAN values
-            smallerThan = (np.nan_to_num(data) < self.thData['thresholds'][idx][1]) * ~np.isnan(data)
-            # Angles between 1 and 3 degrees have error level 'attention'
-            if self.thData['thresholds'][idx][0] < maxVal < self.thData['thresholds'][idx][1]:
-                color = 2   # orange
-            elif maxVal < self.thData['thresholds'][idx][0]:
-                color = 1   # red
-            # Check which pole is affected
-            locationPole = np.ravel(np.argwhere(smallerThan))
-            for poleIdx in locationPole:
+            # Loop through all angles and test poles with thresholds
+            for poleIdx, angle in enumerate(data):
+                # NAN values will be ignored
+                if np.isnan(angle):
+                    continue
+                color = 1  # neutral
+                # Angle under first threshold (1 to 3 degrees -> error level 'attention')
+                if angle < self.thData['thresholds'][idx][1]:
+                    color = 2   # orange
+                    # Angle under second threshold
+                    if angle < self.thData['thresholds'][idx][0]:
+                        color = 3   # red
+
                 pole = self.poles.poles[self.poles.idxA + poleIdx]
                 location.append(pole['d'])
-                plotLabel.append(self.formatThreshold(data[poleIdx], idx))
+                plotLabel.append(self.formatThreshold(angle, idx))
+                colorList.append(color)
         
         if isinstance(maxVal, float) and not np.isnan(maxVal):
             valStr = self.formatThreshold(maxVal, idx)
         
-        return valStr, location, color, plotLabel
+        return valStr, location, colorList, plotLabel
     
     def formatThreshold(self, val, idx):
         if isinstance(val, float) and not np.isnan(val):
@@ -695,14 +697,10 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         arrIdx = []
         # Get index of horizontal distance so we know which height value to
         #  chose
-        if row in [2, 3, 4]:
-            # For thresholds that correspond to a pole
-            for loc in location:
-                arrIdx.append(np.argwhere(self.profile.di_disp == loc)[0][0])
-            z = self.profile.zi_disp[arrIdx]
-        else:  # row in [0, 1]
-            # For thresholds that correspond to cable
-            z = self.cableline['empty'][location]
+        for loc in location:
+            arrIdx.append(np.argwhere(self.profile.di_disp == loc)[0][0])
+        z = self.profile.zi_disp[arrIdx]
+
         self.plot.showMarkers(location, z, self.thData['plotLabels'][row], color)
         self.selectedThresholdRow = row
     

@@ -32,9 +32,9 @@ class AdjustmentDialogThresholds(QObject):
     COLOR_ATTENTION = QColor(237, 148, 76)
     COLOR_NEUTRAL = QColor(255, 255, 255)
     COLOR = {
-        1: COLOR_ERROR,
+        1: COLOR_NEUTRAL,
         2: COLOR_ATTENTION,
-        3: COLOR_NEUTRAL
+        3: COLOR_ERROR
     }
     
     sig_clickedRow = pyqtSignal(int)
@@ -81,7 +81,7 @@ class AdjustmentDialogThresholds(QObject):
                     if loclen > 0:
                         # Set background color for cells where threshold is
                         #  exceeded
-                        color = self.COLOR[cellData['color']]
+                        color = self.COLOR[max(cellData['color'] or [1])]
                         self.colorBackground(i, valueColumn, color)
                     cellData = loclen
                 item = QStandardItem(cellData)
@@ -100,7 +100,7 @@ class AdjustmentDialogThresholds(QObject):
         # Update background color of new values
         if col == 5 and isinstance(newVal, dict):
             locLen = len(newVal['loc'])
-            color = self.COLOR[newVal['color']]
+            color = self.COLOR[max(newVal['color'] or [1])]
             self.colorBackground(row, 4, color)
             newVal = locLen
         # Update value itself

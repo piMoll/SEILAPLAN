@@ -32,9 +32,9 @@ class AdjustmentPlot(FigureCanvas):
     
     ZOOM_TO_DISTANCE = 20
     COLOR_MARKER = {
-        1: '#e06767',   # red = error
+        1: '#696969',   # grey = neutral
         2: '#e38400',   # orange = attention
-        3: '#787878'    # grey = neutral
+        3: '#e06767',   # red = error
     }
     
     def __init__(self, parent=None, width=5, height=4, dpi=72):
@@ -55,7 +55,7 @@ class AdjustmentPlot(FigureCanvas):
         self.data_ylow = 0
         self.data_yhi = 0
         self.labelBuffer = 1
-        self.arrowMarker = None
+        self.arrowMarker = []
         self.arrowLabel = []
         # Reference to navigation toolbar
         self.tbar = None
@@ -214,29 +214,28 @@ class AdjustmentPlot(FigureCanvas):
             self.tbar.update()
             self.tbar.push_current()
     
-    def showMarkers(self, x, y, label, colorNr=1):
-        color = self.COLOR_MARKER[colorNr]
+    def showMarkers(self, x, y, label, colorList):
         # Displays marker for thresholds
         self.removeMarkers()
+        color = [self.COLOR_MARKER[col] for col in colorList]
         y -= self.labelBuffer * 3
-        self.arrowMarker = self.axes.scatter(x, y, marker='^', zorder=20,
-                                             c=color, s=100)
-        # Adds a label underneath marker with threshold value
-        self.arrowLabel = []
-        for i, txt in enumerate(label):
+        for i, xi in enumerate(x):
+            self.arrowMarker.append(
+                self.axes.scatter(xi, y[i], marker='^', zorder=20, c=color[i],
+                                  s=100))
+            # Adds a label underneath marker with threshold value
             self.arrowLabel.append(
-                self.axes.text(x[i], y[i] - 2 * self.labelBuffer, txt, zorder=30,
-                               ha='center', backgroundcolor='white', va='top',
-                               color=color))
+                self.axes.text(xi, y[i] - 2 * self.labelBuffer, label[i],
+                               zorder=30, ha='center', backgroundcolor='white',
+                               va='top', color=color[i], fontweight='semibold'))
         self.draw()
     
     def removeMarkers(self):
-        if self.arrowMarker:
-            self.arrowMarker.remove()
-            [l.remove() for l in self.arrowLabel]
-            self.arrowMarker = None
-            self.arrowLabel = []
-            self.draw()
+        [arrow.remove() for arrow in self.arrowMarker]
+        [label.remove() for label in self.arrowLabel]
+        self.arrowMarker = []
+        self.arrowLabel = []
+        self.draw()
 
     def zoomTo(self, pole):
         self.isZoomed = True
@@ -268,8 +267,9 @@ class AdjustmentPlot(FigureCanvas):
             self.axes.text(pos_h_d, pos_h_z, f'{round(h, 1)} m', ha='center')
         else:
             for i in range(len(xdata)):
-                self.axes.text(xdata[i], ydata[i] + self.labelBuffer,
-                               label[i], fontsize=12, ha='center')
+                self.axes.text(xdata[i], ydata[i] + self.labelBuffer, label[i],
+                               fontsize=12, ha='center', fontweight='semibold',
+                               color=self.COLOR_MARKER[1])
     
     def printToPdf(self, filelocation, title, poles, dpi=300):
         xlen = 11.69  # 11.69 inch = A4 width
