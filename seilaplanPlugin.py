@@ -71,9 +71,9 @@ class SeilaplanPlugin(object):
         self.plugin_dir = os.path.dirname(__file__)
         
         # Initialize locale
-        # Default locale is german
+        # Default locale is english
         useLocale = os.path.join(self.plugin_dir, 'i18n',
-                                     'SeilaplanPlugin_de.qm')
+                                     'SeilaplanPlugin_en.qm')
         # Get locale from QGIS settings
         qgisLocale = QSettings().value("locale/userLocale")[0:2]
         localePath = os.path.join(self.plugin_dir, 'i18n',
