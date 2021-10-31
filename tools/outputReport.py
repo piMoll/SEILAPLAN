@@ -82,6 +82,9 @@ def generateReportText(confHandler, result, comment, projname):
     polesWithAnchors = poles.poles
     polesWithoutAnchors = polesWithAnchors[poles.idxA:poles.idxE+1]
     hmpath = textwrap.wrap(confHandler.project.getHeightSourceAsStr(source=True, formatting='comma'), 120)
+    # Shorten list to display max. 3 items
+    del hmpath[3:]
+    hmpath.append('...')
     hmodell = '\n'.join(hmpath)
     kraft = result['force']
     az_grad = math.degrees(poles.azimut)
