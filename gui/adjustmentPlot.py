@@ -32,7 +32,8 @@ class AdjustmentPlot(FigureCanvas):
     
     ZOOM_TO_DISTANCE = 20
     COLOR_MARKER = {
-        1: '#696969',   # grey = neutral
+        0: '#696969',   # grey = neutral
+        1: '#4a6b55',   # dark green = ok
         2: '#e38400',   # orange = attention
         3: '#e06767',   # red = error
     }
@@ -269,7 +270,7 @@ class AdjustmentPlot(FigureCanvas):
             for i in range(len(xdata)):
                 self.axes.text(xdata[i], ydata[i] + self.labelBuffer, label[i],
                                fontsize=12, ha='center', fontweight='semibold',
-                               color=self.COLOR_MARKER[1])
+                               color=self.COLOR_MARKER[0])
     
     def printToPdf(self, filelocation, title, poles, dpi=300):
         xlen = 11.69  # 11.69 inch = A4 width
