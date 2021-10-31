@@ -23,7 +23,7 @@
     <message>
         <location filename="../gui/guiHelperFunctions.py" line="134"/>
         <source>Felddaten-Messpunkte</source>
-        <translation>Points measured on the terrain</translation>
+        <translation>Points measured on terrain</translation>
     </message>
     <message>
         <location filename="../tools/outputGeo.py" line="58"/>
@@ -34,13 +34,13 @@
     <message>
         <location filename="../tools/outputGeo.py" line="63"/>
         <source>leerseil</source>
-        <translation>unloadedcable</translation>
+        <translation>unloadedskyline</translation>
     </message>
     <message>
         <location filename="../tools/outputGeo.py" line="68"/>
         <source>lastseil</source>
         <translatorcomment>Leo</translatorcomment>
-        <translation>loadedcable</translation>
+        <translation>loadedskyline</translation>
     </message>
     <message>
         <location filename="../tools/outputGeo.py" line="87"/>
@@ -77,7 +77,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="122"/>
         <source>Horizontaldistanz</source>
-        <translation>Location (distance)</translation>
+        <translation>horizontal distance</translation>
     </message>
     <message>
         <location filename="../tools/outputGeo.py" line="192"/>
@@ -211,18 +211,18 @@
     <message>
         <location filename="../tools/outputReport.py" line="132"/>
         <source>gewaehlte Grundspannung bei der Anfangsstuetze</source>
-        <translatorcomment>Selected cable tensile force at the first support</translatorcomment>
-        <translation>Pre-stress tensile force of unloaded skyline at the first support</translation>
+        <translatorcomment>Selected cable tensile force at first support</translatorcomment>
+        <translation>Pre-stress tensile force of unloaded skyline at first support</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="137"/>
         <source>Laenge Leerseil bei Anfangszugkraft</source>
-        <translation>Length of the unloaded skyline at the initial rope tension force</translation>
+        <translation>Length of unloaded skyline at initial rope tension force</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="139"/>
         <source>Laenge Leerseil bei 0 kN Seilzugkraft</source>
-        <translation>Length of the unloaded skyline at the tensile force (skyline) of 0 kN</translation>
+        <translation>Length of the unloaded skyline at tensile force (skyline) of 0 kN</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="152"/>
@@ -233,37 +233,37 @@
     <message>
         <location filename="../tools/outputReport.py" line="240"/>
         <source>am Leerseil</source>
-        <translation>at the unloaded skyline</translation>
+        <translation>at unloaded skyline</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="153"/>
         <source>Seilzugkraft an der Anfangsstuetze</source>
-        <translation>Tensile force at the first support</translation>
+        <translation>Tensile force at first support</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="155"/>
         <source>Seilzugkraft an der Endstuetze</source>
-        <translation>Tensile force at the terminal support</translation>
+        <translation>Tensile force at terminal support</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="158"/>
         <source>Seilzugkraft des Leerseils an den Stuetzen</source>
-        <translation>Tensile force of the unloaded skyline at the supports</translation>
+        <translation>Tensile force of unloaded skyline at supports</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="162"/>
         <source>Leerseilverhaeltnis: Horizontalkomponente</source>
-        <translation>Ratio of the unloaded skyline: Horizontal component</translation>
+        <translation>Ratio of unloaded skyline: Horizontal component</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="164"/>
         <source>der Seilzugkraft an den Stuetzen</source>
-        <translation>of the tensile force at the supports</translation>
+        <translation>of tensile force at supports</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="248"/>
         <source>am Lastseil</source>
-        <translation>at the loaded skyline</translation>
+        <translation>at loaded skyline</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="168"/>
@@ -273,22 +273,22 @@
     <message>
         <location filename="../tools/outputReport.py" line="169"/>
         <source>am hoechsten Punkt im Seilsystem</source>
-        <translation>at the highest point of the cable system</translation>
+        <translation>at highest point of cable system</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="171"/>
         <source>am Anfangsanker</source>
-        <translation>at the initial anchor</translation>
+        <translation>at initial anchor</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="173"/>
         <source>am Endanker</source>
-        <translation>at the final anchor</translation>
+        <translation>at final anchor</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="176"/>
         <source>am Lastseil mit Last in Feldmitte</source>
-        <translation>at the loaded skyline with load in the middle of the span</translation>
+        <translation>at loaded skyline with load in the middle of the span</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="178"/>
@@ -303,17 +303,17 @@
     <message>
         <location filename="../tools/outputReport.py" line="184"/>
         <source>gemessen am hoechsten Punkt im Seilsystem</source>
-        <translation>measured at the highest point of the cable system</translation>
+        <translation>measured at highest point of cable system</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="191"/>
         <source>an befahrbarer Stuetze, Laufwagen auf Stuetze</source>
-        <translation>at a trafficable support, carriage on the saddle</translation>
+        <translation>at a trafficable support, carriage on saddle</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="227"/>
         <source>Sattelkraft, resultierend</source>
-        <translation>Saddle force, resultant</translation>
+        <translation>Saddle force, resulting</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="230"/>
@@ -329,32 +329,32 @@
     <message>
         <location filename="../tools/outputReport.py" line="202"/>
         <source>Sattelkraft (Anteil von Tragseil), resultierend</source>
-        <translation>Saddle force (ratio of the skyline), resultant</translation>
+        <translation>Saddle force (proportion of skyline), resulting</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="205"/>
         <source>Sattelkraft (Anteil von Tragseil), vertikale Komponente</source>
-        <translation>Saddle force (ratio of the skyline), vertical component</translation>
+        <translation>Saddle force (proportion of skyline), vertical component</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="208"/>
         <source>Sattelkraft (Anteil von Tragseil), horizontale Komponente</source>
-        <translation>Saddle force (ratio of the skyline), horizontal component</translation>
+        <translation>Saddle force (proportion of skyline), horizontal component</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="211"/>
         <source>Einwirkung auf Stuetze aus Last, Gewicht Zug- Tragseil</source>
-        <translation>Impact on support by load and weight of skyline and mainline</translation>
+        <translation>Impact on support from load and weight of skyline and mainline</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="220"/>
         <source>an nicht befahrbarer Stuetze,</source>
-        <translation>at a non trafficable support,</translation>
+        <translation>at non trafficable support,</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="221"/>
         <source>Laufwagen unmittelbar links/rechts bei Stuetze</source>
-        <translation>carriage directly left/right of the support</translation>
+        <translation>carriage directly left/right of support</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="222"/>
@@ -394,7 +394,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="277"/>
         <source>Parameterset:</source>
-        <translation>Set of parameters:</translation>
+        <translation>Parameterset:</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="308"/>
@@ -410,12 +410,12 @@
     <message>
         <location filename="../tools/outputReport.py" line="338"/>
         <source>Stuetzenpositionen</source>
-        <translation>Positions of the supports</translation>
+        <translation>Positions of supports</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="339"/>
         <source>Daten fuer Absteckung im Feld (Bodenpunkt)</source>
-        <translation>Data for tracing the line (ground point)</translation>
+        <translation>Data for stakeout in the field (ground point)</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="340"/>
@@ -435,7 +435,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="343"/>
         <source>Auftretende Kraefte am Seil</source>
-        <translation>Performing forces on the skyline</translation>
+        <translation>Forces occuring on the skyline</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="344"/>
@@ -505,7 +505,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
         <source>Bezeichnung</source>
-        <translation>Denomination</translation>
+        <translation>Designation</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
@@ -525,7 +525,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
         <source>Angabe BDH bei zu steilem Winkel nicht moeglich</source>
-        <translation>* specification of the minimal DBH is not possible in case of a too steep angle</translation>
+        <translation>* specification of minimal DBH not possible in case of very steep angle</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
@@ -568,8 +568,8 @@ attack</translation>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
         <source>Horizontal-distanz</source>
-        <translation>Location
-(distance)</translation>
+        <translation>Horizontal
+distance</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
@@ -643,12 +643,12 @@ loaded skyline</translation>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
         <source>Seillinie befahrbar ab ... vom Anfangspunkt</source>
-        <translation>Skyline trafficable from ... of the start point</translation>
+        <translation>Skyline trafficable after ... from start point</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
         <source>Seillinie befahrbar bis ... vor dem Endpunkt</source>
-        <translation>Skyline trafficable up to ... in front of the end point</translation>
+        <translation>Skyline trafficable up to ... before end point</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
@@ -658,16 +658,16 @@ loaded skyline</translation>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
         <source>einzuhalten ab ... vom Anfangspunkt</source>
-        <translation>to follow from ... of the start point</translation>
+        <translation>to be respectect after ... from start point</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
         <source>einzuhalten bis ... vor dem Endpunkt</source>
-        <translation>to follow at ... to the end point</translation>
+        <translation>to be respected up to ... before the end point</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
-       <source>Gesamtlast</source>
+        <source>Gesamtlast</source>
         <translation>Load weight including the carriage</translation>
     </message>
     <message>
@@ -698,12 +698,12 @@ loaded skyline</translation>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
         <source>Minimaler Abstand zwischen Stuetzen</source>
-        <translation>Minimal distance between supports</translation>
+        <translation>Minimal distance between realized supports</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
         <source>Horiz. Aufloesung moegl. Stuetzenstandorte</source>
-        <translation>Minimal distance of potential support positions</translation>
+        <translation>Minimal distance between potential support positions</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
@@ -718,12 +718,12 @@ loaded skyline</translation>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
         <source>Abstufungsinterval</source>
-        <translation>Grading range</translation>
+        <translation>Stepping interval</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
         <source>Kuenstliche Stuetze ab Stuetzenhoehe von</source>
-        <translation>Artificial support from a saddle height of</translation>
+        <translation>Artificial support from saddle height of</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
@@ -733,7 +733,7 @@ loaded skyline</translation>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
         <source>Elastizitaetsmodul Tragseil</source>
-        <translation>Ealsticity modulus of the skyline</translation>
+        <translation>Modulus of elasticity of the skyline</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
@@ -743,7 +743,7 @@ loaded skyline</translation>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
         <source>Sicherheitsfaktor Tragseil</source>
-        <translation>Safety factor of the skyline</translation>
+        <translation>Safety factor of skyline</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
@@ -753,7 +753,7 @@ loaded skyline</translation>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
         <source>Parameterset</source>
-        <translation>Set of parameters</translation>
+        <translation>Parameterset</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
@@ -780,7 +780,7 @@ loaded skyline</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="166"/>
         <source>Unerwarteter Fehler bei Berechnung der Seillinie</source>
-        <translation>Unexpected error in the calculation of the cable road</translation>
+        <translation>Unexpected error during calculation of cable road</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="304"/>
@@ -795,28 +795,28 @@ loaded skyline</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="337"/>
         <source>Optimierung erfolgreich abgeschlossen</source>
-        <translation>Optimization completed successfully</translation>
+        <translation>Optimisation successful</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="342"/>
         <source>Tragseil hebt bei mindestens einer Stuetze ab</source>
         <translatorcomment>cable crane line</translatorcomment>
-        <translation>The cable road has been calculated but the skyline lifts off the saddle at one support minimally</translation>
+        <translation>The cable road has been calculated, but the skyline lifts off the saddle at least on one support</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="348"/>
         <source>Nicht genuegend Stuetzenstandorte bestimmbar</source>
-        <translation>The cable road could not be calculated completely, there could not be determined enough support positions.</translation>
+        <translation>The cable road could not be calculated completely, not enough support positions can be determined.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="354"/>
         <source>Stuetzen manuell platzieren</source>
-        <translation>The optimisation has been skipped, the supports have to be positioned manually.</translation>
+        <translation>Optimisation has been skipped, supports must be positioned manually.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="360"/>
         <source>Stuetzen aus Projektdatei geladen</source>
-        <translation>The optimisation has been skipped, the supports have been uploaded from a project data file.</translation>
+        <translation>Optimisation has been skipped, supports have been loaded from project file.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="366"/>
@@ -826,7 +826,7 @@ loaded skyline</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="370"/>
         <source>Fehler aufgetreten</source>
-        <translation>An error ocurred at the calculation of the cable road.</translation>
+        <translation>An error ocurred during the calculation of the cable road.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="376"/>
@@ -834,63 +834,8 @@ loaded skyline</translation>
         <translation>Results saved.</translation>
     </message>
     <message>
-        <location filename="../gui/adjustmentDialog.py" line="460"/>
-        <source>Kennwert</source>
-        <translation>Structural design criteria</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="461"/>
-        <source>Grenzwert</source>
-        <translatorcomment>Internet, nur &quot;threshold&quot; wäre auch möglich</translatorcomment>
-        <translation>Threshold
-value</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="462"/>
-        <source>Optimierte Loesung</source>
-        <translatorcomment>Internet</translatorcomment>
-        <translation>Optimized
-solution</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="463"/>
-        <source>Aktuelle Loesung</source>
-        <translation>Currrent
-solution</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="464"/>
-        <source>Wo?</source>
-        <translation>Where?</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="511"/>
-        <source>Minimaler Bodenabstand</source>
-        <translation>Minimum ground clearance</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="512"/>
-        <source>Max. auftretende Seilzugkraft</source>
-        <translation>Maximum tensile force (skyline)</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="513"/>
-        <source>Max. resultierende Sattelkraft</source>
-        <translation>Maximum resultant support saddle force</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="514"/>
-        <source>Max. Lastseilknickwinkel</source>
-        <translation>Maximum rope deflection angle (loaded skyline)</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="515"/>
-        <source>Min. Leerseilknickwinkel</source>
-        <translation>Minimum rope deflection angle (unloaded skyline)</translation>
-    </message>
-    <message>
         <location filename="../gui/adjustmentDialog.py" line="690"/>
-        <source>Projekteinstellungen.txt</source>
+        <source>Projekteinstellungen</source>
         <translatorcomment>Projet</translatorcomment>
         <translation>Projectsettings</translation>
     </message>
@@ -902,12 +847,12 @@ solution</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="726"/>
         <source>Nicht gespeicherte Aenderungen</source>
-        <translation>Unsaved modifications</translation>
+        <translation>Unsaved changes</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="726"/>
         <source>Moechten Sie die Ergebnisse speichern?</source>
-        <translation>Do you like to save the results?</translation>
+        <translation>Would you like to save the results?</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="729"/>
@@ -924,32 +869,90 @@ solution</translation>
         <source>Ja</source>
         <translation>Yes</translation>
     </message>
+</context>
+<context>
+    <name>ThresholdUpdater</name>
     <message>
-        <location filename="../gui/adjustmentDialog.py" line="469"/>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Kennwert</source>
+        <translation>Structural design criteria</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Grenzwert</source>
+        <translatorcomment>Internet, nur &quot;threshold&quot; wäre auch möglich</translatorcomment>
+        <translation>Threshold
+value</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Optimierte Loesung</source>
+        <translatorcomment>Internet</translatorcomment>
+        <translation>Optimised
+solution</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Aktuelle Loesung</source>
+        <translation>Currrent
+solution</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Wo?</source>
+        <translation>Where?</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Minimaler Bodenabstand</source>
+        <translation>Min. ground clearance</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Max. auftretende Seilzugkraft</source>
+        <translation>Max. tensile force (skyline)</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Max. resultierende Sattelkraft</source>
+        <translation>Max. resulting saddle force</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Max. Lastseilknickwinkel</source>
+        <translation>Max. rope deflection angle (loaded)</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Min. Leerseilknickwinkel</source>
+        <translation>Min. rope deflection angle (unloaded)</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
         <source>Es wird der im Parameterset definierte minimale Bodenabstand mit einer Aufloesung von 1m getestet.</source>
-        <translation>There is tested the minimal clearance to the ground, defined in the parameter set, with a resolution of 1m.</translation>
+        <translation>The minimum ground distance defined in the parameter set is tested with a resolution of 1m.</translation>
     </message>
     <message>
-        <location filename="../gui/adjustmentDialog.py" line="473"/>
+        <location filename="../tools/calcThreshold.py" line="85"/>
         <source>Es wird die maximal auftretende Seilzugkraft am Lastseil mit der Last in Feldmitte berechnet.</source>
-        <translation>There is calculated the maximal occuring tensile force on the loaded skyline with the load in the middle of the span. If the admissible value is exceeded (highlighted in red), one or several spans have to be shortened (additional supports).</translation>
+        <translation>The maximum occuring tensile force on the loaded skyline with the load in the middle of the span is calculated. If the admissible value is exceeded (highlighted in red), one or more span fields must be shortened (additional supports).</translation>
     </message>
     <message>
-        <location filename="../gui/adjustmentDialog.py" line="477"/>
+        <location filename="../tools/calcThreshold.py" line="85"/>
         <source>Es wird die maximal resultierende Sattelkraft an befahrbaren Stuetzen mit der Last auf der Stuetze berechnet.</source>
-        <translation>There is calculated the maximal resultant saddle force on trafficable supports with the load positioned on the saddle.</translation>
+        <translation>The maximum resulting saddle force on trafficable supports with the load positioned on the saddle is calculated.</translation>
     </message>
     <message>
-        <location filename="../gui/adjustmentDialog.py" line="481"/>
+        <location filename="../tools/calcThreshold.py" line="85"/>
         <source>Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften.</source>
-        <translation>Bigger angles reduce the rupture load of the skyline and result in higher saddle forces.
-Note: At the final support the threshold value is higher (approx. 60°).</translation>
+        <translation>Greater angles reduce the rupture load of the skyline and result in higher saddle forces.
+Note: At the final supports the threshold value is higher (approx. 60°).</translation>
     </message>
     <message>
-        <location filename="../gui/adjustmentDialog.py" line="485"/>
+        <location filename="../tools/calcThreshold.py" line="85"/>
         <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
-        <translation>With angles below 1° there is the risk that the skyline lifts off the saddle (red). The support has to be heightened.
-With angles between 1° and 3° the skyline has to be locked by a hold-down plate (orange).</translation>
+        <translation>With angles below 1°, there is a risk that the skyline lifts off at the saddle (red). The support must be raised.
+For angles between 1° and 3°, the skyline must be secured by a hold-down plate (orange).</translation>
     </message>
 </context>
 <context>
@@ -975,17 +978,17 @@ With angles between 1° and 3° the skyline has to be locked by a hold-down plat
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="76"/>
         <source>Manuelle Anpassungen verwerfen und zurueck zum Startfenster wechseln</source>
-        <translation>Reject the manual adjustments and return to the start window</translation>
+        <translation>Discard the manual adjustments and return to the start window</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="79"/>
         <source>zurueck zum Startfenster</source>
-        <translation>Return to the start window</translation>
+        <translation>Return to start window</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="102"/>
         <source>Plugin beenden</source>
-        <translation>Exit the plugin</translation>
+        <translation>Close plugin</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="105"/>
@@ -996,7 +999,7 @@ With angles between 1° and 3° the skyline has to be locked by a hold-down plat
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="115"/>
         <source>Ergebnisse speichern</source>
-        <translation>Save the results</translation>
+        <translation>Save results</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="118"/>
@@ -1013,7 +1016,7 @@ With angles between 1° and 3° the skyline has to be locked by a hold-down plat
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="178"/>
         <source>Feinjustierung der Stuetzen</source>
-        <translation>Location and height adjustment of supports</translation>
+        <translation>Adjustment of supports</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="227"/>
@@ -1024,12 +1027,12 @@ With angles between 1° and 3° the skyline has to be locked by a hold-down plat
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="249"/>
         <source>Stuetzenbezeichnung</source>
-        <translation>Denomination of the supports</translation>
+        <translation>Support designation</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="274"/>
         <source>Horiz.distanz</source>
-        <translation>Location (dist.)</translation>
+        <translation>Horizontal dist.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="299"/>
@@ -1053,7 +1056,7 @@ With angles between 1° and 3° the skyline has to be locked by a hold-down plat
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="388"/>
-       <source>Gesamtlast</source>
+        <source>Gesamtlast</source>
         <translation>Load weight including the carriage</translation>
     </message>
     <message>
@@ -1125,12 +1128,12 @@ With angles between 1° and 3° the skyline has to be locked by a hold-down plat
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="834"/>
         <source>Bemerkungen</source>
-        <translation>Remarks</translation>
+        <translation>Notes</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="842"/>
         <source>Bemerkungstext, welcher im technischen Bericht ergaenzt wird</source>
-        <translation>Text of the remarks, which is completed in the technical report</translation>
+        <translation>Notes will be included in the technical report</translation>
     </message>
 </context>
 <context>
@@ -1166,12 +1169,12 @@ terrain shape</translation>
         <location filename="../gui/adjustmentPlot.py" line="269"/>
         <source>Horizontaldistanz [m]</source>
         <translatorcomment>Samset</translatorcomment>
-        <translation>Location (distance) [m]</translation>
+        <translation>Horizontal distance [m]</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="270"/>
         <source>Hoehe [m.ue.M]</source>
-        <translation>Height [m a.s.l.]</translation>
+        <translation>Elevation [m a.s.l.]</translation>
     </message>
 </context>
 <context>
@@ -1191,12 +1194,12 @@ terrain shape</translation>
     <message>
         <location filename="../gui/saveDialog.py" line="151"/>
         <source>Speicherpfad</source>
-        <translation>Storage path</translation>
+        <translation>Save path</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="174"/>
         <source>Welche Produkte sollen erzeugt werden?</source>
-        <translation>Which are the products to create?</translation>
+        <translation>Which outputs should be created?</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="175"/>
@@ -1216,7 +1219,7 @@ terrain shape</translation>
     <message>
         <location filename="../gui/saveDialog.py" line="177"/>
         <source>Shape-Daten der Stuetzen und Seillinie</source>
-        <translation>Shape data of supports and cable road</translation>
+        <translation>Shape files of supports and cable road</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="177"/>
@@ -1226,7 +1229,7 @@ terrain shape</translation>
     <message>
         <location filename="../gui/saveDialog.py" line="178"/>
         <source>Koordinaten-Tabellen der Stuetzen und Seillinie</source>
-        <translation>Coordinate tables of the supports and of the cable road</translation>
+        <translation>Coordinate tables of supports and cable road</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="195"/>
@@ -1249,12 +1252,12 @@ terrain shape</translation>
     <message>
         <location filename="../gui/saveDialog.py" line="40"/>
         <source>Name Parameterset</source>
-        <translation>Name of the parameter set</translation>
+        <translation>Name of parameter set</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="45"/>
         <source>Bezeichnung Parameterset</source>
-        <translation>Denomination of the parameter set</translation>
+        <translation>Name of parameter set</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="59"/>
@@ -1287,7 +1290,7 @@ terrain shape</translation>
     <message>
         <location filename="../tools/configHandler.py" line="594"/>
         <source>Fehler in Parameterset &apos;{}&apos; gefunden. Set kann nicht geladen werden.</source>
-        <translation>Error in set of parameters {}. Set cannot be loaded.</translation>
+        <translation>Error in parameters set {}. Set cannot be loaded.</translation>
     </message>
     <message>
         <location filename="../tools/configHandler.py" line="722"/>
@@ -1302,12 +1305,12 @@ terrain shape</translation>
     <message>
         <location filename="../tools/configHandler.py" line="729"/>
         <source>Der Wert im Feld ist ungueltig</source>
-        <translation>The value {} in the box {} is invalid. Please select a value between {} and {} {}.</translation>
+        <translation>The value {} in input field {} is invalid. Please enter a value between {} and {} {}.</translation>
     </message>
     <message>
         <location filename="../tools/configHandler.py" line="784"/>
         <source>Fehler in Parameterset gefunden</source>
-        <translation>Error in set of parameters {}. Set cannot be loaded.</translation>
+        <translation>Error in parameters set {}. Set cannot be loaded.</translation>
     </message>
     <message>
         <location filename="../tools/configHandler.py" line="825"/>
@@ -1317,13 +1320,13 @@ terrain shape</translation>
     <message>
         <location filename="../tools/configHandler.py" line="874"/>
         <source>Kein Zweiseil-System moeglich</source>
-        <translation>Error: Two-cable system is not possible if the start point (at winch/machine) is situated lower than the end point.</translation>
+        <translation>Error: Two-cable system is not possible if the start point (at winch/machine) is lower than the end point.</translation>
     </message>
     <message>
         <location filename="../tools/configHandler.py" line="739"/>
         <source>Der Parameter Minimaler Abstand Tragseil Boden darf nicht groesser als der Parameter Minimale Stuetzenhoehe sein.</source>
-        <translation>The parameter ‘Minimal clearance between skyline and ground’ (tab Cable road) must not be greater than the parameter &apos;Minimal support height&apos; (tab Optional #1).
-Please adapt the input.</translation>
+        <translation>The parameter ‘Minimal clearance between skyline and ground’ (tab Cable road) should not be greater than the parameter &apos;Minimal support height&apos; (tab Optional #1).
+Please change the input.</translation>
     </message>
 </context>
 <context>
@@ -1336,7 +1339,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/poleWidget.py" line="390"/>
         <source>Loescht die Stuetze</source>
-        <translation>Deletes the support</translation>
+        <translation>Delete support</translation>
     </message>
 </context>
 <context>
@@ -1383,12 +1386,12 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/profileDialog.py" line="75"/>
         <source>Stuetzenoptimierung einschraenken</source>
-        <translation>Restrict the support optimization</translation>
+        <translation>Restrict support optimisation</translation>
     </message>
     <message>
         <location filename="../gui/profileDialog.py" line="82"/>
         <source>Fixe Stuetze definieren</source>
-        <translation>Define a fix support position</translation>
+        <translation>Define a fixed support</translation>
     </message>
     <message>
         <location filename="../gui/profileDialog.py" line="83"/>
@@ -1398,12 +1401,12 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/profileDialog.py" line="91"/>
         <source>Tooltip Fixe Stuetzen</source>
-        <translation>Fixed supports are considered as already existing supports by the optimising algorithm.</translation>
+        <translation>Fixed supports are considered as already existing supports by the optimisation algorithm.</translation>
     </message>
     <message>
         <location filename="../gui/profileDialog.py" line="92"/>
         <source>Tooltip Abschnitte ohne Stuetzen</source>
-        <translation>Sectors, where no supports are placed at the optimization process.</translation>
+        <translation>Sectors, where no support is placed during the optimisation.</translation>
     </message>
     <message>
         <location filename="../gui/profileDialog.py" line="93"/>
@@ -1413,12 +1416,12 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/profileDialog.py" line="186"/>
         <source>Stuetzenbezeichnung</source>
-        <translation>Denomination of the supports</translation>
+        <translation>Support designation</translation>
     </message>
     <message>
         <location filename="../gui/profileDialog.py" line="188"/>
         <source>Hori.distanz</source>
-        <translation>Location (dist.)</translation>
+        <translation>Horizontal dist.</translation>
     </message>
     <message>
         <location filename="../gui/profileDialog.py" line="190"/>
@@ -1429,7 +1432,7 @@ Please adapt the input.</translation>
         <location filename="../gui/profileDialog.py" line="212"/>
         <source>fixe Stuetze</source>
         <translatorcomment>oder: fixed support</translatorcomment>
-        <translation>fix support</translation>
+        <translation>fixed support</translation>
     </message>
 </context>
 <context>
@@ -1437,7 +1440,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/profilePlot.py" line="271"/>
         <source>Horizontaldistanz [m]</source>
-        <translation>Location (distance) [m]</translation>
+        <translation>Horizontal distance [m]</translation>
     </message>
     <message>
         <location filename="../gui/profilePlot.py" line="272"/>
@@ -1471,12 +1474,12 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/progressDialog.py" line="131"/>
         <source>Berechnungen abgebrochen.</source>
-        <translation>Calculation stopped.</translation>
+        <translation>Calculation canceled.</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="156"/>
         <source>Laufender Prozess wird abgebrochen...</source>
-        <translation>The running process is stopped...</translation>
+        <translation>Process is being canceled...</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="162"/>
@@ -1491,12 +1494,12 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/progressDialog.py" line="168"/>
         <source>Aufgrund der Gelaendeform oder der Eingabeparameter konnten keine Stuetzenstandorte bestimmt werden.</source>
-        <translation>Due to shape of the terrain or the input values, no support positions could be determined.</translation>
+        <translation>Due to the shape of the terrain or the input values, no support positions could be determined.</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="168"/>
         <source>Fehler in Optimierungsalgorithmus.</source>
-        <translation>Error in optimization algorithm.</translation>
+        <translation>Error in optimisation algorithm.</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="44"/>
@@ -1573,7 +1576,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="108"/>
         <source>Projekteinstellungen aus Textdatei laden</source>
-        <translation>Load the project settings from a json file</translation>
+        <translation>Load project settings from a json file</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="139"/>
@@ -1583,12 +1586,12 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="147"/>
         <source>Parameterset auswaehlen</source>
-        <translation>Select a set of parameters</translation>
+        <translation>Select a parameterset</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="179"/>
         <source>Eigenschaften der Seillinie in neuem Parameterset abspeichern</source>
-        <translation>Save the cable road design parameter specifications in a new parameter set</translation>
+        <translation>Save the cable road design parameters in a new parameter set</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="208"/>
@@ -1608,7 +1611,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="317"/>
         <source>einzuhalten bis ... vor dem Endpunkt</source>
-        <translation>to follow at ... to the end point</translation>
+        <translation>to be respected up to ... before the end point</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="365"/>
@@ -1618,7 +1621,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="372"/>
         <source>Seillinie befahrbar bis ... vor dem Endpunkt</source>
-        <translation>Skyline trafficable up to ... in front of the end point</translation>
+        <translation>Skyline trafficable up to ... before end point</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="379"/>
@@ -1639,12 +1642,12 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="535"/>
         <source>einzuhalten ab ... vom Anfangspunkt</source>
-        <translation>to follow from ... of the start point</translation>
+        <translation>to be respectect after ... from start point</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="567"/>
         <source>Seillinie befahrbar ab ... vom Anfangspunkt</source>
-        <translation>Skyline trafficable from ... of the start point</translation>
+        <translation>Skyline trafficable after ... from start point</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="580"/>
@@ -1668,7 +1671,7 @@ Please adapt the input.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="719"/>
-       <source>Gesamtlast</source>
+        <source>Gesamtlast</source>
         <translation>Weight of the load incl. carriage</translation>
     </message>
     <message>
@@ -1714,7 +1717,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1074"/>
         <source>Kuenstliche Stuetze ab Stuetzenhoehe von</source>
-        <translation>Artificial support from a saddle height of</translation>
+        <translation>Artificial support from saddle height of</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1112"/>
@@ -1729,22 +1732,22 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1336"/>
         <source>Horiz. Aufloesung moegl. Stuetzenstandorte</source>
-        <translation>Minimal distance of potential support positions</translation>
+        <translation>Minimal distance between potential support positions</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1387"/>
         <source>Abstufungsinterval</source>
-        <translation>Grading range</translation>
+        <translation>Stepping interval</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1425"/>
         <source>Optimierungsparameter</source>
-        <translation>Optimization parameters</translation>
+        <translation>Optimisation parameters</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1447"/>
         <source>Minimaler Abstand zwischen Stuetzen</source>
-        <translation>Minimal distance between supports</translation>
+        <translation>Minimal distance between realized supports</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1482"/>
@@ -1769,7 +1772,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1658"/>
         <source>Elastizitaetsmodul Tragseil</source>
-        <translation>Ealsticity modulus of the skyline</translation>
+        <translation>Modulus of elasticity of the skyline</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1658"/>
@@ -1799,7 +1802,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1787"/>
         <source>Liste der in QGIS geladenen Raster aktualisieren</source>
-        <translation>Update the list of the rasters loaded into QGIS</translation>
+        <translation>Update list of rasters loaded into QGIS</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1821"/>
@@ -1825,7 +1828,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1960"/>
         <source>Stuetzenoptimierung ueberspringen und direkt zur manuellen Bearbeitung der Seillinie uebergehen</source>
-        <translation>Skip the support optimization and pass directly to the manual conditioning of the cable road</translation>
+        <translation>Skip the support optimisation and continue directly to the manual adjustment of the cable road</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1963"/>
@@ -1841,8 +1844,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1976"/>
         <source>Stuetzen optimieren</source>
-        <translatorcomment>Optimize cable road automatically</translatorcomment>
-        <translation>Optimize cable road</translation>
+        <translation>Optimise cable road</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1993"/>
@@ -1918,12 +1920,12 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2345"/>
         <source>Horizontaldistanz</source>
-        <translation>Location (distance) [m]</translation>
+        <translation>Horizontal distance [m]</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2389"/>
         <source>Gelaendelinie in Diagramm darstellen und fixe Stuetzen definieren</source>
-        <translation>Display the terrain profile in the diagram and define the fix supports</translation>
+        <translation>Display the terrain profile in the diagram and define the fixed supports</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2392"/>
@@ -1938,7 +1940,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="179"/>
         <source>Parameterset loeschen</source>
-        <translation>Delete set of parameters</translation>
+        <translation>Delete parameterset</translation>
     </message>
 </context>
 <context>
@@ -1967,7 +1969,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../seilaplanPlugin.py" line="209"/>
         <source>Seilaplan benoetigt die Python Bibliothek scipy um Berechnungen durchzufuehren.</source>
-        <translation>Seilaplan needs the python library scipy to execute its calculations. Please install the library manually on your system.</translation>
+        <translation>Seilaplan depends on the python library scipy to execute its calculations. Please install the library manually on your system.</translation>
     </message>
     <message>
         <location filename="../seilaplanPlugin.py" line="209"/>
@@ -1990,17 +1992,17 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="438"/>
         <source>Parameterset loeschen</source>
-        <translation>Delete set of parameters</translation>
+        <translation>Delete parameterset</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="439"/>
         <source>Standardparameterset kann nicht geloescht werden.</source>
-        <translation>Standard set of parameters cannot be deleted.</translation>
+        <translation>Standard parameterset cannot be deleted.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="439"/>
         <source>Moechten Sie das Parameterset wirklich loeschen?</source>
-        <translation>Do you really want to delete the set of parameters?</translation>
+        <translation>Do you really want to delete this parameterset?</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="452"/>
@@ -2015,7 +2017,7 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="462"/>
         <source>Ein Fehler ist aufgetreten. Parameterset kann nicht geloescht werden.</source>
-        <translation>An error has occured. Set of parameters cannot be deleted.</translation>
+        <translation>An error occured. Parameterset cannot be deleted.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="438"/>
@@ -2036,27 +2038,25 @@ Please adapt the input.</translation>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="558"/>
         <source>Fehler Koordinatenbezugssystem (KBS)</source>
-        <translation>Error coordinate reference system (CRS)</translation>
+        <translation>Error with coordinate reference system (CRS)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="574"/>
         <source>KBS-Fehler - Raster kann nicht verarbeitet werden</source>
         <translation>Raster with geographic CRS (&apos;{}&apos; ({}) cannot be used.
-Seilaplan can process only height grid data in a projected CRS.</translation>
+Seilaplan can only process terrain data in a projected CRS.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="586"/>
         <source>KBS-Fehler - Felddaten und QGIS in geografischem KBS</source>
-        <translatorcomment>CRS error - field data and QGIS in geographic CRS</translatorcomment>
-        <translation>Field data are existing in a geographic CRS!
-Seilaplan can only process data in a projected CRS. The data are transformed automatically into the Swiss CRS &apos;LV95&apos; (EPSG:2056).</translation>
+        <translation>Field data is in a geographic CRS!
+Seilaplan can only process data in a projected CRS. The data will be transformed automatically into the Swiss CRS &apos;LV95&apos; (EPSG:2056).</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="593"/>
         <source>KBS-Fehler - Bezugssystem des Rasters unbekannt</source>
-        <translatorcomment>CRS error - reference system of raster is unknown</translatorcomment>
         <translation>Reference system of the raster unknown.
-The raster is displayed in the Swiss CRS &apos;LV95&apos; (EPSG:2056). To use another CRS system you have to arrange your QGIS project accordingly before loading the height data.</translation>
+The raster is displayed in the Swiss CRS &apos;LV95&apos; (EPSG:2056). To use another CRS system you have to set up your QGIS project accordingly before loading the height data.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="609"/>
@@ -2071,12 +2071,12 @@ The raster is displayed in the Swiss CRS &apos;LV95&apos; (EPSG:2056). To use an
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="739"/>
         <source>zu definieren</source>
-        <translation>to define</translation>
+        <translation>to be defined</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="740"/>
         <source>ausserhalb Raster</source>
-        <translation>beyond the raster</translation>
+        <translation>outside of raster</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="796"/>
@@ -2085,13 +2085,13 @@ The raster is displayed in the Swiss CRS &apos;LV95&apos; (EPSG:2056). To use an
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="797"/>
-        <source>Txt Dateien (*.txt)</source>
+        <source>Json (*.json);; Text - altes Format (*.txt)</source>
         <translation>Json file (*.json);;Text file - old format (*.txt)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="806"/>
         <source>Fehler beim Laden</source>
-        <translation>Error at loading</translation>
+        <translation>Error when loading</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="806"/>
@@ -2113,9 +2113,9 @@ The raster is displayed in the Swiss CRS &apos;LV95&apos; (EPSG:2056). To use an
         <location filename="../gui/seilaplanPluginDialog.py" line="849"/>
         <source>Infotext</source>
         <translatorcomment>Internet</translatorcomment>
-        <translation>SEILAPLAN - Seilkran-Layoutplaner
+        <translation>SEILAPLAN - Cable road layout planning
 
-SEILAPLAN is calculating, based on a digital terrain model and technical parameters between defined start and end coordinates, the optimal yarding road layout. The position and the height of the supports as well as the most important parameters of the yarding road are determined.
+Based on a digital terrain model and technical parameters between defined start and end coordinates, SEILAPLAN is calculating the optimal yarding road layout. The position and the height of the supports as well as the most important parameters of the yarding road are determined.
 
 Realization:
 
@@ -2129,20 +2129,20 @@ Swiss Federal Institute for Forest, Snow and Landscape Research WSL
 8903 Birmensdorf
 (Realization Version 2.x for QGIS 3)
 
-Persons involved:
+People involved:
 
 Leo Bont, Hans Rudolf Heinimann (Concept, Mechanics)
 Patricia Moll (Implementation in Python / QGIS)
 
 SEILAPLAN is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or (at your option) any later version (www.gnu.org/licenses).
 
-Path to the documentation:
+Path to documentation:
 {}</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="857"/>
         <source>Hoeheninformation - Erklaerung Raster</source>
-        <translation>Height information is extracted from an elevation raster. The list incorporates all the existing rasters in the current QGIS project.
+        <translation>Height information is extracted from an elevation raster. The list incorporates all rasters in the current QGIS project.
 When a new raster is added to QGIS, the list can be updated by clicking on the update button.
 
 Precise elevation data for Switzerland can be downloaded with the QGIS plugin &apos;Swiss Geo Downloader&apos;. More information (de):
@@ -2151,10 +2151,10 @@ http://pimoll.github.io/SEILAPLAN/</translation>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="859"/>
         <source>Hoeheninformation - Erklaerung Felddaten</source>
-        <translation>Load the measured terrain profile points.
+        <translation>Load profile points from field data.
 Supported data types:
 1) csv file exported from the measuring instrument Haglöf Vertex (Sweden).
-2) Generic csv file (comma-separated) with the coordinates &apos;x&apos;, &apos;y&apos; and &apos;z&apos; in columns. The file must not contain comments and the points have to be assorted.</translation>
+2) Generic csv file (comma-separated) with the coordinates &apos;x&apos;, &apos;y&apos; and &apos;z&apos; in columns. The file must not contain comments and the points have to be sorted.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="860"/>
@@ -2187,8 +2187,8 @@ Supported data types:
         <translation>Edit cable road manually:
 The calculation is done with the entered pre-stress tensile force (unloaded skyline).
 
-Optimize cable road:
-The optimal pre-stress tensile force (unloaded skyline) is calculated. The optimization is starting at 75 percent of the entered value.</translation>
+Optimise cable road:
+The optimal pre-stress tensile force (unloaded skyline) is calculated. The optimisation is starting at 75 percent of the entered value.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="941"/>
@@ -2198,12 +2198,12 @@ The optimal pre-stress tensile force (unloaded skyline) is calculated. The optim
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="885"/>
         <source>Erklaerungen zum Bodenabstand</source>
-        <translation>Explications to the ground clearance</translation>
+        <translation>Explanation of the ground clearance</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="886"/>
         <source>Erklaerungen zu den Zwischenstuetzen</source>
-        <translation>Explications on the intermediate supports</translation>
+        <translation>Explanation of the intermediate supports</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
@@ -2218,7 +2218,7 @@ The optimal pre-stress tensile force (unloaded skyline) is calculated. The optim
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
         <source>Fuellfaktor Erklaerung</source>
-        <translation>The fill factor is the relation between the metallic cross sectional area of the rope and the area of its circumscribed circle.</translation>
+        <translation>The fill factor is the relation between the metallic cross-sectional area of the rope and the area of its circumference.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="897"/>
@@ -2228,7 +2228,7 @@ The optimal pre-stress tensile force (unloaded skyline) is calculated. The optim
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="902"/>
         <source>Europaweit wird ein Sicherheitsfaktor von 3.0 fuer das Tragseil verwendet.</source>
-        <translation>Europe-wide there is used a safety factor of 3.0 for the skyline.</translation>
+        <translation>Throughout Europe, a safety factor of 3.0 is used for the skyline.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="904"/>
@@ -2239,10 +2239,10 @@ The optimal pre-stress tensile force (unloaded skyline) is calculated. The optim
         <location filename="../gui/seilaplanPluginDialog.py" line="905"/>
         <source>Erklaerungen Berechnungsbuttons</source>
         <translation>Manually edit cable road:
-No optimization is performed and no cable road layout is proposed. The layout can be directly edited manually.
+No optimisation is performed and no cable road layout is proposed. The layout can be directly edited manually.
 
 Optimize cable road:
-The algorithm calculates a solution, which in first priority is minimizing the number of supports and in second priority the height of the supports. The minimum rope deflection angle of the unloaded skyline and the maximum rope deflection angle of the loaded skyline are not considered yet in the optimization.</translation>
+The algorithm calculates a solution, which in first priority is minimizing the number of supports and in second priority the height of the supports. The minimum rope deflection angle of the unloaded skyline and the maximum rope deflection angle of the loaded skyline are not considered yet in the optimisation.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="906"/>

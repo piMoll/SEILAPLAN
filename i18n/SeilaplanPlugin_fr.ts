@@ -671,7 +671,7 @@ câble chargé</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
-       <source>Gesamtlast</source>
+        <source>Gesamtlast</source>
         <translation>Poids de la charge y.c. le chariot</translation>
     </message>
     <message>
@@ -841,62 +841,6 @@ câble chargé</translation>
         <translation>Les résultats ont été enregistrés.</translation>
     </message>
     <message>
-        <location filename="../gui/adjustmentDialog.py" line="460"/>
-        <source>Kennwert</source>
-        <translation>Paramètre caractéristique</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="461"/>
-        <source>Grenzwert</source>
-        <translatorcomment>BAFU</translatorcomment>
-        <translation>Valeur
-limite</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="462"/>
-        <source>Optimierte Loesung</source>
-        <translatorcomment>Internet</translatorcomment>
-        <translation>Solution
-optimisée</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="463"/>
-        <source>Aktuelle Loesung</source>
-        <translation>Solution
-actuelle</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="464"/>
-        <source>Wo?</source>
-        <translatorcomment>Internet</translatorcomment>
-        <translation>Où?</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="511"/>
-        <source>Minimaler Bodenabstand</source>
-        <translation>Garde au sol minimale</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="512"/>
-        <source>Max. auftretende Seilzugkraft</source>
-        <translation>Force de traction maximale</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="513"/>
-        <source>Max. resultierende Sattelkraft</source>
-        <translation>Maximum de la force résultante sur l&apos;étrier</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="514"/>
-        <source>Max. Lastseilknickwinkel</source>
-        <translation>Angle maximal du câble chargé</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="515"/>
-        <source>Min. Leerseilknickwinkel</source>
-        <translation>Angle minimal du câble non chargé</translation>
-    </message>
-    <message>
         <location filename="../gui/adjustmentDialog.py" line="690"/>
         <source>Projekteinstellungen</source>
         <translation>Paramètresduprojet</translation>
@@ -931,29 +875,88 @@ actuelle</translation>
         <source>Ja</source>
         <translation>Qui</translation>
     </message>
+</context>
+<context>
+    <name>ThresholdUpdater</name>
     <message>
-        <location filename="../gui/adjustmentDialog.py" line="469"/>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Kennwert</source>
+        <translation>Paramètre caractéristique</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Grenzwert</source>
+        <translatorcomment>BAFU</translatorcomment>
+        <translation>Valeur
+limite</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Optimierte Loesung</source>
+        <translatorcomment>Internet</translatorcomment>
+        <translation>Solution
+optimisée</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Aktuelle Loesung</source>
+        <translation>Solution
+actuelle</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Wo?</source>
+        <translatorcomment>Internet</translatorcomment>
+        <translation>Où?</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Minimaler Bodenabstand</source>
+        <translation>Garde au sol minimale</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Max. auftretende Seilzugkraft</source>
+        <translation>Force de traction maximale</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Max. resultierende Sattelkraft</source>
+        <translation>Maximum de la force résultante sur l&apos;étrier</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Max. Lastseilknickwinkel</source>
+        <translation>Angle maximal du câble chargé</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Min. Leerseilknickwinkel</source>
+        <translation>Angle minimal du câble non chargé</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
         <source>Es wird der im Parameterset definierte minimale Bodenabstand mit einer Aufloesung von 1m getestet.</source>
         <translation>Il est testé la garde au sol, définie dans le bloc de paramètres, avec une résolution de 1m.</translation>
     </message>
     <message>
-        <location filename="../gui/adjustmentDialog.py" line="473"/>
+        <location filename="../tools/calcThreshold.py" line="85"/>
         <source>Es wird die maximal auftretende Seilzugkraft am Lastseil mit der Last in Feldmitte berechnet.</source>
         <translation>Il est calculé le maximum de la force de traction au câble chargé avec la charge au milieu de la portée. Si la valeur admissible est dépassée (marquée en rouge), une ou plusieures portées doivent être raccourcies (supports additionnels).</translation>
     </message>
     <message>
-        <location filename="../gui/adjustmentDialog.py" line="477"/>
+        <location filename="../tools/calcThreshold.py" line="85"/>
         <source>Es wird die maximal resultierende Sattelkraft an befahrbaren Stuetzen mit der Last auf der Stuetze berechnet.</source>
         <translation>Il est calculé le maximum de la force résultante sur l&apos;étrier aux supports praticables avec la charge se trouvant sur l&apos;étrier.</translation>
     </message>
     <message>
-        <location filename="../gui/adjustmentDialog.py" line="481"/>
+        <location filename="../tools/calcThreshold.py" line="85"/>
         <source>Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften.</source>
         <translation>Des angles plus grands induisent une réduction de la charge de rupture du câble porteur et une augmentation des forces sur les étriers.
 Notice explicative: Au mât terminal la valeur limite est plus haute (env. 60°).</translation>
     </message>
     <message>
-        <location filename="../gui/adjustmentDialog.py" line="485"/>
+        <location filename="../tools/calcThreshold.py" line="85"/>
         <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
         <translation>En cas des angles inférieurs à 1° il y a le risque que le câble porteur s&apos;enlève de l&apos;étrier (rouge). L&apos; appui doit être surélevé.
 En cas des angles entre 1° et 3° le câble porteur doit être sécurisé par une patte de fixation (orange).</translation>
@@ -1058,7 +1061,7 @@ En cas des angles entre 1° et 3° le câble porteur doit être sécurisé par u
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="388"/>
-       <source>Gesamtlast</source>
+        <source>Gesamtlast</source>
         <translation>Poids de la charge y.c. le chariot</translation>
     </message>
     <message>
@@ -1670,7 +1673,7 @@ Veuillez adapter la saisie.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="719"/>
-       <source>Gesamtlast</source>
+        <source>Gesamtlast</source>
         <translation>Poids de la charge y.c. le chariot</translation>
     </message>
     <message>

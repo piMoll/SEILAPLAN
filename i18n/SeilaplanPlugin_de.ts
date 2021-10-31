@@ -91,7 +91,7 @@
     <message>
         <location filename="../tools/outputGeo.py" line="205"/>
         <source>Stuetzenhoehe</source>
-        <translation>Stuetzenhoehe</translation>
+        <translation>Sattelhoehe</translation>
     </message>
     <message>
         <location filename="../tools/outputGeo.py" line="205"/>
@@ -822,58 +822,6 @@ Lastseil</translation>
         <translation>Ergebnisse gespeichert.</translation>
     </message>
     <message>
-        <location filename="../gui/adjustmentDialog.py" line="460"/>
-        <source>Kennwert</source>
-        <translation>Kennwert</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="461"/>
-        <source>Grenzwert</source>
-        <translation>Grenzwert</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="462"/>
-        <source>Optimierte Loesung</source>
-        <translation>Optimierte
-Lösung</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="463"/>
-        <source>Aktuelle Loesung</source>
-        <translation>Aktuelle
-Lösung</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="464"/>
-        <source>Wo?</source>
-        <translation>Wo?</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="511"/>
-        <source>Minimaler Bodenabstand</source>
-        <translation>Minimaler Bodenabstand</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="512"/>
-        <source>Max. auftretende Seilzugkraft</source>
-        <translation>Max. auftretende Seilzugkraft</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="513"/>
-        <source>Max. resultierende Sattelkraft</source>
-        <translation>Max. resultierende Sattelkraft</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="514"/>
-        <source>Max. Lastseilknickwinkel</source>
-        <translation>Max. Lastseilknickwinkel</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="515"/>
-        <source>Min. Leerseilknickwinkel</source>
-        <translation>Min. Leerseilknickwinkel</translation>
-    </message>
-    <message>
         <location filename="../gui/adjustmentDialog.py" line="690"/>
         <source>Projekteinstellungen</source>
         <translation>Projekteinstellungen</translation>
@@ -886,7 +834,7 @@ Lösung</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="726"/>
         <source>Nicht gespeicherte Aenderungen</source>
-        <translation>Nicht gespeicherte Aenderungen</translation>
+        <translation>Nicht gespeicherte Änderungen</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="726"/>
@@ -907,34 +855,6 @@ Lösung</translation>
         <location filename="../gui/adjustmentDialog.py" line="731"/>
         <source>Ja</source>
         <translation>Ja</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="469"/>
-        <source>Es wird der im Parameterset definierte minimale Bodenabstand mit einer Aufloesung von 1m getestet.</source>
-        <translation>Es wird der im Parameterset definierte minimale Bodenabstand mit einer Aufloesung von 1m getestet.</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="473"/>
-        <source>Es wird die maximal auftretende Seilzugkraft am Lastseil mit der Last in Feldmitte berechnet.</source>
-        <translation>In der Praxis oft auch als maximale Betriebsspannung bezeichnet.
-Es wird die maximal auftretende Seilzugkraft am Lastseil mit der Last in Feldmitte berechnet. Falls der zulässige Wert überschritten wird (rot hinterlegt), müssen ein oder mehrere Spannfelder verkürzt werden (zusätzliche Stützen).</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="477"/>
-        <source>Es wird die maximal resultierende Sattelkraft an befahrbaren Stuetzen mit der Last auf der Stuetze berechnet.</source>
-        <translation>Es wird die maximal resultierende Sattelkraft an befahrbaren Stützen mit der Last auf der Stütze berechnet.</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="481"/>
-        <source>Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften.</source>
-        <translation>Grössere Knickwinkel reduzieren die Bruchlast des Tragseils und führen zu höheren Sattelkräften.
-Hinweis: Beim Endmast liegt der Grenzwert höher (ca. 60°).</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="485"/>
-        <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
-        <translation>Bei Knickwinkeln unter 1° besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Die Stütze muss erhöht werden.
-Bei Knickwinkeln zwischen 1° und 3° muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</translation>
     </message>
 </context>
 <context>
@@ -1110,6 +1030,89 @@ Bei Knickwinkeln zwischen 1° und 3° muss das Tragseil mittels Niederhaltelasch
         <location filename="../gui/adjustmentDialog.ui" line="842"/>
         <source>Bemerkungstext, welcher im technischen Bericht ergaenzt wird</source>
         <translation>Bemerkungstext, welcher im technischen Bericht ergänzt wird</translation>
+    </message>
+</context>
+<context>
+    <name>ThresholdUpdater</name>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Kennwert</source>
+        <translation>Kennwert</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Grenzwert</source>
+        <translation>Grenzwert</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Optimierte Loesung</source>
+        <translation>Optimierte
+Lösung</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Aktuelle Loesung</source>
+        <translation>Aktuelle
+Lösung</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Wo?</source>
+        <translation>Wo?</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Minimaler Bodenabstand</source>
+        <translation>Minimaler Bodenabstand</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Max. auftretende Seilzugkraft</source>
+        <translation>Max. auftretende Seilzugkraft</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Max. resultierende Sattelkraft</source>
+        <translation>Max. resultierende Sattelkraft</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Max. Lastseilknickwinkel</source>
+        <translation>Max. Lastseilknickwinkel</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Min. Leerseilknickwinkel</source>
+        <translation>Min. Leerseilknickwinkel</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Es wird der im Parameterset definierte minimale Bodenabstand mit einer Aufloesung von 1m getestet.</source>
+        <translation>Es wird der im Parameterset definierte minimale Bodenabstand mit einer Auflösung von 1m getestet.</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Es wird die maximal auftretende Seilzugkraft am Lastseil mit der Last in Feldmitte berechnet.</source>
+        <translation>In der Praxis oft auch als maximale Betriebsspannung bezeichnet.
+Es wird die maximal auftretende Seilzugkraft am Lastseil mit der Last in Feldmitte berechnet. Falls der zulässige Wert überschritten wird (rot hinterlegt), müssen ein oder mehrere Spannfelder verkürzt werden (zusätzliche Stützen).</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Es wird die maximal resultierende Sattelkraft an befahrbaren Stuetzen mit der Last auf der Stuetze berechnet.</source>
+        <translation>Es wird die maximal resultierende Sattelkraft an befahrbaren Stützen mit der Last auf der Stütze berechnet.</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften.</source>
+        <translation>Grössere Knickwinkel reduzieren die Bruchlast des Tragseils und führen zu höheren Sattelkräften.
+Hinweis: Bei den beiden Endmasten liegt der Grenzwert höher (ca. 60°).</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
+        <translation>Bei Knickwinkeln unter 1° besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Die Stütze muss erhöht werden.
+Bei Knickwinkeln zwischen 1° und 3° muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</translation>
     </message>
 </context>
 <context>

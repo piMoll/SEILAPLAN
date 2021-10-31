@@ -668,7 +668,7 @@ fune caricata</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="111"/>
-       <source>Gesamtlast</source>
+        <source>Gesamtlast</source>
         <translation>Peso del carico, carrello compreso</translation>
     </message>
     <message>
@@ -836,88 +836,6 @@ fune caricata</translation>
         <translation>I risultati sono stati salvati.</translation>
     </message>
     <message>
-        <location filename="../gui/adjustmentDialog.py" line="460"/>
-        <source>Kennwert</source>
-        <translation>Carratteristica</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="461"/>
-        <source>Grenzwert</source>
-        <translatorcomment>BAFU</translatorcomment>
-        <translation>Valore
-limite</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="462"/>
-        <source>Optimierte Loesung</source>
-        <translation>Soluzione
-ottimizzata</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="463"/>
-        <source>Aktuelle Loesung</source>
-        <translation>Soluzione
-attuale</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="464"/>
-        <source>Wo?</source>
-        <translatorcomment>Internet</translatorcomment>
-        <translation>Dove?</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="511"/>
-        <source>Minimaler Bodenabstand</source>
-        <translation>Altezza da terra minimale</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="469"/>
-        <source>Es wird der im Parameterset definierte minimale Bodenabstand mit einer Aufloesung von 1m getestet.</source>
-        <translation>C&apos;è verificato l&apos;altezza da terra minimale, definito nella serie di parametri, con una definizione di 1m.</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="512"/>
-        <source>Max. auftretende Seilzugkraft</source>
-        <translation>Forza di trazione massimale</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="473"/>
-        <source>Es wird die maximal auftretende Seilzugkraft am Lastseil mit der Last in Feldmitte berechnet.</source>
-        <translation>C&apos;è calcolato il massimo della forza di trazione alla fune caricata col carico trovandosi in metà della portata. Se il valore ammissibile viene trapassato (evidenziato in rosso), una o parecchie portate devono essere accorciate (cavalletti aggiuntivi).</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="513"/>
-        <source>Max. resultierende Sattelkraft</source>
-        <translation>Massimo della forza risultante sulla sella</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="477"/>
-        <source>Es wird die maximal resultierende Sattelkraft an befahrbaren Stuetzen mit der Last auf der Stuetze berechnet.</source>
-        <translation>C&apos;è calcolato il massimo della forza risultante sulla sella ai cavalletti carrabili col carico trovandosi sulla sella.</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="514"/>
-        <source>Max. Lastseilknickwinkel</source>
-        <translation>Angolo maximale della fune caricata</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="481"/>
-        <source>Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften.</source>
-        <translation>Angoli più grandi causano un carico di rottura ridotto della fune portante e delle forze aumentate sulle selle.
-Indicazione: Al cavalletto terminale il valore limite è superiore (ca. 60°).</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="515"/>
-        <source>Min. Leerseilknickwinkel</source>
-        <translation>Angolo minimale della fune non caricata</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="485"/>
-        <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
-        <translation>Nel caso di un angolo convesso di 1° c&apos;è il rischio che la fune portante si decolla della sella (rosso). Il cavalletto deve essere alzato.
-Nel caso di un angolo tra 1° e 3° la fune portante deve essere atrezzato con un coprifune per sella (orange).</translation>
-    </message>
-    <message>
         <location filename="../gui/adjustmentDialog.py" line="690"/>
         <source>Projekteinstellungen</source>
         <translation>Settagginelprogetto</translation>
@@ -951,6 +869,91 @@ Nel caso di un angolo tra 1° e 3° la fune portante deve essere atrezzato con u
         <location filename="../gui/adjustmentDialog.py" line="731"/>
         <source>Ja</source>
         <translation>Si</translation>
+    </message>
+</context>
+<context>
+    <name>ThresholdUpdater</name>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Kennwert</source>
+        <translation>Carratteristica</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Grenzwert</source>
+        <translatorcomment>BAFU</translatorcomment>
+        <translation>Valore
+limite</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Optimierte Loesung</source>
+        <translation>Soluzione
+ottimizzata</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Aktuelle Loesung</source>
+        <translation>Soluzione
+attuale</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Wo?</source>
+        <translatorcomment>Internet</translatorcomment>
+        <translation>Dove?</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Minimaler Bodenabstand</source>
+        <translation>Altezza da terra minimale</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Es wird der im Parameterset definierte minimale Bodenabstand mit einer Aufloesung von 1m getestet.</source>
+        <translation>C&apos;è verificato l&apos;altezza da terra minimale, definito nella serie di parametri, con una definizione di 1m.</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Max. auftretende Seilzugkraft</source>
+        <translation>Forza di trazione massimale</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Es wird die maximal auftretende Seilzugkraft am Lastseil mit der Last in Feldmitte berechnet.</source>
+        <translation>C&apos;è calcolato il massimo della forza di trazione alla fune caricata col carico trovandosi in metà della portata. Se il valore ammissibile viene trapassato (evidenziato in rosso), una o parecchie portate devono essere accorciate (cavalletti aggiuntivi).</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Max. resultierende Sattelkraft</source>
+        <translation>Massimo della forza risultante sulla sella</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Es wird die maximal resultierende Sattelkraft an befahrbaren Stuetzen mit der Last auf der Stuetze berechnet.</source>
+        <translation>C&apos;è calcolato il massimo della forza risultante sulla sella ai cavalletti carrabili col carico trovandosi sulla sella.</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Max. Lastseilknickwinkel</source>
+        <translation>Angolo maximale della fune caricata</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften.</source>
+        <translation>Angoli più grandi causano un carico di rottura ridotto della fune portante e delle forze aumentate sulle selle.
+Indicazione: Al cavalletto terminale il valore limite è superiore (ca. 60°).</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Min. Leerseilknickwinkel</source>
+        <translation>Angolo minimale della fune non caricata</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="85"/>
+        <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
+        <translation>Nel caso di un angolo convesso di 1° c&apos;è il rischio che la fune portante si decolla della sella (rosso). Il cavalletto deve essere alzato.
+Nel caso di un angolo tra 1° e 3° la fune portante deve essere atrezzato con un coprifune per sella (orange).</translation>
     </message>
 </context>
 <context>
@@ -1049,7 +1052,7 @@ Nel caso di un angolo tra 1° e 3° la fune portante deve essere atrezzato con u
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="388"/>
-       <source>Gesamtlast</source>
+        <source>Gesamtlast</source>
         <translation>Peso del carico, carrello compreso</translation>
     </message>
     <message>
@@ -1664,7 +1667,7 @@ Si prega di adattare l&apos;input.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="719"/>
-       <source>Gesamtlast</source>
+        <source>Gesamtlast</source>
         <translation>Peso del carico, carrello compreso</translation>
     </message>
     <message>
