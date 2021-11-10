@@ -232,6 +232,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             'qZ': self.fieldqZ,
             'qR': self.fieldqR,
             'SK': self.fieldSK,
+            'Anlagetyp': self.fieldAnlagetyp,
             
             'Min_Dist_Mast': self.fieldMinDist,
             'L_Delta': self.fieldLdelta,
@@ -410,7 +411,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         """Fills parameter values into GUI fields."""
         for field_name, field in self.parameterFields.items():
             val = self.paramHandler.getParameterAsStr(field_name)
-            if val:
+            if val is not None:
                 if isinstance(field, QComboBox):
                     val = self.paramHandler.getParameter(field_name)
                     field.setCurrentIndex(val)

@@ -727,6 +727,8 @@ class ParameterConfHandler(AbstractConfHandler):
     def checkRange(self, value, paramInfo):
         rMin = paramInfo['min']
         rMax = paramInfo['max']
+        if rMin == '' or rMax == '':
+            return True
         
         rangeSet = []
         for rangeItem in [rMin, rMax]:
@@ -1039,7 +1041,7 @@ class ConfigHandler(object):
             if params['setname'] not in self.params.parameterSets.keys():
                 # Save new parameter set
                 self.params.saveParameterSet(params['setname'])
-                self.params.currentSetName = params['setname']
+            self.params.currentSetName = params['setname']
             # Opt STA
             self.params.setOptSTA(params['optSTA'])
             # Parameter list
