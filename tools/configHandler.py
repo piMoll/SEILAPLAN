@@ -138,6 +138,7 @@ class ProjectConfHandler(AbstractConfHandler):
             'HM_fix_h': []
         }
         self.noPoleSection = []
+        self.prHeader = {}
         
         self.profile = None
         self.poles = None
@@ -145,6 +146,7 @@ class ProjectConfHandler(AbstractConfHandler):
     def setConfigFromFile(self, settings):
         """Load configuration from json file."""
         self.setProjectName(settings['projectname'])
+        self.setPrHeader(settings['header'])
         
         heightSource = settings['heightsource']
         self.setHeightSource(None, sourceType=heightSource['type'],
@@ -434,6 +436,7 @@ class ProjectConfHandler(AbstractConfHandler):
         return {
             'projectname': self.getProjectName(),
             'version': version,
+            'header': self.prHeader,
             'heightsource': {
                 'type': self.heightSourceType,
                 'source': self.getHeightSourceAsStr(source=True, formatting='json'),
@@ -508,6 +511,9 @@ class ProjectConfHandler(AbstractConfHandler):
         if self.heightSource.errorMsg:
             self.onError(self.heightSource.errorMsg)
         return profile
+
+    def setPrHeader(self, prHeaderData):
+        self.prHeader = prHeaderData
     
     def prepareForCalculation(self):
         success = True

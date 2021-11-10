@@ -24,7 +24,8 @@ import os
 
 # GUI and QGIS libraries
 from qgis.PyQt.QtCore import QFileInfo, QCoreApplication, QSettings, Qt
-from qgis.PyQt.QtWidgets import QDialog, QMessageBox, QFileDialog, QComboBox
+from qgis.PyQt.QtWidgets import (QDialog, QMessageBox, QFileDialog, QComboBox,
+                                 QTextEdit)
 from qgis.PyQt.QtGui import QPixmap
 from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject,
                        QgsCoordinateReferenceSystem)
@@ -86,6 +87,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         
         # Dictionary of all GUI setting fields
         self.parameterFields = {}
+        self.prHeaderFields = {}
         
         # GUI fields and variables handling coordinate information
         self.coordFields = {}
@@ -251,6 +253,13 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             'Ex': self.coordEx,
             'Ey': self.coordEy
         }
+        self.prHeaderFields = {
+            'PrVerf': self.fieldPrVerf,
+            'PrNr': self.fieldPrNr,
+            'PrGmd': self.fieldPrGmd,
+            'PrWald': self.fieldPrWald,
+            'PrBemerkung': self.fieldPrBemerkung,
+        }
     
     def onToggleHeightSource(self):
         if self.radioRaster.isChecked():
@@ -380,6 +389,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         # Emit point type change so that crane value can be removed
         #  from field if point type is not crane
         self.onTypeAChange()
+        # Fill in project header data (if present)
+        self.fillInPrHeaderData()
 
         # Set point types
         self.fieldTypeA.setCurrentIndex(
@@ -852,6 +863,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
     def onSaveProject(self):
         title = self.tr('Projekt speichern')
         fFilter = self.tr('Json (*.json)')
+        self.readoutPrHeaderData()
         if not self.confHandler.checkValidState():
             return
         filename, _ = QFileDialog.getSaveFileName(self, title,
@@ -967,11 +979,29 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         msg = self.tr('Erklaerungen Berechnungsbuttons')
         QMessageBox.information(self, self.tr("Naechste Schritte"), msg,
                                 QMessageBox.Ok)
+    
+    def fillInPrHeaderData(self):
+        for key, val in self.projectHandler.prHeader.items():
+            field = self.prHeaderFields[key]
+            if isinstance(field, QTextEdit):
+                field.setPlainText(val)
+            else:
+                field.setText(val)
+        
+    def readoutPrHeaderData(self):
+        prHeader = {}
+        for key, field in self.prHeaderFields.items():
+            if isinstance(field, QTextEdit):
+                prHeader[key] = field.toPlainText()
+            else:
+                prHeader[key] = field.text()
+        self.projectHandler.setPrHeader(prHeader)
         
     def goToAdjustmentWindow(self):
         if self.confHandler.checkValidState() \
                 and self.checkEqualSpatialRef \
                 and self.confHandler.prepareForCalculation():
+            self.readoutPrHeaderData()
             self.startAlgorithm = False
             self.goToAdjustment = True
             self.close()
@@ -983,6 +1013,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
                 and self.checkEqualSpatialRef \
                 and self.paramHandler.checkBodenabstand() \
                 and self.confHandler.prepareForCalculation():
+            self.readoutPrHeaderData()
             self.startAlgorithm = True
             self.goToAdjustment = False
             self.close()
