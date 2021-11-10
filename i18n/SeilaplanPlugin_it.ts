@@ -780,12 +780,12 @@ fune caricata</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="315"/>
         <source>Erklaerung Gesamtlast</source>
-        <translation type="unfinished">Die Gesamtlast berechnet sich aus der Anhängelast, dem Laufwagengewicht und dem Anschlagmittel.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="316"/>
         <source>Gesamtlast</source>
-        <translation type="unfinished">Gesamtlast</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="333"/>
@@ -925,6 +925,7 @@ fune caricata</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="433"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="518"/>
         <source>Nr.</source>
         <translatorcomment>HeProMo</translatorcomment>
         <translation>N°</translation>
@@ -1044,6 +1045,42 @@ fune caricata</translation>
         <location filename="../gui/ui_adjustmentDialog.py" line="455"/>
         <source>?</source>
         <translation>?</translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="541"/>
+        <source>Anlagetyp</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="552"/>
+        <source>Kopfdaten</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="546"/>
+        <source>Projektnummer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="547"/>
+        <source>Gemeinde</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="548"/>
+        <source>Waldort</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="549"/>
+        <source>Projektverfasser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="550"/>
+        <source>Bemerkungen
+(erscheint in Berichten)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1874,7 +1911,43 @@ Si prega di adattare l&apos;input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2270"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Anfangspunkt&lt;br&gt;&lt;span style=&quot; font-size: small;&quot;&gt;(bei Maschine/Winde)&lt;/span&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Punto iniziale&lt;br&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;(argano/macchina)&lt;/span&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Punto iniziale&lt;br&gt;&lt;span style=&quot; font-size: small;&quot;&gt;(argano/macchina)&lt;/span&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="831"/>
+        <source>Anlagetyp</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1156"/>
+        <source>Waldort</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1192"/>
+        <source>Projektverfasser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1202"/>
+        <source>Bemerkungen
+(erscheint in Berichten)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1222"/>
+        <source>Projektnummer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1235"/>
+        <source>Gemeinde</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1142"/>
+        <source>Kopfdaten</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2109,12 +2182,12 @@ Tipi di file supportati:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="939"/>
         <source>Erklaerung Gesamtlast</source>
-        <translation type="unfinished">Die Gesamtlast berechnet sich aus der Anhängelast, dem Laufwagengewicht und dem Anschlagmittel.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="940"/>
         <source>Gesamtlast</source>
-        <translation type="unfinished">Gesamtlast</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="944"/>

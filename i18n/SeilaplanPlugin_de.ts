@@ -685,7 +685,7 @@ Lastseil</translation>
         <translation>Minimaler Abstand zwischen Stützen</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="298 "/>
+        <location filename="../tools/outputReport.py" line="298"/>
         <source>Horiz. Aufloesung moegl. Stuetzenstandorte</source>
         <translation>Min. Abstand mögl. Stützenstandorte</translation>
     </message>
@@ -890,146 +890,183 @@ Lastseil</translation>
         <translation>Schliessen</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="466"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="561"/>
         <source>Ergebnisse speichern</source>
         <translation>Ergebnisse speichern</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="467"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="562"/>
         <source>Speichern</source>
         <translation>Speichern</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="438"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="523"/>
         <source>Stuetzen</source>
         <translation>Stützen</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="432"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="517"/>
         <source>Feinjustierung der Stuetzen</source>
         <translation>Feinjustierung der Stützen</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="433"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="518"/>
         <source>Nr.</source>
         <translation>Nr.</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="434"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="519"/>
         <source>Stuetzenbezeichnung</source>
         <translation>Stützenbezeichnung</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="435"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="520"/>
         <source>Horiz.distanz</source>
         <translation>Horiz.distanz</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="436"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="521"/>
         <source>Stuetzenhoehe</source>
         <translation>Sattelhöhe</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="437"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="522"/>
         <source>Neigung</source>
         <translatorcomment>Neigung der Stütze und nicht Geländeneigung</translatorcomment>
         <translation>Neigung</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="456"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="542"/>
         <source>Tragsystem</source>
         <translation>Tragsystem</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="449"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="531"/>
         <source>kN/m</source>
         <translation>kN/m</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="441"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="535"/>
         <source>Gesamtlast</source>
         <translation>Gesamtlast</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="452"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="534"/>
         <source>kN</source>
         <translation>kN</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="442"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="536"/>
         <source>Gewicht Rueckholseil</source>
         <translation>Metergewicht Rückholseil</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="451"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="524"/>
         <source>mm</source>
         <translation>mm</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="443"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="539"/>
         <source>Grundspannung Tragseil (Anfangssp.)</source>
         <translatorcomment>Grundspannung Tragseil (Anfangsspunkt)</translatorcomment>
         <translation>Tragseilspannkraft (Anfangsspunkt)</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="453"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="540"/>
         <source>Gewicht Tragseil</source>
         <translation>Metergewicht Tragseil</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="439"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="529"/>
         <source>Durchmesser Tragseil</source>
         <translation>Durchmesser Tragseil</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="445"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="537"/>
         <source>Minimaler Abstand Tragseil - Boden</source>
         <translation>Minimaler Abstand zwischen Tragseil und Boden</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="454"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="533"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="447"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="525"/>
         <source>Gewicht Zugseil</source>
         <translation>Metergewicht Zugseil</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="444"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="528"/>
         <source>Mindestbruchkraft Tragseil</source>
         <translation>Mindestbruchkraft Tragseil</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="459"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="545"/>
         <source>Kennwerte</source>
         <translation>Kennwerte</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="457"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="543"/>
         <source>Kennwerte und Maximalwerte</source>
         <translation>Kennwerte und Maximalwerte</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="458"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="544"/>
         <source>Klick auf Zeile markiert Position der Grenzwert-Ueberschreitung im Diagramm.</source>
         <translation>Klick auf Zeile markiert Position der Grenzwert-Überschreitung im Diagramm.</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="461"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="554"/>
         <source>Bemerkungen</source>
         <translation>Bemerkungen</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="460"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="553"/>
         <source>Bemerkungstext, welcher im technischen Bericht ergaenzt wird</source>
         <translation>Bemerkungstext, welcher im technischen Bericht ergänzt wird</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="455"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="538"/>
         <source>?</source>
         <translation>?</translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="541"/>
+        <source>Anlagetyp</source>
+        <translation>Anlagetyp</translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="552"/>
+        <source>Kopfdaten</source>
+        <translation>Kopfdaten</translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="546"/>
+        <source>Projektnummer</source>
+        <translation>Projektnummer</translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="547"/>
+        <source>Gemeinde</source>
+        <translation>Gemeinde</translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="548"/>
+        <source>Waldort</source>
+        <translation>Waldort</translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="549"/>
+        <source>Projektverfasser</source>
+        <translation>Projektverfasser</translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="550"/>
+        <source>Bemerkungen
+(erscheint in Berichten)</source>
+        <translation>Bemerkungen
+(erscheint in Berichten)</translation>
     </message>
 </context>
 <context>
@@ -1479,388 +1516,425 @@ Bitte passen Sie die Eingabe an.</translation>
         <translation>SEILAPLAN - Seilkran-Layoutplaner</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="819"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2706"/>
         <source>Projekt</source>
         <translation>Projekt</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="825"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2712"/>
         <source>Projektname</source>
         <translation>Projektname</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="860"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2747"/>
         <source>Einstellungen in Textdatei abspeichern</source>
         <translation>Einstellungen in Json-Datei abspeichern</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="895"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2782"/>
         <source>Projekteinstellungen aus Textdatei laden</source>
         <translation>Projekteinstellungen aus Json-Datei laden</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="926"/>
+        <location filename="../gui/seilaplanDialog.ui" line="65"/>
         <source>Eigenschaften der Seillinie</source>
         <translation>Eigenschaften der Seillinie</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="934"/>
+        <location filename="../gui/seilaplanDialog.ui" line="73"/>
         <source>Parameterset auswaehlen</source>
         <translation>Parameterset auswählen</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="966"/>
+        <location filename="../gui/seilaplanDialog.ui" line="105"/>
         <source>Eigenschaften der Seillinie in neuem Parameterset abspeichern</source>
         <translation>Eigenschaften der Seillinie in neuem Parameterset abspeichern</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="995"/>
+        <location filename="../gui/seilaplanDialog.ui" line="134"/>
         <source>Parameterset loeschen</source>
         <translation>Parameterset löschen</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1024"/>
+        <location filename="../gui/seilaplanDialog.ui" line="163"/>
         <source>Seillinie</source>
         <translation>Seillinie</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1245"/>
+        <location filename="../gui/seilaplanDialog.ui" line="384"/>
         <source>Minimaler Abstand Tragseil - Boden</source>
         <translation>Minimaler Abstand Tragseil - Boden</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2495"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2145"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1076"/>
+        <location filename="../gui/seilaplanDialog.ui" line="215"/>
         <source>einzuhalten bis ... vor dem Endpunkt</source>
         <translation>einzuhalten bis ... vor dem Endpunkt</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1156"/>
+        <location filename="../gui/seilaplanDialog.ui" line="295"/>
         <source>Hoehe Seilkranmast</source>
         <translation>Höhe Mast Mobilseilkran</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1432"/>
+        <location filename="../gui/seilaplanDialog.ui" line="571"/>
         <source>Seillinie befahrbar bis ... vor dem Endpunkt</source>
         <translatorcomment>Korrekter: Tragseil befahrbar ...</translatorcomment>
         <translation>Tragseil befahrbar bis ... vor dem Endpunkt</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1124"/>
+        <location filename="../gui/seilaplanDialog.ui" line="263"/>
         <source>Seilsystem</source>
         <translation>Seilsystem</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1471"/>
+        <location filename="../gui/seilaplanDialog.ui" line="610"/>
         <source>Zweiseil-System</source>
         <translation>Zweiseil-System</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1476"/>
+        <location filename="../gui/seilaplanDialog.ui" line="615"/>
         <source>Mehrseil-System</source>
         <translation>Mehrseil-System</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1232"/>
+        <location filename="../gui/seilaplanDialog.ui" line="371"/>
         <source>einzuhalten ab ... vom Anfangspunkt</source>
         <translation>einzuhalten ab ... vom Anfangspunkt</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1302"/>
+        <location filename="../gui/seilaplanDialog.ui" line="441"/>
         <source>Seillinie befahrbar ab ... vom Anfangspunkt</source>
         <translatorcomment>Tragseil befahrbar...</translatorcomment>
         <translation>Tragseil befahrbar ab ... vom Anfangspunkt</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1169"/>
+        <location filename="../gui/seilaplanDialog.ui" line="308"/>
         <source>Bodenabstand</source>
         <translation>Bodenabstand</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2906"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2909"/>
         <source>?</source>
         <translation>?</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1493"/>
+        <location filename="../gui/seilaplanDialog.ui" line="632"/>
         <source>Maschinendaten</source>
         <translation>Maschinendaten</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1748"/>
+        <location filename="../gui/seilaplanDialog.ui" line="919"/>
         <source>kN/m</source>
         <translation>kN/m</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1824"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1002"/>
         <source>Gesamtlast</source>
         <translation>Gesamtlast</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1805"/>
+        <location filename="../gui/seilaplanDialog.ui" line="983"/>
         <source>kN</source>
         <translation>kN</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1646"/>
+        <location filename="../gui/seilaplanDialog.ui" line="812"/>
         <source>Gewicht Rueckholseil</source>
         <translation>Metergewicht Rückholseil</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1561"/>
+        <location filename="../gui/seilaplanDialog.ui" line="713"/>
         <source>Gewicht Zugseil</source>
         <translation>Metergewicht Zugseil</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1780"/>
+        <location filename="../gui/seilaplanDialog.ui" line="958"/>
         <source>Durchmesser Tragseil</source>
         <translation>Durchmesser Tragseil</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1894"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1072"/>
         <source>Gewicht Tragseil</source>
         <translation>Metergewicht Tragseil</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1881"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1059"/>
         <source>mm</source>
         <translation>mm</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1723"/>
+        <location filename="../gui/seilaplanDialog.ui" line="926"/>
         <source>Mindestbruchkraft Tragseil</source>
         <translation>Mindestbruchkraft Tragseil</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2119"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1261"/>
         <source>Optional #1</source>
         <translation>Optional #1</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2508"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1650"/>
         <source>Kuenstliche Stuetze ab Stuetzenhoehe von</source>
         <translation>Künstliche Stütze ab Sattelhöhe von</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2521"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1663"/>
         <source>Maximale Stuetzenhoehe</source>
         <translation>Maximale Sattelhöhe</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2139"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1281"/>
         <source>Minimale Stuetzenhoehe</source>
         <translation>Minimale Sattelhöhe</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2354"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1496"/>
         <source>Horiz. Aufloesung moegl. Stuetzenstandorte</source>
         <translation>Minimaler Abstand mögl. Stützenstandorte</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2244"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1386"/>
         <source>Abstufungsinterval</source>
         <translation>Abstufungsintervall</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2209"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1351"/>
         <source>Optimierungsparameter</source>
         <translation>Optimierungsparameter</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2373"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1515"/>
         <source>Minimaler Abstand zwischen Stuetzen</source>
         <translation>Minimaler Abstand zwischen Stützen</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1653"/>
+        <location filename="../gui/seilaplanDialog.ui" line="805"/>
         <source>Grundspannung</source>
         <translation>Tragseilspannkraft (Grundspannung)</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2576"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1718"/>
         <source>Optional #2</source>
         <translation>Optional #2</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2622"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1764"/>
         <source>Diverses</source>
         <translation>Diverses</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2676"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1818"/>
         <source>kN/mm2</source>
         <translation>kN/mm2</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2609"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1751"/>
         <source>Elastizitaetsmodul Tragseil</source>
         <translation>Elastizitätsmodul Tragseil</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2757"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1899"/>
         <source>Fuellfaktor</source>
         <translation>Füllfaktor</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2718"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1860"/>
         <source>Sicherheitsfaktor</source>
         <translation>Sicherheitsfaktor</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="71"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2560"/>
         <source>Terraindaten</source>
         <translation>Terraindaten</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="82"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2571"/>
         <source>Rasterlayer</source>
         <translation>Rasterlayer</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="89"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2578"/>
         <source>Gelaendeprofil</source>
         <translation>Geländeprofil</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="108"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2597"/>
         <source>Liste der in QGIS geladenen Raster aktualisieren</source>
         <translation>Liste der in QGIS geladenen Raster aktualisieren</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="142"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2631"/>
         <source>Pfad zu csv-Datei</source>
         <translation>Pfad zu csv-Datei</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="161"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2650"/>
         <source>Oeffne Komma-getrennte Textdatei (.csv Datei)</source>
         <translation>Öffne Komma-getrennte Textdatei (.csv Datei)</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2823"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2826"/>
         <source>Info</source>
         <translation>Info</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2852"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2855"/>
         <source>Abbrechen</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2862"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2865"/>
         <source>Stuetzenoptimierung ueberspringen und direkt zur manuellen Bearbeitung der Seillinie uebergehen</source>
         <translation>Stützenoptimierung überspringen und direkt zur manuellen Bearbeitung der Seillinie übergehen</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2865"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2868"/>
         <source>Seillinie direkt bearbeiten</source>
         <translation>Seillinie manuell bearbeiten</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2875"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2878"/>
         <source>Berechnung der optimalen Stuetzenstandorte ausfuehren</source>
         <translation>Berechnung der optimalen Stützenstandorte ausführen</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2878"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2881"/>
         <source>Stuetzen optimieren</source>
         <translation>Seillinie automatisch optimieren</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="217"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1952"/>
         <source>Verlauf der Seillinie</source>
         <translatorcomment>Habe nicht gefunden, wo das vorkommt. Was ist mit Verlauf genau gemeint?</translatorcomment>
         <translation>Verlauf der Seillinie</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="237"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1972"/>
         <source>oder Koordinaten der Seillinie manuell angeben:</source>
         <translatorcomment>Ich habe &quot;angeben&quot; durch &quot;eingeben&quot; ersetzt</translatorcomment>
         <translation>oder Koordinaten der Seillinie manuell eingeben:</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="267"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2002"/>
         <source>zeichnen</source>
         <translation>zeichnen</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="283"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2018"/>
         <source>OpenStreetMap Layer laden</source>
         <translation>OpenStreetMap Layer laden</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="300"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2035"/>
         <source>Seillinie in Karte einzeichnen</source>
         <translation>Seillinie in Karte einzeichnen</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="326"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2061"/>
         <source>Hoehenlinien darstellen</source>
         <translation>Höhenlinien darstellen</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="347"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2082"/>
         <source>X-Koordinate</source>
         <translation>X-Koordinate</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="698"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2433"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/plugins/SeilaplanPlugin/gui/icons/icon_yellow.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/plugins/SeilaplanPlugin/gui/icons/icon_yellow.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="498"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2233"/>
         <source>Stuetze</source>
         <translation>Stütze</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="493"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2228"/>
         <source>Verankerung</source>
         <translation>Verankerung</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="465"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2200"/>
         <source>Seilkran</source>
         <translation>Seilkran</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="473"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2208"/>
         <source>Punktart</source>
         <translation>Bauelement</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="553"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2288"/>
         <source>Endpunkt</source>
         <translation>Endpunkt</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="566"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2301"/>
         <source>Horizontaldistanz</source>
         <translation>Horizontaldistanz</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="610"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2345"/>
         <source>Gelaendelinie in Diagramm darstellen und fixe Stuetzen definieren</source>
         <translation>Geländelinie in Diagramm darstellen und fixe Stützen definieren</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="613"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2348"/>
         <source>Gelaendelinie</source>
         <translation>Geländelinie</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="688"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2423"/>
         <source>Y-Koordinate</source>
         <translation>Y-Koordinate</translation>
     </message>
     <message>
+        <location filename="../gui/seilaplanDialog.ui" line="831"/>
+        <source>Anlagetyp</source>
+        <translation>Anlagetyp</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1156"/>
+        <source>Waldort</source>
+        <translation>Waldort</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1192"/>
+        <source>Projektverfasser</source>
+        <translation>Projektverfasser</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1202"/>
+        <source>Bemerkungen
+(erscheint in Berichten)</source>
+        <translation>Bemerkungen
+(erscheint in Berichten)</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1222"/>
+        <source>Projektnummer</source>
+        <translation>Projektnummer</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1235"/>
+        <source>Gemeinde</source>
+        <translation>Gemeinde</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1142"/>
+        <source>Kopfdaten</source>
+        <translation>Kopfdaten</translation>
+    </message>
+    <message>
         <location filename="../gui/seilaplanDialog.ui" line="2291"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Anfangspunkt&lt;br&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;(bei Maschine/Winde)&lt;/span&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Anfangspunkt&lt;br&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;(bei Maschine/Winde)&lt;/span&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Anfangspunkt&lt;br&gt;&lt;span style=&quot; font-size: small;&quot;&gt;(bei Maschine/Winde)&lt;/span&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Anfangspunkt&lt;br&gt;&lt;span style=&quot; font-size: small;&quot;&gt;(bei Maschine/Winde)&lt;/span&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -2065,7 +2139,7 @@ Unterstützte Dateitypen:
 Es wird mit der eingegebenen Tragseilspannkraft gerechnet.
 
 Seillinie automatisch optimieren:
-Die optimale Tragseilspannkraft wird berechnet. Die Optimierung wird bei 75 Prozent des eingegebenen Werts gestartet.</translation>
+Die optimale Tragseilspannkraft wird berechnet.&#xa0;Die Optimierung wird bei 75 Prozent des eingegebenen Werts gestartet.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="945"/>

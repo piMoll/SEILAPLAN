@@ -720,7 +720,7 @@ loaded skyline</translation>
         <translation>Artificial support from saddle height of</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="298"/>
+        <location filename="../tools/outputReport.py" line="378"/>
         <source>Grundspannung Tragseil (Anfangssp.)</source>
         <translation>Pre-stress tensile force of unloaded skyline (start p.)</translation>
     </message>
@@ -740,12 +740,12 @@ loaded skyline</translation>
         <translation>Safety factor of skyline</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="373"/>
+        <location filename="../tools/outputReport.py" line="464"/>
         <source>Total</source>
         <translation>Total</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="464"/>
+        <location filename="../tools/outputReport.py" line="373"/>
         <source>Parameterset</source>
         <translation>Parameterset</translation>
     </message>
@@ -779,12 +779,12 @@ loaded skyline</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="315"/>
         <source>Erklaerung Gesamtlast</source>
-        <translation type="unfinished">Die Gesamtlast berechnet sich aus der Anhängelast, dem Laufwagengewicht und dem Anschlagmittel.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="316"/>
         <source>Gesamtlast</source>
-        <translation type="unfinished">Gesamtlast</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="333"/>
@@ -867,13 +867,13 @@ loaded skyline</translation>
 <context>
     <name>AdjustmentDialogUI</name>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="429"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="516"/>
         <source>Manuelle Anpassung</source>
         <translatorcomment>Internet</translatorcomment>
         <translation>Manual adjustment</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="431"/>
+        <location filename="../gui/ui_adjustmentDialog.py" line="555"/>
         <source>Neuberechnung...</source>
         <translatorcomment>Internet</translatorcomment>
         <translation>Recalculation...</translation>
@@ -1048,6 +1048,43 @@ loaded skyline</translation>
         <location filename="../gui/ui_adjustmentDialog.py" line="455"/>
         <source>?</source>
         <translation>?</translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="541"/>
+        <source>Anlagetyp</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="552"/>
+        <source>Kopfdaten</source>
+        <translation>Header data</translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="546"/>
+        <source>Projektnummer</source>
+        <translation>Project number</translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="547"/>
+        <source>Gemeinde</source>
+        <translation>Municipality</translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="548"/>
+        <source>Waldort</source>
+        <translation>Forest site</translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="549"/>
+        <source>Projektverfasser</source>
+        <translation>Project author</translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="550"/>
+        <source>Bemerkungen
+(erscheint in Berichten)</source>
+        <translation>Notes
+(will be included in reports)</translation>
     </message>
 </context>
 <context>
@@ -1876,8 +1913,45 @@ Please change the input.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="512"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Anfangspunkt&lt;br&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;(bei Maschine/Winde)&lt;/span&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Starting point&lt;br&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;(at winch/machine)&lt;/span&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Anfangspunkt&lt;br&gt;&lt;span style=&quot; font-size: small;&quot;&gt;(bei Maschine/Winde)&lt;/span&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Starting point&lt;br&gt;&lt;span style=&quot; font-size: small;&quot;&gt;(at winch/machine)&lt;/span&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="831"/>
+        <source>Anlagetyp</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1156"/>
+        <source>Waldort</source>
+        <translation>Forest site</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1192"/>
+        <source>Projektverfasser</source>
+        <translation>Project author</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1202"/>
+        <source>Bemerkungen
+(erscheint in Berichten)</source>
+        <translation>Notes
+(will be included in reports)</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1222"/>
+        <source>Projektnummer</source>
+        <translation>Project number</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1235"/>
+        <source>Gemeinde</source>
+        <translation>Municipality</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1142"/>
+        <source>Kopfdaten</source>
+        <translation>Header data</translation>
     </message>
 </context>
 <context>
@@ -2111,12 +2185,12 @@ Supported data types:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="939"/>
         <source>Erklaerung Gesamtlast</source>
-        <translation type="unfinished">Die Gesamtlast berechnet sich aus der Anhängelast, dem Laufwagengewicht und dem Anschlagmittel.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="940"/>
         <source>Gesamtlast</source>
-        <translation type="unfinished">Gesamtlast</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="944"/>
