@@ -153,6 +153,7 @@ class ProjectConfHandler(AbstractConfHandler):
                              sourcePath=heightSource['source'])
 
         if self.heightSource and self.heightSourceType == 'survey':
+            self.heightSource: SurveyData
             self.heightSource.reprojectToCrs(heightSource['crs'])
 
         self.setPoint('A', settings['profile']['start']['coordinates'])
@@ -185,6 +186,7 @@ class ProjectConfHandler(AbstractConfHandler):
         
         elif property_name == 'KBS':
             if self.heightSource and self.heightSourceType == 'survey':
+                self.heightSource: SurveyData
                 self.heightSource.reprojectToCrs(value)
         
         elif property_name in ['Anfangspunkt', 'Endpunkt']:
@@ -370,7 +372,8 @@ class ProjectConfHandler(AbstractConfHandler):
     
     def getAzimut(self):
         return '' if self.azimut is None else self.azimut
-    
+
+    # noinspection PyUnresolvedReferences
     def setAzimut(self):
         azimut = None
         if self.profileIsValid():
@@ -382,7 +385,8 @@ class ProjectConfHandler(AbstractConfHandler):
     
     def getProfileLenAsStr(self):
         return '' if self.profileLength is None else f"{self.profileLength:.0f}"
-    
+
+    # noinspection PyUnresolvedReferences
     def setProfileLen(self):
         length = None
         if self.profileIsValid():
@@ -595,7 +599,8 @@ class ParameterConfHandler(AbstractConfHandler):
         self.currentSetName = ''
         self.parameterSets = {}
         self.defaultSet = self.tr('Standardparameter')
-    
+
+    # noinspection PyTypeChecker
     def initParameters(self):
         # Load parameter definitions and rules from text file
         parameterDef = self.readParamsFromTxt(
