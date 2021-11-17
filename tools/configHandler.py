@@ -601,17 +601,11 @@ class ParameterConfHandler(AbstractConfHandler):
         parameterDef = self.readParamsFromTxt(
             os.path.join(HOMEPATH, '../config', 'params.txt'))
         
-        for key, pDef in parameterDef.items():
-            parameterDef[key]['value'] = None
-            
-            # Cast numeric information to int / float
-            for field in ['std_val', 'sort']:
-                if not pDef[field].isalpha():
-                    parameterDef[key][field] = self.castToNumber(
-                        pDef['dtype'], pDef[field])
-            
-            if parameterDef[key]['std_val']:
-                parameterDef[key]['value'] = parameterDef[key]['std_val']
+        for paramName in parameterDef.keys():
+            # Set default value to None
+            parameterDef[paramName]['value'] = None
+            # Cast sort number to int
+            parameterDef[paramName]['sort'] = int(parameterDef[paramName]['sort'])
         
         # Get the order of parameters for export to file
         orderedKeyList = []
