@@ -761,6 +761,31 @@ fune caricata</translation>
         <translatorcomment>HeProMo</translatorcomment>
         <translation>Sistema a due funi</translation>
     </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="356"/>
+        <source>Projektverfasser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="356"/>
+        <source>Projektnummer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="357"/>
+        <source>Gemeinde</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="357"/>
+        <source>Waldort</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="358"/>
+        <source>Anlagetyp</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AbstractConfHandler</name>

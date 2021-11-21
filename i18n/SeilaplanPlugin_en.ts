@@ -760,6 +760,31 @@ loaded skyline</translation>
         <translatorcomment>HeProMo</translatorcomment>
         <translation>Two-cable system</translation>
     </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="356"/>
+        <source>Projektverfasser</source>
+        <translation>Project author</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="356"/>
+        <source>Projektnummer</source>
+        <translation>Project number</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="357"/>
+        <source>Gemeinde</source>
+        <translation>Municipality</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="357"/>
+        <source>Waldort</source>
+        <translation>Forest site</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="358"/>
+        <source>Anlagetyp</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AbstractConfHandler</name>

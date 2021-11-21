@@ -749,6 +749,31 @@ Lastseil</translation>
         <source>Zweiseil-System</source>
         <translation>Zweiseil-System</translation>
     </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="356"/>
+        <source>Projektverfasser</source>
+        <translation>Projektverfasser</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="356"/>
+        <source>Projektnummer</source>
+        <translation>Projektnummer</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="357"/>
+        <source>Gemeinde</source>
+        <translation>Gemeinde</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="357"/>
+        <source>Waldort</source>
+        <translation>Waldort</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="358"/>
+        <source>Anlagetyp</source>
+        <translation>Anlagetyp</translation>
+    </message>
 </context>
 <context>
     <name>AbstractConfHandler</name>
@@ -1066,7 +1091,7 @@ Lastseil</translation>
         <source>Bemerkungen
 (erscheint in Berichten)</source>
         <translation>Bemerkungen
-(erscheint in Berichten)</translation>
+(erscheint im Bericht)</translation>
     </message>
 </context>
 <context>
@@ -1914,7 +1939,7 @@ Bitte passen Sie die Eingabe an.</translation>
         <source>Bemerkungen
 (erscheint in Berichten)</source>
         <translation>Bemerkungen
-(erscheint in Berichten)</translation>
+(erscheint im Bericht)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1222"/>
@@ -2139,7 +2164,7 @@ Unterstützte Dateitypen:
 Es wird mit der eingegebenen Tragseilspannkraft gerechnet.
 
 Seillinie automatisch optimieren:
-Die optimale Tragseilspannkraft wird berechnet.&#xa0;Die Optimierung wird bei 75 Prozent des eingegebenen Werts gestartet.</translation>
+Die optimale Tragseilspannkraft wird berechnet. Die Optimierung wird bei 75 Prozent des eingegebenen Werts gestartet.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="945"/>
