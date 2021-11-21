@@ -220,12 +220,12 @@ if __name__ == "__main__":
         # Create short report PDF
         ####
         print('Create short report...')
-        generateShortReport(config, resultDict, '', projName, outputLoc)
+        generateShortReport(config, resultDict, projName, outputLoc)
         
         # Create detailed report PDF
         ####
         print('Create detailed report...')
-        reportText = generateReportText(config, resultDict, '', projName)
+        reportText = generateReportText(config, resultDict, projName)
         generateReport(reportText, outputLoc)
     
         # Create plot PDF

@@ -24,7 +24,7 @@ import numpy as np
 from math import floor
 
 from qgis.PyQt.QtCore import QTimer, Qt, QCoreApplication
-from qgis.PyQt.QtWidgets import QDialog, QMessageBox
+from qgis.PyQt.QtWidgets import QDialog, QMessageBox, QTextEdit
 from qgis.PyQt.QtGui import QPixmap
 
 from .ui_adjustmentDialog import Ui_AdjustmentDialogUI
@@ -105,6 +105,15 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         
         self.paramLayout = AdjustmentDialogParams(self, self.confHandler.params)
         
+        # Project header
+        self.prHeaderFields = {
+            'PrVerf': self.fieldPrVerf,
+            'PrNr': self.fieldPrNr,
+            'PrGmd': self.fieldPrGmd,
+            'PrWald': self.fieldPrWald,
+            'PrBemerkung': self.fieldPrBemerkung,
+        }
+        
         # Thread for instant recalculation when poles or parameters are changed
         self.timer = QTimer()
         self.configurationHasChanged = False
@@ -118,7 +127,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.btnClose.clicked.connect(self.onClose)
         self.btnSave.clicked.connect(self.onSave)
         self.btnBackToStart.clicked.connect(self.onReturnToStart)
-        self.fieldComment.textChanged.connect(self.onCommentChanged)
+        for field in self.prHeaderFields.values():
+            field.textChanged.connect(self.onPrHeaderChanged)
         self.infoQ.clicked.connect(self.onShowInfoFieldQ)
     
     # noinspection PyMethodMayBeStatic
@@ -204,6 +214,9 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         # Mark profile line and poles on map
         self.updateLineOnMap()
         self.addMarkerToMap()
+        
+        # Fill in project header data
+        self.fillInPrHeaderData()
         
         # Start Thread to recalculate cable line every 300 milliseconds
         self.timer.timeout.connect(self.recalculate)
@@ -319,8 +332,25 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
     def updateCableParam(self):
         self.configurationHasChanged = True
     
-    def onCommentChanged(self):
+    def onPrHeaderChanged(self):
         self.unsavedChanges = True
+
+    def fillInPrHeaderData(self):
+        for key, val in self.confHandler.project.prHeader.items():
+            field = self.prHeaderFields[key]
+            if isinstance(field, QTextEdit):
+                field.setPlainText(val)
+            else:
+                field.setText(val)
+
+    def readoutPrHeaderData(self):
+        prHeader = {}
+        for key, field in self.prHeaderFields.items():
+            if isinstance(field, QTextEdit):
+                prHeader[key] = field.toPlainText()
+            else:
+                prHeader[key] = field.text()
+        self.confHandler.project.setPrHeader(prHeader)
     
     def updateRecalcStatus(self, status):
         self.status = status
@@ -461,6 +491,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.close()
     
     def onReturnToStart(self):
+        self.readoutPrHeaderData()
         self.doReRun = True
         self.close()
     
@@ -468,6 +499,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.saveDialog.doSave = False
         self.saveDialog.exec()
         if self.saveDialog.doSave:
+            self.readoutPrHeaderData()
             self.confHandler.updateUserSettings()
             self.createOutput()
             self.unsavedChanges = False
@@ -485,14 +517,12 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
 
         # Create short report
         if self.confHandler.getOutputOption('shortReport'):
-            generateShortReport(self.confHandler, self.result,
-                                self.fieldComment.toPlainText(), projName,
+            generateShortReport(self.confHandler, self.result, projName,
                                 outputLoc)
 
         # Create technical report
         if self.confHandler.getOutputOption('report'):
-            reportText = generateReportText(self.confHandler, self.result,
-                                            self.fieldComment.toPlainText(), projName)
+            reportText = generateReportText(self.confHandler, self.result, projName)
             generateReport(reportText, outputLoc)
         
         # Create plot

@@ -935,53 +935,6 @@
              </item>
             </layout>
            </widget>
-           <widget class="QWidget" name="tabComment">
-            <attribute name="title">
-             <string>Bemerkungen</string>
-            </attribute>
-            <layout class="QVBoxLayout" name="verticalLayout_4">
-             <item>
-              <layout class="QVBoxLayout" name="verticalLayout_3">
-               <item>
-                <widget class="QLabel" name="label_16">
-                 <property name="text">
-                  <string>Bemerkungstext, welcher im technischen Bericht ergaenzt wird</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPlainTextEdit" name="fieldComment">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>120</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="verticalSpacer_3">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>40</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-              </layout>
-             </item>
-            </layout>
-           </widget>
           </widget>
          </item>
         </layout>
@@ -1113,7 +1066,6 @@
   <tabstop>fieldBabstMin</tabstop>
   <tabstop>fieldAnlagetyp</tabstop>
   <tabstop>tableThresholds</tabstop>
-  <tabstop>fieldComment</tabstop>
   <tabstop>btnBackToStart</tabstop>
   <tabstop>btnClose</tabstop>
   <tabstop>btnSave</tabstop>

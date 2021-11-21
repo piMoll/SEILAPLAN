@@ -42,7 +42,8 @@ class AdjustmentDialogParams(object):
             'qZ': self.parent.fieldqZ,
             'qR': self.parent.fieldqR,
             'Vorsp': self.parent.fieldVorsp,
-            'Bodenabst_min': self.parent.fieldBabstMin
+            'Bodenabst_min': self.parent.fieldBabstMin,
+            'Anlagetyp': self.parent.fieldAnlagetyp,
         }
         self.connectFields()
 
@@ -55,6 +56,7 @@ class AdjustmentDialogParams(object):
             'qZ': self.paramHandler.getParameterAsStr('qZ'),
             'qR': self.paramHandler.getParameterAsStr('qR'),
             'Bodenabst_min': self.paramHandler.getParameterAsStr('Bodenabst_min'),
+            'Anlagetyp': self.paramHandler.getParameterAsStr('Anlagetyp'),
             'Vorsp': str(self.paramHandler.optSTA),
         }
         for key, field in self.fields.items():
@@ -79,23 +81,33 @@ class AdjustmentDialogParams(object):
             lambda: self.paramHasChanged('Vorsp'))
         self.parent.fieldBabstMin.editingFinished.connect(
             lambda: self.paramHasChanged('Bodenabst_min'))
+        self.parent.fieldAnlagetyp.editingFinished.connect(
+            lambda: self.paramHasChanged('Anlagetyp'))
 
     def paramHasChanged(self, fieldName=''):
-        newVal = float(self.fields[fieldName].text())
-        if fieldName == 'Vorsp':
-            newVal = self.parent.updateOptSTA(newVal)
-        elif fieldName in ['D', 'MBK']:
-            newVal = self.paramHandler.setParameter(fieldName, newVal)
-            self.paramHandler.prepareForCalculation()
-        elif fieldName in ['qZ', 'qR']:
-            newVal = self.paramHandler.setParameter(fieldName, newVal)
-            self.paramHandler.setPullRope(self.parent.profile.direction)
-        else:
-            newVal = self.paramHandler.setParameter(fieldName, newVal)
+        newVal = self.fields[fieldName].text()
+        if fieldName != 'Anlagetyp':
+            try:
+                newVal = float(newVal)
+            except ValueError:
+                newVal = False
         
         if newVal is not False:
-            # Set correctly formatted Value
-            self.fields[fieldName].blockSignals(True)
-            self.fields[fieldName].setText(str(newVal))
-            self.fields[fieldName].blockSignals(False)
-            self.parent.updateCableParam()
+            if fieldName == 'Vorsp':
+                newVal = self.parent.updateOptSTA(newVal)
+            elif fieldName in ['D', 'MBK']:
+                newVal = self.paramHandler.setParameter(fieldName, newVal)
+                self.paramHandler.prepareForCalculation()
+            elif fieldName in ['qZ', 'qR']:
+                newVal = self.paramHandler.setParameter(fieldName, newVal)
+                self.paramHandler.setPullRope(self.parent.profile.direction)
+            else:
+                newVal = self.paramHandler.setParameter(fieldName, newVal)
+                
+        if newVal is False:
+            newVal = ''
+        # Set correctly formatted Value
+        self.fields[fieldName].blockSignals(True)
+        self.fields[fieldName].setText(str(newVal))
+        self.fields[fieldName].blockSignals(False)
+        self.parent.updateCableParam()

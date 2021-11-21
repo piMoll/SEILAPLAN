@@ -73,18 +73,20 @@ def removeTxtElements(text, key):
         return text
 
 
-def generateReportText(confHandler, result, comment, projname):
+def generateReportText(confHandler, result, projname):
     """ Arrange texts and values for report generation.
     
     :type confHandler: configHandler.ConfigHandler
     """
     poles = confHandler.project.poles
+    prHeader = confHandler.project.prHeader
     polesWithAnchors = poles.poles
     polesWithoutAnchors = polesWithAnchors[poles.idxA:poles.idxE+1]
     hmpath = textwrap.wrap(confHandler.project.getHeightSourceAsStr(source=True, formatting='comma'), 120)
     # Shorten list to display max. 3 items
-    del hmpath[3:]
-    hmpath.append('...')
+    if len(hmpath) > 3:
+        del hmpath[3:]
+        hmpath[-1] += ' ...'
     hmodell = '\n'.join(hmpath)
     kraft = result['force']
     az_grad = math.degrees(poles.azimut)
@@ -94,26 +96,26 @@ def generateReportText(confHandler, result, comment, projname):
     fieldCount = poleCount - 1
     sHeader = [i['name'] for i in polesWithoutAnchors]
     fHeader = [f"{i+1}. " + tr('Feld') for i in range(fieldCount)]
+    
+    # comment = prHeader['PrBemerkung'].split('\n')
+    # commentWrapped = [textwrap.wrap(c, 150) for c in comment]
+    # commentWrapped = [line for sublist in commentWrapped for line in sublist]
 
     # First section with duration, dhm and several comments
     str_time = [
         [],
-        [tr('Zeitpunkt'), "{}, {}: {}".format(result['duration'][2],
-                                              tr('Berechnungsdauer'),
-                                              result['duration'][0])],
-        [tr('Hoehendaten'), hmodell], []]
-    if comment:
-        commentWraped = textwrap.fill(comment, 150).split('\n')
-        # First line
-        str_time.append([tr('Bemerkung'), commentWraped[0]])
-        # Consecutive lines
-        for line in commentWraped[1:]:
-            str_time.append(['', line])
-        str_time.append([])
+        [tr('Datum'), "{}, {}: {}".format(result['duration'][2], tr('Berechnungsdauer'), result['duration'][0])],
+        [tr('Projektverfasser'), (prHeader['PrVerf'] or '-')],
+        [tr('Projektnummer'), (prHeader['PrNr'] or '-')],
+        [tr('Gemeinde'), (prHeader['PrGmd'] or '-')],
+        [tr('Waldort'), (prHeader['PrWald'] or '-')],
+        [tr('Anlagetyp'), (confHandler.params.getParameterAsStr('Anlagetyp') or '-')],
+        [tr('Hoehendaten'), hmodell],
+        [tr('Bemerkung'), ('\n'.join(textwrap.wrap(prHeader['PrBemerkung'], 150) or '-'))],
+        [],
+        ['', tr('Erklaerungen und Diagramme zu den technischen Werten '
+                'sind in der Dokumentation zu finden.')]]
 
-    str_time.append(['', tr('Erklaerungen und Diagramme zu den technischen Werten '
-                        'sind in der Dokumentation zu finden.')])
-    
     # Section poles
     str_posi = [["", tr('Hoehe Sattel [m]'), tr('Neigung []'), tr('X-Koordinate'),
                  tr('Y-Koordinate'), tr('Z-Koordinate [m.ue.M.]')]]
@@ -326,22 +328,19 @@ def generateReportText(confHandler, result, comment, projname):
     return str_report
 
 
-def generateShortReport(confHandler, result, comment, projname, outputLoc):
+def generateShortReport(confHandler, result, projname, outputLoc):
 
     styles = getSampleStyleSheet()
     styles.add(ParagraphStyle(name='disclaimer', fontSize=6,
                               fontName='Helvetica', leading=9))
-    styles.add(ParagraphStyle(name='continuousTxt', fontSize=9,
-                              fontName='Helvetica'))
     
     poles = confHandler.project.poles
+    prHeader = confHandler.project.prHeader
     polesArray = []
     for pole in poles.poles:
         if not pole['active']:
             continue
         polesArray.append(pole)
-    hmPath = textwrap.wrap(confHandler.project.getHeightSourceAsStr(source=True, formatting='comma'), 85)
-    hmodell = '\n'.join(hmPath)
     kraft = result['force']
     
     setname = confHandler.params.currentSetName
@@ -354,15 +353,17 @@ def generateShortReport(confHandler, result, comment, projname, outputLoc):
     ###
     s_gener = [
         [tr('Datum'), result['duration'][2]],
-        [tr('Hoehendaten'), hmodell],
-        [tr('Azimut'), "{:.2f} {} / {:.2f}°".format(az_gon, tr('gon'), az_grad)]
+        [tr('Projektverfasser'), (prHeader['PrVerf'] or '-'), tr('Projektnummer'), (prHeader['PrNr'] or '-')],
+        [tr('Gemeinde'), (prHeader['PrGmd'] or '-'), tr('Waldort'), (prHeader['PrWald'] or '-')],
+        [tr('Anlagetyp'), (confHandler.params.getParameterAsStr('Anlagetyp') or '-'), '', ''],
+        [tr('Bemerkung'), ('\n'.join(textwrap.wrap(prHeader['PrBemerkung'], 100) or '-'))],
     ]
     
     # Input values
     ###
     param = {}
     param_list = ['D', 'MBK', 'Q', 'Bodenabst_min', 'Bodenabst_A',
-                  'Bodenabst_E', 'SF_T']
+                  'Bodenabst_E', 'SF_T', 'E']
     
     for key in param_list:
         p = confHandler.params.params[key]
@@ -377,7 +378,7 @@ def generateShortReport(confHandler, result, comment, projname, outputLoc):
         ['', ''] + param['Bodenabst_E'],
         [tr('Grundspannung Tragseil (Anfangssp.)'), f"{confHandler.params.optSTA:.0f}kN"]
             + [tr('Grundspannung (Endpunkt)'), f"{kraft['Spannkraft'][1]:.0f} kN"],
-        param['SF_T']]
+        param['SF_T'] + param['E']]
     
     # Pole dimensions
     ###
@@ -422,10 +423,11 @@ def generateShortReport(confHandler, result, comment, projname, outputLoc):
     
     # Fields
     ###
-    s_field1 = [[tr('Berechnete Seillaenge'), f"{kraft['LaengeSeil'][1]:.1f} m"],
-                [tr('Max. Abstand Leerseil - Boden'),
-                 f"{result['cableline']['maxDistToGround']:.1f} m"],
-                []]
+    s_field1 = [
+        [tr('Azimut'), "{:.2f} {} / {:.2f}°".format(az_gon, tr('gon'), az_grad)],
+        [tr('Berechnete Seillaenge'), f"{kraft['LaengeSeil'][1]:.1f} m"],
+        [tr('Max. Abstand Leerseil - Boden'), f"{result['cableline']['maxDistToGround']:.1f} m"],
+        []]
     s_field2 = [
         [tr('Feld'),
          tr('Horizontal-distanz'),
@@ -464,14 +466,10 @@ def generateShortReport(confHandler, result, comment, projname, outputLoc):
     s_field2.append([tr('Total'), f"{total_h:.1f} m", f"{total_s:.1f} m",
                      f"{total_z:.1f} m"])
     s_field2 = removeTxtElements(s_field2, "nan")
-    
-    # Comment
-    ###
-    s_comme = [[Paragraph(comment, style=styles['continuousTxt'])]]
 
     # Disclaimer
     ###
-    s_discl = [[], [Paragraph(tr('Haftungsausschluss'), style=styles['disclaimer'])]]
+    s_discl = [[Paragraph(tr('Haftungsausschluss'), style=styles['disclaimer'])]]
     
     # Create reportlab element
     ###
@@ -481,9 +479,9 @@ def generateShortReport(confHandler, result, comment, projname, outputLoc):
         os.remove(savePath)
 
     width, height = portrait(A4)
-    margin = 1.5 * cm
+    margin = 1 * cm
     widthT, heightT = [width - 2 * margin, height - 2 * margin]
-    fontSize = 9
+    fontSize = 8
     smallfontSize = 7
     he_row = 0.42 * cm
 
@@ -506,7 +504,6 @@ def generateShortReport(confHandler, result, comment, projname, outputLoc):
         ])
     style_gener = [
         ('FONT', (0, 0), (-1, -1), font, fontSize),
-        ('VALIGN', (0, 1), (-1, -1), 'MIDDLE'),
     ]
     style_gener_right = [
         ('FONT', (0, 0), (-1, -1), font, fontSize),
@@ -546,14 +543,16 @@ def generateShortReport(confHandler, result, comment, projname, outputLoc):
                     colWidths=widthT, style=style_h)
     h_field = Table([[tr('Anker- und Spannfelder')]],
                     colWidths=widthT, style=style_h)
-    h_comme = Table([[tr('Bemerkung')]],
-                    colWidths=widthT, style=style_h)
     
     # Build paragraphs
     data = []
 
     # General information
-    t_gener = Table(s_gener, rowHeights=[he_row, len(hmPath)*he_row, he_row], style=style_gener)
+    genStyle = style_gener + [('SPAN', (1, 4), (-1, 4))] + [('VALIGN', (0, 4), (0, 4), 'MIDDLE')]
+    rowheights = len(s_gener) * [he_row]
+    rowheights[4] = (s_gener[4][1].count('\n') + 1) * he_row
+    t_gener = Table(s_gener, colWidths=[3*cm, 5.5*cm, 3*cm, (widthT - 11*cm)],
+                    rowHeights=rowheights, style=genStyle)
     data.append([Table([[h_titel], [t_gener]])])
 
     # Input values
@@ -577,11 +576,6 @@ def generateShortReport(confHandler, result, comment, projname, outputLoc):
     t_field1 = Table(s_field1, rowHeights=he_row, style=style_gener_right)
     t_field2 = Table(s_field2, rowHeights=he_row, style=style_fields)
     data.append([Table([[h_field], [t_field1], [t_field2]])])
-    
-    # Comment
-    if comment:
-        t_comme = Table(s_comme, style=style_gener)
-        data.append([Table([[h_comme], [t_comme]])])
 
     # Disclaimer
     t_discl = Table(s_discl, style=style_small)
@@ -589,9 +583,9 @@ def generateShortReport(confHandler, result, comment, projname, outputLoc):
 
     # Create document
     elements = []
-    elements.append(Table(data))
+    elements.append(Table(data, colWidths=widthT))
     doc_short = SimpleDocTemplate(savePath, encoding='utf8', topMargin=margin,
-                             bottomMargin=margin, leftMargin=margin,
+                             bottomMargin=0.25*margin, leftMargin=margin,
                              rightMargin=margin, pageBreakQuick=1,
                              pagesize=portrait(A4))
     doc_short.build(elements)
@@ -655,17 +649,18 @@ def generateReport(reportText, outputLoc):
 
     t_tite1 = Table(h_tite, wi_doc, [0.8*cm])
     rowheights = len(str_time) * he_row
-    rowheights[2] = (str_time[2][1].count('\n') + 1) * he_row[0]
+    rowheights[7] = (str_time[7][1].count('\n') + 1) * he_row[0]
+    rowheights[8] = (str_time[8][1].count('\n') + 1) * he_row[0]
     t_tite2 = Table(str_time, [None, None], rowHeights=rowheights)
     t_tite1.setStyle(TableStyle([
         ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
         ('FONT', (0, 0), (-1, -1), fontBold, 13),
         ('BACKGROUND', (0, 0), (-1, -1), colors.lightgrey),
-        ('LINEBELOW', (0,0), (-1,-1), 1, colors.black),
+        ('LINEBELOW', (0, 0), (-1, -1), 1, colors.black),
         ]))
     t_tite2.setStyle(TableStyle([('FONT', (0, 0), (-1, -1), font, fontSize),
-                                 ('VALIGN', (0, 1), (0, -1), 'MIDDLE'),
+                                 ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
                                  ('LEFTPADDING', (0, 0), (0, -1), lPadd)]))
 
     t_posi1 = Table(h_posi, wi_doc, he_rowT)
