@@ -630,8 +630,8 @@ def generateReport(reportText, outputLoc):
     wi_abk = [1.7*cm]
     he_row = [0.40 * cm]
     he_rowT = [0.45 * cm]
-    len_pole = len(str_posi)-3
-    len_field = len_pole - 1
+    poleCount = len(str_stue1[1])-2
+    fieldCount = poleCount - 1
     lPadd = 6
     fontSize = 8
     smallfontSize = 6
@@ -686,44 +686,44 @@ def generateReport(reportText, outputLoc):
     t_opti2.setStyle(TableStyle(stdStyleA))
 
     t_laen1 = Table(h_leng, wi_doc, he_rowT)
-    t_laen2 = Table(str_laen, [None] + [2*cm] + [1.5*cm]*len_field, 4*he_row)
+    t_laen2 = Table(str_laen, [None] + [2*cm] + [1.5*cm]*fieldCount, 4*he_row)
     t_laen1.setStyle(title_style)
     t_laen2.setStyle(TableStyle(stdStyleA + [
         ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize)]))  # field headers
 
     t_durc1 = Table(h_durc, wi_doc, he_rowT)
-    t_durc2 = Table(str_durc, wi_abk + [None] + [1.7*cm]*len_field, 4*he_row)
+    t_durc2 = Table(str_durc, wi_abk + [None] + [1.7*cm]*fieldCount, 4*he_row)
     t_durc1.setStyle(title_style)
     t_durc2.setStyle(TableStyle(stdStyleB + [
         ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),  # field headers
         ('FONT', (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
 
-    t_seil1 = Table(h_seil, wi_doc, he_rowT)
-    t_seil2 = Table(str_seil1, wi_abk + [None] + [1*cm] + [None]*len_field, len(str_seil1)*he_row)
-    t_seil3 = Table(str_seil2, wi_abk + [None] + [None]*len_pole, len(str_seil2)*he_row)
-    t_seil4 = Table(str_seil3, wi_abk + [None] + [1*cm], len(str_seil3)*he_row)
-    t_seil5 = Table(str_seil4, wi_abk + [None] + [None]*len_field, len(str_seil4)*he_row)
-    t_seil1.setStyle(title_style)
-    t_seil2.setStyle(TableStyle(stdStyleB + [
+    t_seil0 = Table(h_seil, wi_doc, he_rowT)
+    t_seil1 = Table(str_seil1, wi_abk + [None] + [1*cm] + [None]*fieldCount, len(str_seil1)*he_row)
+    t_seil2 = Table(str_seil2, wi_abk + [None] + [None]*poleCount, len(str_seil2)*he_row)
+    t_seil3 = Table(str_seil3, wi_abk + [None] + [1*cm], len(str_seil3)*he_row)
+    t_seil4 = Table(str_seil4, wi_abk + [None] + [None]*fieldCount, len(str_seil4)*he_row)
+    t_seil0.setStyle(title_style)
+    t_seil1.setStyle(TableStyle(stdStyleB + [
         ('FONT', (0, 0), (-1, 0), fontHeader, fontSize),  # first row = subsection
         ('FONT', (3, 3), (-1, 3), fontHeader, smallfontSize),  # pole header
         ('FONT', (0, 0), (0, -1), font, smallfontSize),  # abbreviation in first column
         ('BOTTOMPADDING', (0, -1), (-1, -1), 0)]))
-    t_seil3.setStyle(TableStyle(stdStyleB + [
+    t_seil2.setStyle(TableStyle(stdStyleB + [
         ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),  # pole header
         ('FONT', (0, 0), (0, -1), font, smallfontSize),  # abbreviation in first column
         ('TOPPADDING', (0, 0), (-1, 0), 0)]))
-    t_seil4.setStyle(TableStyle(stdStyleB + [
+    t_seil3.setStyle(TableStyle(stdStyleB + [
         ('FONT', (0, 0), (-1, 0), fontHeader, fontSize),  # first row = subsection
         ('FONT', (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
-    t_seil5.setStyle(TableStyle(stdStyleB + [
+    t_seil4.setStyle(TableStyle(stdStyleB + [
         ('FONT', (0, 0), (1, 0), fontHeader, fontSize),  # first row = subsection
         ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),  # field header
         ('FONT', (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
 
     t_stue1 = Table(h_stue, wi_doc, he_rowT)
-    t_stue2 = Table(str_stue1, wi_abk + [6.8*cm] + [2.4*cm]*len_pole, len(str_stue1)*he_row)
-    t_stue3 = Table(str_stue2, wi_abk + [6.8*cm] + [1.2*cm]*len_pole, len(str_stue2)*he_row)
+    t_stue2 = Table(str_stue1, wi_abk + [6.8*cm] + [2.4*cm]*poleCount, len(str_stue1)*he_row)
+    t_stue3 = Table(str_stue2, wi_abk + [6.8*cm] + [1.2*cm]*poleCount, len(str_stue2)*he_row)
     t_stue1.setStyle(title_style)
     t_stue2.setStyle(TableStyle(stdStyleB + [
         ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),  # field header
@@ -735,13 +735,13 @@ def generateReport(reportText, outputLoc):
         ('FONT', (0, 0), (0, -1), font, smallfontSize),  # abbreviation in first column
         ('ALIGN', (2, 1), (2, -1), 'CENTER'),
         ('ALIGN', (-2, 1), (-2, -1), 'CENTER')]
-    for i in range(2, len_pole*2+2, 2):
+    for i in range(2, poleCount*2+2, 2):
         stdStyleStue += [
                          ('RIGHTPADDING', (i, 1), (i, -1), 1)]
     t_stue3.setStyle(TableStyle(stdStyleStue))
 
     t_wink1 = Table(h_wink, wi_doc, he_rowT)
-    t_wink2 = Table(str_wink, wi_abk + [4*cm] + [None]*len_field, 7*he_row)
+    t_wink2 = Table(str_wink, wi_abk + [4*cm] + [None]*fieldCount, 7*he_row)
     t_wink1.setStyle(title_style)
     t_wink2.setStyle(TableStyle(stdStyleB + [
         ('FONT', (1, 0), (1, 0), fontHeader, fontSize),  # heading empty cable
@@ -751,7 +751,7 @@ def generateReport(reportText, outputLoc):
         ('FONT', (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
 
     t_nach1 = Table(h_nach, wi_doc, he_rowT)
-    t_nach2 = Table(str_nach, wi_abk + [6.8*cm] + [None]*len_field, len(str_nach) * he_row)
+    t_nach2 = Table(str_nach, wi_abk + [6.8*cm] + [None]*fieldCount, len(str_nach) * he_row)
     t_nach1.setStyle(title_style)
     t_nach2.setStyle(TableStyle(stdStyleB + [
         ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),  # field header
@@ -774,8 +774,8 @@ def generateReport(reportText, outputLoc):
     data = [ [Table([[t_tite1], [t_tite2]])], [Table([[t_posi1], [t_posi2]])],
              [Table([[t_abst1], [t_abst2]])],
              [Table([[t_opti1], [t_opti2]])], [Table([[t_laen1], [t_laen2]])],
-             [Table([[t_durc1], [t_durc2]])], [Table([[t_seil1], [t_seil2],
-             [t_seil3], [t_seil4], [t_seil5]])],
+             [Table([[t_durc1], [t_durc2]])], [Table([[t_seil0], [t_seil1],
+             [t_seil2], [t_seil3], [t_seil4]])],
              [Table([[t_stue1], [t_stue2], [t_stue3]])],
              [Table([[t_wink1], [t_wink2]])],
              [Table([[t_nach1], [t_nach2]])], [Table([[t_anna1], [t_anna2]])]]
