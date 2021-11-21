@@ -98,9 +98,10 @@ class AbstractConfHandler(object):
 # noinspection PyTypeChecker
 class ProjectConfHandler(AbstractConfHandler):
     
+    # Order of pole types in drop down list
     POINT_TYPE = {
-        0: 'pole',
-        1: 'pole_anchor',
+        0: 'pole_anchor',
+        1: 'pole',
         2: 'crane'
     }
     heightSource: AbstractHeightSource
@@ -128,8 +129,8 @@ class ProjectConfHandler(AbstractConfHandler):
             'A': 'yellow',
             'E': 'yellow'
         }
-        self.A_type = 'pole'     # pole, pole_anchor, crane
-        self.E_type = 'pole'     # pole, pole_anchor
+        self.A_type = 'pole_anchor'     # pole_anchor, pole, crane
+        self.E_type = 'pole_anchor'     # pole_anchor, pole,
         self.profileLength = None
         self.azimut = None
         self.fixedPoles = {

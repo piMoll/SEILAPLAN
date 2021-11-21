@@ -386,9 +386,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.fillParametersetList()
         # Fill in parameter values
         self.fillInValues()
-        # Emit point type change so that crane value can be removed
-        #  from field if point type is not crane
-        self.onTypeAChange()
+        # Deactivate / Activate status of field HMKran depending on
+        #  point type of start point
+        self.updateHMKran(self.projectHandler.A_type)
         # Fill in project header data (if present)
         self.fillInPrHeaderData()
 
@@ -414,9 +414,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             self.paramHandler.setParameterSet(name)
             # Fill in values of parameter set
             self.fillInValues()
-            # Emit point type change so that crane value can be removed
-            #  from field if point type is not crane
-            self.onTypeAChange()
+            # Deactivate / Activate status of field HMKran depending on
+            #  point type of start point
+            self.updateHMKran(self.projectHandler.A_type)
     
     def fillInValues(self):
         """Fills parameter values into GUI fields."""
@@ -478,9 +478,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
                 self.fillParametersetList()
                 # Fill in values of default set
                 self.fillInValues()
-                # Emit point type change so that crane value can be removed
-                #  from field if point type is not crane
-                self.onTypeAChange()
+                # Deactivate / Activate status of field HMKran depending on
+                #  point type of start point
+                self.updateHMKran(self.projectHandler.A_type)
             
     def updateRasterList(self):
         rasterlist = self.getAvailableRaster()
@@ -882,18 +882,21 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         if idx == -1:
             return
         self.projectHandler.setPointType('A', idx)
-        # Update GUI: fieldHMKran
-        if idx in [0, 1]:       # pole, pole_anchor
-            self.fieldHMKran.setEnabled(False)
-            self.fieldHMKran.setText('')
-        elif idx == 2:          # crane
-            paramVal = self.paramHandler.getParameterAsStr('HM_Kran')
-            self.fieldHMKran.setText(paramVal)
-            self.fieldHMKran.setEnabled(True)
+        self.updateHMKran(self.projectHandler.A_type)
     
     def onTypeEChange(self):
         idx = self.fieldTypeE.currentIndex()
         self.projectHandler.setPointType('E', idx)
+    
+    def updateHMKran(self, poleType):
+        # Update GUI: fieldHMKran
+        if poleType in ['pole', 'pole_anchor']:
+            self.fieldHMKran.setEnabled(False)
+            self.fieldHMKran.setText('')
+        elif poleType == 'crane':
+            paramVal = self.paramHandler.getParameterAsStr('HM_Kran')
+            self.fieldHMKran.setText(paramVal)
+            self.fieldHMKran.setEnabled(True)
     
     def onInfo(self):
         msg = self.tr('Infotext').format(
