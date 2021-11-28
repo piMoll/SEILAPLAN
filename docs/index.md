@@ -1,16 +1,25 @@
+[**Seilaplan Changelog**](https://github.com/piMoll/SEILAPLAN/blob/master/changelog.md)
+
 ![Seilaplan Bearbeitungsfenster mit Seillinien-Layout](https://github.com/piMoll/SEILAPLAN/raw/master/docs/gui_preview.png)
 
 ## Installation
 Voraussetzung für die Installation von Seilaplan ist QGIS ab Version 3.6: [QGIS herunterladen](https://www.qgis.org/de/site/forusers/download.html).
 
-Das Plugin kann direkt im QGIS Plugin-Manager eingebunden werden: Dazu im Menü unter _Erweiterungen > Erweiterungen verwalten > Einstellungen_ eine neue Online-Quelle (Repositorium) mit folgender Adresse hinzufügen:
+Es wird emfohlen eine aktuelle Langzeitversion (LTS) von QGIS zu benutzen.
+Aufgrund von internen Fehlern in QGIS, kann das Plugin in folgenden QGIS-Versionen nicht ausgeführt werden:
+* 3.10.9
+* 3.14.15
+* 3.16.12
+* 3.16.13
+
+Das Plugin kann direkt im QGIS Plugin-Manager eingebunden werden. Dazu im Menü unter _Erweiterungen > Erweiterungen verwalten > Einstellungen_ eine neue Online-Quelle (Repositorium) mit folgender Adresse hinzufügen:
 ```
 https://raw.githubusercontent.com/piMoll/SEILAPLAN/master/plugin.xml
 ```
 
 Seilaplan kann anschliessend über die Suchfunktion aufgerufen und installiert werden.
 
-Detailiert Installationsanleitung, Erste Schritte und Fehlerbehebungen finden sich im PDF: [SEILAPLAN_Installation_und_erste_Schritte.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/docs/SEILAPLAN_Installation_und_erste_Schritte.pdf)
+Eine detaillierte Installationsanleitung, Erste Schritte und Fehlerbehebungen finden sich im PDF: [SEILAPLAN_Installation_und_erste_Schritte.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/docs/SEILAPLAN_Installation_und_erste_Schritte.pdf)
 
 
 ## Dokumentation
