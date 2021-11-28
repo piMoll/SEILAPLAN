@@ -2118,8 +2118,8 @@ La griglia viene figurata nel SCR svizzero &apos;LV95&apos; (EPSG:2056). Se vuol
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="836"/>
-        <source>Json (*.json);; Text - altes Format (*.txt)</source>
-        <translation>File json (*.json);; File di testo - formato vecchio (*.txt)</translation>
+        <source>Json- oder Text-Datei</source>
+        <translation>Json o file di testo</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="846"/>

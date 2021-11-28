@@ -2121,8 +2121,8 @@ The raster is displayed in the Swiss CRS &apos;LV95&apos; (EPSG:2056). To use an
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="836"/>
-        <source>Json (*.json);; Text - altes Format (*.txt)</source>
-        <translation>Json file (*.json);;Text file - old format (*.txt)</translation>
+        <source>Json- oder Text-Datei</source>
+        <translation>Json or text file</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="846"/>

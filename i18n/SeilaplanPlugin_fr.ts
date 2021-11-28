@@ -2121,8 +2121,8 @@ La grille est visualisée dans le SCR suisse &apos;LV95&apos; (EPSG:2056). Si vo
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="836"/>
-        <source>Json (*.json);; Text - altes Format (*.txt)</source>
-        <translation>Fichiers json (*.json);; Fichiers texte - ancien format (*.txt)</translation>
+        <source>Json- oder Text-Datei</source>
+        <translation>Fichiers json ou texte</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="846"/>

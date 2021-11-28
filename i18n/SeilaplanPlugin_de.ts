@@ -2092,8 +2092,8 @@ Das Raster wird im Schweizer KBS &apos;LV95&apos; (EPSG:2056) dargestellt. Soll 
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="836"/>
-        <source>Json (*.json);; Text - altes Format (*.txt)</source>
-        <translation>Json Datei (*.json);; Text Datei - altes Format (*.txt)</translation>
+        <source>Json- oder Text-Datei</source>
+        <translation>Json- oder Text-Datei</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="846"/>

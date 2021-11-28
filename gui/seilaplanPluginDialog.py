@@ -845,7 +845,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
     
     def onLoadProjects(self):
         title = self.tr('Projekt laden')
-        fFilter = self.tr('Json (*.json);; Text - altes Format (*.txt)')
+        fFilter = self.tr('Json- oder Text-Datei') + ' (*.json *.txt)'
         filename, _ = QFileDialog.getOpenFileName(self, title,
                                                   self.confHandler.getCurrentPath(),
                                                   fFilter)
