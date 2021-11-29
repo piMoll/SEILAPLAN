@@ -402,11 +402,11 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.fieldParamSet.blockSignals(True)
         self.fieldParamSet.clear()
         self.fieldParamSet.addItems(self.paramHandler.getParametersetNames())
-        self.fieldParamSet.blockSignals(False)
         if self.paramHandler.currentSetName:
             self.fieldParamSet.setCurrentText(self.paramHandler.currentSetName)
         else:
             self.fieldParamSet.setCurrentIndex(-1)
+        self.fieldParamSet.blockSignals(False)
     
     def setParameterSet(self):
         name = self.fieldParamSet.currentText()

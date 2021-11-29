@@ -143,6 +143,8 @@ class ProjectConfHandler(AbstractConfHandler):
         
         self.profile = None
         self.poles = None
+        # Poles from a loaded project file
+        self.polesFromTxt = []
     
     def setConfigFromFile(self, settings):
         """Load configuration from json file."""
@@ -164,6 +166,8 @@ class ProjectConfHandler(AbstractConfHandler):
 
         self.setFixedPoles(settings['profile']['fixedPoles'])
         self.setNoPoleSection(settings['profile']['noPoleSection'])
+        
+        self.polesFromTxt = settings['poles']
     
     def setConfigFromFileOld(self, property_name, value):
         """Load settings from old style text file."""
@@ -553,6 +557,15 @@ class ProjectConfHandler(AbstractConfHandler):
             return False
         return success
     
+    def updatePoles(self, status):
+        if self.polesFromTxt:
+            status = 'savedFile'
+            self.poles.updateAllPoles(status, self.polesFromTxt)
+        # If instead user has defined some fixed poles, add these to Poles()
+        elif len(self.fixedPoles['poles']) > 0:
+            self.poles.updateAllPoles(status, self.fixedPoles['poles'])
+        return status
+    
     def resetProfile(self):
         self.points = {
             'A': [None, None],
@@ -570,9 +583,11 @@ class ProjectConfHandler(AbstractConfHandler):
             'HM_fix_h': []
         }
         self.noPoleSection = []
+        self.polesFromTxt = []
     
     def reset(self):
         self.poles = None
+        self.polesFromTxt = []
 
 
 class ParameterConfHandler(AbstractConfHandler):
@@ -1003,8 +1018,6 @@ class ConfigHandler(object):
         self.params = ParameterConfHandler()
         self.project = ProjectConfHandler(self.params)
         
-        self.polesFromTxt = []
-        
         # Load parameter definitions and predefined parameter sets
         self.loadUserSettings()
         self.params.initParameters()
@@ -1053,9 +1066,6 @@ class ConfigHandler(object):
             # Parameter list
             for p in params['parameterList']:
                 self.params.batchSetParameter(p['name'], p['value'])
-                
-            # Poles
-            self.polesFromTxt = settings['poles']
         
         success = self.params.checkValidState()
         return success
@@ -1106,7 +1116,7 @@ class ConfigHandler(object):
                 parts = line.split('\t')
                 if len(parts) != 8:
                     continue
-                self.polesFromTxt.append({
+                self.project.polesFromTxt.append({
                     'idx': int(parts[0]),
                     'd': int(float(parts[1])),
                     'h': float(parts[2]),
@@ -1117,7 +1127,7 @@ class ConfigHandler(object):
                     'name': parts[7]
                 })
 
-        self.polesFromTxt = []
+        self.project.polesFromTxt = []
         lineCount = 0
         if os.path.exists(filename):
             with io.open(filename, encoding='utf-8') as f:
@@ -1271,12 +1281,7 @@ class ConfigHandler(object):
         
         # If the project file already contains pole data from an earlier run,
         # load this data into Poles()
-        if self.polesFromTxt:
-            status = 'savedFile'
-            self.project.poles.updateAllPoles(status, self.polesFromTxt)
-        # If instead user has defined some fixed poles, add these to Poles()
-        elif len(self.project.fixedPoles['poles']) > 0:
-            self.project.poles.updateAllPoles(status, self.project.fixedPoles['poles'])
+        status = self.project.updatePoles(status)
         
         # Set optimized cable tension
         if status == 'savedFile' and self.params.optSTA:

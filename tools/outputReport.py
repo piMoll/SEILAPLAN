@@ -96,10 +96,6 @@ def generateReportText(confHandler, result, projname):
     fieldCount = poleCount - 1
     sHeader = [i['name'] for i in polesWithoutAnchors]
     fHeader = [f"{i+1}. " + tr('Feld') for i in range(fieldCount)]
-    
-    # comment = prHeader['PrBemerkung'].split('\n')
-    # commentWrapped = [textwrap.wrap(c, 150) for c in comment]
-    # commentWrapped = [line for sublist in commentWrapped for line in sublist]
 
     # First section with duration, dhm and several comments
     str_time = [
