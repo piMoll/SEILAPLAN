@@ -1121,7 +1121,9 @@ class ConfigHandler(object):
                         self.params.saveParameterSet(setname)
                     self.params.currentSetName = setname
                     return lineNr
-                self.params.batchSetParameter(key, part[1])
+                paramSuccess = self.params.batchSetParameter(key, part[1])
+                if not paramSuccess:
+                    raise Exception('Fehler beim Laden der Parameter, eventuell sind die Projekteinstellungen in einem alten Format.')
         
         def readOutPoleData(lines, lineNr):
             for line in lines[lineNr:]:
