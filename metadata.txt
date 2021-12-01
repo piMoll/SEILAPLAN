@@ -12,7 +12,7 @@ name=SEILAPLAN
 qgisMinimumVersion=3.6
 description=Seilkran-Layoutplaner
 about=SEILAPLAN berechnet auf Grund eines digitalen Höhenmodells zwischen definierten Anfangs- und Endkoordinaten sowie technischen Parametern das optimale Seillinienlayout. Es werden Position und Höhe der Stütze, sowie die wichtigsten Kennwerte der Seillinie bestimmt.
-version=3.2.1
+version=3.3.0
 author=Leo Bont, Hans Rudolf Heinimann, Patricia Moll
 email=leo.bont@gmail.com
 
@@ -21,24 +21,8 @@ email=leo.bont@gmail.com
 # Recommended items:
 
 # Uncomment the following line and add your changelog:
-changelog=
-    Version 3.2.1 (Juni 2021)
-    Fehler behoben: (1) Fehlermeldung bei Plugin-Installation in QGIS 3.20 / 3.16.8, (2) Rasterlayer werden in Auswahlliste nicht selektiert wenn eine Projektdatei geladen wird
-
-    Version 3.2 (Juni 2021)
-    Mehrfachauswahl von Raster-Kacheln: Erlaubt Seillinien über Kachelgrenzen hinweg zu konstruieren. Korrektur der Berechnung für Angriffswinkel bei 0 Meter Stützen
-
-    Version 3.1 (November 2020)
-    Einführung Maschinen-Parameter Grundspannung, Angabe des Durchmessers der Bundstelle in Kurzbericht, diverse Fehlerkorrekturen
-
-    Version 3.0 (September 2020)
-    Überarbeitung des Plugins und Ergänzung von zusätzlichen Eingabeparametern, Erweiterung um manuelle Editiermöglichkeiten der Seillinie, Übersetzung nach EN, IT, FR
-
-    Version 2.0 (Februar 2018)
-    Portierung auf QGIS 3
-
-    Version 1.0 (Mai 2015)
-    Initiale Version
+changelog= Aktuelle Version: 3.3.0 (Dezember 2021)
+    Changelog unter: http://pimoll.github.io/SEILAPLAN/
 
 # Tags are comma separated with spaces allowed
 tags=analysis,forest,planning,design,optimization
