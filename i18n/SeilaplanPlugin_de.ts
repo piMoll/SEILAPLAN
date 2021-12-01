@@ -1499,6 +1499,11 @@ Bitte passen Sie die Eingabe an.</translation>
         <translation>Unerwarteter Fehler bei Erstellung des Profils</translation>
     </message>
     <message>
+        <location filename="../tools/configHandler.py" line="556"/>
+        <source>Unerwarteter Fehler bei Erstellung der Stuetzen</source>
+        <translation>Unerwarteter Fehler bei Erstellung der Stützen</translation>
+    </message>
+    <message>
         <location filename="../tools/configHandler.py" line="177"/>
         <source>Fehler beim Laden des Rasters</source>
         <translation>Fehler beim Laden des Rasters</translation>

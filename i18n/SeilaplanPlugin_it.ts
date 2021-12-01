@@ -1508,6 +1508,11 @@ Si prega di adattare l&apos;input.</translation>
         <translation>Errore inaspettato alla realizzazione del profilo</translation>
     </message>
     <message>
+        <location filename="../tools/configHandler.py" line="556"/>
+        <source>Unerwarteter Fehler bei Erstellung der Stuetzen</source>
+        <translation>Errore inaspettato alla realizzazione dei cavalletti</translation>
+    </message>
+    <message>
         <location filename="../tools/configHandler.py" line="177"/>
         <source>Fehler beim Laden des Rasters</source>
         <translation>Errore al carico della griglia</translation>

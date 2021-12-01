@@ -279,7 +279,7 @@ class ProfileDialog(QDialog):
         self.drawTool.updateCursor(point, color)
 
     def activateMapLine(self, horiDist):
-        self.noPoleSection.append([int(horiDist), None])
+        self.noPoleSection.append([horiDist, None])
         initPoint = self.projectHandler.transform2MapCoords(horiDist)
         self.drawTool.activateSectionLine(initPoint)
 
@@ -288,8 +288,8 @@ class ProfileDialog(QDialog):
         self.drawTool.updateSectionLine(point)
 
     def finishLine(self, horiDist):
-        self.noPoleSection[-1][1] = int(horiDist)
-        endPoint = self.projectHandler.transform2MapCoords(int(horiDist))
+        self.noPoleSection[-1][1] = horiDist
+        endPoint = self.projectHandler.transform2MapCoords(horiDist)
         self.drawTool.updateSectionLine(endPoint)
         self.drawTool.deactivateCursor()
     

@@ -21,6 +21,7 @@
 import os
 import io
 import re
+import numpy
 from operator import itemgetter
 import traceback
 from math import atan2, pi, cos, sin
@@ -53,6 +54,20 @@ def castToNum(formattedNum):
     except (ValueError, AttributeError):
         num = None
     return num
+
+
+class OwnJsonEncoder(json.JSONEncoder):
+    """Used to serialize numpy int32 or float64 values to regular types
+    so that they can be written to json file."""
+    def default(self, obj):
+        if isinstance(obj, numpy.integer):
+            return int(obj)
+        elif isinstance(obj, numpy.floating):
+            return float(obj)
+        elif isinstance(obj, numpy.ndarray):
+            return obj.tolist()
+        else:
+            return super(OwnJsonEncoder, self).default(obj)
 
 
 class AbstractConfHandler(object):
@@ -553,7 +568,7 @@ class ProjectConfHandler(AbstractConfHandler):
         try:
             self.poles = Poles(self)
         except ValueError:
-            self.onError(self.tr('Unerwarteter Fehler bei Erstellung des Profils'))
+            self.onError(self.tr('Unerwarteter Fehler bei Erstellung der Stuetzen'))
             return False
         return success
     
@@ -1169,7 +1184,7 @@ class ConfigHandler(object):
             os.remove(filename)
 
         with open(filename, 'w', encoding='utf8') as f:
-            json.dump(settings, f, ensure_ascii=False, indent=4)
+            json.dump(settings, f, ensure_ascii=False, indent=4, cls=OwnJsonEncoder)
     
     def loadUserSettings(self):
         """Gets the output options and earlier used output paths and returns

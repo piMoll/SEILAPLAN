@@ -1516,6 +1516,11 @@ Please change the input.</translation>
         <translation>Unexpected error when generating the profile</translation>
     </message>
     <message>
+        <location filename="../tools/configHandler.py" line="556"/>
+        <source>Unerwarteter Fehler bei Erstellung der Stuetzen</source>
+        <translation>Unexpected error when generating the supports</translation>
+    </message>
+    <message>
         <location filename="../tools/configHandler.py" line="177"/>
         <source>Fehler beim Laden des Rasters</source>
         <translation>Error when loading raster file</translation>

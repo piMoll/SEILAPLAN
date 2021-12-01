@@ -1517,6 +1517,11 @@ Veuillez adapter la saisie.</translation>
         <translation>Erreur inattendu à l&apos;élaboration du profil</translation>
     </message>
     <message>
+        <location filename="../tools/configHandler.py" line="556"/>
+        <source>Unerwarteter Fehler bei Erstellung der Stuetzen</source>
+        <translation>Erreur inattendu à l&apos;élaboration des supports</translation>
+    </message>
+    <message>
         <location filename="../tools/configHandler.py" line="177"/>
         <source>Fehler beim Laden des Rasters</source>
         <translation>Erreur au chargement de la grille</translation>
