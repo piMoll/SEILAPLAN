@@ -169,6 +169,9 @@ class ProjectConfHandler(AbstractConfHandler):
         heightSource = settings['heightsource']
         self.setHeightSource(None, sourceType=heightSource['type'],
                              sourcePath=heightSource['source'])
+        
+        if not self.heightSource or not self.heightSource.valid:
+            return False
 
         if self.heightSource and self.heightSourceType == 'survey':
             self.heightSource: SurveyData
@@ -183,6 +186,7 @@ class ProjectConfHandler(AbstractConfHandler):
         self.setNoPoleSection(settings['profile']['noPoleSection'])
         
         self.polesFromTxt = settings['poles']
+        return True
     
     def setConfigFromFileOld(self, property_name, value):
         """Load settings from old style text file."""
@@ -1065,7 +1069,9 @@ class ConfigHandler(object):
                 return False
             
             # Projekt
-            self.project.setConfigFromFile(settings)
+            prLoadSuccessful = self.project.setConfigFromFile(settings)
+            if not prLoadSuccessful:
+                return prLoadSuccessful
             
             # Parameters
             ##

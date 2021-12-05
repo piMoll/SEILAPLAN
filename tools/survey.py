@@ -18,6 +18,7 @@
  *                                                                         *
  ***************************************************************************/
 """
+import os
 import numpy as np
 from qgis.core import (QgsCoordinateTransform, QgsPoint,
                        QgsCoordinateReferenceSystem, QgsProject)
@@ -67,6 +68,13 @@ class SurveyData(AbstractHeightSource):
         
         def formatStr(s):
             return s.strip().upper()
+
+        if not os.path.exists(self.path):
+            self.valid = False
+            self.errorMsg = self.tr(
+                "CSV-Datei '_path_' ist nicht vorhanden.")
+            self.errorMsg = self.errorMsg.replace('_path_', self.path)
+            return
         
         with open(self.path, newline='') as file:
             reader = csv.reader(file)

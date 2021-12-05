@@ -31,6 +31,7 @@ class AbstractHeightSource(object):
         self.extent = []
         self.errorMsg = ''
         self.buffer = (None, None)
+        self.valid = False
     
     def getAsStr(self):
         return self.path or ''
