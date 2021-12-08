@@ -783,7 +783,7 @@ loaded skyline</translation>
     <message>
         <location filename="../tools/outputReport.py" line="358"/>
         <source>Anlagetyp</source>
-        <translation type="unfinished"></translation>
+        <translation>Cable yarder type</translation>
     </message>
 </context>
 <context>
@@ -804,12 +804,12 @@ loaded skyline</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="315"/>
         <source>Erklaerung Gesamtlast</source>
-        <translation type="unfinished"></translation>
+        <translation>The total load is the sum of the timber load, the carriage weight and the attaching ropes.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="316"/>
         <source>Gesamtlast</source>
-        <translation type="unfinished"></translation>
+        <translation>Total load</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="333"/>
@@ -1077,7 +1077,7 @@ loaded skyline</translation>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="541"/>
         <source>Anlagetyp</source>
-        <translation type="unfinished"></translation>
+        <translation>Cable yarder type</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="552"/>
@@ -1109,7 +1109,7 @@ loaded skyline</translation>
         <source>Bemerkungen
 (erscheint in Berichten)</source>
         <translation>Notes
-(will be included in reports)</translation>
+(will be transferred to the report)</translation>
     </message>
 </context>
 <context>
@@ -1949,7 +1949,7 @@ Please change the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="831"/>
         <source>Anlagetyp</source>
-        <translation type="unfinished"></translation>
+        <translation>Cable yarder type</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1156"/>
@@ -1966,7 +1966,7 @@ Please change the input.</translation>
         <source>Bemerkungen
 (erscheint in Berichten)</source>
         <translation>Notes
-(will be included in reports)</translation>
+(will be transferred to the report)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1222"/>
@@ -2215,12 +2215,12 @@ Supported data types:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="939"/>
         <source>Erklaerung Gesamtlast</source>
-        <translation type="unfinished"></translation>
+        <translation>The total load is the sum of the timber load, the carriage weight and the attaching ropes.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="940"/>
         <source>Gesamtlast</source>
-        <translation type="unfinished"></translation>
+        <translation>Total load</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="944"/>

@@ -1091,7 +1091,7 @@ Lastseil</translation>
         <source>Bemerkungen
 (erscheint in Berichten)</source>
         <translation>Bemerkungen
-(erscheint im Bericht)</translation>
+(werden in den Bericht übertragen)</translation>
     </message>
 </context>
 <context>
@@ -1944,7 +1944,7 @@ Bitte passen Sie die Eingabe an.</translation>
         <source>Bemerkungen
 (erscheint in Berichten)</source>
         <translation>Bemerkungen
-(erscheint im Bericht)</translation>
+(werden in den Bericht übertragen)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1222"/>

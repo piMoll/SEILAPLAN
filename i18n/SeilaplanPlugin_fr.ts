@@ -769,27 +769,27 @@ câble chargé</translation>
     <message>
         <location filename="../tools/outputReport.py" line="356"/>
         <source>Projektverfasser</source>
-        <translation type="unfinished"></translation>
+        <translation>Auteur du projet</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="356"/>
         <source>Projektnummer</source>
-        <translation type="unfinished"></translation>
+        <translation>Numéro du projet</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="357"/>
         <source>Gemeinde</source>
-        <translation type="unfinished"></translation>
+        <translation>Commune</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="357"/>
         <source>Waldort</source>
-        <translation type="unfinished"></translation>
+        <translation>Lieu forestier</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="358"/>
         <source>Anlagetyp</source>
-        <translation type="unfinished"></translation>
+        <translation>Type de câble-grue</translation>
     </message>
 </context>
 <context>
@@ -810,12 +810,12 @@ câble chargé</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="315"/>
         <source>Erklaerung Gesamtlast</source>
-        <translation type="unfinished"></translation>
+        <translation>La charge totale est la somme de la charge en bois et du poids du chariot et des élingues.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="316"/>
         <source>Gesamtlast</source>
-        <translation type="unfinished"></translation>
+        <translation>Charge totale</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="333"/>
@@ -1082,38 +1082,39 @@ câble chargé</translation>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="541"/>
         <source>Anlagetyp</source>
-        <translation type="unfinished"></translation>
+        <translation>Type de câble-grue</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="552"/>
         <source>Kopfdaten</source>
-        <translation type="unfinished"></translation>
+        <translation>Données d&apos;entête</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="546"/>
         <source>Projektnummer</source>
-        <translation type="unfinished"></translation>
+        <translation>Numéro du projet</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="547"/>
         <source>Gemeinde</source>
-        <translation type="unfinished"></translation>
+        <translation>Commune</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="548"/>
         <source>Waldort</source>
-        <translation type="unfinished"></translation>
+        <translation>Lieu forestier</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="549"/>
         <source>Projektverfasser</source>
-        <translation type="unfinished"></translation>
+        <translation>Auteur du projet</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="550"/>
         <source>Bemerkungen
 (erscheint in Berichten)</source>
-        <translation type="unfinished"></translation>
+        <translation>Remarques 
+(seront reportées dans le rapport)</translation>
     </message>
 </context>
 <context>
@@ -1950,38 +1951,39 @@ Veuillez adapter la saisie.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="831"/>
         <source>Anlagetyp</source>
-        <translation type="unfinished"></translation>
+        <translation>Type de câble-grue</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1156"/>
         <source>Waldort</source>
-        <translation type="unfinished"></translation>
+        <translation>Lieu forestier</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1192"/>
         <source>Projektverfasser</source>
-        <translation type="unfinished"></translation>
+        <translation>Auteur du projet</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1202"/>
         <source>Bemerkungen
 (erscheint in Berichten)</source>
-        <translation type="unfinished"></translation>
+        <translation>Remarques 
+(seront reportées dans le rapport)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1222"/>
         <source>Projektnummer</source>
-        <translation type="unfinished"></translation>
+        <translation>Numéro du projet</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1235"/>
         <source>Gemeinde</source>
-        <translation type="unfinished"></translation>
+        <translation>Commune</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1142"/>
         <source>Kopfdaten</source>
-        <translation type="unfinished"></translation>
+        <translation>Données d&apos;entête</translation>
     </message>
 </context>
 <context>
@@ -2213,12 +2215,12 @@ Types de fichier supportés:
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="939"/>
         <source>Erklaerung Gesamtlast</source>
-        <translation type="unfinished"></translation>
+        <translation>La charge totale est la somme de la charge en bois et du poids du chariot et des élingues.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="940"/>
         <source>Gesamtlast</source>
-        <translation type="unfinished"></translation>
+        <translation>Charge totale</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="944"/>
