@@ -25,11 +25,12 @@ import csv
 from qgis.PyQt.QtCore import QVariant, QCoreApplication
 from qgis.core import (QgsRasterLayer, QgsProcessing, QgsProcessingException,
                        QgsWkbTypes, QgsFields, QgsField, QgsVectorFileWriter,
-                       QgsFeature, QgsGeometry, QgsPoint,
-                       QgsCoordinateReferenceSystem)
+                       QgsFeature, QgsGeometry, QgsCoordinateTransform, QgsPoint,
+                       QgsCoordinateReferenceSystem, QgsProject)
 from processing import run
 
-
+GPS_CRS = 'EPSG:4326'
+CH_CRS = 'EPSG:2056'
 VIRTUALRASTER = 'SEILAPLAN Virtuelles Raster'
 
 
@@ -287,6 +288,80 @@ def unicode2acii(text):
                    0xf6: 'oe',
                    0xfc: 'ue'}
     return text.translate(translation)
+
+
+def latLonToUtmCode(latitude, longitude):
+    """Returns corresponding UTM or UPS EPSG code from WGS84 coordinates
+    @param latitude - latitude value
+    @param longitude - longitude value
+    @returns - EPSG code string
+    
+    Source: https://github.com/All4Gis/QGISFMV/blob/master/code/geo/QgsMgrs.py
+    """
+
+    if abs(latitude) > 90:
+        raise Exception("Latitude outside of valid range (-90 to 90 degrees).")
+
+    if longitude < -180 or longitude > 360:
+        return Exception("Longitude outside of valid range (-180 to 360 degrees).")
+
+    # UTM zone
+    if latitude <= -80 or latitude >= 84:
+        # Coordinates falls under UPS system
+        zone = 61
+    else:
+        # Coordinates falls under UTM system
+        if longitude < 180:
+            zone = int(31 + (longitude / 6.0))
+        else:
+            zone = int((longitude / 6) - 29)
+
+        if zone > 60:
+            zone = 1
+
+        # Handle UTM special cases
+        if 56.0 <= latitude < 64.0 and 3.0 <= longitude < 12.0:
+            zone = 32
+
+        if 72.0 <= latitude < 84.0:
+            if 0.0 <= longitude < 9.0:
+                zone = 31
+            elif 9.0 <= longitude < 21.0:
+                zone = 33
+            elif 21.0 <= longitude < 33.0:
+                zone = 35
+            elif 33.0 <= longitude < 42.0:
+                zone = 37
+
+    # North or South hemisphere
+    if latitude >= 0:
+        ns = 600
+    else:
+        ns = 700
+
+    return f'EPSG:{32000 + ns + zone}'
+
+
+def reprojectToCrs(x, y, sourceCrs, destinationCrs=CH_CRS):
+    if isinstance(sourceCrs, str):
+        sourceCrs = QgsCoordinateReferenceSystem(sourceCrs)
+    if isinstance(destinationCrs, str):
+        destinationCrs = QgsCoordinateReferenceSystem(destinationCrs)
+    
+    # Do not reproject if data is already in destinationCrs
+    if sourceCrs == destinationCrs or not destinationCrs.isValid():
+        return
+    transformer = QgsCoordinateTransform(sourceCrs, destinationCrs,
+                                         QgsProject.instance())
+    xnew = np.copy(x)
+    ynew = np.copy(y)
+    for i in range(len(x)):
+        point = QgsPoint(x[i], y[i])
+        point.transform(transformer)
+        xnew[i] = point.x()
+        ynew[i] = point.y()
+    
+    return xnew, ynew
 
 
 # noinspection PyMethodMayBeStatic

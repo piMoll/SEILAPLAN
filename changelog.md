@@ -12,6 +12,7 @@
 * Berichtinhalt ist nur teilweise sichtbar, bzw. verschoben, wenn eine Seillinie ohne Zwischenstützen oder nur mit Verankerungen erstellt wird
 * Im Parameterset "MSK 3t 20/11/8mm" wurde der Seildurchmesser von 22 auf 20 mm korrigiert
 * Der Stützentyp (Verankerung, Stütze, Seilkran) wird korrekt aus den Projekteinstellungen ausgelesen
+* Bei der Erstellung von Geländeprofilen aus Vertex-Dateien werden neu nicht nur die GPS-Messungen, sondern auch die relativen Distanz- und Winkelmessungen berücksichtigt.
 
 ## Version 3.2.1 (Juni 2021)
 ### Neue Features
@@ -20,7 +21,7 @@
 
 ## Version 3.2 (Juni 2021)
 ### Neue Features
-* Mehrfachauswahl von Raster-Kacheln: Neu können mehrere Rasterlayer ausgewählt werden, so dass die Seillinien über Kachelgrenzen hinweg konstruiert werden kann
+* Mehrfachauswahl von Raster-Kacheln: Neu können mehrere Rasterlayer ausgewählt werden, sodass die Seillinien über Kachelgrenzen hinweg konstruiert werden kann
 
 ### Fehlerbehebung
 * Korrektur der Berechnung für Angriffswinkel bei 0 Meter hohen Stützen

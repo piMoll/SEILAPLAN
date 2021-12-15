@@ -20,6 +20,7 @@
 """
 from qgis.PyQt.QtCore import QCoreApplication
 from qgis.core import QgsCoordinateReferenceSystem
+from .outputGeo import GPS_CRS
 
 
 class AbstractHeightSource(object):
@@ -45,7 +46,7 @@ class AbstractHeightSource(object):
     def guessCrs(self):
         if self.extent and -180 <= self.extent[0] <= 180 \
                 and -90 <= self.extent[1] <= 90:
-            self.spatialRef = QgsCoordinateReferenceSystem('EPSG:4326')
+            self.spatialRef = QgsCoordinateReferenceSystem(GPS_CRS)
         else:
             self.spatialRef = QgsCoordinateReferenceSystem()
 

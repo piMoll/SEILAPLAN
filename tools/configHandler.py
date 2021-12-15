@@ -291,9 +291,9 @@ class ProjectConfHandler(AbstractConfHandler):
         self.heightSource = None
         self.heightSourceType = None
         self.virtRasterSource = None
-        srs = None
+        heights = None
         if sourceType == 'dhm':
-            srs = Raster(layer, sourcePath)
+            heights = Raster(layer, sourcePath)
         elif sourceType == 'dhm_list':
             if layer:
                 rasterList = layer
@@ -319,21 +319,22 @@ class ProjectConfHandler(AbstractConfHandler):
                         self.virtRasterSource = rasterList
                     except RuntimeError:
                         self.onError(self.tr('Fehler beim Kombinieren der Rasterkacheln.'))
-                srs = Raster(virtLayer)
+                heights = Raster(virtLayer)
         elif sourceType == 'survey':
-            srs = SurveyData(sourcePath)
-            if srs.valid:
+            heights = SurveyData(sourcePath)
+            if heights.valid:
                 self.points = {
                     'A': [None, None],
                     'E': [None, None]
                 }
-        if srs and srs.valid:
-            self.heightSource = srs
+        if heights and heights.valid:
+            self.heightSource = heights
             self.heightSourceType = sourceType
-        elif srs and srs.errorMsg:
-            self.onError(srs.errorMsg)
+        if heights and heights.errorMsg:
+            self.onError(heights.errorMsg)
+            heights.errorMsg = ''
         
-        # Points are ether empty (raster) or they are the first and last point
+        # Points are either empty (raster) or they are the first and last point
         # of survey data
         self.setPoint('A', self.points['A'])
         self.setPoint('E', self.points['E'])
@@ -758,7 +759,8 @@ class ParameterConfHandler(AbstractConfHandler):
         """
         p = self._getParameterInfo(property_name)
         if not p:
-            return False
+            raise Exception(self.tr('Fehler beim Laden der Parameter, '
+                'moeglicherweise sind sie in einem alten Format.'))
         if p['ftype'] == 'drop_field' and property_name == 'Seilsys':
             value = self.getSeilsysAsIdx(value)
         cval = self.castToNumber(p['dtype'], value)
@@ -1127,9 +1129,7 @@ class ConfigHandler(object):
                         self.params.saveParameterSet(setname)
                     self.params.currentSetName = setname
                     return lineNr
-                paramSuccess = self.params.batchSetParameter(key, part[1])
-                if not paramSuccess:
-                    raise Exception('Fehler beim Laden der Parameter, eventuell sind die Projekteinstellungen in einem alten Format.')
+                self.params.batchSetParameter(key, part[1])
         
         def readOutPoleData(lines, lineNr):
             for line in lines[lineNr:]:

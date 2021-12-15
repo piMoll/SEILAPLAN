@@ -1285,6 +1285,11 @@ nach Zweifel</translation>
         <translation>Der Parameter &apos;Minimaler Abstand Tragseil - Boden&apos; (Reiter Seillinie) darf nicht grösser als der Parameter &apos;Minimale Sattelhöhe&apos; (Reiter Optional #1) sein.
 Bitte passen Sie die Eingabe an.</translation>
     </message>
+    <message>
+        <location filename="../tools/configHandler.py" line="762"/>
+        <source>Fehler beim Laden der Parameter, moeglicherweise sind sie in einem alten Format.</source>
+        <translation>Fehler beim Laden der Parameter, möglicherweise sind sie in einem veralteten Format.</translation>
+    </message>
 </context>
 <context>
     <name>PoleRow</name>
@@ -1651,7 +1656,7 @@ Bitte passen Sie die Eingabe an.</translation>
         <location filename="../gui/seilaplanDialog.ui" line="2909"/>
         <source>?</source>
         <translation>?</translation>
-    </message>
+    </message>fm
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="632"/>
         <source>Maschinendaten</source>
@@ -2277,6 +2282,36 @@ Pfad zu Dokumentation:
         <location filename="../tools/survey.py" line="110"/>
         <source>Daten in CSV-Datei konnten nicht geladen werden.</source>
         <translation>Daten aus CSV-Datei konnten nicht geladen werden.</translation>
+    </message>
+    <message>
+        <location filename="../tools/survey.py" line="74"/>
+        <source>CSV-Datei &apos;_path_&apos; ist nicht vorhanden.</source>
+        <translation>CSV-Datei &apos;_path_&apos; ist nicht vorhanden.</translation>
+    </message>
+    <message>
+        <location filename="../tools/survey.py" line="220"/>
+        <source>Die Messdaten sind unvollstaendig, die CSV-Datei kann nicht geladen werden.</source>
+        <translation>Die Messdaten sind unvollständig, die CSV-Datei kann nicht geladen werden.</translation>
+    </message>
+    <message>
+        <location filename="../tools/survey.py" line="227"/>
+        <source>Die CSV-Datei enthaelt Messluecken, das erstellte Profil koennte fehlerhaft sein.</source>
+        <translation>Die CSV-Datei enthält Messlücken, das erstellte Profil könnte fehlerhaft sein.</translation>
+    </message>
+    <message>
+        <location filename="../tools/survey.py" line="234"/>
+        <source>Die CSV-Datei enthaelt mehr als eine Messreihe. Es wurde nur die laengste Messreihe geladen.</source>
+        <translation>Die CSV-Datei enthält mehr als eine Messreihe. Es wurde nur die längste Messreihe geladen.</translation>
+    </message>
+    <message>
+        <location filename="../tools/survey.py" line="240"/>
+        <source>Die CSV-Datei enthaelt keine GPS-Koordinaten, das Profil kann nicht erstellt werden.</source>
+        <translation>Die CSV-Datei enthält keine GPS-Koordinaten, das Profil kann nicht erstellt werden.</translation>
+    </message>
+    <message>
+        <location filename="../tools/survey.py" line="255"/>
+        <source>Die CSV-Datei enthaelt ungueltige GPS-Koordinaten.</source>
+        <translation>Die CSV-Datei enthält ungültige GPS-Koordinaten.</translation>
     </message>
 </context>
 <context>

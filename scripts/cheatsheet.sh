@@ -14,6 +14,6 @@ bash scripts/update-strings.sh de en fr it
 ##  comments.
 
 # compile translations
-bash scripts/compile-strings.sh lrelease en de
+bash bash scripts/update-strings.sh SeilaplanPlugin_de
 
 

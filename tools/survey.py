@@ -20,11 +20,11 @@
 """
 import os
 import numpy as np
-from qgis.core import (QgsCoordinateTransform, QgsPoint,
-                       QgsCoordinateReferenceSystem, QgsProject)
+from qgis.core import QgsCoordinateReferenceSystem
 import csv
 import copy
 from .heightSource import AbstractHeightSource
+from .outputGeo import GPS_CRS, CH_CRS, latLonToUtmCode, reprojectToCrs
 # Check if library scipy is present. On linux scipy isn't included in
 #  the standard qgis python interpreter
 try:
@@ -87,12 +87,22 @@ class SurveyData(AbstractHeightSource):
                     row = row[0].split(',')
                     sep = ','
                 # Analyse header line
+                
+                # Fields of Vertex csv
+                idxTYPE = [idx for idx, h in enumerate(row) if
+                           formatStr(h) == 'TYPE']
                 idxLon = [idx for idx, h in enumerate(row) if
                           formatStr(h) == 'LON']
                 idxLat = [idx for idx, h in enumerate(row) if
                           formatStr(h) == 'LAT']
-                idxAlt = [idx for idx, h in enumerate(row) if
-                          formatStr(h) == 'ALTITUDE']
+                idxSEQ = [idx for idx, h in enumerate(row) if
+                          formatStr(h) == 'SEQ']
+                idxAlti = [idx for idx, h in enumerate(row) if
+                           formatStr(h) == 'ALTITUDE']
+                idxHD = [idx for idx, h in enumerate(row) if
+                         formatStr(h) == 'HD']
+                idxAz = [idx for idx, h in enumerate(row) if
+                         formatStr(h) == 'AZ']
                 
                 idxX = [idx for idx, h in enumerate(row) if
                         formatStr(h) == 'X']
@@ -103,9 +113,11 @@ class SurveyData(AbstractHeightSource):
                 break
         
         # Check if data is in vertex format
-        if len(idxLat) == 1 and len(idxLon) == 1 and len(idxAlt) == 1:
-            success = self.readOutData(idxLon[0], idxLat[0], idxAlt[0], sep)
-            self.spatialRef = QgsCoordinateReferenceSystem('EPSG:4326')
+        if len(idxTYPE) == 1 and len(idxSEQ) == 1 and len(idxAlti) == 1 \
+                and len(idxHD) == 1 and len(idxAz) == 1 \
+                and len(idxLat) == 1 and len(idxLon) == 1:
+            success = self.readOutVertexData(idxTYPE[0], idxSEQ[0], idxAlti[0],
+                        idxHD[0], idxAz[0], idxLon[0], idxLat[0], sep)
         
         # Check if data is in x, y, z format
         elif len(idxX) == 1 and len(idxY) == 1 and len(idxZ) == 1:
@@ -115,8 +127,8 @@ class SurveyData(AbstractHeightSource):
             self.projectOnLine()
             self.valid = True
         else:
-            self.errorMsg = self.tr(
-                "Daten in CSV-Datei konnten nicht geladen werden.")
+            if not self.errorMsg:
+                self.errorMsg = self.tr("Daten in CSV-Datei konnten nicht geladen werden.")
     
     def readOutData(self, idxX, idxY, idxZ, sep):
         try:
@@ -125,14 +137,10 @@ class SurveyData(AbstractHeightSource):
                                     skip_header=1)
         except TypeError as e:
             return False
-        # Check for missing values
-        x_isnan = np.isnan(x)
-        y_isnan = np.isnan(y)
-        z_isnan = np.isnan(z)
-        # Remove whole row
-        x = x[~(x_isnan + y_isnan + z_isnan)]
-        y = y[~(x_isnan + y_isnan + z_isnan)]
-        z = z[~(x_isnan + y_isnan + z_isnan)]
+        # Check for missing values and remove whole row
+        x = x[~(np.isnan(x) + np.isnan(y) + np.isnan(z))]
+        y = y[~(np.isnan(x) + np.isnan(y) + np.isnan(z))]
+        z = z[~(np.isnan(x) + np.isnan(y) + np.isnan(z))]
         
         if len(x) < 2:
             return False
@@ -149,28 +157,171 @@ class SurveyData(AbstractHeightSource):
         self.nr = np.arange(len(x)) + 1
         return True
     
+    def readOutVertexData(self, idxTYPE, idxSEQ, idxAlti, idxHD, idxAz, idxLon, idxLat, sep):
+        try:
+            # Readout measuring type separately (because the data is of
+            # type string)
+            dataType = np.genfromtxt(self.path, delimiter=sep, dtype=str,
+                                     usecols=idxTYPE)
+            # Analyse when data rows start
+            skipHead = np.where(dataType == 'TRAIL')[0][0]
+            # Read out numerical values
+            seq, alti, hd, az, lon, lat = np.genfromtxt(self.path, delimiter=sep,
+                    usecols=(idxSEQ, idxAlti, idxHD, idxAz, idxLon, idxLat),
+                    skip_header=skipHead, unpack=True)
+        except ValueError:
+            return False
+        
+        # Make sure array dataType has the same size as the numerical data
+        #  and check if the readout data has type TRAIL
+        trail = dataType[skipHead:] == 'TRAIL'
+        
+        # See if dimensions of extracted data fit
+        if not (trail.size == seq.size == alti.size == hd.size ==
+                az.size == lon.size == lat.size):
+            return False
+        
+        # Check for missing values and create array masks to skip them when
+        #  processing
+        mask_use = np.array([True]*seq.size)
+        
+        # Check if there are multiple measurement series by searching for
+        #  seq = 1. Only take the longest sequence of measurements
+        sequence_len = []
+        sequence_starts = np.where(seq == 1)[0]
+        last_start = 0
+        for sequence_start in sequence_starts:
+            if sequence_start != 0:
+                sequence_len.append(sequence_start - last_start)
+            last_start = sequence_start
+        sequence_len.append(seq.size - last_start)
+        # Find sequence start and end index
+        start_of_longest_sequence = sequence_starts[np.argmax(sequence_len)]
+        end_of_longest_sequence = sequence_starts[np.argmax(sequence_len)+1] \
+            if sequence_len == seq.size else -1
+        
+        # Update mask by setting every other measurement series to False
+        mask_use[:start_of_longest_sequence] = False
+        if end_of_longest_sequence != -1:
+            mask_use[end_of_longest_sequence:] = False
+        
+        seq = seq[mask_use]
+        alti = alti[mask_use]
+        hd = hd[mask_use]
+        az = az[mask_use]
+        lon = lon[mask_use]
+        lat = lat[mask_use]
+        # Check if some gps measurements are missing
+        mask_gps = ~(np.isnan(lon) + np.isnan(lat))
+        
+        # Quality checks
+        
+        # If relative measurements are missing, we cannot create a line
+        if np.sum(np.isnan(az)) > 0 \
+                or np.sum(np.isnan(hd)) > 0:
+            self.errorMsg = self.tr('Die Messdaten sind unvollstaendig, '
+                                    'die CSV-Datei kann nicht geladen werden.')
+            return False
+
+        # Check if the sequence numbers are in order and that there are no gaps
+        if np.sum(np.cumsum(np.array([1] * seq.size)) == seq) != seq.size:
+            # Only add a warning, create the profile ether way
+            self.errorMsg = self.tr('Die CSV-Datei enthaelt Messluecken, '
+                'das erstellte Profil koennte fehlerhaft sein.')
+        
+        # If there are multiple measurements series (sequence restarts at one),
+        # there is most certainly an issue with the CSV data
+        if np.sum(seq == 1) > 1:
+            # Only add a warning
+            self.errorMsg = self.tr('Die CSV-Datei enthaelt mehr als eine '
+                'Messreihe. Es wurde nur die laengste Messreihe geladen.')
+    
+        # Check if at least one pair of absolute coordinates are present to
+        #  transform relative measurements into destination coordinate system
+        if lon[mask_gps].size == 0 or lat[mask_gps].size == 0:
+            self.errorMsg = self.tr('Die CSV-Datei enthaelt keine '
+                'GPS-Koordinaten, das Profil kann nicht erstellt werden.')
+            return False
+    
+        # Calculate X/Y coordinate relative to the first point (0, 0)
+        #  by adding the distance (horizontalDist * sin(azimuth))
+        relCoords = np.array(
+            [np.cumsum(hd * np.sin(np.radians(az))),
+             np.cumsum(hd * np.cos(np.radians(az)))
+            ])
+    
+        # Guess UTM epsg code by analysing lat, lon values
+        try:
+            utmEpsg = latLonToUtmCode(lat[mask_gps][0], lon[mask_gps][0])
+        except Exception:
+            self.errorMsg = self.tr('Die CSV-Datei enthaelt ungueltige GPS-Koordinaten.')
+            return False
+    
+        # Transform GPS coordinates to projected UTM coordinates
+        utmx, utmy = reprojectToCrs(lon[mask_gps], lat[mask_gps], GPS_CRS, utmEpsg)
+        utmCoords = np.array([utmx, utmy])
+
+        # Calculate mean distance to UTM coords but only on rows where
+        #  GPS coords are present
+        # TODO: Gewichtung GPS Genauigkeit
+        deltaX = utmCoords[0] - relCoords[0][mask_gps]
+        deltaY = utmCoords[1] - relCoords[1][mask_gps]
+        meanDist = np.mean(np.sqrt(np.square(deltaX) + np.square(deltaY)))
+        # Calculate mean azimut to UTM coords
+        meanAz = np.mean(np.arctan(deltaX/deltaY))
+
+        # Move relative coordinates to UTM system
+        relCoordsNew = np.array([
+            relCoords[0] + meanDist * np.sin(meanAz),
+            relCoords[1] + meanDist * np.cos(meanAz)
+        ])
+        # Translate back to WGS84
+        gpsx, gpsy = reprojectToCrs(relCoordsNew[0], relCoordsNew[1], utmEpsg, GPS_CRS)
+        self.surveyPoints = {
+            'x': gpsx,
+            'y': gpsy,
+            'z': alti
+        }
+        self.spatialRef = QgsCoordinateReferenceSystem(GPS_CRS)
+        self.nr = np.arange(len(gpsx)) + 1
+
+        # TODO: Remove
+        self.addToMap(GPS_CRS, lon, lat, 'gps')
+        # self.addToMap(utmEpsg, relCoordsNew[0], relCoordsNew[1], 'rel')
+        # self.addToMap(GPS_CRS, gpsx, gpsy, 'rel2gps')
+
+        return True
+    
     def reprojectToCrs(self, destinationCrs):
         if isinstance(destinationCrs, str):
             destinationCrs = QgsCoordinateReferenceSystem(destinationCrs)
         if not destinationCrs:
-            destinationCrs = QgsCoordinateReferenceSystem('EPSG:2056')
+            destinationCrs = QgsCoordinateReferenceSystem(CH_CRS)
         # Do not reproject if data is already in destinationCrs
         if self.spatialRef == destinationCrs or not destinationCrs.isValid():
             return
-        transformer = QgsCoordinateTransform(self.spatialRef, destinationCrs,
-                                             QgsProject.instance())
         
-        for i in range(len(self.surveyPoints['x'])):
-            point = QgsPoint(self.surveyPoints['x'][i],
-                             self.surveyPoints['y'][i])
-            point.transform(transformer)
-            self.surveyPoints['x'][i] = point.x()
-            self.surveyPoints['y'][i] = point.y()
-        
+        # If original spatial ref was not valid (empty), set the destination
+        #  CRS as new spatial reference
+        if not self.spatialRef.isValid():
+            self.spatialRef = destinationCrs
+            return
+
+        xnew, ynew = reprojectToCrs(self.surveyPoints['x'],
+                                    self.surveyPoints['y'],
+                                    self.spatialRef, destinationCrs)
+        self.surveyPoints['x'] = xnew
+        self.surveyPoints['y'] = ynew
         self.spatialRef = destinationCrs
+        
         self.projectOnLine()
     
     def projectOnLine(self):
+        """ Interpolate points so they lay on a line. This does not make much
+        sense for geographical GPS coordinates, but this function will run
+        again after points have been projected onto a planar coordinate system.
+        """
+        
         # Fit a plane through X/Y coordinates with least squares algorithm
         x = self.surveyPoints['x']
         y = self.surveyPoints['y']
@@ -335,3 +486,29 @@ class SurveyData(AbstractHeightSource):
             yOnLine = self.origData['y'][lastIdx]
         
         return [xOnLine, yOnLine]
+
+
+    # TODO remove
+    def addToMap(self, lyrCrs, x, y, lyrname):
+        from qgis.core import (QgsPointXY, QgsProject,
+                               QgsFeature, QgsGeometry, QgsVectorLayer,
+                               QgsField)
+        from qgis.PyQt.QtCore import QVariant
+        # Create survey point layer
+        surveyPointLayer = QgsVectorLayer('Point?crs=' + lyrCrs,
+                                          lyrname, 'memory')
+        pr = surveyPointLayer.dataProvider()
+        pr.addAttributes([QgsField("nr", QVariant.Int)])
+        surveyPointLayer.updateFields()
+        features = []
+        idx = 1
+        for x, y in np.column_stack([x, y]):
+            feature = QgsFeature()
+            feature.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(x, y)))
+            feature.setId(idx)
+            feature.setAttributes([idx])
+            features.append(feature)
+            idx += 1
+        pr.addFeatures(features)
+        surveyPointLayer.updateExtents()
+        QgsProject.instance().addMapLayers([surveyPointLayer])

@@ -1298,6 +1298,11 @@ dopo Zweifel</translation>
         <translation>Il parametro &quot;Spazio minimale tra fune portante e suolo&quot; (tab Linea di gru a cavo) non deve essere maggiore del parametro &quot; Altezza minimale dei cavalletti&quot; (tab Opzionale #1).
 Si prega di adattare l&apos;input.</translation>
     </message>
+    <message>
+        <location filename="../tools/configHandler.py" line="762"/>
+        <source>Fehler beim Laden der Parameter, moeglicherweise sind sie in einem alten Format.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PoleRow</name>
@@ -2296,6 +2301,36 @@ C&apos;è cercato la soluzione che, in prima priorità, minimizza il numero dei 
         <location filename="../tools/survey.py" line="110"/>
         <source>Daten in CSV-Datei konnten nicht geladen werden.</source>
         <translation>I dati del file CSV non hanno potuto essere caricato.</translation>
+    </message>
+    <message>
+        <location filename="../tools/survey.py" line="74"/>
+        <source>CSV-Datei &apos;_path_&apos; ist nicht vorhanden.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tools/survey.py" line="220"/>
+        <source>Die Messdaten sind unvollstaendig, die CSV-Datei kann nicht geladen werden.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tools/survey.py" line="227"/>
+        <source>Die CSV-Datei enthaelt Messluecken, das erstellte Profil koennte fehlerhaft sein.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tools/survey.py" line="234"/>
+        <source>Die CSV-Datei enthaelt mehr als eine Messreihe. Es wurde nur die laengste Messreihe geladen.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tools/survey.py" line="240"/>
+        <source>Die CSV-Datei enthaelt keine GPS-Koordinaten, das Profil kann nicht erstellt werden.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tools/survey.py" line="255"/>
+        <source>Die CSV-Datei enthaelt ungueltige GPS-Koordinaten.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

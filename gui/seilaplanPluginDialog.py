@@ -34,6 +34,7 @@ from processing.core.Processing import Processing
 # Further GUI modules for functionality
 from .guiHelperFunctions import (DialogWithImage, createContours,
     loadOsmLayer, createProfileLayers)
+from ..tools.outputGeo import CH_CRS
 from ..tools.configHandler import ConfigHandler, castToNum
 # GUI elements
 from .checkableComboBoxOwn import QgsCheckableComboBoxOwn
@@ -649,7 +650,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         elif not lyrCrs.isValid():
             if mapCrs.isGeographic():
                 msg = self.tr('KBS-Fehler - Bezugssystem des Rasters unbekannt')
-                heightSource.spatialRef = QgsCoordinateReferenceSystem('EPSG:2056')
+                heightSource.spatialRef = QgsCoordinateReferenceSystem(CH_CRS)
                 self.canvas.setDestinationCrs(heightSource.spatialRef)
                 self.canvas.refresh()
                 success = True
@@ -709,12 +710,15 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             self.osmLyrButton.setEnabled(False)
     
     def removeSurveyDataLayer(self):
-        if self.surveyLineLayer:
-            QgsProject.instance().removeMapLayer(self.surveyLineLayer.id())
-            self.surveyLineLayer = None
-        if self.surveyPointLayer:
-            QgsProject.instance().removeMapLayer(self.surveyPointLayer.id())
-            self.surveyPointLayer = None
+        try:
+            if self.surveyLineLayer:
+                QgsProject.instance().removeMapLayer(self.surveyLineLayer.id())
+                self.surveyLineLayer = None
+            if self.surveyPointLayer:
+                QgsProject.instance().removeMapLayer(self.surveyPointLayer.id())
+                self.surveyPointLayer = None
+        except RuntimeError:
+            return
     
     def setProjName(self, projname):
         self.projectHandler.setProjectName(projname)
