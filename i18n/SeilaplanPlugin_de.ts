@@ -1240,53 +1240,53 @@ nach Zweifel</translation>
 <context>
     <name>ParameterConfHandler</name>
     <message>
-        <location filename="../tools/configHandler.py" line="647"/>
+        <location filename="../tools/paramHandler.py" line="647"/>
         <source>Fehler in Parameterset &apos;{}&apos; gefunden. Set kann nicht geladen werden.</source>
         <translation>Fehler in Parameterset &apos;{}&apos; gefunden. Set kann nicht geladen werden.</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="764"/>
+        <location filename="../tools/paramHandler.py" line="764"/>
         <source>Bitte geben Sie im Feld einen Wert ein</source>
         <translation>Bitte geben Sie im Feld {} einen Wert zwischen {} und {} {} ein.</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="794"/>
+        <location filename="../tools/paramHandler.py" line="794"/>
         <source>Ungueltige Eingabe</source>
         <translation>Ungültige Eingabe</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="772"/>
+        <location filename="../tools/paramHandler.py" line="772"/>
         <source>Der Wert im Feld ist ungueltig</source>
         <translation>Der Wert {} im Feld {} ist ungültig. Bitte wählen Sie einen Wert zwischen {} und {} {}.</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="605"/>
+        <location filename="../tools/paramHandler.py" line="605"/>
         <source>Standardparameter</source>
         <translation>Standardparameter</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="839"/>
+        <location filename="../tools/paramHandler.py" line="839"/>
         <source>Fehler in Parameterset gefunden</source>
         <translation>Fehler in Parameterset {} gefunden. Set kann nicht geladen werden.</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="891"/>
+        <location filename="../tools/paramHandler.py" line="891"/>
         <source>Bitte geben Sie eine gueltige Zahl ein.</source>
         <translation>Bitte geben Sie eine gültige Zahl ein.</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="956"/>
+        <location filename="../tools/paramHandler.py" line="956"/>
         <source>Kein Zweiseil-System moeglich</source>
         <translation>Fehler: Kein Zweilseil-System möglich wenn der Anfangspunkt (bei Winde/Maschine) tiefer als der Endpunkt liegt.</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="794"/>
+        <location filename="../tools/paramHandler.py" line="794"/>
         <source>Der Parameter Minimaler Abstand Tragseil Boden darf nicht groesser als der Parameter Minimale Stuetzenhoehe sein.</source>
         <translation>Der Parameter &apos;Minimaler Abstand Tragseil - Boden&apos; (Reiter Seillinie) darf nicht grösser als der Parameter &apos;Minimale Sattelhöhe&apos; (Reiter Optional #1) sein.
 Bitte passen Sie die Eingabe an.</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="762"/>
+        <location filename="../tools/paramHandler.py" line="762"/>
         <source>Fehler beim Laden der Parameter, moeglicherweise sind sie in einem alten Format.</source>
         <translation>Fehler beim Laden der Parameter, möglicherweise sind sie in einem veralteten Format.</translation>
     </message>
@@ -1479,52 +1479,52 @@ Bitte passen Sie die Eingabe an.</translation>
 <context>
     <name>ProjectConfHandler</name>
     <message>
-        <location filename="../tools/configHandler.py" line="474"/>
+        <location filename="../tools/projectHandler.py" line="474"/>
         <source>Bitte definieren Sie gueltige Start- und Endkoordinaten</source>
         <translation>Bitte definieren Sie gültige Start- und Endkoordinaten</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="476"/>
+        <location filename="../tools/projectHandler.py" line="476"/>
         <source>Bitte definieren Sie einen Projektnamen</source>
         <translation>Bitte definieren Sie einen Projektnamen</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="478"/>
+        <location filename="../tools/projectHandler.py" line="478"/>
         <source>Ungueltige Daten</source>
         <translation>Ungültige Daten</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="520"/>
+        <location filename="../tools/projectHandler.py" line="520"/>
         <source>Unerwarteter Fehler bei der Erstellung des Profils.</source>
         <translation>Unerwarteter Fehler bei der Erstellung des Profils.</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="555"/>
+        <location filename="../tools/projectHandler.py" line="555"/>
         <source>Unerwarteter Fehler bei Erstellung des Profils</source>
         <translation>Unerwarteter Fehler bei Erstellung des Profils</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="556"/>
+        <location filename="../tools/projectHandler.py" line="556"/>
         <source>Unerwarteter Fehler bei Erstellung der Stuetzen</source>
         <translation>Unerwarteter Fehler bei Erstellung der Stützen</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="177"/>
+        <location filename="../tools/projectHandler.py" line="177"/>
         <source>Fehler beim Laden des Rasters</source>
         <translation>Fehler beim Laden des Rasters</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="284"/>
+        <location filename="../tools/projectHandler.py" line="284"/>
         <source>Fehler beim Kombinieren der Rasterkacheln</source>
         <translation>Fehler beim Kombinieren der Rasterkacheln</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="293"/>
+        <location filename="../tools/projectHandler.py" line="293"/>
         <source>Fehler beim Kombinieren der Rasterkacheln.</source>
         <translation>Fehler beim Kombinieren der Rasterkacheln.</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="316"/>
+        <location filename="../tools/projectHandler.py" line="316"/>
         <source>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</source>
         <translation>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</translation>
     </message>

@@ -1259,53 +1259,53 @@ terrain shape</translation>
 <context>
     <name>ParameterConfHandler</name>
     <message>
-        <location filename="../tools/configHandler.py" line="605"/>
+        <location filename="../tools/paramHandler.py" line="605"/>
         <source>Standardparameter</source>
         <translation>Standard parameters</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="647"/>
+        <location filename="../tools/paramHandler.py" line="647"/>
         <source>Fehler in Parameterset &apos;{}&apos; gefunden. Set kann nicht geladen werden.</source>
         <translation>Error in parameters set {}. Set cannot be loaded.</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="764"/>
+        <location filename="../tools/paramHandler.py" line="764"/>
         <source>Bitte geben Sie im Feld einen Wert ein</source>
         <translation>Please enter a value between {} and {} {}.</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="794"/>
+        <location filename="../tools/paramHandler.py" line="794"/>
         <source>Ungueltige Eingabe</source>
         <translation>Invalid input</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="772"/>
+        <location filename="../tools/paramHandler.py" line="772"/>
         <source>Der Wert im Feld ist ungueltig</source>
         <translation>The value {} in input field {} is invalid. Please enter a value between {} and {} {}.</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="839"/>
+        <location filename="../tools/paramHandler.py" line="839"/>
         <source>Fehler in Parameterset gefunden</source>
         <translation>Error in parameters set {}. Set cannot be loaded.</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="891"/>
+        <location filename="../tools/paramHandler.py" line="891"/>
         <source>Bitte geben Sie eine gueltige Zahl ein.</source>
         <translation>Please enter a valid number.</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="956"/>
+        <location filename="../tools/paramHandler.py" line="956"/>
         <source>Kein Zweiseil-System moeglich</source>
         <translation>Error: Two-cable system is not possible if the start point (at winch/machine) is lower than the end point.</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="794"/>
+        <location filename="../tools/paramHandler.py" line="794"/>
         <source>Der Parameter Minimaler Abstand Tragseil Boden darf nicht groesser als der Parameter Minimale Stuetzenhoehe sein.</source>
         <translation>The parameter ‘Minimal clearance between skyline and ground’ (tab Cable road) should not be greater than the parameter &apos;Minimal support height&apos; (tab Optional #1).
 Please change the input.</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="762"/>
+        <location filename="../tools/paramHandler.py" line="762"/>
         <source>Fehler beim Laden der Parameter, moeglicherweise sind sie in einem alten Format.</source>
         <translation>Error loading parameters, they could be in a depricated format.</translation>
     </message>
@@ -1496,52 +1496,52 @@ Please change the input.</translation>
 <context>
     <name>ProjectConfHandler</name>
     <message>
-        <location filename="../tools/configHandler.py" line="474"/>
+        <location filename="../tools/projectHandler.py" line="474"/>
         <source>Bitte definieren Sie gueltige Start- und Endkoordinaten</source>
         <translation>Please define valid start and end coordinates</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="476"/>
+        <location filename="../tools/projectHandler.py" line="476"/>
         <source>Bitte definieren Sie einen Projektnamen</source>
         <translation>Please define a project name</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="478"/>
+        <location filename="../tools/projectHandler.py" line="478"/>
         <source>Ungueltige Daten</source>
         <translation>Invalid data</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="520"/>
+        <location filename="../tools/projectHandler.py" line="520"/>
         <source>Unerwarteter Fehler bei der Erstellung des Profils.</source>
         <translation>Unexpected error when generating the profile.</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="555"/>
+        <location filename="../tools/projectHandler.py" line="555"/>
         <source>Unerwarteter Fehler bei Erstellung des Profils</source>
         <translation>Unexpected error when generating the profile</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="556"/>
+        <location filename="../tools/projectHandler.py" line="556"/>
         <source>Unerwarteter Fehler bei Erstellung der Stuetzen</source>
         <translation>Unexpected error when generating the supports</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="177"/>
+        <location filename="../tools/projectHandler.py" line="177"/>
         <source>Fehler beim Laden des Rasters</source>
         <translation>Error when loading raster file</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="284"/>
+        <location filename="../tools/projectHandler.py" line="284"/>
         <source>Fehler beim Kombinieren der Rasterkacheln</source>
         <translation>Error when combining raster tiles</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="293"/>
+        <location filename="../tools/projectHandler.py" line="293"/>
         <source>Fehler beim Kombinieren der Rasterkacheln.</source>
         <translation>Error when combining raster tiles</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler.py" line="316"/>
+        <location filename="../tools/projectHandler.py" line="316"/>
         <source>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</source>
         <translation>Raster file _path_ is not present, raster cannot be loaded.</translation>
     </message>

@@ -34,7 +34,7 @@ class Profile(object):
         points. So xi[-1] and yi[-1] end point coordinates differ to the ones
         the user defined at the beginning.
 
-        :type project: configHandler.ProjectConfHandler
+        :type project: projectHandler.ProjectConfHandler
         :return:
         """
         [self.Ax, self.Ay] = project.points['A']

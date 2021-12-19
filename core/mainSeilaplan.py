@@ -28,7 +28,7 @@ from .cablelineFinal import preciseCable
 def main(progress, project):
     """
     :type progress: processingThread.ProcessingTask
-    :type project: configHandler.ProjectConfHandler
+    :type project: projectHandler.ProjectConfHandler
     """
     progress.status.append(1)
     if progress.isCanceled():

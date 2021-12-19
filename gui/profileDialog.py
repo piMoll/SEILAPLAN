@@ -39,7 +39,7 @@ class ProfileDialog(QDialog):
     def __init__(self, parent, interface, drawTool, projectHandler):
         """
         :type drawTool: gui.mapMarker.MapMarkerTool
-        :type projectHandler: configHandler.ProjectConfHandler
+        :type projectHandler: projectHandler.ProjectConfHandler
         """
         QDialog.__init__(self, parent)
         self.iface = interface

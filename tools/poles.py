@@ -44,7 +44,7 @@ class Poles(object):
     
     def __init__(self, project):
         """
-        :type project: configHandler.ProjectConfHandler
+        :type project: projectHandler.ProjectConfHandler
         """
         self.params = project.params
         self.heightSource = project.heightSource
