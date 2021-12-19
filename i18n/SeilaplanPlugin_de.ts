@@ -1656,7 +1656,7 @@ Bitte passen Sie die Eingabe an.</translation>
         <location filename="../gui/seilaplanDialog.ui" line="2909"/>
         <source>?</source>
         <translation>?</translation>
-    </message>fm
+    </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="632"/>
         <source>Maschinendaten</source>
