@@ -600,7 +600,7 @@ def generateReport(reportText, outputLoc):
         os.remove(savePath)
 
     width, height = landscape(A4)
-    margin = 1.5 * cm
+    margin = 0.8 * cm
     doc1 = SimpleDocTemplate(savePath, encoding='utf8', topMargin=margin,
                              bottomMargin=margin, leftMargin=margin,
                              rightMargin=margin, pageBreakQuick=1,
@@ -625,6 +625,8 @@ def generateReport(reportText, outputLoc):
     lPadd = 6
     fontSize = 8
     smallfontSize = 6
+    if poleCount > 9:
+        fontSize = 7
 
     # Table styles
     font = 'Helvetica'
@@ -636,11 +638,9 @@ def generateReport(reportText, outputLoc):
                               ('FONT', (0, 0), (-1, -1), font, 8),
                               ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
                               ])
-    stdStyleA = [('LEFTPADDING', (0, 0), (0, -1), lPadd),  # Align everything left
-                ('ALIGN', (1, 0), (-1, -1), 'RIGHT'),  # after first column aling right
+    stdStyleA = [('ALIGN', (1, 0), (-1, -1), 'RIGHT'),  # after first column align right
                 ('FONT', (0, 0), (-1, -1), font, fontSize)]
-    stdStyleB = [('LEFTPADDING', (0, 0), (0, -1), lPadd),
-                 ('FONT', (1, 0), (-1, -1), font, fontSize),
+    stdStyleB = [('FONT', (1, 0), (-1, -1), font, fontSize),
                  ('ALIGN', (2, 0), (-1, -1), 'RIGHT')]
 
     t_tite1 = Table(h_tite, wi_doc, [0.8*cm])
@@ -713,23 +713,43 @@ def generateReport(reportText, outputLoc):
         ('FONT', (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
 
     t_stue1 = Table(h_stue, wi_doc, he_rowT)
-    t_stue2 = Table(str_stue1, wi_abk + [6.8*cm] + [2.4*cm]*poleCount, len(str_stue1)*he_row)
-    t_stue3 = Table(str_stue2, wi_abk + [6.8*cm] + [1.2*cm]*poleCount, len(str_stue2)*he_row)
+    # Control font sizes and widths for cases with lots of poles
+    labelWidth = [6.8 * cm]
+    colWidth = [2.4 * cm]
+    colWidthHalf = [1.2 * cm]
+    colFontSize = fontSize
+    padding = 6
+    # Make everything smaller when there are a lot of poles
+    if len(str_stue1[0]) > 8:
+        labelWidth = [6.0 * cm]
+        colWidth = [1.8 * cm]
+        colWidthHalf = [0.9 * cm]
+        colFontSize = fontSize - 1
+        padding = 1
+        
+    t_stue2 = Table(str_stue1, wi_abk + labelWidth + colWidth*poleCount, len(str_stue1)*he_row)
+    t_stue3 = Table(str_stue2, wi_abk + labelWidth + colWidthHalf*poleCount, len(str_stue2)*he_row)
     t_stue1.setStyle(title_style)
-    t_stue2.setStyle(TableStyle(stdStyleB + [
+    stueStyle = stdStyleB + [
         ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),  # field header
-        ('FONT', (1, 0), (1, 0), fontHeader, fontSize),  # subsection
-        ('FONT', (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
-    stdStyleStue = stdStyleB + [
+        ('FONT', (1, 0), (1, 1), fontHeader, colFontSize),  # subsection
+        ('FONT', (0, 0), (0, -1), font, smallfontSize),     # abbreviation in first column
+        ('LEFTPADDING', (2, 0), (-1, -1), padding),         # table padding
+        ('RIGHTPADDING', (2, 0), (-1, -1), padding),
+    ]
+    t_stue2.setStyle(TableStyle(stueStyle + [
+        ('FONT', (1, 1), (1, -1), font, colFontSize),       # Label
+        ('FONT', (2, 1), (-1, -1), font, colFontSize)]))    # Number values
+    steuStyleHalfCol = stueStyle + [
         ('FONT', (2, 0), (-1, 1), fontHeader, smallfontSize),   # field header
-        ('FONT', (1, 0), (1, 1), fontHeader, fontSize),  # subsection
-        ('FONT', (0, 0), (0, -1), font, smallfontSize),  # abbreviation in first column
+        ('FONT', (1, 2), (1, -1), font, colFontSize),       # Label
+        ('FONT', (2, 2), (-1, -1), font, colFontSize),      # Number values
         ('ALIGN', (2, 1), (2, -1), 'CENTER'),
         ('ALIGN', (-2, 1), (-2, -1), 'CENTER')]
     for i in range(2, poleCount*2+2, 2):
-        stdStyleStue += [
+        steuStyleHalfCol += [
                          ('RIGHTPADDING', (i, 1), (i, -1), 1)]
-    t_stue3.setStyle(TableStyle(stdStyleStue))
+    t_stue3.setStyle(TableStyle(steuStyleHalfCol))
 
     t_wink1 = Table(h_wink, wi_doc, he_rowT)
     t_wink2 = Table(str_wink, wi_abk + [4*cm] + [None]*fieldCount, 7*he_row)
@@ -771,7 +791,7 @@ def generateReport(reportText, outputLoc):
              [Table([[t_wink1], [t_wink2]])],
              [Table([[t_nach1], [t_nach2]])], [Table([[t_anna1], [t_anna2]])]]
 
-    elements.append(Table(data))
+    elements.append(Table(data, colWidths=wi_doc))
     doc1.build(elements)
     del elements
 
