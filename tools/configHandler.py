@@ -25,8 +25,8 @@ import numpy
 import time
 import json
 
-from .projectHandler import ProjectConfHandler
-from .paramHandler import ParameterConfHandler
+from .configHandler_project import ProjectConfHandler
+from .configHandler_params import ParameterConfHandler
 from .outputReport import getTimestamp
 
 # Constants

@@ -790,7 +790,7 @@ fune caricata</translation>
 <context>
     <name>AbstractConfHandler</name>
     <message>
-        <location filename="../tools/configHandler.py" line="68"/>
+        <location filename="../tools/configHandler_abstract.py" line="68"/>
         <source>Fehler</source>
         <translation>Errore</translation>
     </message>
@@ -1253,53 +1253,53 @@ dopo Zweifel</translation>
 <context>
     <name>ParameterConfHandler</name>
     <message>
-        <location filename="../tools/paramHandler.py" line="605"/>
+        <location filename="../tools/configHandler_params.py" line="605"/>
         <source>Standardparameter</source>
         <translation>Parametri standard</translation>
     </message>
     <message>
-        <location filename="../tools/paramHandler.py" line="647"/>
+        <location filename="../tools/configHandler_params.py" line="647"/>
         <source>Fehler in Parameterset &apos;{}&apos; gefunden. Set kann nicht geladen werden.</source>
         <translation>Errore nella serie di parametri &apos;{}&apos;. La serie non può essere caricata.</translation>
     </message>
     <message>
-        <location filename="../tools/paramHandler.py" line="764"/>
+        <location filename="../tools/configHandler_params.py" line="764"/>
         <source>Bitte geben Sie im Feld einen Wert ein</source>
         <translation>Per favore inserisca un valore tra {} e {} {}.</translation>
     </message>
     <message>
-        <location filename="../tools/paramHandler.py" line="794"/>
+        <location filename="../tools/configHandler_params.py" line="794"/>
         <source>Ungueltige Eingabe</source>
         <translation>Input invalido</translation>
     </message>
     <message>
-        <location filename="../tools/paramHandler.py" line="772"/>
+        <location filename="../tools/configHandler_params.py" line="772"/>
         <source>Der Wert im Feld ist ungueltig</source>
         <translation>Il valore {} nel campo{} non e valido. Per favore scelga un valore tra {} e {} {}.</translation>
     </message>
     <message>
-        <location filename="../tools/paramHandler.py" line="839"/>
+        <location filename="../tools/configHandler_params.py" line="839"/>
         <source>Fehler in Parameterset gefunden</source>
         <translation>Errore nella serie di parametri &apos;{}&apos;. La serie non può essere caricata.</translation>
     </message>
     <message>
-        <location filename="../tools/paramHandler.py" line="891"/>
+        <location filename="../tools/configHandler_params.py" line="891"/>
         <source>Bitte geben Sie eine gueltige Zahl ein.</source>
         <translation>Per favore inserisca un numero valido.</translation>
     </message>
     <message>
-        <location filename="../tools/paramHandler.py" line="956"/>
+        <location filename="../tools/configHandler_params.py" line="956"/>
         <source>Kein Zweiseil-System moeglich</source>
         <translation>Errore: Il sistema a due funi non è possibile se il punto d&apos;inizio (argano/macchina) si trova più basso che il punto finale.</translation>
     </message>
     <message>
-        <location filename="../tools/paramHandler.py" line="794"/>
+        <location filename="../tools/configHandler_params.py" line="794"/>
         <source>Der Parameter Minimaler Abstand Tragseil Boden darf nicht groesser als der Parameter Minimale Stuetzenhoehe sein.</source>
         <translation>Il parametro &quot;Spazio minimale tra fune portante e suolo&quot; (tab Linea di gru a cavo) non deve essere maggiore del parametro &quot; Altezza minimale dei cavalletti&quot; (tab Opzionale #1).
 Si prega di adattare l&apos;input.</translation>
     </message>
     <message>
-        <location filename="../tools/paramHandler.py" line="762"/>
+        <location filename="../tools/configHandler_params.py" line="762"/>
         <source>Fehler beim Laden der Parameter, moeglicherweise sind sie in einem alten Format.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1489,37 +1489,37 @@ Si prega di adattare l&apos;input.</translation>
 <context>
     <name>ProjectConfHandler</name>
     <message>
-        <location filename="../tools/projectHandler.py" line="474"/>
+        <location filename="../tools/configHandler_project.py" line="474"/>
         <source>Bitte definieren Sie gueltige Start- und Endkoordinaten</source>
         <translation>Per favore, definisca delle coordinate d&apos;inizio e di fine validi</translation>
     </message>
     <message>
-        <location filename="../tools/projectHandler.py" line="476"/>
+        <location filename="../tools/configHandler_project.py" line="476"/>
         <source>Bitte definieren Sie einen Projektnamen</source>
         <translation>Per favore, definisca un nome per il progetto</translation>
     </message>
     <message>
-        <location filename="../tools/projectHandler.py" line="478"/>
+        <location filename="../tools/configHandler_project.py" line="478"/>
         <source>Ungueltige Daten</source>
         <translation>Dai invalidi</translation>
     </message>
     <message>
-        <location filename="../tools/projectHandler.py" line="520"/>
+        <location filename="../tools/configHandler_project.py" line="520"/>
         <source>Unerwarteter Fehler bei der Erstellung des Profils.</source>
         <translation>Errore inaspettato alla realizzazione del profilo.</translation>
     </message>
     <message>
-        <location filename="../tools/projectHandler.py" line="555"/>
+        <location filename="../tools/configHandler_project.py" line="555"/>
         <source>Unerwarteter Fehler bei Erstellung des Profils</source>
         <translation>Errore inaspettato alla realizzazione del profilo</translation>
     </message>
     <message>
-        <location filename="../tools/projectHandler.py" line="556"/>
+        <location filename="../tools/configHandler_project.py" line="556"/>
         <source>Unerwarteter Fehler bei Erstellung der Stuetzen</source>
         <translation>Errore inaspettato alla realizzazione dei cavalletti</translation>
     </message>
     <message>
-        <location filename="../tools/projectHandler.py" line="177"/>
+        <location filename="../tools/configHandler_project.py" line="177"/>
         <source>Fehler beim Laden des Rasters</source>
         <translation>Errore al carico della griglia</translation>
     </message>
@@ -1529,12 +1529,12 @@ Si prega di adattare l&apos;input.</translation>
         <translation>Errore alla combinazione dei diversi settori della griglia</translation>
     </message>
     <message>
-        <location filename="../tools/projectHandler.py" line="293"/>
+        <location filename="../tools/configHandler_project.py" line="293"/>
         <source>Fehler beim Kombinieren der Rasterkacheln.</source>
         <translation>Errore alla combinazione dei diversi settori della griglia</translation>
     </message>
     <message>
-        <location filename="../tools/projectHandler.py" line="316"/>
+        <location filename="../tools/configHandler_project.py" line="316"/>
         <source>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</source>
         <translation>File della griglia _path_ non esiste, griglia non ha potuto essere caricato.</translation>
     </message>

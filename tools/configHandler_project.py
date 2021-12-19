@@ -59,7 +59,7 @@ class ProjectConfHandler(AbstractConfHandler):
 
     def __init__(self, params):
         """
-        :type params: paramHandler.ParameterConfHandler
+        :type params: tools.configHandler_params.ParamConfHandler
         """
         AbstractConfHandler.__init__(self)
         

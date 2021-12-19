@@ -36,7 +36,7 @@ from .guiHelperFunctions import (DialogWithImage, createContours,
     loadOsmLayer, createProfileLayers)
 from ..tools.outputGeo import CH_CRS
 from ..tools.configHandler import ConfigHandler
-from ..tools.projectHandler import castToNum
+from ..tools.configHandler_project import castToNum
 # GUI elements
 from .checkableComboBoxOwn import QgsCheckableComboBoxOwn
 from .saveDialog import DialogSaveParamset
