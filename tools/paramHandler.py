@@ -23,8 +23,8 @@ import io
 from operator import itemgetter
 from math import pi
 
+from .configHandler_abstract import AbstractConfHandler
 from ..gui.guiHelperFunctions import validateFilename
-from .configHandler import AbstractConfHandler
 
 # Constants
 HOMEPATH = os.path.join(os.path.dirname(__file__))

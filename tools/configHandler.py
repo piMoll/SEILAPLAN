@@ -22,82 +22,15 @@ import os
 import io
 import re
 import numpy
-import traceback
 import time
 import json
 
-from qgis.PyQt.QtCore import QCoreApplication
-from qgis.PyQt.QtWidgets import QMessageBox
 from .projectHandler import ProjectConfHandler
 from .paramHandler import ParameterConfHandler
 from .outputReport import getTimestamp
 
 # Constants
 HOMEPATH = os.path.join(os.path.dirname(__file__))
-
-
-def castToNum(formattedNum):
-    if type(formattedNum) in [int, float]:
-        return formattedNum
-    try:
-        num = float(formattedNum.replace("'", ''))
-    except (ValueError, AttributeError):
-        num = None
-    return num
-
-
-class OwnJsonEncoder(json.JSONEncoder):
-    """Used to serialize numpy int32 or float64 values to regular types
-    so that they can be written to json file."""
-    def default(self, obj):
-        if isinstance(obj, numpy.integer):
-            return int(obj)
-        elif isinstance(obj, numpy.floating):
-            return float(obj)
-        elif isinstance(obj, numpy.ndarray):
-            return obj.tolist()
-        else:
-            return super(OwnJsonEncoder, self).default(obj)
-
-
-class AbstractConfHandler(object):
-    
-    def __init__(self):
-        self.dialog = None
-    
-    def setDialog(self, dialog):
-        self.dialog = dialog
-    
-    def onError(self, message=None, title=''):
-        if not title:
-            title = self.tr('Fehler')
-        if not message:
-            message = traceback.format_exc()
-        QMessageBox.information(self.dialog, title, message,
-                                QMessageBox.Ok)
-
-    # noinspection PyMethodMayBeStatic
-    def tr(self, message, context=None, **kwargs):
-        """Get the translation for a string using Qt translation API.
-        We implement this ourselves since we do not inherit QObject.
-
-        :param message: String for translation.
-        :type message: str, QString
-        
-        :param context: Context to find the translation string.
-        :type context: str, QString
-
-        :returns: Translated version of message.
-        :rtype: QString
-
-        Parameters
-        ----------
-        **kwargs
-        """
-        if not context:
-            context = type(self).__name__
-        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
-        return QCoreApplication.translate(context, message)
 
 
 class ConfigHandler(object):
@@ -411,3 +344,17 @@ class ConfigHandler(object):
     def reset(self):
         self.project.reset()
         self.params.reset()
+
+
+class OwnJsonEncoder(json.JSONEncoder):
+    """Used to serialize numpy int32 or float64 values to regular types
+    so that they can be written to json file."""
+    def default(self, obj):
+        if isinstance(obj, numpy.integer):
+            return int(obj)
+        elif isinstance(obj, numpy.floating):
+            return float(obj)
+        elif isinstance(obj, numpy.ndarray):
+            return obj.tolist()
+        else:
+            return super(OwnJsonEncoder, self).default(obj)

@@ -24,7 +24,7 @@ import json
 
 from qgis.core import (QgsPointXY, QgsDistanceArea, QgsRasterLayer)
 
-from .configHandler import AbstractConfHandler, castToNum
+from .configHandler_abstract import AbstractConfHandler
 from .heightSource import AbstractHeightSource
 from .raster import Raster
 from .survey import SurveyData
@@ -33,8 +33,15 @@ from .poles import Poles
 from .outputGeo import createVirtualRaster
 from .. import __version__ as version
 
-# Constants
-HOMEPATH = os.path.join(os.path.dirname(__file__))
+
+def castToNum(formattedNum):
+    if type(formattedNum) in [int, float]:
+        return formattedNum
+    try:
+        num = float(formattedNum.replace("'", ''))
+    except (ValueError, AttributeError):
+        num = None
+    return num
 
 
 # noinspection PyTypeChecker
