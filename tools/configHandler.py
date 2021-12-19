@@ -170,9 +170,6 @@ class ProjectConfHandler(AbstractConfHandler):
         self.setHeightSource(None, sourceType=heightSource['type'],
                              sourcePath=heightSource['source'])
         
-        if not self.heightSource or not self.heightSource.valid:
-            return False
-
         if self.heightSource and self.heightSourceType == 'survey':
             self.heightSource: SurveyData
             self.heightSource.reprojectToCrs(heightSource['crs'])
@@ -312,11 +309,20 @@ class ProjectConfHandler(AbstractConfHandler):
                         self.onError(self.tr('Fehler beim Kombinieren der Rasterkacheln'))
                 elif isinstance(rasterList[0], str):
                     # List of paths is provided because a project file is
-                    #  loaded. We create layers first, then create virtual layer
-                    layerlist = [QgsRasterLayer(path, f'Raster {i}') for i, path in enumerate(rasterList)]
+                    #  loaded. We create layers first, then create virtual layerFix projec
+                    layerlist = []
+                    for i, path in enumerate(rasterList):
+                        if not os.path.exists(path):
+                            self.onError(self.tr("Raster-Datei _path_ ist "
+                                "nicht vorhanden, Raster kann nicht geladen "
+                                "werden.").replace('_path_', path))
+                            break
+                        else:
+                            layerlist.append(QgsRasterLayer(path, f'Raster {i}'))
                     try:
-                        virtLayer = createVirtualRaster(layerlist)
-                        self.virtRasterSource = rasterList
+                        if layerlist:
+                            virtLayer = createVirtualRaster(layerlist)
+                            self.virtRasterSource = rasterList
                     except RuntimeError:
                         self.onError(self.tr('Fehler beim Kombinieren der Rasterkacheln.'))
                 heights = Raster(virtLayer)

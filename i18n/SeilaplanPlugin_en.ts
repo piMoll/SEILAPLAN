@@ -1540,6 +1540,11 @@ Please change the input.</translation>
         <source>Fehler beim Kombinieren der Rasterkacheln.</source>
         <translation>Error when combining raster tiles</translation>
     </message>
+    <message>
+        <location filename="../tools/configHandler.py" line="316"/>
+        <source>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</source>
+        <translation>Raster file _path_ is not present, raster cannot be loaded.</translation>
+    </message>
 </context>
 <context>
     <name>Raster</name>

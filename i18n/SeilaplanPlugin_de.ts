@@ -1523,6 +1523,11 @@ Bitte passen Sie die Eingabe an.</translation>
         <source>Fehler beim Kombinieren der Rasterkacheln.</source>
         <translation>Fehler beim Kombinieren der Rasterkacheln.</translation>
     </message>
+    <message>
+        <location filename="../tools/configHandler.py" line="316"/>
+        <source>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</source>
+        <translation>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</translation>
+    </message>
 </context>
 <context>
     <name>Raster</name>

@@ -1533,6 +1533,11 @@ Si prega di adattare l&apos;input.</translation>
         <source>Fehler beim Kombinieren der Rasterkacheln.</source>
         <translation>Errore alla combinazione dei diversi settori della griglia</translation>
     </message>
+    <message>
+        <location filename="../tools/configHandler.py" line="316"/>
+        <source>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</source>
+        <translation>File della griglia _path_ non esiste, griglia non ha potuto essere caricato.</translation>
+    </message>
 </context>
 <context>
     <name>Raster</name>

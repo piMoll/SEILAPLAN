@@ -1542,6 +1542,11 @@ Veuillez adapter la saisie.</translation>
         <source>Fehler beim Kombinieren der Rasterkacheln.</source>
         <translation>Erreur à la combinaison des différents secteurs de la grille</translation>
     </message>
+    <message>
+        <location filename="../tools/configHandler.py" line="316"/>
+        <source>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</source>
+        <translation>Fichier du grille _path_ n&apos;existe pas, grille n&apos;a pas pu être chargé.</translation>
+    </message>
 </context>
 <context>
     <name>Raster</name>
