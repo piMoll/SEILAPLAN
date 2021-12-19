@@ -276,7 +276,6 @@ class AdjustmentPlot(FigureCanvas):
         xlen = 11.69  # 11.69 inch = A4 width
         ylen = 8.27  # 8.27 inch = A4 height
         self.fig.set_size_inches([xlen, ylen])
-        self.fig.tight_layout(pad=4, w_pad=1, h_pad=3)
         self.setPlotLimits()
         # Layout plot
         self.axes.set_title(self.tr('Seilaplan Plot  -  {}').format(title),
@@ -287,11 +286,16 @@ class AdjustmentPlot(FigureCanvas):
         self.axes.grid(which='major', lw=0.5)
         self.axes.grid(which='minor', lw=0.5, linestyle=':')
         # Label poles
-        for pole in poles:
-            if pole['poleType'] != 'anchor':
-                self.axes.text(pole['dtop'], pole['ztop'] + self.labelBuffer*4,
-                               f"{pole['name']} ({pole['nr']})\nH = {pole['h']:.1f} m",
-                               ha='center', fontsize=8)
+        for idx, pole in enumerate(poles):
+            # Don't label anchors
+            if pole['poleType'] == 'anchor':
+                continue
+            poleNr = f"({pole['nr']})" if pole['nr'] else ''
+            self.axes.text(pole['dtop'], pole['ztop'] + self.labelBuffer * 4,
+                           f"{pole['name']} {poleNr}\nH = {pole['h']:.1f} m",
+                           ha='center', fontsize=8)
+
+        self.fig.tight_layout(pad=2.5)
         self.print_figure(filelocation, dpi, facecolor='white')
 
     def setToolbar(self, tbar):
