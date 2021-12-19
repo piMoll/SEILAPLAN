@@ -284,12 +284,6 @@ class SurveyData(AbstractHeightSource):
         }
         self.spatialRef = QgsCoordinateReferenceSystem(GPS_CRS)
         self.nr = np.arange(len(gpsx)) + 1
-
-        # TODO: Remove
-        self.addToMap(GPS_CRS, lon, lat, 'gps')
-        # self.addToMap(utmEpsg, relCoordsNew[0], relCoordsNew[1], 'rel')
-        # self.addToMap(GPS_CRS, gpsx, gpsy, 'rel2gps')
-
         return True
     
     def reprojectToCrs(self, destinationCrs):
@@ -486,29 +480,3 @@ class SurveyData(AbstractHeightSource):
             yOnLine = self.origData['y'][lastIdx]
         
         return [xOnLine, yOnLine]
-
-
-    # TODO remove
-    def addToMap(self, lyrCrs, x, y, lyrname):
-        from qgis.core import (QgsPointXY, QgsProject,
-                               QgsFeature, QgsGeometry, QgsVectorLayer,
-                               QgsField)
-        from qgis.PyQt.QtCore import QVariant
-        # Create survey point layer
-        surveyPointLayer = QgsVectorLayer('Point?crs=' + lyrCrs,
-                                          lyrname, 'memory')
-        pr = surveyPointLayer.dataProvider()
-        pr.addAttributes([QgsField("nr", QVariant.Int)])
-        surveyPointLayer.updateFields()
-        features = []
-        idx = 1
-        for x, y in np.column_stack([x, y]):
-            feature = QgsFeature()
-            feature.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(x, y)))
-            feature.setId(idx)
-            feature.setAttributes([idx])
-            features.append(feature)
-            idx += 1
-        pr.addFeatures(features)
-        surveyPointLayer.updateExtents()
-        QgsProject.instance().addMapLayers([surveyPointLayer])
