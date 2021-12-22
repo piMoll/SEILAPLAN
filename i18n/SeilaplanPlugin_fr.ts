@@ -340,7 +340,7 @@
         <location filename="../tools/outputReport.py" line="223"/>
         <source>Einwirkung auf Stuetze aus Last, Gewicht Zug- Tragseil</source>
         <translatorcomment>Impact sur le support par la charge et le poids du câble porteur et du câble tracteur</translatorcomment>
-        <translation>Impact par la charge et le poids du câble porteur et tracteur</translation>
+        <translation>Action par la charge et le poids du câble porteur et tracteur</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="232"/>
@@ -1310,7 +1310,7 @@ Veuillez adapter la saisie.</translation>
     <message>
         <location filename="../tools/configHandler_params.py" line="762"/>
         <source>Fehler beim Laden der Parameter, moeglicherweise sind sie in einem alten Format.</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur dans le chargement des paramètres, éventuellement  leur format est obsolète.</translation>
     </message>
 </context>
 <context>
@@ -2312,32 +2312,32 @@ Il est recherché la solution qui, en première priorité, minimalise le nombre 
     <message>
         <location filename="../tools/survey.py" line="74"/>
         <source>CSV-Datei &apos;_path_&apos; ist nicht vorhanden.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier CSV &apos;_path_&apos; n&apos;existe pas.</translation>
     </message>
     <message>
         <location filename="../tools/survey.py" line="220"/>
         <source>Die Messdaten sind unvollstaendig, die CSV-Datei kann nicht geladen werden.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les données de mesure sont incomplètes, le fichier CSV ne peut pas être chargé.</translation>
     </message>
     <message>
         <location filename="../tools/survey.py" line="227"/>
         <source>Die CSV-Datei enthaelt Messluecken, das erstellte Profil koennte fehlerhaft sein.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier CSV contient des lacunes de mesure, le profil créé pourrait contenir des erreurs.</translation>
     </message>
     <message>
         <location filename="../tools/survey.py" line="234"/>
         <source>Die CSV-Datei enthaelt mehr als eine Messreihe. Es wurde nur die laengste Messreihe geladen.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier CSV contient plus d&apos;une série de mesures. Seule la série de mesures la plus longue a été chargée.</translation>
     </message>
     <message>
         <location filename="../tools/survey.py" line="240"/>
         <source>Die CSV-Datei enthaelt keine GPS-Koordinaten, das Profil kann nicht erstellt werden.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier CSV ne contient pas de coordonnées GPS, le profil ne peut pas être créé.</translation>
     </message>
     <message>
         <location filename="../tools/survey.py" line="255"/>
         <source>Die CSV-Datei enthaelt ungueltige GPS-Koordinaten.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier CSV contient des coordonnées GPS non valables.</translation>
     </message>
 </context>
 <context>

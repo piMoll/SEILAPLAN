@@ -338,7 +338,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="223"/>
         <source>Einwirkung auf Stuetze aus Last, Gewicht Zug- Tragseil</source>
-        <translation type="unfinished">Impact on support from load and weight of skyline+mainline</translation>
+        <translation>Action on support by load and weight of skyline and mainline</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="232"/>
@@ -1307,7 +1307,7 @@ Please change the input.</translation>
     <message>
         <location filename="../tools/configHandler_params.py" line="762"/>
         <source>Fehler beim Laden der Parameter, moeglicherweise sind sie in einem alten Format.</source>
-        <translation>Error loading parameters, they could be in a depricated format.</translation>
+        <translation>Error in loading the parameters, possibly their format is outdated.</translation>
     </message>
 </context>
 <context>
@@ -2316,12 +2316,12 @@ The algorithm calculates a solution, which in first priority is minimizing the n
     <message>
         <location filename="../tools/survey.py" line="220"/>
         <source>Die Messdaten sind unvollstaendig, die CSV-Datei kann nicht geladen werden.</source>
-        <translation>The survey data is incomplete, the CSV file cannot be loaded.</translation>
+        <translation>The measured data is incomplete, the CSV file cannot be loaded.</translation>
     </message>
     <message>
         <location filename="../tools/survey.py" line="227"/>
         <source>Die CSV-Datei enthaelt Messluecken, das erstellte Profil koennte fehlerhaft sein.</source>
-        <translation>Die CSV-Datei enthaelt Messluecken, das erstellte Profil koennte fehlerhaft sein.</translation>
+        <translation>The CSV file contains measurement gaps, the created profile could be faulty.</translation>
     </message>
     <message>
         <location filename="../tools/survey.py" line="234"/>
@@ -2331,12 +2331,12 @@ The algorithm calculates a solution, which in first priority is minimizing the n
     <message>
         <location filename="../tools/survey.py" line="240"/>
         <source>Die CSV-Datei enthaelt keine GPS-Koordinaten, das Profil kann nicht erstellt werden.</source>
-        <translation>Die CSV-Datei enthält keine GPS-Koordinaten, das Profil kann nicht erstellt werden.</translation>
+        <translation>The CSV file does not contain GPS coordinates, the profile cannot be created.</translation>
     </message>
     <message>
         <location filename="../tools/survey.py" line="255"/>
         <source>Die CSV-Datei enthaelt ungueltige GPS-Koordinaten.</source>
-        <translation>Die CSV-Datei enthält ungültige GPS-Koordinaten.</translation>
+        <translation>The CSV file contains invalid GPS coordinates.</translation>
     </message>
 </context>
 <context>

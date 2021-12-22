@@ -1288,7 +1288,7 @@ Bitte passen Sie die Eingabe an.</translation>
     <message>
         <location filename="../tools/configHandler_params.py" line="182"/>
         <source>Fehler beim Laden der Parameter, moeglicherweise sind sie in einem alten Format.</source>
-        <translation>Fehler beim Laden der Parameter, möglicherweise sind sie in einem veralteten Format.</translation>
+        <translation>Fehler beim Laden der Parameter, möglicherweise ist ihr Format veraltet.</translation>
     </message>
 </context>
 <context>
