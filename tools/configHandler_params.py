@@ -21,7 +21,7 @@
 import os
 import io
 from operator import itemgetter
-from math import pi
+from math import pi, sqrt
 
 from .configHandler_abstract import AbstractConfHandler
 from ..gui.guiHelperFunctions import validateFilename
@@ -121,7 +121,6 @@ class ParameterConfHandler(AbstractConfHandler):
         try:
             return self.params[property_name]
         except KeyError:
-            self.onError()
             return {}
     
     def getParameter(self, property_name):
@@ -129,11 +128,15 @@ class ParameterConfHandler(AbstractConfHandler):
             return self.params[property_name]['value']
         except KeyError:
             # Try to find parameter in derived parameter dictionary
-            return self.derievedParams[property_name]['value']
+            if property_name in self.derievedParams:
+                return self.derievedParams[property_name]['value']
+            else:
+                return None
     
     def getParameterAsStr(self, property_name):
         p = self._getParameterInfo(property_name)
         if not p:
+            self.onError()
             return ''
         value = p['value']
         if value is None:
@@ -177,14 +180,33 @@ class ParameterConfHandler(AbstractConfHandler):
         when a whole parameterset is set or parameters are loaded from a txt
         file. Checks are done after all parameters have been set.
         """
+        property_name, value = self.checkForDepricatedParams(property_name, value)
         p = self._getParameterInfo(property_name)
         if not p:
-            raise Exception(self.tr('Fehler beim Laden der Parameter, '
+            self.onError(self.tr('Fehler beim Laden der Parameter, '
                 'moeglicherweise sind sie in einem alten Format.'))
-        if p['ftype'] == 'drop_field' and property_name == 'Seilsys':
+            raise KeyError(f'Unknown parameter {property_name}')
+
+        if p and p['ftype'] == 'drop_field' and property_name == 'Seilsys':
             value = self.getSeilsysAsIdx(value)
         cval = self.castToNumber(p['dtype'], value)
         self.params[property_name]['value'] = cval
+    
+    @staticmethod
+    def checkForDepricatedParams(property_name, value):
+        """This will check for parameters that have been depricated since
+        version 3.0. It's not going to try to fix parametersets from older
+        Seilaplan parametersets."""
+        
+        if property_name == 'min_SK':
+            property_name = 'SK'
+    
+        elif property_name == 'A':
+            # Area to diameter
+            property_name = 'D'
+            value = 2 * sqrt(float(value) / pi)
+            
+        return property_name, value
     
     def checkRange(self, value, paramInfo):
         rMin = paramInfo['min']

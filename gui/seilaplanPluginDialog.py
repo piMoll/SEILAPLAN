@@ -861,7 +861,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
                 self.setupContent()
             else:
                 QMessageBox.critical(self, self.tr('Fehler beim Laden'),
-                                self.tr('Projektdatei konnte nicht geladen werden.'))
+                    self.tr('Projektdatei konnte nicht geladen werden.'))
         else:
             return False
     

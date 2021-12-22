@@ -88,12 +88,19 @@ class ConfigHandler(object):
                 return False
             
             # Projekt
-            prLoadSuccessful = self.project.setConfigFromFile(settings)
-            if not prLoadSuccessful:
-                return prLoadSuccessful
+            try:
+                prLoadSuccessful = self.project.setConfigFromFile(settings)
+                if not prLoadSuccessful:
+                    return prLoadSuccessful
+            except KeyError:
+                return False
             
             # Parameters
             ##
+            
+            # Reset params to standard values
+            self.params.setParameterSet(self.params.defaultSet)
+            
             params = settings['params']
             
             # Set name
@@ -172,6 +179,10 @@ class ConfigHandler(object):
         if os.path.exists(filename):
             with io.open(filename, encoding='utf-8') as f:
                 allLines = f.read().splitlines()
+
+                # Reset params to standard values. This will asure missing
+                #  params will be reset or emptied (e.g. Anlagetyp)
+                self.params.setParameterSet(self.params.defaultSet)
                 
                 try:
                     for currLine in allLines:
