@@ -1,6 +1,6 @@
 # Seilaplan Changelog
 
-## Version 3.3.0 (Dezember 2021)
+## Version 3.3.0 (Januar 2022)
 ### Neue Features
 * Erfassen und Speichern von Projekt-Metadaten wie Autor, Projektnummer, Waldort, etc. Projekt-Metadaten werden in den Berichten aufgelistet
 * Projekteinstellungen werden neu im JSON-Format anstatt Textformat abgepseichert (alte Projekteinstellungen im Textformat werden weiterhin unterstützt)
@@ -9,10 +9,11 @@
 * Die Standardeinstellung für Anfangs- und Endpunkt der Seillinine ist neu eine Verankerung anstatt eine Stütze
 
 ### Fehlerbehebung
-* Berichtinhalt ist nur teilweise sichtbar, bzw. verschoben, wenn eine Seillinie ohne Zwischenstützen oder nur mit Verankerungen erstellt wird
+* Der Berichtinhalt ist nur teilweise sichtbar, bzw. verschoben, wenn eine Seillinie ohne Zwischenstützen oder nur mit Verankerungen erstellt wird
+* Der Berichtinhalt ist nur teilweise sichtbar, bzw. verschoben, wenn mehr als 7 Stützen aufgelistet werden
 * Im Parameterset "MSK 3t 20/11/8mm" wurde der Seildurchmesser von 22 auf 20 mm korrigiert
 * Der Stützentyp (Verankerung, Stütze, Seilkran) wird korrekt aus den Projekteinstellungen ausgelesen
-* Bei der Erstellung von Geländeprofilen aus Vertex-Dateien werden neu nicht nur die GPS-Messungen, sondern auch die relativen Distanz- und Winkelmessungen berücksichtigt.
+* Bei der Erstellung von Geländeprofilen aus Vertex-Dateien werden neu die relativen Distanz- und Winkelmessungen anstatt die GPS-Messungen für die Berechnung verwendet. Die GPS-Messungen werden nur für die Georeferenzierung des Profils benutzt.
 
 ## Version 3.2.1 (Juni 2021)
 ### Neue Features

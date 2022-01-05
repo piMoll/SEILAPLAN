@@ -263,7 +263,6 @@ class SurveyData(AbstractHeightSource):
 
         # Calculate mean distance to UTM coords but only on rows where
         #  GPS coords are present
-        # TODO: Gewichtung GPS Genauigkeit
         deltaX = utmCoords[0] - relCoords[0][mask_gps]
         deltaY = utmCoords[1] - relCoords[1][mask_gps]
         meanDist = np.mean(np.sqrt(np.square(deltaX) + np.square(deltaY)))

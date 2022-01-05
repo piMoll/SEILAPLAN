@@ -1,4 +1,7 @@
-[**Seilaplan Changelog**](https://github.com/piMoll/SEILAPLAN/blob/master/changelog.md)
+[**GitHub Repository**](https://github.com/piMoll/SEILAPLAN)
+
+[**Changelog**](https://github.com/piMoll/SEILAPLAN/blob/master/changelog.md)
+
 
 ![Seilaplan Bearbeitungsfenster mit Seillinien-Layout](https://github.com/piMoll/SEILAPLAN/raw/master/docs/gui_preview.png)
 

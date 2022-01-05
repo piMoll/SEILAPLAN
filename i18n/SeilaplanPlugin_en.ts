@@ -338,7 +338,8 @@
     <message>
         <location filename="../tools/outputReport.py" line="223"/>
         <source>Einwirkung auf Stuetze aus Last, Gewicht Zug- Tragseil</source>
-        <translation>Action on support by load and weight of skyline and mainline</translation>
+        <translatorcomment>Bitte &apos;skyline&amp;mainline&apos; so lassen, hat sonst zu wenig Platz im Bericht</translatorcomment>
+        <translation>Action on support by load and weight of skyline&amp;mainline</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="232"/>
