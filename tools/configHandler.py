@@ -103,16 +103,17 @@ class ConfigHandler(object):
             
             params = settings['params']
             
+            # Parameter list
+            for p in params['parameterList']:
+                self.params.batchSetParameter(p['name'], p['value'])
+            # Opt STA
+            self.params.setOptSTA(params['optSTA'])
+
             # Set name
             if params['setname'] not in self.params.parameterSets.keys():
                 # Save new parameter set
                 self.params.saveParameterSet(params['setname'])
             self.params.currentSetName = params['setname']
-            # Opt STA
-            self.params.setOptSTA(params['optSTA'])
-            # Parameter list
-            for p in params['parameterList']:
-                self.params.batchSetParameter(p['name'], p['value'])
         
         success = self.params.checkValidState()
         return success
