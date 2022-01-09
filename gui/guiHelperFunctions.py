@@ -172,7 +172,7 @@ def createProfileLayers(heightSource):
     return surveyLineLayer, surveyPointLayer
 
 
-def validateFilename(name):
+def sanitizeFilename(name):
     """ Replace all prohibited chars with underline."""
     valid_chars = '-_.() abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
     return ''.join(c if c in valid_chars else '_' for c in name)

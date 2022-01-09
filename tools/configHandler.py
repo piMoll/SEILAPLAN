@@ -25,6 +25,8 @@ import numpy
 import time
 import json
 
+from qgis.core import QgsSettings
+
 from .configHandler_project import ProjectConfHandler
 from .configHandler_params import ParameterConfHandler
 from .outputReport import getTimestamp
@@ -35,22 +37,15 @@ HOMEPATH = os.path.join(os.path.dirname(__file__))
 
 class ConfigHandler(object):
     
-    SETTINGS_FILE = os.path.join(HOMEPATH, '../config', 'commonPaths.txt')
     DEFAULT_SAVE_PATH = os.path.join(os.path.expanduser('~'), 'Seilaplan')
+    SETTING_PREFIX = 'PluginSeilaplan/output/'
     
     def __init__(self):
         self._config = {}
         
         # User settings
         self.commonPaths = []
-        self.outputOptions = {
-            'report': 0,
-            'plot': 1,
-            'geodata': 0,
-            'coords': 0,
-            'shortReport': 1,
-            'kml': 0
-        }
+        self.outputOptions = {}
         self.userSettingsHaveChanged = False
         
         self.params = ParameterConfHandler()
@@ -60,6 +55,7 @@ class ConfigHandler(object):
         self.loadUserSettings()
         self.params.initParameters()
         self.params.loadPredefinedParametersets()
+        self.params.loadParametersetsFromSettings()
     
     def setDialog(self, dialog):
         self.project.setDialog(dialog)
@@ -227,31 +223,24 @@ class ConfigHandler(object):
         """Gets the output options and earlier used output paths and returns
         them."""
         
-        if os.path.exists(self.SETTINGS_FILE):
-            with io.open(self.SETTINGS_FILE, encoding='utf-8') as f:
-                lines = f.read().splitlines()
-                # First line contains output options
-                try:
-                    outputOpts = lines[0].split()
-                    outputOpts = [int(x) for x in outputOpts]
-                    self.outputOptions = {
-                        'report': (outputOpts[0] if len(outputOpts) >= 0 else 0),
-                        'plot': (outputOpts[1] if len(outputOpts) >= 1 else 1),
-                        'geodata': (outputOpts[2] if len(outputOpts) >= 2 else 0),
-                        'coords': (outputOpts[3] if len(outputOpts) >= 3 else 0),
-                        'shortReport': (outputOpts[4] if len(outputOpts) >= 4 else 1),
-                        'kml': (outputOpts[5] if len(outputOpts) >= 5 else 0),
-                    }
-                except IndexError:  # if file/fist line is empty
-                    pass
-                except ValueError:  # if there are letters instead of numbers
-                    pass
-                # Go through paths from most recent to oldest
-                for path in lines[1:]:
-                    if path == '':
-                        continue
-                    if os.path.exists(path):  # If path still exists
-                        self.commonPaths.append(path)
+        # Read out output settings from QGIS settings, provide default value
+        #  if settings key does not exist
+        s = QgsSettings()
+        self.outputOptions = {
+            'report': s.value(f'{self.SETTING_PREFIX}report', 0),
+            'plot': s.value(f'{self.SETTING_PREFIX}plot', 1),
+            'geodata': s.value(f'{self.SETTING_PREFIX}geodata', 0),
+            'coords': s.value(f'{self.SETTING_PREFIX}coords', 0),
+            'shortReport': s.value(f'{self.SETTING_PREFIX}shortReport', 1),
+            'kml': s.value(f'{self.SETTING_PREFIX}kml', 0),
+        }
+        for path in [
+            s.value(f'{self.SETTING_PREFIX}savePath1', None),
+            s.value(f'{self.SETTING_PREFIX}savePath2', None),
+            s.value(f'{self.SETTING_PREFIX}savePath3', None)]:
+    
+            if path and os.path.exists(path):
+                self.commonPaths.append(path)
         
         # If there are no paths defined by user (for example at first run),
         # try to create standard folder
@@ -269,24 +258,23 @@ class ConfigHandler(object):
         """ Update the user defined settings. """
         if not self.userSettingsHaveChanged:
             return
-        # Maximum length of drop down menu is 6 entries
-        if len(self.commonPaths) > 6:
+        # Maximum length of drop down menu is 3 entries
+        if len(self.commonPaths) > 3:
             del self.commonPaths[0]  # Delete oldest entry
         
-        if os.path.exists(self.SETTINGS_FILE):
-            os.remove(self.SETTINGS_FILE)
-        
-        with io.open(self.SETTINGS_FILE, encoding='utf-8', mode='w+') as f:
-            f.writelines(
-                "{} {} {} {} {} {} {}".format(self.outputOptions['report'],
-                                        self.outputOptions['plot'],
-                                        self.outputOptions['geodata'],
-                                        self.outputOptions['coords'],
-                                        self.outputOptions['shortReport'],
-                                        self.outputOptions['kml'],
-                                        '\n'))
-            for path in self.commonPaths:
-                f.writelines(path + '\n')
+        s = QgsSettings()
+        s.setValue(f'{self.SETTING_PREFIX}report', self.outputOptions['report'])
+        s.setValue(f'{self.SETTING_PREFIX}plot', self.outputOptions['plot'])
+        s.setValue(f'{self.SETTING_PREFIX}geodata', self.outputOptions['geodata'])
+        s.setValue(f'{self.SETTING_PREFIX}coords', self.outputOptions['coords'])
+        s.setValue(f'{self.SETTING_PREFIX}shortReport', self.outputOptions['shortReport'])
+        s.setValue(f'{self.SETTING_PREFIX}kml', self.outputOptions['kml'])
+        if len(self.commonPaths) > 0:
+            s.setValue(f'{self.SETTING_PREFIX}savePath1', self.commonPaths[0])
+        if len(self.commonPaths) > 1:
+            s.setValue(f'{self.SETTING_PREFIX}savePath2', self.commonPaths[1])
+        if len(self.commonPaths) > 2:
+            s.setValue(f'{self.SETTING_PREFIX}savePath3', self.commonPaths[2])
     
     def getCurrentPath(self):
         try:

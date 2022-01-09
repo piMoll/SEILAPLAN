@@ -23,8 +23,10 @@ import io
 from operator import itemgetter
 from math import pi, sqrt
 
+from qgis.core import QgsSettings
+
 from .configHandler_abstract import AbstractConfHandler
-from ..gui.guiHelperFunctions import validateFilename
+from ..gui.guiHelperFunctions import sanitizeFilename
 
 # Constants
 HOMEPATH = os.path.join(os.path.dirname(__file__))
@@ -38,6 +40,7 @@ class ParameterConfHandler(AbstractConfHandler):
     }
     ANCHOR_LEN = 20
     SETS_PATH = os.path.join(HOMEPATH, '../config', 'parametersets')
+    SETTING_PREFIX = 'PluginSeilaplan/parameterset/'
     
     def __init__(self):
         AbstractConfHandler.__init__(self)
@@ -289,6 +292,8 @@ class ParameterConfHandler(AbstractConfHandler):
         }
     
     def loadPredefinedParametersets(self):
+        # Some predefined parametersets are provided by the plugin, they have
+        #  to be loaded from text files
         for f in os.listdir(self.SETS_PATH):
             txtfile = os.path.join(self.SETS_PATH, f)
             if os.path.isfile(txtfile) and txtfile.lower().endswith('.txt'):
@@ -325,27 +330,59 @@ class ParameterConfHandler(AbstractConfHandler):
         for property_name, p in self.params.items():
             self.parameterSets[setname][property_name] = p['value']
         
-        # Write parameter set out to file
-        fileName = validateFilename(setname)
-        savePath = os.path.join(self.SETS_PATH, f'{fileName}.txt')
-        with io.open(savePath, encoding='utf-8', mode='w') as f:
-            # Write header
-            f.writelines('name\tvalue\n')
-            f.writelines('label\t' + setname + '\n')
-            # Write parameter values
-            for property_name, value in self.parameterSets[setname].items():
-                f.writelines(f"{property_name}\t{value}\n")
+        self.saveParamSetToSettings(setname)
     
     def removeParameterSet(self, setname):
-        fileName = validateFilename(setname)
+        fileName = sanitizeFilename(setname)
         savePath = os.path.join(self.SETS_PATH, f'{fileName}.txt')
-        if not os.path.isfile(savePath):
+        # If user wants to remove a predefined parameterset --> we do not allow this
+        if os.path.isfile(savePath):
             return False
-        # Remove file on disk
-        os.remove(savePath)
-        # Remove set from parameter handler
-        del self.parameterSets[setname]
-        return True
+        else:
+            # Remove from QgsSettings
+            success = self.removeParamSetFromSettings(setname)
+            
+        if success:
+            # Remove set from parameter handler
+            del self.parameterSets[setname]
+        return success
+    
+    def loadParametersetsFromSettings(self):
+        """Load all user defined parameter sets from QGIS Settings DB."""
+        s = QgsSettings()
+        s.beginGroup(self.SETTING_PREFIX)
+        for setname in s.childGroups():
+            if setname in self.parameterSets.keys():
+                continue
+            params = {}
+            # Switch context to the parameter set
+            s.beginGroup(setname)
+            for prop in s.allKeys():
+                params[prop] = s.value(prop)
+            label = params['label']
+            del params['label']
+            self.parameterSets[label] = params
+            # Close group, go back to '/parameterset' context
+            s.endGroup()
+        s.endGroup()
+    
+    def saveParamSetToSettings(self, setname):
+        sanitizedSetname = sanitizeFilename(setname)
+        prefix = f'{self.SETTING_PREFIX}{sanitizedSetname}/'
+
+        s = QgsSettings()
+        s.setValue(f'{prefix}label', setname)
+        for property_name, value in self.parameterSets[setname].items():
+            s.setValue(f'{prefix}{property_name}', value)
+    
+    def removeParamSetFromSettings(self, setname):
+        """Remove a user defined parameter set from the QGIS settings DB."""
+        sanitizedSetname = sanitizeFilename(setname)
+        if not sanitizedSetname:
+            return
+        s = QgsSettings()
+        s.remove(f'{self.SETTING_PREFIX}{sanitizedSetname}')
+        return not s.contains(f'{self.SETTING_PREFIX}{sanitizedSetname}/label')
     
     def castToNumber(self, dtype, value):
         # Cast value to correct type
