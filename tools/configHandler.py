@@ -227,12 +227,12 @@ class ConfigHandler(object):
         #  if settings key does not exist
         s = QgsSettings()
         self.outputOptions = {
-            'report': s.value(f'{self.SETTING_PREFIX}report', 0),
-            'plot': s.value(f'{self.SETTING_PREFIX}plot', 1),
-            'geodata': s.value(f'{self.SETTING_PREFIX}geodata', 0),
-            'coords': s.value(f'{self.SETTING_PREFIX}coords', 0),
-            'shortReport': s.value(f'{self.SETTING_PREFIX}shortReport', 1),
-            'kml': s.value(f'{self.SETTING_PREFIX}kml', 0),
+            'report': s.value(f'{self.SETTING_PREFIX}report', 0, int),
+            'plot': s.value(f'{self.SETTING_PREFIX}plot', 1, int),
+            'geodata': s.value(f'{self.SETTING_PREFIX}geodata', 0, int),
+            'coords': s.value(f'{self.SETTING_PREFIX}coords', 0, int),
+            'shortReport': s.value(f'{self.SETTING_PREFIX}shortReport', 1, int),
+            'kml': s.value(f'{self.SETTING_PREFIX}kml', 0, int),
         }
         for path in [
             s.value(f'{self.SETTING_PREFIX}savePath1', None),
