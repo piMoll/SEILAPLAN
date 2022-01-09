@@ -905,7 +905,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
     
     def onInfo(self):
         msg = self.tr('Infotext').format(
-            os.path.join(os.path.dirname(__file__), 'help', 'docs'))
+            os.path.join(os.path.dirname(os.path.dirname(__file__)), 'help', 'docs'))
         QMessageBox.information(self, "SEILAPLAN Info", msg, QMessageBox.Ok)
     
     def onHeightDataInfoShow(self):
