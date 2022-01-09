@@ -174,5 +174,5 @@ def createProfileLayers(heightSource):
 
 def sanitizeFilename(name):
     """ Replace all prohibited chars with underline."""
-    valid_chars = '-_.() abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-    return ''.join(c if c in valid_chars else '_' for c in name)
+    invalid_chars = ['/', '\\']
+    return ''.join('_' if c in invalid_chars else c for c in name)
