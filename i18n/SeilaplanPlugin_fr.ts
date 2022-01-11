@@ -2223,6 +2223,18 @@ Types de fichier supportés:
         <translation>Point terminal</translation>
     </message>
     <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="961"/>
+        <source>Erklaerung Paramersets wiederherstellen</source>
+        <translation>En raison d&apos;une erreur logicielle, les jeux de paramètres définis par l&apos;utilisateur ont été éffacés.
+
+Les jeux de paramètres peuvent être restaurés en chargeant d&apos;anciens fichiers du projet Seilaplan.</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="962"/>
+        <source>Parametersets wiederherstellen</source>
+        <translation>Restaurer des jeux de paramètres</translation>
+    </message>
+    <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="939"/>
         <source>Erklaerung Gesamtlast</source>
         <translation>La charge totale est la somme de la charge en bois et du poids du chariot et des élingues.</translation>

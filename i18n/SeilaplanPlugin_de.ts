@@ -2163,6 +2163,18 @@ Unterstützte Dateitypen:
         <translation>Endpunkt</translation>
     </message>
     <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="961"/>
+        <source>Erklaerung Paramersets wiederherstellen</source>
+        <translation>Aufgrund eines Software-Fehlers wurden benutzerdefinierte Parametersets gelöscht.
+
+Die Parametersets können durch Laden von alten Seilaplan-Projektdateien wiederhergestellt werden.</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="962"/>
+        <source>Parametersets wiederherstellen</source>
+        <translation>Parametersets wiederherstellen</translation>
+    </message>
+    <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="960"/>
         <source>Erklaerung Gesamtlast</source>
         <translation>Die Gesamtlast berechnet sich aus der Anhängelast, dem Laufwagengewicht und dem Anschlagmittel.</translation>

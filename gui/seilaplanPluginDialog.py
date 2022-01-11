@@ -172,6 +172,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.infoSurveyData.clicked.connect(self.onHeightDataInfoShow)
         self.infoPointA.clicked.connect(self.onPointAInfoShow)
         self.infoPointE.clicked.connect(self.onPointEInfoShow)
+        self.infoParamSet.clicked.connect(self.onParamSetInfoShow)
         self.infoBodenabstand.clicked.connect(self.onShowInfoImg)
         self.infoStuetzen.clicked.connect(self.onShowInfoImg)
         self.infoQ.clicked.connect(self.onShowInfoFieldQ)
@@ -955,7 +956,12 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.imgBox.label.setPixmap(myPixmap)
         self.imgBox.setLayout(self.imgBox.container)
         self.imgBox.show()
-    
+
+    def onParamSetInfoShow(self):
+        msg = self.tr('Erklaerung Paramersets wiederherstellen')
+        QMessageBox.information(self, self.tr('Parametersets wiederherstellen'),
+                                msg, QMessageBox.Ok)
+
     def onShowInfoFieldQ(self):
         msg = self.tr('Erklaerung Gesamtlast')
         QMessageBox.information(self, self.tr("Gesamtlast"),

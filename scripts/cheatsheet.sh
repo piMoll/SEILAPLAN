@@ -4,7 +4,8 @@
 pyrcc5 -o resources/resources.py resources/resources.qrc
 
 # Compile gui
-pyuic5 ui/sgd_dockwidget_base.ui -o ui/sgd_dockwidget_base.py
+pyuic5 gui/seilaplanDialog.ui -o gui/ui_seilaplanDialog.py
+pyuic5 gui/adjustmentDialog.ui -o gui/ui_adjustmentDialog.py
 
 # get new translation texts
 bash scripts/update-strings.sh de en fr it

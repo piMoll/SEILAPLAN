@@ -2222,6 +2222,18 @@ Tipi di file supportati:
         <translation>Punto terminale</translation>
     </message>
     <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="961"/>
+        <source>Erklaerung Paramersets wiederherstellen</source>
+        <translation>A causa d’un errore del software, i set di parametri definiti dall&apos;utente sono stati cancellati.
+
+I set di parametri possono essere ricreati caricando i vecchi file del progetto Seilaplan.</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="962"/>
+        <source>Parametersets wiederherstellen</source>
+        <translation>Ricreare dei set di parametri</translation>
+    </message>
+    <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="939"/>
         <source>Erklaerung Gesamtlast</source>
         <translation>Il carico totale è la somma del carico del legname, del peso del carrello e dei funi per il fissaggio del carico.</translation>

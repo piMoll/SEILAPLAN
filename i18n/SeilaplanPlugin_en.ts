@@ -2224,6 +2224,18 @@ Supported data types:
         <translation>End point</translation>
     </message>
     <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="961"/>
+        <source>Erklaerung Paramersets wiederherstellen</source>
+        <translation>Due to a software error, user-defined parameter sets have been deleted.
+
+The parameter sets can be restored by loading old Seilaplan project files.</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="962"/>
+        <source>Parametersets wiederherstellen</source>
+        <translation>Restore parameter sets</translation>
+    </message>
+    <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="939"/>
         <source>Erklaerung Gesamtlast</source>
         <translation>The total load is the sum of the timber load, the carriage weight and the attaching ropes.</translation>
