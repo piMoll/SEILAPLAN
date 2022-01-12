@@ -3,10 +3,10 @@
 ## Version 3.3.0 (Januar 2022)
 ### Neue Features
 * Erfassen und Speichern von Projekt-Metadaten wie Autor, Projektnummer, Waldort, etc. Projekt-Metadaten werden in den Berichten aufgelistet
-* Projekteinstellungen werden neu im JSON-Format anstatt Textformat abgepseichert (alte Projekteinstellungen im Textformat werden weiterhin unterstützt)
+* Projekteinstellungen werden neu im JSON-Format anstatt Textformat abgespeichert (alte Projekteinstellungen im Textformat werden weiterhin unterstützt)
 * Überarbeitung und Vereinheitlichung diverser Fachbegriffe in der deutschen Version
 * Anzeige von Kennwerten im Diagramm des Überarbeitungsfensters: Neu werden Kennwerte immer angezeigt, egal ob der Grenzwert überschritten wurde
-* Die Standardeinstellung für Anfangs- und Endpunkt der Seillinine ist neu eine Verankerung anstatt eine Stütze
+* Die Standardeinstellung für Anfangs- und Endpunkt der Seillinie ist neu eine Verankerung anstatt eine Stütze
 
 ### Fehlerbehebung
 * Der Berichtinhalt ist nur teilweise sichtbar, bzw. verschoben, wenn eine Seillinie ohne Zwischenstützen oder nur mit Verankerungen erstellt wird
@@ -16,7 +16,7 @@
 * Bei der Erstellung von Geländeprofilen aus Vertex-Dateien werden neu die relativen Distanz- und Winkelmessungen anstatt die GPS-Messungen für die Berechnung verwendet. Die GPS-Messungen werden nur für die Georeferenzierung des Profils benutzt.
 * Beim Öffnen des Geländelinien-Fensters wurde ein leeres Diagramm dargestellt
 * Parametersets verschwinden nach Plugin-Update. Dieses Problem tritt einmalig bei der Aktualisierung auf die aktuelle Version 3.3.0 auf, zukünftig nicht mehr.
-  * Hinweis: Verschwundene Prametersets können Sie wiederhergestellen, indem Sie alte Projektdateien laden, die mit dem Parameterset berechnet wurden. 
+  * Hinweis: Verschwundene Prametersets können Sie wiederherstellen, indem Sie alte Projektdateien laden, die mit dem Parameterset berechnet wurden.
 
 ## Version 3.2.1 (Juni 2021)
 ### Neue Features
