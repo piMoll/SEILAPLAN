@@ -14,6 +14,7 @@
 * Im Parameterset "MSK 3t 20/11/8mm" wurde der Seildurchmesser von 22 auf 20 mm korrigiert
 * Der Stützentyp (Verankerung, Stütze, Seilkran) wird korrekt aus den Projekteinstellungen ausgelesen
 * Bei der Erstellung von Geländeprofilen aus Vertex-Dateien werden neu die relativen Distanz- und Winkelmessungen anstatt die GPS-Messungen für die Berechnung verwendet. Die GPS-Messungen werden nur für die Georeferenzierung des Profils benutzt.
+* Beim Öffnen des Geländelinien-Fensters wurde ein leeres Diagramm dargestellt
 * Parametersets verschwinden nach Plugin-Update. Dieses Problem tritt einmalig bei der Aktualisierung auf die aktuelle Version 3.3.0 auf, zukünftig nicht mehr.
   * Hinweis: Verschwundene Prametersets können Sie wiederhergestellen, indem Sie alte Projektdateien laden, die mit dem Parameterset berechnet wurden. 
 

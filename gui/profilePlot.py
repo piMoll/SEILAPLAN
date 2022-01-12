@@ -74,6 +74,9 @@ class ProfilePlot(FigureCanvas):
         self.setMinimumSize(QSize(600, 400))
         FigureCanvas.updateGeometry(self)
         
+        # Fit plot tightly into window
+        self.fig.tight_layout(pad=0.2, w_pad=0.1, h_pad=0.1)
+        
     def plotData(self, plotData):
         """
         :type plotData: tool.profile.Profile
@@ -88,8 +91,6 @@ class ProfilePlot(FigureCanvas):
         xmax = np.max(self.profile.di_disp)
         ymax = np.max(self.profile.zi_disp)
         self.labelScale = (ymax - ymin) / 20
-        self.axes.set_xlim(xmin - 2 * self.labelScale, xmax + 2 * self.labelScale)
-        self.axes.set_ylim(ymin - 2 * self.labelScale, ymax + 2 * self.labelScale)
 
         # Data point of profile
         self.x_data = self.profile.di
@@ -134,13 +135,13 @@ class ProfilePlot(FigureCanvas):
         self.ly.set_visible(False)
         self.lx.set_visible(False)
         
+        self.axes.set_xlim(xmin - 2 * self.labelScale, xmax + 2 * self.labelScale)
+        self.axes.set_ylim(ymin - 2 * self.labelScale, ymax + 2 * self.labelScale)
+        
         self.draw()
         # Set new plot extent as home extent (for home button)
         self.tbar.update()
         self.tbar.push_current()
-
-        # Fit plot tightly into window
-        self.fig.tight_layout(pad=0.2, w_pad=0.1, h_pad=0.1)
 
     def acitvateCrosshairPole(self):
         self.evtMovePole = self.mpl_connect('motion_notify_event', self.onMouseMoveP)

@@ -119,7 +119,7 @@ class ProfileDialog(QDialog):
         self.buttonBox.accepted.connect(self.Apply)
         self.setLayout(self.container)
         
-        # Gui functionality for fixed pole gui fields
+        # Gui's functionality for fixed pole gui fields
         self.buildPoleHeader()
         self.poleLayout = CustomPoleWidget(self, self.outerLayout, self.poleData)
         self.poleLayout.sig_updatePole.connect(self.updatePole)
