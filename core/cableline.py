@@ -45,7 +45,7 @@ def checkCable(zi, si, sc, befGSK, SeilSys, R_R):
     Seilsys     0 = Zweiseil-System, 1 = Mehrseil-System
     R_R = 0 --> egal ob rauf oder runder weil kein Gravitationsseilkran
     """
-    sc_dm = np.array(sc*10, dtype=np.int)
+    sc_dm = np.array(sc*10, dtype=int)
     sc_dm[sc_dm == 0] = -10
     bodenabst = np.sum((si-zi) > sc_dm, axis=0) == sc_dm.size
 
