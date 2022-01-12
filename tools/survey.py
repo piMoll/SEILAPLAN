@@ -116,8 +116,11 @@ class SurveyData(AbstractHeightSource):
         if len(idxTYPE) == 1 and len(idxSEQ) == 1 and len(idxAlti) == 1 \
                 and len(idxHD) == 1 and len(idxAz) == 1 \
                 and len(idxLat) == 1 and len(idxLon) == 1:
-            success = self.readOutVertexData(idxTYPE[0], idxSEQ[0], idxAlti[0],
-                        idxHD[0], idxAz[0], idxLon[0], idxLat[0], sep)
+            try:
+                success = self.readOutVertexData(idxTYPE[0], idxSEQ[0], idxAlti[0],
+                            idxHD[0], idxAz[0], idxLon[0], idxLat[0], sep)
+            except Exception:
+                success = False
         
         # Check if data is in x, y, z format
         elif len(idxX) == 1 and len(idxY) == 1 and len(idxZ) == 1:
@@ -186,9 +189,10 @@ class SurveyData(AbstractHeightSource):
         mask_use = np.array([True]*seq.size)
         
         # Check if there are multiple measurement series by searching for
-        #  seq = 1. Only take the longest sequence of measurements
+        #  seq = 1 or the lowest value. Only take the longest sequence of
+        #  measurements
         sequence_len = []
-        sequence_starts = np.where(seq == 1)[0]
+        sequence_starts = np.where(seq == np.min(seq))[0]
         last_start = 0
         for sequence_start in sequence_starts:
             if sequence_start != 0:
@@ -229,7 +233,7 @@ class SurveyData(AbstractHeightSource):
             self.errorMsg = self.tr('Die CSV-Datei enthaelt Messluecken, '
                 'das erstellte Profil koennte fehlerhaft sein.')
         
-        # If there are multiple measurements series (sequence restarts at one),
+        # If there are multiple measurement series (sequence restarts at one),
         # there is most certainly an issue with the CSV data
         if np.sum(seq == 1) > 1:
             # Only add a warning
