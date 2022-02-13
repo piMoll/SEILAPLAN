@@ -15,6 +15,6 @@ bash scripts/update-strings.sh de en fr it
 ##  comments.
 
 # compile translations
-bash bash scripts/update-strings.sh SeilaplanPlugin_de
+lrelease i18n/SeilaplanPlugin_i18n.pro
 
 
