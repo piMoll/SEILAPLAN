@@ -1158,6 +1158,34 @@ d&apos;après Zweifel</translation>
     </message>
 </context>
 <context>
+    <name>CsvVertexReader</name>
+    <message>
+        <location filename="../tools/importCsvVertex.py" line="144"/>
+        <source>Die Messdaten sind unvollstaendig, die CSV-Datei kann nicht geladen werden.</source>
+        <translation>Les données de mesure sont incomplètes, le fichier CSV ne peut pas être chargé.</translation>
+    </message>
+    <message>
+        <location filename="../tools/importCsvVertex.py" line="151"/>
+        <source>Die CSV-Datei enthaelt Messluecken, das erstellte Profil koennte fehlerhaft sein.</source>
+        <translation>Le fichier CSV contient des lacunes de mesure, le profil créé pourrait contenir des erreurs.</translation>
+    </message>
+    <message>
+        <location filename="../tools/importCsvVertex.py" line="158"/>
+        <source>Die CSV-Datei enthaelt mehr als eine Messreihe. Es wurde nur die laengste Messreihe geladen.</source>
+        <translation>Le fichier CSV contient plus d&apos;une série de mesures. Seule la série de mesures la plus longue a été chargée.</translation>
+    </message>
+    <message>
+        <location filename="../tools/importCsvVertex.py" line="164"/>
+        <source>Die CSV-Datei enthaelt keine GPS-Koordinaten, das Profil kann nicht erstellt werden.</source>
+        <translation>Le fichier CSV ne contient pas de coordonnées GPS, le profil ne peut pas être créé.</translation>
+    </message>
+    <message>
+        <location filename="../tools/importCsvVertex.py" line="179"/>
+        <source>Die CSV-Datei enthaelt ungueltige GPS-Koordinaten.</source>
+        <translation>Le fichier CSV contient des coordonnées GPS non valables.</translation>
+    </message>
+</context>
+<context>
     <name>DialogOutputOptions</name>
     <message>
         <location filename="../gui/saveDialog.py" line="134"/>
@@ -2325,31 +2353,6 @@ Il est recherché la solution qui, en première priorité, minimalise le nombre 
         <location filename="../tools/survey.py" line="74"/>
         <source>CSV-Datei &apos;_path_&apos; ist nicht vorhanden.</source>
         <translation>Le fichier CSV &apos;_path_&apos; n&apos;existe pas.</translation>
-    </message>
-    <message>
-        <location filename="../tools/survey.py" line="220"/>
-        <source>Die Messdaten sind unvollstaendig, die CSV-Datei kann nicht geladen werden.</source>
-        <translation>Les données de mesure sont incomplètes, le fichier CSV ne peut pas être chargé.</translation>
-    </message>
-    <message>
-        <location filename="../tools/survey.py" line="227"/>
-        <source>Die CSV-Datei enthaelt Messluecken, das erstellte Profil koennte fehlerhaft sein.</source>
-        <translation>Le fichier CSV contient des lacunes de mesure, le profil créé pourrait contenir des erreurs.</translation>
-    </message>
-    <message>
-        <location filename="../tools/survey.py" line="234"/>
-        <source>Die CSV-Datei enthaelt mehr als eine Messreihe. Es wurde nur die laengste Messreihe geladen.</source>
-        <translation>Le fichier CSV contient plus d&apos;une série de mesures. Seule la série de mesures la plus longue a été chargée.</translation>
-    </message>
-    <message>
-        <location filename="../tools/survey.py" line="240"/>
-        <source>Die CSV-Datei enthaelt keine GPS-Koordinaten, das Profil kann nicht erstellt werden.</source>
-        <translation>Le fichier CSV ne contient pas de coordonnées GPS, le profil ne peut pas être créé.</translation>
-    </message>
-    <message>
-        <location filename="../tools/survey.py" line="255"/>
-        <source>Die CSV-Datei enthaelt ungueltige GPS-Koordinaten.</source>
-        <translation>Le fichier CSV contient des coordonnées GPS non valables.</translation>
     </message>
 </context>
 <context>
