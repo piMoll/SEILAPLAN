@@ -75,19 +75,18 @@ class AbstractSurveyReader:
         self.valid = False
         self.errorMsg = ''
         self.path = path
-        self.success = False
         self.spatialRef = None
         self.surveyPoints = {}
         self.nr = None
     
-    def checkFile(self, *args):
+    def checkStructure(self, *args):
         raise NotImplementedError
 
     def readOutData(self, *args):
         raise NotImplementedError
 
     @staticmethod
-    def formatStr(s):
+    def formatHeader(s):
         return s.strip().upper()
 
     # noinspection PyMethodMayBeStatic

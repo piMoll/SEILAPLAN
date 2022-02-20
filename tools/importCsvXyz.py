@@ -27,12 +27,15 @@ class CsvXyzReader(AbstractSurveyReader):
     
     def __init__(self, path):
         AbstractSurveyReader.__init__(self, path)
-        self.checkFile()
         
-    def checkFile(self):
-    
-        def formatStr(s):
-            return s.strip().upper()
+        self.sep = None
+        self.idxX = None
+        self.idxY = None
+        self.idxZ = None
+        
+        self.checkStructure()
+        
+    def checkStructure(self):
         
         with open(self.path, newline='') as file:
             reader = csv.reader(file)
@@ -47,23 +50,26 @@ class CsvXyzReader(AbstractSurveyReader):
                     
                 # Analyse header line
                 idxX = [idx for idx, h in enumerate(row) if
-                        formatStr(h) == 'X']
+                        self.formatHeader(h) == 'X']
                 idxY = [idx for idx, h in enumerate(row) if
-                        formatStr(h) == 'Y']
+                        self.formatHeader(h) == 'Y']
                 idxZ = [idx for idx, h in enumerate(row) if
-                        formatStr(h) == 'Z']
+                        self.formatHeader(h) == 'Z']
                 break
         
         # Check if data is in x, y, z format
         if len(idxX) == 1 and len(idxY) == 1 and len(idxZ) == 1:
+            self.sep = sep
+            self.idxX = idxX[0]
+            self.idxY = idxY[0]
+            self.idxZ = idxZ[0]
             self.valid = True
-            self.success = self.readOutData(idxX[0], idxY[0], idxZ[0], sep)
     
-    def readOutData(self, idxX, idxY, idxZ, sep):
+    def readOutData(self):
         try:
-            x, y, z = np.genfromtxt(self.path, delimiter=sep, dtype='float64',
-                                    usecols=(idxX, idxY, idxZ), unpack=True,
-                                    skip_header=1)
+            x, y, z = np.genfromtxt(self.path, delimiter=self.sep, dtype='float64',
+                                    usecols=(self.idxX, self.idxY, self.idxZ),
+                                    unpack=True, skip_header=1)
         except TypeError as e:
             return False
         # Check for missing values and remove whole row
@@ -71,14 +77,9 @@ class CsvXyzReader(AbstractSurveyReader):
         y = y[~(np.isnan(x) + np.isnan(y) + np.isnan(z))]
         z = z[~(np.isnan(x) + np.isnan(y) + np.isnan(z))]
 
+        # Are there enough points?
         if len(x) < 2:
             return False
-        # try:
-        #     self.extent = [np.min(x), np.max(y), np.max(x), np.min(y)]
-        # except TypeError as e:
-        #     return False
-
-        # TODO: Check if file contains any data
 
         self.surveyPoints = {
             'x': x,

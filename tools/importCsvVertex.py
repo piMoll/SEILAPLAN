@@ -29,9 +29,19 @@ class CsvVertexReader(AbstractSurveyReader):
     
     def __init__(self, path):
         AbstractSurveyReader.__init__(self, path)
-        self.checkFile()
+        
+        self.sep = None
+        self.idxTYPE = None
+        self.idxLon = None
+        self.idxLat = None
+        self.idxSEQ = None
+        self.idxAlti = None
+        self.idxHD = None
+        self.idxAz = None
+        
+        self.checkStructure()
 
-    def checkFile(self):
+    def checkStructure(self):
     
         with open(self.path, newline='') as file:
             reader = csv.reader(file)
@@ -45,51 +55,54 @@ class CsvVertexReader(AbstractSurveyReader):
                     sep = ','
             
                 # Analyse header line
-                # Fields of Vertex csv
                 idxTYPE = [idx for idx, h in enumerate(row) if
-                           self.formatStr(h) == 'TYPE']
+                           self.formatHeader(h) == 'TYPE']
                 idxLon = [idx for idx, h in enumerate(row) if
-                          self.formatStr(h) == 'LON']
+                          self.formatHeader(h) == 'LON']
                 idxLat = [idx for idx, h in enumerate(row) if
-                          self.formatStr(h) == 'LAT']
+                          self.formatHeader(h) == 'LAT']
                 idxSEQ = [idx for idx, h in enumerate(row) if
-                          self.formatStr(h) == 'SEQ']
+                          self.formatHeader(h) == 'SEQ']
                 idxAlti = [idx for idx, h in enumerate(row) if
-                           self.formatStr(h) == 'ALTITUDE']
+                           self.formatHeader(h) == 'ALTITUDE']
                 idxHD = [idx for idx, h in enumerate(row) if
-                         self.formatStr(h) == 'HD']
+                         self.formatHeader(h) == 'HD']
                 idxAz = [idx for idx, h in enumerate(row) if
-                         self.formatStr(h) == 'AZ']
+                         self.formatHeader(h) == 'AZ']
                 break
     
         # Check if data is in vertex format
         if len(idxTYPE) == 1 and len(idxSEQ) == 1 and len(idxAlti) == 1 \
                 and len(idxHD) == 1 and len(idxAz) == 1 \
                 and len(idxLat) == 1 and len(idxLon) == 1:
+    
+            self.sep = sep
+            self.idxTYPE = idxTYPE[0]
+            self.idxLon = idxLon[0]
+            self.idxLat = idxLat[0]
+            self.idxSEQ = idxSEQ[0]
+            self.idxAlti = idxAlti[0]
+            self.idxHD = idxHD[0]
+            self.idxAz = idxAz[0]
+            
             self.valid = True
-            try:
-                self.success = self.readOutData(idxTYPE[0], idxSEQ[0], idxAlti[0],
-                            idxHD[0], idxAz[0], idxLon[0], idxLat[0], sep)
-            except Exception:
-                self.success = False
 
-    def readOutData(self, idxTYPE, idxSEQ, idxAlti, idxHD, idxAz, idxLon,
-                          idxLat, sep):
+    def readOutData(self):
         try:
             # Readout measuring type separately (because the data is of
             # type string)
-            dataType = np.genfromtxt(self.path, delimiter=sep, dtype=str,
-                                     usecols=idxTYPE)
+            dataType = np.genfromtxt(self.path, delimiter=self.sep, dtype=str,
+                                     usecols=self.idxTYPE)
             # Analyse when data rows start
             skipHead = np.where(dataType == 'TRAIL')[0][0]
             # Read out numerical values
-            seq, alti, hd, az, lon, lat = np.genfromtxt(self.path,
-                                                        delimiter=sep,
-                                                        usecols=(
-                                                        idxSEQ, idxAlti, idxHD,
-                                                        idxAz, idxLon, idxLat),
-                                                        skip_header=skipHead,
-                                                        unpack=True)
+            (seq, alti,
+                hd, az,
+                lon, lat) = np.genfromtxt(self.path, delimiter=self.sep,
+                                         usecols=(self.idxSEQ, self.idxAlti,
+                                                  self.idxHD, self.idxAz,
+                                                  self.idxLon, self.idxLat),
+                                         skip_header=skipHead, unpack=True)
         except ValueError:
             return False
     
