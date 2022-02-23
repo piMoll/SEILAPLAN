@@ -123,14 +123,14 @@ class ExcelProtocolReader(AbstractSurveyReader):
             self.errorMsg = self.tr('Azimut ist ungueltig')
             return False
     
-        nr = []
+        nr = [1]
         distList = [0]
         slopeList = [0]
         notes = {
             'onPoint': [],
             'between': []
         }
-        nextPoint = 1
+        nextPoint = 2
         rowIdx = self.ROW_START + 1
         while nextPoint is not None:
             # Check if mandatory values are present
