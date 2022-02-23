@@ -39,6 +39,10 @@ except ModuleNotFoundError:
 class SurveyData(AbstractHeightSource):
     BUFFER_DEFAULT = 0
     
+    SOURCE_CSV_XYZ = 'csvXyz'
+    SOURCE_CSV_VERTEX = 'csvVertex'
+    SOURCE_EXCEL_PROTOCOL = 'excelProtocol'
+    
     def __init__(self, path, sourceType=None):
         AbstractHeightSource.__init__(self)
         self.path = path
@@ -79,27 +83,27 @@ class SurveyData(AbstractHeightSource):
         reader = None
         
         # TODO Test
-        sourceType = 'excelProtocol'
-
-        if sourceType == 'csvXyz' or not sourceType:
+        sourceType = self.SOURCE_EXCEL_PROTOCOL
+        
+        if sourceType == self.SOURCE_CSV_XYZ or not sourceType:
             reader = CsvXyzReader(self.path)
             if reader.valid:
                 try:
                     success = reader.readOutData()
-                    sourceType = 'csvXyz'
+                    sourceType = self.SOURCE_CSV_XYZ
                 except Exception:
                     pass
         
-        if sourceType == 'csvVertex' or not sourceType:
+        if sourceType == self.SOURCE_CSV_VERTEX or not sourceType:
             reader = CsvVertexReader(self.path)
             if reader.valid:
                 try:
                     success = reader.readOutData()
-                    sourceType = 'csvVertex'
+                    sourceType = self.SOURCE_CSV_VERTEX
                 except Exception:
                     pass
     
-        if sourceType == 'excelProtocol':
+        if sourceType == self.SOURCE_EXCEL_PROTOCOL:
             reader = ExcelProtocolReader(self.path)
             if reader.valid:
                 try:

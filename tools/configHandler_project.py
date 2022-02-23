@@ -212,12 +212,14 @@ class ProjectConfHandler(AbstractConfHandler):
         else:
             return self.heightSource.getAsStr()
     
-    def setHeightSource(self, layer, sourceType='dhm', sourcePath=None):
+    def setHeightSource(self, layer, sourceType='dhm', sourcePath=None,
+                        surveySourceType=None):
         """Raster can be set by providing the QGIS Raster Layer or by giving
         the path to the raster file.
         :param layer: QGIS layer object
         :param sourceType: dhm or survey
         :param sourcePath: path to file
+        :param surveySourceType: Type of survey file to load
          """
         self.heightSource = None
         self.heightSourceType = None
@@ -261,7 +263,7 @@ class ProjectConfHandler(AbstractConfHandler):
                         self.onError(self.tr('Fehler beim Kombinieren der Rasterkacheln.'))
                 heights = Raster(virtLayer)
         elif sourceType == 'survey':
-            heights = SurveyData(sourcePath)
+            heights = SurveyData(sourcePath, surveySourceType)
             if heights.valid:
                 self.points = {
                     'A': [None, None],

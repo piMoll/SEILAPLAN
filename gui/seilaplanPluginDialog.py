@@ -34,6 +34,7 @@ from processing.core.Processing import Processing
 # Further GUI modules for functionality
 from .guiHelperFunctions import (DialogWithImage, createContours,
     loadOsmLayer, createProfileLayers)
+from .surveyImportDialog import SurveyImportDialog
 from ..tools.outputGeo import CH_CRS
 from ..tools.configHandler import ConfigHandler
 from ..tools.configHandler_project import castToNum
@@ -100,6 +101,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         
         # Organize parameter GUI fields in dictionary
         self.groupFields()
+        
+        # Dialog to import survey data
+        self.surveyImportDialog = SurveyImportDialog(self, self.confHandler)
         
         # Dialog with explanatory images
         self.imgBox = DialogWithImage()
@@ -287,7 +291,6 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.rasterField.setEnabled(True)
         self.rasterField.blockSignals(False)
         self.buttonRefreshRa.setEnabled(True)
-        self.fieldSurveyDataPath.setEnabled(False)
         self.buttonLoadSurveyData.setEnabled(False)
 
     def enableSurveyDataHeightSource(self):
@@ -302,7 +305,6 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.rasterField.setEnabled(False)
         self.rasterField.blockSignals(False)
         self.buttonRefreshRa.setEnabled(False)
-        self.fieldSurveyDataPath.setEnabled(True)
         self.buttonLoadSurveyData.setEnabled(True)
 
     def getListenerLineEdit(self, property_name):
@@ -667,18 +669,15 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         return success
     
     def onLoadSurveyData(self):
-        title = self.tr('Feldaufnahmen laden')
-        fFilter = self.tr('csv Dateien (*.csv *.CSV)')
-        filename, _ = QFileDialog.getOpenFileName(self, title,
-                self.confHandler.getCurrentPath(), fFilter)
-        if filename:
+        self.surveyImportDialog.exec()
+        if self.surveyImportDialog.doImport:
             self.projectHandler.resetProfile()
-            # Load data from csv file
-            self.projectHandler.setHeightSource(None, 'survey', filename)
+            # # Load data from csv file
+            self.projectHandler.setHeightSource(None, 'survey',
+                self.surveyImportDialog.filePath,
+                self.surveyImportDialog.surveyType)
             self.loadSurveyData()
             self.checkPoints()
-        else:
-            return False
     
     def loadSurveyData(self):
         # Remove earlier survey data layer
