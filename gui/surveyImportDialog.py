@@ -18,10 +18,11 @@
  *                                                                         *
  ***************************************************************************/
 """
-
-from qgis.PyQt.QtWidgets import QDialog, QFileDialog, QDialogButtonBox
+import os
+from qgis.PyQt.QtWidgets import QDialog, QFileDialog, QDialogButtonBox, QMessageBox
 from .ui_surveyImportDialog import Ui_SurveyImportDialogUI
 from ..tools.survey import SurveyData
+from ..tools.fileFetcher import FileFetcher
 
 
 class SurveyImportDialog(QDialog, Ui_SurveyImportDialogUI):
@@ -54,8 +55,10 @@ class SurveyImportDialog(QDialog, Ui_SurveyImportDialogUI):
         
         self.buttonOpenSurvey.clicked.connect(self.onOpenFile)
         
-        self.buttonTemplateCsvXyz.clicked.connect(self.onOpenTemplate)
-        self.buttonTemplateExcelProtocol.clicked.connect(self.onOpenTemplate)
+        self.buttonTemplateCsvXyz.clicked.connect(
+            lambda: self.onDownloadTemplate('csvXyz'))
+        self.buttonTemplateExcelProtocol.clicked.connect(
+            lambda: self.onDownloadTemplate('excelProtocol'))
 
         self.buttonBox.accepted.connect(self.onOk)
         self.buttonBox.rejected.connect(self.onCancel)
@@ -110,9 +113,23 @@ class SurveyImportDialog(QDialog, Ui_SurveyImportDialogUI):
             self.buttonOpenSurvey.setDisabled(True)
             self.buttonBox.button(QDialogButtonBox.Ok).setDisabled(True)
     
-    def onOpenTemplate(self):
-        # TODO
-        pass
+    def onDownloadTemplate(self, templateName):
+        title = self.tr('Speicherort fuer Vorlage')
+        path = self.confHandler.getCurrentPath()
+        folder = QFileDialog.getExistingDirectory(self, title, path,
+                                                  QFileDialog.ShowDirsOnly)
+        if folder:
+            templateUrl, filename = self.confHandler.getTemplateUrl(templateName, self.locale())
+            savepath = os.path.join(folder, filename)
+            filefetcher = FileFetcher(templateUrl, savepath)
+
+            if filefetcher.success:
+                msg = self.tr('Vorlage erfolgreich heruntergeladen.')
+            else:
+                msg = self.tr('Download nicht erfolgreich. Link fuer manuellen Download: _templateUrl_')\
+                    .replace('_templateUrl_', templateUrl)
+            QMessageBox.information(self, self.tr('Download Vorlage'),
+                                    msg, QMessageBox.Ok)
     
     def onOk(self):
         if self.surveyType and self.filePath:

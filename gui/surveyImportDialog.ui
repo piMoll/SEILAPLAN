@@ -40,7 +40,7 @@
           <item row="2" column="1">
            <widget class="QPushButton" name="buttonTemplateExcelProtocol">
             <property name="text">
-             <string>Vorlage oeffnen</string>
+             <string>Vorlage herunterladen</string>
             </property>
            </widget>
           </item>
@@ -54,7 +54,7 @@
           <item row="0" column="1">
            <widget class="QPushButton" name="buttonTemplateCsvXyz">
             <property name="text">
-             <string>Vorlage oeffnen</string>
+             <string>Vorlage herunterladen</string>
             </property>
            </widget>
           </item>

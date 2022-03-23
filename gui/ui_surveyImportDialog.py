@@ -89,9 +89,9 @@ class Ui_SurveyImportDialogUI(object):
         SurveyImportDialogUI.setWindowTitle(_translate("SurveyImportDialogUI", "Import Gelaendeprofil"))
         self.groupBox.setTitle(_translate("SurveyImportDialogUI", "Profiltyp auswaehlen"))
         self.radioExcelProtocol.setText(_translate("SurveyImportDialogUI", "Feldaufnahme-Protokoll (*.xlsx)"))
-        self.buttonTemplateExcelProtocol.setText(_translate("SurveyImportDialogUI", "Vorlage oeffnen"))
+        self.buttonTemplateExcelProtocol.setText(_translate("SurveyImportDialogUI", "Vorlage herunterladen"))
         self.radioCsvXyz.setText(_translate("SurveyImportDialogUI", "CSV-Datei mit X, Y, Z Werten (*.csv)"))
-        self.buttonTemplateCsvXyz.setText(_translate("SurveyImportDialogUI", "Vorlage oeffnen"))
+        self.buttonTemplateCsvXyz.setText(_translate("SurveyImportDialogUI", "Vorlage herunterladen"))
         self.radioCsvVertex.setText(_translate("SurveyImportDialogUI", "Exportdatei des Hagloef Vertex Messgeraetes (*.csv)"))
         self.label_3.setText(_translate("SurveyImportDialogUI", "Datei auswaehlen"))
 
