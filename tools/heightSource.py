@@ -78,6 +78,7 @@ class AbstractSurveyReader:
         self.spatialRef = None
         self.surveyPoints = {}
         self.nr = None
+        self.prHeaderData = {}
     
     def checkStructure(self, *args):
         raise NotImplementedError

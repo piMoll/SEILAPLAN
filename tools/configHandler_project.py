@@ -269,6 +269,10 @@ class ProjectConfHandler(AbstractConfHandler):
                     'A': [None, None],
                     'E': [None, None]
                 }
+                if heights.prHeaderData:
+                    self.setPrHeader(heights.prHeaderData['Header'])
+                    self.params.setParameter('Anlagetyp', heights.prHeaderData['Anlagetyp'])
+                
         if heights and heights.valid:
             self.heightSource = heights
             self.heightSourceType = sourceType
@@ -484,7 +488,14 @@ class ProjectConfHandler(AbstractConfHandler):
         return profile
 
     def setPrHeader(self, prHeaderData):
-        self.prHeader = prHeaderData
+        self.prHeader = {}
+        if not isinstance(prHeaderData, dict):
+            return
+        for propName, value in prHeaderData.items():
+            try:
+                self.prHeader[propName] = str(value)
+            except ValueError:
+                self.prHeader[propName] = ''
     
     def prepareForCalculation(self):
         success = True

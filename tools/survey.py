@@ -65,6 +65,7 @@ class SurveyData(AbstractHeightSource):
         self.origData = {}
         self.valid = False
         self.errorMsg = ''
+        self.prHeaderData = {}
         self.openFile(sourceType)
         if self.valid and not self.spatialRef:
             self.guessCrs()
@@ -112,6 +113,8 @@ class SurveyData(AbstractHeightSource):
             self.spatialRef = reader.spatialRef
             self.surveyPoints = reader.surveyPoints
             self.nr = reader.nr
+            # Only present in excelProtocol
+            self.prHeaderData = reader.prHeaderData
             if not reader.valid and not self.errorMsg:
                 self.errorMsg = self.tr("Ungueltiges Format oder fehlende Daten.")
 

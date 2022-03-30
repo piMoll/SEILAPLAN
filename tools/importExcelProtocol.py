@@ -20,15 +20,14 @@
 """
 from ..lib.pylightxl import pylightxl as xl
 import numpy as np
-# from qgis.core import QgsCoordinateReferenceSystem
-# from .outputGeo import GPS_CRS, latLonToUtmCode, reprojectToCrs
 from .heightSource import AbstractSurveyReader
+from .outputGeo import reprojectToCrs, GPS_CRS
 
 
 class ExcelProtocolReader(AbstractSurveyReader):
     
     # Addresses of excel values
-    CELL_VERSION = 'I3'
+    CELL_VERSION = 'G3'
     CELL_PRVERF = 'C4'
     CELL_PRNR = 'C6'
     CELL_PRGMD = 'G6'
@@ -36,14 +35,14 @@ class ExcelProtocolReader(AbstractSurveyReader):
     CELL_PRBEM = 'C10'
     CELL_ANLAGE = 'C8'
     CELL_X = 'C14'
-    CELL_Y = 'F14'
-    CELL_Z = 'I14'
+    CELL_Y = 'E14'
+    CELL_Z = 'G14'
     CELL_NR = 'C16'
     CELL_AZI = 'C18'
     COL_NR = 'A'
     COL_DIST = 'B'
-    COL_SLOPE = 'D'
-    COL_NOTES = 'E'
+    COL_SLOPE = 'C'
+    COL_NOTES = 'D'
     ROW_START = 21
     
     TEMPLATE_VERSION = 'v3.4'
@@ -53,38 +52,43 @@ class ExcelProtocolReader(AbstractSurveyReader):
         self.checkStructure()
     
     def checkStructure(self):
-        db = xl.readxl(
-            fn='/home/pi/Downloads/protokoll_test2.xlsx')
+        db = xl.readxl(fn=self.path)
         sheet = db.ws(ws=db.ws_names[0])
     
-        # TODO: check if excel has right format
+        # Check some mandatory values
+        try:
+            templateVersion = sheet.address(address=self.CELL_VERSION)
+            coord_x = float(sheet.address(address=self.CELL_X))
+            coord_y = float(sheet.address(address=self.CELL_Y))
+        except ValueError:
+            self.valid = False
+            return
         
-        self.valid = True
+        if (templateVersion and templateVersion.startswith('v')
+                and coord_x and coord_y):
+            self.valid = True
 
     def readOutData(self):
-        db = xl.readxl(
-            fn='/home/pi/Downloads/protokoll_test2.xlsx')
+        db = xl.readxl(fn=self.path)
         sheet = db.ws(ws=db.ws_names[0])
     
         # Readout data and check validity
-        
         templateVersion = sheet.address(address=self.CELL_VERSION)
-        
         try:
             assert templateVersion == self.TEMPLATE_VERSION
         except AssertionError:
             self.errorMsg = self.tr('Veraltetes Template, Daten koennen nicht eingelesen werden')
             return False
     
-        prData = {
-            'header': {
+        self.prHeaderData = {
+            'Header': {
                 'PrVerf': sheet.address(address=self.CELL_PRVERF),
                 'PrNr': sheet.address(address=self.CELL_NR),
                 'PrGmd': sheet.address(address=self.CELL_PRGMD),
                 'PrWald': sheet.address(address=self.CELL_PRWALD),
                 'PrBemerkung': sheet.address(address=self.CELL_PRBEM),
             },
-            'anlagetyp': sheet.address(address=self.CELL_ANLAGE),
+            'Anlagetyp': sheet.address(address=self.CELL_ANLAGE),
         }
     
         try:
@@ -95,8 +99,17 @@ class ExcelProtocolReader(AbstractSurveyReader):
         except ValueError:
             self.errorMsg = self.tr('Koordinatenwerte sind ungueltig')
             return False
-        
-        # TODO: Check that coordinates are not geographical
+
+        # Check if coordinates are geographic and transform to projected
+        if -90 <= abs(absolutePoint['x']) <= 90 and -180 <= absolutePoint['y'] <= 180:
+            xnew, ynew = reprojectToCrs([absolutePoint['x']],
+                                        [absolutePoint['y']], GPS_CRS)
+            if xnew and ynew:
+                absolutePoint['x'] = xnew
+                absolutePoint['y'] = ynew
+            else:
+                self.errorMsg = self.tr('Koordinatenwerte sind ungueltig')
+                return False
 
         try:
             absolutePoint['z'] = float(sheet.address(address=self.CELL_Z))
@@ -116,22 +129,31 @@ class ExcelProtocolReader(AbstractSurveyReader):
             self.errorMsg = self.tr('Azimut ist ungueltig')
             return False
         
-        # Check existence and valid of mandatory values
         try:
             assert 0 <= azimuth <= 400
         except AssertionError:
             self.errorMsg = self.tr('Azimut ist ungueltig')
             return False
-    
-        nr = [1]
+        
         distList = [0]
         slopeList = [0]
         notes = {
             'onPoint': [],
             'between': []
         }
-        nextPoint = 2
-        rowIdx = self.ROW_START + 1
+        nr = [0]
+        nextPoint = 1
+        rowIdx = self.ROW_START
+        
+        # Check if there are measurements before first point
+        dist = sheet.address(address=f'{self.COL_DIST}{self.ROW_START}')
+        slope = sheet.address(address=f'{self.COL_SLOPE}{self.ROW_START}')
+        if dist == '' and slope == '':
+            # No measurements: start at point nr 1 instead of 0
+            nr = [1]
+            nextPoint = 2
+            rowIdx = self.ROW_START + 2
+        
         while nextPoint is not None:
             # Check if mandatory values are present
             dist = sheet.address(address=f'{self.COL_DIST}{rowIdx}')
@@ -148,16 +170,16 @@ class ExcelProtocolReader(AbstractSurveyReader):
                     self.errorMsg = (self.tr('Fehlende oder fehlerhafte Werte fuer Distanz oder Neigung auf Zeile _rowIdx_')).replace('_rowIdx_', rowIdx)
                     return False
         
+            try:
+                nextPoint = int(sheet.address(address=f'{self.COL_NR}{rowIdx + 1}'))
+            except ValueError:
+                nextPoint = None
+            
             nr.append(nextPoint)
             distList.append(dist)
             slopeList.append(slope)
             notes['between'].append(sheet.address(address=f'{self.COL_NOTES}{rowIdx}'))
             notes['onPoint'].append(sheet.address(address=f'{self.COL_NOTES}{rowIdx + 1}'))
-        
-            try:
-                nextPoint = int(sheet.address(address=f'{self.COL_NR}{rowIdx + 1}'))
-            except ValueError:
-                nextPoint = None
             
             rowIdx += 2
         

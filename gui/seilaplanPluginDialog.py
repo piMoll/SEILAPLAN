@@ -678,6 +678,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
                 self.surveyImportDialog.surveyType)
             self.loadSurveyData()
             self.checkPoints()
+            # Excel protocol can include project header data
+            self.fillInPrHeaderData()
+            self.fillInValues()
     
     def loadSurveyData(self):
         # Remove earlier survey data layer
