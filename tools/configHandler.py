@@ -251,9 +251,10 @@ class ConfigHandler(object):
             'kml': s.value(f'{self.SETTING_PREFIX}kml', 0, int),
         }
         for path in [
-            s.value(f'{self.SETTING_PREFIX}savePath1', None),
-            s.value(f'{self.SETTING_PREFIX}savePath2', None),
-            s.value(f'{self.SETTING_PREFIX}savePath3', None)]:
+            s.value(f'{self.SETTING_PREFIX}savePath1'),
+            s.value(f'{self.SETTING_PREFIX}savePath2'),
+            s.value(f'{self.SETTING_PREFIX}savePath3')
+        ]:
     
             if path and os.path.exists(path):
                 self.commonPaths.append(path)

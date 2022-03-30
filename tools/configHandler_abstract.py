@@ -58,7 +58,5 @@ class AbstractConfHandler(object):
         ----------
         **kwargs
         """
-        if not context:
-            context = type(self).__name__
         # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
-        return QCoreApplication.translate(context, message)
+        return QCoreApplication.translate('AbstractConfHandler', message)

@@ -73,7 +73,7 @@ class ExcelProtocolReader(AbstractSurveyReader):
         try:
             assert templateVersion == self.TEMPLATE_VERSION
         except AssertionError:
-            self.errorMsg = self.tr('Veraltetes Template, Daten koennen nicht eingelesen werden.')
+            self.errorMsg = self.tr('Veraltetes Template, Daten koennen nicht eingelesen werden')
             return False
     
         prData = {

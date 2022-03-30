@@ -74,16 +74,12 @@ class SurveyData(AbstractHeightSource):
 
         if not os.path.exists(self.path):
             self.valid = False
-            # TODO Broader error message, no mention of CSV
             self.errorMsg = self.tr(
-                "CSV-Datei '_path_' ist nicht vorhanden.")
+                "Datei '_path_' ist nicht vorhanden.")
             self.errorMsg = self.errorMsg.replace('_path_', self.path)
             return
         
         reader = None
-        
-        # TODO Test
-        sourceType = self.SOURCE_EXCEL_PROTOCOL
         
         if sourceType == self.SOURCE_CSV_XYZ or not sourceType:
             reader = CsvXyzReader(self.path)
@@ -116,14 +112,15 @@ class SurveyData(AbstractHeightSource):
             self.spatialRef = reader.spatialRef
             self.surveyPoints = reader.surveyPoints
             self.nr = reader.nr
+            if not reader.valid and not self.errorMsg:
+                self.errorMsg = self.tr("Ungueltiges Format oder fehlende Daten.")
 
         if success:
             self.projectOnLine()
             self.valid = True
         else:
             if not self.errorMsg:
-                # TODO Broader error message, no mention of CSV
-                self.errorMsg = self.tr("Daten in CSV-Datei konnten nicht geladen werden.")
+                self.errorMsg = self.tr("Datei konnte nicht eingelesen werden. Unerwarteter Fehler aufgetreten.")
     
     def reprojectToCrs(self, destinationCrs):
         if isinstance(destinationCrs, str):

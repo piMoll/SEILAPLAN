@@ -92,7 +92,7 @@ class SurveyImportDialog(QDialog, Ui_SurveyImportDialogUI):
             # No survey type selected
             return
         
-        title = self.tr('Gelaendedaten laden')
+        title = self.tr('Gelaendeprofil laden')
         path = self.confHandler.getCurrentPath()
         filename, _ = QFileDialog.getOpenFileName(self, title, path, fFilter)
         
