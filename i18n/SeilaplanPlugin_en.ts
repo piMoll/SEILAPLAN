@@ -2253,8 +2253,9 @@ http://pimoll.github.io/SEILAPLAN/</translation>
         <source>Hoeheninformation - Erklaerung Felddaten</source>
         <translation>Load profile points from field data.
 Supported data types:
-1) csv file exported from the measuring instrument Haglöf Vertex (Sweden).
-2) Generic csv file (comma-separated) with the coordinates &apos;x&apos;, &apos;y&apos; and &apos;z&apos; in columns. The file must not contain comments and the points have to be sorted.</translation>
+1) Generic csv file (comma-separated) with the coordinates &apos;x&apos;, &apos;y&apos; and &apos;z&apos; in columns. The file must not contain comments and the points have to be sorted.
+2) csv file exported from the measuring instrument Haglöf Vertex (Sweden).
+3) Field survey protocol according to template.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="917"/>

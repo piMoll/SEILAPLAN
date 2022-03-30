@@ -2192,8 +2192,9 @@ http://pimoll.github.io/SEILAPLAN/</translation>
         <source>Hoeheninformation - Erklaerung Felddaten</source>
         <translation>Profil-Messpunkte aus Feldaufnahmen laden.
 Unterstützte Dateitypen:
-1) CSV-Exportdatei des Haglöf Vertex Messgerätes (Schweden).
-2) Generische CSV-Datei (Komma-separiert) mit den Koordinaten-Spalten &apos;x&apos;, &apos;y&apos; und &apos;z&apos;. Die Datei darf keine Kommentare enthalten und die Punkte sind sortiert aufzulisten.</translation>
+1) Generische CSV-Datei (Komma-separiert) mit den Koordinaten-Spalten &apos;x&apos;, &apos;y&apos; und &apos;z&apos;. Die Datei darf keine Kommentare enthalten und die Punkte sind sortiert aufzulisten.
+2) CSV-Exportdatei des Haglöf Vertex Messgerätes (Schweden).
+3) Feldaufnahmeprotokoll gemäss Vorlage.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="917"/>
@@ -2402,7 +2403,7 @@ Pfad zu Dokumentation:
     <message>
         <location filename="../gui/surveyImportDialog.ui" line="14"/>
         <source>Import Gelaendeprofil</source>
-        <translation>Import Gelaendeprofil</translation>
+        <translation>Import Geländeprofil</translation>
     </message>
     <message>
         <location filename="../gui/surveyImportDialog.ui" line="22"/>

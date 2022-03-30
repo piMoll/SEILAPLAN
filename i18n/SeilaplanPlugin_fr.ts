@@ -2250,10 +2250,11 @@ http://pimoll.github.io/SEILAPLAN/</translation>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="916"/>
         <source>Hoeheninformation - Erklaerung Felddaten</source>
-        <translation>Charger les points de profil relevés sur le terrain.
+        <translation type="unfinished">Charger les points de profil relevés sur le terrain.
 Types de fichier supportés:
-1) Fichier csv exporté de l&apos;appareil de mesure Haglöf Vertex (Suède).
-2) Fichier csv générique (valeurs séparées par comma) avec les coordonnées &apos;x&apos;, &apos;y&apos; et &apos;z&apos; en colonnes. Le fichier ne doit pas avoir des commentaires et les points doivent être classés.</translation>
+1) Fichier csv générique (valeurs séparées par comma) avec les coordonnées &apos;x&apos;, &apos;y&apos; et &apos;z&apos; en colonnes. Le fichier ne doit pas avoir des commentaires et les points doivent être classés.
+2) Fichier csv exporté de l&apos;appareil de mesure Haglöf Vertex (Suède).
+3) </translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="917"/>

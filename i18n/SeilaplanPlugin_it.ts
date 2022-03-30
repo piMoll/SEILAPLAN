@@ -2247,10 +2247,11 @@ http://pimoll.github.io/SEILAPLAN/</translation>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="916"/>
         <source>Hoeheninformation - Erklaerung Felddaten</source>
-        <translation>Caricare i punti di profilo rilevati sul terreno.
+        <translation type="unfinished">Caricare i punti di profilo rilevati sul terreno.
 Tipi di file supportati:
-1) File csv esportato dallo strumento di misura Haglöf Vertex (Svezia).
-2) File csv generico (valori separati tramite comma) con le coordinate &apos;x&apos;, &apos;y&apos; e &apos;z&apos; in colonne. Il file non può comprendere commenti e i punti devono essere assortiti.
+1) File csv generico (valori separati tramite comma) con le coordinate &apos;x&apos;, &apos;y&apos; e &apos;z&apos; in colonne. Il file non può comprendere commenti e i punti devono essere assortiti.
+2) File csv esportato dallo strumento di misura Haglöf Vertex (Svezia).
+3) 
 </translation>
     </message>
     <message>
@@ -2363,7 +2364,7 @@ C&apos;è cercato la soluzione che, in prima priorità, minimizza il numero dei 
     <name>SurveyData</name>
     <message>
         <location filename="../tools/survey.py" line="78"/>
-        <source>CSV-Datei &apos;_path_&apos; ist nicht vorhanden.</source>
+        <source>Datei &apos;_path_&apos; ist nicht vorhanden.</source>
         <translation>Il file &apos;_path_&apos; non esiste.</translation>
     </message>
     <message>
