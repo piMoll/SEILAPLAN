@@ -44,13 +44,13 @@ class ConfigHandler(object):
         # TODO: Insert translated file names
         'excelProtocol': {
             'de': 'Vorlage_Feldaufnahmeprotokoll.xlsx',
-            'en': 'Vorlage_Feldaufnahmeprotokoll.xlsx',
+            'en': 'Template_FieldSurveyProtocol.xlsx',
             'fr': 'Vorlage_Feldaufnahmeprotokoll.xlsx',
             'it': 'Vorlage_Feldaufnahmeprotokoll.xlsx',
         },
         'csvXyz': {
             'de': 'Vorlage_Gelaendeprofil_XYZ.csv',
-            'en': 'Vorlage_Gelaendeprofil_XYZ.csv',
+            'en': 'Template_TerrainProfile_XYZ.csv',
             'fr': 'Vorlage_Gelaendeprofil_XYZ.csv',
             'it': 'Vorlage_Gelaendeprofil_XYZ.csv',
         }
