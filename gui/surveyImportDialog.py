@@ -114,7 +114,7 @@ class SurveyImportDialog(QDialog, Ui_SurveyImportDialogUI):
             self.buttonBox.button(QDialogButtonBox.Ok).setDisabled(True)
     
     def onDownloadTemplate(self, templateName):
-        title = self.tr('Speicherort fuer Vorlage')
+        title = self.tr('Vorlage speichern')
         path = self.confHandler.getCurrentPath()
         folder = QFileDialog.getExistingDirectory(self, title, path,
                                                   QFileDialog.ShowDirsOnly)
