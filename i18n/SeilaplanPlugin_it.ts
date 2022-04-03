@@ -2359,6 +2359,16 @@ C&apos;è cercato la soluzione che, in prima priorità, minimizza il numero dei 
         <source>Naechste Schritte</source>
         <translation>Prossimi passi</translation>
     </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="849"/>
+        <source>Fehler</source>
+        <translation>Errore</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="849"/>
+        <source>Unerwarteter Fehler bei Erstellung des Profils</source>
+        <translation>Errore inaspettato alla realizzazione del profilo</translation>
+    </message>
 </context>
 <context>
     <name>SurveyData</name>

@@ -2362,6 +2362,16 @@ The algorithm calculates a solution, which in first priority is minimizing the n
         <source>Naechste Schritte</source>
         <translation>Next steps</translation>
     </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="849"/>
+        <source>Fehler</source>
+        <translation>Error</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="849"/>
+        <source>Unerwarteter Fehler bei Erstellung des Profils</source>
+        <translation>Unexpected error when generating the profile</translation>
+    </message>
 </context>
 <context>
     <name>SurveyData</name>

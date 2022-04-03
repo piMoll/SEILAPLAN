@@ -498,7 +498,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         rColl = []
         for item in QgsProject.instance().layerTreeRoot().findLayers():
             lyr = item.layer()
-            if lyr.type() == 1 and lyr.name() != self.tr('OSM_Karte'):
+            if lyr.type() == 1 and lyr.providerType() not in ['wms', 'wmts']:
                 lyrName = lyr.name()
                 r = {
                     'lyr': lyr,
@@ -843,7 +843,12 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.draw.setChecked(False)
     
     def onShowProfile(self):
-        profile = self.projectHandler.preparePreviewProfile()
+        try:
+            profile = self.projectHandler.preparePreviewProfile()
+        except Exception:
+            QMessageBox.critical(self, self.tr('Fehler'),
+                self.tr('Unerwarteter Fehler bei Erstellung des Profils'))
+            return
         if profile:
             self.profileWin.setProfile(profile)
             self.profileWin.setPoleData(

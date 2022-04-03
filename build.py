@@ -18,7 +18,8 @@ ZIP_EXCLUDES = [
     'help/build',
     'help/source',
     'help/Makefile',
-    'help/make.bat'
+    'help/make.bat',
+    'templates'
 ]
 
 def create_zip(zip_path, folder_path, ignore_patterns):

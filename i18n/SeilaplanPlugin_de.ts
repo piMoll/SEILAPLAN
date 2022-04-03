@@ -2341,6 +2341,16 @@ Pfad zu Dokumentation:
         <source>Erklaerungen zu den Zwischenstuetzen</source>
         <translation>Erklärungen zu den Zwischenstützen</translation>
     </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="849"/>
+        <source>Fehler</source>
+        <translation>Fehler</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="849"/>
+        <source>Unerwarteter Fehler bei Erstellung des Profils</source>
+        <translation>Unerwarteter Fehler bei Erstellung des Profils</translation>
+    </message>
 </context>
 <context>
     <name>SurveyData</name>

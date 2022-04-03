@@ -500,8 +500,12 @@ class ProjectConfHandler(AbstractConfHandler):
     def prepareForCalculation(self):
         success = True
         # Prepare raster (create subraster) or interpolate survey data
-        self.heightSource.prepareData(self.points, self.azimut,
-                                      self.params.ANCHOR_LEN)
+        try:
+            self.heightSource.prepareData(self.points, self.azimut,
+                                          self.params.ANCHOR_LEN)
+        except Exception:
+            self.onError(self.tr('Unerwarteter Fehler bei Erstellung des Profils'))
+            return False
         
         # Anchor length is shortened in case the height source has not enough
         #  data to extract terrain data for anchor field. Also, anchor is
