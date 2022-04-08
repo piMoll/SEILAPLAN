@@ -21,10 +21,12 @@
 import os
 import numpy as np
 from qgis.core import QgsCoordinateReferenceSystem
-import csv
 import copy
 from .heightSource import AbstractHeightSource
-from .outputGeo import GPS_CRS, CH_CRS, latLonToUtmCode, reprojectToCrs
+from .importCsvXyz import CsvXyzReader
+from .importCsvVertex import CsvVertexReader
+from .importExcelProtocol import ExcelProtocolReader
+from .outputGeo import CH_CRS, reprojectToCrs
 # Check if library scipy is present. On linux scipy isn't included in
 #  the standard qgis python interpreter
 try:
@@ -37,7 +39,11 @@ except ModuleNotFoundError:
 class SurveyData(AbstractHeightSource):
     BUFFER_DEFAULT = 0
     
-    def __init__(self, path):
+    SOURCE_CSV_XYZ = 'csvXyz'
+    SOURCE_CSV_VERTEX = 'csvVertex'
+    SOURCE_EXCEL_PROTOCOL = 'excelProtocol'
+    
+    def __init__(self, path, sourceType=None):
         AbstractHeightSource.__init__(self)
         self.path = path
         self.extent = None
@@ -59,235 +65,65 @@ class SurveyData(AbstractHeightSource):
         self.origData = {}
         self.valid = False
         self.errorMsg = ''
-        self.openFile()
-        if not self.spatialRef:
+        self.prHeaderData = {}
+        self.openFile(sourceType)
+        if self.valid and not self.spatialRef:
             self.guessCrs()
     
-    def openFile(self):
+    def openFile(self, sourceType):
         success = False
-        
-        def formatStr(s):
-            return s.strip().upper()
 
         if not os.path.exists(self.path):
             self.valid = False
             self.errorMsg = self.tr(
-                "CSV-Datei '_path_' ist nicht vorhanden.")
+                "Datei '_path_' ist nicht vorhanden.")
             self.errorMsg = self.errorMsg.replace('_path_', self.path)
             return
         
-        with open(self.path, newline='') as file:
-            reader = csv.reader(file)
-            sep = ','
-            for row in reader:
-                if len(row) == 1:
-                    row = row[0].split(';')
-                    sep = ';'
-                if len(row) == 1:
-                    row = row[0].split(',')
-                    sep = ','
-                # Analyse header line
-                
-                # Fields of Vertex csv
-                idxTYPE = [idx for idx, h in enumerate(row) if
-                           formatStr(h) == 'TYPE']
-                idxLon = [idx for idx, h in enumerate(row) if
-                          formatStr(h) == 'LON']
-                idxLat = [idx for idx, h in enumerate(row) if
-                          formatStr(h) == 'LAT']
-                idxSEQ = [idx for idx, h in enumerate(row) if
-                          formatStr(h) == 'SEQ']
-                idxAlti = [idx for idx, h in enumerate(row) if
-                           formatStr(h) == 'ALTITUDE']
-                idxHD = [idx for idx, h in enumerate(row) if
-                         formatStr(h) == 'HD']
-                idxAz = [idx for idx, h in enumerate(row) if
-                         formatStr(h) == 'AZ']
-                
-                idxX = [idx for idx, h in enumerate(row) if
-                        formatStr(h) == 'X']
-                idxY = [idx for idx, h in enumerate(row) if
-                        formatStr(h) == 'Y']
-                idxZ = [idx for idx, h in enumerate(row) if
-                        formatStr(h) == 'Z']
-                break
+        reader = None
         
-        # Check if data is in vertex format
-        if len(idxTYPE) == 1 and len(idxSEQ) == 1 and len(idxAlti) == 1 \
-                and len(idxHD) == 1 and len(idxAz) == 1 \
-                and len(idxLat) == 1 and len(idxLon) == 1:
-            try:
-                success = self.readOutVertexData(idxTYPE[0], idxSEQ[0], idxAlti[0],
-                            idxHD[0], idxAz[0], idxLon[0], idxLat[0], sep)
-            except Exception:
-                success = False
+        if sourceType == self.SOURCE_CSV_XYZ or not sourceType:
+            reader = CsvXyzReader(self.path)
+            if reader.valid:
+                try:
+                    success = reader.readOutData()
+                    sourceType = self.SOURCE_CSV_XYZ
+                except Exception:
+                    pass
         
-        # Check if data is in x, y, z format
-        elif len(idxX) == 1 and len(idxY) == 1 and len(idxZ) == 1:
-            success = self.readOutData(idxX[0], idxY[0], idxZ[0], sep)
+        if sourceType == self.SOURCE_CSV_VERTEX or not sourceType:
+            reader = CsvVertexReader(self.path)
+            if reader.valid:
+                try:
+                    success = reader.readOutData()
+                    sourceType = self.SOURCE_CSV_VERTEX
+                except Exception:
+                    pass
+    
+        if sourceType == self.SOURCE_EXCEL_PROTOCOL:
+            reader = ExcelProtocolReader(self.path)
+            if reader.valid:
+                try:
+                    success = reader.readOutData()
+                except Exception:
+                    pass
         
+        if reader:
+            self.errorMsg = reader.errorMsg
+            self.spatialRef = reader.spatialRef
+            self.surveyPoints = reader.surveyPoints
+            self.nr = reader.nr
+            # Only present in excelProtocol
+            self.prHeaderData = reader.prHeaderData
+            if not reader.valid and not self.errorMsg:
+                self.errorMsg = self.tr("Ungueltiges Format oder fehlende Daten.")
+
         if success:
             self.projectOnLine()
             self.valid = True
         else:
             if not self.errorMsg:
-                self.errorMsg = self.tr("Daten in CSV-Datei konnten nicht geladen werden.")
-    
-    def readOutData(self, idxX, idxY, idxZ, sep):
-        try:
-            x, y, z = np.genfromtxt(self.path, delimiter=sep, dtype='float64',
-                                    usecols=(idxX, idxY, idxZ), unpack=True,
-                                    skip_header=1)
-        except TypeError as e:
-            return False
-        # Check for missing values and remove whole row
-        x = x[~(np.isnan(x) + np.isnan(y) + np.isnan(z))]
-        y = y[~(np.isnan(x) + np.isnan(y) + np.isnan(z))]
-        z = z[~(np.isnan(x) + np.isnan(y) + np.isnan(z))]
-        
-        if len(x) < 2:
-            return False
-        try:
-            self.extent = [np.min(x), np.max(y), np.max(x), np.min(y)]
-        except TypeError as e:
-            return False
-        
-        self.surveyPoints = {
-            'x': x,
-            'y': y,
-            'z': z
-        }
-        self.nr = np.arange(len(x)) + 1
-        return True
-    
-    def readOutVertexData(self, idxTYPE, idxSEQ, idxAlti, idxHD, idxAz, idxLon, idxLat, sep):
-        try:
-            # Readout measuring type separately (because the data is of
-            # type string)
-            dataType = np.genfromtxt(self.path, delimiter=sep, dtype=str,
-                                     usecols=idxTYPE)
-            # Analyse when data rows start
-            skipHead = np.where(dataType == 'TRAIL')[0][0]
-            # Read out numerical values
-            seq, alti, hd, az, lon, lat = np.genfromtxt(self.path, delimiter=sep,
-                    usecols=(idxSEQ, idxAlti, idxHD, idxAz, idxLon, idxLat),
-                    skip_header=skipHead, unpack=True)
-        except ValueError:
-            return False
-        
-        # Make sure array dataType has the same size as the numerical data
-        #  and check if the readout data has type TRAIL
-        trail = dataType[skipHead:] == 'TRAIL'
-        
-        # See if dimensions of extracted data fit
-        if not (trail.size == seq.size == alti.size == hd.size ==
-                az.size == lon.size == lat.size):
-            return False
-        
-        # Check for missing values and create array masks to skip them when
-        #  processing
-        mask_use = np.array([True]*seq.size)
-        
-        # Check if there are multiple measurement series by searching for
-        #  seq = 1 or the lowest value. Only take the longest sequence of
-        #  measurements
-        sequence_len = []
-        sequence_starts = np.where(seq == np.min(seq))[0]
-        last_start = 0
-        for sequence_start in sequence_starts:
-            if sequence_start != 0:
-                sequence_len.append(sequence_start - last_start)
-            last_start = sequence_start
-        sequence_len.append(seq.size - last_start)
-        # Find sequence start and end index
-        start_of_longest_sequence = sequence_starts[np.argmax(sequence_len)]
-        end_of_longest_sequence = sequence_starts[np.argmax(sequence_len)+1] \
-            if sequence_len == seq.size else -1
-        
-        # Update mask by setting every other measurement series to False
-        mask_use[:start_of_longest_sequence] = False
-        if end_of_longest_sequence != -1:
-            mask_use[end_of_longest_sequence:] = False
-        
-        seq = seq[mask_use]
-        alti = alti[mask_use]
-        hd = hd[mask_use]
-        az = az[mask_use]
-        lon = lon[mask_use]
-        lat = lat[mask_use]
-        # Check if some gps measurements are missing
-        mask_gps = ~(np.isnan(lon) + np.isnan(lat))
-        
-        # Quality checks
-        
-        # If relative measurements are missing, we cannot create a line
-        if np.sum(np.isnan(az)) > 0 \
-                or np.sum(np.isnan(hd)) > 0:
-            self.errorMsg = self.tr('Die Messdaten sind unvollstaendig, '
-                                    'die CSV-Datei kann nicht geladen werden.')
-            return False
-
-        # Check if the sequence numbers are in order and that there are no gaps
-        if np.sum(np.cumsum(np.array([1] * seq.size)) == seq) != seq.size:
-            # Only add a warning, create the profile ether way
-            self.errorMsg = self.tr('Die CSV-Datei enthaelt Messluecken, '
-                'das erstellte Profil koennte fehlerhaft sein.')
-        
-        # If there are multiple measurement series (sequence restarts at one),
-        # there is most certainly an issue with the CSV data
-        if np.sum(seq == 1) > 1:
-            # Only add a warning
-            self.errorMsg = self.tr('Die CSV-Datei enthaelt mehr als eine '
-                'Messreihe. Es wurde nur die laengste Messreihe geladen.')
-    
-        # Check if at least one pair of absolute coordinates are present to
-        #  transform relative measurements into destination coordinate system
-        if lon[mask_gps].size == 0 or lat[mask_gps].size == 0:
-            self.errorMsg = self.tr('Die CSV-Datei enthaelt keine '
-                'GPS-Koordinaten, das Profil kann nicht erstellt werden.')
-            return False
-    
-        # Calculate X/Y coordinate relative to the first point (0, 0)
-        #  by adding the distance (horizontalDist * sin(azimuth))
-        relCoords = np.array(
-            [np.cumsum(hd * np.sin(np.radians(az))),
-             np.cumsum(hd * np.cos(np.radians(az)))
-            ])
-    
-        # Guess UTM epsg code by analysing lat, lon values
-        try:
-            utmEpsg = latLonToUtmCode(lat[mask_gps][0], lon[mask_gps][0])
-        except Exception:
-            self.errorMsg = self.tr('Die CSV-Datei enthaelt ungueltige GPS-Koordinaten.')
-            return False
-    
-        # Transform GPS coordinates to projected UTM coordinates
-        utmx, utmy = reprojectToCrs(lon[mask_gps], lat[mask_gps], GPS_CRS, utmEpsg)
-        utmCoords = np.array([utmx, utmy])
-
-        # Calculate mean distance to UTM coords but only on rows where
-        #  GPS coords are present
-        deltaX = utmCoords[0] - relCoords[0][mask_gps]
-        deltaY = utmCoords[1] - relCoords[1][mask_gps]
-        meanDist = np.mean(np.sqrt(np.square(deltaX) + np.square(deltaY)))
-        # Calculate mean azimut to UTM coords
-        meanAz = np.mean(np.arctan(deltaX/deltaY))
-
-        # Move relative coordinates to UTM system
-        relCoordsNew = np.array([
-            relCoords[0] + meanDist * np.sin(meanAz),
-            relCoords[1] + meanDist * np.cos(meanAz)
-        ])
-        # Translate back to WGS84
-        gpsx, gpsy = reprojectToCrs(relCoordsNew[0], relCoordsNew[1], utmEpsg, GPS_CRS)
-        self.surveyPoints = {
-            'x': gpsx,
-            'y': gpsy,
-            'z': alti
-        }
-        self.spatialRef = QgsCoordinateReferenceSystem(GPS_CRS)
-        self.nr = np.arange(len(gpsx)) + 1
-        return True
+                self.errorMsg = self.tr("Datei konnte nicht eingelesen werden. Unerwarteter Fehler aufgetreten.")
     
     def reprojectToCrs(self, destinationCrs):
         if isinstance(destinationCrs, str):

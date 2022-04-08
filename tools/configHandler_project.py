@@ -212,12 +212,14 @@ class ProjectConfHandler(AbstractConfHandler):
         else:
             return self.heightSource.getAsStr()
     
-    def setHeightSource(self, layer, sourceType='dhm', sourcePath=None):
+    def setHeightSource(self, layer, sourceType='dhm', sourcePath=None,
+                        surveySourceType=None):
         """Raster can be set by providing the QGIS Raster Layer or by giving
         the path to the raster file.
         :param layer: QGIS layer object
         :param sourceType: dhm or survey
         :param sourcePath: path to file
+        :param surveySourceType: Type of survey file to load
          """
         self.heightSource = None
         self.heightSourceType = None
@@ -261,12 +263,16 @@ class ProjectConfHandler(AbstractConfHandler):
                         self.onError(self.tr('Fehler beim Kombinieren der Rasterkacheln.'))
                 heights = Raster(virtLayer)
         elif sourceType == 'survey':
-            heights = SurveyData(sourcePath)
+            heights = SurveyData(sourcePath, surveySourceType)
             if heights.valid:
                 self.points = {
                     'A': [None, None],
                     'E': [None, None]
                 }
+                if heights.prHeaderData:
+                    self.setPrHeader(heights.prHeaderData['Header'])
+                    self.params.setParameter('Anlagetyp', heights.prHeaderData['Anlagetyp'])
+                
         if heights and heights.valid:
             self.heightSource = heights
             self.heightSourceType = sourceType
@@ -482,13 +488,24 @@ class ProjectConfHandler(AbstractConfHandler):
         return profile
 
     def setPrHeader(self, prHeaderData):
-        self.prHeader = prHeaderData
+        self.prHeader = {}
+        if not isinstance(prHeaderData, dict):
+            return
+        for propName, value in prHeaderData.items():
+            try:
+                self.prHeader[propName] = str(value)
+            except ValueError:
+                self.prHeader[propName] = ''
     
     def prepareForCalculation(self):
         success = True
         # Prepare raster (create subraster) or interpolate survey data
-        self.heightSource.prepareData(self.points, self.azimut,
-                                      self.params.ANCHOR_LEN)
+        try:
+            self.heightSource.prepareData(self.points, self.azimut,
+                                          self.params.ANCHOR_LEN)
+        except Exception:
+            self.onError(self.tr('Unerwarteter Fehler bei Erstellung des Profils'))
+            return False
         
         # Anchor length is shortened in case the height source has not enough
         #  data to extract terrain data for anchor field. Also, anchor is

@@ -124,9 +124,15 @@ class Raster(AbstractHeightSource):
         # 'projWin' are shifted so that the raster does not have to be
         # resampled.
         ds = gdal.Open(self.path)
-        subraster = gdal.Translate('/vsimem/in_memory_output.tif', ds,
-                                   projWin=[pointXmin, pointYmax, pointXmax,
-                                            pointYmin])
+        if not ds:
+            raise Exception
+        try:
+            subraster = gdal.Translate('/vsimem/in_memory_output.tif', ds,
+                                       projWin=[pointXmin, pointYmax, pointXmax,
+                                                pointYmin])
+        except Exception:
+            return
+        
         z = subraster.ReadAsArray()
         if np.ndim(z) > 2:
             # Assumption: Height information is in first raster band

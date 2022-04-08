@@ -137,15 +137,13 @@ def createProfileLayers(heightSource):
     pr.addAttributes([QgsField("nr", QVariant.Int)])
     surveyPointLayer.updateFields()
     features = []
-    idx = 1
     # TODO: Survey points are NOT rounded
-    for x, y in np.column_stack([heightSource.x, heightSource.y]):
+    for x, y, nr in np.column_stack([heightSource.x, heightSource.y, heightSource.nr]):
         feature = QgsFeature()
         feature.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(x, y)))
-        feature.setId(idx)
-        feature.setAttributes([idx])
+        feature.setId(int(nr+1))
+        feature.setAttributes([int(nr)])
         features.append(feature)
-        idx += 1
     pr.addFeatures(features)
     surveyPointLayer.updateExtents()
     QgsProject.instance().addMapLayers([surveyPointLayer])

@@ -24,12 +24,12 @@
         <translation>bez</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="154"/>
+        <location filename="../tools/outputReport.py" line="148"/>
         <source>Leerseil</source>
         <translation>Leerseil</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="156"/>
+        <location filename="../tools/outputReport.py" line="150"/>
         <source>Lastseil</source>
         <translation>Lastseil</translation>
     </message>
@@ -119,243 +119,243 @@
         <translation>Zeitpunkt</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="103"/>
+        <location filename="../tools/outputReport.py" line="98"/>
         <source>Berechnungsdauer</source>
         <translation>Berechnungsdauer</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="109"/>
+        <location filename="../tools/outputReport.py" line="104"/>
         <source>Hoehendaten</source>
         <translation>Höhendaten</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="355"/>
+        <location filename="../tools/outputReport.py" line="349"/>
         <source>Bemerkung</source>
         <translation>Bemerkung</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="112"/>
+        <location filename="../tools/outputReport.py" line="107"/>
         <source>Erklaerungen und Diagramme zu den technischen Werten sind in der Dokumentation zu finden.</source>
         <translation>Erklärungen und Diagramme zu den technischen Werten sind in der Dokumentation zu finden.</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="116"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Hoehe Sattel [m]</source>
         <translation>Höhe Sattel [m]</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="116"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>Neigung []</source>
         <translation>Neigung [°]</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="116"/>
+        <location filename="../tools/outputReport.py" line="111"/>
         <source>X-Koordinate</source>
         <translation>X-Koordinate</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="117"/>
+        <location filename="../tools/outputReport.py" line="112"/>
         <source>Y-Koordinate</source>
         <translation>Y-Koordinate</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="117"/>
+        <location filename="../tools/outputReport.py" line="112"/>
         <source>Z-Koordinate [m.ue.M.]</source>
         <translation>Z-Koordinate [m ü.M.]</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="130"/>
+        <location filename="../tools/outputReport.py" line="124"/>
         <source>Schraegdistanz</source>
         <translation>Schrägdistanz</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="140"/>
+        <location filename="../tools/outputReport.py" line="134"/>
         <source>gewaehlte Grundspannung bei der Anfangsstuetze</source>
         <translatorcomment>Gewählte Seilzugkraft bei der Anfangsstütze</translatorcomment>
         <translation>Tragseilspannkraft bei der Anfangsstütze</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="145"/>
+        <location filename="../tools/outputReport.py" line="139"/>
         <source>Laenge Leerseil bei Anfangszugkraft</source>
         <translation>Länge Leerseil bei Anfangszugkraft</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="147"/>
+        <location filename="../tools/outputReport.py" line="141"/>
         <source>Laenge Leerseil bei 0 kN Seilzugkraft</source>
         <translation>Länge Leerseil bei 0 kN Seilzugkraft</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="162"/>
+        <location filename="../tools/outputReport.py" line="156"/>
         <source>Abk.</source>
         <translation>Abk.</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="250"/>
+        <location filename="../tools/outputReport.py" line="244"/>
         <source>am Leerseil</source>
         <translation>am Leerseil</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="163"/>
+        <location filename="../tools/outputReport.py" line="157"/>
         <source>Seilzugkraft an der Anfangsstuetze</source>
         <translation>Seilzugkraft an der Anfangsstütze</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="165"/>
+        <location filename="../tools/outputReport.py" line="159"/>
         <source>Seilzugkraft an der Endstuetze</source>
         <translation>Seilzugkraft an der Endstütze</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="168"/>
+        <location filename="../tools/outputReport.py" line="162"/>
         <source>Seilzugkraft des Leerseils an den Stuetzen</source>
         <translation>Seilzugkraft des Leerseils an den Stützen</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="172"/>
+        <location filename="../tools/outputReport.py" line="166"/>
         <source>Leerseilverhaeltnis: Horizontalkomponente</source>
         <translation>Leerseilverhältnis: Horizontalkomponente</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="174"/>
+        <location filename="../tools/outputReport.py" line="168"/>
         <source>der Seilzugkraft an den Stuetzen</source>
         <translation>der Seilzugkraft an den Stützen</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="258"/>
+        <location filename="../tools/outputReport.py" line="252"/>
         <source>am Lastseil</source>
         <translation>am Lastseil</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="178"/>
+        <location filename="../tools/outputReport.py" line="172"/>
         <source>Max. auftretende Seilzugkraft</source>
         <translation>Max. auftretende Seilzugkraft</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="179"/>
+        <location filename="../tools/outputReport.py" line="173"/>
         <source>am hoechsten Punkt im Seilsystem</source>
         <translation>am höchsten Punkt im Seilsystem</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="181"/>
+        <location filename="../tools/outputReport.py" line="175"/>
         <source>am Anfangsanker</source>
         <translation>am Anfangsanker</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="183"/>
+        <location filename="../tools/outputReport.py" line="177"/>
         <source>am Endanker</source>
         <translation>am Endanker</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="186"/>
+        <location filename="../tools/outputReport.py" line="180"/>
         <source>am Lastseil mit Last in Feldmitte</source>
         <translation>am Lastseil mit Last in Feldmitte</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="188"/>
+        <location filename="../tools/outputReport.py" line="182"/>
         <source>Max. auftretende Seilzugkraft gemessen in Feldmitte</source>
         <translation>Max. auftretende Seilzugkraft gemessen in Feldmitte</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="191"/>
+        <location filename="../tools/outputReport.py" line="185"/>
         <source>davon horizontale Komponente</source>
         <translation>davon horizontale Komponente</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="194"/>
+        <location filename="../tools/outputReport.py" line="188"/>
         <source>gemessen am hoechsten Punkt im Seilsystem</source>
         <translation>gemessen am höchsten Punkt im Seilsystem</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="201"/>
+        <location filename="../tools/outputReport.py" line="195"/>
         <source>an befahrbarer Stuetze, Laufwagen auf Stuetze</source>
         <translation>an befahrbarer Stütze, Laufwagen auf Sattel</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="237"/>
+        <location filename="../tools/outputReport.py" line="231"/>
         <source>Sattelkraft, resultierend</source>
         <translation>Sattelkraft, resultierend</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="240"/>
+        <location filename="../tools/outputReport.py" line="234"/>
         <source>Sattelkraft, vertikale Komponente</source>
         <translation>Sattelkraft, vertikale Komponente</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="243"/>
+        <location filename="../tools/outputReport.py" line="237"/>
         <source>Sattelkraft, horizontale Komponente</source>
         <translation>Sattelkraft, horizontale Komponente</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="212"/>
+        <location filename="../tools/outputReport.py" line="206"/>
         <source>Sattelkraft (Anteil von Tragseil), resultierend</source>
         <translation>Sattelkraft (Anteil von Tragseil), resultierend</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="215"/>
+        <location filename="../tools/outputReport.py" line="209"/>
         <source>Sattelkraft (Anteil von Tragseil), vertikale Komponente</source>
         <translation>Sattelkraft (Anteil von Tragseil), vertikale Komponente</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="218"/>
+        <location filename="../tools/outputReport.py" line="212"/>
         <source>Sattelkraft (Anteil von Tragseil), horizontale Komponente</source>
         <translation>Sattelkraft (Anteil von Tragseil), horizontale Komponente</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="221"/>
+        <location filename="../tools/outputReport.py" line="215"/>
         <source>Einwirkung auf Stuetze aus Last, Gewicht Zug- Tragseil</source>
         <translation>Einwirkung auf Stütze aus Last, Gewicht Trag- und Zugseil</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="230"/>
+        <location filename="../tools/outputReport.py" line="224"/>
         <source>an nicht befahrbarer Stuetze,</source>
         <translation>an nicht befahrbarer Stütze,</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="231"/>
+        <location filename="../tools/outputReport.py" line="225"/>
         <source>Laufwagen unmittelbar links/rechts bei Stuetze</source>
         <translation>Laufwagen unmittelbar links/rechts bei Stütze</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="232"/>
+        <location filename="../tools/outputReport.py" line="226"/>
         <source>links</source>
         <translation>links</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="232"/>
+        <location filename="../tools/outputReport.py" line="226"/>
         <source>rechts</source>
         <translation>rechts</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="234"/>
+        <location filename="../tools/outputReport.py" line="228"/>
         <source>Seilzugkraft</source>
         <translation>Seilzugkraft</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="259"/>
+        <location filename="../tools/outputReport.py" line="253"/>
         <source>eingehender Winkel</source>
         <translation>eingehender Winkel</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="263"/>
+        <location filename="../tools/outputReport.py" line="257"/>
         <source>ausgehender Winkel</source>
         <translation>ausgehender Winkel</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="276"/>
+        <location filename="../tools/outputReport.py" line="270"/>
         <source>Leerseilknickwinkel</source>
         <translation>Leerseilknickwinkel</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="279"/>
+        <location filename="../tools/outputReport.py" line="273"/>
         <source>Nachweis erfuellt</source>
         <translation>Nachweis erfüllt</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="287"/>
+        <location filename="../tools/outputReport.py" line="281"/>
         <source>Parameterset:</source>
         <translation>Parameterset:</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="598"/>
+        <location filename="../tools/outputReport.py" line="591"/>
         <source>Bericht</source>
         <translation>Bericht</translation>
     </message>
@@ -366,251 +366,251 @@
         <translation>Seillinienprojekt</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="308"/>
+        <location filename="../tools/outputReport.py" line="302"/>
         <source>Stuetzenpositionen</source>
         <translation>Stützenpositionen</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="309"/>
+        <location filename="../tools/outputReport.py" line="303"/>
         <source>Daten fuer Absteckung im Feld (Bodenpunkt)</source>
         <translation>Daten für Absteckung im Feld (Bodenpunkt)</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="310"/>
+        <location filename="../tools/outputReport.py" line="304"/>
         <source>Vorspannung der Seilzugkraft</source>
         <translatorcomment>Fritz: &quot;Vorspannung der Seilzugkraft&quot; ist meiner Meinung nach kein korrekter Begriff, Vorschlag: Vorspannkraft (des Tragseils)</translatorcomment>
         <translation>Tragseilspannkraft (Grundspannung)</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="311"/>
+        <location filename="../tools/outputReport.py" line="305"/>
         <source>Seillaenge</source>
         <translation>Seillänge</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="312"/>
+        <location filename="../tools/outputReport.py" line="306"/>
         <source>Durchhang</source>
         <translation>Durchhang</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="313"/>
+        <location filename="../tools/outputReport.py" line="307"/>
         <source>Auftretende Kraefte am Seil</source>
         <translatorcomment>präziser: am Tragseil</translatorcomment>
         <translation>Auftretende Kräfte am Tragseil</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="314"/>
+        <location filename="../tools/outputReport.py" line="308"/>
         <source>Auftretende Kraefte an den Stuetzen</source>
         <translation>Auftretende Kräfte an den Stützen</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="315"/>
+        <location filename="../tools/outputReport.py" line="309"/>
         <source>Seilwinkel an den Stuetzen</source>
         <translation>Seilwinkel an den Stützen</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="316"/>
+        <location filename="../tools/outputReport.py" line="310"/>
         <source>Nachweis, dass Tragseil nicht vom Sattel abhebt</source>
         <translation>Nachweis, dass Tragseil nicht vom Sattel abhebt</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="317"/>
+        <location filename="../tools/outputReport.py" line="311"/>
         <source>Annahmen</source>
         <translation>Annahmen</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="428"/>
+        <location filename="../tools/outputReport.py" line="421"/>
         <source>Feld</source>
         <translatorcomment>Habe nicht gefunden wo das steht, könnte auch ein Eingabefeld sein?</translatorcomment>
         <translation>Spannfeld</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="423"/>
+        <location filename="../tools/outputReport.py" line="416"/>
         <source>Azimut</source>
         <translation>Azimut</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="423"/>
+        <location filename="../tools/outputReport.py" line="416"/>
         <source>gon</source>
         <translation>gon</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="136"/>
+        <location filename="../tools/outputReport.py" line="130"/>
         <source>von</source>
         <translatorcomment>Kommt auf den Zusammenhang an, wo steht das?</translatorcomment>
         <translation>von</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="136"/>
+        <location filename="../tools/outputReport.py" line="130"/>
         <source>zu</source>
         <translatorcomment>Kommt auf den Zusammenhang an, wo steht das?</translatorcomment>
         <translation>zu</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="149"/>
+        <location filename="../tools/outputReport.py" line="143"/>
         <source>Laenge der Spannfelder (Schraegdistanz)</source>
         <translation>Länge der Spannfelder (Schrägdistanz)</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="268"/>
+        <location filename="../tools/outputReport.py" line="262"/>
         <source>Ja</source>
         <translation>Ja</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="268"/>
+        <location filename="../tools/outputReport.py" line="262"/>
         <source>Nein</source>
         <translation>Nein</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="280"/>
+        <location filename="../tools/outputReport.py" line="274"/>
         <source>(Leerseilknickwinkel 2)</source>
         <translation>(Leerseilknickwinkel &gt; 1°)</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="273"/>
+        <location filename="../tools/outputReport.py" line="267"/>
         <source>Lastseilknickwinkel</source>
         <translation>Lastseilknickwinkel</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="351"/>
+        <location filename="../tools/outputReport.py" line="345"/>
         <source>Datum</source>
         <translation>Datum</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="376"/>
+        <location filename="../tools/outputReport.py" line="370"/>
         <source>Grundspannung (Endpunkt)</source>
         <translation>Tragseilspannkraft (Endpunkt)</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="402"/>
+        <location filename="../tools/outputReport.py" line="395"/>
         <source>Nr.</source>
         <translation>Nr.</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="402"/>
+        <location filename="../tools/outputReport.py" line="395"/>
         <source>Bezeichnung</source>
         <translation>Bezeichnung</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="381"/>
+        <location filename="../tools/outputReport.py" line="375"/>
         <source>Sattelhoehe</source>
         <translation>Sattelhöhe</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="382"/>
+        <location filename="../tools/outputReport.py" line="376"/>
         <source>Min. BHD</source>
         <translation>Min. BHD</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="382"/>
+        <location filename="../tools/outputReport.py" line="376"/>
         <source>Bundstelle</source>
         <translation>Ø Bundstelle</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="395"/>
+        <location filename="../tools/outputReport.py" line="388"/>
         <source>Angabe BDH bei zu steilem Winkel nicht moeglich</source>
         <translation>* Angabe des min. BHD bei zu steilem Angriffswinkel nicht möglich</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="399"/>
+        <location filename="../tools/outputReport.py" line="392"/>
         <source>Maximal berechnete Seilzugkraft</source>
         <translatorcomment>evtl. Deutsche Variante ändern (Max. auftretende / berechnete Seilzugkraft)</translatorcomment>
         <translation>Maximal berechnete Seilzugkraft</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="402"/>
+        <location filename="../tools/outputReport.py" line="395"/>
         <source>Max. Kraefte</source>
         <translation>Max. Kräfte</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="403"/>
+        <location filename="../tools/outputReport.py" line="396"/>
         <source>Leerseil-knickwinkel</source>
         <translation>Leerseil-
 knickwinkel</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="403"/>
+        <location filename="../tools/outputReport.py" line="396"/>
         <source>Lastseil-knickwinkel</source>
         <translation>Lastseil-
 knickwinkel</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="424"/>
+        <location filename="../tools/outputReport.py" line="417"/>
         <source>Berechnete Seillaenge</source>
         <translation>Länge Leerseil gespannt (Anfangs- bis Endpunkt)</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="425"/>
+        <location filename="../tools/outputReport.py" line="418"/>
         <source>Max. Abstand Leerseil - Boden</source>
         <translation>Maximaler Abstand Leerseil - Boden</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="404"/>
+        <location filename="../tools/outputReport.py" line="397"/>
         <source>Angriffs-winkel</source>
         <translation>Angriffs-
 winkel</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="429"/>
+        <location filename="../tools/outputReport.py" line="422"/>
         <source>Horizontal-distanz</source>
         <translation>Horizontal
 -distanz</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="430"/>
+        <location filename="../tools/outputReport.py" line="423"/>
         <source>Schraeg-distanz</source>
         <translation>Schräg-
 distanz</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="431"/>
+        <location filename="../tools/outputReport.py" line="424"/>
         <source>Hoehen-differenz</source>
         <translation>Höhen-
 differenz</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="432"/>
+        <location filename="../tools/outputReport.py" line="425"/>
         <source>Durchhang Leerseil</source>
         <translation>Durchhang
 Leerseil</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="433"/>
+        <location filename="../tools/outputReport.py" line="426"/>
         <source>Durchhang Lastseil</source>
         <translation>Durchhang
 Lastseil</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="468"/>
+        <location filename="../tools/outputReport.py" line="461"/>
         <source>Haftungsausschluss</source>
         <translation>Jegliche Haftung wird im Rahmen der GNU General Public Licence Version 2 oder neuere ausgeschlossen (www.gnu.org/licenses). Die implementierte Berechnungsmethode basiert auf der Methode von Zweifel (1960). Zur Berechnung der Seillinie wurde eine beidseitig fixierte Verankerung angenommen.</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="473"/>
+        <location filename="../tools/outputReport.py" line="466"/>
         <source>Kurzbericht</source>
         <translation>Kurzbericht</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="307"/>
+        <location filename="../tools/outputReport.py" line="301"/>
         <source>SEILAPLAN Projekt</source>
         <translation>SEILAPLAN Projekt</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="534"/>
+        <location filename="../tools/outputReport.py" line="527"/>
         <source>Eingabewerte</source>
         <translation>Eingabewerte</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="536"/>
+        <location filename="../tools/outputReport.py" line="529"/>
         <source>Stuetzen- und Ankerdimensionen</source>
         <translation>Stützen- und Ankerdimensionen</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="538"/>
+        <location filename="../tools/outputReport.py" line="531"/>
         <source>Kraefte und Winkel</source>
         <translation>Kräfte und Winkel</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="540"/>
+        <location filename="../tools/outputReport.py" line="533"/>
         <source>Anker- und Spannfelder</source>
         <translation>Anker- und Spannfelder</translation>
     </message>
@@ -710,7 +710,7 @@ Lastseil</translation>
         <translation>Künstliche Stütze ab Sattelhöhe von</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="375"/>
+        <location filename="../tools/outputReport.py" line="369"/>
         <source>Grundspannung Tragseil (Anfangssp.)</source>
         <translation>Tragseilspannkraft (Anfangsspunkt)</translation>
     </message>
@@ -730,7 +730,7 @@ Lastseil</translation>
         <translation>Sicherheitsfaktor Tragseil</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="370"/>
+        <location filename="../tools/outputReport.py" line="364"/>
         <source>Parameterset</source>
         <translation>Parameterset</translation>
     </message>
@@ -740,7 +740,7 @@ Lastseil</translation>
         <translation>Sattelkraft</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="462"/>
+        <location filename="../tools/outputReport.py" line="455"/>
         <source>Total</source>
         <translation>Total</translation>
     </message>
@@ -750,27 +750,27 @@ Lastseil</translation>
         <translation>Zweiseil-System</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="352"/>
+        <location filename="../tools/outputReport.py" line="346"/>
         <source>Projektverfasser</source>
         <translation>Projektverfasser</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="352"/>
+        <location filename="../tools/outputReport.py" line="346"/>
         <source>Projektnummer</source>
         <translation>Projektnummer</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="353"/>
+        <location filename="../tools/outputReport.py" line="347"/>
         <source>Gemeinde</source>
         <translation>Gemeinde</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="353"/>
+        <location filename="../tools/outputReport.py" line="347"/>
         <source>Waldort</source>
         <translation>Waldort</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="354"/>
+        <location filename="../tools/outputReport.py" line="348"/>
         <source>Anlagetyp</source>
         <translation>Anlagetyp</translation>
     </message>
@@ -1042,16 +1042,6 @@ Lastseil</translation>
         <translation>Klick auf Zeile markiert Position der Grenzwert-Überschreitung im Diagramm.</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="554"/>
-        <source>Bemerkungen</source>
-        <translation>Bemerkungen</translation>
-    </message>
-    <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="553"/>
-        <source>Bemerkungstext, welcher im technischen Bericht ergaenzt wird</source>
-        <translation>Bemerkungstext, welcher im technischen Bericht ergänzt wird</translation>
-    </message>
-    <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="515"/>
         <source>?</source>
         <translation>?</translation>
@@ -1091,7 +1081,8 @@ Lastseil</translation>
         <source>Bemerkungen
 (erscheint in Berichten)</source>
         <translation>Bemerkungen
-(werden in den Bericht übertragen)</translation>
+(werden in den
+Bericht übertragen)</translation>
     </message>
 </context>
 <context>
@@ -1136,69 +1127,97 @@ nach Zweifel</translation>
     </message>
 </context>
 <context>
+    <name>CsvVertexReader</name>
+    <message>
+        <location filename="../tools/importCsvVertex.py" line="157"/>
+        <source>Die Messdaten sind unvollstaendig, die CSV-Datei kann nicht geladen werden.</source>
+        <translation>Die Messdaten sind unvollständig, die CSV-Datei kann nicht geladen werden.</translation>
+    </message>
+    <message>
+        <location filename="../tools/importCsvVertex.py" line="164"/>
+        <source>Die CSV-Datei enthaelt Messluecken, das erstellte Profil koennte fehlerhaft sein.</source>
+        <translation>Die CSV-Datei enthält Messlücken, das erstellte Profil könnte fehlerhaft sein.</translation>
+    </message>
+    <message>
+        <location filename="../tools/importCsvVertex.py" line="171"/>
+        <source>Die CSV-Datei enthaelt mehr als eine Messreihe. Es wurde nur die laengste Messreihe geladen.</source>
+        <translation>Die CSV-Datei enthält mehr als eine Messreihe. Es wurde nur die längste Messreihe geladen.</translation>
+    </message>
+    <message>
+        <location filename="../tools/importCsvVertex.py" line="177"/>
+        <source>Die CSV-Datei enthaelt keine GPS-Koordinaten, das Profil kann nicht erstellt werden.</source>
+        <translation>Die CSV-Datei enthält keine GPS-Koordinaten, das Profil kann nicht erstellt werden.</translation>
+    </message>
+    <message>
+        <location filename="../tools/importCsvVertex.py" line="192"/>
+        <source>Die CSV-Datei enthaelt ungueltige GPS-Koordinaten.</source>
+        <translation>Die CSV-Datei enthält ungültige GPS-Koordinaten.</translation>
+    </message>
+</context>
+<context>
     <name>DialogOutputOptions</name>
     <message>
-        <location filename="../gui/saveDialog.py" line="134"/>
+        <location filename="../gui/saveDialog.py" line="137"/>
         <source>Output Optionen</source>
         <translation>Output Optionen</translation>
     </message>
     <message>
-        <location filename="../gui/saveDialog.py" line="141"/>
+        <location filename="../gui/saveDialog.py" line="144"/>
         <source>Projektname</source>
         <translation>Projektname</translation>
     </message>
     <message>
-        <location filename="../gui/saveDialog.py" line="153"/>
+        <location filename="../gui/saveDialog.py" line="156"/>
         <source>Speicherpfad</source>
         <translation>Speicherpfad</translation>
     </message>
     <message>
-        <location filename="../gui/saveDialog.py" line="176"/>
+        <location filename="../gui/saveDialog.py" line="179"/>
         <source>Welche Produkte sollen erzeugt werden?</source>
         <translation>Welche Produkte sollen erzeugt werden?</translation>
     </message>
     <message>
-        <location filename="../gui/saveDialog.py" line="178"/>
+        <location filename="../gui/saveDialog.py" line="181"/>
         <source>Technischer Bericht</source>
         <translation>Technischer Bericht</translation>
     </message>
     <message>
-        <location filename="../gui/saveDialog.py" line="177"/>
+        <location filename="../gui/saveDialog.py" line="180"/>
         <source>Kurzbericht</source>
         <translation>Kurzbericht</translation>
     </message>
     <message>
-        <location filename="../gui/saveDialog.py" line="179"/>
+        <location filename="../gui/saveDialog.py" line="182"/>
         <source>Diagramm</source>
         <translation>Diagramm</translation>
     </message>
     <message>
-        <location filename="../gui/saveDialog.py" line="180"/>
+        <location filename="../gui/saveDialog.py" line="183"/>
         <source>Shape-Daten der Stuetzen und Seillinie</source>
         <translation>Shape-Daten der Stützen und Seillinie</translation>
     </message>
     <message>
-        <location filename="../gui/saveDialog.py" line="181"/>
+        <location filename="../gui/saveDialog.py" line="184"/>
         <source>KML-Daten der Stuetzen und Seillinie</source>
         <translation>KML-Daten der Stützen und Seillinie</translation>
     </message>
     <message>
-        <location filename="../gui/saveDialog.py" line="182"/>
+        <location filename="../gui/saveDialog.py" line="185"/>
         <source>Koordinaten-Tabellen der Stuetzen und Seillinie</source>
         <translation>Koordinaten-Tabellen der Stützen und Seillinie</translation>
     </message>
     <message>
-        <location filename="../gui/saveDialog.py" line="195"/>
+        <location filename="../gui/saveDialog.py" line="198"/>
         <source>Speichern</source>
         <translation>Speichern</translation>
     </message>
     <message>
-        <location filename="../gui/saveDialog.py" line="196"/>
+        <location filename="../gui/saveDialog.py" line="199"/>
         <source>Abbrechen</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../gui/saveDialog.py" line="246"/>
+        <location filename="../gui/saveDialog.py" line="249"/>
         <source>Output Ordner auswaehlen</source>
         <translation>Output Ordner auswählen</translation>
     </message>
@@ -1226,67 +1245,105 @@ nach Zweifel</translation>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../gui/saveDialog.py" line="113"/>
+        <location filename="../gui/saveDialog.py" line="116"/>
         <source>Fehler</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../gui/saveDialog.py" line="113"/>
+        <location filename="../gui/saveDialog.py" line="116"/>
         <source>Bitte geben Sie einen gueltigen Dateinamen fuer das Parameterset an</source>
         <translatorcomment>Allenfalls das &quot;Bitte&quot; weglassen</translatorcomment>
         <translation>Bitte geben Sie einen gültigen Dateinamen für das Parameterset an</translation>
     </message>
 </context>
 <context>
+    <name>ExcelProtocolReader</name>
+    <message>
+        <location filename="../tools/importExcelProtocol.py" line="78"/>
+        <source>Veraltetes Template, Daten koennen nicht eingelesen werden</source>
+        <translation>Veraltetes Template, Daten können nicht eingelesen werden</translation>
+    </message>
+    <message>
+        <location filename="../tools/importExcelProtocol.py" line="109"/>
+        <source>Koordinatenwerte sind ungueltig</source>
+        <translation>Koordinatenwerte sind ungültig</translation>
+    </message>
+    <message>
+        <location filename="../tools/importExcelProtocol.py" line="121"/>
+        <source>Punkt-Nummer ist ungueltig</source>
+        <translation>Punkt-Nummer ist ungültig</translation>
+    </message>
+    <message>
+        <location filename="../tools/importExcelProtocol.py" line="133"/>
+        <source>Azimut ist ungueltig</source>
+        <translation>Azimut ist ungültig</translation>
+    </message>
+    <message>
+        <location filename="../tools/importExcelProtocol.py" line="158"/>
+        <source>Fehlende oder fehlerhafte Werte fuer Distanz oder Neigung auf Zeile _rowIdx_</source>
+        <translation>Fehlende oder fehlerhafte Werte für Distanz oder Neigung auf Zeile _rowIdx_</translation>
+    </message>
+    <message>
+        <location filename="../tools/importExcelProtocol.py" line="175"/>
+        <source>Nicht genuegend Punkte in Protokoll vorhanden</source>
+        <translation>Nicht genügend Punkte in Protokoll vorhanden</translation>
+    </message>
+    <message>
+        <location filename="../tools/importExcelProtocol.py" line="190"/>
+        <source>Punkt-Nr. nicht in Protokoll vorhanden</source>
+        <translation>Punkt-Nr. nicht in Protokoll vorhanden</translation>
+    </message>
+</context>
+<context>
     <name>ParameterConfHandler</name>
     <message>
-        <location filename="../tools/configHandler_params.py" line="94"/>
+        <location filename="../tools/configHandler_params.py" line="97"/>
         <source>Fehler in Parameterset &apos;{}&apos; gefunden. Set kann nicht geladen werden.</source>
         <translation>Fehler in Parameterset &apos;{}&apos; gefunden. Set kann nicht geladen werden.</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler_params.py" line="214"/>
+        <location filename="../tools/configHandler_params.py" line="239"/>
         <source>Bitte geben Sie im Feld einen Wert ein</source>
         <translation>Bitte geben Sie im Feld {} einen Wert zwischen {} und {} {} ein.</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler_params.py" line="244"/>
+        <location filename="../tools/configHandler_params.py" line="269"/>
         <source>Ungueltige Eingabe</source>
         <translation>Ungültige Eingabe</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler_params.py" line="222"/>
+        <location filename="../tools/configHandler_params.py" line="247"/>
         <source>Der Wert im Feld ist ungueltig</source>
         <translation>Der Wert {} im Feld {} ist ungültig. Bitte wählen Sie einen Wert zwischen {} und {} {}.</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler_params.py" line="57"/>
+        <location filename="../tools/configHandler_params.py" line="60"/>
         <source>Standardparameter</source>
         <translation>Standardparameter</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler_params.py" line="289"/>
+        <location filename="../tools/configHandler_params.py" line="316"/>
         <source>Fehler in Parameterset gefunden</source>
         <translation>Fehler in Parameterset {} gefunden. Set kann nicht geladen werden.</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler_params.py" line="341"/>
+        <location filename="../tools/configHandler_params.py" line="400"/>
         <source>Bitte geben Sie eine gueltige Zahl ein.</source>
         <translation>Bitte geben Sie eine gültige Zahl ein.</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler_params.py" line="406"/>
+        <location filename="../tools/configHandler_params.py" line="465"/>
         <source>Kein Zweiseil-System moeglich</source>
         <translation>Fehler: Kein Zweilseil-System möglich wenn der Anfangspunkt (bei Winde/Maschine) tiefer als der Endpunkt liegt.</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler_params.py" line="244"/>
+        <location filename="../tools/configHandler_params.py" line="269"/>
         <source>Der Parameter Minimaler Abstand Tragseil Boden darf nicht groesser als der Parameter Minimale Stuetzenhoehe sein.</source>
         <translation>Der Parameter &apos;Minimaler Abstand Tragseil - Boden&apos; (Reiter Seillinie) darf nicht grösser als der Parameter &apos;Minimale Sattelhöhe&apos; (Reiter Optional #1) sein.
 Bitte passen Sie die Eingabe an.</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler_params.py" line="182"/>
+        <location filename="../tools/configHandler_params.py" line="189"/>
         <source>Fehler beim Laden der Parameter, moeglicherweise sind sie in einem alten Format.</source>
         <translation>Fehler beim Laden der Parameter, möglicherweise ist ihr Format veraltet.</translation>
     </message>
@@ -1402,12 +1459,12 @@ Bitte passen Sie die Eingabe an.</translation>
 <context>
     <name>ProfilePlot</name>
     <message>
-        <location filename="../gui/profilePlot.py" line="273"/>
+        <location filename="../gui/profilePlot.py" line="274"/>
         <source>Horizontaldistanz [m]</source>
         <translation>Horizontaldistanz [m]</translation>
     </message>
     <message>
-        <location filename="../gui/profilePlot.py" line="274"/>
+        <location filename="../gui/profilePlot.py" line="275"/>
         <source>Hoehe [m.ue.M]</source>
         <translatorcomment>Abkürzung im Ursprungstext falsch: Nach der Abkürzung &quot;m&quot; für Meter kommt nie ein Punkt</translatorcomment>
         <translation>Höhe [m ü.M]</translation>
@@ -1479,52 +1536,52 @@ Bitte passen Sie die Eingabe an.</translation>
 <context>
     <name>ProjectConfHandler</name>
     <message>
-        <location filename="../tools/configHandler_project.py" line="432"/>
+        <location filename="../tools/configHandler_project.py" line="436"/>
         <source>Bitte definieren Sie gueltige Start- und Endkoordinaten</source>
         <translation>Bitte definieren Sie gültige Start- und Endkoordinaten</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler_project.py" line="434"/>
+        <location filename="../tools/configHandler_project.py" line="438"/>
         <source>Bitte definieren Sie einen Projektnamen</source>
         <translation>Bitte definieren Sie einen Projektnamen</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler_project.py" line="436"/>
+        <location filename="../tools/configHandler_project.py" line="440"/>
         <source>Ungueltige Daten</source>
         <translation>Ungültige Daten</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler_project.py" line="478"/>
+        <location filename="../tools/configHandler_project.py" line="486"/>
         <source>Unerwarteter Fehler bei der Erstellung des Profils.</source>
         <translation>Unerwarteter Fehler bei der Erstellung des Profils.</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler_project.py" line="502"/>
+        <location filename="../tools/configHandler_project.py" line="510"/>
         <source>Unerwarteter Fehler bei Erstellung des Profils</source>
         <translation>Unerwarteter Fehler bei Erstellung des Profils</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler_project.py" line="516"/>
+        <location filename="../tools/configHandler_project.py" line="524"/>
         <source>Unerwarteter Fehler bei Erstellung der Stuetzen</source>
         <translation>Unerwarteter Fehler bei Erstellung der Stützen</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler_project.py" line="135"/>
+        <location filename="../tools/configHandler_project.py" line="137"/>
         <source>Fehler beim Laden des Rasters</source>
         <translation>Fehler beim Laden des Rasters</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler_project.py" line="243"/>
+        <location filename="../tools/configHandler_project.py" line="247"/>
         <source>Fehler beim Kombinieren der Rasterkacheln</source>
         <translation>Fehler beim Kombinieren der Rasterkacheln</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler_project.py" line="261"/>
+        <location filename="../tools/configHandler_project.py" line="265"/>
         <source>Fehler beim Kombinieren der Rasterkacheln.</source>
         <translation>Fehler beim Kombinieren der Rasterkacheln.</translation>
     </message>
     <message>
-        <location filename="../tools/configHandler_project.py" line="250"/>
+        <location filename="../tools/configHandler_project.py" line="254"/>
         <source>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</source>
         <translation>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</translation>
     </message>
@@ -1556,22 +1613,22 @@ Bitte passen Sie die Eingabe an.</translation>
         <translation>SEILAPLAN - Seilkran-Layoutplaner</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2706"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2719"/>
         <source>Projekt</source>
         <translation>Projekt</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2712"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2725"/>
         <source>Projektname</source>
         <translation>Projektname</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2747"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2760"/>
         <source>Einstellungen in Textdatei abspeichern</source>
         <translation>Einstellungen in Json-Datei abspeichern</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2782"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2795"/>
         <source>Projekteinstellungen aus Textdatei laden</source>
         <translation>Projekteinstellungen aus Json-Datei laden</translation>
     </message>
@@ -1586,393 +1643,394 @@ Bitte passen Sie die Eingabe an.</translation>
         <translation>Parameterset auswählen</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="105"/>
+        <location filename="../gui/seilaplanDialog.ui" line="118"/>
         <source>Eigenschaften der Seillinie in neuem Parameterset abspeichern</source>
         <translation>Eigenschaften der Seillinie in neuem Parameterset abspeichern</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="134"/>
+        <location filename="../gui/seilaplanDialog.ui" line="147"/>
         <source>Parameterset loeschen</source>
         <translation>Parameterset löschen</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="163"/>
+        <location filename="../gui/seilaplanDialog.ui" line="176"/>
         <source>Seillinie</source>
         <translation>Seillinie</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="384"/>
+        <location filename="../gui/seilaplanDialog.ui" line="397"/>
         <source>Minimaler Abstand Tragseil - Boden</source>
         <translation>Minimaler Abstand Tragseil - Boden</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2145"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2158"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="215"/>
+        <location filename="../gui/seilaplanDialog.ui" line="228"/>
         <source>einzuhalten bis ... vor dem Endpunkt</source>
         <translation>einzuhalten bis ... vor dem Endpunkt</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="295"/>
+        <location filename="../gui/seilaplanDialog.ui" line="308"/>
         <source>Hoehe Seilkranmast</source>
         <translation>Höhe Mast Mobilseilkran</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="571"/>
+        <location filename="../gui/seilaplanDialog.ui" line="584"/>
         <source>Seillinie befahrbar bis ... vor dem Endpunkt</source>
         <translatorcomment>Korrekter: Tragseil befahrbar ...</translatorcomment>
         <translation>Tragseil befahrbar bis ... vor dem Endpunkt</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="263"/>
+        <location filename="../gui/seilaplanDialog.ui" line="276"/>
         <source>Seilsystem</source>
         <translation>Seilsystem</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="610"/>
+        <location filename="../gui/seilaplanDialog.ui" line="623"/>
         <source>Zweiseil-System</source>
         <translation>Zweiseil-System</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="615"/>
+        <location filename="../gui/seilaplanDialog.ui" line="628"/>
         <source>Mehrseil-System</source>
         <translation>Mehrseil-System</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="371"/>
+        <location filename="../gui/seilaplanDialog.ui" line="384"/>
         <source>einzuhalten ab ... vom Anfangspunkt</source>
         <translation>einzuhalten ab ... vom Anfangspunkt</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="441"/>
+        <location filename="../gui/seilaplanDialog.ui" line="454"/>
         <source>Seillinie befahrbar ab ... vom Anfangspunkt</source>
         <translatorcomment>Tragseil befahrbar...</translatorcomment>
         <translation>Tragseil befahrbar ab ... vom Anfangspunkt</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="308"/>
+        <location filename="../gui/seilaplanDialog.ui" line="321"/>
         <source>Bodenabstand</source>
         <translation>Bodenabstand</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2909"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2922"/>
         <source>?</source>
         <translation>?</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="632"/>
+        <location filename="../gui/seilaplanDialog.ui" line="645"/>
         <source>Maschinendaten</source>
         <translation>Maschinendaten</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="919"/>
+        <location filename="../gui/seilaplanDialog.ui" line="932"/>
         <source>kN/m</source>
         <translation>kN/m</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1002"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1015"/>
         <source>Gesamtlast</source>
         <translation>Gesamtlast</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="983"/>
+        <location filename="../gui/seilaplanDialog.ui" line="996"/>
         <source>kN</source>
         <translation>kN</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="812"/>
+        <location filename="../gui/seilaplanDialog.ui" line="825"/>
         <source>Gewicht Rueckholseil</source>
         <translation>Metergewicht Rückholseil</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="713"/>
+        <location filename="../gui/seilaplanDialog.ui" line="726"/>
         <source>Gewicht Zugseil</source>
         <translation>Metergewicht Zugseil</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="958"/>
+        <location filename="../gui/seilaplanDialog.ui" line="971"/>
         <source>Durchmesser Tragseil</source>
         <translation>Durchmesser Tragseil</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1072"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1085"/>
         <source>Gewicht Tragseil</source>
         <translation>Metergewicht Tragseil</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1059"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1072"/>
         <source>mm</source>
         <translation>mm</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="926"/>
+        <location filename="../gui/seilaplanDialog.ui" line="939"/>
         <source>Mindestbruchkraft Tragseil</source>
         <translation>Mindestbruchkraft Tragseil</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1261"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1274"/>
         <source>Optional #1</source>
         <translation>Optional #1</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1650"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1663"/>
         <source>Kuenstliche Stuetze ab Stuetzenhoehe von</source>
         <translation>Künstliche Stütze ab Sattelhöhe von</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1663"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1676"/>
         <source>Maximale Stuetzenhoehe</source>
         <translation>Maximale Sattelhöhe</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1281"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1294"/>
         <source>Minimale Stuetzenhoehe</source>
         <translation>Minimale Sattelhöhe</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1496"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1509"/>
         <source>Horiz. Aufloesung moegl. Stuetzenstandorte</source>
         <translation>Minimaler Abstand mögl. Stützenstandorte</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1386"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1399"/>
         <source>Abstufungsinterval</source>
         <translation>Abstufungsintervall</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1351"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1364"/>
         <source>Optimierungsparameter</source>
         <translation>Optimierungsparameter</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1515"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1528"/>
         <source>Minimaler Abstand zwischen Stuetzen</source>
         <translation>Minimaler Abstand zwischen Stützen</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="805"/>
+        <location filename="../gui/seilaplanDialog.ui" line="818"/>
         <source>Grundspannung</source>
         <translation>Tragseilspannkraft (Grundspannung)</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1718"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1731"/>
         <source>Optional #2</source>
         <translation>Optional #2</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1764"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1777"/>
         <source>Diverses</source>
         <translation>Diverses</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1818"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1831"/>
         <source>kN/mm2</source>
         <translation>kN/mm2</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1751"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1764"/>
         <source>Elastizitaetsmodul Tragseil</source>
         <translation>Elastizitätsmodul Tragseil</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1899"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1912"/>
         <source>Fuellfaktor</source>
         <translation>Füllfaktor</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1860"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1873"/>
         <source>Sicherheitsfaktor</source>
         <translation>Sicherheitsfaktor</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2560"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2573"/>
         <source>Terraindaten</source>
         <translation>Terraindaten</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2571"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2584"/>
         <source>Rasterlayer</source>
         <translation>Rasterlayer</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2578"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2591"/>
         <source>Gelaendeprofil</source>
         <translation>Geländeprofil</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2597"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2610"/>
         <source>Liste der in QGIS geladenen Raster aktualisieren</source>
         <translation>Liste der in QGIS geladenen Raster aktualisieren</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2631"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2644"/>
         <source>Pfad zu csv-Datei</source>
         <translation>Pfad zu csv-Datei</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2650"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2663"/>
         <source>Oeffne Komma-getrennte Textdatei (.csv Datei)</source>
         <translation>Öffne Komma-getrennte Textdatei (.csv Datei)</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2826"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2839"/>
         <source>Info</source>
         <translation>Info</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2855"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2868"/>
         <source>Abbrechen</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2865"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2878"/>
         <source>Stuetzenoptimierung ueberspringen und direkt zur manuellen Bearbeitung der Seillinie uebergehen</source>
         <translation>Stützenoptimierung überspringen und direkt zur manuellen Bearbeitung der Seillinie übergehen</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2868"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2881"/>
         <source>Seillinie direkt bearbeiten</source>
         <translation>Seillinie manuell bearbeiten</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2878"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2891"/>
         <source>Berechnung der optimalen Stuetzenstandorte ausfuehren</source>
         <translation>Berechnung der optimalen Stützenstandorte ausführen</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2881"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2894"/>
         <source>Stuetzen optimieren</source>
         <translation>Seillinie automatisch optimieren</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1952"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1965"/>
         <source>Verlauf der Seillinie</source>
         <translatorcomment>Habe nicht gefunden, wo das vorkommt. Was ist mit Verlauf genau gemeint?</translatorcomment>
         <translation>Verlauf der Seillinie</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1972"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1985"/>
         <source>oder Koordinaten der Seillinie manuell angeben:</source>
         <translatorcomment>Ich habe &quot;angeben&quot; durch &quot;eingeben&quot; ersetzt</translatorcomment>
         <translation>oder Koordinaten der Seillinie manuell eingeben:</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2002"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2015"/>
         <source>zeichnen</source>
         <translation>zeichnen</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2018"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2031"/>
         <source>OpenStreetMap Layer laden</source>
         <translation>OpenStreetMap Layer laden</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2035"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2048"/>
         <source>Seillinie in Karte einzeichnen</source>
         <translation>Seillinie in Karte einzeichnen</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2061"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2074"/>
         <source>Hoehenlinien darstellen</source>
         <translation>Höhenlinien darstellen</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2082"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2095"/>
         <source>X-Koordinate</source>
         <translation>X-Koordinate</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2433"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2446"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/plugins/SeilaplanPlugin/gui/icons/icon_yellow.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/plugins/SeilaplanPlugin/gui/icons/icon_yellow.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2233"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2246"/>
         <source>Stuetze</source>
         <translation>Stütze</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2228"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2241"/>
         <source>Verankerung</source>
         <translation>Verankerung</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2200"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2213"/>
         <source>Seilkran</source>
         <translation>Seilkran</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2208"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2221"/>
         <source>Punktart</source>
         <translation>Bauelement</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2288"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2301"/>
         <source>Endpunkt</source>
         <translation>Endpunkt</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2301"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2314"/>
         <source>Horizontaldistanz</source>
         <translation>Horizontaldistanz</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2345"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2358"/>
         <source>Gelaendelinie in Diagramm darstellen und fixe Stuetzen definieren</source>
         <translation>Geländelinie in Diagramm darstellen und fixe Stützen definieren</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2348"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2361"/>
         <source>Gelaendelinie</source>
         <translation>Geländelinie</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2423"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2436"/>
         <source>Y-Koordinate</source>
         <translation>Y-Koordinate</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="831"/>
+        <location filename="../gui/seilaplanDialog.ui" line="844"/>
         <source>Anlagetyp</source>
         <translation>Anlagetyp</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1156"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1169"/>
         <source>Waldort</source>
         <translation>Waldort</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1192"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1205"/>
         <source>Projektverfasser</source>
         <translation>Projektverfasser</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1202"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1215"/>
         <source>Bemerkungen
 (erscheint in Berichten)</source>
         <translation>Bemerkungen
-(werden in den Bericht übertragen)</translation>
+(werden in den
+Bericht übertragen)</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1222"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1235"/>
         <source>Projektnummer</source>
         <translation>Projektnummer</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1235"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1248"/>
         <source>Gemeinde</source>
         <translation>Gemeinde</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1142"/>
+        <location filename="../gui/seilaplanDialog.ui" line="1155"/>
         <source>Kopfdaten</source>
         <translation>Kopfdaten</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2247"/>
+        <location filename="../gui/seilaplanDialog.ui" line="2260"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Anfangspunkt&lt;br&gt;&lt;span style=&quot; font-size: small;&quot;&gt;(bei Maschine/Winde)&lt;/span&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Anfangspunkt&lt;br&gt;&lt;span style=&quot; font-size: small;&quot;&gt;(bei Maschine/Winde)&lt;/span&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -2023,82 +2081,72 @@ Bitte passen Sie die Eingabe an.</translation>
 <context>
     <name>SeilaplanPluginDialog</name>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="474"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="477"/>
         <source>Parameterset loeschen</source>
         <translation>Parameterset löschen</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="454"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="457"/>
         <source>Standardparameterset kann nicht geloescht werden.</source>
         <translation>Standardparameterset kann nicht gelöscht werden.</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="462"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="465"/>
         <source>Moechten Sie das Parameterset wirklich loeschen?</source>
         <translation>Möchten Sie das Parameterset wirklich löschen?</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="465"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="468"/>
         <source>Nein</source>
         <translation>Nein</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="467"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="470"/>
         <source>Ja</source>
         <translation>Ja</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="474"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="477"/>
         <source>Ein Fehler ist aufgetreten. Parameterset kann nicht geloescht werden.</source>
         <translation>Ein Fehler ist aufgetreten. Parameterset kann nicht gelöscht werden.</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="498"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="501"/>
         <source>OSM_Karte</source>
         <translation>OSM_Karte</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="605"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="608"/>
         <source>Raster &apos;{}&apos; nicht vorhanden</source>
         <translation>Raster &apos;{}&apos; nicht vorhanden</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="606"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="609"/>
         <source>Fehler beim Laden des Rasters</source>
         <translation>Fehler beim Laden des Rasters</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="619"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="622"/>
         <source>Fehler Koordinatenbezugssystem (KBS)</source>
         <translation>Fehler Koordinatenbezugssystem (KBS)</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="634"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="637"/>
         <source>KBS-Fehler - Raster kann nicht verarbeitet werden</source>
         <translation>Raster mit geografischem KBS (&apos;{}&apos; ({}) kann nicht benutzt werden.
 Seilaplan kann nur Höhenraster in einem projizierten KBS verarbeiten.</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="646"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="649"/>
         <source>KBS-Fehler - Felddaten und QGIS in geografischem KBS</source>
         <translation>Felddaten liegen in einem geografischen KBS vor!
 Seilaplan kann nur mit Daten in einem projizierten KBS arbeiten. Die Daten werden automatisch ins Schweizer KBS &apos;LV95&apos; (EPSG:2056) transformiert.</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="653"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="656"/>
         <source>KBS-Fehler - Bezugssystem des Rasters unbekannt</source>
         <translation>Bezugssystem des Rasters unbekannt.
 Das Raster wird im Schweizer KBS &apos;LV95&apos; (EPSG:2056) dargestellt. Soll ein anderes KBS benutzt werden, richten Sie ihr QGIS Projekt bitte vor dem Laden der Höhendaten entsprechend ein.</translation>
-    </message>
-    <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="669"/>
-        <source>Feldaufnahmen laden</source>
-        <translation>Feldaufnahmen laden</translation>
-    </message>
-    <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="670"/>
-        <source>csv Dateien (*.csv *.CSV)</source>
-        <translation>csv Dateien (*.csv *.CSV)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="852"/>
@@ -2144,8 +2192,9 @@ http://pimoll.github.io/SEILAPLAN/</translation>
         <source>Hoeheninformation - Erklaerung Felddaten</source>
         <translation>Profil-Messpunkte aus Feldaufnahmen laden.
 Unterstützte Dateitypen:
-1) CSV-Exportdatei des Haglöf Vertex Messgerätes (Schweden).
-2) Generische CSV-Datei (Komma-separiert) mit den Koordinaten-Spalten &apos;x&apos;, &apos;y&apos; und &apos;z&apos;. Die Datei darf keine Kommentare enthalten und die Punkte sind sortiert aufzulisten.</translation>
+1) Generische CSV-Datei (Komma-separiert) mit den Koordinaten-Spalten &apos;x&apos;, &apos;y&apos; und &apos;z&apos;. Die Datei darf keine Kommentare enthalten und die Punkte sind sortiert aufzulisten.
+2) CSV-Exportdatei des Haglöf Vertex Messgerätes (Schweden).
+3) Feldaufnahmeprotokoll gemäss Vorlage.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="917"/>
@@ -2163,29 +2212,29 @@ Unterstützte Dateitypen:
         <translation>Endpunkt</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="961"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="960"/>
         <source>Erklaerung Paramersets wiederherstellen</source>
         <translation>Aufgrund eines Software-Fehlers wurden benutzerdefinierte Parametersets gelöscht.
 
 Die Parametersets können durch Laden von alten Seilaplan-Projektdateien wiederhergestellt werden.</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="962"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="961"/>
         <source>Parametersets wiederherstellen</source>
         <translation>Parametersets wiederherstellen</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="960"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="965"/>
         <source>Erklaerung Gesamtlast</source>
         <translation>Die Gesamtlast berechnet sich aus der Anhängelast, dem Laufwagengewicht und dem Anschlagmittel.</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="961"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="966"/>
         <source>Gesamtlast</source>
         <translation>Gesamtlast</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="965"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="970"/>
         <source>Erklaerung Grundspannung</source>
         <translation>Seillinie manuell bearbeiten:
 Es wird mit der eingegebenen Tragseilspannkraft gerechnet.
@@ -2194,42 +2243,42 @@ Seillinie automatisch optimieren:
 Die optimale Tragseilspannkraft wird berechnet. Die Optimierung wird bei 75 Prozent des eingegebenen Werts gestartet.</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="966"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="971"/>
         <source>Grundspannung</source>
         <translation>Tragseilspannkraft (Grundspannung)</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="970"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="975"/>
         <source>Elastizitaetsmodul Tragseil Erklaerung</source>
         <translation>Materialkennwert des Tragseils, welcher den Zusammenhang zwischen Spannung und Dehnung des Seils beschreibt. Der Kennwert variiert kaum, weshalb der Default-Wert für die meisten üblichen Seile übernommen werden kann.</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="971"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="976"/>
         <source>Elastizitaetsmodul Tragseil</source>
         <translation>Elastizitätsmodul Tragseil</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="975"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="980"/>
         <source>Fuellfaktor Erklaerung</source>
         <translation>Der Füllfaktor ist das Verhältnis der metallischen Querschnittsfläche des Seils zum Flächeninhalt seines Umkreises.</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="976"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="981"/>
         <source>Fuellfaktor</source>
         <translation>Füllfaktor Seil</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="981"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="986"/>
         <source>Europaweit wird ein Sicherheitsfaktor von 3.0 fuer das Tragseil verwendet.</source>
         <translation>Europaweit wird ein Sicherheitsfaktor von 3.0 für das Tragseil verwendet.</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="983"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="988"/>
         <source>Sicherheitsfaktor Tragseil</source>
         <translation>Sicherheitsfaktor Tragseil</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="987"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="992"/>
         <source>Erklaerungen Berechnungsbuttons</source>
         <translation>Seillinie manuell bearbeiten:
 Es wird keine Optimierung durchgeführt und kein Seillinienlayout vorgeschlagen. Das Layout kann direkt manuell bearbeitet werden.
@@ -2239,7 +2288,7 @@ Es wird diejenige Lösung gesucht, welche in erster Priorität eine minimale Anz
 </translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanPluginDialog.py" line="988"/>
+        <location filename="../gui/seilaplanPluginDialog.py" line="993"/>
         <source>Naechste Schritte</source>
         <translation>Nächste Schritte</translation>
     </message>
@@ -2292,43 +2341,109 @@ Pfad zu Dokumentation:
         <source>Erklaerungen zu den Zwischenstuetzen</source>
         <translation>Erklärungen zu den Zwischenstützen</translation>
     </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="849"/>
+        <source>Fehler</source>
+        <translation>Fehler</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="849"/>
+        <source>Unerwarteter Fehler bei Erstellung des Profils</source>
+        <translation>Unerwarteter Fehler bei Erstellung des Profils</translation>
+    </message>
 </context>
 <context>
     <name>SurveyData</name>
     <message>
-        <location filename="../tools/survey.py" line="131"/>
-        <source>Daten in CSV-Datei konnten nicht geladen werden.</source>
-        <translation>Daten aus CSV-Datei konnten nicht geladen werden.</translation>
+        <location filename="../tools/survey.py" line="78"/>
+        <source>Datei &apos;_path_&apos; ist nicht vorhanden.</source>
+        <translation>Datei &apos;_path_&apos; ist nicht vorhanden.</translation>
     </message>
     <message>
-        <location filename="../tools/survey.py" line="74"/>
-        <source>CSV-Datei &apos;_path_&apos; ist nicht vorhanden.</source>
-        <translation>CSV-Datei &apos;_path_&apos; ist nicht vorhanden.</translation>
+        <location filename="../tools/survey.py" line="120"/>
+        <source>Ungueltiges Format oder fehlende Daten.</source>
+        <translation>Ungültiges Format oder fehlende Daten.</translation>
     </message>
     <message>
-        <location filename="../tools/survey.py" line="222"/>
-        <source>Die Messdaten sind unvollstaendig, die CSV-Datei kann nicht geladen werden.</source>
-        <translation>Die Messdaten sind unvollständig, die CSV-Datei kann nicht geladen werden.</translation>
+        <location filename="../tools/survey.py" line="127"/>
+        <source>Datei konnte nicht eingelesen werden. Unerwarteter Fehler aufgetreten.</source>
+        <translation>Datei konnte nicht eingelesen werden. Unerwarteter Fehler aufgetreten.</translation>
+    </message>
+</context>
+<context>
+    <name>SurveyImportDialog</name>
+    <message>
+        <location filename="../gui/surveyImportDialog.py" line="88"/>
+        <source>csv Dateien (*.csv)</source>
+        <translation>csv Dateien (*.csv)</translation>
     </message>
     <message>
-        <location filename="../tools/survey.py" line="229"/>
-        <source>Die CSV-Datei enthaelt Messluecken, das erstellte Profil koennte fehlerhaft sein.</source>
-        <translation>Die CSV-Datei enthält Messlücken, das erstellte Profil könnte fehlerhaft sein.</translation>
+        <location filename="../gui/surveyImportDialog.py" line="90"/>
+        <source>Excel Dateien (*.xlsx)</source>
+        <translation>Excel Dateien (*.xlsx)</translation>
     </message>
     <message>
-        <location filename="../tools/survey.py" line="236"/>
-        <source>Die CSV-Datei enthaelt mehr als eine Messreihe. Es wurde nur die laengste Messreihe geladen.</source>
-        <translation>Die CSV-Datei enthält mehr als eine Messreihe. Es wurde nur die längste Messreihe geladen.</translation>
+        <location filename="../gui/surveyImportDialog.py" line="95"/>
+        <source>Gelaendeprofil laden</source>
+        <translation>Geländeprofil laden</translation>
     </message>
     <message>
-        <location filename="../tools/survey.py" line="242"/>
-        <source>Die CSV-Datei enthaelt keine GPS-Koordinaten, das Profil kann nicht erstellt werden.</source>
-        <translation>Die CSV-Datei enthält keine GPS-Koordinaten, das Profil kann nicht erstellt werden.</translation>
+        <location filename="../gui/surveyImportDialog.py" line="117"/>
+        <source>Vorlage speichern</source>
+        <translation>Vorlage speichern</translation>
     </message>
     <message>
-        <location filename="../tools/survey.py" line="257"/>
-        <source>Die CSV-Datei enthaelt ungueltige GPS-Koordinaten.</source>
-        <translation>Die CSV-Datei enthält ungültige GPS-Koordinaten.</translation>
+        <location filename="../gui/surveyImportDialog.py" line="127"/>
+        <source>Vorlage erfolgreich heruntergeladen.</source>
+        <translation>Vorlage erfolgreich heruntergeladen.</translation>
+    </message>
+    <message>
+        <location filename="../gui/surveyImportDialog.py" line="129"/>
+        <source>Download nicht erfolgreich. Link fuer manuellen Download: _templateUrl_</source>
+        <translation>Download nicht erfolgreich. Link für manuellen Download: _templateUrl_</translation>
+    </message>
+    <message>
+        <location filename="../gui/surveyImportDialog.py" line="131"/>
+        <source>Download Vorlage</source>
+        <translation>Download Vorlage</translation>
+    </message>
+</context>
+<context>
+    <name>SurveyImportDialogUI</name>
+    <message>
+        <location filename="../gui/surveyImportDialog.ui" line="14"/>
+        <source>Import Gelaendeprofil</source>
+        <translation>Import Geländeprofil</translation>
+    </message>
+    <message>
+        <location filename="../gui/surveyImportDialog.ui" line="22"/>
+        <source>Profiltyp auswaehlen</source>
+        <translation>Profiltyp auswählen</translation>
+    </message>
+    <message>
+        <location filename="../gui/surveyImportDialog.ui" line="36"/>
+        <source>Feldaufnahme-Protokoll (*.xlsx)</source>
+        <translation>Feldaufnahme-Protokoll (*.xlsx)</translation>
+    </message>
+    <message>
+        <location filename="../gui/surveyImportDialog.ui" line="57"/>
+        <source>Vorlage herunterladen</source>
+        <translation>Vorlage herunterladen</translation>
+    </message>
+    <message>
+        <location filename="../gui/surveyImportDialog.ui" line="50"/>
+        <source>CSV-Datei mit X, Y, Z Werten (*.csv)</source>
+        <translation>CSV-Datei mit X, Y, Z Werten (*.csv)</translation>
+    </message>
+    <message>
+        <location filename="../gui/surveyImportDialog.ui" line="64"/>
+        <source>Exportdatei des Hagloef Vertex Messgeraetes (*.csv)</source>
+        <translation>Exportdatei des Hagloef Vertex Messgerätes (*.csv)</translation>
+    </message>
+    <message>
+        <location filename="../gui/surveyImportDialog.ui" line="78"/>
+        <source>Datei auswaehlen</source>
+        <translation>Datei auswählen</translation>
     </message>
 </context>
 <context>

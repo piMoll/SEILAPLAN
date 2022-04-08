@@ -68,3 +68,42 @@ class AbstractHeightSource(object):
         # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
         return QCoreApplication.translate(type(self).__name__, message)
 
+
+class AbstractSurveyReader:
+    
+    def __init__(self, path):
+        self.valid = False
+        self.errorMsg = ''
+        self.path = path
+        self.spatialRef = None
+        self.surveyPoints = {}
+        self.nr = None
+        self.prHeaderData = {}
+    
+    def checkStructure(self, *args):
+        raise NotImplementedError
+
+    def readOutData(self, *args):
+        raise NotImplementedError
+
+    @staticmethod
+    def formatHeader(s):
+        return s.strip().upper()
+
+    # noinspection PyMethodMayBeStatic
+    def tr(self, message, **kwargs):
+        """Get the translation for a string using Qt translation API.
+        We implement this ourselves since we do not inherit QObject.
+
+        :param message: String for translation.
+        :type message: str, QString
+
+        :returns: Translated version of message.
+        :rtype: QString
+
+        Parameters
+        ----------
+        **kwargs
+        """
+        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
+        return QCoreApplication.translate(type(self).__name__, message)

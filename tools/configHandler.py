@@ -39,6 +39,22 @@ class ConfigHandler(object):
     
     DEFAULT_SAVE_PATH = os.path.join(os.path.expanduser('~'), 'Seilaplan')
     SETTING_PREFIX = 'PluginSeilaplan/output/'
+    TEMPLATES_URL = 'https://raw.githubusercontent.com/piMoll/SEILAPLAN/master/templates/'
+    TEMPLATE_FILENAME = {
+        # TODO: Insert translated file names
+        'excelProtocol': {
+            'de': 'Vorlage_Feldaufnahmeprotokoll.xlsx',
+            'en': 'Template_FieldSurveyProtocol.xlsx',
+            'fr': 'Vorlage_Feldaufnahmeprotokoll.xlsx',
+            'it': 'Vorlage_Feldaufnahmeprotokoll.xlsx',
+        },
+        'csvXyz': {
+            'de': 'Vorlage_Gelaendeprofil_XYZ.csv',
+            'en': 'Template_TerrainProfile_XYZ.csv',
+            'fr': 'Vorlage_Gelaendeprofil_XYZ.csv',
+            'it': 'Vorlage_Gelaendeprofil_XYZ.csv',
+        }
+    }
     
     def __init__(self):
         self._config = {}
@@ -235,9 +251,10 @@ class ConfigHandler(object):
             'kml': s.value(f'{self.SETTING_PREFIX}kml', 0, int),
         }
         for path in [
-            s.value(f'{self.SETTING_PREFIX}savePath1', None),
-            s.value(f'{self.SETTING_PREFIX}savePath2', None),
-            s.value(f'{self.SETTING_PREFIX}savePath3', None)]:
+            s.value(f'{self.SETTING_PREFIX}savePath1'),
+            s.value(f'{self.SETTING_PREFIX}savePath2'),
+            s.value(f'{self.SETTING_PREFIX}savePath3')
+        ]:
     
             if path and os.path.exists(path):
                 self.commonPaths.append(path)
@@ -297,6 +314,15 @@ class ConfigHandler(object):
             return self.outputOptions[property_name]
         except KeyError:
             return None
+    
+    def getTemplateUrl(self, template, locale):
+        if locale and len(locale.name()) >= 2:
+            locale = locale.name()[:2].lower()
+        if locale not in self.TEMPLATE_FILENAME[template]:
+            locale = 'en'
+        filename = self.TEMPLATE_FILENAME[template][locale]
+        url = self.TEMPLATES_URL + filename
+        return url, filename
     
     def setOutputOptions(self, outputOptions):
         self.outputOptions = outputOptions
