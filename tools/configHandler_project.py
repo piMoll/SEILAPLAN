@@ -69,6 +69,7 @@ class ProjectConfHandler(AbstractConfHandler):
         self.projectName = None
         self.heightSource = None
         self.heightSourceType = None
+        self.surveyType = None
         self.virtRasterSource = []
         self.points = {
             'A': [None, None],
@@ -101,8 +102,12 @@ class ProjectConfHandler(AbstractConfHandler):
         self.setPrHeader(settings['header'])
         
         heightSource = settings['heightsource']
+        surveyType = None
+        if 'surveyType' in heightSource:
+            surveyType = heightSource['surveyType']
         self.setHeightSource(None, sourceType=heightSource['type'],
-                             sourcePath=heightSource['source'])
+                             sourcePath=heightSource['source'],
+                             surveySourceType=surveyType)
         
         if self.heightSource and self.heightSourceType == 'survey':
             self.heightSource: SurveyData
@@ -223,6 +228,7 @@ class ProjectConfHandler(AbstractConfHandler):
          """
         self.heightSource = None
         self.heightSourceType = None
+        self.surveyType = None
         self.virtRasterSource = None
         heights = None
         if sourceType == 'dhm':
@@ -245,7 +251,7 @@ class ProjectConfHandler(AbstractConfHandler):
                         self.onError(self.tr('Fehler beim Kombinieren der Rasterkacheln'))
                 elif isinstance(rasterList[0], str):
                     # List of paths is provided because a project file is
-                    #  loaded. We create layers first, then create virtual layerFix projec
+                    #  loaded. We create layers first, then create virtual layer
                     layerlist = []
                     for i, path in enumerate(rasterList):
                         if not os.path.exists(path):
@@ -269,6 +275,7 @@ class ProjectConfHandler(AbstractConfHandler):
                     'A': [None, None],
                     'E': [None, None]
                 }
+                self.surveyType = heights.sourceType
                 if heights.prHeaderData:
                     self.setPrHeader(heights.prHeaderData['Header'])
                     self.params.setParameter('Anlagetyp', heights.prHeaderData['Anlagetyp'])
@@ -414,8 +421,9 @@ class ProjectConfHandler(AbstractConfHandler):
             'header': self.prHeader,
             'heightsource': {
                 'type': self.heightSourceType,
+                'surveyType': self.surveyType,
                 'source': self.getHeightSourceAsStr(source=True, formatting='json'),
-                'crs': self.heightSource.spatialRef.authid()
+                'crs': self.heightSource.spatialRef.authid(),
             },
             'profile': {
                 'start': {

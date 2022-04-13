@@ -46,6 +46,7 @@ class SurveyData(AbstractHeightSource):
     def __init__(self, path, sourceType=None):
         AbstractHeightSource.__init__(self)
         self.path = path
+        self.sourceType = None
         self.extent = None
         self.cellsize = 1
         self.spatialRef = None
@@ -113,6 +114,7 @@ class SurveyData(AbstractHeightSource):
             self.spatialRef = reader.spatialRef
             self.surveyPoints = reader.surveyPoints
             self.nr = reader.nr
+            self.sourceType = sourceType
             # Only present in excelProtocol
             self.prHeaderData = reader.prHeaderData
             if not reader.valid and not self.errorMsg:
