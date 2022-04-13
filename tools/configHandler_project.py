@@ -464,15 +464,14 @@ class ProjectConfHandler(AbstractConfHandler):
             self.E_type = pType
 
     @staticmethod
-    def formatCoordinate(number):
-        """Format big numbers with thousand separator"""
+    def formatCoordinate(number, digits=1):
+        """Format coordinates to one digit except otherwise"""
         if number is None:
             return ''
-        # Format big numbers with thousand separator
-        elif number >= 1000:
-            return f"{number:,.0f}".replace(',', "'")
-        else:
-            return f"{number:,.6f}"
+        try:
+            return str(round(number, digits))
+        except ValueError:
+            return ''
     
     def preparePreviewProfile(self):
         if not self.profileIsValid():

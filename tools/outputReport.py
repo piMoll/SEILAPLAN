@@ -53,11 +53,6 @@ def getTimestamp(tStart):
     return [tdFormated, tsFormated1, tsFormated2]
 
 
-def formatNum(numbr):
-    """Format big numbers with thousand separator"""
-    return f"{numbr:,.1f}".replace(',', "'")
-
-
 def removeTxtElements(text, key):
     """Prepare Text for report by removing 'nan' values"""
     if type(text) is str:
@@ -118,15 +113,14 @@ def generateReportText(confHandler, result, projname):
     for pole in polesWithAnchors:
         if not pole['active']:
             continue
-        angle = round(pole['angle'], 0) if pole['angle'] != 0 else '-'
         str_posi.append([
-            f"{pole['name']}", f"{pole['h']:.1f}", f"{angle}",
-            f"{formatNum(pole['coordx'])}",
-            f"{formatNum(pole['coordy'])}",
-            f"{formatNum(pole['z'])}"])
+            f"{pole['name']}", f"{pole['h']:.1f}", f"{round(pole['angle'], 0)}",
+            f"{confHandler.project.formatCoordinate(pole['coordx'])}",
+            f"{confHandler.project.formatCoordinate(pole['coordy'])}",
+            f"{round(pole['z'], 1)}"])
 
     # Section field survey
-    str_abst = [["{}: {:.2f} {} / {:.2f} °".format(tr('Azimut'), az_gon, tr('gon'), az_grad)],
+    str_abst = [["{}: {:.1f} {} / {:.1f} °".format(tr('Azimut'), az_gon, tr('gon'), az_grad)],
                 ["", tr('Horizontaldistanz'), tr('Schraegdistanz')]]
     for i, pole in enumerate(polesWithAnchors[:-1]):
         nextPole = polesWithAnchors[i+1]
@@ -134,7 +128,7 @@ def generateReportText(confHandler, result, projname):
         dist_z = nextPole['z'] - pole['z']
         dist_s = (dist_h**2 + dist_z**2)**0.5
         str_abst.append(["{} {} {} {}".format(tr('von'), pole['name'], tr('zu'), nextPole['name']),
-                         f"{dist_h:.1f} m", f"{dist_s:.2f} m"])
+                         f"{dist_h:.1f} m", f"{dist_s:.1f} m"])
 
     # Section cable pull strength
     str_opti = [[tr('gewaehlte Grundspannung bei der Anfangsstuetze'),
@@ -372,7 +366,7 @@ def generateShortReport(confHandler, result, projname, outputLoc):
         param['Q'],
         param['Bodenabst_min'] + param['Bodenabst_A'],
         ['', ''] + param['Bodenabst_E'],
-        [tr('Grundspannung Tragseil (Anfangssp.)'), f"{confHandler.params.optSTA:.0f}kN"]
+        [tr('Grundspannung Tragseil (Anfangssp.)'), f"{confHandler.params.optSTA:.0f} kN"]
             + [tr('Grundspannung (Endpunkt)'), f"{kraft['Spannkraft'][1]:.0f} kN"],
         param['SF_T'] + param['E']]
     
@@ -385,9 +379,8 @@ def generateShortReport(confHandler, result, projname, outputLoc):
         if pole['angriff'] > 45:
             pole['BHD'] = '*'
             add_footnote = True
-        angle = np.nan if pole['angle'] == 0 else pole['angle']
         s_dimen.append([pole['nr'], pole['name'], f"{pole['h']:.1f} m",
-                        f"{angle:.0f} °", f"{pole['BHD']} cm",
+                        f"{pole['angle']:.0f} °", f"{pole['BHD']} cm",
                         f"{pole['bundstelle']} cm"])
     s_dimen = removeTxtElements(s_dimen, "nan")
     s_dimen2 = None
@@ -420,7 +413,7 @@ def generateShortReport(confHandler, result, projname, outputLoc):
     # Fields
     ###
     s_field1 = [
-        [tr('Azimut'), "{:.2f} {} / {:.2f}°".format(az_gon, tr('gon'), az_grad)],
+        [tr('Azimut'), "{:.1f} {} / {:.1f} °".format(az_gon, tr('gon'), az_grad)],
         [tr('Berechnete Seillaenge'), f"{kraft['LaengeSeil'][1]:.1f} m"],
         [tr('Max. Abstand Leerseil - Boden'), f"{result['cableline']['maxDistToGround']:.1f} m"],
         []]
@@ -457,7 +450,7 @@ def generateShortReport(confHandler, result, projname, outputLoc):
         fieldIdent = "{} -> {}".format(poleName, nextPoleName)
         s_field2.append([
             (fieldIdent[:42] + '...') if len(fieldIdent) > 42 else fieldIdent,
-            f"{dist_h:.0f} m", f"{dist_s:.1f} m", f"{h_diff:.1f} m",
+            f"{dist_h:.1f} m", f"{dist_s:.1f} m", f"{h_diff:.1f} m",
             f"{slack_e:.1f} m", f"{slack_f:.1f} m"])
     s_field2.append([tr('Total'), f"{total_h:.1f} m", f"{total_s:.1f} m",
                      f"{total_z:.1f} m"])
