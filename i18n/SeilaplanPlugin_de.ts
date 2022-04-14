@@ -192,17 +192,17 @@
     <message>
         <location filename="../tools/outputReport.py" line="244"/>
         <source>am Leerseil</source>
-        <translation>am Leerseil</translation>
+        <translation type="unfinished">am Leerseil (Grundspannung)</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="157"/>
         <source>Seilzugkraft an der Anfangsstuetze</source>
-        <translation>Seilzugkraft an der Anfangsstütze</translation>
+        <translation>Seilzugkraft am Anfangspunkt</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="159"/>
         <source>Seilzugkraft an der Endstuetze</source>
-        <translation>Seilzugkraft an der Endstütze</translation>
+        <translation>Seilzugkraft am Endpunkt</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="162"/>
@@ -237,12 +237,12 @@
     <message>
         <location filename="../tools/outputReport.py" line="175"/>
         <source>am Anfangsanker</source>
-        <translation>am Anfangsanker</translation>
+        <translation>am Anfangspunkt</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="177"/>
         <source>am Endanker</source>
-        <translation>am Endanker</translation>
+        <translation>am Endpunkt</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="180"/>
@@ -267,7 +267,8 @@
     <message>
         <location filename="../tools/outputReport.py" line="195"/>
         <source>an befahrbarer Stuetze, Laufwagen auf Stuetze</source>
-        <translation>an befahrbarer Stütze, Laufwagen auf Sattel</translation>
+        <translatorcomment>an befahrbarer Stütze, Laufwagen auf Sattel</translatorcomment>
+        <translation>Laufwagen auf Sattel</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="231"/>
@@ -307,12 +308,14 @@
     <message>
         <location filename="../tools/outputReport.py" line="224"/>
         <source>an nicht befahrbarer Stuetze,</source>
-        <translation>an nicht befahrbarer Stütze,</translation>
+        <translatorcomment>an nicht befahrbarer Stütze,</translatorcomment>
+        <translation type="unfinished">Laufwagen unmittelbar links/rechts bei Stütze</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="225"/>
         <source>Laufwagen unmittelbar links/rechts bei Stuetze</source>
-        <translation>Laufwagen unmittelbar links/rechts bei Stütze</translation>
+        <translatorcomment>Laufwagen unmittelbar links/rechts bei Stütze</translatorcomment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="226"/>
@@ -1266,7 +1269,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../tools/importExcelProtocol.py" line="109"/>
         <source>Koordinatenwerte sind ungueltig</source>
-        <translation>Koordinatenwerte sind ungültig</translation>
+        <translation>Ungültige Koordinatenwerte</translation>
     </message>
     <message>
         <location filename="../tools/importExcelProtocol.py" line="121"/>
@@ -1286,7 +1289,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../tools/importExcelProtocol.py" line="175"/>
         <source>Nicht genuegend Punkte in Protokoll vorhanden</source>
-        <translation>Nicht genügend Punkte in Protokoll vorhanden</translation>
+        <translation>Nicht genügend Punkte im Protokoll vorhanden</translation>
     </message>
     <message>
         <location filename="../tools/importExcelProtocol.py" line="190"/>
@@ -2367,7 +2370,7 @@ Pfad zu Dokumentation:
     <message>
         <location filename="../tools/survey.py" line="127"/>
         <source>Datei konnte nicht eingelesen werden. Unerwarteter Fehler aufgetreten.</source>
-        <translation>Datei konnte nicht eingelesen werden. Unerwarteter Fehler aufgetreten.</translation>
+        <translation>Datei kann nicht eingelesen werden. Unerwarteter Fehler aufgetreten.</translation>
     </message>
 </context>
 <context>

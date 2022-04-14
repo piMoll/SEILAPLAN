@@ -227,17 +227,17 @@
     <message>
         <location filename="../tools/outputReport.py" line="244"/>
         <source>am Leerseil</source>
-        <translation>at unloaded skyline</translation>
+        <translation type="unfinished">at unloaded skyline (pre-stress tensile force)</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="157"/>
         <source>Seilzugkraft an der Anfangsstuetze</source>
-        <translation>Tensile force at first support</translation>
+        <translation>Tensile force at starting point</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="159"/>
         <source>Seilzugkraft an der Endstuetze</source>
-        <translation>Tensile force at terminal support</translation>
+        <translation>Tensile force at point terminal</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="162"/>
@@ -272,12 +272,12 @@
     <message>
         <location filename="../tools/outputReport.py" line="175"/>
         <source>am Anfangsanker</source>
-        <translation>at initial anchor</translation>
+        <translation>at starting point</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="177"/>
         <source>am Endanker</source>
-        <translation>at final anchor</translation>
+        <translation>at end point</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="180"/>
@@ -302,7 +302,8 @@
     <message>
         <location filename="../tools/outputReport.py" line="195"/>
         <source>an befahrbarer Stuetze, Laufwagen auf Stuetze</source>
-        <translation>at a trafficable support, carriage on saddle</translation>
+        <translatorcomment>at a trafficable support, carriage on saddle</translatorcomment>
+        <translation>carriage on saddle</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="231"/>
@@ -344,12 +345,14 @@
     <message>
         <location filename="../tools/outputReport.py" line="224"/>
         <source>an nicht befahrbarer Stuetze,</source>
-        <translation>at non trafficable support,</translation>
+        <translatorcomment>at non trafficable support,</translatorcomment>
+        <translation type="unfinished">carriage directly left/right of support</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="225"/>
         <source>Laufwagen unmittelbar links/rechts bei Stuetze</source>
-        <translation>carriage directly left/right of support</translation>
+        <translatorcomment>carriage directly left/right of support</translatorcomment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="226"/>
@@ -1286,7 +1289,7 @@ terrain shape</translation>
     <message>
         <location filename="../tools/importExcelProtocol.py" line="109"/>
         <source>Koordinatenwerte sind ungueltig</source>
-        <translation>Coordinate values are invalid</translation>
+        <translation>Invalid coordinate values</translation>
     </message>
     <message>
         <location filename="../tools/importExcelProtocol.py" line="121"/>
@@ -2388,7 +2391,7 @@ The algorithm calculates a solution, which in first priority is minimizing the n
     <message>
         <location filename="../tools/survey.py" line="127"/>
         <source>Datei konnte nicht eingelesen werden. Unerwarteter Fehler aufgetreten.</source>
-        <translation>File could not be loaded. An unexpected error occured.</translation>
+        <translation>File cannot be loaded. An unexpected error occured.</translation>
     </message>
 </context>
 <context>
