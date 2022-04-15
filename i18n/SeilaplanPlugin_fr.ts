@@ -224,17 +224,17 @@
     <message>
         <location filename="../tools/outputReport.py" line="244"/>
         <source>am Leerseil</source>
-        <translation>au câble non chargé</translation>
+        <translation type="unfinished">au câble non chargé (force de traction initiale)</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="157"/>
         <source>Seilzugkraft an der Anfangsstuetze</source>
-        <translation>Force de traction du câble au premier support</translation>
+        <translation type="unfinished">Force de traction du câble au point initial</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="159"/>
         <source>Seilzugkraft an der Endstuetze</source>
-        <translation>Force de traction du câble au mât terminal</translation>
+        <translation type="unfinished">Force de traction du câble au point terminal</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="162"/>
@@ -269,12 +269,12 @@
     <message>
         <location filename="../tools/outputReport.py" line="175"/>
         <source>am Anfangsanker</source>
-        <translation>à l&apos;ancrage initial</translation>
+        <translation type="unfinished">au point initial</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="177"/>
         <source>am Endanker</source>
-        <translation>à l&apos;ancrage terminal</translation>
+        <translation type="unfinished">au point terminal</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="180"/>
@@ -299,7 +299,8 @@
     <message>
         <location filename="../tools/outputReport.py" line="195"/>
         <source>an befahrbarer Stuetze, Laufwagen auf Stuetze</source>
-        <translation>sur un support praticable, chariot sur l&apos;étrier</translation>
+        <translatorcomment>sur un support praticable, chariot sur l&apos;étrier</translatorcomment>
+        <translation>chariot sur l&apos;étrier</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="231"/>
@@ -345,12 +346,14 @@
     <message>
         <location filename="../tools/outputReport.py" line="224"/>
         <source>an nicht befahrbarer Stuetze,</source>
-        <translation>sur un support non praticable,</translation>
+        <translatorcomment>sur un support non praticable,</translatorcomment>
+        <translation type="unfinished">chariot directement à gauche/à droite du support</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="225"/>
         <source>Laufwagen unmittelbar links/rechts bei Stuetze</source>
-        <translation>chariot directement à gauche/à droite du support</translation>
+        <translatorcomment>chariot directement à gauche/à droite du support</translatorcomment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="226"/>
@@ -1283,37 +1286,37 @@ d&apos;après Zweifel</translation>
     <message>
         <location filename="../tools/importExcelProtocol.py" line="78"/>
         <source>Veraltetes Template, Daten koennen nicht eingelesen werden</source>
-        <translation type="unfinished"></translation>
+        <translation>Modèle obsolète, les données ne peuvent pas être importées</translation>
     </message>
     <message>
         <location filename="../tools/importExcelProtocol.py" line="109"/>
         <source>Koordinatenwerte sind ungueltig</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeurs de coordonnées invalides</translation>
     </message>
     <message>
         <location filename="../tools/importExcelProtocol.py" line="121"/>
         <source>Punkt-Nummer ist ungueltig</source>
-        <translation type="unfinished"></translation>
+        <translation>Le numéro de point n’est pas valide</translation>
     </message>
     <message>
         <location filename="../tools/importExcelProtocol.py" line="133"/>
         <source>Azimut ist ungueltig</source>
-        <translation type="unfinished"></translation>
+        <translation>L’azimut n’est pas valide</translation>
     </message>
     <message>
         <location filename="../tools/importExcelProtocol.py" line="158"/>
         <source>Fehlende oder fehlerhafte Werte fuer Distanz oder Neigung auf Zeile _rowIdx_</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeurs de distance ou de pente manquantes ou erronées sur la ligne _rowIdx_</translation>
     </message>
     <message>
         <location filename="../tools/importExcelProtocol.py" line="175"/>
         <source>Nicht genuegend Punkte in Protokoll vorhanden</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de points insuffisant dans le protocole</translation>
     </message>
     <message>
         <location filename="../tools/importExcelProtocol.py" line="190"/>
         <source>Punkt-Nr. nicht in Protokoll vorhanden</source>
-        <translation type="unfinished"></translation>
+        <translation>Numéro du point non disponible dans le protocole</translation>
     </message>
 </context>
 <context>
@@ -2250,11 +2253,11 @@ http://pimoll.github.io/SEILAPLAN/</translation>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="916"/>
         <source>Hoeheninformation - Erklaerung Felddaten</source>
-        <translation type="unfinished">Charger les points de profil relevés sur le terrain.
+        <translation>Charger les points de profil relevés sur le terrain.
 Types de fichier supportés:
 1) Fichier csv générique (valeurs séparées par comma) avec les coordonnées &apos;x&apos;, &apos;y&apos; et &apos;z&apos; en colonnes. Le fichier ne doit pas avoir des commentaires et les points doivent être classés.
 2) Fichier csv exporté de l&apos;appareil de mesure Haglöf Vertex (Suède).
-3) </translation>
+3) Protocol de relevé sur le terrain selon le modèle.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="917"/>
@@ -2383,12 +2386,12 @@ Il est recherché la solution qui, en première priorité, minimalise le nombre 
     <message>
         <location filename="../tools/survey.py" line="120"/>
         <source>Ungueltiges Format oder fehlende Daten.</source>
-        <translation type="unfinished"></translation>
+        <translation>Format non valide ou données manquantes.</translation>
     </message>
     <message>
         <location filename="../tools/survey.py" line="127"/>
         <source>Datei konnte nicht eingelesen werden. Unerwarteter Fehler aufgetreten.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier ne peut pas être chargé. Une erreur inattendue s&apos;est produite.</translation>
     </message>
 </context>
 <context>
@@ -2406,27 +2409,27 @@ Il est recherché la solution qui, en première priorité, minimalise le nombre 
     <message>
         <location filename="../gui/surveyImportDialog.py" line="95"/>
         <source>Gelaendeprofil laden</source>
-        <translation type="unfinished"></translation>
+        <translation>Charger le profil de terrain</translation>
     </message>
     <message>
         <location filename="../gui/surveyImportDialog.py" line="117"/>
         <source>Vorlage speichern</source>
-        <translation type="unfinished"></translation>
+        <translation>Enregistrer le modèle</translation>
     </message>
     <message>
         <location filename="../gui/surveyImportDialog.py" line="127"/>
         <source>Vorlage erfolgreich heruntergeladen.</source>
-        <translation type="unfinished"></translation>
+        <translation>Modèle téléchargé avec succès.</translation>
     </message>
     <message>
         <location filename="../gui/surveyImportDialog.py" line="129"/>
         <source>Download nicht erfolgreich. Link fuer manuellen Download: _templateUrl_</source>
-        <translation type="unfinished"></translation>
+        <translation>Le téléchargement n&apos;a pas réussi. Lien pour le téléchargement manuel : _templateUrl_</translation>
     </message>
     <message>
         <location filename="../gui/surveyImportDialog.py" line="131"/>
         <source>Download Vorlage</source>
-        <translation type="unfinished"></translation>
+        <translation>Télécharger le modèle</translation>
     </message>
 </context>
 <context>
@@ -2434,37 +2437,37 @@ Il est recherché la solution qui, en première priorité, minimalise le nombre 
     <message>
         <location filename="../gui/surveyImportDialog.ui" line="14"/>
         <source>Import Gelaendeprofil</source>
-        <translation type="unfinished"></translation>
+        <translation>Importer le profil de terrain</translation>
     </message>
     <message>
         <location filename="../gui/surveyImportDialog.ui" line="22"/>
         <source>Profiltyp auswaehlen</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionner le type de profil</translation>
     </message>
     <message>
         <location filename="../gui/surveyImportDialog.ui" line="36"/>
         <source>Feldaufnahme-Protokoll (*.xlsx)</source>
-        <translation type="unfinished"></translation>
+        <translation>Protocol de relevé sur le terrain</translation>
     </message>
     <message>
         <location filename="../gui/surveyImportDialog.ui" line="57"/>
         <source>Vorlage herunterladen</source>
-        <translation type="unfinished"></translation>
+        <translation>Télécharger le modèle</translation>
     </message>
     <message>
         <location filename="../gui/surveyImportDialog.ui" line="50"/>
         <source>CSV-Datei mit X, Y, Z Werten (*.csv)</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier CSV avec valeurs X, Y, Z (*.csv)</translation>
     </message>
     <message>
         <location filename="../gui/surveyImportDialog.ui" line="64"/>
         <source>Exportdatei des Hagloef Vertex Messgeraetes (*.csv)</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier d&apos;exportation de l&apos;appareil de mesure Hagloef Vertex (*.csv)</translation>
     </message>
     <message>
         <location filename="../gui/surveyImportDialog.ui" line="78"/>
         <source>Datei auswaehlen</source>
-        <translation type="unfinished"></translation>
+        <translation>Séléctionner un fichier</translation>
     </message>
 </context>
 <context>
