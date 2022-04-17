@@ -63,6 +63,7 @@ class SurveyData(AbstractHeightSource):
         self.pointInPlane = None
         self.interpolFunc = None
         self.plotPoints = None
+        self.plotNotes = None
         self.origData = {}
         self.valid = False
         self.errorMsg = ''
@@ -106,6 +107,7 @@ class SurveyData(AbstractHeightSource):
             if reader.valid:
                 try:
                     success = reader.readOutData()
+                    self.plotNotes = reader.notes['onPoint']
                 except Exception:
                     pass
         
@@ -235,21 +237,28 @@ class SurveyData(AbstractHeightSource):
         # For display in plot survey points are being rounded to the nearest
         #  meter and numbered
         surveyPnts_d = self.dist - distToStart
+        surveyPnts_z = np.array([]*np.size(surveyPnts_d))
         # surveyPnts_d[1:-1] = np.round(surveyPnts_d[1:-1])
         try:
             surveyPnts_z = self.interpolFunc(surveyPnts_d + distToStart)
-            self.plotPoints = np.column_stack(
-                [surveyPnts_d, surveyPnts_z, self.nr])
+            self.plotPoints = {
+                'd': surveyPnts_d,
+                'z': surveyPnts_z,
+                'nr': self.nr,
+                'notes': self.plotNotes,
+            }
+            
         except ValueError:
             self.plotPoints = None
         
         if orig:
             # Save initial profile (full length) so it can be used to calculate
             #  cursor position in function projectPositionOnToLine()
+            pointCoords = np.column_stack([surveyPnts_d, surveyPnts_z])
             self.origData = {
                 'x': copy.deepcopy(self.x),
                 'y': copy.deepcopy(self.y),
-                'plotPoints': copy.deepcopy(self.plotPoints)
+                'plotPoints': copy.deepcopy(pointCoords)
             }
     
     def getFirstPoint(self):

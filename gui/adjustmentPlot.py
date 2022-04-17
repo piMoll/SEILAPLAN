@@ -128,7 +128,7 @@ class AdjustmentPlot(FigureCanvas):
     def updatePlot(self, poles, cable, printPdf=False):
         scale = 1
         legendCol = 4
-        fontSize = 11
+        fontSize = 12
         if printPdf:
             legendCol = 3
             scale = 0.5
@@ -146,12 +146,16 @@ class AdjustmentPlot(FigureCanvas):
         # Mark survey points when working with CSV height data
         if self.tPoints is not None:
             # Add markers for survey points
-            for pointX, pointY, idx in self.tPoints:
+            for pointX, pointY, idx, notes in zip(self.tPoints['d'],
+                                                  self.tPoints['z'],
+                                                  self.tPoints['nr'],
+                                                  self.tPoints['notes']):
                 self.axes.plot([pointX, pointX],
                                [pointY, pointY - 6 * self.labelBuffer * scale],
                                color='green', linewidth=1.5 * scale, zorder=2)
+                labelText = f"{idx}{':' if notes else ''} {notes}"
                 self.axes.text(pointX, pointY - 8 * self.labelBuffer * scale,
-                               str(int(idx)), fontsize=fontSize, ha='center',
+                               labelText, fontsize=fontSize, ha='center',
                                va='top', color='green')
         
         if not printPdf:

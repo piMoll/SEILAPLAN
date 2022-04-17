@@ -49,6 +49,10 @@ class ExcelProtocolReader(AbstractSurveyReader):
     
     def __init__(self, path):
         AbstractSurveyReader.__init__(self, path)
+        self.notes = {
+            'onPoint': [],
+            'between': []
+        }
         self.checkStructure()
     
     def checkStructure(self):
@@ -137,10 +141,6 @@ class ExcelProtocolReader(AbstractSurveyReader):
         
         distList = [0]
         slopeList = [0]
-        notes = {
-            'onPoint': [],
-            'between': []
-        }
         nr = [0]
         nextPoint = 1
         rowIdx = self.ROW_START
@@ -178,8 +178,8 @@ class ExcelProtocolReader(AbstractSurveyReader):
             nr.append(nextPoint)
             distList.append(dist)
             slopeList.append(slope)
-            notes['between'].append(sheet.address(address=f'{self.COL_NOTES}{rowIdx}'))
-            notes['onPoint'].append(sheet.address(address=f'{self.COL_NOTES}{rowIdx + 1}'))
+            self.notes['between'].append(sheet.address(address=f'{self.COL_NOTES}{rowIdx}'))
+            self.notes['onPoint'].append(sheet.address(address=f'{self.COL_NOTES}{rowIdx + 1}'))
             
             rowIdx += 2
         

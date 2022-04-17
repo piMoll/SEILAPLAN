@@ -90,8 +90,7 @@ class ProfilePlot(FigureCanvas):
         ymin = np.min(self.profile.zi_disp)
         xmax = np.max(self.profile.di_disp)
         ymax = np.max(self.profile.zi_disp)
-        self.labelScale = (ymax - ymin) / 20
-
+        self.labelScale = 1
         # Data point of profile
         self.x_data = self.profile.di
         self.y_data = self.profile.zi
@@ -119,13 +118,26 @@ class ProfilePlot(FigureCanvas):
         
         if self.profile.surveyPnts is not None:
             # Add markers for survey points
-            for pointX, pointY, idx in self.profile.surveyPnts:
+            for pointX, pointY, idx, notes in zip(self.profile.surveyPnts['d'],
+                                                  self.profile.surveyPnts['z'],
+                                                  self.profile.surveyPnts['nr'],
+                                                  self.profile.surveyPnts['notes']):
                 self.axes.plot([pointX, pointX],
-                               [pointY, pointY - 3 * self.labelScale],
+                               [pointY, pointY - 5 * self.labelScale],
                                color='green', linewidth=1.5)
-                self.axes.text(pointX, pointY - 4 * self.labelScale,
-                               str(int(idx)), ha='center', fontsize=12,
-                               color='green')
+                labelText = f"{idx}{':' if notes else ''} {notes}"
+                # For less placement issues, labels are rotated 45°
+                rotation = 45
+                ha = 'right'
+                va = 'bottom'
+                # Label rotation is switched if profile line inclines
+                if self.y_data[0] < self.y_data[-1]:
+                    rotation = 315
+                    ha = 'left'
+                    va = 'top'
+                self.axes.text(pointX, pointY - 6 * self.labelScale,
+                               labelText, ha=ha, va=va, fontsize=12, color='green',
+                               rotation=rotation, rotation_mode='anchor')
 
         # Init cursor cross position
         self.xcursor = self.x_data[floor(len(self.x_data) / 2)]
