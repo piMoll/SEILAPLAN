@@ -34,7 +34,7 @@ class AbstractConfHandler(object):
     
     def onError(self, message=None, title=''):
         if not title:
-            title = self.tr('Fehler')
+            title = self.tr('Fehler', 'AbstractConfHandler')
         if not message:
             message = traceback.format_exc()
         QMessageBox.information(self.dialog, title, message,
@@ -58,5 +58,7 @@ class AbstractConfHandler(object):
         ----------
         **kwargs
         """
+        if not context:
+            context = type(self).__name__
         # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
-        return QCoreApplication.translate('AbstractConfHandler', message)
+        return QCoreApplication.translate(context, message)
