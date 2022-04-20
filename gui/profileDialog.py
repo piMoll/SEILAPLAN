@@ -165,6 +165,7 @@ class ProfileDialog(QDialog):
     def setPoleData(self, poles, sections):
         """Fills gui, plot and map with data of fixed poles and pole
         sections."""
+        self.drawTool.removeIntermediateMarkers()
         # Make sure the pole layout has the correct reference to the pole data
         self.poleLayout.poleArr = self.poleData
         # Set the max ranges
@@ -179,7 +180,7 @@ class ProfileDialog(QDialog):
             for x in section:
                 z = self.getZValue(x)
                 self.sc.drawSection(x, z)
-            self.sc.draw()
+        self.sc.draw()
 
     def buildPoleHeader(self):
         headerRow = QHBoxLayout()

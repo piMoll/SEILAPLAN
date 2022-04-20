@@ -192,6 +192,8 @@ class MapMarkerTool(QgsMapTool):
 
     def removeMarker(self, idx=-1):
         if idx >= 0:
+            if not idx < len(self.markers):
+                return
             marker = self.markers[idx]
             self.canvas.scene().removeItem(marker)
             self.markers.pop(idx)
@@ -199,6 +201,15 @@ class MapMarkerTool(QgsMapTool):
             for marker in self.markers:
                 self.canvas.scene().removeItem(marker)
             self.markers = []
+        self.canvas.refresh()
+    
+    def removeIntermediateMarkers(self):
+        if not len(self.markers) >= 3:
+            return
+        for idx in range(1, len(self.markers)-1):
+            marker = self.markers[idx]
+            self.canvas.scene().removeItem(marker)
+            self.markers.pop(idx)
         self.canvas.refresh()
     
     def hideMarker(self, idx):
