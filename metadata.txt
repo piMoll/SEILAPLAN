@@ -12,7 +12,7 @@ name=SEILAPLAN
 qgisMinimumVersion=3.6
 description=Seilkran-Layoutplaner
 about=SEILAPLAN berechnet aufgrund eines digitalen Höhenmodells zwischen definierten Anfangs- und Endkoordinaten sowie technischen Parametern das optimale Seillinienlayout. Es werden Position und Höhe der Stütze, sowie die wichtigsten Kennwerte der Seillinie bestimmt.
-version=3.3.0
+version=3.4.0
 author=Leo Bont, Hans Rudolf Heinimann, Patricia Moll
 email=leo.bont@gmail.com
 
@@ -21,13 +21,12 @@ email=leo.bont@gmail.com
 # Recommended items:
 
 # Uncomment the following line and add your changelog:
-changelog=Version 3.3.0 (Januar 2022)
+changelog=Version 3.4.0 (Mai 2022)
 
-    - Projekt-Metadaten erfassen
-    - Projekteinstellungen im JSON-Format abspeichern
-    - Überarbeitung von Fachbegriffen
-    - Bei der Berechnung von Geländeprofilen aus Vertex-Dateien relative Winkel- und Distanzmessungen berücksichtigen
-    - Diverse Fehlerkorrekturen
+    - Profil-Import aus Feldaufnahmeprotokoll, inkl. Protokoll-Vorlage
+    - Auswahl und Import des Geländeprofils in einem separaten Dialogfenster
+    - Erhöhung der max. zulässigen Werte für: Gewicht Last, Mindestbruchlast Tragseil und Tragseilspannkraft am Anfangspunkt
+
 
     Vollständiger Changelog unter: https://github.com/piMoll/SEILAPLAN/blob/master/changelog.md
 

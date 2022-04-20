@@ -1,5 +1,19 @@
 # Seilaplan Changelog
 
+## Version 3.4.0 (Mai 2022)
+### Neue Features
+* Profil-Import aus Feldaufnahmeprotokoll, inkl. Protokoll-Vorlage im Excel-Format
+* Auswahl und Import des Geländeprofils in einem separaten Dialogfenster
+* Vorlage für Profile im CSV Format mit X-, Y-, Z-Koordinaten
+* Erhöhung der max. zulässigen Werte für: Gewicht Last (neu 250 kN), Mindestbruchlast Tragseil (neu 5000 kN), Tragseilspannkraft am Anfangspunkt (neu 1000 kN)
+
+### Fehlerbehebung
+* Besseres Abfangen von Fehlern beim Import von Geländeprofilen
+* Auswahlliste für Raster zeigt keine WMS-Layer mehr
+* Besseres Abfangen von Fehlern beim Aufbereiten von Rasterdaten
+* Verbesserung der Formatierung von Koordinaten-Werte für internationale Benutzer
+* Karten-Markierungen für fixe Stützen verschwinden nach dem Löschen zuverlässig
+
 ## Version 3.3.0 (Januar 2022)
 ### Neue Features
 * Erfassen und Speichern von Projekt-Metadaten wie Autor, Projektnummer, Waldort, etc. Projekt-Metadaten werden in den Berichten aufgelistet
