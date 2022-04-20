@@ -125,19 +125,22 @@ class ProfilePlot(FigureCanvas):
                 self.axes.plot([pointX, pointX],
                                [pointY, pointY - 5 * self.labelScale],
                                color='green', linewidth=1.5)
-                labelText = f"{idx}{':' if notes else ''} {notes}"
-                # For less placement issues, labels are rotated 45°
-                rotation = 45
-                ha = 'right'
-                va = 'bottom'
-                # Label rotation is switched if profile line inclines
-                if self.y_data[0] < self.y_data[-1]:
-                    rotation = 315
-                    ha = 'left'
-                    va = 'top'
+                labelText = f"{idx}{':' if notes else ''} {notes if len(notes) <= 25 else notes[:22] + '...'}"
+                rot = 0
+                ha = 'center'
+                va = 'top'
+                if notes:
+                    # For less placement issues, labels are rotated 45°
+                    rot = 55
+                    ha = 'right'
+                    va = 'center'
+                    # Label rotation is switched if profile line inclines
+                    if self.y_data[0] < self.y_data[-1]:
+                        rot = 305
+                        ha = 'left'
                 self.axes.text(pointX, pointY - 6 * self.labelScale,
                                labelText, ha=ha, va=va, fontsize=12, color='green',
-                               rotation=rotation, rotation_mode='anchor')
+                               rotation=rot, rotation_mode='anchor')
 
         # Init cursor cross position
         self.xcursor = self.x_data[floor(len(self.x_data) / 2)]

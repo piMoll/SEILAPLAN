@@ -153,10 +153,22 @@ class AdjustmentPlot(FigureCanvas):
                 self.axes.plot([pointX, pointX],
                                [pointY, pointY - 6 * self.labelBuffer * scale],
                                color='green', linewidth=1.5 * scale, zorder=2)
-                labelText = f"{idx}{':' if notes else ''} {notes}"
-                self.axes.text(pointX, pointY - 8 * self.labelBuffer * scale,
-                               labelText, fontsize=fontSize, ha='center',
-                               va='top', color='green')
+                labelText = f"{idx}{':' if notes else ''} {notes if len(notes) <= 25 else notes[:22] + '...'}"
+                rot = 0
+                ha = 'center'
+                va = 'top'
+                if notes:
+                    # For less placement issues, labels are rotated 45°
+                    rot = 55
+                    ha = 'right'
+                    va = 'center'
+                    # Label rotation is switched if profile line inclines
+                    if self.terrain[0] < self.terrain[-1]:
+                        rot = 305
+                        ha = 'left'
+                self.axes.text(pointX, pointY - 6 * self.labelBuffer * scale,
+                               labelText, ha=ha, va=va, fontsize=fontSize,
+                               color='green', rotation=rot, rotation_mode='anchor')
         
         if not printPdf:
             # Well suited locations (peaks) for poles
