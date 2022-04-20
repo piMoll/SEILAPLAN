@@ -144,6 +144,8 @@ class ExcelProtocolReader(AbstractSurveyReader):
         nr = [0]
         nextPoint = 1
         rowIdx = self.ROW_START
+        self.notes['onPoint'].append('')
+        self.notes['between'].append(sheet.address(address=f'{self.COL_NOTES}{rowIdx}'))
         
         # Check if there are measurements before first point
         dist = sheet.address(address=f'{self.COL_DIST}{self.ROW_START}')
@@ -152,6 +154,7 @@ class ExcelProtocolReader(AbstractSurveyReader):
             # No measurements: start at point nr 1 instead of 0
             nr = [1]
             nextPoint = 2
+            self.notes['onPoint'][0] = sheet.address(address=f'{self.COL_NOTES}{rowIdx + 1}')
             rowIdx = self.ROW_START + 2
         
         while nextPoint is not None:
@@ -207,7 +210,7 @@ class ExcelProtocolReader(AbstractSurveyReader):
             [np.cumsum(hd * np.sin(azimuth)),
              np.cumsum(hd * np.cos(azimuth))
         ])
-        relHeight = h
+        relHeight = np.cumsum(h)
         
         # Calculate absolute coordinates
         deltaX = absolutePoint['x'] - relCoords[0][idxAbsPoint]
