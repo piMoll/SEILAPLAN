@@ -166,7 +166,7 @@ class AdjustmentPlot(FigureCanvas):
                     if self.terrain[0] < self.terrain[-1]:
                         rot = 305
                         ha = 'left'
-                self.axes.text(pointX, pointY - 6 * self.labelBuffer * scale,
+                self.axes.text(pointX, pointY - 7 * self.labelBuffer * scale,
                                labelText, ha=ha, va=va, fontsize=fontSize,
                                color='green', rotation=rot, rotation_mode='anchor')
         

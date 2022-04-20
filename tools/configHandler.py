@@ -39,7 +39,7 @@ class ConfigHandler(object):
     
     DEFAULT_SAVE_PATH = os.path.join(os.path.expanduser('~'), 'Seilaplan')
     SETTING_PREFIX = 'PluginSeilaplan/output/'
-    TEMPLATES_URL = 'https://raw.githubusercontent.com/piMoll/SEILAPLAN/master/templates/'
+    TEMPLATES_URL = 'https://raw.githubusercontent.com/piMoll/SEILAPLAN/dev/templates/'
     TEMPLATE_FILENAME = {
         # TODO: Insert translated file names
         'excelProtocol': {
