@@ -6,14 +6,14 @@ Befahr_E	Seillinie befahrbar bis ... vor dem Endpunkt	m	field	int	0	1000	13
 Bodenabst_min	Minimaler Abstand Tragseil - Boden	m	field	float	0	30	14
 Bodenabst_A	einzuhalten ab ... vom Anfangspunkt	m	field	int	0	200	15
 Bodenabst_E	einzuhalten bis ... vor dem Endpunkt	m	field	int	0	200	16
-Q	Gesamtlast	kN	field	float	1	100	20
+Q	Gesamtlast	kN	field	float	1	250	20
 qT	Gewicht Tragseil	kN/m	field	float	0.001	1	21
 D	Durchmesser Tragseil	mm	field	float	1	500	22
-MBK	Mindestbruchkraft Tragseil	kN	field	float	10	1000	23
+MBK	Mindestbruchkraft Tragseil	kN	field	float	10	5000	23
 qZ	Gewicht Zugseil	kN/m	field	float	0	1	24
 qR	Gewicht Rueckholseil	kN/m	field	float	0	1	25
-SK	Grundspannung Tragseil (Anfangssp.)	kN	field	int	10	500	26
-Anlagetyp	Anlagetyp		field	string			26
+SK	Grundspannung Tragseil (Anfangssp.)	kN	field	int	10	1000	26
+Anlagetyp	Anlagetyp		field	string			27
 Min_Dist_Mast	Minimaler Abstand zwischen Stuetzen	m	field	int	0	200	30
 L_Delta	Horiz. Aufloesung moegl. Stuetzenstandorte	m	field	int	1	20	31
 HM_min	Minimale Stuetzenhoehe	m	field	int	1	HM_max	32
