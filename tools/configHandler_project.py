@@ -423,7 +423,7 @@ class ProjectConfHandler(AbstractConfHandler):
                 'type': self.heightSourceType,
                 'surveyType': self.surveyType,
                 'source': self.getHeightSourceAsStr(source=True, formatting='json'),
-                'crs': self.heightSource.spatialRef.authid(),
+                'crs': self.heightSource.spatialRef.authid()
             },
             'profile': {
                 'start': {

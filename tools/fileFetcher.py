@@ -9,13 +9,7 @@ class FileFetcher:
         self.filePath = filePath
         self.success = False
         self.run()
-
-        # temporary = QTemporaryFile(
-        #     os.path.join(QDir.tempPath(), 'request-XXXXXX.osm'))
-        # temporary.open()
-        # self.result_path = temporary.fileName()
-        # temporary.close()
-
+        
     def error(self):
         self.success = False
 

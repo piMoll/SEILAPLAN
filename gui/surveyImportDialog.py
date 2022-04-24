@@ -138,3 +138,7 @@ class SurveyImportDialog(QDialog, Ui_SurveyImportDialogUI):
     def onCancel(self):
         self.doImport = False
     
+    def closeEvent(self, QCloseEvent):
+        # When user clicks 'x'
+        self.doImport = False
+    

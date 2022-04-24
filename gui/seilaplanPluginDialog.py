@@ -672,7 +672,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.surveyImportDialog.exec()
         if self.surveyImportDialog.doImport:
             self.projectHandler.resetProfile()
-            # # Load data from csv file
+            # Load data from csv file
             self.projectHandler.setHeightSource(None, 'survey',
                 self.surveyImportDialog.filePath,
                 self.surveyImportDialog.surveyType)
