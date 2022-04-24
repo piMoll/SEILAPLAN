@@ -59,17 +59,14 @@ class ExcelProtocolReader(AbstractSurveyReader):
         db = xl.readxl(fn=self.path)
         sheet = db.ws(ws=db.ws_names[0])
     
-        # Check some mandatory values
+        # Check if the excel file has a version in the right cell
         try:
             templateVersion = sheet.address(address=self.CELL_VERSION)
-            coord_x = float(sheet.address(address=self.CELL_X))
-            coord_y = float(sheet.address(address=self.CELL_Y))
         except ValueError:
             self.valid = False
             return
         
-        if (templateVersion and templateVersion.startswith('v')
-                and coord_x and coord_y):
+        if templateVersion and templateVersion.startswith('v'):
             self.valid = True
 
     def readOutData(self):
@@ -87,7 +84,7 @@ class ExcelProtocolReader(AbstractSurveyReader):
         self.prHeaderData = {
             'Header': {
                 'PrVerf': sheet.address(address=self.CELL_PRVERF),
-                'PrNr': sheet.address(address=self.CELL_NR),
+                'PrNr': sheet.address(address=self.CELL_PRNR),
                 'PrGmd': sheet.address(address=self.CELL_PRGMD),
                 'PrWald': sheet.address(address=self.CELL_PRWALD),
                 'PrBemerkung': sheet.address(address=self.CELL_PRBEM),
@@ -157,6 +154,12 @@ class ExcelProtocolReader(AbstractSurveyReader):
             self.notes['onPoint'][0] = sheet.address(address=f'{self.COL_NOTES}{rowIdx + 1}')
             rowIdx = self.ROW_START + 2
         
+        elif (dist == '' and slope != '') or (dist != '' and slope == ''):
+            self.errorMsg = (self.tr(
+                'Fehlende oder fehlerhafte Werte fuer Distanz oder Neigung auf Zeile _rowIdx_')).replace(
+                '_rowIdx_', self.ROW_START)
+            return False
+        
         while nextPoint is not None:
             # Check if mandatory values are present
             dist = sheet.address(address=f'{self.COL_DIST}{rowIdx}')
@@ -201,7 +204,7 @@ class ExcelProtocolReader(AbstractSurveyReader):
         # See if point number of absolute point exists in protocol
         try:
             idxAbsPoint = np.where(np.array(nr) == absolutePointNr)[0][0]
-        except ValueError:
+        except IndexError:
             self.errorMsg = self.tr('Punkt-Nr. nicht in Protokoll vorhanden')
             return False
         
