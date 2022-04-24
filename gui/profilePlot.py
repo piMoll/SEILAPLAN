@@ -125,11 +125,12 @@ class ProfilePlot(FigureCanvas):
                 self.axes.plot([pointX, pointX],
                                [pointY, pointY - 5 * self.labelScale],
                                color='green', linewidth=1.5)
-                labelText = f"{idx}{':' if notes else ''} {notes if len(notes) <= 25 else notes[:22] + '...'}"
+                labelText = f"{idx}"
                 rot = 0
                 ha = 'center'
                 va = 'top'
                 if notes:
+                    labelText = f"{idx}{':' if notes else ''} {notes if len(notes) <= 25 else notes[:22] + '...'}"
                     # For less placement issues, labels are rotated 45°
                     rot = 55
                     ha = 'right'

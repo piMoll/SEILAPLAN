@@ -134,15 +134,16 @@ def createProfileLayers(heightSource):
     surveyPointLayer = QgsVectorLayer('Point?crs=' + lyrCrs,
                                       tr('Felddaten-Messpunkte'), 'memory')
     pr = surveyPointLayer.dataProvider()
-    pr.addAttributes([QgsField("nr", QVariant.Int)])
+    pr.addAttributes([QgsField("nr", QVariant.String)])
     surveyPointLayer.updateFields()
     features = []
     # TODO: Survey points are NOT rounded
-    for x, y, nr in np.column_stack([heightSource.x, heightSource.y, heightSource.nr]):
+    for x, y, nr, notes in zip(heightSource.x, heightSource.y, heightSource.nr, heightSource.plotNotes):
         feature = QgsFeature()
         feature.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(x, y)))
         feature.setId(int(nr+1))
-        feature.setAttributes([int(nr)])
+        labelText = f"{nr}{':' if notes else ''} {notes if len(notes) <= 25 else notes[:22] + '...'}"
+        feature.setAttributes([labelText])
         features.append(feature)
     pr.addFeatures(features)
     surveyPointLayer.updateExtents()

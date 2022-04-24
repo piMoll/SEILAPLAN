@@ -63,7 +63,7 @@ class SurveyData(AbstractHeightSource):
         self.pointInPlane = None
         self.interpolFunc = None
         self.plotPoints = None
-        self.plotNotes = None
+        self.plotNotes = []
         self.origData = {}
         self.valid = False
         self.errorMsg = ''
@@ -196,6 +196,9 @@ class SurveyData(AbstractHeightSource):
         # point in plane
         res = self.pointInPlane + projOntoPlane
         self.x, self.y, self.z = np.column_stack(res)
+        self.plotNotes = self.plotNotes if len(self.plotNotes) == len(self.x) \
+                                else[''] * len(self.x)
+        
         # Update extent with projected coordinates
         self.extent = [np.min(self.x), np.max(self.y),
                        np.max(self.x), np.min(self.y)]
