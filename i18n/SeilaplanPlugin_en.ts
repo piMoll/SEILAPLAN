@@ -227,7 +227,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="244"/>
         <source>am Leerseil</source>
-        <translation type="unfinished">at unloaded skyline (pre-stress tensile force)</translation>
+        <translation>at unloaded skyline (pre-stress tensile force)</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="157"/>
@@ -237,7 +237,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="159"/>
         <source>Seilzugkraft an der Endstuetze</source>
-        <translation>Tensile force at point terminal</translation>
+        <translation>Tensile force at end point</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="162"/>
@@ -346,13 +346,13 @@
         <location filename="../tools/outputReport.py" line="224"/>
         <source>an nicht befahrbarer Stuetze,</source>
         <translatorcomment>at non trafficable support,</translatorcomment>
-        <translation type="unfinished">carriage directly left/right of support</translation>
+        <translation>carriage directly left/right of support</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="225"/>
         <source>Laufwagen unmittelbar links/rechts bei Stuetze</source>
         <translatorcomment>carriage directly left/right of support</translatorcomment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="226"/>

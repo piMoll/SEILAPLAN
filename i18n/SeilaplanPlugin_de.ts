@@ -192,7 +192,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="244"/>
         <source>am Leerseil</source>
-        <translation type="unfinished">am Leerseil (Grundspannung)</translation>
+        <translation>am Leerseil (Grundspannung)</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="157"/>
@@ -309,13 +309,13 @@
         <location filename="../tools/outputReport.py" line="224"/>
         <source>an nicht befahrbarer Stuetze,</source>
         <translatorcomment>an nicht befahrbarer Stütze,</translatorcomment>
-        <translation type="unfinished">Laufwagen unmittelbar links/rechts bei Stütze</translation>
+        <translation>Laufwagen unmittelbar links/rechts bei Stütze</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="225"/>
         <source>Laufwagen unmittelbar links/rechts bei Stuetze</source>
         <translatorcomment>Laufwagen unmittelbar links/rechts bei Stütze</translatorcomment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="226"/>

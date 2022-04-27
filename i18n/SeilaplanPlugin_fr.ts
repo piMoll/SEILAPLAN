@@ -224,17 +224,17 @@
     <message>
         <location filename="../tools/outputReport.py" line="244"/>
         <source>am Leerseil</source>
-        <translation type="unfinished">au câble non chargé (force de traction initiale)</translation>
+        <translation>au câble non chargé (force de traction initiale)</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="157"/>
         <source>Seilzugkraft an der Anfangsstuetze</source>
-        <translation type="unfinished">Force de traction du câble au point initial</translation>
+        <translation>Force de traction du câble au point initial</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="159"/>
         <source>Seilzugkraft an der Endstuetze</source>
-        <translation type="unfinished">Force de traction du câble au point terminal</translation>
+        <translation>Force de traction du câble au point terminal</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="162"/>
@@ -269,12 +269,12 @@
     <message>
         <location filename="../tools/outputReport.py" line="175"/>
         <source>am Anfangsanker</source>
-        <translation type="unfinished">au point initial</translation>
+        <translation>au point initial</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="177"/>
         <source>am Endanker</source>
-        <translation type="unfinished">au point terminal</translation>
+        <translation>au point terminal</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="180"/>
@@ -347,13 +347,13 @@
         <location filename="../tools/outputReport.py" line="224"/>
         <source>an nicht befahrbarer Stuetze,</source>
         <translatorcomment>sur un support non praticable,</translatorcomment>
-        <translation type="unfinished">chariot directement à gauche/à droite du support</translation>
+        <translation>chariot directement à gauche/à droite du support</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="225"/>
         <source>Laufwagen unmittelbar links/rechts bei Stuetze</source>
         <translatorcomment>chariot directement à gauche/à droite du support</translatorcomment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="226"/>
