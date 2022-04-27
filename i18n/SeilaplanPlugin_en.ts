@@ -227,7 +227,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="244"/>
         <source>am Leerseil</source>
-        <translation>at unloaded skyline (pre-stress tensile force)</translation>
+        <translation>At unloaded skyline (pre-stress tensile force)</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="157"/>
@@ -257,7 +257,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="252"/>
         <source>am Lastseil</source>
-        <translation>at loaded skyline</translation>
+        <translation>At loaded skyline</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="172"/>
@@ -282,7 +282,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="180"/>
         <source>am Lastseil mit Last in Feldmitte</source>
-        <translation>at loaded skyline with load in the middle of the span</translation>
+        <translation>At loaded skyline with load in the middle of the span</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="182"/>
@@ -303,7 +303,7 @@
         <location filename="../tools/outputReport.py" line="195"/>
         <source>an befahrbarer Stuetze, Laufwagen auf Stuetze</source>
         <translatorcomment>at a trafficable support, carriage on saddle</translatorcomment>
-        <translation>carriage on saddle</translation>
+        <translation>Carriage on saddle</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="231"/>
@@ -343,16 +343,9 @@
         <translation>Action on support by load and weight of skyline&amp;mainline</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="224"/>
-        <source>an nicht befahrbarer Stuetze,</source>
-        <translatorcomment>at non trafficable support,</translatorcomment>
-        <translation>carriage directly left/right of support</translation>
-    </message>
-    <message>
         <location filename="../tools/outputReport.py" line="225"/>
         <source>Laufwagen unmittelbar links/rechts bei Stuetze</source>
-        <translatorcomment>carriage directly left/right of support</translatorcomment>
-        <translation></translation>
+        <translation>Carriage directly left/right of support</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="226"/>

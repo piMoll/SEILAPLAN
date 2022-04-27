@@ -224,7 +224,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="244"/>
         <source>am Leerseil</source>
-        <translation>au câble non chargé (force de traction initiale)</translation>
+        <translation>Au câble non chargé (force de traction initiale)</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="157"/>
@@ -254,7 +254,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="252"/>
         <source>am Lastseil</source>
-        <translation>au câble chargé</translation>
+        <translation>Au câble chargé</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="172"/>
@@ -279,7 +279,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="180"/>
         <source>am Lastseil mit Last in Feldmitte</source>
-        <translation>au câble chargé avec charge au milieu de la portée</translation>
+        <translation>Au câble chargé avec charge au milieu de la portée</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="182"/>
@@ -300,7 +300,7 @@
         <location filename="../tools/outputReport.py" line="195"/>
         <source>an befahrbarer Stuetze, Laufwagen auf Stuetze</source>
         <translatorcomment>sur un support praticable, chariot sur l&apos;étrier</translatorcomment>
-        <translation>chariot sur l&apos;étrier</translation>
+        <translation>Chariot sur l&apos;étrier</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="231"/>
@@ -344,16 +344,9 @@
         <translation>Action par la charge et le poids du câble porteur et tracteur</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="224"/>
-        <source>an nicht befahrbarer Stuetze,</source>
-        <translatorcomment>sur un support non praticable,</translatorcomment>
-        <translation>chariot directement à gauche/à droite du support</translation>
-    </message>
-    <message>
         <location filename="../tools/outputReport.py" line="225"/>
         <source>Laufwagen unmittelbar links/rechts bei Stuetze</source>
-        <translatorcomment>chariot directement à gauche/à droite du support</translatorcomment>
-        <translation></translation>
+        <translation>Chariot directement à gauche/à droite du support</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="226"/>
@@ -978,7 +971,7 @@ câble chargé</translation>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="498"/>
         <source>Stuetzenhoehe</source>
-        <translation>Hauteur des supports</translation>
+        <translation>Hauteur</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="499"/>

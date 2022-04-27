@@ -192,7 +192,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="244"/>
         <source>am Leerseil</source>
-        <translation>am Leerseil (Grundspannung)</translation>
+        <translation>Am Leerseil (Grundspannung)</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="157"/>
@@ -222,7 +222,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="252"/>
         <source>am Lastseil</source>
-        <translation>am Lastseil</translation>
+        <translation>Am Lastseil</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="172"/>
@@ -247,7 +247,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="180"/>
         <source>am Lastseil mit Last in Feldmitte</source>
-        <translation>am Lastseil mit Last in Feldmitte</translation>
+        <translation>Am Lastseil mit Last in Feldmitte</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="182"/>
@@ -306,16 +306,9 @@
         <translation>Einwirkung auf Stütze aus Last, Gewicht Trag- und Zugseil</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="224"/>
-        <source>an nicht befahrbarer Stuetze,</source>
-        <translatorcomment>an nicht befahrbarer Stütze,</translatorcomment>
-        <translation>Laufwagen unmittelbar links/rechts bei Stütze</translation>
-    </message>
-    <message>
         <location filename="../tools/outputReport.py" line="225"/>
         <source>Laufwagen unmittelbar links/rechts bei Stuetze</source>
-        <translatorcomment>Laufwagen unmittelbar links/rechts bei Stütze</translatorcomment>
-        <translation></translation>
+        <translation>Laufwagen unmittelbar links/rechts bei Stütze</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="226"/>
@@ -715,7 +708,7 @@ Lastseil</translation>
     <message>
         <location filename="../tools/outputReport.py" line="369"/>
         <source>Grundspannung Tragseil (Anfangssp.)</source>
-        <translation>Tragseilspannkraft (Anfangsspunkt)</translation>
+        <translation>Tragseilspannkraft (Anfangspunkt)</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
@@ -997,7 +990,7 @@ Lastseil</translation>
         <location filename="../gui/ui_adjustmentDialog.py" line="516"/>
         <source>Grundspannung Tragseil (Anfangssp.)</source>
         <translatorcomment>Grundspannung Tragseil (Anfangsspunkt)</translatorcomment>
-        <translation>Tragseilspannkraft (Anfangsspunkt)</translation>
+        <translation>Tragseilspannkraft (Anfangspunkt)</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="517"/>

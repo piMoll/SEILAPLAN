@@ -170,7 +170,7 @@ def generateReportText(confHandler, result, projname):
     str_seil3 = [
         ['', tr('am Lastseil')] + ['']*fieldCount,
         ['', tr('Max. auftretende Seilzugkraft')],
-        ['Tmax', '     ' + tr('am hoechsten Punkt im Seilsystem'),
+        ['Tmax', '     ' + tr('am hoechsten Punkt im Seilsystem') + '           ',
          f"{kraft['MaxSeilzugkraft_L'][0]:.0f} kN"],
         ['Tmax,A', '     ' + tr('am Anfangsanker'),
          f"{kraft['MaxSeilzugkraft_L'][1]:.0f} kN"],
@@ -221,8 +221,8 @@ def generateReportText(confHandler, result, projname):
         newHeader[i+1] = sHeader[a]
         a += 1
     str_stue2 = [
-        ['', tr('an nicht befahrbarer Stuetze,')] + newHeader,
-        ['', '     ' + tr('Laufwagen unmittelbar links/rechts bei Stuetze')] +
+        ['', ''] + newHeader,
+        ['', tr('Laufwagen unmittelbar links/rechts bei Stuetze')] +
         [tr('links'), tr('rechts')] * poleCount,
         ['TCS', tr('Seilzugkraft')] +
         ("{:.0f} kN,"*(poleCount*2)).format(*tuple(
@@ -745,7 +745,7 @@ def generateReport(reportText, outputLoc):
     t_stue3.setStyle(TableStyle(steuStyleHalfCol))
 
     t_wink1 = Table(h_wink, wi_doc, he_rowT)
-    t_wink2 = Table(str_wink, wi_abk + [4*cm] + [None]*fieldCount, 7*he_row)
+    t_wink2 = Table(str_wink, wi_abk + [None] + [None]*fieldCount, 7*he_row)
     t_wink1.setStyle(title_style)
     t_wink2.setStyle(TableStyle(stdStyleB + [
         ('FONT', (1, 0), (1, 0), fontHeader, fontSize),  # heading empty cable
@@ -755,7 +755,7 @@ def generateReport(reportText, outputLoc):
         ('FONT', (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
 
     t_nach1 = Table(h_nach, wi_doc, he_rowT)
-    t_nach2 = Table(str_nach, wi_abk + [6.8*cm] + [None]*fieldCount, len(str_nach) * he_row)
+    t_nach2 = Table(str_nach, wi_abk + [5*cm] + [None]*fieldCount, len(str_nach) * he_row)
     t_nach1.setStyle(title_style)
     t_nach2.setStyle(TableStyle(stdStyleB + [
         ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),  # field header

@@ -230,7 +230,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="244"/>
         <source>am Leerseil</source>
-        <translation>alla fune non caricata (forza di trazione iniziale)</translation>
+        <translation>Alla fune non caricata (forza di trazione iniziale)</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="157"/>
@@ -260,7 +260,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="252"/>
         <source>am Lastseil</source>
-        <translation>alla fune caricata</translation>
+        <translation>Alla fune caricata</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="172"/>
@@ -285,7 +285,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="180"/>
         <source>am Lastseil mit Last in Feldmitte</source>
-        <translation>alla fune caricata con carico in metà della portata</translation>
+        <translation>Alla fune caricata con carico in metà della portata</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="182"/>
@@ -306,7 +306,7 @@
         <location filename="../tools/outputReport.py" line="195"/>
         <source>an befahrbarer Stuetze, Laufwagen auf Stuetze</source>
         <translatorcomment>su un cavalletto carrabile, carrello sulla sella</translatorcomment>
-        <translation>carrello sulla sella</translation>
+        <translation>Carrello sulla sella</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="231"/>
@@ -350,16 +350,9 @@
         <translation>Azione dal carico e dal peso della fune portante e traente</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="224"/>
-        <source>an nicht befahrbarer Stuetze,</source>
-        <translatorcomment>su un cavalletto non carrabile,</translatorcomment>
-        <translation>carello immed. a sinistra/a destra del cavalletto</translation>
-    </message>
-    <message>
         <location filename="../tools/outputReport.py" line="225"/>
         <source>Laufwagen unmittelbar links/rechts bei Stuetze</source>
-        <translatorcomment>carello immed. a sinistra/a destra del cavalletto</translatorcomment>
-        <translation></translation>
+        <translation>Carello immed. a sinistra/a destra del cavalletto</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="226"/>
