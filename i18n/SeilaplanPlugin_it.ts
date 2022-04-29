@@ -2209,6 +2209,8 @@ La griglia viene figurata nel SCR svizzero &apos;LV95&apos; (EPSG:2056). Se vuol
 
 SEILAPLAN calcola, sulla base di un modello digitale del terreno e dei parametri tecnici tra le coordinate di partenza e di fine ben definiti, la disposizione ottimale della linea di gru a cavo. Saranno determinati la posizione e l&apos;altezza dei cavalletti intermedi come pure i parametri i più importanti della linea di gru a cavo.
 
+Tutte le denominazioni personali si applicano allo stesso modo a tutti i generi.
+
 Realizzazione:
 
 Chair of Land Use Engineering

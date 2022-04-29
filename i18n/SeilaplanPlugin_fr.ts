@@ -2212,6 +2212,8 @@ La grille est visualisée dans le SCR suisse &apos;LV95&apos; (EPSG:2056). Si vo
 
 SEILAPLAN calcule, sur la base d&apos;un modèle de terrain digital et des paramètres techniques entre des coordonnées de départ et de fin bien définies, la disposition optimale de la ligne de câble. Il seront déterminés la position et la hauteur des appuis intermédiaires ainsi que les paramètres les plus importants de la ligne de câble.
 
+Toutes les désignations de personnes s&apos;appliquent indifféremment à tous les sexes.
+
 Réalisation:
 
 Chair of Land Use Engineering

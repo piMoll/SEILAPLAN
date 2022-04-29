@@ -385,7 +385,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="281"/>
         <source>Parameterset:</source>
-        <translation>Parameterset:</translation>
+        <translation>Parameter set:</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="591"/>
@@ -629,7 +629,7 @@ loaded skyline</translation>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Hoehe Seilkranmast</source>
-        <translation>Tower height</translation>
+        <translation>Tower height of mobile yarder</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
@@ -649,7 +649,7 @@ loaded skyline</translation>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>einzuhalten ab ... vom Anfangspunkt</source>
-        <translation>to be respectect after ... from start point</translation>
+        <translation>to be respected after ... from start point</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
@@ -659,7 +659,7 @@ loaded skyline</translation>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Gesamtlast</source>
-        <translation>Load weight including the carriage</translation>
+        <translation>Weight of the load incl. carriage</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
@@ -744,7 +744,7 @@ loaded skyline</translation>
     <message>
         <location filename="../tools/outputReport.py" line="364"/>
         <source>Parameterset</source>
-        <translation>Parameterset</translation>
+        <translation>Parameter set</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
@@ -988,7 +988,7 @@ loaded skyline</translation>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="512"/>
         <source>Gesamtlast</source>
-        <translation>Load weight including the carriage</translation>
+        <translation>Weight of the load incl. carriage</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="511"/>
@@ -1654,7 +1654,7 @@ Please change the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="73"/>
         <source>Parameterset auswaehlen</source>
-        <translation>Select a parameterset</translation>
+        <translation>Select a parameter set</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="118"/>
@@ -1922,7 +1922,7 @@ Please change the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1985"/>
         <source>oder Koordinaten der Seillinie manuell angeben:</source>
-        <translation>or insert the coordinates of the cable road manually:</translation>
+        <translation>or enter the coordinates of the cable road manually:</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2015"/>
@@ -2003,7 +2003,7 @@ Please change the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="147"/>
         <source>Parameterset loeschen</source>
-        <translation>Delete parameterset</translation>
+        <translation>Delete parameter set</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2260"/>
@@ -2098,17 +2098,17 @@ to the report)</translation>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="477"/>
         <source>Parameterset loeschen</source>
-        <translation>Delete parameterset</translation>
+        <translation>Delete parameter set</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="457"/>
         <source>Standardparameterset kann nicht geloescht werden.</source>
-        <translation>Standard parameterset cannot be deleted.</translation>
+        <translation>Standard parameter set cannot be deleted.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="465"/>
         <source>Moechten Sie das Parameterset wirklich loeschen?</source>
-        <translation>Do you really want to delete this parameterset?</translation>
+        <translation>Do you really want to delete this parameter set?</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="468"/>
@@ -2123,7 +2123,7 @@ to the report)</translation>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="477"/>
         <source>Ein Fehler ist aufgetreten. Parameterset kann nicht geloescht werden.</source>
-        <translation>An error occured. Parameterset cannot be deleted.</translation>
+        <translation>An error occured. Parameter set cannot be deleted.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="501"/>
@@ -2211,7 +2211,9 @@ The raster is displayed in the Swiss CRS &apos;LV95&apos; (EPSG:2056). To use an
         <translatorcomment>Internet</translatorcomment>
         <translation>SEILAPLAN - Cable road layout planning
 
-Based on a digital terrain model and technical parameters between defined start and end coordinates, SEILAPLAN is calculating the optimal yarding road layout. The position and the height of the supports as well as the most important parameters of the yarding road are determined.
+Based on a digital terrain model and technical parameters between defined start and end coordinates, SEILAPLAN is calculating the optimal cable road layout. The position and the height of the supports as well as the most important parameters of the cable road are determined.
+
+All personal designations apply equally to all genders.
 
 Realization:
 
@@ -2230,7 +2232,7 @@ People involved:
 Leo Bont, Hans Rudolf Heinimann (Concept, Mechanics)
 Patricia Moll (Implementation in Python / QGIS)
 
-SEILAPLAN is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or (at your option) any later version (www.gnu.org/licenses).
+SEILAPLAN is a free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either with version 2 of the License, or any later published version of your choice (www.gnu.org/licenses).
 
 Path to documentation:
 {}</translation>
