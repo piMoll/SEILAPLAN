@@ -25,6 +25,7 @@ import numpy
 import time
 import json
 
+from qgis.PyQt.QtCore import QSettings
 from qgis.core import QgsSettings
 
 from .configHandler_project import ProjectConfHandler
@@ -39,9 +40,8 @@ class ConfigHandler(object):
     
     DEFAULT_SAVE_PATH = os.path.join(os.path.expanduser('~'), 'Seilaplan')
     SETTING_PREFIX = 'PluginSeilaplan/output/'
-    TEMPLATES_URL = 'https://raw.githubusercontent.com/piMoll/SEILAPLAN/dev/templates/'
+    TEMPLATES_URL = 'https://raw.githubusercontent.com/piMoll/SEILAPLAN/master/templates/'
     TEMPLATE_FILENAME = {
-        # TODO: Insert translated file names
         'excelProtocol': {
             'de': 'DE_Vorlage_Feldaufnahmeprotokoll.xlsx',
             'en': 'EN_Template_field_survey_protocol.xlsx',
@@ -315,11 +315,13 @@ class ConfigHandler(object):
         except KeyError:
             return None
     
-    def getTemplateUrl(self, template, locale):
-        if locale and len(locale.name()) >= 2:
-            locale = locale.name()[:2].lower()
-        if locale not in self.TEMPLATE_FILENAME[template]:
-            locale = 'en'
+    def getTemplateUrl(self, template):
+        locale = 'en'
+        qgisLocale = QSettings().value("locale/userLocale")
+        if qgisLocale and len(qgisLocale) >= 2:
+            locale = qgisLocale[0:2].lower()
+            if locale not in self.TEMPLATE_FILENAME[template]:
+                locale = 'en'
         filename = self.TEMPLATE_FILENAME[template][locale]
         url = self.TEMPLATES_URL + filename
         return url, filename

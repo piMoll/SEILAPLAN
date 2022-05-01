@@ -119,7 +119,7 @@ class SurveyImportDialog(QDialog, Ui_SurveyImportDialogUI):
         folder = QFileDialog.getExistingDirectory(self, title, path,
                                                   QFileDialog.ShowDirsOnly)
         if folder:
-            templateUrl, filename = self.confHandler.getTemplateUrl(templateName, self.locale())
+            templateUrl, filename = self.confHandler.getTemplateUrl(templateName)
             savepath = os.path.join(folder, filename)
             filefetcher = FileFetcher(templateUrl, savepath)
 
