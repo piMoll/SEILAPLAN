@@ -2405,6 +2405,16 @@ Pfad zu Dokumentation:
         <source>Download Vorlage</source>
         <translation>Download Vorlage</translation>
     </message>
+    <message>
+        <location filename="../gui/surveyImportDialog.py" line="65"/>
+        <source>Import</source>
+        <translation>Import</translation>
+    </message>
+    <message>
+        <location filename="../gui/surveyImportDialog.py" line="66"/>
+        <source>Abbrechen</source>
+        <translation>Abbrechen</translation>
+    </message>
 </context>
 <context>
     <name>SurveyImportDialogUI</name>

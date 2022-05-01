@@ -2426,6 +2426,16 @@ Il est recherché la solution qui, en première priorité, minimalise le nombre 
         <source>Download Vorlage</source>
         <translation>Télécharger le modèle</translation>
     </message>
+    <message>
+        <location filename="../gui/surveyImportDialog.py" line="65"/>
+        <source>Import</source>
+        <translation>Importer</translation>
+    </message>
+    <message>
+        <location filename="../gui/surveyImportDialog.py" line="66"/>
+        <source>Abbrechen</source>
+        <translation>Annuler</translation>
+    </message>
 </context>
 <context>
     <name>SurveyImportDialogUI</name>

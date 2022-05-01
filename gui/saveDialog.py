@@ -54,8 +54,8 @@ class DialogSaveParamset(QDialog):
         
         # Create Ok/Cancel Button and connect signal
         buttonBox = QDialogButtonBox(main_widget)
-        buttonBox.setStandardButtons(QDialogButtonBox.Ok |
-                                     QDialogButtonBox.Cancel)
+        buttonBox.setStandardButtons(QDialogButtonBox.Cancel |
+                                     QDialogButtonBox.Ok)
         buttonBox.button(QDialogButtonBox.Ok).setText(self.tr("OK"))
         buttonBox.button(QDialogButtonBox.Cancel).setText(self.tr("Abbrechen"))
         buttonBox.accepted.connect(self.apply)

@@ -60,8 +60,10 @@ class SurveyImportDialog(QDialog, Ui_SurveyImportDialogUI):
         self.buttonTemplateExcelProtocol.clicked.connect(
             lambda: self.onDownloadTemplate('excelProtocol'))
 
-        self.buttonBox.accepted.connect(self.onOk)
+        self.buttonBox.accepted.connect(self.onImport)
         self.buttonBox.rejected.connect(self.onCancel)
+        self.buttonBox.button(QDialogButtonBox.Ok).setText(self.tr('Import'))
+        self.buttonBox.button(QDialogButtonBox.Cancel).setText(self.tr('Abbrechen'))
     
     def onSelectSurveyType(self):
         newSurveyType = None
@@ -131,7 +133,7 @@ class SurveyImportDialog(QDialog, Ui_SurveyImportDialogUI):
             QMessageBox.information(self, self.tr('Download Vorlage'),
                                     msg, QMessageBox.Ok)
     
-    def onOk(self):
+    def onImport(self):
         if self.surveyType and self.filePath:
             self.doImport = True
     
