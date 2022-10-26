@@ -183,6 +183,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         
         self.cableline = self.result['cableline']
         self.profile.updateProfileAnalysis(self.cableline)
+        self.result['maxDistToGround'] = self.cableline['maxDistToGround']
         
         self.updateRecalcStatus(status)
         
@@ -431,6 +432,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         
         # Ground clearance
         self.profile.updateProfileAnalysis(self.cableline)
+        self.result['maxDistToGround'] = self.cableline['maxDistToGround']
         
         # Update Plot
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
