@@ -161,7 +161,7 @@ def createProfileLayers(heightSource):
     text_format.setBuffer(buffer_settings)
     layer_settings.setFormat(text_format)
     layer_settings.fieldName = "nr"
-    layer_settings.placement = 2
+    layer_settings.Placement = 2
     layer_settings.enabled = True
     layer_settings = QgsVectorLayerSimpleLabeling(layer_settings)
     surveyPointLayer.setLabelsEnabled(True)
