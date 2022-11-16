@@ -26,8 +26,16 @@ from qgis.PyQt.QtCore import QVariant, QCoreApplication
 from qgis.core import (QgsRasterLayer, QgsProcessing, QgsProcessingException,
                        QgsWkbTypes, QgsFields, QgsField, QgsVectorFileWriter,
                        QgsFeature, QgsGeometry, QgsCoordinateTransform, QgsPoint,
-                       QgsCoordinateReferenceSystem, QgsProject)
+                       QgsCoordinateReferenceSystem, QgsProject,
+                       QgsCoordinateTransformContext)
 from processing import run
+# Checking for deprecations needs a deprecation check...
+try:
+    from qgis.core.Qgis import QGIS_VERSION_INT
+except ImportError as e:
+    from qgis.core import Qgis
+    QGIS_VERSION_INT = Qgis.versionInt()
+
 
 GPS_CRS = 'EPSG:4326'
 CH_CRS = 'EPSG:2056'
@@ -62,73 +70,90 @@ def organizeDataForExport(poles, cableline):
     }
 
 
-def exportToShape(geodata, epsg, savePath):
+def writeGeodata(geodata, geoFormat, epsg, savePath):
     spatialRef = QgsCoordinateReferenceSystem(epsg)
-    geoFormat = 'ESRI Shapefile'
+    
+    if geoFormat == 'SHP':
+        geoFormat = 'ESRI Shapefile'
+        stuePath = os.path.join(savePath, tr('stuetzen') + '.shp')
+        seilLeerPath = os.path.join(savePath, tr('leerseil') + '.shp')
+        seilLastPath = os.path.join(savePath, tr('lastseil') + '.shp')
+        checkShpPath(stuePath)
+        checkShpPath(seilLeerPath)
+        checkShpPath(seilLastPath)
+    
+    elif geoFormat == 'KML':
+        stuePath = os.path.join(savePath, 'kml_' + tr('stuetzen') + '.kml')
+        seilLeerPath = os.path.join(savePath, 'kml_' + tr('leerseil') + '.kml')
+        seilLastPath = os.path.join(savePath, 'kml_' + tr('lastseil') + '.kml')
+    
+    elif geoFormat == 'DXF':
+        stuePath = os.path.join(savePath, 'dxf_' + tr('stuetzen') + '.dxf')
+        seilLeerPath = os.path.join(savePath, 'dxf_' + tr('leerseil') + '.dxf')
+        seilLastPath = os.path.join(savePath, 'dxf_' + tr('lastseil') + '.dxf')
+    
+    else:
+        raise Exception(f'Writing to {geoFormat} not implemented')
+    
+    # Check if qgis supports the requested geodata file type
+    isGeoFormatAvailable = False
+    for availableFormat in QgsVectorFileWriter.supportedFiltersAndFormats():
+        if availableFormat.driverName == geoFormat:
+            isGeoFormatAvailable = True
+            break
+    if not isGeoFormatAvailable:
+        errorMsg = tr('Die Ausgabe in _geoFormat_ wird von dieser QGIS-Installation nicht unterstuetzt')
+        raise Exception(errorMsg.replace('_geoFormat_', geoFormat))
 
     # Save pole positions
-    stuePath = os.path.join(savePath, tr('stuetzen') + '.shp')
-    checkShpPath(stuePath)
     savePointGeometry(stuePath, geodata['poleGeo'], geodata['poleName'],
                       spatialRef, geoFormat)
-    
     # Save empty cable line
-    seilLeerPath = os.path.join(savePath, tr('leerseil') + '.shp')
-    checkShpPath(seilLeerPath)
     saveLineGeometry(seilLeerPath, geodata['emptyLine'], spatialRef, geoFormat)
-
     # Save cable line under load
-    seilLastPath = os.path.join(savePath, tr('lastseil') + '.shp')
-    checkShpPath(seilLastPath)
     saveLineGeometry(seilLastPath, geodata['loadLine'], spatialRef, geoFormat)
-
+    
     geoOutput = {'stuetzen': stuePath,
                  'leerseil': seilLeerPath,
                  'lastseil': seilLastPath}
     return geoOutput
 
 
-def exportToKML(geodata, epsg, savePath):
-    spatialRef = QgsCoordinateReferenceSystem(epsg)
-    geoFormat = 'KML'
-    
-    # Save pole positions
-    stuePath = os.path.join(savePath, 'kml_' + tr('stuetzen') + '.kml')
-    savePointGeometry(stuePath, geodata['poleGeo'], geodata['poleName'],
-                      spatialRef, geoFormat)
-    
-    # Save empty cable line
-    seilLeerPath = os.path.join(savePath, 'kml_' + tr('leerseil') + '.kml')
-    saveLineGeometry(seilLeerPath, geodata['emptyLine'], spatialRef, geoFormat)
-    
-    # Save cable line under load
-    seilLastPath = os.path.join(savePath, 'kml_' + tr('lastseil') + '.kml')
-    saveLineGeometry(seilLastPath, geodata['loadLine'], spatialRef, geoFormat)
-
-
-def savePointGeometry(path, geodata, label, spatialRef, geoFormat):
+def savePointGeometry(filePath, geodata, label, spatialRef, geoFormat):
     """
     :param label: Name of poles
-    :param path: Location of shape file
+    :param filePath: Location of shape file
     :param geodata: x, y and z coordinate of poles
     :param spatialRef: current spatial reference of qgis project
     :param geoFormat: Geodata export format
     """
-
-    # Define fields for feature attributes. A QgsFields object is needed
-    stueNrName = tr('bezeichnung')
     fields = QgsFields()
-    fields.append(QgsField(stueNrName, QVariant.String, 'text', 254))
-    fields.append(QgsField('x', QVariant.Double))
-    fields.append(QgsField('y', QVariant.Double))
-    fields.append(QgsField('z', QVariant.Double))
-    fields.append(QgsField('h', QVariant.Double))
-    writer = QgsVectorFileWriter(path, 'UTF-8', fields, QgsWkbTypes.PointZ,
-                                 spatialRef, geoFormat)
+    stueNrName = tr('bezeichnung')
+    
+    if geoFormat != 'DXF':
+        # Define fields for feature attributes, DXF-format does not support
+        #  fields
+        fields.append(QgsField(stueNrName, QVariant.String, 'text', 254))
+        fields.append(QgsField('x', QVariant.Double))
+        fields.append(QgsField('y', QVariant.Double))
+        fields.append(QgsField('z', QVariant.Double))
+        fields.append(QgsField('h', QVariant.Double))
+
+    if QGIS_VERSION_INT >= 31030:
+        # Use newer QgsVectorFileWriter.create() function
+        options = QgsVectorFileWriter.SaveVectorOptions()
+        options.driverName = geoFormat
+        options.includeZ = True
+        options.fileEncoding = 'UTF-8'
+        writer = QgsVectorFileWriter.create(
+            filePath, fields, QgsWkbTypes.PointZ, spatialRef,
+            QgsCoordinateTransformContext(), options)
+    else:
+        writer = QgsVectorFileWriter(filePath, 'UTF-8', fields,
+            QgsWkbTypes.PointZ, spatialRef, geoFormat)
 
     if writer.hasError() != QgsVectorFileWriter.NoError:
-        # TODO
-        raise Exception('Vector Writer')
+        raise Exception(f'{writer.errorMessage()} ({geoFormat})')
     
     features = []
     for idx, coords in enumerate(geodata):
@@ -136,11 +161,13 @@ def savePointGeometry(path, geodata, label, spatialRef, geoFormat):
         feature.setFields(fields)
         feature.setGeometry(QgsPoint(coords[0], coords[1], coords[2]))
         feature.setId(idx)
-        feature.setAttribute(stueNrName, label[idx])
-        feature.setAttribute('x', float(coords[0]))
-        feature.setAttribute('y', float(coords[1]))
-        feature.setAttribute('z', float(coords[2]))
-        feature.setAttribute('h', float(coords[3]))
+        if geoFormat != 'DXF':
+            # DXF-Format does not support fields / attributes
+            feature.setAttribute(stueNrName, label[idx])
+            feature.setAttribute('x', float(coords[0]))
+            feature.setAttribute('y', float(coords[1]))
+            feature.setAttribute('z', float(coords[2]))
+            feature.setAttribute('h', float(coords[3]))
         features.append(feature)
 
     writer.addFeatures(features)
@@ -148,21 +175,30 @@ def savePointGeometry(path, geodata, label, spatialRef, geoFormat):
     del writer
 
 
-def saveLineGeometry(shapePath, geodata, spatialRef, geoFormat):
+def saveLineGeometry(filePath, geodata, spatialRef, geoFormat):
     """
-    :param shapePath: Location of shape file
+    :param filePath: Location of shape file
     :param geodata: x, y and z coordinate of line
     :param spatialRef: current spatial reference of qgis project
     :param geoFormat: Geodata export format
     """
     # Define fields for feature attributes. A QgsFields object is needed
     fields = QgsFields()
-    writer = QgsVectorFileWriter(shapePath, 'UTF-8', fields, QgsWkbTypes.LineStringZ,
-                                 spatialRef, geoFormat)
+    if QGIS_VERSION_INT >= 31030:
+        # Use newer QgsVectorFileWriter.create() function
+        options = QgsVectorFileWriter.SaveVectorOptions()
+        options.driverName = geoFormat
+        options.includeZ = True
+        options.fileEncoding = 'UTF-8'
+        writer = QgsVectorFileWriter.create(
+            filePath, fields, QgsWkbTypes.LineStringZ, spatialRef,
+            QgsCoordinateTransformContext(), options)
+    else:
+        writer = QgsVectorFileWriter(filePath, 'UTF-8', fields,
+            QgsWkbTypes.LineStringZ, spatialRef, geoFormat)
 
     if writer.hasError() != QgsVectorFileWriter.NoError:
-        # TODO
-        raise Exception('Vector Writer')
+        raise Exception(f'{writer.errorMessage()} ({geoFormat})')
 
     lineVertices = []
     for coords in geodata:
@@ -178,7 +214,7 @@ def saveLineGeometry(shapePath, geodata, spatialRef, geoFormat):
 
 
 def checkShpPath(path):
-    """Deletes remains of earlier shapefiles. Otherwise these files can
+    """Deletes remains of earlier shapefiles. Otherwise, these files can
     interact with new shapefiles (e.g. old indexes)."""
     fileEndings = ['.shp', '.dbf', '.prj', '.shx']
     path = path.replace('.shp', '')
@@ -303,7 +339,7 @@ def latLonToUtmCode(latitude, longitude):
         raise Exception("Latitude outside of valid range (-90 to 90 degrees).")
 
     if longitude < -180 or longitude > 360:
-        return Exception("Longitude outside of valid range (-180 to 360 degrees).")
+        raise Exception("Longitude outside of valid range (-180 to 360 degrees).")
 
     # UTM zone
     if latitude <= -80 or latitude >= 84:

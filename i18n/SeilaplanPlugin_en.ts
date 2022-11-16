@@ -43,6 +43,11 @@
         <translation>loadedskyline</translation>
     </message>
     <message>
+        <location filename="../tools/outputGeo.py" line="200"/>
+        <source>Die Ausgabe in _geoFormat_ wird von dieser QGIS-Installation nicht unterstuetzt</source>
+        <translation>Writing to _geoFormat_ not supported by this QGIS installation</translation>
+    </message>
+    <message>
         <location filename="../tools/outputGeo.py" line="119"/>
         <source>bezeichnung</source>
         <translatorcomment>Internet</translatorcomment>
@@ -861,6 +866,16 @@ loaded skyline</translation>
         <translation>Diagram.pdf</translation>
     </message>
     <message>
+        <location filename="../gui/adjustmentDialog.py" line="564"/>
+        <source>Unerwarteter Fehler</source>
+        <translation>Unexpected error</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="565"/>
+        <source>Erstellen der Geodaten nicht moeglich</source>
+        <translation>Creating geodata not possible</translation>
+    </message>
+    <message>
         <location filename="../gui/adjustmentDialog.py" line="566"/>
         <source>Nicht gespeicherte Aenderungen</source>
         <translation>Unsaved changes</translation>
@@ -1210,18 +1225,8 @@ terrain shape</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="183"/>
-        <source>Shape-Daten der Stuetzen und Seillinie</source>
-        <translation>Shape files of supports and cable road</translation>
-    </message>
-    <message>
-        <location filename="../gui/saveDialog.py" line="184"/>
-        <source>KML-Daten der Stuetzen und Seillinie</source>
-        <translation>KML data of supports and cable road</translation>
-    </message>
-    <message>
-        <location filename="../gui/saveDialog.py" line="185"/>
-        <source>Koordinaten-Tabellen der Stuetzen und Seillinie</source>
-        <translation>Coordinate tables of supports and cable road</translation>
+        <source>Geodaten (Stuetzen, Seillinie, Gelaende)</source>
+        <translation>Geodata (supports, cable road, terrain)</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="198"/>
@@ -2394,7 +2399,7 @@ The algorithm calculates a solution, which in first priority is minimizing the n
     <message>
         <location filename="../gui/surveyImportDialog.py" line="88"/>
         <source>csv Dateien (*.csv)</source>
-        <translation>csv file (*.csv)</translation>
+        <translation>csv file (*.csv *.CSV)</translation>
     </message>
     <message>
         <location filename="../gui/surveyImportDialog.py" line="90"/>

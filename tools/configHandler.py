@@ -68,6 +68,7 @@ class ConfigHandler(object):
         self.project = ProjectConfHandler(self.params)
         
         # Load parameter definitions and predefined parameter sets
+        self.qgsSettingsMigrator()
         self.loadUserSettings()
         self.params.initParameters()
         self.params.loadPredefinedParametersets()
@@ -238,22 +239,22 @@ class ConfigHandler(object):
     def loadUserSettings(self):
         """Gets the output options and earlier used output paths and returns
         them."""
-        
         # Read out output settings from QGIS settings, provide default value
         #  if settings key does not exist
         s = QgsSettings()
         self.outputOptions = {
             'report': s.value(f'{self.SETTING_PREFIX}report', 0, int),
-            'plot': s.value(f'{self.SETTING_PREFIX}plot', 1, int),
-            'geodata': s.value(f'{self.SETTING_PREFIX}geodata', 0, int),
-            'coords': s.value(f'{self.SETTING_PREFIX}coords', 0, int),
             'shortReport': s.value(f'{self.SETTING_PREFIX}shortReport', 1, int),
+            'plot': s.value(f'{self.SETTING_PREFIX}plot', 1, int),
+            'shape': s.value(f'{self.SETTING_PREFIX}shape', 0, int),
+            'csv': s.value(f'{self.SETTING_PREFIX}csv', 0, int),
             'kml': s.value(f'{self.SETTING_PREFIX}kml', 0, int),
+            'dxf': s.value(f'{self.SETTING_PREFIX}dxf', 0, int),
         }
         for path in [
-            s.value(f'{self.SETTING_PREFIX}savePath1'),
-            s.value(f'{self.SETTING_PREFIX}savePath2'),
-            s.value(f'{self.SETTING_PREFIX}savePath3')
+                s.value(f'{self.SETTING_PREFIX}savePath1'),
+                s.value(f'{self.SETTING_PREFIX}savePath2'),
+                s.value(f'{self.SETTING_PREFIX}savePath3')
         ]:
     
             if path and os.path.exists(path):
@@ -281,11 +282,12 @@ class ConfigHandler(object):
         
         s = QgsSettings()
         s.setValue(f'{self.SETTING_PREFIX}report', self.outputOptions['report'])
-        s.setValue(f'{self.SETTING_PREFIX}plot', self.outputOptions['plot'])
-        s.setValue(f'{self.SETTING_PREFIX}geodata', self.outputOptions['geodata'])
-        s.setValue(f'{self.SETTING_PREFIX}coords', self.outputOptions['coords'])
         s.setValue(f'{self.SETTING_PREFIX}shortReport', self.outputOptions['shortReport'])
+        s.setValue(f'{self.SETTING_PREFIX}plot', self.outputOptions['plot'])
+        s.setValue(f'{self.SETTING_PREFIX}shape', self.outputOptions['shape'])
+        s.setValue(f'{self.SETTING_PREFIX}csv', self.outputOptions['csv'])
         s.setValue(f'{self.SETTING_PREFIX}kml', self.outputOptions['kml'])
+        s.setValue(f'{self.SETTING_PREFIX}dxf', self.outputOptions['dxf'])
         if len(self.commonPaths) > 0:
             s.setValue(f'{self.SETTING_PREFIX}savePath1', self.commonPaths[0])
         if len(self.commonPaths) > 1:
@@ -372,6 +374,26 @@ class ConfigHandler(object):
     def reset(self):
         self.project.reset()
         self.params.reset()
+    
+    def qgsSettingsMigrator(self):
+        """Migrates settings to be up-to-date with the current Seilaplan
+        version"""
+        s = QgsSettings()
+        migrations = [
+            {'old': 'coords', 'new': 'csv', 'default': 0},
+            {'old': 'geodata', 'new': 'shape', 'default': 0},
+        ]
+        
+        for migration in migrations:
+            newVal = s.value(f"{self.SETTING_PREFIX}{migration['new']}", -1, int)
+            if newVal == -1:
+                # New value not there yet, migrate!
+                oldVal = s.value(f"{self.SETTING_PREFIX}{migration['old']}",
+                                 migration['default'], int)
+                # Update settings
+                s.setValue(f"{self.SETTING_PREFIX}{migration['new']}", oldVal)
+                # Delete old key
+                s.remove(f"{self.SETTING_PREFIX}{migration['old']}")
 
 
 class OwnJsonEncoder(json.JSONEncoder):

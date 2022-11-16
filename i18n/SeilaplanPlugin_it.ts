@@ -41,6 +41,11 @@
         <translation>funecaricata</translation>
     </message>
     <message>
+        <location filename="../tools/outputGeo.py" line="200"/>
+        <source>Die Ausgabe in _geoFormat_ wird von dieser QGIS-Installation nicht unterstuetzt</source>
+        <translation>L'esportazione in _geoFormat_ non è supportata da questa installazione di QGIS</translation>
+    </message>
+    <message>
         <location filename="../tools/outputGeo.py" line="119"/>
         <source>bezeichnung</source>
         <translatorcomment>Fritz</translatorcomment>
@@ -861,6 +866,16 @@ fune caricata</translation>
         <translation>Grafico.pdf</translation>
     </message>
     <message>
+        <location filename="../gui/adjustmentDialog.py" line="564"/>
+        <source>Unerwarteter Fehler</source>
+        <translation>Errore inaspettato</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="565"/>
+        <source>Erstellen der Geodaten nicht moeglich</source>
+        <translation>Non è possibile creare i dati geografici</translation>
+    </message>
+    <message>
         <location filename="../gui/adjustmentDialog.py" line="566"/>
         <source>Nicht gespeicherte Aenderungen</source>
         <translation>Modificazioni non salvate</translation>
@@ -1202,18 +1217,8 @@ dopo Zweifel</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="183"/>
-        <source>Shape-Daten der Stuetzen und Seillinie</source>
-        <translation>Dati dei cavalletti e della linea di gru a cavo nel formato shape</translation>
-    </message>
-    <message>
-        <location filename="../gui/saveDialog.py" line="184"/>
-        <source>KML-Daten der Stuetzen und Seillinie</source>
-        <translation>Dati dei cavalletti e della linea di gru a cavo nel formato KML</translation>
-    </message>
-    <message>
-        <location filename="../gui/saveDialog.py" line="185"/>
-        <source>Koordinaten-Tabellen der Stuetzen und Seillinie</source>
-        <translation>Tabella delle coordinate dei cavalletti et della linea di gru a cavo</translation>
+        <source>Geodaten (Stuetzen, Seillinie, Gelaende)</source>
+        <translation>Dati geografici (avalletti, linea di gru a cavo, linea del terreno)</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="198"/>
@@ -2391,7 +2396,7 @@ C&apos;è cercato la soluzione che, in prima priorità, minimizza il numero dei 
     <message>
         <location filename="../gui/surveyImportDialog.py" line="88"/>
         <source>csv Dateien (*.csv)</source>
-        <translation>file csv (*.csv)</translation>
+        <translation>file csv (*.csv *.CSV)</translation>
     </message>
     <message>
         <location filename="../gui/surveyImportDialog.py" line="90"/>

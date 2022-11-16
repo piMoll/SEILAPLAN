@@ -177,20 +177,25 @@ class DialogOutputOptions(QDialog):
         hbox2.addWidget(openButton)
         # Create checkboxes
         questionLabel = QLabel(self.tr('Welche Produkte sollen erzeugt werden?'))
+        questionLabel.setStyleSheet('font-weight: bold;')
         self.checkBoxShortReport = QCheckBox(self.tr('Kurzbericht'))
         self.checkBoxReport = QCheckBox(self.tr('Technischer Bericht'))
         self.checkBoxPlot = QCheckBox(self.tr('Diagramm'))
-        self.checkBoxGeodata = QCheckBox(self.tr('Shape-Daten der Stuetzen und Seillinie'))
-        self.checkBoxKML = QCheckBox(self.tr('KML-Daten der Stuetzen und Seillinie'))
-        self.checkBoxCoords = QCheckBox(self.tr('Koordinaten-Tabellen der Stuetzen und Seillinie'))
+        geodataLabel = QLabel(self.tr('Geodaten (Stuetzen, Seillinie, Gelaende)'))
+        geodataLabel.setStyleSheet('padding-top: 10px;')
+        self.checkBoxCsv = QCheckBox('CSV')
+        self.checkBoxShape = QCheckBox('ESRI Shapefile')
+        self.checkBoxKML = QCheckBox('KML')
+        self.checkBoxDXF = QCheckBox('DXF')
         
         # Set tick correctly
         self.checkBoxShortReport.setChecked(self.confHandler.outputOptions['shortReport'])
         self.checkBoxReport.setChecked(self.confHandler.outputOptions['report'])
         self.checkBoxPlot.setChecked(self.confHandler.outputOptions['plot'])
-        self.checkBoxGeodata.setChecked(self.confHandler.outputOptions['geodata'])
+        self.checkBoxCsv.setChecked(self.confHandler.outputOptions['csv'])
+        self.checkBoxShape.setChecked(self.confHandler.outputOptions['shape'])
         self.checkBoxKML.setChecked(self.confHandler.outputOptions['kml'])
-        self.checkBoxCoords.setChecked(self.confHandler.outputOptions['coords'])
+        self.checkBoxDXF.setChecked(self.confHandler.outputOptions['dxf'])
         # Create Ok/Cancel Button and connect signal
         buttonBox = QDialogButtonBox(main_widget)
         buttonBox.setStandardButtons(QDialogButtonBox.Save |
@@ -208,9 +213,14 @@ class DialogOutputOptions(QDialog):
         container.addWidget(self.checkBoxShortReport)
         container.addWidget(self.checkBoxReport)
         container.addWidget(self.checkBoxPlot)
-        container.addWidget(self.checkBoxGeodata)
-        container.addWidget(self.checkBoxKML)
-        container.addWidget(self.checkBoxCoords)
+        container.addWidget(geodataLabel)
+        vboxGeodata = QVBoxLayout()
+        vboxGeodata.setContentsMargins(20, 0, 0, 0)
+        vboxGeodata.addWidget(self.checkBoxShape)
+        vboxGeodata.addWidget(self.checkBoxCsv)
+        vboxGeodata.addWidget(self.checkBoxKML)
+        vboxGeodata.addWidget(self.checkBoxDXF)
+        container.addLayout(vboxGeodata)
         container.addWidget(buttonBox)
         container.setAlignment(Qt.AlignLeft)
         self.setLayout(container)
@@ -257,11 +267,12 @@ class DialogOutputOptions(QDialog):
         # Save checkbox status
         options = {
             'report': int(self.checkBoxReport.isChecked()),
-            'plot': int(self.checkBoxPlot.isChecked()),
-            'geodata': int(self.checkBoxGeodata.isChecked()),
-            'coords': int(self.checkBoxCoords.isChecked()),
             'shortReport': int(self.checkBoxShortReport.isChecked()),
+            'plot': int(self.checkBoxPlot.isChecked()),
+            'csv': int(self.checkBoxCsv.isChecked()),
+            'shape': int(self.checkBoxShape.isChecked()),
             'kml': int(self.checkBoxKML.isChecked()),
+            'dxf': int(self.checkBoxDXF.isChecked()),
         }
         # Update project name
         self.confHandler.project.setProjectName(self.projectField.text())

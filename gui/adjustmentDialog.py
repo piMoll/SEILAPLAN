@@ -40,7 +40,7 @@ from ..tools.calcThreshold import ThresholdUpdater
 from ..tools.outputReport import generateReportText, generateReport, \
     createOutputFolder, generateShortReport
 from ..tools.outputGeo import organizeDataForExport, addToMap, \
-    generateCoordTable, exportToShape, exportToKML
+    generateCoordTable, writeGeodata
 
 
 class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
@@ -538,26 +538,37 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             printPlot.printToPdf(plotSavePath, projName, self.poles.poles)
         
         # Generate geo data
-        if self.confHandler.getOutputOption('geodata') \
-                or self.confHandler.getOutputOption('kml'):
+        if (self.confHandler.getOutputOption('csv') or
+                self.confHandler.outputOptions['shape'] or
+                self.confHandler.outputOptions['kml'] or
+                self.confHandler.outputOptions['dxf']):
+            
             # Put geo data in separate sub folder
             savePath = os.path.join(outputLoc, 'geodata')
             os.makedirs(savePath)
             epsg = project.heightSource.spatialRef
             geodata = organizeDataForExport(self.poles.poles, self.cableline)
             
-            if self.confHandler.getOutputOption('geodata'):
-                shapeFiles = exportToShape(geodata, epsg, savePath)
-                addToMap(shapeFiles, projName)
-            if self.confHandler.getOutputOption('kml'):
-                exportToKML(geodata, epsg, savePath)
-        
-        # Generate coordinate tables
-        if self.confHandler.getOutputOption('coords'):
-            generateCoordTable(self.cableline, self.profile, self.poles.poles,
-                               outputLoc)
+            try:
+                if self.confHandler.getOutputOption('csv'):
+                    generateCoordTable(self.cableline, self.profile,
+                        self.poles.poles, outputLoc)
+                if self.confHandler.getOutputOption('shape'):
+                    shapeFiles = writeGeodata(geodata, 'SHP', epsg, savePath)
+                    addToMap(shapeFiles, projName)
+                if self.confHandler.getOutputOption('kml'):
+                    writeGeodata(geodata, 'KML', epsg, savePath)
+                if self.confHandler.getOutputOption('dxf'):
+                    writeGeodata(geodata, 'DXF', epsg, savePath)
+            except Exception as e:
+                title = self.tr('Unerwarteter Fehler')
+                msg = f"{self.tr('Erstellen der Geodaten nicht moeglich')}:\n{e}"
+                self.showMessage(title, msg)
         
         self.updateRecalcStatus('saveDone')
+    
+    def showMessage(self, title, message):
+        QMessageBox.critical(self, title, message, QMessageBox.Ok)
     
     def closeEvent(self, event):
         if self.isRecalculating or self.configurationHasChanged:

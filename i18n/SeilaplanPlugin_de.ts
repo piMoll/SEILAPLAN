@@ -19,6 +19,11 @@
         <translation>lastseil</translation>
     </message>
     <message>
+        <location filename="../tools/outputGeo.py" line="200"/>
+        <source>Die Ausgabe in _geoFormat_ wird von dieser QGIS-Installation nicht unterstuetzt</source>
+        <translation>Die Ausgabe in _geoFormat_ wird von dieser QGIS-Installation nicht unterstützt</translation>
+    </message>
+    <message>
         <location filename="../tools/outputGeo.py" line="119"/>
         <source>bezeichnung</source>
         <translation>bez</translation>
@@ -848,6 +853,16 @@ Lastseil</translation>
         <translation>Diagramm.pdf</translation>
     </message>
     <message>
+        <location filename="../gui/adjustmentDialog.py" line="564"/>
+        <source>Unerwarteter Fehler</source>
+        <translation>Unerwarteter Fehler</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="565"/>
+        <source>Erstellen der Geodaten nicht moeglich</source>
+        <translation>Erstellen der Geodaten nicht möglich</translation>
+    </message>
+    <message>
         <location filename="../gui/adjustmentDialog.py" line="566"/>
         <source>Nicht gespeicherte Aenderungen</source>
         <translation>Nicht gespeicherte Änderungen</translation>
@@ -1189,18 +1204,8 @@ nach Zweifel</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="183"/>
-        <source>Shape-Daten der Stuetzen und Seillinie</source>
-        <translation>Shape-Daten der Stützen und Seillinie</translation>
-    </message>
-    <message>
-        <location filename="../gui/saveDialog.py" line="184"/>
-        <source>KML-Daten der Stuetzen und Seillinie</source>
-        <translation>KML-Daten der Stützen und Seillinie</translation>
-    </message>
-    <message>
-        <location filename="../gui/saveDialog.py" line="185"/>
-        <source>Koordinaten-Tabellen der Stuetzen und Seillinie</source>
-        <translation>Koordinaten-Tabellen der Stützen und Seillinie</translation>
+        <source>Geodaten (Stuetzen, Seillinie, Gelaende)</source>
+        <translation>Geodaten (Stützen, Seillinie, Gelände)</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="198"/>
@@ -2373,7 +2378,7 @@ Pfad zu Dokumentation:
     <message>
         <location filename="../gui/surveyImportDialog.py" line="88"/>
         <source>csv Dateien (*.csv)</source>
-        <translation>csv Dateien (*.csv)</translation>
+        <translation>csv Dateien (*.csv *.CSV)</translation>
     </message>
     <message>
         <location filename="../gui/surveyImportDialog.py" line="90"/>

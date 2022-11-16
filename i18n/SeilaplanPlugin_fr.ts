@@ -42,6 +42,11 @@
         <translation>cablecharge</translation>
     </message>
     <message>
+        <location filename="../tools/outputGeo.py" line="200"/>
+        <source>Die Ausgabe in _geoFormat_ wird von dieser QGIS-Installation nicht unterstuetzt</source>
+        <translation>L'exportation en _geoFormat_ n'est pas supportée par cette installation QGIS</translation>
+    </message>
+    <message>
         <location filename="../tools/outputGeo.py" line="119"/>
         <source>bezeichnung</source>
         <translatorcomment>Fritz</translatorcomment>
@@ -866,6 +871,16 @@ câble chargé</translation>
         <translation>Diagramme.pdf</translation>
     </message>
     <message>
+        <location filename="../gui/adjustmentDialog.py" line="564"/>
+        <source>Unerwarteter Fehler</source>
+        <translation>Erreur inattendue</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="565"/>
+        <source>Erstellen der Geodaten nicht moeglich</source>
+        <translation>Création des données géographiques impossible</translation>
+    </message>
+    <message>
         <location filename="../gui/adjustmentDialog.py" line="566"/>
         <source>Nicht gespeicherte Aenderungen</source>
         <translation>Modifications non sécurisées</translation>
@@ -1212,18 +1227,8 @@ d&apos;après Zweifel</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="183"/>
-        <source>Shape-Daten der Stuetzen und Seillinie</source>
-        <translation>Données des supports et de la ligne de câble au format shape</translation>
-    </message>
-    <message>
-        <location filename="../gui/saveDialog.py" line="184"/>
-        <source>KML-Daten der Stuetzen und Seillinie</source>
-        <translation>Données des supports et de la ligne de câble au format KML</translation>
-    </message>
-    <message>
-        <location filename="../gui/saveDialog.py" line="185"/>
-        <source>Koordinaten-Tabellen der Stuetzen und Seillinie</source>
-        <translation>Table des coordonnée des supports et de la ligne de câble</translation>
+        <source>Geodaten (Stuetzen, Seillinie, Gelaende)</source>
+        <translation>Données géographiques (supports, ligne de câble, terrain)</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="198"/>
@@ -2394,7 +2399,7 @@ Il est recherché la solution qui, en première priorité, minimalise le nombre 
     <message>
         <location filename="../gui/surveyImportDialog.py" line="88"/>
         <source>csv Dateien (*.csv)</source>
-        <translation>fichier csv (*.csv)</translation>
+        <translation>fichier csv (*.csv *.CSV)</translation>
     </message>
     <message>
         <location filename="../gui/surveyImportDialog.py" line="90"/>
