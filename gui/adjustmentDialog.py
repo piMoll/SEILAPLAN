@@ -556,7 +556,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             if self.confHandler.getOutputOption('csv'):
                 try:
                     generateCoordTable(self.cableline, self.profile,
-                        self.poles.poles, outputLoc)
+                        self.poles.poles, savePath)
                 except Exception as e:
                     msg = f'{msg}:\n{e}'
                     self.showMessage(title, msg)

@@ -75,6 +75,10 @@ def organizeDataForExport(poles, cableline, profile):
 
 
 def writeGeodata(geodata, geoFormat, epsg, savePath):
+    # Create sub folder for every format
+    savePath = os.path.join(savePath, geoFormat.lower())
+    os.makedirs(savePath)
+    
     spatialRef = QgsCoordinateReferenceSystem(epsg)
     
     if geoFormat == 'SHP':
@@ -89,16 +93,16 @@ def writeGeodata(geodata, geoFormat, epsg, savePath):
         checkShpPath(profilePath)
     
     elif geoFormat == 'KML':
-        stuePath = os.path.join(savePath, 'kml_' + tr('stuetzen') + '.kml')
-        seilLeerPath = os.path.join(savePath, 'kml_' + tr('leerseil') + '.kml')
-        seilLastPath = os.path.join(savePath, 'kml_' + tr('lastseil') + '.kml')
-        profilePath = os.path.join(savePath, 'kml_' + tr('profil') + '.kml')
+        stuePath = os.path.join(savePath, tr('stuetzen') + '.kml')
+        seilLeerPath = os.path.join(savePath, tr('leerseil') + '.kml')
+        seilLastPath = os.path.join(savePath, tr('lastseil') + '.kml')
+        profilePath = os.path.join(savePath, tr('profil') + '.kml')
     
     elif geoFormat == 'DXF':
-        stuePath = os.path.join(savePath, 'dxf_' + tr('stuetzen') + '.dxf')
-        seilLeerPath = os.path.join(savePath, 'dxf_' + tr('leerseil') + '.dxf')
-        seilLastPath = os.path.join(savePath, 'dxf_' + tr('lastseil') + '.dxf')
-        profilePath = os.path.join(savePath, 'dxf_' + tr('profil') + '.dxf')
+        stuePath = os.path.join(savePath, tr('stuetzen') + '.dxf')
+        seilLeerPath = os.path.join(savePath, tr('leerseil') + '.dxf')
+        seilLastPath = os.path.join(savePath, tr('lastseil') + '.dxf')
+        profilePath = os.path.join(savePath, tr('profil') + '.dxf')
     
     else:
         raise Exception(f'Writing to {geoFormat} not implemented')
@@ -293,8 +297,11 @@ def createVirtualRaster(rasterList):
 
 def generateCoordTable(cableline, profile, poles, outputLoc):
     """Creates csv files with the corse of the cable line."""
-    savePathStue = os.path.join(outputLoc, tr('Koordinaten Stuetzen.csv'))
-    savePathSeil = os.path.join(outputLoc, tr('Koordinaten Seil.csv'))
+    savePath = os.path.join(outputLoc, 'csv')
+    os.makedirs(savePath)
+    
+    savePathStue = os.path.join(savePath, tr('Koordinaten Stuetzen.csv'))
+    savePathSeil = os.path.join(savePath, tr('Koordinaten Seil.csv'))
 
     # Combine cable data into matrix
     seilDataMatrix = np.array(
