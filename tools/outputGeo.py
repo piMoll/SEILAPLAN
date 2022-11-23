@@ -42,7 +42,7 @@ CH_CRS = 'EPSG:2056'
 VIRTUALRASTER = 'SEILAPLAN Virtuelles Raster'
 
 
-def organizeDataForExport(poles, cableline):
+def organizeDataForExport(poles, cableline, profile):
     """Creates 3D shapefiles containing the pole positions, the empty cable
     line and the cable line under load.
     """
@@ -53,6 +53,9 @@ def organizeDataForExport(poles, cableline):
     loadLine = np.swapaxes(np.array([cableline['coordx'],
                                         cableline['coordy'],
                                         cableline['load']]), 1, 0)
+    profileLine = np.swapaxes(np.array([profile.xi_disp,
+                                        profile.yi_disp,
+                                        profile.zi_disp]), 1, 0)
     
     # Pole coordinates
     poleGeo = []
@@ -66,7 +69,8 @@ def organizeDataForExport(poles, cableline):
         'poleGeo': poleGeo,
         'poleName': poleName,
         'emptyLine': emptyLine,
-        'loadLine': loadLine
+        'loadLine': loadLine,
+        'profile': profileLine
     }
 
 
@@ -78,19 +82,23 @@ def writeGeodata(geodata, geoFormat, epsg, savePath):
         stuePath = os.path.join(savePath, tr('stuetzen') + '.shp')
         seilLeerPath = os.path.join(savePath, tr('leerseil') + '.shp')
         seilLastPath = os.path.join(savePath, tr('lastseil') + '.shp')
+        profilePath = os.path.join(savePath, tr('profil') + '.shp')
         checkShpPath(stuePath)
         checkShpPath(seilLeerPath)
         checkShpPath(seilLastPath)
+        checkShpPath(profilePath)
     
     elif geoFormat == 'KML':
         stuePath = os.path.join(savePath, 'kml_' + tr('stuetzen') + '.kml')
         seilLeerPath = os.path.join(savePath, 'kml_' + tr('leerseil') + '.kml')
         seilLastPath = os.path.join(savePath, 'kml_' + tr('lastseil') + '.kml')
+        profilePath = os.path.join(savePath, 'kml_' + tr('profil') + '.kml')
     
     elif geoFormat == 'DXF':
         stuePath = os.path.join(savePath, 'dxf_' + tr('stuetzen') + '.dxf')
         seilLeerPath = os.path.join(savePath, 'dxf_' + tr('leerseil') + '.dxf')
         seilLastPath = os.path.join(savePath, 'dxf_' + tr('lastseil') + '.dxf')
+        profilePath = os.path.join(savePath, 'dxf_' + tr('profil') + '.dxf')
     
     else:
         raise Exception(f'Writing to {geoFormat} not implemented')
@@ -112,10 +120,13 @@ def writeGeodata(geodata, geoFormat, epsg, savePath):
     saveLineGeometry(seilLeerPath, geodata['emptyLine'], spatialRef, geoFormat)
     # Save cable line under load
     saveLineGeometry(seilLastPath, geodata['loadLine'], spatialRef, geoFormat)
+    # Save profile line
+    saveLineGeometry(profilePath, geodata['profile'], spatialRef, geoFormat)
     
     geoOutput = {'stuetzen': stuePath,
                  'leerseil': seilLeerPath,
-                 'lastseil': seilLastPath}
+                 'lastseil': seilLastPath,
+                 'profile': profilePath}
     return geoOutput
 
 
@@ -233,9 +244,10 @@ def addToMap(geodata, projName):
     
     polesLyr = QgsVectorLayer(geodata['stuetzen'], tr('stuetzen'), 'ogr')
     emptyLineLyr = QgsVectorLayer(geodata['leerseil'], tr('leerseil'), 'ogr')
-    loadLineLyar = QgsVectorLayer(geodata['lastseil'], tr('lastseil'), 'ogr')
+    loadLineLyr = QgsVectorLayer(geodata['lastseil'], tr('lastseil'), 'ogr')
+    profileLyr = QgsVectorLayer(geodata['profile'], tr('profil'), 'ogr')
     
-    for layer in [polesLyr, emptyLineLyr, loadLineLyar]:
+    for layer in [polesLyr, emptyLineLyr, loadLineLyr, profileLyr]:
         layer.setProviderEncoding('UTF-8')
         layer.dataProvider().setEncoding('UTF-8')
 

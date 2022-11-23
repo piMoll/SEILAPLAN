@@ -547,24 +547,39 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             savePath = os.path.join(outputLoc, 'geodata')
             os.makedirs(savePath)
             epsg = project.heightSource.spatialRef
-            geodata = organizeDataForExport(self.poles.poles, self.cableline)
-            
-            try:
-                if self.confHandler.getOutputOption('csv'):
+            geodata = organizeDataForExport(self.poles.poles, self.cableline,
+                                            self.profile)
+
+            title = self.tr('Unerwarteter Fehler')
+            msg = self.tr('Erstellen der Geodaten nicht moeglich')
+        
+            if self.confHandler.getOutputOption('csv'):
+                try:
                     generateCoordTable(self.cableline, self.profile,
                         self.poles.poles, outputLoc)
-                if self.confHandler.getOutputOption('shape'):
+                except Exception as e:
+                    msg = f'{msg}:\n{e}'
+                    self.showMessage(title, msg)
+            if self.confHandler.getOutputOption('shape'):
+                try:
                     shapeFiles = writeGeodata(geodata, 'SHP', epsg, savePath)
                     addToMap(shapeFiles, projName)
-                if self.confHandler.getOutputOption('kml'):
+                except Exception as e:
+                    msg = f'{msg}:\n{e}'
+                    self.showMessage(title, msg)
+            if self.confHandler.getOutputOption('kml'):
+                try:
                     writeGeodata(geodata, 'KML', epsg, savePath)
-                if self.confHandler.getOutputOption('dxf'):
+                except Exception as e:
+                    msg = f'{msg}:\n{e}'
+                    self.showMessage(title, msg)
+            if self.confHandler.getOutputOption('dxf'):
+                try:
                     writeGeodata(geodata, 'DXF', epsg, savePath)
-            except Exception as e:
-                title = self.tr('Unerwarteter Fehler')
-                msg = f"{self.tr('Erstellen der Geodaten nicht moeglich')}:\n{e}"
-                self.showMessage(title, msg)
-        
+                except Exception as e:
+                    msg = f'{msg}:\n{e}'
+                    self.showMessage(title, msg)
+            
         self.updateRecalcStatus('saveDone')
     
     def showMessage(self, title, message):
