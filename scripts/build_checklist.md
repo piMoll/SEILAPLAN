@@ -3,7 +3,7 @@
 ### 1. Update changelog
 
 ### 2. Change version information --> Version format: x.y.z
-1. metadata.txt: Change version
+1. metadata.txt: Change version, add short changelog
 2. plugin.xml: Change version in _<pyqgis_plugin>_ and _<download_url>_
 3. __init__.py: Change version
 
@@ -17,6 +17,7 @@
 
 
 ### 5. Run plugin builder tool to copy plugin to other QGIS profile
+Make sure there are no local changes!
 ```pbt deploy --user-profile pi -y```
 
 

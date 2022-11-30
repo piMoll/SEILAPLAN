@@ -21,12 +21,12 @@ email=leo.bont@gmail.com
 # Recommended items:
 
 # Uncomment the following line and add your changelog:
-changelog=Version 3.4.0 (Mai 2022)
+changelog=Version 3.4.1 (Dezember 2022)
 
-    - Profil-Import aus Feldaufnahmeprotokoll, inkl. Protokoll-Vorlage
-    - Auswahl und Import des Geländeprofils in einem separaten Dialogfenster
-    - Erhöhung der max. zulässigen Werte für: Gewicht Last, Mindestbruchlast Tragseil und Tragseilspannkraft am Anfangspunkt
-
+    - Kurzbericht: Wert für maximalen Abstand Seil - Boden korrigiert
+    - Haglöf Vertex CSV Import: Nur Messungen vom Typ "TRAIL" berücksichtigen, "3P" Messungen als Zusatzinformation im Geländeprofil anzeigen
+    - Fehlermeldung beim Erstellen von QGIS Layern behoben
+    - Überarbeitung Speichern-Dialogfenster
 
     Vollständiger Changelog unter: https://github.com/piMoll/SEILAPLAN/blob/master/changelog.md
 

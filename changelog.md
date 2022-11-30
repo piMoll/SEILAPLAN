@@ -1,5 +1,16 @@
 # Seilaplan Changelog
 
+## Version 3.4.1 (Dez 2022)
+### Neue Features
+* Geländelinie als DXF, KML und Shapefile exportieren
+* Überarbeitung des Speichern-Dialogfensters
+* Geodaten in separate Ordner abspeichern
+
+### Fehlerbehebung
+* Kurzbericht: Wert für maximalen Abstand Seil - Boden korrigiert
+* Haglöf Vertex CSV Import: Nur Messungen vom Typ "TRAIL" berücksichtigen, "3P" Messungen als Zusatzinformation im Geländeprofil anzeigen
+* Fehlermeldung beim Erstellen von QGIS Layern behoben
+
 ## Version 3.4.0 (Mai 2022)
 ### Neue Features
 * Profil-Import aus Feldaufnahmeprotokoll, inkl. Protokoll-Vorlage im Excel-Format
