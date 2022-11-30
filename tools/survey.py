@@ -67,6 +67,7 @@ class SurveyData(AbstractHeightSource):
         self.origData = {}
         self.valid = False
         self.errorMsg = ''
+        self.warnMsg = ''
         self.prHeaderData = {}
         self.openFile(sourceType)
         if self.valid and not self.spatialRef:
@@ -99,6 +100,7 @@ class SurveyData(AbstractHeightSource):
                 try:
                     success = reader.readOutData()
                     sourceType = self.SOURCE_CSV_VERTEX
+                    self.plotNotes = reader.notes
                 except Exception:
                     pass
     
@@ -113,6 +115,7 @@ class SurveyData(AbstractHeightSource):
         
         if reader:
             self.errorMsg = reader.errorMsg
+            self.warnMsg = reader.warnMsg
             self.spatialRef = reader.spatialRef
             self.surveyPoints = reader.surveyPoints
             self.nr = reader.nr
@@ -128,6 +131,10 @@ class SurveyData(AbstractHeightSource):
         else:
             if not self.errorMsg:
                 self.errorMsg = self.tr("Datei konnte nicht eingelesen werden. Unerwarteter Fehler aufgetreten.")
+        
+        # If everything went fine but there is a warning, show that one on completion
+        if self.warnMsg and not self.errorMsg:
+            self.errorMsg = self.warnMsg
     
     def reprojectToCrs(self, destinationCrs):
         if isinstance(destinationCrs, str):

@@ -31,12 +31,15 @@ class CsvVertexReader(AbstractSurveyReader):
         AbstractSurveyReader.__init__(self, path)
         
         self.sep = None
+        self.notes = []
+        self.idxMark = None
         self.idxTYPE = None
         self.idxLon = None
         self.idxLat = None
         self.idxSEQ = None
         self.idxAlti = None
         self.idxHD = None
+        self.idxH = None
         self.idxAz = None
         
         self.checkStructure()
@@ -55,6 +58,8 @@ class CsvVertexReader(AbstractSurveyReader):
                     sep = ','
             
                 # Analyse header line
+                idxMark = [idx for idx, h in enumerate(row) if
+                           self.formatHeader(h) == 'MARK']
                 idxTYPE = [idx for idx, h in enumerate(row) if
                            self.formatHeader(h) == 'TYPE']
                 idxLon = [idx for idx, h in enumerate(row) if
@@ -67,55 +72,56 @@ class CsvVertexReader(AbstractSurveyReader):
                            self.formatHeader(h) == 'ALTITUDE']
                 idxHD = [idx for idx, h in enumerate(row) if
                          self.formatHeader(h) == 'HD']
+                idxH = [idx for idx, h in enumerate(row) if
+                         self.formatHeader(h) == 'H']
                 idxAz = [idx for idx, h in enumerate(row) if
                          self.formatHeader(h) == 'AZ']
                 break
     
         # Check if data is in vertex format
-        if len(idxTYPE) == 1 and len(idxSEQ) == 1 and len(idxAlti) == 1 \
-                and len(idxHD) == 1 and len(idxAz) == 1 \
-                and len(idxLat) == 1 and len(idxLon) == 1:
+        if len(idxTYPE) == 1 and len(idxTYPE) == 1 and len(idxSEQ) == 1 \
+                and len(idxAlti) == 1 and len(idxHD) == 1 and len(idxH) == 1 \
+                and len(idxAz) == 1 and len(idxLat) == 1 and len(idxLon) == 1:
     
             self.sep = sep
+            self.idxMark = idxMark[0]
             self.idxTYPE = idxTYPE[0]
             self.idxLon = idxLon[0]
             self.idxLat = idxLat[0]
             self.idxSEQ = idxSEQ[0]
             self.idxAlti = idxAlti[0]
             self.idxHD = idxHD[0]
+            self.idxH = idxH[0]
             self.idxAz = idxAz[0]
             
             self.valid = True
 
     def readOutData(self):
         try:
-            # Readout measuring type separately (because the data is of
-            # type string)
-            dataType = np.genfromtxt(self.path, delimiter=self.sep, dtype=str,
-                                     usecols=self.idxTYPE)
+            # Readout mark (marks the rows with measurements) and measuring
+            #  type separately because the data is of type string
+            (mark, dataType) = np.genfromtxt(self.path, delimiter=self.sep,
+                                             dtype=str, usecols=(self.idxMark,
+                                             self.idxTYPE), unpack=True)
             # Analyse when data rows start
-            skipHead = np.where(dataType == 'TRAIL')[0][0]
+            skipHead = np.where(mark == '$')[0][0]
             # Read out numerical values
             (seq, alti,
-                hd, az,
+                hd, h, az,
                 lon, lat) = np.genfromtxt(self.path, delimiter=self.sep,
                                          usecols=(self.idxSEQ, self.idxAlti,
-                                                  self.idxHD, self.idxAz,
+                                                  self.idxHD, self.idxH, self.idxAz,
                                                   self.idxLon, self.idxLat),
                                          skip_header=skipHead, unpack=True)
         except ValueError:
             return False
     
-        # Make sure array dataType has the same size as the numerical data
-        #  and check if the readout data has type TRAIL
-        trail = dataType[skipHead:] == 'TRAIL'
-    
-        # See if dimensions of extracted data fit
-        if not (trail.size == seq.size == alti.size == hd.size ==
-                az.size == lon.size == lat.size):
+        # See if dimensions of extracted numerical data and mark fit
+        if not (mark[skipHead:].size == seq.size == alti.size ==
+                hd.size == h.size == az.size == lon.size == lat.size):
             return False
     
-        # Check for missing values and create array masks to skip them when
+        # Create a mask to mark missing / wrong values and skip them when
         #  processing
         mask_use = np.array([True] * seq.size)
     
@@ -139,7 +145,16 @@ class CsvVertexReader(AbstractSurveyReader):
         mask_use[:start_of_longest_sequence] = False
         if end_of_longest_sequence != -1:
             mask_use[end_of_longest_sequence:] = False
-    
+
+        # Check if there are rows of type '3P': These are measurements of
+        #  possible tree poles
+        treePosition = seq[np.where(dataType[skipHead:] == '3P')[0]]
+        treeHeight = h[np.where(dataType[skipHead:] == '3P')[0]]
+        
+        # Check for entries of other type than 'TRAIL' and filter them out
+        mask_use *= dataType[skipHead:] == 'TRAIL'
+        
+        # Apply mask to measurement values
         seq = seq[mask_use]
         alti = alti[mask_use]
         hd = hd[mask_use]
@@ -158,17 +173,18 @@ class CsvVertexReader(AbstractSurveyReader):
                                     'die CSV-Datei kann nicht geladen werden.')
             return False
     
-        # Check if the sequence numbers are in order and that there are no gaps
-        if np.sum(np.cumsum(np.array([1] * seq.size)) == seq) != seq.size:
-            # Only add a warning, create the profile ether way
-            self.errorMsg = self.tr('Die CSV-Datei enthaelt Messluecken, '
-                                    'das erstellte Profil koennte fehlerhaft sein.')
+        # CAN'T DO THIS CHECK ANYMORE BECAUSE THERE CAN BE 3P POINTS
+        # # Check if the sequence numbers are in order and that there are no gaps
+        # if np.sum(np.cumsum(np.array([1] * seq.size)) == seq) != seq.size:
+        #     # Only add a warning, create the profile ether way
+        #     self.errorMsg = self.tr('Die CSV-Datei enthaelt Messluecken, '
+        #                             'das erstellte Profil koennte fehlerhaft sein.')
     
         # If there are multiple measurement series (sequence restarts at one),
         # there is most certainly an issue with the CSV data
         if np.sum(seq == 1) > 1:
             # Only add a warning
-            self.errorMsg = self.tr('Die CSV-Datei enthaelt mehr als eine '
+            self.warnMsg = self.tr('Die CSV-Datei enthaelt mehr als eine '
                                     'Messreihe. Es wurde nur die laengste Messreihe geladen.')
     
         # Check if at least one pair of absolute coordinates are present to
@@ -220,5 +236,20 @@ class CsvVertexReader(AbstractSurveyReader):
             'z': alti
         }
         self.spatialRef = QgsCoordinateReferenceSystem(GPS_CRS)
-        self.nr = np.arange(len(gpsx)) + 1
+        self.nr = seq.astype(int)
+        
+        if len(treePosition) > 0:
+            self.notes = [''] * len(seq)
+            for treeNr, treeSeq in enumerate(treePosition):
+                # Sequence where tree stands on the ground comes one after
+                terrainSeq = int(treeSeq + 1)
+                arrayIdx = np.where(self.nr == terrainSeq)[0]
+                if len(arrayIdx) > 0:
+                    self.notes[arrayIdx[0]] = f'3P, h = {treeHeight[treeNr]}m'
+        
+        # QS: Calculate difference between GPS coords (in UTM) and relative
+        #  measurements that were moved to UTM system
+        # self.warnMsg = f'Max diff utmx {np.round(np.max(relCoordsNew[0] - utmx), 2)},' \
+        #                f' utmy {np.round(np.max(relCoordsNew[1] - utmy), 2)} m'
+        
         return True

@@ -74,6 +74,7 @@ class AbstractSurveyReader:
     def __init__(self, path):
         self.valid = False
         self.errorMsg = ''
+        self.warnMsg = ''
         self.path = path
         self.spatialRef = None
         self.surveyPoints = {}
