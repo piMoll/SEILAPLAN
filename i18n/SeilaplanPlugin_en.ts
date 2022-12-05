@@ -1183,6 +1183,11 @@ terrain shape</translation>
         <source>Die CSV-Datei enthaelt ungueltige GPS-Koordinaten.</source>
         <translation>The CSV file contains invalid GPS coordinates.</translation>
     </message>
+    <message>
+        <location filename="../tools/importCsvVertex.py" line="164"/>
+        <source>Die CSV-Datei enthaelt grosse Abweichungen zwischen GPS-Koordinaten und Distanz- Winkelmessungen, das erstellte Profil koennte fehlerhaft sein.</source>
+        <translation>The CSV file contains large deviations between GPS coordinates and distance / angle measurements, the created profile could be faulty!</translation>
+    </message>
 </context>
 <context>
     <name>DialogOutputOptions</name>

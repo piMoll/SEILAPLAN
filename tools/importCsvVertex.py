@@ -146,6 +146,13 @@ class CsvVertexReader(AbstractSurveyReader):
         if end_of_longest_sequence != -1:
             mask_use[end_of_longest_sequence:] = False
 
+        # If there are multiple measurement series (sequence restarts at one),
+        # there is most certainly an issue with the CSV data
+        if np.sum(seq == 1) > 1:
+            # Only add a warning
+            self.warnMsg = self.tr('Die CSV-Datei enthaelt mehr als eine '
+                                   'Messreihe. Es wurde nur die laengste Messreihe geladen.')
+
         # Check if there are rows of type '3P': These are measurements of
         #  possible tree poles
         treePosition = seq[np.where(dataType[skipHead:] == '3P')[0]]
@@ -179,13 +186,6 @@ class CsvVertexReader(AbstractSurveyReader):
         #     # Only add a warning, create the profile ether way
         #     self.errorMsg = self.tr('Die CSV-Datei enthaelt Messluecken, '
         #                             'das erstellte Profil koennte fehlerhaft sein.')
-    
-        # If there are multiple measurement series (sequence restarts at one),
-        # there is most certainly an issue with the CSV data
-        if np.sum(seq == 1) > 1:
-            # Only add a warning
-            self.warnMsg = self.tr('Die CSV-Datei enthaelt mehr als eine '
-                                    'Messreihe. Es wurde nur die laengste Messreihe geladen.')
     
         # Check if at least one pair of absolute coordinates are present to
         #  transform relative measurements into destination coordinate system
@@ -253,7 +253,13 @@ class CsvVertexReader(AbstractSurveyReader):
         
         # QS: Calculate difference between GPS coords (in UTM) and relative
         #  measurements that were moved to UTM system
-        # self.warnMsg = f'Max diff utmx {np.round(np.max(relCoordsNew[0] - utmx), 2)},' \
-        #                f' utmy {np.round(np.max(relCoordsNew[1] - utmy), 2)} m'
-        
+        utmx = np.max(relCoordsNew[0] - utmx)
+        utmy = np.max(relCoordsNew[1] - utmy)
+        if utmx > 2.0 or utmy > 2.0:
+            # Show a warning if differences are high
+            self.warnMsg += self.tr('Die CSV-Datei enthaelt grosse Abweichungen '
+                'zwischen GPS-Koordinaten und Distanz- Winkelmessungen, '
+                'das erstellte Profil koennte fehlerhaft sein.')
+            self.warnMsg += f'\n(Max. delta X = {utmx:0.1f} m, Y = {utmy:0.1f} m)'
+    
         return True
