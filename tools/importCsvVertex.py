@@ -149,7 +149,7 @@ class CsvVertexReader(AbstractSurveyReader):
         # Check if there are rows of type '3P': These are measurements of
         #  possible tree poles
         treePosition = seq[np.where(dataType[skipHead:] == '3P')[0]]
-        treeHeight = h[np.where(dataType[skipHead:] == '3P')[0]]
+        treeAltitude = alti[np.where(dataType[skipHead:] == '3P')[0]]
         
         # Check for entries of other type than 'TRAIL' and filter them out
         mask_use *= dataType[skipHead:] == 'TRAIL'
@@ -240,12 +240,16 @@ class CsvVertexReader(AbstractSurveyReader):
         
         if len(treePosition) > 0:
             self.notes = [''] * len(seq)
-            for treeNr, treeSeq in enumerate(treePosition):
-                # Sequence where tree stands on the ground comes one after
-                terrainSeq = int(treeSeq + 1)
-                arrayIdx = np.where(self.nr == terrainSeq)[0]
+            for treeCount, treeNr in enumerate(treePosition):
+                # Sequence of tree ground point comes one before
+                terrainNr = int(treeNr) - 1
+                # Check if measurement of tree ground point exists in array
+                if not (terrainNr in self.nr):
+                    continue
+                arrayIdx = np.where(self.nr == terrainNr)[0]
                 if len(arrayIdx) > 0:
-                    self.notes[arrayIdx[0]] = f'3P, h = {treeHeight[treeNr]}m'
+                    treeHeight = treeAltitude[treeCount] - alti[arrayIdx[0]]
+                    self.notes[arrayIdx[0]] = f'3P, h = {treeHeight:0.1f}m'
         
         # QS: Calculate difference between GPS coords (in UTM) and relative
         #  measurements that were moved to UTM system
