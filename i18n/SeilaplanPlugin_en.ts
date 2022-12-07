@@ -44,6 +44,16 @@
     </message>
     <message>
         <location filename="../tools/outputGeo.py" line="200"/>
+        <source>terrain</source>
+        <translation>terrain</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputGeo.py" line="200"/>
+        <source>profilansicht</source>
+        <translation>profileview</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputGeo.py" line="200"/>
         <source>Die Ausgabe in _geoFormat_ wird von dieser QGIS-Installation nicht unterstuetzt</source>
         <translation>Writing to _geoFormat_ not supported by this QGIS installation</translation>
     </message>
@@ -1237,6 +1247,11 @@ terrain shape</translation>
         <location filename="../gui/saveDialog.py" line="183"/>
         <source>Geodaten (Stuetzen, Seillinie, Gelaende)</source>
         <translation>Geodata (supports, cable road, terrain)</translation>
+    </message>
+    <message>
+        <location filename="../gui/saveDialog.py" line="183"/>
+        <source>inkl. Profilansicht</source>
+        <translation>incl. profile view</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="198"/>

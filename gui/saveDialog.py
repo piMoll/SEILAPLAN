@@ -186,7 +186,7 @@ class DialogOutputOptions(QDialog):
         self.checkBoxCsv = QCheckBox('CSV')
         self.checkBoxShape = QCheckBox('ESRI Shapefile')
         self.checkBoxKML = QCheckBox('KML')
-        self.checkBoxDXF = QCheckBox('DXF')
+        self.checkBoxDXF = QCheckBox(f"DXF ({self.tr('inkl. Profilansicht')})")
         
         # Set tick correctly
         self.checkBoxShortReport.setChecked(self.confHandler.outputOptions['shortReport'])

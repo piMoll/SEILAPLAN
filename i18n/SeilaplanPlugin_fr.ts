@@ -43,6 +43,16 @@
     </message>
     <message>
         <location filename="../tools/outputGeo.py" line="200"/>
+        <source>terrain</source>
+        <translation>terrain</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputGeo.py" line="200"/>
+        <source>profilansicht</source>
+        <translation>vueprofil</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputGeo.py" line="200"/>
         <source>Die Ausgabe in _geoFormat_ wird von dieser QGIS-Installation nicht unterstuetzt</source>
         <translation>L'exportation en _geoFormat_ n'est pas supportée par cette installation QGIS</translation>
     </message>
@@ -1239,6 +1249,11 @@ d&apos;après Zweifel</translation>
         <location filename="../gui/saveDialog.py" line="183"/>
         <source>Geodaten (Stuetzen, Seillinie, Gelaende)</source>
         <translation>Données géographiques (supports, ligne de câble, terrain)</translation>
+    </message>
+    <message>
+        <location filename="../gui/saveDialog.py" line="183"/>
+        <source>inkl. Profilansicht</source>
+        <translation>avec vue du profil</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="198"/>

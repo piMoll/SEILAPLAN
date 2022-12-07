@@ -3,6 +3,7 @@
 ## Version 3.4.1 (Dez 2022)
 ### Neue Features
 * Geländelinie als DXF, KML und Shapefile exportieren
+* Profilansicht (Seitenansicht) als DXF exportieren
 * Überarbeitung des Speichern-Dialogfensters
 * Geodaten in separate Ordner abspeichern
 

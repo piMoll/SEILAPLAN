@@ -53,10 +53,17 @@ def organizeDataForExport(poles, cableline, profile):
     loadLine = np.swapaxes(np.array([cableline['coordx'],
                                         cableline['coordy'],
                                         cableline['load']]), 1, 0)
-    profileLine = np.swapaxes(np.array([profile.xi_disp,
+    terrainLine = np.swapaxes(np.array([profile.xi_disp,
                                         profile.yi_disp,
                                         profile.zi_disp]), 1, 0)
-    
+    profile_emptyLine = np.swapaxes(np.array([cableline['xaxis'],
+                                               cableline['empty']]), 1, 0)
+    profile_loadLine = np.swapaxes(np.array([cableline['xaxis'],
+                                               cableline['load']]), 1, 0)
+    profile_terrain = np.swapaxes(np.array([profile.di_disp,
+                                            profile.zi_disp]), 1, 0)
+    profile_data = [profile_emptyLine, profile_loadLine, profile_terrain]
+        
     # Pole coordinates
     poleGeo = []
     poleName = []
@@ -64,13 +71,16 @@ def organizeDataForExport(poles, cableline, profile):
         if pole['active']:
             poleGeo.append([pole['coordx'], pole['coordy'], pole['z'], pole['h']])
             poleName.append(pole['name'])
+            poleLine = [pole['d'], pole['z']], [pole['dtop'], pole['ztop']]
+            profile_data.append(np.array(poleLine))
     
     return {
         'poleGeo': poleGeo,
         'poleName': poleName,
         'emptyLine': emptyLine,
         'loadLine': loadLine,
-        'profile': profileLine
+        'terrain': terrainLine,
+        'profile': profile_data
     }
 
 
@@ -86,23 +96,26 @@ def writeGeodata(geodata, geoFormat, epsg, savePath):
         stuePath = os.path.join(savePath, tr('stuetzen') + '.shp')
         seilLeerPath = os.path.join(savePath, tr('leerseil') + '.shp')
         seilLastPath = os.path.join(savePath, tr('lastseil') + '.shp')
-        profilePath = os.path.join(savePath, tr('profil') + '.shp')
+        terrainPath = os.path.join(savePath, tr('terrain') + '.shp')
         checkShpPath(stuePath)
         checkShpPath(seilLeerPath)
         checkShpPath(seilLastPath)
-        checkShpPath(profilePath)
+        checkShpPath(terrainPath)
     
     elif geoFormat == 'KML':
         stuePath = os.path.join(savePath, tr('stuetzen') + '.kml')
         seilLeerPath = os.path.join(savePath, tr('leerseil') + '.kml')
         seilLastPath = os.path.join(savePath, tr('lastseil') + '.kml')
-        profilePath = os.path.join(savePath, tr('profil') + '.kml')
+        terrainPath = os.path.join(savePath, tr('terrain') + '.kml')
     
     elif geoFormat == 'DXF':
         stuePath = os.path.join(savePath, tr('stuetzen') + '.dxf')
         seilLeerPath = os.path.join(savePath, tr('leerseil') + '.dxf')
         seilLastPath = os.path.join(savePath, tr('lastseil') + '.dxf')
-        profilePath = os.path.join(savePath, tr('profil') + '.dxf')
+        terrainPath = os.path.join(savePath, tr('terrain') + '.dxf')
+        # For DXF, we create an additional file containing the side view
+        #  (dist and height) of the data
+        profilePath = os.path.join(savePath, tr('profilansicht') + '.dxf')
     
     else:
         raise Exception(f'Writing to {geoFormat} not implemented')
@@ -121,16 +134,19 @@ def writeGeodata(geodata, geoFormat, epsg, savePath):
     savePointGeometry(stuePath, geodata['poleGeo'], geodata['poleName'],
                       spatialRef, geoFormat)
     # Save empty cable line
-    saveLineGeometry(seilLeerPath, geodata['emptyLine'], spatialRef, geoFormat)
+    saveLineGeometry(seilLeerPath, [geodata['emptyLine']], spatialRef, geoFormat)
     # Save cable line under load
-    saveLineGeometry(seilLastPath, geodata['loadLine'], spatialRef, geoFormat)
-    # Save profile line
-    saveLineGeometry(profilePath, geodata['profile'], spatialRef, geoFormat)
+    saveLineGeometry(seilLastPath, [geodata['loadLine']], spatialRef, geoFormat)
+    # Save terrain line
+    saveLineGeometry(terrainPath, [geodata['terrain']], spatialRef, geoFormat)
+    # Side view
+    if geoFormat == 'DXF':
+        saveLineGeometry(profilePath, geodata['profile'], spatialRef, geoFormat, False)
     
     geoOutput = {'stuetzen': stuePath,
                  'leerseil': seilLeerPath,
                  'lastseil': seilLastPath,
-                 'profile': profilePath}
+                 'terrain': terrainPath}
     return geoOutput
 
 
@@ -190,15 +206,19 @@ def savePointGeometry(filePath, geodata, label, spatialRef, geoFormat):
     del writer
 
 
-def saveLineGeometry(filePath, geodata, spatialRef, geoFormat):
+def saveLineGeometry(filePath, geodata, spatialRef, geoFormat, is3D=True):
     """
     :param filePath: Location of shape file
     :param geodata: x, y and z coordinate of line
     :param spatialRef: current spatial reference of qgis project
     :param geoFormat: Geodata export format
+    :param is3D: Geodata in 3D, else 2D
     """
     # Define fields for feature attributes. A QgsFields object is needed
     fields = QgsFields()
+    geomType = QgsWkbTypes.LineStringZ
+    if not is3D:
+        geomType = QgsWkbTypes.LineString
     if QGIS_VERSION_INT >= 31030:
         # Use newer QgsVectorFileWriter.create() function
         options = QgsVectorFileWriter.SaveVectorOptions()
@@ -206,24 +226,31 @@ def saveLineGeometry(filePath, geodata, spatialRef, geoFormat):
         options.includeZ = True
         options.fileEncoding = 'UTF-8'
         writer = QgsVectorFileWriter.create(
-            filePath, fields, QgsWkbTypes.LineStringZ, spatialRef,
+            filePath, fields, geomType, spatialRef,
             QgsCoordinateTransformContext(), options)
     else:
         writer = QgsVectorFileWriter(filePath, 'UTF-8', fields,
-            QgsWkbTypes.LineStringZ, spatialRef, geoFormat)
+                                     geomType, spatialRef, geoFormat)
 
     if writer.hasError() != QgsVectorFileWriter.NoError:
         raise Exception(f'{writer.errorMessage()} ({geoFormat})')
 
-    lineVertices = []
-    for coords in geodata:
-        lineVertices.append(QgsPoint(coords[0], coords[1], coords[2]))
+    features = []
+    for idx, line in enumerate(geodata):
+        lineVertices = []
+        for coords in line:
+            if len(coords) == 3:
+                lineVertices.append(QgsPoint(coords[0], coords[1], coords[2]))
+            elif len(coords) == 2:
+                lineVertices.append(QgsPoint(coords[0], coords[1]))
         
-    feature = QgsFeature()
-    feature.setGeometry(QgsGeometry.fromPolyline(lineVertices))
-    feature.setId(1)
-    writer.addFeatures([feature])
-    del feature
+        feature = QgsFeature()
+        feature.setGeometry(QgsGeometry.fromPolyline(lineVertices))
+        feature.setId(idx + 1)
+        features.append(feature)
+    writer.addFeatures(features)
+    for featureToDel in features:
+        del featureToDel
     # Delete the writer to flush features to disk
     del writer
 
@@ -249,9 +276,9 @@ def addToMap(geodata, projName):
     polesLyr = QgsVectorLayer(geodata['stuetzen'], tr('stuetzen'), 'ogr')
     emptyLineLyr = QgsVectorLayer(geodata['leerseil'], tr('leerseil'), 'ogr')
     loadLineLyr = QgsVectorLayer(geodata['lastseil'], tr('lastseil'), 'ogr')
-    profileLyr = QgsVectorLayer(geodata['profile'], tr('profil'), 'ogr')
+    terrainLyr = QgsVectorLayer(geodata['terrain'], tr('terrain'), 'ogr')
     
-    for layer in [polesLyr, emptyLineLyr, loadLineLyr, profileLyr]:
+    for layer in [polesLyr, emptyLineLyr, loadLineLyr, terrainLyr]:
         layer.setProviderEncoding('UTF-8')
         layer.dataProvider().setEncoding('UTF-8')
 
