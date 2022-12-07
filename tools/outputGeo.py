@@ -32,9 +32,9 @@ from processing import run
 # Checking for deprecations needs a deprecation check...
 try:
     from qgis.core.Qgis import QGIS_VERSION_INT
-except ImportError as e:
+except (ImportError, ModuleNotFoundError):
     from qgis.core import Qgis
-    QGIS_VERSION_INT = Qgis.versionInt()
+    QGIS_VERSION_INT = Qgis.QGIS_VERSION_INT
 
 
 GPS_CRS = 'EPSG:4326'
