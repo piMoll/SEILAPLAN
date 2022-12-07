@@ -253,13 +253,14 @@ class CsvVertexReader(AbstractSurveyReader):
         
         # QS: Calculate difference between GPS coords (in UTM) and relative
         #  measurements that were moved to UTM system
-        utmx = np.max(relCoordsNew[0] - utmx)
-        utmy = np.max(relCoordsNew[1] - utmy)
-        if utmx > 2.0 or utmy > 2.0:
+        utmDistDiff = np.max(np.sqrt((relCoordsNew[0] - utmx)**2 + (relCoordsNew[1] - utmy)**2))
+        if utmDistDiff > 3.0:
             # Show a warning if differences are high
+            if self.warnMsg:
+                self.warnMsg += '\n\n'
             self.warnMsg += self.tr('Die CSV-Datei enthaelt grosse Abweichungen '
                 'zwischen GPS-Koordinaten und Distanz- Winkelmessungen, '
                 'das erstellte Profil koennte fehlerhaft sein.')
-            self.warnMsg += f'\n(Max. delta X = {utmx:0.1f} m, Y = {utmy:0.1f} m)'
+            self.warnMsg += f" ({self.tr('Max. Abweichung')}: {utmDistDiff:0.1f} m)"
     
         return True

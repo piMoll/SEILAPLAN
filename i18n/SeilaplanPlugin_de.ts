@@ -1165,9 +1165,14 @@ nach Zweifel</translation>
         <translation>Die CSV-Datei enthält ungültige GPS-Koordinaten.</translation>
     </message>
     <message>
-        <location filename="../tools/importCsvVertex.py" line="164"/>
+        <location filename="../tools/importCsvVertex.py" line="263"/>
         <source>Die CSV-Datei enthaelt grosse Abweichungen zwischen GPS-Koordinaten und Distanz- Winkelmessungen, das erstellte Profil koennte fehlerhaft sein.</source>
         <translation>Die CSV-Datei enthält grosse Abweichungen zwischen GPS-Koordinaten und Distanz- / Winkelmessungen, das erstellte Profil könnte fehlerhaft sein!</translation>
+    </message>
+    <message>
+        <location filename="../tools/importCsvVertex.py" line="263"/>
+        <source>Max. Abweichung</source>
+        <translation>Max. Abweichung</translation>
     </message>
 </context>
 <context>
