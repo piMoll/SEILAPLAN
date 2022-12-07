@@ -12,7 +12,7 @@ name=SEILAPLAN
 qgisMinimumVersion=3.6
 description=Seilkran-Layoutplaner
 about=SEILAPLAN berechnet aufgrund eines digitalen Höhenmodells zwischen definierten Anfangs- und Endkoordinaten sowie technischen Parametern das optimale Seillinienlayout. Es werden Position und Höhe der Stütze, sowie die wichtigsten Kennwerte der Seillinie bestimmt.
-version=3.4.0
+version=3.4.1
 author=Leo Bont, Hans Rudolf Heinimann, Patricia Moll
 email=leo.bont@gmail.com
 
@@ -23,9 +23,9 @@ email=leo.bont@gmail.com
 # Uncomment the following line and add your changelog:
 changelog=Version 3.4.1 (Dezember 2022)
 
-    - Kurzbericht: Wert für maximalen Abstand Seil - Boden korrigiert
+    - Kurzbericht: Korrektur maximaler Abstand Seil - Boden
     - Haglöf Vertex CSV Import: Nur Messungen vom Typ "TRAIL" berücksichtigen, "3P" Messungen als Zusatzinformation im Geländeprofil anzeigen
-    - Fehlermeldung beim Erstellen von QGIS Layern behoben
+    - Korrektur Layererstellung in QGIS Version 3.28
     - Überarbeitung Speichern-Dialogfenster
 
     Vollständiger Changelog unter: https://github.com/piMoll/SEILAPLAN/blob/master/changelog.md
