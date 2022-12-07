@@ -323,15 +323,17 @@ def generateCoordTable(cableline, profile, poles, outputLoc):
             fi.writerow(np.round(row, 1))
 
     # Pole data
-    header = [tr('Stuetze'), 'X', 'Y', tr('Z Stuetze Boden'),
-              tr('Z Stuetze Spitze'), tr('Stuetzenhoehe'), tr('Neigung')]
+    header = [tr('Stuetze'), tr('Horizontaldistanz'), 'X', 'Y',
+              tr('Z Stuetze Boden'), tr('Z Stuetze Spitze'),
+              tr('Stuetzenhoehe'), tr('Neigung')]
     
     with open(savePathStue, 'w') as f:
         fi = csv.writer(f, delimiter=';', dialect='excel', lineterminator='\n')
         fi.writerow([unicode2acii(col) for col in header])
         for pole in poles:
             name = [unicode2acii(pole['name'])]
-            coords = ([round(e, 3) for e in [pole['coordx'], pole['coordy'],
+            coords = ([round(e, 3) for e in [pole['d'],
+                                             pole['coordx'], pole['coordy'],
                                              pole['z'], pole['ztop'],
                                              pole['h'], pole['angle']]])
             row = name + coords
