@@ -318,15 +318,17 @@ def generateCoordTable(cableline, profile, poles, outputLoc):
     # Write to file
     with open(savePathSeil, 'w') as f:
         fi = csv.writer(f, delimiter=';', dialect='excel', lineterminator='\n')
-        fi.writerow(header)
+        fi.writerow([unicode2acii(col) for col in header])
         for row in seilDataMatrix:
             fi.writerow(np.round(row, 1))
 
     # Pole data
+    header = [tr('Stuetze'), 'X', 'Y', tr('Z Stuetze Boden'),
+              tr('Z Stuetze Spitze'), tr('Stuetzenhoehe'), tr('Neigung')]
+    
     with open(savePathStue, 'w') as f:
         fi = csv.writer(f, delimiter=';', dialect='excel', lineterminator='\n')
-        fi.writerow([tr('Stuetze'), 'X', 'Y', tr('Z Stuetze Boden'),
-                     tr('Z Stuetze Spitze'), tr('Stuetzenhoehe'), tr('Neigung')])
+        fi.writerow([unicode2acii(col) for col in header])
         for pole in poles:
             name = [unicode2acii(pole['name'])]
             coords = ([round(e, 3) for e in [pole['coordx'], pole['coordy'],
@@ -341,7 +343,12 @@ def unicode2acii(text):
     converted. This should be fixed in the future."""
     translation = {0xe4: 'ae',
                    0xf6: 'oe',
-                   0xfc: 'ue'}
+                   0xfc: 'ue',
+                   0xe9: 'e',  # é
+                   0xe8: 'e',  # è
+                   0xea: 'e',  # ê
+                   0xe2: 'a',  # â
+                   }
     return text.translate(translation)
 
 
