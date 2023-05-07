@@ -162,7 +162,7 @@ class CsvVertexReader(AbstractSurveyReader):
         mask_use *= dataType[skipHead:] == 'TRAIL'
         
         # Apply mask to measurement values
-        seq = seq[mask_use]
+        seq = seq[mask_use].astype(int)
         alti = alti[mask_use]
         hd = hd[mask_use]
         az = az[mask_use]
@@ -227,16 +227,25 @@ class CsvVertexReader(AbstractSurveyReader):
             relCoords[0] + meanDist * np.sin(meanAz),
             relCoords[1] + meanDist * np.cos(meanAz)
         ])
+        # Create and add first point (=location where first dist and angle
+        #  where measured from) by going "back" from first relative measurement
+        firstPnt = [meanDist * np.sin(meanAz),
+                    meanDist * np.cos(meanAz)]
+        relCoordsWithFirstPnt = np.insert(relCoordsNew, 0, firstPnt, axis=1)
+        # Height of first point is simple first altitude measurement minus first
+        #  relative height measurement
+        altiWithFirstPnt = np.insert(alti, 0, alti[0] - h[0])
+        self.nr = np.insert(seq, 0, 0)
+        
         # Translate back to WGS84
-        gpsx, gpsy = reprojectToCrs(relCoordsNew[0], relCoordsNew[1], utmEpsg,
-                                    GPS_CRS)
+        gpsx, gpsy = reprojectToCrs(relCoordsWithFirstPnt[0],
+                                    relCoordsWithFirstPnt[1], utmEpsg, GPS_CRS)
         self.surveyPoints = {
             'x': gpsx,
             'y': gpsy,
-            'z': alti
+            'z': altiWithFirstPnt
         }
         self.spatialRef = QgsCoordinateReferenceSystem(GPS_CRS)
-        self.nr = seq.astype(int)
         
         if len(treePosition) > 0:
             self.notes = [''] * len(seq)
@@ -244,12 +253,15 @@ class CsvVertexReader(AbstractSurveyReader):
                 # Sequence of tree ground point comes one before
                 terrainNr = int(treeNr) - 1
                 # Check if measurement of tree ground point exists in array
-                if not (terrainNr in self.nr):
+                if not (terrainNr in seq):
                     continue
-                arrayIdx = np.where(self.nr == terrainNr)[0]
+                arrayIdx = np.where(seq == terrainNr)[0]
                 if len(arrayIdx) > 0:
                     treeHeight = treeAltitude[treeCount] - alti[arrayIdx[0]]
                     self.notes[arrayIdx[0]] = f'3P, h = {treeHeight:0.1f}m'
+            
+            # Add entry for first point
+            self.notes.insert(0, '')
         
         # QS: Calculate difference between GPS coords (in UTM) and relative
         #  measurements that were moved to UTM system
