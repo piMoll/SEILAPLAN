@@ -365,13 +365,23 @@ class Poles(object):
         if anchor['poleType'] == 'anchor':
             # Angle between anchor -> pole top point and anchor -> pole
             # ground point
-            return degrees(atan(ztop_diff / dtop_diff) - atan(z_diff / d_diff))
+            if d_diff == 0 or ztop_diff == 0:
+                # If anchor and pole are at the same horizontal distance or
+                # at the same height, angle calculation is not meaningfull
+                return np.nan
+            try:
+                return degrees(atan(ztop_diff / dtop_diff) - atan(z_diff / d_diff))
+            except ZeroDivisionError:
+                return np.nan
         
         elif anchor['poleType'] == 'pole_anchor':
             # Partial angle from horizontal line to terrain line, this will be
             #  used to correct the already calculated outgoing angle that
             #  is calculated from horizontal line to cable.
+            if d_diff == 0:
+                return np.nan
             return degrees(atan(z_diff / d_diff))
+            
 
     def getCableFieldDimension(self):
         [_, _, _, dtop, ztop, _, _] = self.getAsArray(withAnchor=True, withDeactivated=True)
