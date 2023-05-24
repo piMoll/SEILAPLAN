@@ -26,7 +26,7 @@ import sys
 # Add shipped libraries to python path
 libPath = os.path.join(os.path.dirname(__file__), 'lib')
 if libPath not in sys.path:
-    sys.path.insert(0, libPath)
+    sys.path.insert(-1, libPath)
 
 from qgis.PyQt.QtCore import QSettings, QTranslator, qVersion, QCoreApplication
 from qgis.PyQt.QtWidgets import QAction, QPushButton, QMessageBox
