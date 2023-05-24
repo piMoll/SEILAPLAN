@@ -53,17 +53,20 @@ def getTimestamp(tStart):
     return [tdFormated, tsFormated1, tsFormated2]
 
 
-def removeTxtElements(text, key):
-    """Prepare Text for report by removing 'nan' values"""
+def replaceRecursively(text, findText, replaceWith, fullReplace=True):
+    """Replace text insided nested arrays or tuples"""
     if type(text) is str:
-        if key in text:
-            return "-"
+        if findText in text:
+            if fullReplace:
+                return replaceWith
+            else:
+                return text.replace(findText, replaceWith)
         else:
             return text
     elif type(text) is list:
-        return [removeTxtElements(x, key) for x in text]
+        return [replaceRecursively(x, findText, replaceWith, fullReplace) for x in text]
     elif type(text) is set:
-        return {removeTxtElements(x, key) for x in text}
+        return {replaceRecursively(x, findText, replaceWith, fullReplace) for x in text}
     else:
         return text
 
@@ -313,7 +316,11 @@ def generateReportText(confHandler, result, projname):
 
     text = [headers, str_time, str_posi, str_abst, str_opti, str_laen, str_durc,
             str_seil, str_stue, str_wink, str_nach, str_para]
-    str_report = removeTxtElements(text, "nan")
+    # Remove nan values with a minus
+    str_report = replaceRecursively(text, 'nan', '-')
+    # Replace the often used but unsupported diameter symbol with a lower
+    #  case strike trough o
+    str_report = replaceRecursively(str_report, u'\u2300', u'\u00F8', False)
 
     return str_report
 
@@ -348,6 +355,7 @@ def generateShortReport(confHandler, result, projname, outputLoc):
         [tr('Anlagetyp'), (confHandler.params.getParameterAsStr('Anlagetyp') or '-'), '', ''],
         [tr('Bemerkung'), ('\n'.join(textwrap.wrap(prHeader['PrBemerkung'], 100) or '-'))],
     ]
+    s_gener = replaceRecursively(s_gener, u'\u2300', u'\u00F8', False)
     
     # Input values
     ###
@@ -382,7 +390,8 @@ def generateShortReport(confHandler, result, projname, outputLoc):
         s_dimen.append([pole['nr'], pole['name'], f"{pole['h']:.1f} m",
                         f"{pole['angle']:.0f} °", f"{pole['BHD']} cm",
                         f"{pole['bundstelle']} cm"])
-    s_dimen = removeTxtElements(s_dimen, "nan")
+    s_dimen = replaceRecursively(s_dimen, 'nan', '-')
+    s_dimen = replaceRecursively(s_dimen, u'\u2300', u'\u00F8', False)
     s_dimen2 = None
     if add_footnote:
         s_dimen2 = [[tr('Angabe BDH bei zu steilem Winkel nicht moeglich')]]
@@ -408,7 +417,8 @@ def generateShortReport(confHandler, result, projname, outputLoc):
                          f"({tr(pole['maxForce'][1])})",
                          f"{leerseil:.1f} °", f"{lastseil:.1f} °",
                          f"{pole['angriff']:.1f} °"])
-    s_force2 = removeTxtElements(s_force2, "nan")
+    s_force2 = replaceRecursively(s_force2, 'nan', '-')
+    s_force2 = replaceRecursively(s_force2, u'\u2300', u'\u00F8', False)
     
     # Fields
     ###
@@ -454,7 +464,8 @@ def generateShortReport(confHandler, result, projname, outputLoc):
             f"{slack_e:.1f} m", f"{slack_f:.1f} m"])
     s_field2.append([tr('Total'), f"{total_h:.1f} m", f"{total_s:.1f} m",
                      f"{total_z:.1f} m"])
-    s_field2 = removeTxtElements(s_field2, "nan")
+    s_field2 = replaceRecursively(s_field2, 'nan', '-')
+    s_field2 = replaceRecursively(s_field2, u'\u2300', u'\u00F8', False)
 
     # Disclaimer
     ###
