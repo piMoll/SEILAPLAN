@@ -90,13 +90,13 @@ class Profile(object):
         dx = (float(self.Ex) - float(self.Ax)) / dp
         dy = (float(self.Ey) - float(self.Ay)) / dp
     
-        if dx == 0:
-            xi = np.array([self.Ax] * pCount)
+        if round(dx, 3) == 0:
+            xi = np.array([self.Ax] * (pCount + 1))
         else:
             # range max value (end point) is not included
             xi = np.arange(self.Ax, self.Ex, dx)
-        if dy == 0:
-            yi = np.array([self.Ay] * pCount)
+        if round(dy, 3) == 0:
+            yi = np.array([self.Ay] * (pCount + 1))
         else:
             # range max value (end point) is not included
             yi = np.arange(self.Ay, self.Ey, dy)

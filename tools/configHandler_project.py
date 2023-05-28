@@ -487,8 +487,8 @@ class ProjectConfHandler(AbstractConfHandler):
         self.heightSource.prepareData(self.points, self.azimut, self.params.ANCHOR_LEN)
         try:
             profile = Profile(self)
-        except ValueError:
-            self.onError(self.tr('Unerwarteter Fehler bei der Erstellung des Profils.'))
+        except Exception as e:
+            self.onError(f"{self.tr('Unerwarteter Fehler bei der Erstellung des Profils.')}\n{e}")
             return False
         if self.heightSource.errorMsg:
             self.onError(self.heightSource.errorMsg)
