@@ -522,7 +522,7 @@ class ProjectConfHandler(AbstractConfHandler):
         # Create profile line from subraster or survey data
         try:
             self.profile = Profile(self)
-        except ValueError:
+        except Exception:
             self.onError(self.tr('Unerwarteter Fehler bei Erstellung des Profils'))
             return False
         if self.heightSource.errorMsg:

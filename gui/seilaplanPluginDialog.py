@@ -854,7 +854,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             self.profileWin.setPoleData(
                 self.projectHandler.fixedPoles['poles'],
                 self.projectHandler.noPoleSection)
-        self.profileWin.exec()
+            self.profileWin.exec()
     
     def onLoadProjects(self):
         title = self.tr('Projekt laden')
