@@ -6,6 +6,7 @@
 1. metadata.txt: Change version, add short changelog
 2. plugin.xml: Change version in _<pyqgis_plugin>_ and _<download_url>_
 3. __init__.py: Change version
+4. Template of field survey profile
 
 
 ### 3. Check if build configs are still up to date
@@ -18,11 +19,14 @@
 
 ### 5. Run plugin builder tool to copy plugin to other QGIS profile
 Make sure there are no local changes!
-```pbt deploy --user-profile pi -y```
+```
+export PATH="$PATH:/home/pi/.local/bin"
+pbt deploy --user-profile pi -y
+```
 
 
 ### 6. Run build script to create zip file and exclude all unnecessary files
-```python build.py```
+```python3 build.py```
 
 
 ### 7. Merge dev into master

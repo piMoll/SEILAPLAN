@@ -1,5 +1,11 @@
 # Seilaplan Changelog
 
+## Version 3.4.2 (Juni 2023)
+### Fehlerbehebung
+* Korrigiere die Darstellung des Durchmesser-Symbols in Berichten
+* Problembehebung bei der Erstellung von Profillinien bei Seillinien in Richtung 0, 100, 200 oder 300 Gon
+* Beim Laden von reportlab (Bibliothek für Berichterstellung) wird die im System installierte Version bevorzugt.
+
 ## Version 3.4.1 (Dez 2022)
 ### Neue Features
 * Geländelinie als DXF, KML und Shapefile exportieren
