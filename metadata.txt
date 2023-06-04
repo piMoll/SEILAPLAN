@@ -23,8 +23,9 @@ email=leo.bont@gmail.com
 # Uncomment the following line and add your changelog:
 changelog=Version 3.4.2 (Juni 2023)
 
-    - Problembehebung bei der Erstellung von Profillinien bei Seillinien in Richtung 0, 100, 200 oder 300 Gon
-    - Korrigiere die Darstellung des Durchmesser-Symbols in Berichten
+    - Geländeprofil aus Haglöf Vertex: Ergänze Standort der ersten Messung (Punkt Nr. 0)
+    - Fehler bei Erstellung der Profillinie bei Seillinien in Richtung 0, 100, 200 oder 300 Gon
+    - Korrigiere Darstellung des Durchmesser-Symbols in Berichten
 
     Vollständiger Changelog unter: https://github.com/piMoll/SEILAPLAN/blob/master/changelog.md
 
