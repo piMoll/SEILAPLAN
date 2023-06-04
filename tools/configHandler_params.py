@@ -317,6 +317,7 @@ class ParameterConfHandler(AbstractConfHandler):
             self.onError(msg)
             return
         
+        self.reset()
         for property_name, value in self.parameterSets[setname].items():
             self.batchSetParameter(property_name, value)
         self.currentSetName = setname
