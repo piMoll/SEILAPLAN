@@ -31,6 +31,7 @@ from .ui_adjustmentDialog import Ui_AdjustmentDialogUI
 from .adjustmentPlot import AdjustmentPlot
 from .plotting_tools import MyNavigationToolbar
 from .poleWidget import CustomPoleWidget
+from .birdViewWidget import BirdViewWidget
 from .adjustmentDialog_params import AdjustmentDialogParams
 from .adjustmentDialog_thresholds import AdjustmentDialogThresholds
 from .saveDialog import DialogOutputOptions
@@ -104,6 +105,10 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
                                            self.showThresholdInPlot)
         
         self.paramLayout = AdjustmentDialogParams(self, self.confHandler.params)
+        
+        # Fill bird view widget with data
+        self.birdViewLayout = BirdViewWidget(self.tabPoles, self.birdViewGrid, self.poles)
+        self.birdViewLayout.sig_updatePole.connect(self.updateBirdViewParams)
         
         # Project header
         self.prHeaderFields = {
@@ -197,6 +202,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         lowerDistRange = floor(-1 * self.anchorBuffer[0])
         upperDistRange = floor(self.profile.profileLength + self.anchorBuffer[1])
         self.poleLayout.setInitialGui([lowerDistRange, upperDistRange])
+        self.birdViewLayout.setInitialGui()
 
         # Fill in cable parameters
         self.paramLayout.fillInParams()
@@ -324,6 +330,9 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         # Save new value to config Handler
         self.confHandler.params.setOptSTA(newVal)
         return str(self.confHandler.params.optSTA)
+
+    def updateBirdViewParams(self, idx, property_name, newVal):
+        self.poles.update(idx, property_name, newVal)
 
     def onShowInfoFieldQ(self):
         msg = self.tr('Erklaerung Gesamtlast')

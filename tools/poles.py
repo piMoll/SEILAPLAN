@@ -61,6 +61,7 @@ class Poles(object):
         self.idxE = None
         self.hasAnchorA = False
         self.hasAnchorE = False
+        self.direction = None
         
         # Default height for different pole types
         height = {
@@ -149,7 +150,10 @@ class Poles(object):
             'coordx': x,
             'coordy': y,
             'manually': manually,
-            'active': active
+            'active': active,
+            'category': None,
+            'position': None,
+            'abspann': None
         })
         if refresh:
             self.refresh()
@@ -173,6 +177,9 @@ class Poles(object):
                 self.poles[0]['active'] = False
             elif idx == self.idxE and self.hasAnchorE:
                 self.poles[-1]['active'] = False
+        
+        if property_name in ['category', 'position', 'abspann']:
+            self.poles[idx][property_name] = newVal
         
         self.refresh()
 
@@ -292,6 +299,7 @@ class Poles(object):
         self.updateAnchorType()
         self.numberPoles()
         self.calculateAnchorLength()
+        self.setDirection()
     
     def updateFirstLastPole(self):
         for idx, pole in enumerate(self.poles):
@@ -314,6 +322,12 @@ class Poles(object):
             else:
                 self.poles[idx]['nr'] = str(i)
                 i += 1
+    
+    def setDirection(self):
+        self.direction = None
+        if self.firstPole and self.lastPole:
+             self.direction = 'downhill' if self.firstPole['ztop'] > self.lastPole['ztop'] else 'uphill'
+            
 
     def delete(self, idx):
         self.poles.pop(idx)
