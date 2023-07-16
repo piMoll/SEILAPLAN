@@ -107,8 +107,9 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.paramLayout = AdjustmentDialogParams(self, self.confHandler.params)
         
         # Fill bird view widget with data
-        self.birdViewLayout = BirdViewWidget(self.tabPoles, self.birdViewGrid, self.poles)
+        self.birdViewLayout = BirdViewWidget(self.tabBirdView, self.birdViewGrid, self.poles)
         self.birdViewLayout.sig_updatePole.connect(self.updateBirdViewParams)
+        self.tabWidget.currentChanged.connect(self.onBirdViewVisible)
         
         # Project header
         self.prHeaderFields = {
@@ -202,7 +203,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         lowerDistRange = floor(-1 * self.anchorBuffer[0])
         upperDistRange = floor(self.profile.profileLength + self.anchorBuffer[1])
         self.poleLayout.setInitialGui([lowerDistRange, upperDistRange])
-        self.birdViewLayout.setInitialGui()
+        self.birdViewLayout.updateGui()
 
         # Fill in cable parameters
         self.paramLayout.fillInParams()
@@ -333,6 +334,10 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
 
     def updateBirdViewParams(self, idx, property_name, newVal):
         self.poles.update(idx, property_name, newVal)
+    
+    def onBirdViewVisible(self, tabIdx):
+        if tabIdx == self.tabWidget.indexOf(self.tabBirdView):
+            self.birdViewLayout.updateGui()
 
     def onShowInfoFieldQ(self):
         msg = self.tr('Erklaerung Gesamtlast')

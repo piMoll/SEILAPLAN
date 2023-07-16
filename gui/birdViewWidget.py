@@ -59,6 +59,7 @@ class BirdViewWidget(QObject):
         self.layout = layout
         self.poles = None
         self.direction = None
+        self.layout.setAlignment(Qt.AlignTop)
         
         if isinstance(poles, Poles):
             self.poles = poles
@@ -68,9 +69,10 @@ class BirdViewWidget(QObject):
             self.poleArr = poles
         self.poleRows = []
         
-    def setInitialGui(self):
-        self.layout.setAlignment(Qt.AlignTop)
-        
+    def updateGui(self):
+        if self.poleRows:
+            self.removeRows()
+            
         for idx, pole in enumerate(self.poleArr):
             # Create layout
             self.poleRows.append(
@@ -79,6 +81,11 @@ class BirdViewWidget(QObject):
                             pole['position'], pole['abspann']))
             if not pole['active']:
                 self.poleRows[-1].deactivate()
+    
+    def removeRows(self):
+        for poleRow in reversed(self.poleRows):
+            poleRow.remove()
+        self.poleRows = []
         
     def onRowChange(self, idx, property_name, newVal):
         self.sig_updatePole.emit(idx, property_name, newVal)
@@ -249,6 +256,23 @@ class BirdViewRow(object):
         
         currentIdx = self.fieldAbspann.currentIndex()
         self.setFieldAbspannValue(None if currentIdx == -1 else self.fieldAbspannModel.item(currentIdx).data())
+        
+    def remove(self):
+        # Disconnect all widgets
+        self.fieldCat.disconnect()
+        self.fieldPos.disconnect()
+        self.fieldAbspann.disconnect()
+        
+        self.layout.removeWidget(self.labelNr)
+        self.layout.removeWidget(self.fieldName)
+        self.layout.removeWidget(self.fieldCat)
+        self.layout.removeWidget(self.fieldPos)
+        self.layout.removeWidget(self.fieldAbspann)
+        
+        self.fieldCat.deleteLater()
+        self.fieldPos.deleteLater()
+        self.fieldAbspann.deleteLater()
+        
     
     # noinspection PyMethodMayBeStatic
     def tr(self, message, **kwargs):

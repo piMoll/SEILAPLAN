@@ -91,7 +91,7 @@
             </size>
            </property>
            <property name="currentIndex">
-            <number>3</number>
+            <number>0</number>
            </property>
            <widget class="QWidget" name="tabPoles">
             <property name="focusPolicy">
@@ -837,6 +837,12 @@
             </layout>
            </widget>
            <widget class="QWidget" name="tabBirdView">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
             <attribute name="title">
              <string>Vogelperspektive</string>
             </attribute>
@@ -894,7 +900,7 @@
                       </size>
                      </property>
                      <property name="text">
-                      <string>Stuetzenbezeichnung</string>
+                      <string>Stuetzenbez.</string>
                      </property>
                     </widget>
                    </item>
@@ -949,7 +955,7 @@
                    <item row="0" column="4">
                     <widget class="QLabel" name="label_47">
                      <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                        <horstretch>0</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
@@ -989,7 +995,7 @@
              </item>
             </layout>
            </widget>
-           <widget class="QWidget" name="tab">
+           <widget class="QWidget" name="tabHeaderData">
             <attribute name="title">
              <string>Kopfdaten</string>
             </attribute>
