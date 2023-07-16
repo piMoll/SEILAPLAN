@@ -177,7 +177,7 @@ class ConfigHandler(object):
                 parts = line.split('\t')
                 if len(parts) != 8:
                     continue
-                self.project.polesFromTxt.append({
+                self.project.polesFromFile.append({
                     'idx': int(parts[0]),
                     'd': int(float(parts[1])),
                     'h': float(parts[2]),
@@ -188,7 +188,7 @@ class ConfigHandler(object):
                     'name': parts[7]
                 })
 
-        self.project.polesFromTxt = []
+        self.project.polesFromFile = []
         lineCount = 0
         if os.path.exists(filename):
             with io.open(filename, encoding='utf-8') as f:

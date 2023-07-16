@@ -94,7 +94,7 @@ class ProjectConfHandler(AbstractConfHandler):
         self.profile = None
         self.poles = None
         # Poles from a loaded project file
-        self.polesFromTxt = []
+        self.polesFromFile = []
     
     def setConfigFromFile(self, settings):
         """Load configuration from json file."""
@@ -121,7 +121,7 @@ class ProjectConfHandler(AbstractConfHandler):
         self.setFixedPoles(settings['profile']['fixedPoles'])
         self.setNoPoleSection(settings['profile']['noPoleSection'])
         
-        self.polesFromTxt = settings['poles']
+        self.polesFromFile = settings['poles']
         return True
     
     def setConfigFromFileOld(self, property_name, value):
@@ -542,9 +542,9 @@ class ProjectConfHandler(AbstractConfHandler):
         return success
     
     def updatePoles(self, status):
-        if self.polesFromTxt:
+        if self.polesFromFile:
             status = 'savedFile'
-            self.poles.updateAllPoles(status, self.polesFromTxt)
+            self.poles.updateAllPoles(status, self.polesFromFile)
         # If instead user has defined some fixed poles, add these to Poles()
         elif len(self.fixedPoles['poles']) > 0:
             self.poles.updateAllPoles(status, self.fixedPoles['poles'])
@@ -567,8 +567,8 @@ class ProjectConfHandler(AbstractConfHandler):
             'HM_fix_h': []
         }
         self.noPoleSection = []
-        self.polesFromTxt = []
+        self.polesFromFile = []
     
     def reset(self):
         self.poles = None
-        self.polesFromTxt = []
+        self.polesFromFile = []

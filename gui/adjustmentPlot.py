@@ -196,7 +196,8 @@ class AdjustmentPlot(FigureCanvas):
                        color='#910000', linewidth=1*scale)
             
         # Poles
-        [pole_d, pole_z, pole_h, pole_dtop, pole_ztop, pole_nr, poleType] = poles
+        [pole_d, pole_z, pole_h, pole_dtop, pole_ztop,
+         pole_nr, poleType,  category, position, abspann] = poles
         for i, d in enumerate(pole_d):
             self.axes.plot([pole_d[i], pole_dtop[i]], [pole_z[i], pole_ztop[i]],
                            color='#363432', linewidth=3.0*scale)

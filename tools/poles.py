@@ -114,7 +114,8 @@ class Poles(object):
         return QCoreApplication.translate(type(self).__name__, message)
 
     def add(self, idx, d, h=INIT_POLE_HEIGHT, angle=INIT_POLE_ANGLE,
-            manually=False, poleType='pole', active=True, name='', refresh=True):
+            manually=False, poleType='pole', active=True, name='',
+            category=None, position=None, abspann=None, refresh=True):
        
         if d is None:
             leftPole = self.poles[idx-1]['d']
@@ -151,9 +152,9 @@ class Poles(object):
             'coordy': y,
             'manually': manually,
             'active': active,
-            'category': None,
-            'position': None,
-            'abspann': None
+            'category': category,
+            'position': position,
+            'abspann': abspann
         })
         if refresh:
             self.refresh()
@@ -249,8 +250,10 @@ class Poles(object):
             self.poles = []
             for p in poles:
                 self.add(p['idx'], p['d'], p['h'], p['angle'],
-                         p['manually'], p['poleType'], active=p['active'],
-                         name=p['name'], refresh=False)
+                         p['manually'], p['poleType'], p['active'], p['name'],
+                         p['category'] if 'category' in p else None,
+                         p['position'] if 'position' in p else None,
+                         p['abspann'] if 'abspann' in p else None, False)
         
         elif status == 'jumpedOver':
             # User wants to jump over the optimization but has not loaded a
@@ -272,6 +275,9 @@ class Poles(object):
         ztop = []
         number = []
         types = []
+        category = []
+        position = []
+        abspann = []
         
         for i, pole in enumerate(self.poles):
             if not withAnchor and pole['poleType'] == 'anchor':
@@ -285,13 +291,16 @@ class Poles(object):
             ztop.append(pole['ztop'])
             number.append(pole['nr'])
             types.append(pole['poleType'])
+            category.append(pole['category'])
+            position.append(pole['position'])
+            abspann.append(pole['abspann'])
 
         d = np.array(d)
         z = np.array(z)
         h = np.array(h)
         dtop = np.array(dtop)
         ztop = np.array(ztop)
-        return [d, z, h, dtop, ztop, number, types]
+        return [d, z, h, dtop, ztop, number, types, category, position, abspann]
 
     def refresh(self):
         self.updateFirstLastPole()
@@ -398,7 +407,8 @@ class Poles(object):
             
 
     def getCableFieldDimension(self):
-        [_, _, _, dtop, ztop, _, _] = self.getAsArray(withAnchor=True, withDeactivated=True)
+        [_, _, _, dtop, ztop,
+         _, _, _, _, _] = self.getAsArray(withAnchor=True, withDeactivated=True)
 
         b = dtop[self.idxA+1:self.idxE+1] - dtop[self.idxA:self.idxE]
         h = ztop[self.idxA+1:self.idxE+1] - ztop[self.idxA:self.idxE]
@@ -408,7 +418,8 @@ class Poles(object):
     def getAnchorCable(self):
         anchorFieldA = None
         anchorFieldE = None
-        [_, _, _, pole_dtop, pole_ztop, _, _] = self.getAsArray(True, False)
+        [_, _, _, pole_dtop, pole_ztop,
+         _, _, _, _, _] = self.getAsArray(True, False)
         
         if self.hasAnchorA:
             anchorFieldA = {
@@ -578,7 +589,7 @@ class Poles(object):
     
     def getSettings(self):
         propList = ['name', 'poleType', 'd', 'h', 'z', 'angle',
-                    'manually', 'active']
+                    'manually', 'active', 'category', 'position', 'abspann']
         settings = []
         for idx, p in enumerate(self.poles):
             pole = {'idx': idx}
