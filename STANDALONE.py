@@ -237,7 +237,8 @@ if __name__ == "__main__":
                            profile.peakLoc_x, profile.peakLoc_z,
                            profile.surveyPnts)
         printPlot.updatePlot(poles.getAsArray(), cableline, True)
-        printPlot.printToPdf(plotSavePath, projName, poles.poles)
+        printPlot.layoutDiagrammForPrint(projName, poles.poles)
+        printPlot.printToPdf(plotSavePath)
     
         # Generate geo data
         ###

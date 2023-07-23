@@ -543,13 +543,21 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         
         # Create plot
         if self.confHandler.getOutputOption('plot'):
+            includingBirdView = True
             plotSavePath = os.path.join(outputLoc, self.tr('Diagramm.pdf'))
-            printPlot = AdjustmentPlot(self)
+            width, height = 11.69, 8.27  # A4 dimensions in inch
+            printPlot = AdjustmentPlot(self, width, height, 150, withBirdView=includingBirdView)
             printPlot.initData(self.profile.di_disp, self.profile.zi_disp,
                                self.profile.peakLoc_x, self.profile.peakLoc_z,
                                self.profile.surveyPnts)
             printPlot.updatePlot(self.poles.getAsArray(), self.cableline, True)
-            printPlot.printToPdf(plotSavePath, projName, self.poles.poles)
+            printPlot.layoutDiagrammForPrint(projName, self.poles.poles)
+            if includingBirdView:
+                xlim, ylim = printPlot.createBirdView(self.poles.poles)
+                # TODO:
+                # imgPath = calculateMapExtent(xlim, ylim, self.confHandler.project.points['A'], self.confHandler.project.azimut)
+                # printPlot.addBackgroundMap(imgPath, xlim, ylim)
+            printPlot.exportPdf(plotSavePath)
         
         # Generate geo data
         if (self.confHandler.getOutputOption('csv') or

@@ -24,8 +24,11 @@ from qgis.PyQt.QtWidgets import QSizePolicy
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from matplotlib.patches import Rectangle
+from matplotlib.patches import Rectangle, Circle
+from matplotlib.pyplot import imread
+
 from .plotting_tools import zoom_with_wheel
+from ..tools.birdViewSymbol import BirdViewSymbol, BirdViewSymbolLoader
 
 
 class AdjustmentPlot(FigureCanvas):
@@ -38,11 +41,25 @@ class AdjustmentPlot(FigureCanvas):
         3: '#e06767',   # red = error
     }
     
-    def __init__(self, parent=None, width=5, height=4, dpi=72):
+    def __init__(self, parent=None, width=5., height=4., dpi=72, withBirdView=False):
         self.win = parent
-        self.fig = Figure(figsize=(width, height), dpi=dpi, facecolor='#efefef')
-        self.axes = self.fig.add_subplot(111)
-    
+        self.dpi = dpi
+        self.fig = Figure(figsize=(width, height), dpi=self.dpi, facecolor='#efefef')
+        
+        self.axesBirdView = None
+        self.birdViewMarkers = None
+        
+        if withBirdView:
+            axes = self.fig.subplots(2, 1, sharex=True)
+            self.axes = axes[0]
+            self.axesBirdView = axes[1]
+            # Load markers
+            loader = BirdViewSymbolLoader()
+            self.birdViewMarkers = loader.loadSymbolFromArray()
+        else:
+            self.axes = self.fig.add_subplot(111)
+            
+        
         FigureCanvas.__init__(self, self.fig)
         self.setParent(parent)
         
@@ -134,10 +151,6 @@ class AdjustmentPlot(FigureCanvas):
             scale = 0.5
             fontSize = 8
         
-        # current Zoom
-        xlim = self.axes.get_xlim()
-        ylim = self.axes.get_ylim()
-        
         self.axes.clear()
         self.__setupAxes()
         # Terrain
@@ -215,18 +228,13 @@ class AdjustmentPlot(FigureCanvas):
             self.axes.axvline(lw=1, ls='dotted', color='black', x=d)
             self.axes.axhline(lw=1, ls='dotted', color='black', y=z)
             self.axes.axhline(lw=1, ls='dotted', color='black', y=ztop)
-        
-        # Data limit of axis
-        # self.setPlotLimits()
+
         # Add labels
         if not printPdf:
             self.placeLabels(pole_dtop, pole_ztop, pole_nr)
         # Legend
         self.axes.legend(loc='lower center', fontsize=fontSize,
                          bbox_to_anchor=(0.5, 0), ncol=legendCol)
-        
-        self.axes.set_xlim(xlim)
-        self.axes.set_ylim(ylim)
         self.draw()
         # Set new plot extent as home extent (for home button)
         if not printPdf:
@@ -289,13 +297,8 @@ class AdjustmentPlot(FigureCanvas):
                 self.axes.text(xdata[i], ydata[i] + self.labelBuffer, label[i],
                                fontsize=12, ha='center', fontweight='semibold',
                                color=self.COLOR_MARKER[0])
-    
-    def printToPdf(self, filelocation, title, poles, dpi=300):
-        xlen = 11.69  # 11.69 inch = A4 width
-        ylen = 8.27  # 8.27 inch = A4 height
-        self.fig.set_size_inches([xlen, ylen])
-        self.setPlotLimits()
-        # Layout plot
+        
+    def layoutDiagrammForPrint(self, title, poles):
         self.axes.set_title(self.tr('Seilaplan Plot  -  {}').format(title),
                             fontsize=10, multialignment='center')
         self.axes.set_xlabel(self.tr('Horizontaldistanz [m]'), fontsize=9)
@@ -312,9 +315,63 @@ class AdjustmentPlot(FigureCanvas):
             self.axes.text(pole['dtop'], pole['ztop'] + self.labelBuffer * 4,
                            f"{pole['name']} {poleNr}\nH = {pole['h']:.1f} m",
                            ha='center', fontsize=8)
+        
+    def createBirdView(self, poles):
+        self.axesBirdView.set_ylim(-30, 30)
+        # Horizontal line symbolizing pole layout
+        self.axesBirdView.plot([poles[0]['d'], poles[-1]['d']], [0, 0], color='red', linewidth=1)
+        
+        # Draw bird view markers
+        for pole in poles:
+            # Special symbol for option 'flach'
+            if pole['abspann'] == 'flach':
+                symbol: BirdViewSymbol = self.birdViewMarkers['dreizackiger_stern']
+            else:
+                symbol: BirdViewSymbol = self.birdViewMarkers[pole['category']]
+            marker = symbol.mplPath
+            if pole['abspann'] == 'anfang':
+                marker = symbol.mirror()
+                
+            # Move marker a bit up/or down depending on pole position
+            yPos = 0
+            shift = 5   # meter
+            if pole['position'] == 'links':
+                yPos += shift
+            elif pole['position'] == 'rechts':
+                yPos += shift
+            
+            self.axesBirdView.plot(pole['d'], yPos, marker=marker, markersize=symbol.scale * 40, color=marker.color)
+            # Add a brown center point where needed
+            if symbol.centerPoint:
+                self.axesBirdView.add_patch(
+                    Circle((pole['d'], yPos), 2.8, fc=BirdViewSymbol.ACCENT_COLOR, ec='black', zorder=10))
+        
+        self.layoutBirdViewForPrint()
+        
+        return self.axesBirdView.get_xlim(), self.axesBirdView.get_ylim()
+    
+    def layoutBirdViewForPrint(self):
+        self.axesBirdView.set_aspect('equal')
+        self.axesBirdView.set_title('Vogelperspektive',
+                                    fontsize=9, multialignment='center')
+        self.axesBirdView.tick_params(labelsize=8)
+        self.axesBirdView.set_xlabel(self.tr('Horizontaldistanz [m]'), fontsize=9)
+        self.axesBirdView.grid(which='major', lw=0.5)
+        self.axesBirdView.grid(which='minor', lw=0.5, linestyle=':')
 
+    def addBackgroundMap(self, imgPath):
+        xMin, xMax = self.axesBirdView.get_xlim()
+        yMin, yMax = self.axesBirdView.get_ylim()
+        
+        # imgPath = '/home/pi/Seilaplan/Vogelperspektive/MapOut.png'
+        img = imread(imgPath)
+        # TODO: use these limits to cut out image!
+        # https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.imshow.html
+        self.axesBirdView.imshow(img, aspect='equal', extent=[xMin, xMax, yMin, yMax])
+    
+    def exportPdf(self, fileLocation):
         self.fig.tight_layout(pad=2.5)
-        self.print_figure(filelocation, dpi, facecolor='white')
+        self.print_figure(fileLocation, self.dpi, facecolor='white')
 
     def setToolbar(self, tbar):
         self.tbar = tbar
