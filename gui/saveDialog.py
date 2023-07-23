@@ -24,7 +24,7 @@ import os
 from qgis.PyQt.QtCore import QSize, Qt, QCoreApplication
 from qgis.PyQt.QtWidgets import QDialog, QWidget, QLabel, QDialogButtonBox, \
     QHBoxLayout, QComboBox, QSizePolicy, QPushButton, QCheckBox, \
-    QVBoxLayout, QFileDialog, QLineEdit, QMessageBox
+    QVBoxLayout, QFileDialog, QLineEdit, QMessageBox, QSpacerItem
 from qgis.PyQt.QtGui import QIcon, QPixmap
 from .guiHelperFunctions import sanitizeFilename
 
@@ -181,6 +181,7 @@ class DialogOutputOptions(QDialog):
         self.checkBoxShortReport = QCheckBox(self.tr('Kurzbericht'))
         self.checkBoxReport = QCheckBox(self.tr('Technischer Bericht'))
         self.checkBoxPlot = QCheckBox(self.tr('Diagramm'))
+        self.checkBoxBirdView = QCheckBox(self.tr('inkl. Vogelperspektive'))
         geodataLabel = QLabel(self.tr('Geodaten (Stuetzen, Seillinie, Gelaende)'))
         geodataLabel.setStyleSheet('padding-top: 10px;')
         self.checkBoxCsv = QCheckBox('CSV')
@@ -192,6 +193,7 @@ class DialogOutputOptions(QDialog):
         self.checkBoxShortReport.setChecked(self.confHandler.outputOptions['shortReport'])
         self.checkBoxReport.setChecked(self.confHandler.outputOptions['report'])
         self.checkBoxPlot.setChecked(self.confHandler.outputOptions['plot'])
+        self.checkBoxBirdView.setChecked(self.confHandler.outputOptions['birdView'])
         self.checkBoxCsv.setChecked(self.confHandler.outputOptions['csv'])
         self.checkBoxShape.setChecked(self.confHandler.outputOptions['shape'])
         self.checkBoxKML.setChecked(self.confHandler.outputOptions['kml'])
@@ -212,7 +214,12 @@ class DialogOutputOptions(QDialog):
         container.addWidget(questionLabel)
         container.addWidget(self.checkBoxShortReport)
         container.addWidget(self.checkBoxReport)
-        container.addWidget(self.checkBoxPlot)
+        hboxContainer = QHBoxLayout(main_widget)
+        hboxContainer.addWidget(self.checkBoxPlot)
+        hboxContainer.addWidget(self.checkBoxBirdView)
+        spacerItem = QSpacerItem(20, 5, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        hboxContainer.addItem(spacerItem)
+        container.addLayout(hboxContainer)
         container.addWidget(geodataLabel)
         vboxGeodata = QVBoxLayout()
         vboxGeodata.setContentsMargins(20, 0, 0, 0)
@@ -269,6 +276,7 @@ class DialogOutputOptions(QDialog):
             'report': int(self.checkBoxReport.isChecked()),
             'shortReport': int(self.checkBoxShortReport.isChecked()),
             'plot': int(self.checkBoxPlot.isChecked()),
+            'birdView': int(self.checkBoxBirdView.isChecked()),
             'csv': int(self.checkBoxCsv.isChecked()),
             'shape': int(self.checkBoxShape.isChecked()),
             'kml': int(self.checkBoxKML.isChecked()),

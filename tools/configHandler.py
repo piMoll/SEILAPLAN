@@ -246,6 +246,7 @@ class ConfigHandler(object):
             'report': s.value(f'{self.SETTING_PREFIX}report', 0, int),
             'shortReport': s.value(f'{self.SETTING_PREFIX}shortReport', 1, int),
             'plot': s.value(f'{self.SETTING_PREFIX}plot', 1, int),
+            'birdView': s.value(f'{self.SETTING_PREFIX}birdView', 1, int),
             'shape': s.value(f'{self.SETTING_PREFIX}shape', 0, int),
             'csv': s.value(f'{self.SETTING_PREFIX}csv', 0, int),
             'kml': s.value(f'{self.SETTING_PREFIX}kml', 0, int),
@@ -254,9 +255,7 @@ class ConfigHandler(object):
         for path in [
                 s.value(f'{self.SETTING_PREFIX}savePath1'),
                 s.value(f'{self.SETTING_PREFIX}savePath2'),
-                s.value(f'{self.SETTING_PREFIX}savePath3')
-        ]:
-    
+                s.value(f'{self.SETTING_PREFIX}savePath3')]:
             if path and os.path.exists(path):
                 self.commonPaths.append(path)
         
@@ -284,6 +283,7 @@ class ConfigHandler(object):
         s.setValue(f'{self.SETTING_PREFIX}report', self.outputOptions['report'])
         s.setValue(f'{self.SETTING_PREFIX}shortReport', self.outputOptions['shortReport'])
         s.setValue(f'{self.SETTING_PREFIX}plot', self.outputOptions['plot'])
+        s.setValue(f'{self.SETTING_PREFIX}birdView', self.outputOptions['birdView'])
         s.setValue(f'{self.SETTING_PREFIX}shape', self.outputOptions['shape'])
         s.setValue(f'{self.SETTING_PREFIX}csv', self.outputOptions['csv'])
         s.setValue(f'{self.SETTING_PREFIX}kml', self.outputOptions['kml'])

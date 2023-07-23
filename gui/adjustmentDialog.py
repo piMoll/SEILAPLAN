@@ -543,7 +543,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         
         # Create plot
         if self.confHandler.getOutputOption('plot'):
-            includingBirdView = True
+            includingBirdView = self.confHandler.getOutputOption('birdView')
             plotSavePath = os.path.join(outputLoc, self.tr('Diagramm.pdf'))
             width, height = 11.69, 8.27  # A4 dimensions in inch
             printPlot = AdjustmentPlot(self, width, height, 150, withBirdView=includingBirdView)

@@ -340,7 +340,7 @@ class AdjustmentPlot(FigureCanvas):
             elif pole['position'] == 'rechts':
                 yPos += shift
             
-            self.axesBirdView.plot(pole['d'], yPos, marker=marker, markersize=symbol.scale * 40, color=marker.color)
+            self.axesBirdView.plot(pole['d'], yPos, marker=marker, markersize=symbol.scale * 40, color=symbol.color)
             # Add a brown center point where needed
             if symbol.centerPoint:
                 self.axesBirdView.add_patch(
