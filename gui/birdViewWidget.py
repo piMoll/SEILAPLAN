@@ -29,7 +29,7 @@ birdViewKatConf = {
     '-': {
         'abspann': [],
     },
-    'seilkran': {
+    'mobiler_seilkran': {
         'abspann': [],
     },
     'vorziehstuetze_1': {
@@ -37,7 +37,28 @@ birdViewKatConf = {
     },
     'vorziehstuetze_2': {
         'abspann': ['anfang', 'flach', 'ende'],
-    }
+    },
+    'vorgeneigte_stuetze': {
+        'abspann': ['anfang', 'ende'],
+    },
+    'mehrbaumanker': {
+        'abspann': ['anfang', 'ende'],
+    },
+    'endmast_mit_zugseilrolle': {
+        'abspann': ['anfang', 'ende'],
+    },
+    'endmast_ohne_zugseilrolle': {
+        'abspann': ['anfang', 'ende'],
+    },
+    'totmannanker': {
+        'abspann': [],
+    },
+    'verstaerkter_ankerbaum': {
+        'abspann': ['anfang', 'ende'],
+    },
+    'normaler_ankerbaum': {
+        'abspann': [],
+    },
 }
 
 birdViewPosKonf = ['links', 'mitte', 'rechts']
@@ -193,7 +214,7 @@ class BirdViewRow(object):
         self.setFieldAbspannValue(dataValue)
         # Connect events
         self.fieldAbspann.currentIndexChanged.connect(
-            lambda newVal: self.parent.onRowChange(self.index, 'abspann', self.fieldAbspannModel.item(newVal).data() if newVal > 0 else None))
+            lambda newVal: self.parent.onRowChange(self.index, 'abspann', self.fieldAbspannModel.item(newVal).data() if newVal > -1 else None))
     
     def setFieldAbspannValue(self, dataValue):
         currentIndex = self.fieldAbspann.currentIndex()
