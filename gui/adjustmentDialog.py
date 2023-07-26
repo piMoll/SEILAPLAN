@@ -35,6 +35,7 @@ from .birdViewWidget import BirdViewWidget
 from .adjustmentDialog_params import AdjustmentDialogParams
 from .adjustmentDialog_thresholds import AdjustmentDialogThresholds
 from .saveDialog import DialogOutputOptions
+from .guiHelperFunctions import DialogWithImage
 from .mapMarker import MapMarkerTool
 from ..core.cablelineFinal import preciseCable, updateWithCableCoordinates
 from ..tools.calcThreshold import ThresholdUpdater
@@ -66,6 +67,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.poles = self.confHandler.project.poles
         # Max distance the anchors can move away from initial position
         self.anchorBuffer = self.confHandler.project.heightSource.buffer
+        # Path to plugin root
+        self.homePath = os.path.dirname(os.path.dirname(__file__))
         
         # Load data
         self.originalData = {}
@@ -129,13 +132,19 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         # Save dialog
         self.saveDialog = DialogOutputOptions(self, self.confHandler)
         
+        # Dialog with explanatory images
+        self.imgBox = DialogWithImage()
+        
         # Connect signals
         self.btnClose.clicked.connect(self.onClose)
         self.btnSave.clicked.connect(self.onSave)
         self.btnBackToStart.clicked.connect(self.onReturnToStart)
         for field in self.prHeaderFields.values():
             field.textChanged.connect(self.onPrHeaderChanged)
-        self.infoQ.clicked.connect(self.onShowInfoFieldQ)
+        self.infoQ.clicked.connect(self.onInfo)
+        self.infoBirdViewCategory.clicked.connect(self.onInfo)
+        self.infoBirdViewPosition.clicked.connect(self.onInfo)
+        self.infoBirdViewAbspann.clicked.connect(self.onInfo)
     
     # noinspection PyMethodMayBeStatic
     def tr(self, message, **kwargs):
@@ -338,11 +347,39 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
     def onBirdViewVisible(self, tabIdx):
         if tabIdx == self.tabWidget.indexOf(self.tabBirdView):
             self.birdViewLayout.updateGui()
-
-    def onShowInfoFieldQ(self):
-        msg = self.tr('Erklaerung Gesamtlast')
-        QMessageBox.information(self, self.tr("Gesamtlast"),
-                                msg, QMessageBox.Ok)
+    
+    def onInfo(self):
+        title = 'info'
+        msg = ''
+        imageName = None
+        if self.sender().objectName() == 'infoQ':
+            title = self.tr('Gesamtlast')
+            msg = self.tr('Erklaerung Gesamtlast')
+        elif self.sender().objectName() == 'infoBirdViewCategory':
+            title = self.tr('Stuetzenkategorie')
+            msg = self.tr('Erklaerung Stuetzenkategorie')
+            imageName = '_Stuetzenkategorie.png'
+        elif self.sender().objectName() == 'infoBirdViewPosition':
+            title = self.tr('Stuetzenposition')
+            msg = self.tr('Erklaerung Stuetzenposition')
+        elif self.sender().objectName() == 'infoBirdViewAbspann':
+            title = self.tr('Abspann')
+            msg = self.tr('Erklaerung Abspann')
+        
+        if imageName:
+            # Show an info image
+            imgPath = os.path.join(self.homePath, 'img', f'{self.locale}_{imageName}')
+            if not os.path.exists(imgPath):
+                imgPath = os.path.join(self.homePath, 'img', f'de_{imageName}')
+            self.imgBox.setWindowTitle(title)
+            # Load image
+            myPixmap = QPixmap(imgPath)
+            self.imgBox.label.setPixmap(myPixmap)
+            self.imgBox.setLayout(self.imgBox.container)
+            self.imgBox.show()
+        else:
+            # Show a simple MessageBox with an info text
+            QMessageBox.information(self, title, msg, QMessageBox.Ok)
 
     def updateCableParam(self):
         self.configurationHasChanged = True
