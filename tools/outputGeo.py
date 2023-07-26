@@ -65,18 +65,13 @@ def organizeDataForExport(poles, cableline, profile):
     profile_data = [profile_emptyLine, profile_loadLine, profile_terrain]
         
     # Pole coordinates
-    poleGeo = []
-    poleName = []
     for pole in poles:
         if pole['active']:
-            poleGeo.append([pole['coordx'], pole['coordy'], pole['z'], pole['h']])
-            poleName.append(pole['name'])
             poleLine = [pole['d'], pole['z']], [pole['dtop'], pole['ztop']]
             profile_data.append(np.array(poleLine))
     
     return {
-        'poleGeo': poleGeo,
-        'poleName': poleName,
+        'poles': [pole for pole in poles if pole['active']],
         'emptyLine': emptyLine,
         'loadLine': loadLine,
         'terrain': terrainLine,
@@ -131,8 +126,7 @@ def writeGeodata(geodata, geoFormat, epsg, savePath):
         raise Exception(errorMsg.replace('_geoFormat_', geoFormat))
 
     # Save pole positions
-    savePointGeometry(stuePath, geodata['poleGeo'], geodata['poleName'],
-                      spatialRef, geoFormat)
+    savePointGeometry(stuePath, geodata['poles'], spatialRef, geoFormat)
     # Save empty cable line
     saveLineGeometry(seilLeerPath, [geodata['emptyLine']], spatialRef, geoFormat)
     # Save cable line under load
@@ -150,25 +144,30 @@ def writeGeodata(geodata, geoFormat, epsg, savePath):
     return geoOutput
 
 
-def savePointGeometry(filePath, geodata, label, spatialRef, geoFormat):
+def savePointGeometry(filePath, poles, spatialRef, geoFormat):
     """
-    :param label: Name of poles
     :param filePath: Location of shape file
-    :param geodata: x, y and z coordinate of poles
+    :param poles: array of poles dictionaries
     :param spatialRef: current spatial reference of qgis project
     :param geoFormat: Geodata export format
     """
     fields = QgsFields()
-    stueNrName = tr('bezeichnung')
+    headerName = tr('bezeichnung')
+    headerCategory = tr('kategorie')
+    headerPosition = tr('position')
+    headerAbspann = tr('abspannung')
     
     if geoFormat != 'DXF':
         # Define fields for feature attributes, DXF-format does not support
         #  fields
-        fields.append(QgsField(stueNrName, QVariant.String, 'text', 254))
+        fields.append(QgsField(headerName, QVariant.String, 'text', 254))
         fields.append(QgsField('x', QVariant.Double))
         fields.append(QgsField('y', QVariant.Double))
         fields.append(QgsField('z', QVariant.Double))
         fields.append(QgsField('h', QVariant.Double))
+        fields.append(QgsField(headerCategory, QVariant.String, 'text', 254))
+        fields.append(QgsField(headerPosition, QVariant.String, 'text', 254))
+        fields.append(QgsField(headerAbspann, QVariant.String, 'text', 254))
 
     if QGIS_VERSION_INT >= 31030:
         # Use newer QgsVectorFileWriter.create() function
@@ -187,18 +186,21 @@ def savePointGeometry(filePath, geodata, label, spatialRef, geoFormat):
         raise Exception(f'{writer.errorMessage()} ({geoFormat})')
     
     features = []
-    for idx, coords in enumerate(geodata):
+    for idx, pole in enumerate(poles):
         feature = QgsFeature()
         feature.setFields(fields)
-        feature.setGeometry(QgsPoint(coords[0], coords[1], coords[2]))
+        feature.setGeometry(QgsPoint(pole['coordx'], pole['coordy'], pole['z']))
         feature.setId(idx)
         if geoFormat != 'DXF':
             # DXF-Format does not support fields / attributes
-            feature.setAttribute(stueNrName, label[idx])
-            feature.setAttribute('x', float(coords[0]))
-            feature.setAttribute('y', float(coords[1]))
-            feature.setAttribute('z', float(coords[2]))
-            feature.setAttribute('h', float(coords[3]))
+            feature.setAttribute(headerName, pole['name'])
+            feature.setAttribute('x', float(pole['coordx']))
+            feature.setAttribute('y', float(pole['coordy']))
+            feature.setAttribute('z', float(pole['z']))
+            feature.setAttribute('h', float(pole['h']))
+            feature.setAttribute(headerCategory, tr(pole['category']))
+            feature.setAttribute(headerPosition, tr(pole['position']))
+            feature.setAttribute(headerAbspann, tr(pole['abspann']))
         features.append(feature)
 
     writer.addFeatures(features)
@@ -352,18 +354,20 @@ def generateCoordTable(cableline, profile, poles, outputLoc):
     # Pole data
     header = [tr('Stuetze'), tr('Horizontaldistanz'), 'X', 'Y',
               tr('Z Stuetze Boden'), tr('Z Stuetze Spitze'),
-              tr('Stuetzenhoehe'), tr('Neigung')]
+              tr('Stuetzenhoehe'), tr('Neigung'), tr('Kategorie'),
+              tr('Position Stuetze'), tr('Ausrichtung Abspannung')]
     
     with open(savePathStue, 'w') as f:
         fi = csv.writer(f, delimiter=';', dialect='excel', lineterminator='\n')
         fi.writerow([unicode2acii(col) for col in header])
         for pole in poles:
             name = [unicode2acii(pole['name'])]
-            coords = ([round(e, 3) for e in [pole['d'],
-                                             pole['coordx'], pole['coordy'],
-                                             pole['z'], pole['ztop'],
-                                             pole['h'], pole['angle']]])
-            row = name + coords
+            coords = ([round(e, 3) for e in [
+                pole['d'], pole['coordx'], pole['coordy'], pole['z'],
+                pole['ztop'], pole['h'], pole['angle']]])
+            birdViewProps = [unicode2acii(tr(prop)) for prop in [
+                pole['category'], pole['position'], pole['abspann']]]
+            row = name + coords + birdViewProps
             fi.writerow(row)
 
 
