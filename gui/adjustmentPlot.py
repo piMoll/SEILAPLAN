@@ -326,8 +326,10 @@ class AdjustmentPlot(FigureCanvas):
             # Special symbol for option 'flach'
             if pole['abspann'] == 'flach':
                 symbol: BirdViewSymbol = self.birdViewMarkers['dreizackiger_stern']
-            else:
+            elif pole['category']:
                 symbol: BirdViewSymbol = self.birdViewMarkers[pole['category']]
+            else:
+                symbol: BirdViewSymbol = self.birdViewMarkers['default']
             marker = symbol.mplPath
             if pole['abspann'] == 'anfang':
                 marker = symbol.mirror()

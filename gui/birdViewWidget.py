@@ -240,15 +240,17 @@ class BirdViewRow(object):
         self.parent.onRowChange(self.index, 'abspann', dataValue)
         
     def onKatSelection(self, poleIdx, newCategory):
-        # Save pole changes
-        self.parent.onRowChange(poleIdx, 'category', newCategory)
         if newCategory == '-':
+            self.parent.onRowChange(poleIdx, 'category', None)
             # Deactivate the dropdown elements
             self.fieldPos.setEnabled(False)
             self.parent.onRowChange(poleIdx, 'position', None)
             self.fieldAbspann.setEnabled(False)
             self.parent.onRowChange(poleIdx, 'abspann', None)
             return
+        
+        # Save pole changes
+        self.parent.onRowChange(poleIdx, 'category', newCategory)
         
         # Enable drop down elements
         if not self.fieldPos.isEnabled():
