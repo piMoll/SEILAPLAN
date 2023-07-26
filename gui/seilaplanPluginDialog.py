@@ -172,19 +172,18 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.fieldTypeE.currentTextChanged.connect(self.onTypeEChange)
         
         # Info buttons
-        self.infoRasterlayer.clicked.connect(self.onHeightDataInfoShow)
-        self.infoSurveyData.clicked.connect(self.onHeightDataInfoShow)
-        self.infoPointA.clicked.connect(self.onPointAInfoShow)
-        self.infoPointE.clicked.connect(self.onPointEInfoShow)
-        self.infoParamSet.clicked.connect(self.onParamSetInfoShow)
-        self.infoBodenabstand.clicked.connect(self.onShowInfoImg)
-        self.infoStuetzen.clicked.connect(self.onShowInfoImg)
-        self.infoQ.clicked.connect(self.onShowInfoFieldQ)
-        self.infoSK.clicked.connect(self.onShowInfoFieldSK)
-        self.infoFieldE.clicked.connect(self.onShowInfoFieldE)
-        self.infoFieldFuellF.clicked.connect(self.onShowInfoFieldFuellF)
-        self.infoFieldSFT.clicked.connect(self.onShowInfoFieldSFT)
-        self.infoBerechnung.clicked.connect(self.onShowInfoBerechnung)
+        self.infoRasterlayer.clicked.connect(self.onInfo)
+        self.infoSurveyData.clicked.connect(self.onInfo)
+        self.infoPointA.clicked.connect(self.onInfo)
+        self.infoPointE.clicked.connect(self.onInfo)
+        self.infoBodenabstand.clicked.connect(self.onInfo)
+        self.infoStuetzen.clicked.connect(self.onInfo)
+        self.infoQ.clicked.connect(self.onInfo)
+        self.infoSK.clicked.connect(self.onInfo)
+        self.infoFieldE.clicked.connect(self.onInfo)
+        self.infoFieldFuellF.clicked.connect(self.onInfo)
+        self.infoFieldSFT.clicked.connect(self.onInfo)
+        self.infoBerechnung.clicked.connect(self.onInfo)
         
         # OSM map and contour buttons
         self.osmLyrButton.clicked.connect(self.onClickOsmButton)
@@ -910,96 +909,73 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             paramVal = self.paramHandler.getParameterAsStr('HM_Kran')
             self.fieldHMKran.setText(paramVal)
             self.fieldHMKran.setEnabled(True)
-    
+        
     def onInfo(self):
-        msg = self.tr('Infotext').format(
-            os.path.join(os.path.dirname(os.path.dirname(__file__)), 'help', 'docs'))
-        QMessageBox.information(self, "SEILAPLAN Info", msg, QMessageBox.Ok)
-    
-    def onHeightDataInfoShow(self):
+        title = 'info'
         msg = ''
-        if self.sender().objectName() == 'infoRasterlayer':
+        imageName = None
+        
+        if self.sender().objectName() == 'buttonInfo':
+            title = 'SEILAPLAN Info'
+            msg = self.tr('Infotext').format(os.path.join(os.path.dirname(
+                os.path.dirname(__file__)), 'help', 'docs'))
+        
+        elif self.sender().objectName() == 'infoRasterlayer':
+            title = self.tr('Hoeheninformationen laden')
             msg = self.tr('Hoeheninformation - Erklaerung Raster')
         elif self.sender().objectName() == 'infoSurveyData':
+            title = self.tr('Hoeheninformationen laden')
             msg = self.tr('Hoeheninformation - Erklaerung Felddaten')
-        QMessageBox.information(self, self.tr("Hoeheninformationen laden"), msg,
-                                QMessageBox.Ok)
-    
-    def onPointAInfoShow(self):
-        imgPath = os.path.join(self.homePath, 'img', self.locale + '_Anfangspunkt.png')
-        if not os.path.exists(imgPath):
-            imgPath = os.path.join(self.homePath, 'img', 'de_Anfangspunkt.png')
-        self.imgBox.setWindowTitle(self.tr('Anfangspunkt'))
-        # Load image
-        myPixmap = QPixmap(imgPath)
-        self.imgBox.label.setPixmap(myPixmap)
-        self.imgBox.setLayout(self.imgBox.container)
-        self.imgBox.show()
-
-    def onPointEInfoShow(self):
-        imgPath = os.path.join(self.homePath, 'img', self.locale + '_Endpunkt.png')
-        if not os.path.exists(imgPath):
-            imgPath = os.path.join(self.homePath, 'img', 'de_Endpunkt.png')
-        self.imgBox.setWindowTitle(self.tr('Endpunkt'))
-        # Load image
-        myPixmap = QPixmap(imgPath)
-        self.imgBox.label.setPixmap(myPixmap)
-        self.imgBox.setLayout(self.imgBox.container)
-        self.imgBox.show()
         
-    def onShowInfoImg(self):
-        sender = self.sender().objectName()
-        infoType = sender[4:]
-        # Titles of info images
-        infImg = {'Bodenabstand': self.tr('Erklaerungen zum Bodenabstand'),
-                  'Stuetzen': self.tr('Erklaerungen zu den Zwischenstuetzen')}
-        infoTitle = infImg[infoType]
-        imgPath = os.path.join(self.homePath, 'img', f"{self.locale}_{infoType}.png")
-        if not os.path.exists(imgPath):
-            imgPath = os.path.join(self.homePath, 'img', f"de_{infoType}.png")
-        self.imgBox.setWindowTitle(infoTitle)
-        # Load image
-        myPixmap = QPixmap(imgPath)
-        self.imgBox.label.setPixmap(myPixmap)
-        self.imgBox.setLayout(self.imgBox.container)
-        self.imgBox.show()
-
-    def onParamSetInfoShow(self):
-        msg = self.tr('Erklaerung Paramersets wiederherstellen')
-        QMessageBox.information(self, self.tr('Parametersets wiederherstellen'),
-                                msg, QMessageBox.Ok)
-
-    def onShowInfoFieldQ(self):
-        msg = self.tr('Erklaerung Gesamtlast')
-        QMessageBox.information(self, self.tr("Gesamtlast"),
-                                msg, QMessageBox.Ok)
+        elif self.sender().objectName() == 'infoPointA':
+            title = self.tr('Anfangspunkt')
+            imageName = 'Anfangspunkt.png'
+        elif self.sender().objectName() == 'infoPointE':
+            title = self.tr('Endpunkt')
+            imageName = 'Endpunkt.png'
         
-    def onShowInfoFieldSK(self):
-        msg = self.tr('Erklaerung Grundspannung')
-        QMessageBox.information(self, self.tr("Grundspannung"),
-                                msg, QMessageBox.Ok)
-    
-    def onShowInfoFieldE(self):
-        msg = self.tr('Elastizitaetsmodul Tragseil Erklaerung')
-        QMessageBox.information(self, self.tr("Elastizitaetsmodul Tragseil"),
-                                msg, QMessageBox.Ok)
-
-    def onShowInfoFieldFuellF(self):
-        msg = self.tr('Fuellfaktor Erklaerung')
-        QMessageBox.information(self,
-                                self.tr("Fuellfaktor"),
-                                msg, QMessageBox.Ok)
-    
-    def onShowInfoFieldSFT(self):
-        msg = self.tr('Europaweit wird ein Sicherheitsfaktor von 3.0 fuer das '
-               'Tragseil verwendet.')
-        QMessageBox.information(self, self.tr("Sicherheitsfaktor Tragseil"), msg,
-                                QMessageBox.Ok)
-    
-    def onShowInfoBerechnung(self):
-        msg = self.tr('Erklaerungen Berechnungsbuttons')
-        QMessageBox.information(self, self.tr("Naechste Schritte"), msg,
-                                QMessageBox.Ok)
+        elif self.sender().objectName() == 'infoBodenabstand':
+            title = self.tr('Erklaerungen zum Bodenabstand')
+            imageName = 'Bodenabstand.png'
+        elif self.sender().objectName() == 'infoStuetzen':
+            title = self.tr('Erklaerungen zu den Zwischenstuetzen')
+            imageName = 'Stuetzen.png'
+        
+        elif self.sender().objectName() == 'infoQ':
+            title = self.tr("Gesamtlast")
+            msg = self.tr('Erklaerung Gesamtlast')
+        elif self.sender().objectName() == 'infoSK':
+            self.tr("Grundspannung"),
+            msg = self.tr('Erklaerung Grundspannung')
+        elif self.sender().objectName() == 'infoFieldE':
+            title = self.tr("Elastizitaetsmodul Tragseil")
+            msg = self.tr('Elastizitaetsmodul Tragseil Erklaerung')
+        elif self.sender().objectName() == 'infoFieldFuellF':
+            title = self.tr("Fuellfaktor")
+            msg = self.tr('Fuellfaktor Erklaerung')
+        elif self.sender().objectName() == 'infoFieldSFT':
+            title = self.tr("Sicherheitsfaktor Tragseil")
+            msg = self.tr('Europaweit wird ein Sicherheitsfaktor von 3.0 fuer das '
+                          'Tragseil verwendet.')
+        
+        elif self.sender().objectName() == 'infoBerechnung':
+            title = self.tr("Naechste Schritte")
+            msg = self.tr('Erklaerungen Berechnungsbuttons')
+        
+        if imageName:
+            # Show an info image
+            imgPath = os.path.join(self.homePath, 'img', f'{self.locale}_{imageName}')
+            if not os.path.exists(imgPath):
+                imgPath = os.path.join(self.homePath, 'img', f'de_{imageName}')
+            self.imgBox.setWindowTitle(title)
+            # Load image
+            myPixmap = QPixmap(imgPath)
+            self.imgBox.label.setPixmap(myPixmap)
+            self.imgBox.setLayout(self.imgBox.container)
+            self.imgBox.show()
+        else:
+            # Show a simple MessageBox with an info text
+            QMessageBox.information(self, title, msg, QMessageBox.Ok)
     
     def fillInPrHeaderData(self):
         for key, val in self.projectHandler.prHeader.items():
