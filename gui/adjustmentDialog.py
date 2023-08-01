@@ -593,7 +593,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             printPlot.layoutDiagrammForPrint(projName, poles)
             if includingBirdView:
                 # Create second plot
-                xlim, ylim = printPlot.createBirdView(poles)
+                xlim, ylim = printPlot.createBirdView(poles, self.confHandler.project.azimut)
                 # Extract the map background
                 imgPath = extractMapBackground(outputLoc, xlim, ylim,
                             self.confHandler.project.points['A'], self.confHandler.project.azimut)

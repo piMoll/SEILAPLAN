@@ -19,6 +19,7 @@
  ***************************************************************************/
 """
 import numpy as np
+from math import degrees
 from qgis.PyQt.QtCore import Qt, QSize, QCoreApplication
 from qgis.PyQt.QtWidgets import QSizePolicy
 
@@ -317,7 +318,7 @@ class AdjustmentPlot(FigureCanvas):
                            f"{pole['name']} {poleNr}\nH = {pole['h']:.1f} m",
                            ha='center', fontsize=8)
         
-    def createBirdView(self, poles):
+    def createBirdView(self, poles, azimut):
         xMin, xMax = self.axesBirdView.get_xlim()
         plotWidth = xMax - xMin
         yLim = plotWidth / 35
@@ -350,7 +351,9 @@ class AdjustmentPlot(FigureCanvas):
             elif pole['position'] == 'rechts':
                 yPos += posShiftVertical
             
-            self.axesBirdView.plot(pole['d'], yPos, marker=marker, markersize=symbol.scale * markerSize, color=symbol.color)
+            self.axesBirdView.plot(pole['d'], yPos, marker=marker,
+                                   markersize=symbol.scale * markerSize,
+                                   color=symbol.color)
             # Add a brown center point where needed
             if symbol.centerPoint:
                 defaultCircle: BirdViewSymbol = self.birdViewMarkers['default']
@@ -358,6 +361,10 @@ class AdjustmentPlot(FigureCanvas):
                                        markersize=defaultCircle.scale * markerSize,
                                        color=defaultCircle.color)
         
+        # Add north arrow
+        self.axesBirdView.text(xMax - 15, yLim - 15,  s='➸',
+                              fontsize=20, color='black', ha='center', va='center',
+                               rotation=degrees(azimut), rotation_mode='anchor')
         self.layoutBirdViewForPrint()
         
         return self.axesBirdView.get_xlim(), self.axesBirdView.get_ylim()
