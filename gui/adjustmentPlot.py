@@ -210,7 +210,7 @@ class AdjustmentPlot(FigureCanvas):
             
         # Poles
         [pole_d, pole_z, pole_h, pole_dtop, pole_ztop,
-         pole_nr, poleType,  category, position, abspann] = poles
+         pole_nr, poleType, category, position, abspann] = poles
         for i, d in enumerate(pole_d):
             self.axes.plot([pole_d[i], pole_dtop[i]], [pole_z[i], pole_ztop[i]],
                            color='#363432', linewidth=3.0*scale)
@@ -301,7 +301,8 @@ class AdjustmentPlot(FigureCanvas):
     def layoutDiagrammForPrint(self, title, poles):
         self.axes.set_title(self.tr('Seilaplan Plot  -  {}').format(title),
                             fontsize=10, multialignment='center')
-        self.axes.set_xlabel(self.tr('Horizontaldistanz [m]'), fontsize=9)
+        if not self.axesBirdView:
+            self.axes.set_xlabel(self.tr('Horizontaldistanz [m]'), fontsize=9)
         self.axes.set_ylabel(self.tr("Hoehe [m.ue.M]"), fontsize=9)
         self.axes.tick_params(labelsize=8)
         self.axes.grid(which='major', lw=0.5)
@@ -317,7 +318,15 @@ class AdjustmentPlot(FigureCanvas):
                            ha='center', fontsize=8)
         
     def createBirdView(self, poles):
-        self.axesBirdView.set_ylim(-30, 30)
+        xMin, xMax = self.axesBirdView.get_xlim()
+        plotWidth = xMax - xMin
+        yLim = plotWidth / 35
+        yLim = 10 if yLim < 10 else yLim
+        
+        posShiftVertical = 0.25 * yLim  # meter
+        markerSize = 30
+        
+        self.axesBirdView.set_ylim(-yLim, yLim)
         # Horizontal line symbolizing pole layout
         self.axesBirdView.plot([poles[0]['d'], poles[-1]['d']], [0, 0], color='red', linewidth=1)
         
@@ -336,17 +345,18 @@ class AdjustmentPlot(FigureCanvas):
                 
             # Move marker a bit up/or down depending on pole position
             yPos = 0
-            shift = 5   # meter
             if pole['position'] == 'links':
-                yPos += shift
+                yPos += posShiftVertical
             elif pole['position'] == 'rechts':
-                yPos += shift
+                yPos += posShiftVertical
             
-            self.axesBirdView.plot(pole['d'], yPos, marker=marker, markersize=symbol.scale * 40, color=symbol.color)
+            self.axesBirdView.plot(pole['d'], yPos, marker=marker, markersize=symbol.scale * markerSize, color=symbol.color)
             # Add a brown center point where needed
             if symbol.centerPoint:
-                self.axesBirdView.add_patch(
-                    Circle((pole['d'], yPos), 2.8, fc=BirdViewSymbol.ACCENT_COLOR, ec='black', zorder=10))
+                defaultCircle: BirdViewSymbol = self.birdViewMarkers['default']
+                self.axesBirdView.plot(pole['d'], yPos, marker=defaultCircle.mplPath,
+                                       markersize=defaultCircle.scale * markerSize,
+                                       color=defaultCircle.color)
         
         self.layoutBirdViewForPrint()
         
@@ -358,8 +368,8 @@ class AdjustmentPlot(FigureCanvas):
                                     fontsize=9, multialignment='center')
         self.axesBirdView.tick_params(labelsize=8)
         self.axesBirdView.set_xlabel(self.tr('Horizontaldistanz [m]'), fontsize=9)
-        self.axesBirdView.grid(which='major', lw=0.5)
-        self.axesBirdView.grid(which='minor', lw=0.5, linestyle=':')
+        self.axesBirdView.grid(which='major', axis='x', lw=0.5)
+        self.axesBirdView.grid(which='minor', axis='x', lw=0.5, linestyle=':')
 
     def addBackgroundMap(self, imgPath):
         xMin, xMax = self.axesBirdView.get_xlim()
