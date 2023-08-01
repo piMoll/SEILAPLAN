@@ -565,6 +565,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         outputLoc = createOutputFolder(os.path.join(outputFolder, projName))
         updateWithCableCoordinates(self.cableline, project.points['A'],
                                    project.azimut)
+        poles = [pole for pole in self.poles.poles if pole['active']]
         # Save project file
         self.confHandler.saveSettings(os.path.join(outputLoc,
                                       self.tr('Projekteinstellungen') + '.json'))
@@ -589,10 +590,10 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
                                self.profile.peakLoc_x, self.profile.peakLoc_z,
                                self.profile.surveyPnts)
             printPlot.updatePlot(self.poles.getAsArray(), self.cableline, True)
-            printPlot.layoutDiagrammForPrint(projName, self.poles.poles)
+            printPlot.layoutDiagrammForPrint(projName, poles)
             if includingBirdView:
                 # Create second plot
-                xlim, ylim = printPlot.createBirdView(self.poles.poles)
+                xlim, ylim = printPlot.createBirdView(poles)
                 # Extract the map background
                 imgPath = extractMapBackground(outputLoc, xlim, ylim,
                             self.confHandler.project.points['A'], self.confHandler.project.azimut)
@@ -611,7 +612,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             savePath = os.path.join(outputLoc, 'geodata')
             os.makedirs(savePath)
             epsg = project.heightSource.spatialRef
-            geodata = organizeDataForExport(self.poles.poles, self.cableline,
+            geodata = organizeDataForExport(poles, self.cableline,
                                             self.profile)
 
             title = self.tr('Unerwarteter Fehler')
@@ -620,7 +621,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             if self.confHandler.getOutputOption('csv'):
                 try:
                     generateCoordTable(self.cableline, self.profile,
-                        self.poles.poles, savePath)
+                                       poles, savePath)
                 except Exception as e:
                     msg = f'{msg}:\n{e}'
                     self.showMessage(title, msg)

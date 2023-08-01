@@ -66,12 +66,11 @@ def organizeDataForExport(poles, cableline, profile):
         
     # Pole coordinates
     for pole in poles:
-        if pole['active']:
-            poleLine = [pole['d'], pole['z']], [pole['dtop'], pole['ztop']]
-            profile_data.append(np.array(poleLine))
+        poleLine = [pole['d'], pole['z']], [pole['dtop'], pole['ztop']]
+        profile_data.append(np.array(poleLine))
     
     return {
-        'poles': [pole for pole in poles if pole['active']],
+        'poles': poles,
         'emptyLine': emptyLine,
         'loadLine': loadLine,
         'terrain': terrainLine,

@@ -78,30 +78,23 @@ class BirdViewWidget(QObject):
         super().__init__()
         self.widget = widget
         self.layout = layout
-        self.poles = None
-        self.direction = None
+        self.poles = poles.poles
+        self.direction = poles.direction
         self.layout.setAlignment(Qt.AlignTop)
-        
-        if isinstance(poles, Poles):
-            self.poles = poles
-            self.poleArr = poles.poles
-            self.direction = poles.direction
-        else:
-            self.poleArr = poles
         self.poleRows = []
         
     def updateGui(self):
         if self.poleRows:
             self.removeRows()
             
-        for idx, pole in enumerate(self.poleArr):
+        for idx, pole in enumerate(self.poles):
+            if not pole['active']:
+                continue
             # Create layout
             self.poleRows.append(
                 BirdViewRow(self, self.widget, self.layout, idx, pole['nr'],
                             pole['name'], pole['poleType'], pole['category'],
                             pole['position'], pole['abspann']))
-            if not pole['active']:
-                self.poleRows[-1].deactivate()
     
     def removeRows(self):
         for poleRow in reversed(self.poleRows):
