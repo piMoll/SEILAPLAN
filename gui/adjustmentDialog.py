@@ -37,6 +37,7 @@ from .adjustmentDialog_thresholds import AdjustmentDialogThresholds
 from .saveDialog import DialogOutputOptions
 from .guiHelperFunctions import DialogWithImage
 from .mapMarker import MapMarkerTool
+from ..tools.birdViewMapExtractor import extractMapBackground
 from ..core.cablelineFinal import preciseCable, updateWithCableCoordinates
 from ..tools.calcThreshold import ThresholdUpdater
 from ..tools.outputReport import generateReportText, generateReport, \
@@ -590,10 +591,14 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             printPlot.updatePlot(self.poles.getAsArray(), self.cableline, True)
             printPlot.layoutDiagrammForPrint(projName, self.poles.poles)
             if includingBirdView:
+                # Create second plot
                 xlim, ylim = printPlot.createBirdView(self.poles.poles)
-                # TODO:
-                # imgPath = calculateMapExtent(xlim, ylim, self.confHandler.project.points['A'], self.confHandler.project.azimut)
-                # printPlot.addBackgroundMap(imgPath, xlim, ylim)
+                # Extract the map background
+                imgPath = extractMapBackground(outputLoc, xlim, ylim,
+                            self.confHandler.project.points['A'], self.confHandler.project.azimut)
+                printPlot.addBackgroundMap(imgPath)
+                # Delete map background
+                os.remove(imgPath)
             printPlot.exportPdf(plotSavePath)
         
         # Generate geo data
