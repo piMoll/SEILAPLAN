@@ -820,13 +820,13 @@ Lastseil</translation>
     </message>
     <message>
         <location filename="../gui/guiHelperFunctions.py" line="126"/>
-        <source>Layer '{}' zur Karte hinzugefügt</source>
-        <translation>Layer '{}' zur Karte hinzugefügt</translation>
+        <source>Layer &apos;{}&apos; zur Karte hinzugefügt</source>
+        <translation>Layer &apos;{}&apos; zur Karte hinzugefügt</translation>
     </message>
     <message>
         <location filename="../gui/guiHelperFunctions.py" line="129"/>
-        <source>Fehler beim Hinzufügen des Layers '{}'</source>
-        <translation>Fehler beim Hinzufügen des Layers '{}'</translation>
+        <source>Fehler beim Hinzufügen des Layers &apos;{}&apos;</source>
+        <translation>Fehler beim Hinzufügen des Layers &apos;{}&apos;</translation>
     </message>
     <message>
         <location filename="../gui/guiHelperFunctions.py" line="149"/>
@@ -1553,7 +1553,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../tools/configHandler_params.py" line="97"/>
         <source>Fehler in Parameterset &apos;{}&apos; gefunden. Set kann nicht geladen werden.</source>
-        <translation>Fehler in Parameterset '{}' gefunden. Set kann nicht geladen werden.</translation>
+        <translation>Fehler in Parameterset &apos;{}&apos; gefunden. Set kann nicht geladen werden.</translation>
     </message>
     <message>
         <location filename="../tools/configHandler_params.py" line="239"/>
@@ -1593,7 +1593,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../tools/configHandler_params.py" line="269"/>
         <source>Der Parameter Minimaler Abstand Tragseil Boden darf nicht groesser als der Parameter Minimale Stuetzenhoehe sein.</source>
-        <translation>Der Parameter 'Minimaler Abstand Tragseil - Boden' (Reiter Seillinie) darf nicht grösser als der Parameter 'Minimale Sattelhöhe' (Reiter Optional #1) sein.
+        <translation>Der Parameter &apos;Minimaler Abstand Tragseil - Boden&apos; (Reiter Seillinie) darf nicht grösser als der Parameter &apos;Minimale Sattelhöhe&apos; (Reiter Optional #1) sein.
 Bitte passen Sie die Eingabe an.</translation>
     </message>
     <message>
@@ -2367,7 +2367,7 @@ Bericht übertragen)</translation>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="609"/>
         <source>Raster &apos;{}&apos; nicht vorhanden</source>
-        <translation>Raster '{}' nicht vorhanden</translation>
+        <translation>Raster &apos;{}&apos; nicht vorhanden</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="610"/>
@@ -2382,20 +2382,20 @@ Bericht übertragen)</translation>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="638"/>
         <source>KBS-Fehler - Raster kann nicht verarbeitet werden</source>
-        <translation>Raster mit geografischem KBS ('{}' ({}) kann nicht benutzt werden.
+        <translation>Raster mit geografischem KBS (&apos;{}&apos; ({}) kann nicht benutzt werden.
 Seilaplan kann nur Höhenraster in einem projizierten KBS verarbeiten.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="650"/>
         <source>KBS-Fehler - Felddaten und QGIS in geografischem KBS</source>
         <translation>Felddaten liegen in einem geografischen KBS vor!
-Seilaplan kann nur mit Daten in einem projizierten KBS arbeiten. Die Daten werden automatisch ins Schweizer KBS 'LV95' (EPSG:2056) transformiert.</translation>
+Seilaplan kann nur mit Daten in einem projizierten KBS arbeiten. Die Daten werden automatisch ins Schweizer KBS &apos;LV95&apos; (EPSG:2056) transformiert.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="657"/>
         <source>KBS-Fehler - Bezugssystem des Rasters unbekannt</source>
         <translation>Bezugssystem des Rasters unbekannt.
-Das Raster wird im Schweizer KBS 'LV95' (EPSG:2056) dargestellt. Soll ein anderes KBS benutzt werden, richten Sie ihr QGIS Projekt bitte vor dem Laden der Höhendaten entsprechend ein.</translation>
+Das Raster wird im Schweizer KBS &apos;LV95&apos; (EPSG:2056) dargestellt. Soll ein anderes KBS benutzt werden, richten Sie ihr QGIS Projekt bitte vor dem Laden der Höhendaten entsprechend ein.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="861"/>
@@ -2433,7 +2433,7 @@ Das Raster wird im Schweizer KBS 'LV95' (EPSG:2056) dargestellt. Soll ein andere
         <translation>Höheninformation aus einem Höhenraster auslesen. Die Liste beinhaltet alle im aktuellen QGIS-Projekt vorhanden Raster.
 Wird ein neuer Raster zu QGIS hinzugefügt, kann die Liste per Aktualisieren-Schaltfläche ergänzt werden.
 
-Hochaufgelöste Schweizer Höhendaten können mit dem QGIS Plugin 'Swiss Geo Downloader' heruntergeladen werden. Weitere Informationen:
+Hochaufgelöste Schweizer Höhendaten können mit dem QGIS Plugin &apos;Swiss Geo Downloader&apos; heruntergeladen werden. Weitere Informationen:
 http://pimoll.github.io/SEILAPLAN/</translation>
     </message>
     <message>
@@ -2441,7 +2441,7 @@ http://pimoll.github.io/SEILAPLAN/</translation>
         <source>Hoeheninformation - Erklaerung Felddaten</source>
         <translation>Profil-Messpunkte aus Feldaufnahmen laden.
 Unterstützte Dateitypen:
-1) Generische CSV-Datei (Komma-separiert) mit den Koordinaten-Spalten 'x', 'y' und 'z'. Die Datei darf keine Kommentare enthalten und die Punkte sind sortiert aufzulisten.
+1) Generische CSV-Datei (Komma-separiert) mit den Koordinaten-Spalten &apos;x&apos;, &apos;y&apos; und &apos;z&apos;. Die Datei darf keine Kommentare enthalten und die Punkte sind sortiert aufzulisten.
 2) CSV-Exportdatei des Haglöf Vertex Messgerätes (Schweden).
 3) Feldaufnahmeprotokoll gemäss Vorlage.</translation>
     </message>
@@ -2601,7 +2601,7 @@ Pfad zu Dokumentation:
     <message>
         <location filename="../tools/survey.py" line="81"/>
         <source>Datei &apos;_path_&apos; ist nicht vorhanden.</source>
-        <translation>Datei '_path_' ist nicht vorhanden.</translation>
+        <translation>Datei &apos;_path_&apos; ist nicht vorhanden.</translation>
     </message>
     <message>
         <location filename="../tools/survey.py" line="126"/>
