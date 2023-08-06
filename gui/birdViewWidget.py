@@ -19,7 +19,7 @@
  ***************************************************************************/
 """
 from qgis.PyQt.QtCore import Qt, pyqtSignal, QObject, QCoreApplication
-from qgis.PyQt.QtWidgets import (QLabel, QComboBox)
+from qgis.PyQt.QtWidgets import (QLabel, QComboBox, QGridLayout)
 from qgis.PyQt.QtGui import QStandardItem, QStandardItemModel
 
 from ..tools.poles import Poles
@@ -77,7 +77,7 @@ class BirdViewWidget(QObject):
         """
         super().__init__()
         self.widget = widget
-        self.layout = layout
+        self.layout: QGridLayout = layout
         self.poles = poles.poles
         self.direction = poles.direction
         self.layout.setAlignment(Qt.AlignTop)
@@ -86,13 +86,15 @@ class BirdViewWidget(QObject):
     def updateGui(self):
         if self.poleRows:
             self.removeRows()
+        rowIdx = 0
             
-        for idx, pole in enumerate(self.poles):
+        for poleIdx, pole in enumerate(self.poles):
             if not pole['active']:
                 continue
+            rowIdx += 1
             # Create layout
             self.poleRows.append(
-                BirdViewRow(self, self.widget, self.layout, idx, pole['nr'],
+                BirdViewRow(self, self.widget, self.layout, rowIdx, poleIdx, pole['nr'],
                             pole['name'], pole['poleType'], pole['category'],
                             pole['position'], pole['abspann']))
     
@@ -108,12 +110,13 @@ class BirdViewWidget(QObject):
 
 class BirdViewRow(object):
     
-    def __init__(self, parent, widget, layout, idx, nr, name, rowType, poleCat,
+    def __init__(self, parent, widget, layout, rowIdx, poleIdx, nr, name, rowType, poleCat,
                  polePos, abspann):
         self.parent = parent
         self.widget = widget
         self.layout = layout
-        self.index = idx
+        self.rowIndex = rowIdx      # Row number in grid layout
+        self.poleIndex = poleIdx    # Pole number in Poles.poles array
         self.rowType = rowType
         self.defaultAbspannIdx = 2 if self.parent.direction == 'downhill' else 0
         
@@ -143,9 +146,8 @@ class BirdViewRow(object):
         
     def addLabelNr(self, nr):
         self.labelNr = QLabel(self.widget)
-        self.labelNr.setFixedWidth(20)
         self.labelNr.setAlignment(Qt.AlignVCenter | Qt.AlignRight)
-        self.layout.addWidget(self.labelNr, self.index + 1, 0)
+        self.layout.addWidget(self.labelNr, self.rowIndex, 0)
         if nr:
             self.labelNr.setText(f"{nr}:")
         
@@ -154,7 +156,7 @@ class BirdViewRow(object):
         # TODO: How to make this grow based on available size? And we need MouseOver
         self.fieldName.setFixedWidth(120)
         self.fieldName.setText(value)
-        self.layout.addWidget(self.fieldName, self.index + 1, 1)
+        self.layout.addWidget(self.fieldName, self.rowIndex, 1)
     
     def addFieldCat(self, value):
         self.fieldCat = QComboBox(self.widget)
@@ -167,12 +169,12 @@ class BirdViewRow(object):
             if name == value:
                 currentIdx = idx
         self.fieldCat.setModel(model)
-        self.layout.addWidget(self.fieldCat, self.index + 1, 2)
+        self.layout.addWidget(self.fieldCat, self.rowIndex, 2)
         # Set the current value
         self.fieldCat.setCurrentIndex(currentIdx)
         # Connect events
         self.fieldCat.currentIndexChanged.connect(
-            lambda newVal: self.onKatSelection(self.index, model.item(newVal).data()))
+            lambda newVal: self.onKatSelection(self.poleIndex, model.item(newVal).data()))
     
     def addFieldPos(self, value):
         self.fieldPos = QComboBox(self.widget)
@@ -185,12 +187,12 @@ class BirdViewRow(object):
             if name == value:
                 currentIdx = idx
         self.fieldPos.setModel(self.fieldPosModel)
-        self.layout.addWidget(self.fieldPos, self.index + 1, 3)
+        self.layout.addWidget(self.fieldPos, self.rowIndex, 3)
         # Set the current value
         self.fieldPos.setCurrentIndex(currentIdx)
         # Connect events
         self.fieldPos.currentIndexChanged.connect(
-            lambda newVal: self.parent.onRowChange(self.index, 'position', self.fieldPosModel.item(newVal).data()))
+            lambda newVal: self.parent.onRowChange(self.poleIndex, 'position', self.fieldPosModel.item(newVal).data()))
     
     def addFieldAbspann(self, dataValue):
         self.fieldAbspann = QComboBox(self.widget)
@@ -202,12 +204,12 @@ class BirdViewRow(object):
             self.fieldAbspannModel.appendRow(item)
 
         self.fieldAbspann.setModel(self.fieldAbspannModel)
-        self.layout.addWidget(self.fieldAbspann, self.index + 1, 4)
+        self.layout.addWidget(self.fieldAbspann, self.rowIndex, 4)
         # Set the current value
         self.setFieldAbspannValue(dataValue)
         # Connect events
         self.fieldAbspann.currentIndexChanged.connect(
-            lambda newVal: self.parent.onRowChange(self.index, 'abspann', self.fieldAbspannModel.item(newVal).data() if newVal > -1 else None))
+            lambda newVal: self.parent.onRowChange(self.poleIndex, 'abspann', self.fieldAbspannModel.item(newVal).data() if newVal > -1 else None))
     
     def setFieldAbspannValue(self, dataValue):
         currentIndex = self.fieldAbspann.currentIndex()
@@ -230,7 +232,7 @@ class BirdViewRow(object):
         
         # Manually trigger the event
         dataValue = None if newIndex == -1 else self.fieldAbspannModel.item(newIndex).data()
-        self.parent.onRowChange(self.index, 'abspann', dataValue)
+        self.parent.onRowChange(self.poleIndex, 'abspann', dataValue)
         
     def onKatSelection(self, poleIdx, newCategory):
         if newCategory == '-':
