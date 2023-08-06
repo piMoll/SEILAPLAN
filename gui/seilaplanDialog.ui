@@ -2015,7 +2015,7 @@
                </size>
               </property>
               <property name="toolTip">
-               <string>OpenStreetMap Layer laden</string>
+               <string>Hintergrundkarte laden</string>
               </property>
               <property name="text">
                <string/>

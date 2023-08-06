@@ -1293,7 +1293,7 @@ class Ui_SeilaplanDialogUI(object):
         self.groupBox_3.setTitle(_translate("SeilaplanDialogUI", "Verlauf der Seillinie"))
         self.label_8.setText(_translate("SeilaplanDialogUI", "oder Koordinaten der Seillinie manuell angeben:"))
         self.draw.setText(_translate("SeilaplanDialogUI", "zeichnen"))
-        self.osmLyrButton.setToolTip(_translate("SeilaplanDialogUI", "OpenStreetMap Layer laden"))
+        self.osmLyrButton.setToolTip(_translate("SeilaplanDialogUI", "Hintergrundkarte laden"))
         self.label_25.setText(_translate("SeilaplanDialogUI", "Seillinie in Karte einzeichnen"))
         self.contourLyrButton.setToolTip(_translate("SeilaplanDialogUI", "Hoehenlinien darstellen"))
         self.label_27.setText(_translate("SeilaplanDialogUI", "X-Koordinate"))
