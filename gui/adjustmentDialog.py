@@ -601,6 +601,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
                                self.profile.surveyPnts)
             printPlot.updatePlot(self.poles.getAsArray(), self.cableline, True)
             printPlot.layoutDiagrammForPrint(projName, poles)
+            imgPath = None
             if includingBirdView:
                 # Create second plot
                 xlim, ylim = printPlot.createBirdView(poles, self.confHandler.project.azimut)
@@ -608,9 +609,10 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
                 imgPath = extractMapBackground(outputLoc, xlim, ylim,
                             self.confHandler.project.points['A'], self.confHandler.project.azimut)
                 printPlot.addBackgroundMap(imgPath)
-                # Delete map background
-                os.remove(imgPath)
             printPlot.exportPdf(plotSavePath)
+            # Delete map background
+            if imgPath:
+                os.remove(imgPath)
         
         # Generate geo data
         if (self.confHandler.getOutputOption('csv') or
