@@ -33,7 +33,7 @@ from processing.core.Processing import Processing
 
 # Further GUI modules for functionality
 from .guiHelperFunctions import (DialogWithImage, createContours,
-    loadOsmLayer, createProfileLayers)
+                                 addBackgroundMap, createProfileLayers)
 from .surveyImportDialog import SurveyImportDialog
 from ..tools.outputGeo import CH_CRS
 from ..tools.configHandler import ConfigHandler
@@ -107,6 +107,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         
         # Dialog with explanatory images
         self.imgBox = DialogWithImage()
+        # MessageBar
+        self.msgBar = self.iface.messageBar()
         
         # Additional GIS-Layers
         self.osmLyrButton.setEnabled(False)
@@ -824,9 +826,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
                 self.symE.setToolTip(redTxt)
     
     def onClickOsmButton(self):
-        """Add a OpenStreetMap layer."""
-        loadOsmLayer(self.homePath)
-        self.canvas.refresh()
+        """Add a Background layer."""
+        statusMsg, severity = addBackgroundMap(self.canvas)
+        self.msgBar.pushMessage(self.tr('Hintergrundkarte laden'), statusMsg, severity)
     
     def onClickContourButton(self):
         """Calcluate contour lines from currently selected dhm and add them to

@@ -28,8 +28,14 @@ from qgis.PyQt.QtWidgets import (QDialog, QWidget, QLabel, QDialogButtonBox,
     QLayout, QVBoxLayout)
 from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject, QgsPoint,
     QgsFeature, QgsGeometry, QgsVectorLayer, QgsField, QgsPalLayerSettings,
-    QgsTextFormat, QgsTextBufferSettings,  QgsVectorLayerSimpleLabeling)
+    QgsTextFormat, QgsTextBufferSettings,  QgsVectorLayerSimpleLabeling, Qgis)
 from processing import run
+
+# Path to plugin root
+HOMEPATH = os.path.dirname(os.path.dirname(__file__))
+SWISSTOPO_WMS_URL = 'https://wmts.geo.admin.ch/EPSG/2056/1.0.0/WMTSCapabilities.xml?lang=de'
+OVERVIEW_MAP = 'ch.swisstopo.pixelkarte-farbe'
+SWISS_CRS = ['EPSG:2056', 'EPSG:21781']
 
 
 # noinspection PyMethodMayBeStatic
@@ -97,21 +103,63 @@ def createContours(canvas, heightSource):
     heightSource.contourLyr = contourLyr
 
 
-def loadOsmLayer(homePath):
-    osmLyr = None
+def inSwitzerland():
+    crs = QgsProject.instance().crs()
+    if crs.authid() in SWISS_CRS:
+        return True
+    else:
+        return False
+
+
+def addBackgroundMap(canvas):
+    if inSwitzerland():
+        layer: QgsRasterLayer = addSwissBackgroundMap(QgsProject.instance().crs().authid())
+    else:
+        layer: QgsRasterLayer = addOsmBackgroundMap()
     
-    for l in QgsProject.instance().layerTreeRoot().findLayers():
-        if l.layer().name() == tr('OSM_Karte'):
-            osmLyr = l.layer()
-            QgsProject.instance().removeMapLayer(osmLyr.id())
-            break
-            
-    if not osmLyr:
+    if not layer:
+        return tr("Layer {} bereits zur Karte hinzugefügt").format(
+            layer.name()), Qgis.Info
+    
+    if layer.isValid():
+        QgsProject.instance().addMapLayer(layer)
+        canvas.refresh()
+        return tr("Layer '{}' zur Karte hinzugefügt").format(
+            layer.name()), Qgis.Success
+    else:
+        return tr("Fehler beim Hinzufügen des Layers '{}'").format(
+            layer.name()), Qgis.Warning
+
+
+def addOsmBackgroundMap():
+    osmLyr = None
+    layerName = tr('OSM_Karte')
+    
+    already_added = [lyr.name() for lyr in QgsProject.instance().mapLayers().values()]
+    
+    if layerName not in already_added:
         # Add OSM layer
-        xmlPath = os.path.join(homePath, 'config', 'OSM_Karte.xml')
+        xmlPath = os.path.join(HOMEPATH, 'config', 'OSM_Karte.xml')
         baseName = QFileInfo(xmlPath).baseName()
-        osmLayer = QgsRasterLayer(xmlPath, baseName)
-        QgsProject.instance().addMapLayer(osmLayer)
+        osmLyr = QgsRasterLayer(xmlPath, baseName)
+    return osmLyr
+
+
+def addSwissBackgroundMap(crs=SWISS_CRS[0]):
+    layer = None
+    layerName = tr('Landeskarten (farbig)')
+    wmsUrl = (f'contextualWMSLegend=0&crs={crs}&dpiMode=7'
+              f'&featureCount=10&format=image/jpeg'
+              f'&layers={OVERVIEW_MAP}'
+              f'&styles={OVERVIEW_MAP}'
+              f'&tileDimensions=Time%3Dcurrent'
+              f'&url={SWISSTOPO_WMS_URL}')
+    
+    already_added = [lyr.source() for lyr in QgsProject.instance().mapLayers().values()]
+    
+    if wmsUrl not in already_added:
+        layer = QgsRasterLayer(wmsUrl, layerName, 'wms')
+    return layer
 
 
 def createProfileLayers(heightSource):
