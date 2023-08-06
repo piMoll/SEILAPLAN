@@ -371,7 +371,7 @@ class AdjustmentPlot(FigureCanvas):
     
     def layoutBirdViewForPrint(self):
         self.axesBirdView.set_aspect('equal')
-        self.axesBirdView.set_title('Vogelperspektive',
+        self.axesBirdView.set_title(self.tr('Vogelperspektive'),
                                     fontsize=9, multialignment='center')
         self.axesBirdView.tick_params(labelsize=8)
         self.axesBirdView.set_xlabel(self.tr('Horizontaldistanz [m]'), fontsize=9)

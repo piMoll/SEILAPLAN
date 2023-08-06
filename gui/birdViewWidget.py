@@ -128,7 +128,7 @@ class BirdViewRow(object):
         self.fieldAbspann = None
         self.fieldAbspannModel = None
         
-        # Translate
+        # Possible drop down values
         self.katItems = [item for item in birdViewKatConf.keys()]
         self.posItems = [item for item in birdViewPosKonf]
         self.abspannItems = [item for item in birdViewAbspannKonf]

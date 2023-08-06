@@ -152,9 +152,9 @@ def savePointGeometry(filePath, poles, spatialRef, geoFormat):
     """
     fields = QgsFields()
     headerName = tr('bezeichnung')
-    headerCategory = tr('kategorie')
-    headerPosition = tr('position')
-    headerAbspann = tr('abspannung')
+    headerCategory = tr('shp_kategorie')
+    headerPosition = tr('shp_position')
+    headerAbspann = tr('shp_abspann')
     
     if geoFormat != 'DXF':
         # Define fields for feature attributes, DXF-format does not support
@@ -197,9 +197,9 @@ def savePointGeometry(filePath, poles, spatialRef, geoFormat):
             feature.setAttribute('y', float(pole['coordy']))
             feature.setAttribute('z', float(pole['z']))
             feature.setAttribute('h', float(pole['h']))
-            feature.setAttribute(headerCategory, tr(pole['category']))
-            feature.setAttribute(headerPosition, tr(pole['position']))
-            feature.setAttribute(headerAbspann, tr(pole['abspann']))
+            feature.setAttribute(headerCategory, tr(pole['category'], 'BirdViewRow'))
+            feature.setAttribute(headerPosition, tr(pole['position'], 'BirdViewRow'))
+            feature.setAttribute(headerAbspann, unicode2acii(tr(pole['abspann'], 'BirdViewRow')))
         features.append(feature)
 
     writer.addFeatures(features)
@@ -354,7 +354,7 @@ def generateCoordTable(cableline, profile, poles, outputLoc):
     header = [tr('Stuetze'), tr('Horizontaldistanz'), 'X', 'Y',
               tr('Z Stuetze Boden'), tr('Z Stuetze Spitze'),
               tr('Stuetzenhoehe'), tr('Neigung'), tr('Kategorie'),
-              tr('Position Stuetze'), tr('Ausrichtung Abspannung')]
+              tr('Position Stuetze'), tr('Ausrichtung Abspannseile')]
     
     with open(savePathStue, 'w') as f:
         fi = csv.writer(f, delimiter=';', dialect='excel', lineterminator='\n')
@@ -364,7 +364,7 @@ def generateCoordTable(cableline, profile, poles, outputLoc):
             coords = ([round(e, 3) for e in [
                 pole['d'], pole['coordx'], pole['coordy'], pole['z'],
                 pole['ztop'], pole['h'], pole['angle']]])
-            birdViewProps = [unicode2acii(tr(prop)) for prop in [
+            birdViewProps = [unicode2acii(tr(prop, 'BirdViewRow')) for prop in [
                 pole['category'], pole['position'], pole['abspann']]]
             row = name + coords + birdViewProps
             fi.writerow(row)
@@ -374,12 +374,23 @@ def unicode2acii(text):
     """Csv write can not handle utf-8, so most common utf-8 strings are
     converted. This should be fixed in the future."""
     translation = {0xe4: 'ae',
+                   0xc4: 'Ae',
                    0xf6: 'oe',
+                   0xd6: 'Oe',
                    0xfc: 'ue',
+                   0xdc: 'Ue',
                    0xe9: 'e',  # é
+                   0xc9: 'E',  # é
                    0xe8: 'e',  # è
+                   0xc8: 'E',  # è
                    0xea: 'e',  # ê
+                   0xca: 'E',  # ê
                    0xe2: 'a',  # â
+                   0xc2: 'A',  # â
+                   0xf8: 'O',  # ø
+                   0xd8: 'O',  # Ø
+                   0x2300: 'O',     # Diameter
+                   0x2192: 'Ri.',   # Unicode Arrow
                    }
     return text.translate(translation)
 
@@ -459,7 +470,7 @@ def reprojectToCrs(x, y, sourceCrs, destinationCrs=CH_CRS):
 
 
 # noinspection PyMethodMayBeStatic
-def tr(message, **kwargs):
+def tr(message, context='@default', **kwargs):
     """Get the translation for a string using Qt translation API.
     We implement this ourselves since we do not inherit QObject.
 
@@ -474,4 +485,4 @@ def tr(message, **kwargs):
     **kwargs
     """
     # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
-    return QCoreApplication.translate('@default', message)
+    return QCoreApplication.translate(context, message)

@@ -785,6 +785,56 @@ Lastseil</translation>
         <source>Anlagetyp</source>
         <translation>Anlagetyp</translation>
     </message>
+    <message>
+        <location filename="../tools/outputGeo.py" line="155"/>
+        <source>shp_kategorie</source>
+        <translation>kategorie</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputGeo.py" line="156"/>
+        <source>shp_position</source>
+        <translation>position</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputGeo.py" line="157"/>
+        <source>shp_abspann</source>
+        <translation>ri_abspann</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputGeo.py" line="356"/>
+        <source>Kategorie</source>
+        <translation>Kategorie</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputGeo.py" line="357"/>
+        <source>Position Stuetze</source>
+        <translation>Position Stuetze</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputGeo.py" line="357"/>
+        <source>Ausrichtung Abspannseile</source>
+        <translation>Ausrichtung Abspannseile</translation>
+    </message>
+    <message>
+        <location filename="../gui/guiHelperFunctions.py" line="121"/>
+        <source>Layer bereits in Karte</source>
+        <translation>Layer bereits in Karte</translation>
+    </message>
+    <message>
+        <location filename="../gui/guiHelperFunctions.py" line="126"/>
+        <source>Layer '{}' zur Karte hinzugefügt</source>
+        <translation>Layer '{}' zur Karte hinzugefügt</translation>
+    </message>
+    <message>
+        <location filename="../gui/guiHelperFunctions.py" line="129"/>
+        <source>Fehler beim Hinzufügen des Layers '{}'</source>
+        <translation>Fehler beim Hinzufügen des Layers '{}'</translation>
+    </message>
+    <message>
+        <location filename="../gui/guiHelperFunctions.py" line="149"/>
+        <source>Landeskarten (farbig)</source>
+        <translation>Landeskarten (farbig)</translation>
+    </message>
 </context>
 <context>
     <name>AbstractConfHandler</name>
@@ -896,6 +946,51 @@ Lastseil</translation>
         <location filename="../gui/adjustmentDialog.py" line="575"/>
         <source>Ja</source>
         <translation>Ja</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="383"/>
+        <source>Stuetzenkategorie</source>
+        <translation>Stützenkategorie</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="384"/>
+        <source>Erklaerung Stuetzenkategorie</source>
+        <translation type="unfinished">TODO</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="387"/>
+        <source>Stuetzenposition</source>
+        <translation>Stützenposition</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="388"/>
+        <source>Erklaerung Stuetzenposition</source>
+        <translation type="unfinished">TODO</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="390"/>
+        <source>Abspann</source>
+        <translation type="unfinished">Ausrichtung Abspannseile</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="391"/>
+        <source>Erklaerung Abspann</source>
+        <translation type="unfinished">TODO</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="370"/>
+        <source>Hintergrundkarte laden</source>
+        <translation>Hintergrundkarte laden</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="380"/>
+        <source>Konfiguration Vogelperspektive</source>
+        <translation>Konfiguration Vogelperspektive</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="381"/>
+        <source>Erklaerung Vogelperspektive</source>
+        <translation type="unfinished">TODO</translation>
     </message>
 </context>
 <context>
@@ -1105,6 +1200,46 @@ Lastseil</translation>
 (werden in den
 Bericht übertragen)</translation>
     </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="681"/>
+        <source>Vogelperspektive</source>
+        <translation>Vogelperspektive</translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="677"/>
+        <source>Konfiguration Vogelperspektive</source>
+        <translation>Konfiguration Vogelperspektive</translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="676"/>
+        <source>Stuetzenbez.</source>
+        <translation>Stuetzenbez.</translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="672"/>
+        <source>Kategorie</source>
+        <translation>Kategorie</translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="669"/>
+        <source>Position Stuetze</source>
+        <translation>Position Stütze</translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="674"/>
+        <source>Ausrichtung Abspannseile</source>
+        <translation>Ausrichtung Abspannseile</translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="679"/>
+        <source>Darstellung der Seillinie und Stuetzen aus der Vogelperspektive.</source>
+        <translation>Darstellung der Seillinie und Stützen aus der Vogelperspektive.</translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="680"/>
+        <source>Hintergrundkarte laden um sie in der Vogelperspektive darzustellen.</source>
+        <translation>Hintergrundkarte laden um sie in der Vogelperspektive darzustellen.</translation>
+    </message>
 </context>
 <context>
     <name>AdjustmentPlot</name>
@@ -1145,6 +1280,94 @@ nach Zweifel</translation>
         <location filename="../gui/adjustmentPlot.py" line="163"/>
         <source>Leerseil</source>
         <translation>Leerseil</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentPlot.py" line="382"/>
+        <source>Vogelperspektive</source>
+        <translation>Vogelperspektive</translation>
+    </message>
+</context>
+<context>
+    <name>BirdViewRow</name>
+    <message>
+        <location filename="../gui/birdViewWidget.py" line="410"/>
+        <source>links</source>
+        <translation>links</translation>
+    </message>
+    <message>
+        <location filename="../gui/birdViewWidget.py" line="410"/>
+        <source>mitte</source>
+        <translation>mitte</translation>
+    </message>
+    <message>
+        <location filename="../gui/birdViewWidget.py" line="410"/>
+        <source>rechts</source>
+        <translation>rechts</translation>
+    </message>
+    <message>
+        <location filename="../gui/birdViewWidget.py" line="410"/>
+        <source>mobiler_seilkran</source>
+        <translation>Mobiler Seilkran</translation>
+    </message>
+    <message>
+        <location filename="../gui/birdViewWidget.py" line="410"/>
+        <source>vorziehstuetze_1</source>
+        <translation>Vorziehstütze (1 Abspannseil)</translation>
+    </message>
+    <message>
+        <location filename="../gui/birdViewWidget.py" line="410"/>
+        <source>vorziehstuetze_2</source>
+        <translation>Vorziehstütze (2 Abspannseile)</translation>
+    </message>
+    <message>
+        <location filename="../gui/birdViewWidget.py" line="410"/>
+        <source>vorgeneigte_stuetze</source>
+        <translation>Vorgeneigte St. / Gittermast</translation>
+    </message>
+    <message>
+        <location filename="../gui/birdViewWidget.py" line="410"/>
+        <source>mehrbaumanker</source>
+        <translation>Mehrbaumanker</translation>
+    </message>
+    <message>
+        <location filename="../gui/birdViewWidget.py" line="410"/>
+        <source>endmast_mit_zugseilrolle</source>
+        <translation>Endmast mit Zugseilrolle</translation>
+    </message>
+    <message>
+        <location filename="../gui/birdViewWidget.py" line="410"/>
+        <source>endmast_ohne_zugseilrolle</source>
+        <translation>Endmast ohne Zugseilrolle</translation>
+    </message>
+    <message>
+        <location filename="../gui/birdViewWidget.py" line="410"/>
+        <source>totmannanker</source>
+        <translation>Totmannanker</translation>
+    </message>
+    <message>
+        <location filename="../gui/birdViewWidget.py" line="410"/>
+        <source>verstaerkter_ankerbaum</source>
+        <translation>Verstärkter Ankerbaum</translation>
+    </message>
+    <message>
+        <location filename="../gui/birdViewWidget.py" line="410"/>
+        <source>normaler_ankerbaum</source>
+        <translation>Normaler Ankerbaum</translation>
+    </message>
+    <message>
+        <location filename="../gui/birdViewWidget.py" line="410"/>
+        <source>anfang</source>
+        <translation>→ Anfangspunkt</translation>
+    </message>
+    <message>
+        <location filename="../gui/birdViewWidget.py" line="410"/>
+        <source>flach</source>
+        <translation>flach</translation>
+    </message>
+    <message>
+        <location filename="../gui/birdViewWidget.py" line="410"/>
+        <source>ende</source>
+        <translation>→ Endpunkt</translation>
     </message>
 </context>
 <context>
@@ -1246,6 +1469,11 @@ nach Zweifel</translation>
         <location filename="../gui/saveDialog.py" line="249"/>
         <source>Output Ordner auswaehlen</source>
         <translation>Output Ordner auswählen</translation>
+    </message>
+    <message>
+        <location filename="../gui/saveDialog.py" line="184"/>
+        <source>inkl. Vogelperspektive</source>
+        <translation>inkl. Vogelperspektive</translation>
     </message>
 </context>
 <context>
@@ -2060,6 +2288,11 @@ Bericht übertragen)</translation>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Anfangspunkt&lt;br&gt;&lt;span style=&quot; font-size: small;&quot;&gt;(bei Maschine/Winde)&lt;/span&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Anfangspunkt&lt;br&gt;&lt;span style=&quot; font-size: small;&quot;&gt;(bei Maschine/Winde)&lt;/span&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="2018"/>
+        <source>Hintergrundkarte laden</source>
+        <translation>Hintergrundkarte laden</translation>
+    </message>
 </context>
 <context>
     <name>SeilaplanPlugin</name>
@@ -2139,7 +2372,7 @@ Bericht übertragen)</translation>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="501"/>
         <source>OSM_Karte</source>
-        <translation>OSM_Karte</translation>
+        <translation type="obsolete">OSM_Karte</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="608"/>
@@ -2378,6 +2611,11 @@ Pfad zu Dokumentation:
         <location filename="../gui/seilaplanPluginDialog.py" line="849"/>
         <source>Unerwarteter Fehler bei Erstellung des Profils</source>
         <translation>Unerwarteter Fehler bei Erstellung des Profils</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="831"/>
+        <source>Hintergrundkarte laden</source>
+        <translation>Hintergrundkarte laden</translation>
     </message>
 </context>
 <context>
