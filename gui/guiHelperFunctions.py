@@ -118,8 +118,7 @@ def addBackgroundMap(canvas):
         layer: QgsRasterLayer = addOsmBackgroundMap()
     
     if not layer:
-        return tr("Layer {} bereits zur Karte hinzugefügt").format(
-            layer.name()), Qgis.Info
+        return tr("Layer bereits in Karte"), Qgis.Info
     
     if layer.isValid():
         QgsProject.instance().addMapLayer(layer)

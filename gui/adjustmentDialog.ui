@@ -858,44 +858,18 @@
              <string>Vogelperspektive</string>
             </attribute>
             <layout class="QGridLayout" name="gridLayout_7">
-             <item row="0" column="0">
-              <layout class="QVBoxLayout" name="DescLayout">
-               <item>
-                <widget class="QLabel" name="label_7">
-                 <property name="font">
-                  <font>
-                   <weight>75</weight>
-                   <bold>true</bold>
-                  </font>
-                 </property>
-                 <property name="text">
-                  <string>Konfiguration Vogelperspektive</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_16">
-                 <property name="font">
-                  <font>
-                   <italic>true</italic>
-                  </font>
-                 </property>
-                 <property name="text">
-                  <string>Konfiguration der Stuetzen fuer die Darstellung in der Vogelperspektive. Die Vogelperspektive kann in den Speicheroptionen aktiviert werden. Sie ist Teil des Diagramm-Exports und wird unterhalb der Profilansicht im PDF ausgegeben. </string>
-                 </property>
-                 <property name="wordWrap">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
              <item row="1" column="0">
-              <layout class="QGridLayout" name="birdViewGrid">
+              <layout class="QGridLayout" name="birdViewGrid" columnstretch="0,0,0,0,0" columnminimumwidth="0,0,0,0,0">
                <item row="0" column="3">
                 <layout class="QHBoxLayout" name="horizontalLayout_5">
                  <item>
                   <widget class="QLabel" name="label_46">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>35</height>
+                    </size>
+                   </property>
                    <property name="text">
                     <string>Position Stuetze</string>
                    </property>
@@ -917,6 +891,19 @@
                    </property>
                   </widget>
                  </item>
+                 <item>
+                  <spacer name="horizontalSpacer_9">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>1</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
                 </layout>
                </item>
                <item row="0" column="0">
@@ -930,7 +917,7 @@
                  <property name="minimumSize">
                   <size>
                    <width>20</width>
-                   <height>0</height>
+                   <height>35</height>
                   </size>
                  </property>
                  <property name="text">
@@ -951,7 +938,7 @@
                    <property name="minimumSize">
                     <size>
                      <width>0</width>
-                     <height>0</height>
+                     <height>35</height>
                     </size>
                    </property>
                    <property name="text">
@@ -1000,7 +987,7 @@
                    <property name="minimumSize">
                     <size>
                      <width>100</width>
-                     <height>0</height>
+                     <height>35</height>
                     </size>
                    </property>
                    <property name="text">
@@ -1025,7 +1012,7 @@
                   </widget>
                  </item>
                  <item>
-                  <spacer name="horizontalSpacer_9">
+                  <spacer name="horizontalSpacer_12">
                    <property name="orientation">
                     <enum>Qt::Horizontal</enum>
                    </property>
@@ -1044,7 +1031,7 @@
                  <item>
                   <widget class="QLabel" name="label_43">
                    <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
@@ -1052,26 +1039,13 @@
                    <property name="minimumSize">
                     <size>
                      <width>0</width>
-                     <height>30</height>
+                     <height>35</height>
                     </size>
                    </property>
                    <property name="text">
                     <string>Stuetzenbez.</string>
                    </property>
                   </widget>
-                 </item>
-                 <item>
-                  <spacer name="horizontalSpacer_10">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>1</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
                  </item>
                 </layout>
                </item>
@@ -1089,6 +1063,95 @@
                 </size>
                </property>
               </spacer>
+             </item>
+             <item row="0" column="0">
+              <layout class="QVBoxLayout" name="DescLayout">
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_10">
+                 <item>
+                  <widget class="QLabel" name="label_7">
+                   <property name="font">
+                    <font>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Konfiguration Vogelperspektive</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="infoBirdViewGeneral">
+                   <property name="maximumSize">
+                    <size>
+                     <width>22</width>
+                     <height>22</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>?</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer name="horizontalSpacer_11">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_11">
+                 <item>
+                  <widget class="QLabel" name="label_16">
+                   <property name="font">
+                    <font>
+                     <italic>true</italic>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Darstellung der Seillinie und Stuetzen aus der Vogelperspektive.</string>
+                   </property>
+                   <property name="wordWrap">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="mapBackgroundButton">
+                   <property name="maximumSize">
+                    <size>
+                     <width>27</width>
+                     <height>27</height>
+                    </size>
+                   </property>
+                   <property name="toolTip">
+                    <string>Hintergrundkarte laden um sie in der Vogelperspektive darzustellen.</string>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="resources.qrc">
+                     <normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_map.png</normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_map.png</iconset>
+                   </property>
+                   <property name="autoDefault">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
              </item>
             </layout>
            </widget>

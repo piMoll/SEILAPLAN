@@ -35,7 +35,7 @@ from .birdViewWidget import BirdViewWidget
 from .adjustmentDialog_params import AdjustmentDialogParams
 from .adjustmentDialog_thresholds import AdjustmentDialogThresholds
 from .saveDialog import DialogOutputOptions
-from .guiHelperFunctions import DialogWithImage
+from .guiHelperFunctions import DialogWithImage, addBackgroundMap
 from .mapMarker import MapMarkerTool
 from ..tools.birdViewMapExtractor import extractMapBackground
 from ..core.cablelineFinal import preciseCable, updateWithCableCoordinates
@@ -60,6 +60,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         """
         QDialog.__init__(self, interface.mainWindow())
         self.iface = interface
+        self.msgBar = self.iface.messageBar()
         
         # Management of Parameters and settings
         self.confHandler = confHandler
@@ -142,7 +143,9 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.btnBackToStart.clicked.connect(self.onReturnToStart)
         for field in self.prHeaderFields.values():
             field.textChanged.connect(self.onPrHeaderChanged)
+        self.mapBackgroundButton.clicked.connect(self.onClickMapButton)
         self.infoQ.clicked.connect(self.onInfo)
+        self.infoBirdViewGeneral.clicked.connect(self.onInfo)
         self.infoBirdViewCategory.clicked.connect(self.onInfo)
         self.infoBirdViewPosition.clicked.connect(self.onInfo)
         self.infoBirdViewAbspann.clicked.connect(self.onInfo)
@@ -349,6 +352,10 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         if tabIdx == self.tabWidget.indexOf(self.tabBirdView):
             self.birdViewLayout.updateGui()
     
+    def onClickMapButton(self):
+        statusMsg, severity = addBackgroundMap(self.iface.mapCanvas())
+        self.msgBar.pushMessage(self.tr('Hintergrundkarte laden'), statusMsg, severity)
+    
     def onInfo(self):
         title = 'info'
         msg = ''
@@ -356,6 +363,9 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         if self.sender().objectName() == 'infoQ':
             title = self.tr('Gesamtlast')
             msg = self.tr('Erklaerung Gesamtlast')
+        elif self.sender().objectName() == 'infoBirdViewGeneral':
+            title = self.tr('Konfiguration Vogelperspektive')
+            msg = self.tr('Erklaerung Vogelperspektive')
         elif self.sender().objectName() == 'infoBirdViewCategory':
             title = self.tr('Stuetzenkategorie')
             msg = self.tr('Erklaerung Stuetzenkategorie')
