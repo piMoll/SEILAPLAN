@@ -44,12 +44,12 @@ birdViewKatConf = {
     'mehrbaumanker': {
         'abspann': ['anfang', 'ende'],
     },
-    'endmast_mit_zugseilleitrolle': {
-        'abspann': ['anfang', 'ende'],
-    },
-    'endmast_ohne_zugseilleitrolle': {
-        'abspann': ['anfang', 'ende'],
-    },
+    # 'endmast_mit_zugseilleitrolle': {
+    #     'abspann': ['anfang', 'ende'],
+    # },
+    # 'endmast_ohne_zugseilleitrolle': {
+    #     'abspann': ['anfang', 'ende'],
+    # },
     'totmannanker': {
         'abspann': [],
     },
