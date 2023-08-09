@@ -618,7 +618,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         if not heightSource:
             return False
         hsType = self.projectHandler.heightSourceType
-        mapCrs = self.canvas.mapSettings().destinationCrs()
+        mapCrs = QgsProject.instance().crs()
         lyrCrs = heightSource.spatialRef
         title = self.tr('Fehler Koordinatenbezugssystem (KBS)')
         msg = ''
@@ -626,7 +626,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         
         # Height source has a different crs than map --> map crs is changed
         if lyrCrs.isValid() and not lyrCrs.isGeographic() and lyrCrs != mapCrs:
-            self.canvas.setDestinationCrs(lyrCrs)
+            QgsProject.instance().setCrs(lyrCrs)
             self.canvas.refresh()
             return True
         
@@ -648,7 +648,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
                 # Transform to LV95 by default
                 heightSource.reprojectToCrs(None)
                 msg = self.tr('KBS-Fehler - Felddaten und QGIS in geografischem KBS')
-                self.canvas.setDestinationCrs(heightSource.spatialRef)
+                QgsProject.instance().setCrs(lyrCrs)
                 self.canvas.refresh()
                 success = True
         
@@ -656,7 +656,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             if mapCrs.isGeographic():
                 msg = self.tr('KBS-Fehler - Bezugssystem des Rasters unbekannt')
                 heightSource.spatialRef = QgsCoordinateReferenceSystem(CH_CRS)
-                self.canvas.setDestinationCrs(heightSource.spatialRef)
+                QgsProject.instance().setCrs(lyrCrs)
                 self.canvas.refresh()
                 success = True
             else:
