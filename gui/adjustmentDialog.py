@@ -595,7 +595,13 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             includingBirdView = self.confHandler.getOutputOption('birdView')
             plotSavePath = os.path.join(outputLoc, self.tr('Diagramm.pdf'))
             width, height = 11.69, 8.27  # A4 dimensions in inch
-            printPlot = AdjustmentPlot(self, width, height, 150, withBirdView=includingBirdView)
+            
+            # TODO: Needs to get better
+            data_ylow = np.min(self.profile.zi_disp)
+            data_yhi = np.max(self.profile.zi_disp) + 40
+            ratio = (data_yhi - data_ylow) / 60
+            
+            printPlot = AdjustmentPlot(self, width, height, 150, withBirdView=includingBirdView, profilePlotRatio=ratio)
             printPlot.initData(self.profile.di_disp, self.profile.zi_disp,
                                self.profile.peakLoc_x, self.profile.peakLoc_z,
                                self.profile.surveyPnts)

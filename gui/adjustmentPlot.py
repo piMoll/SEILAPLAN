@@ -42,7 +42,7 @@ class AdjustmentPlot(FigureCanvas):
         3: '#e06767',   # red = error
     }
     
-    def __init__(self, parent=None, width=5., height=4., dpi=72, withBirdView=False):
+    def __init__(self, parent=None, width=5., height=4., dpi=72, withBirdView=False, profilePlotRatio=3):
         self.win = parent
         self.dpi = dpi
         self.fig = Figure(figsize=(width, height), dpi=self.dpi, facecolor='#efefef')
@@ -51,15 +51,17 @@ class AdjustmentPlot(FigureCanvas):
         self.birdViewMarkers = None
         
         if withBirdView:
-            axes = self.fig.subplots(2, 1, sharex=True)
+            axes = self.fig.subplots(nrows=2, ncols=1, gridspec_kw={'height_ratios': [profilePlotRatio, 1]}, sharex=True)
             self.axes = axes[0]
             self.axesBirdView = axes[1]
             # Load markers
             loader = BirdViewSymbolLoader()
             self.birdViewMarkers = loader.loadSymbolFromArray()
+            self.axesBirdView.set_aspect('equal')
+            self.fig.subplots_adjust(hspace=0)
         else:
             self.axes = self.fig.add_subplot(111)
-            
+        self.axes.set_aspect('equal', 'datalim', share=True)
         
         FigureCanvas.__init__(self, self.fig)
         self.setParent(parent)
@@ -85,7 +87,6 @@ class AdjustmentPlot(FigureCanvas):
         # Enable zoom with scroll wheel
         zoomFunc = zoom_with_wheel(self, self.axes, zoomScale=1.3)
 
-        self.axes.set_aspect('equal', 'datalim')
         self.setFocusPolicy(Qt.ClickFocus)
         FigureCanvas.setSizePolicy(self, QSizePolicy.Expanding,
                                    QSizePolicy.Expanding)
@@ -117,9 +118,10 @@ class AdjustmentPlot(FigureCanvas):
         rangeY = self.data_yhi - self.data_ylow
         ratio = rangeX / rangeY
         # Update figure size to fit data, height is a minimum of 330 px
-        minHight = 330
-        minLength = int(round(min(minHight * ratio, 600)))
-        self.setMinimumSize(QSize(minLength, minHight))
+        if not self.axesBirdView:
+            minHeight = 330
+            minLength = int(round(min(minHeight * ratio, 600)))
+            self.setMinimumSize(QSize(minLength, minHeight))
         # Set label positioning by taking height of figure into account
         height_m2px = rangeY / self.height()
         self.labelBuffer = 5 * height_m2px
@@ -128,6 +130,7 @@ class AdjustmentPlot(FigureCanvas):
         self.data_yhi += 4*self.labelBuffer
 
     def setPlotLimits(self):
+        """Only used when activating zoomTo functionality."""
         if self.isZoomed:
             d = self.currentPole['d']
             z = self.currentPole['z']
@@ -320,18 +323,18 @@ class AdjustmentPlot(FigureCanvas):
         
     def createBirdView(self, poles, azimut):
         xMin, xMax = self.axesBirdView.get_xlim()
-        plotWidth = xMax - xMin
-        yLim = plotWidth / 35
-        yLim = 10 if yLim < 10 else yLim
-        
+        # TODO: Should this be less when cable line is short?
+        yLim = 30
         posShiftVertical = 0.25 * yLim  # meter
-        markerSize = 30
+        # TODO: dependent on yLIm
+        markerSize = 25
         
         self.axesBirdView.set_ylim(-yLim, yLim)
         # Horizontal line symbolizing pole layout
         self.axesBirdView.plot([poles[0]['d'], poles[-1]['d']], [0, 0], color='red', linewidth=1)
         
         # Draw bird view markers
+        defaultCircle: BirdViewSymbol = self.birdViewMarkers['default']
         for pole in poles:
             # Special symbol for option 'flach'
             if pole['abspann'] == 'flach':
@@ -339,7 +342,7 @@ class AdjustmentPlot(FigureCanvas):
             elif pole['category']:
                 symbol: BirdViewSymbol = self.birdViewMarkers[pole['category']]
             else:
-                symbol: BirdViewSymbol = self.birdViewMarkers['default']
+                symbol: BirdViewSymbol = defaultCircle
             marker = symbol.mplPath
             if pole['abspann'] == 'anfang':
                 marker = symbol.mirror()
@@ -356,12 +359,12 @@ class AdjustmentPlot(FigureCanvas):
                                    color=symbol.color)
             # Add a brown center point where needed
             if symbol.centerPoint:
-                defaultCircle: BirdViewSymbol = self.birdViewMarkers['default']
                 self.axesBirdView.plot(pole['d'], yPos, marker=defaultCircle.mplPath,
                                        markersize=defaultCircle.scale * markerSize,
                                        color=defaultCircle.color)
         
         # Add north arrow
+        # TODO: Calculate position based on length and height of plot
         self.axesBirdView.text(xMax - 15, yLim - 15,  s='➸',
                               fontsize=20, color='black', ha='center', va='center',
                                rotation=degrees(azimut), rotation_mode='anchor')
@@ -370,7 +373,6 @@ class AdjustmentPlot(FigureCanvas):
         return self.axesBirdView.get_xlim(), self.axesBirdView.get_ylim()
     
     def layoutBirdViewForPrint(self):
-        self.axesBirdView.set_aspect('equal')
         self.axesBirdView.set_title(self.tr('Vogelperspektive'),
                                     fontsize=9, multialignment='center')
         self.axesBirdView.tick_params(labelsize=8)
@@ -381,15 +383,11 @@ class AdjustmentPlot(FigureCanvas):
     def addBackgroundMap(self, imgPath):
         xMin, xMax = self.axesBirdView.get_xlim()
         yMin, yMax = self.axesBirdView.get_ylim()
-        
-        # imgPath = '/home/pi/Seilaplan/Vogelperspektive/MapOut.png'
         img = imread(imgPath)
-        # TODO: use these limits to cut out image!
-        # https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.imshow.html
         self.axesBirdView.imshow(img, aspect='equal', extent=[xMin, xMax, yMin, yMax])
     
     def exportPdf(self, fileLocation):
-        self.fig.tight_layout(pad=2.5)
+        self.fig.tight_layout(pad=2)
         self.print_figure(fileLocation, self.dpi, facecolor='white')
 
     def setToolbar(self, tbar):
