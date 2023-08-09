@@ -369,7 +369,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         elif self.sender().objectName() == 'infoBirdViewCategory':
             title = self.tr('Stuetzenkategorie')
             msg = self.tr('Erklaerung Stuetzenkategorie')
-            imageName = '_Stuetzenkategorie.png'
+            imageName = 'Vogelperspektive_Kategorie.png'
         elif self.sender().objectName() == 'infoBirdViewPosition':
             title = self.tr('Stuetzenposition')
             msg = self.tr('Erklaerung Stuetzenposition')
