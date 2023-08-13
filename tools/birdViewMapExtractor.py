@@ -42,7 +42,8 @@ def extractMapBackground(savePath, xlim, ylim, startPoint, azimut):
     lowerLeft = QgsPointXY(eCoord + xMin, nCoord + yMin)
     upperRight = QgsPointXY(eCoord + xMin + width, nCoord + yMax)
     viewportHori = QgsRectangle(lowerLeft, upperRight)
-    # When rotating a geometry, we need a QgsGeometry instead of a rectangle
+    # Now rotate the viewport to align with the cable line. When rotating
+    #  a geometry, we need a QgsGeometry instead of a rectangle
     viewportPolygon = QgsGeometry.fromRect(viewportHori)
     viewportPolygon.rotate(degrees(rotation), QgsPointXY(*startPoint))
     # Extract the center of this rotated geometry by calculating the center
@@ -52,41 +53,28 @@ def extractMapBackground(savePath, xlim, ylim, startPoint, azimut):
     corner2 = QgsPointXY(polyPoints[2])
     eCenter = corner1.x() + (corner2.x() - corner1.x()) / 2
     nCenter = corner1.y() + (corner2.y() - corner1.y()) / 2
-    
-    # Extract new lower left and upper right and go back from polygon to rectangle
-    # TODO: Remove this part
-    polyPoints = viewportPolygon.asPolygon()[0]
-    lowerLeftR = QgsPointXY(polyPoints[0])
-    upperRightR = QgsPointXY(polyPoints[2])
-    rectangleR = QgsRectangle(lowerLeftR, upperRightR)
-    # Now we can extract the center of the rotated map extent
-    center = rectangleR.center()
-    eCenterTest = center.x()
-    nCenterTest = center.y()
-    
-    if round(eCenter, 2) != round(eCenterTest, 2):
-        print('Center not identical')
-    if round(nCenter, 2) != round(nCenterTest, 2):
-        print('Center not identical')
+
     # Create the final viewport as a rectangle with center in the middle of
     #  the bird view image and with the necessary image dimensions.
     #  Placing the viewport in the center is necessary, because in the subsequent
-    #  map rotation, the rotation is applied to the center of the map extract / viewport.
+    #  rotation of the map canvas bellow, the rotation is applied to the
+    #  center of the map extract / viewport.
     viewport = QgsRectangle.fromCenterAndSize(QgsPointXY(eCenter, nCenter), width, height)
 
     # Create the QGIS print layout
     project = QgsProject.instance()
     layout = QgsPrintLayout(project)
     layout.initializeDefaults()
-    # # If we want to see the layout, we can give it a name and add it to the manager
+    # If we want to see the layout, we can give it a name and add it to the manager
     # layout.setName("Seilaplan BirdView Layout")
     # project.layoutManager().addLayout(layout)
     
     # Create a map item
     mapExtract = QgsLayoutItemMap(layout)
-    # Item needs a fixed size that is the same as the bird view plot
-    ratio = width / 290
-    mapExtract.setFixedSize(QgsLayoutSize(width / ratio, height / ratio))
+    # Item needs a fixed size that is the same as the bird view plot and fits
+    #  the A4 print layout
+    scaleToA4 = width / 290
+    mapExtract.setFixedSize(QgsLayoutSize(width / scaleToA4, height / scaleToA4))
     mapExtract.zoomToExtent(viewport)
     # Rotate the map so the cable line becomes horizontal
     mapRotation = radians(90) - azimut
