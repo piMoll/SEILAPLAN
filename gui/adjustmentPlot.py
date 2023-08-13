@@ -48,6 +48,9 @@ class AdjustmentPlot(FigureCanvas):
         self.dpi = dpi
         self.fig = Figure(figsize=(width, height), dpi=self.dpi, facecolor='#efefef')
         
+        FigureCanvas.__init__(self, self.fig)
+        self.setParent(parent)
+        
         self.axesBirdView = None
         self.birdViewMarkers = None
         
@@ -62,10 +65,10 @@ class AdjustmentPlot(FigureCanvas):
             self.fig.subplots_adjust(hspace=0)
         else:
             self.axes = self.fig.add_subplot(111)
-        self.axes.set_aspect('equal', 'datalim', share=True)
+            self.fig.tight_layout(pad=0, w_pad=0.1, h_pad=0.1)
         
-        FigureCanvas.__init__(self, self.fig)
-        self.setParent(parent)
+        # Profile plot should always be drawn with equal aspect
+        self.axes.set_aspect('equal', 'datalim', share=True)
         
         self.xdata = None
         self.terrain = None
@@ -92,15 +95,17 @@ class AdjustmentPlot(FigureCanvas):
         FigureCanvas.setSizePolicy(self, QSizePolicy.Expanding,
                                    QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)
-        self.fig.tight_layout(pad=0, w_pad=0.1, h_pad=0.1)
 
     def __setupAxes(self):
+        direction = 'in'
+        if self.axesBirdView:
+            direction = 'inout'
         self.axes.ticklabel_format(style='plain', useOffset=False)
-        self.axes.tick_params(axis="both", which="major", direction="in",
+        self.axes.tick_params(axis="both", which="major", direction=direction,
                               length=5, width=1, bottom=True, top=False,
                               left=True, right=False)
         self.axes.minorticks_on()
-        self.axes.tick_params(which="minor", direction="in")
+        self.axes.tick_params(which="minor", direction=direction)
         
     def initData(self, xdata, terrain, peakLocation_x, peakLocation_y,
                  surveyPoints):
@@ -395,10 +400,20 @@ class AdjustmentPlot(FigureCanvas):
         return self.axesBirdView.get_xlim(), self.axesBirdView.get_ylim()
     
     def layoutBirdViewForPrint(self):
-        self.axesBirdView.set_title(self.tr('Vogelperspektive'),
-                                    fontsize=9, multialignment='center')
-        self.axesBirdView.tick_params(labelsize=8)
-        self.axesBirdView.set_xlabel(self.tr('Horizontaldistanz [m]'), fontsize=9)
+        # Label axis at the top between the two subplots
+        self.axesBirdView.set_xlabel(self.tr('Horizontaldistanz [m]'), fontsize=9,
+                                     loc='left', labelpad=-6, backgroundcolor='white')
+        self.axesBirdView.xaxis.set_label_position('top')
+        # Show the tick labels
+        self.axesBirdView.tick_params(labelsize=8, labeltop=True, labelbottom=False)
+        self.axesBirdView.ticklabel_format(style='plain', useOffset=False)
+        self.axesBirdView.tick_params(axis="both", which="major", direction="inout",
+                              length=5, width=1, bottom=False, top=True,
+                              left=True, right=False)
+        self.axesBirdView.minorticks_on()
+        self.axesBirdView.tick_params(which="minor", direction="inout",
+                                      bottom=False, top=True, left=False, right=False)
+        # Add grid
         self.axesBirdView.grid(which='major', axis='x', lw=0.5)
         self.axesBirdView.grid(which='minor', axis='x', lw=0.5, linestyle=':')
 
