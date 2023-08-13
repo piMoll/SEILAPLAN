@@ -25,8 +25,9 @@ from qgis.PyQt.QtWidgets import QSizePolicy
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from matplotlib.patches import Rectangle, Circle
+from matplotlib.patches import Rectangle
 from matplotlib.pyplot import imread
+import matplotlib.patheffects as pe
 
 from .plotting_tools import zoom_with_wheel
 from ..tools.birdViewSymbol import BirdViewSymbol, BirdViewSymbolLoader
@@ -322,17 +323,27 @@ class AdjustmentPlot(FigureCanvas):
                            ha='center', fontsize=8)
         
     def createBirdView(self, poles, azimut):
-        xMin, xMax = self.axesBirdView.get_xlim()
-        # TODO: Should this be less when cable line is short?
+        # Height of y-axis (+/- from x-axis) in meter
         yLim = 30
-        posShiftVertical = 0.25 * yLim  # meter
-        # TODO: dependent on yLIm
-        markerSize = 25
-        
+        # Vertical shift of poles that are not in the center (in meter)
+        posShiftVertical = 0.25 * yLim
+        # Set fixed limits of the vertical axis
         self.axesBirdView.set_ylim(-yLim, yLim)
-        # Horizontal line symbolizing pole layout
+        # Horizontal line symbolizing cable line from first to last pole
         self.axesBirdView.plot([poles[0]['d'], poles[-1]['d']], [0, 0], color='red', linewidth=1)
         
+        # Calculate marker size by take the height of the drawn plot into account
+        # First, draw it once to get the figures size
+        self.fig.canvas.draw()
+        figExtent = self.axesBirdView.get_window_extent()
+        #  Diameter of the marker in the plot (in meter)
+        markerDiameter = 22
+        # Transform to marker size (in point)
+        #  1 point = self.fig.dpi / 72 pixels
+        markerSize = figExtent.height / (2*yLim / markerDiameter) * 72./self.fig.dpi
+        # Halo effect around markers and north arrow for better readability
+        haloEffect = [pe.withStroke(linewidth=4, foreground="white")]
+
         # Draw bird view markers
         defaultCircle: BirdViewSymbol = self.birdViewMarkers['default']
         for pole in poles:
@@ -353,10 +364,10 @@ class AdjustmentPlot(FigureCanvas):
                 yPos += posShiftVertical
             elif pole['position'] == 'rechts':
                 yPos += posShiftVertical
-            
+            # Plot the marker
             self.axesBirdView.plot(pole['d'], yPos, marker=marker,
                                    markersize=symbol.scale * markerSize,
-                                   color=symbol.color)
+                                   color=symbol.color, path_effects=haloEffect)
             # Add a brown center point where needed
             if symbol.centerPoint:
                 self.axesBirdView.plot(pole['d'], yPos, marker=defaultCircle.mplPath,
@@ -364,10 +375,21 @@ class AdjustmentPlot(FigureCanvas):
                                        color=defaultCircle.color)
         
         # Add north arrow
-        # TODO: Calculate position based on length and height of plot
-        self.axesBirdView.text(xMax - 15, yLim - 15,  s='➸',
-                              fontsize=20, color='black', ha='center', va='center',
-                               rotation=degrees(azimut), rotation_mode='anchor')
+        yMin, yMax = self.axesBirdView.get_ylim()
+        xMin, xMax = self.axesBirdView.get_xlim()
+        # Label font size for north arrow is fixed to 30
+        labelSize = 30
+        # Place arrow in upper right corner, with distance in points
+        baseShiftInPointsY = 50
+        baseShiftInPointsX = 40
+        # Calculate shift in plot units
+        labelXShift = (baseShiftInPointsX / figExtent.width) * (xMax - xMin)
+        labelYShift = (baseShiftInPointsY / figExtent.height) * (yMax - yMin)
+        self.axesBirdView.text(xMax - labelXShift, yMax - labelYShift,  s='➸',
+                               fontsize=labelSize, color='black', ha='center',
+                               va='center', rotation=degrees(azimut),
+                               rotation_mode='anchor', path_effects=haloEffect)
+        # Add title and axis labels
         self.layoutBirdViewForPrint()
         
         return self.axesBirdView.get_xlim(), self.axesBirdView.get_ylim()
@@ -385,7 +407,7 @@ class AdjustmentPlot(FigureCanvas):
         yMin, yMax = self.axesBirdView.get_ylim()
         img = imread(imgPath)
         self.axesBirdView.imshow(img, aspect='equal', extent=[xMin, xMax, yMin, yMax])
-    
+
     def exportPdf(self, fileLocation):
         self.fig.tight_layout(pad=2)
         self.print_figure(fileLocation, self.dpi, facecolor='white')
