@@ -35,7 +35,7 @@ except ModuleNotFoundError:
 
 
 class Raster(AbstractHeightSource):
-    BUFFER_DEFAULT = 50
+    BUFFER_DEFAULT = 20
     
     def __init__(self, layer=None, path=None):
         AbstractHeightSource.__init__(self)
