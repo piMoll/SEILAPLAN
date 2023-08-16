@@ -247,6 +247,7 @@ class ConfigHandler(object):
             'shortReport': s.value(f'{self.SETTING_PREFIX}shortReport', 1, int),
             'plot': s.value(f'{self.SETTING_PREFIX}plot', 1, int),
             'birdView': s.value(f'{self.SETTING_PREFIX}birdView', 1, int),
+            'birdViewLegend': s.value(f'{self.SETTING_PREFIX}birdViewLegend', 0, int),
             'shape': s.value(f'{self.SETTING_PREFIX}shape', 0, int),
             'csv': s.value(f'{self.SETTING_PREFIX}csv', 0, int),
             'kml': s.value(f'{self.SETTING_PREFIX}kml', 0, int),
@@ -284,6 +285,7 @@ class ConfigHandler(object):
         s.setValue(f'{self.SETTING_PREFIX}shortReport', self.outputOptions['shortReport'])
         s.setValue(f'{self.SETTING_PREFIX}plot', self.outputOptions['plot'])
         s.setValue(f'{self.SETTING_PREFIX}birdView', self.outputOptions['birdView'])
+        s.setValue(f'{self.SETTING_PREFIX}birdViewLegend', self.outputOptions['birdViewLegend'])
         s.setValue(f'{self.SETTING_PREFIX}shape', self.outputOptions['shape'])
         s.setValue(f'{self.SETTING_PREFIX}csv', self.outputOptions['csv'])
         s.setValue(f'{self.SETTING_PREFIX}kml', self.outputOptions['kml'])
