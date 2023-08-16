@@ -223,15 +223,15 @@ class SeilaplanPlugin(object):
     def run(self):
         """Run method that performs all the real work"""
         
-        # # Uncomment when debugging
-        # try:
-        #     import pydevd_pycharm
-        #     pydevd_pycharm.settrace('localhost', port=53100,
-        #                             stdoutToServer=True, stderrToServer=True)
-        # except ConnectionRefusedError:
-        #     pass
-        # except ImportError:
-        #     pass
+        # Uncomment when debugging
+        try:
+            import pydevd_pycharm
+            pydevd_pycharm.settrace('localhost', port=53100,
+                                    stdoutToServer=True, stderrToServer=True)
+        except ConnectionRefusedError:
+            pass
+        except ImportError:
+            pass
         
         # Check for import errors and show messages
         if ERROR:
@@ -269,11 +269,20 @@ class SeilaplanPlugin(object):
             self.dlg.show()
             self.dlg.exec()
 
-            # # Uncomment the following code when trying to debug adjustment
-            # #  window directly without having to run the optimization
-            # #  algorithm. Comment out the two previous lines (self.dgl...) to
-            # #  stop first window from showing
-            # conf.loadFromFile("/path/to/projectfile.txt")
+            # Uncomment the following code when trying to debug adjustment
+            #  window directly without having to run the optimization
+            #  algorithm. Comment out the two previous lines (self.dgl...) to
+            #  stop first window from showing
+            # conf.loadFromJsonFile("/home/pi/Seilaplan/Testfälle_Diagramm/kurz_flach/Projekteinstellungen.json")
+            # conf.loadFromJsonFile("/home/pi/Seilaplan/Testfälle_Diagramm/kurz_flach_2/Projekteinstellungen.json")
+            # conf.loadFromJsonFile("/home/pi/Seilaplan/Testfälle_Diagramm/kurz_mittelSteil/Projekteinstellungen.json")
+            # conf.loadFromJsonFile("/home/pi/Seilaplan/Testfälle_Diagramm/kurz_mittelSteil_2/Projekteinstellungen.json")
+            # conf.loadFromJsonFile("/home/pi/Seilaplan/Testfälle_Diagramm/mittel_mittelSteil/Projekteinstellungen.json")
+            # conf.loadFromJsonFile("/home/pi/Seilaplan/Testfälle_Diagramm/mittel_mittelSteil_aufwärts/Projekteinstellungen.json")
+            # conf.loadFromJsonFile("/home/pi/Seilaplan/Testfälle_Diagramm/mittel_mittelSteil_aufwärts_2/Projekteinstellungen.json")
+            # conf.loadFromJsonFile("/home/pi/Seilaplan/Testfälle_Diagramm/lang_mittelSteil/Projekteinstellungen.json")
+            # conf.loadFromJsonFile("/home/pi/Seilaplan/Testfälle_Diagramm/lang_steil_aufwärts/Projekteinstellungen.json")
+            # conf.loadFromJsonFile("/home/pi/Seilaplan/Testfälle_Diagramm/zu_lang/Projekteinstellungen.json")
             # conf.prepareForCalculation()
             # result, status = conf.loadCableDataFromFile()
             # self.adjustmentWindow = AdjustmentDialog(self.iface, conf)

@@ -112,7 +112,8 @@ def generateReportText(confHandler, result, projname):
 
     # Section poles
     str_posi = [["", tr('Hoehe Sattel [m]'), tr('Neigung []'), tr('X-Koordinate'),
-                 tr('Y-Koordinate'), tr('Z-Koordinate [m.ue.M.]')]]
+                 tr('Y-Koordinate'), tr('Z-Koordinate [m.ue.M.]'),
+                 tr('Kategorie'), tr('Position'), tr('Ausrichtung Abspannseile')]]
     for pole in polesWithAnchors:
         if not pole['active']:
             continue
@@ -120,7 +121,8 @@ def generateReportText(confHandler, result, projname):
             f"{pole['name']}", f"{pole['h']:.1f}", f"{round(pole['angle'], 0)}",
             f"{confHandler.project.formatCoordinate(pole['coordx'])}",
             f"{confHandler.project.formatCoordinate(pole['coordy'])}",
-            f"{round(pole['z'], 1)}"])
+            f"{round(pole['z'], 1)}", f"{tr(pole['category'], 'BirdViewRow')}",
+            f"{tr(pole['position'], 'BirdViewRow')}", f"{tr(pole['abspann'], 'BirdViewRow')}"])
 
     # Section field survey
     str_abst = [["{}: {:.1f} {} / {:.1f} °".format(tr('Azimut'), az_gon, tr('gon'), az_grad)],
@@ -381,7 +383,8 @@ def generateShortReport(confHandler, result, projname, outputLoc):
     # Pole dimensions
     ###
     s_dimen = [[tr('Nr.'), tr('Bezeichnung'), tr('Sattelhoehe'),
-                tr('Neigung'), tr('Min. BHD'), tr('Bundstelle')]]
+                tr('Neigung'), tr('Min. BHD'), tr('Bundstelle'),
+                tr('Kategorie')]]
     add_footnote = False
     for pole in polesArray:
         if pole['angriff'] > 45:
@@ -389,7 +392,8 @@ def generateShortReport(confHandler, result, projname, outputLoc):
             add_footnote = True
         s_dimen.append([pole['nr'], pole['name'], f"{pole['h']:.1f} m",
                         f"{pole['angle']:.0f} °", f"{pole['BHD']} cm",
-                        f"{pole['bundstelle']} cm"])
+                        f"{pole['bundstelle']} cm",
+                        tr(pole['category'], 'BirdViewRow')])
     s_dimen = replaceRecursively(s_dimen, 'nan', '-')
     s_dimen = replaceRecursively(s_dimen, u'\u2300', u'\u00F8', False)
     s_dimen2 = None
@@ -560,7 +564,8 @@ def generateShortReport(confHandler, result, projname, outputLoc):
     data.append([Table([[h_input], [t_input]])])
 
     # Pole dimensions
-    t_dimen1 = Table(s_dimen, rowHeights=he_row, style=style_2cl)
+    style_2789cl = style_2cl + [('ALIGN', (6, 0), (6, -1), 'LEFT')]
+    t_dimen1 = Table(s_dimen, rowHeights=he_row, style=style_2789cl)
     if s_dimen2:
         t_dimen2 = Table(s_dimen2, rowHeights=he_row, style=style_small)
         data.append([Table([[h_dimen], [t_dimen1], [t_dimen2]])])
@@ -664,10 +669,11 @@ def generateReport(reportText, outputLoc):
                                  ('LEFTPADDING', (0, 0), (0, -1), lPadd)]))
 
     t_posi1 = Table(h_posi, wi_doc, he_rowT)
-    t_posi2 = Table(str_posi, [None] + 5*wi_clo, len(str_posi) * he_row)
+    t_posi2 = Table(str_posi, [None] + 5*wi_clo + 3*[None], len(str_posi) * he_row)
     t_posi1.setStyle(title_style)
     t_posi2.setStyle(TableStyle(stdStyleA + [
-        ('FONT', (0, 0), (-1, 0), fontHeader, smallfontSize)]))
+        ('FONT', (0, 0), (-1, 0), fontHeader, smallfontSize)]
+        + [('ALIGN', (6, 0), (8, -1), 'LEFT')]))    # style for 3 bird view rows
 
     t_abst1 = Table(h_abst, wi_doc, he_rowT)
     t_abst2 = Table(str_abst, [None] + 2*wi_clo, len(str_abst) * he_row)
@@ -812,7 +818,7 @@ def createOutputFolder(location):
 
 
 # noinspection PyMethodMayBeStatic
-def tr(message, **kwargs):
+def tr(message, context='@default', **kwargs):
     """Get the translation for a string using Qt translation API.
     We implement this ourselves since we do not inherit QObject.
 
@@ -827,4 +833,4 @@ def tr(message, **kwargs):
     **kwargs
     """
     # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
-    return QCoreApplication.translate('@default', message)
+    return QCoreApplication.translate(context, message)
