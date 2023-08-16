@@ -56,7 +56,7 @@ def getTimestamp(tStart):
 def replaceRecursively(text, findText, replaceWith, fullReplace=True):
     """Replace text insided nested arrays or tuples"""
     if type(text) is str:
-        if findText in text:
+        if findText == text or f'{findText} ' in text or f' {findText}' in text:
             if fullReplace:
                 return replaceWith
             else:
