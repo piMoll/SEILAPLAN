@@ -281,12 +281,16 @@ class BirdViewRow(object):
         self.fieldPos.disconnect()
         self.fieldAbspann.disconnect()
         
-        self.layout.removeWidget(self.labelNr)
+        if self.labelNr:
+            self.layout.removeWidget(self.labelNr)
         self.layout.removeWidget(self.fieldName)
         self.layout.removeWidget(self.fieldCat)
         self.layout.removeWidget(self.fieldPos)
         self.layout.removeWidget(self.fieldAbspann)
         
+        if self.labelNr:
+            self.labelNr.deleteLater()
+        self.fieldName.deleteLater()
         self.fieldCat.deleteLater()
         self.fieldPos.deleteLater()
         self.fieldAbspann.deleteLater()
