@@ -402,7 +402,7 @@ class AdjustmentPlot(FigureCanvas):
     def layoutBirdViewForPrint(self):
         # Label axis at the top between the two subplots
         self.axesBirdView.set_xlabel(self.tr('Horizontaldistanz [m]'), fontsize=9,
-                                     loc='left', labelpad=-6, backgroundcolor='white')
+                                     x=0, ha='left', labelpad=-6, backgroundcolor='white')
         self.axesBirdView.xaxis.set_label_position('top')
         # Show the tick labels
         self.axesBirdView.tick_params(labelsize=8, labeltop=True, labelbottom=False)
