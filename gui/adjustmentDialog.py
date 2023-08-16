@@ -28,7 +28,7 @@ from qgis.PyQt.QtWidgets import QDialog, QMessageBox, QTextEdit
 from qgis.PyQt.QtGui import QPixmap
 
 from .ui_adjustmentDialog import Ui_AdjustmentDialogUI
-from .adjustmentPlot import AdjustmentPlot
+from .adjustmentPlot import AdjustmentPlot, saveImgAsPdfWithMpl
 from .plotting_tools import MyNavigationToolbar
 from .poleWidget import CustomPoleWidget
 from .birdViewWidget import BirdViewWidget
@@ -619,6 +619,13 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             # Delete map background
             if imgPath:
                 os.remove(imgPath)
+        
+        if self.confHandler.getOutputOption('birdViewLegend'):
+            imageName = 'Vogelperspektive_Kategorie.png'
+            imgPath = os.path.join(self.homePath, 'img', f'{self.locale}_{imageName}')
+            if not os.path.exists(imgPath):
+                imgPath = os.path.join(self.homePath, 'img', f'de_{imageName}')
+            saveImgAsPdfWithMpl(imgPath, os.path.join(outputLoc, self.tr('Vogelperspektive Legende') + '.pdf'))
         
         # Generate geo data
         if (self.confHandler.getOutputOption('csv') or

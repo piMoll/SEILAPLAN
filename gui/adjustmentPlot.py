@@ -447,3 +447,24 @@ class AdjustmentPlot(FigureCanvas):
         """
         # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
         return QCoreApplication.translate(type(self).__name__, message)
+
+
+
+def saveImgAsPdfWithMpl(imgPath, savePath, dpi=300):
+    """ Loads an image into a plot and saves it as a pdf. This is a workaround
+    to be able to save PDF without an additional library."""
+    height, width = 11.69, 8.27  # A4 dimensions in inch
+    fig = Figure(figsize=(width, height), dpi=dpi)
+    axis = fig.add_subplot(111)
+    img = imread(imgPath)
+    axis.imshow(img, aspect='equal')
+    # Remove axis ticks
+    axis.tick_params(axis="both", which="both", bottom=False, top=False,
+                     left=False, right=False)
+    # Remove axis labels
+    axis.xaxis.set_ticklabels([])
+    axis.yaxis.set_ticklabels([])
+    # Save to pdf
+    canvas = FigureCanvas(fig)
+    canvas.print_figure(savePath, dpi, facecolor='white')
+    
