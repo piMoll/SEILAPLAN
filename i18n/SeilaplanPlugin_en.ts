@@ -64,12 +64,12 @@
         <translation>label</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="151"/>
+        <location filename="../tools/outputReport.py" line="153"/>
         <source>Leerseil</source>
         <translation>Unloaded skyline</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="153"/>
+        <location filename="../tools/outputReport.py" line="155"/>
         <source>Lastseil</source>
         <translation>Loaded skyline</translation>
     </message>
@@ -137,7 +137,7 @@
         <translation>Slope</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="431"/>
+        <location filename="../tools/outputReport.py" line="435"/>
         <source>Feld</source>
         <translation>Span</translation>
     </message>
@@ -839,7 +839,12 @@ loaded skyline</translation>
     <message>
         <location filename="../gui/guiHelperFunctions.py" line="149"/>
         <source>Landeskarten (farbig)</source>
-        <translation>national map (color)</translation>
+        <translation type="unfinished">national map (color)</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="116"/>
+        <source>Position</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -998,6 +1003,11 @@ loaded skyline</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="391"/>
         <source>Erklaerung Abspann</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="628"/>
+        <source>Vogelperspektive Legende</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1306,82 +1316,87 @@ terrain shape</translation>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>links</source>
-        <translation>links</translation>
+        <translation type="unfinished">links</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>mitte</source>
-        <translation>mitte</translation>
+        <translation type="unfinished">mitte</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>rechts</source>
-        <translation>rechts</translation>
+        <translation type="unfinished">rechts</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>mobiler_seilkran</source>
-        <translation>Mobiler Seilkran</translation>
+        <translation type="unfinished">Mobiler Seilkran</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>vorziehstuetze_1</source>
-        <translation>Vorziehstütze (1 Abspannseil)</translation>
+        <translation type="unfinished">Vorziehstütze (1 Abspannseil)</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>vorziehstuetze_2</source>
-        <translation>Vorziehstütze (2 Abspannseile)</translation>
+        <translation type="unfinished">Vorziehstütze (2 Abspannseile)</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>vorgeneigte_stuetze</source>
-        <translation>Vorgeneigte St. / Gittermast</translation>
+        <translation type="unfinished">Vorgeneigte St. / Gittermast</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>mehrbaumanker</source>
-        <translation>Mehrbaumanker</translation>
+        <translation type="unfinished">Mehrbaumanker</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>endmast_mit_zugseilleitrolle</source>
-        <translation>Endmast mit Zugseilleitrolle</translation>
+        <translation type="unfinished">Endmast mit Zugseilleitrolle</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>endmast_ohne_zugseilleitrolle</source>
-        <translation>Endmast ohne Zugseilleitrolle</translation>
+        <translation type="unfinished">Endmast ohne Zugseilleitrolle</translation>
+    </message>
+    <message>
+        <location filename="../gui/birdViewWidget.py" line="410"/>
+        <source>endmast</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>totmannanker</source>
-        <translation>Totmannanker</translation>
+        <translation type="unfinished">Totmannanker</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>verstaerkter_ankerbaum</source>
-        <translation>Verstärkter Ankerbaum</translation>
+        <translation type="unfinished">Verstärkter Ankerbaum</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>normaler_ankerbaum</source>
-        <translation>Normaler Ankerbaum</translation>
+        <translation type="unfinished">Normaler Ankerbaum</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>anfang</source>
-        <translation>→ Anfangspunkt</translation>
+        <translation type="unfinished">→ Anfangspunkt</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>flach</source>
-        <translation>flach</translation>
+        <translation type="unfinished">flach</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>ende</source>
-        <translation>→ Endpunkt</translation>
+        <translation type="unfinished">→ Endpunkt</translation>
     </message>
 </context>
 <context>
@@ -1490,6 +1505,11 @@ terrain shape</translation>
         <location filename="../gui/saveDialog.py" line="184"/>
         <source>inkl. Vogelperspektive</source>
         <translation>incl. bird view</translation>
+    </message>
+    <message>
+        <location filename="../gui/saveDialog.py" line="185"/>
+        <source>Legende Vogelperspektive</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

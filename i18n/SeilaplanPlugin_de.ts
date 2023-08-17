@@ -39,12 +39,12 @@
         <translation>bez</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="151"/>
+        <location filename="../tools/outputReport.py" line="153"/>
         <source>Leerseil</source>
         <translation>Leerseil</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="153"/>
+        <location filename="../tools/outputReport.py" line="155"/>
         <source>Lastseil</source>
         <translation>Lastseil</translation>
     </message>
@@ -139,7 +139,7 @@
         <translation>Höhendaten</translation>
     </message>
     <message>
-        <location filename="../tools/outputReport.py" line="356"/>
+        <location filename="../tools/outputReport.py" line="358"/>
         <source>Bemerkung</source>
         <translation>Bemerkung</translation>
     </message>
@@ -833,6 +833,11 @@ Lastseil</translation>
         <source>Landeskarten (farbig)</source>
         <translation>Landeskarten (farbig)</translation>
     </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="116"/>
+        <source>Position</source>
+        <translation>Position</translation>
+    </message>
 </context>
 <context>
     <name>AbstractConfHandler</name>
@@ -991,6 +996,11 @@ Lastseil</translation>
         <location filename="../gui/adjustmentDialog.py" line="381"/>
         <source>Erklaerung Vogelperspektive</source>
         <translation>Die Vogelperspektive wird in den Speicheroptionen aktiviert. Sie ist Teil des Diagramm-Exports und wird unterhalb der Profilansicht im PDF ausgegeben.</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="628"/>
+        <source>Vogelperspektive Legende</source>
+        <translation>Vogelperspektive Legende</translation>
     </message>
 </context>
 <context>
@@ -1341,6 +1351,11 @@ nach Zweifel</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
+        <source>endmast</source>
+        <translation>Endmast</translation>
+    </message>
+    <message>
+        <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>totmannanker</source>
         <translation>Totmannanker</translation>
     </message>
@@ -1474,6 +1489,11 @@ nach Zweifel</translation>
         <location filename="../gui/saveDialog.py" line="184"/>
         <source>inkl. Vogelperspektive</source>
         <translation>inkl. Vogelperspektive</translation>
+    </message>
+    <message>
+        <location filename="../gui/saveDialog.py" line="185"/>
+        <source>Legende Vogelperspektive</source>
+        <translation>Legende Vogelperspektive</translation>
     </message>
 </context>
 <context>
