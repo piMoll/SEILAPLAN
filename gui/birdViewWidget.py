@@ -50,6 +50,9 @@ birdViewKatConf = {
     # 'endmast_ohne_zugseilleitrolle': {
     #     'abspann': ['anfang', 'ende'],
     # },
+    'endmast': {
+        'abspann': ['anfang', 'ende'],
+    },
     'totmannanker': {
         'abspann': [],
     },
@@ -115,10 +118,12 @@ class BirdViewRow(object):
         self.parent = parent
         self.widget = widget
         self.layout = layout
-        self.rowIndex = rowIdx      # Row number in grid layout
-        self.poleIndex = poleIdx    # Pole number in Poles.poles array
+        self.rowIndex = rowIdx      # Row number in grid layout: starts at 1
+        self.poleIndex = poleIdx    # Pole number in Poles.poles array: can start at 0 or 1
         self.rowType = rowType
-        self.defaultAbspannIdx = 2 if self.parent.direction == 'downhill' else 0
+        # Default direction is towards endpoint if the cable line goes downhill
+        #  Exception: First element of cable line always goes in direction of start
+        self.defaultAbspannIdx = 0 if self.rowIndex == 1 or self.parent.direction == 'uphill' else 2
         
         self.labelNr = None
         self.fieldName = None
