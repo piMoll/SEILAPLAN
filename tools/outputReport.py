@@ -121,9 +121,8 @@ def generateReportText(confHandler, result, projname):
             f"{pole['name']}", f"{pole['h']:.1f}", f"{round(pole['angle'], 0)}",
             f"{confHandler.project.formatCoordinate(pole['coordx'])}",
             f"{confHandler.project.formatCoordinate(pole['coordy'])}",
-            f"{round(pole['z'], 1)}", f"{tr(pole['category'], 'BirdViewRow')}",
-            f"{tr(pole['position'], 'BirdViewRow')}", f"{tr(pole['abspann'], 'BirdViewRow')}"])
-
+            f"{round(pole['z'], 1)}"] +
+            [f"{tr(val, 'BirdViewRow')}" or 'nan' for val in [pole['category'], pole['position'], pole['abspann']]])
     # Section field survey
     str_abst = [["{}: {:.1f} {} / {:.1f} °".format(tr('Azimut'), az_gon, tr('gon'), az_grad)],
                 ["", tr('Horizontaldistanz'), tr('Schraegdistanz')]]
@@ -393,7 +392,7 @@ def generateShortReport(confHandler, result, projname, outputLoc):
         s_dimen.append([pole['nr'], pole['name'], f"{pole['h']:.1f} m",
                         f"{pole['angle']:.0f} °", f"{pole['BHD']} cm",
                         f"{pole['bundstelle']} cm",
-                        tr(pole['category'], 'BirdViewRow')])
+                        tr(pole['category'], 'BirdViewRow') or 'nan'])
     s_dimen = replaceRecursively(s_dimen, 'nan', '-')
     s_dimen = replaceRecursively(s_dimen, u'\u2300', u'\u00F8', False)
     s_dimen2 = None
