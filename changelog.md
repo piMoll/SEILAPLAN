@@ -1,5 +1,13 @@
 # Seilaplan Changelog
 
+## Version 3.5.0 (August 2023)
+### Neue Features
+* Vogelperspektive: Darstellung der Seillinie, Stützen und Abspannseile aus der Vogelperspektive
+  * Konfiguriere Stützenkategorie und -position, sowie Ausrichtung der Abspannseile in einem neuen Tab
+  * Exportiere Vogelperspektive als Diagramm unterhalb des Seitenprofils
+  * Ergänzung der Stützeneigenschaften in Berichten und Geodaten-Export
+* Hintergrundkarte darstellen: Bei QGIS-Projekten im CH-Koordinatensystem wird neu die Schweizer Landeskarte statt der OSM-Karte geladen
+
 ## Version 3.4.2 (Juni 2023)
 ### Fehlerbehebung
 * Geländeprofil aus Haglöf Vertex: Ergänze Standort der ersten Messung (Punkt Nr. 0)
@@ -7,7 +15,7 @@
 * Problembehebung bei der Erstellung von Profillinien bei Seillinien in Richtung 0, 100, 200 oder 300 Gon
 * Beim Laden von reportlab (Bibliothek für Berichterstellung) wird die im System installierte Version bevorzugt
 
-## Version 3.4.1 (Dez 2022)
+## Version 3.4.1 (Dezember 2022)
 ### Neue Features
 * Geländelinie als DXF, KML und Shapefile exportieren
 * Profilansicht (Seitenansicht) als DXF exportieren

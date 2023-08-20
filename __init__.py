@@ -22,7 +22,7 @@
  This script initializes the plugin, making it known to QGIS.
 """
 
-__version__ = '3.4.1'
+__version__ = '3.5.0'
 
 
 # noinspection PyPep8Naming

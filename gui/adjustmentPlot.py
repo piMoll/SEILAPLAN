@@ -463,7 +463,6 @@ def calculatePlotDimensions(xData, yData):
     
     # Height to width ration of data
     dataHeightRatio = (data_yhi - data_ylow) / (data_xhi - data_xlow)
-    print(f'goal Ratio: {round((height / width) * 100, 1)}% height.  Current ratio: {round(dataHeightRatio * 100, 1)} % height. Subplot ratio: {ratio}')
 
     # If the data does not fit on the landscape page, we turn the page to portrait
     if dataHeightRatio > pageHeightRatio:

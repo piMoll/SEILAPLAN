@@ -223,15 +223,15 @@ class SeilaplanPlugin(object):
     def run(self):
         """Run method that performs all the real work"""
         
-        # Uncomment when debugging
-        try:
-            import pydevd_pycharm
-            pydevd_pycharm.settrace('localhost', port=53100,
-                                    stdoutToServer=True, stderrToServer=True)
-        except ConnectionRefusedError:
-            pass
-        except ImportError:
-            pass
+        # # Uncomment when debugging
+        # try:
+        #     import pydevd_pycharm
+        #     pydevd_pycharm.settrace('localhost', port=53100,
+        #                             stdoutToServer=True, stderrToServer=True)
+        # except ConnectionRefusedError:
+        #     pass
+        # except ImportError:
+        #     pass
         
         # Check for import errors and show messages
         if ERROR:
