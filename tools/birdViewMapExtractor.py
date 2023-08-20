@@ -31,7 +31,6 @@ def extractMapBackground(savePath, xlim, ylim, startPoint, azimut):
     # Calculate necessary rotation of viewport from horizontal (east-west)
     #  to correct orientation of the cable line
     rotation = azimut - radians(90)
-    rotation = rotation + radians(180) if rotation < 0 else rotation
     
     # Dimension of viewport
     width = xMax - xMin
