@@ -233,6 +233,8 @@ class DialogOutputOptions(QDialog):
         container.addWidget(buttonBox)
         container.setAlignment(Qt.AlignLeft)
         self.setLayout(container)
+        
+        self.checkBoxPlot.clicked.connect(self.onTogglePlotOption)
 
         self.fillInData()
 
@@ -272,14 +274,18 @@ class DialogOutputOptions(QDialog):
             self.pathField.insertItem(0, folder)
             self.pathField.setCurrentIndex(0)
     
+    def onTogglePlotOption(self):
+        self.checkBoxBirdView.setEnabled(self.checkBoxPlot.isChecked())
+        self.checkBoxBirdViewLegend.setEnabled(self.checkBoxPlot.isChecked())
+    
     def onSave(self):
         # Save checkbox status
         options = {
             'report': int(self.checkBoxReport.isChecked()),
             'shortReport': int(self.checkBoxShortReport.isChecked()),
             'plot': int(self.checkBoxPlot.isChecked()),
-            'birdView': int(self.checkBoxBirdView.isChecked()),
-            'birdViewLegend': int(self.checkBoxBirdViewLegend.isChecked()),
+            'birdView': int(self.checkBoxBirdView.isEnabled() and self.checkBoxBirdView.isChecked()),
+            'birdViewLegend': int(self.checkBoxBirdViewLegend.isEnabled() and self.checkBoxBirdViewLegend.isChecked()),
             'csv': int(self.checkBoxCsv.isChecked()),
             'shape': int(self.checkBoxShape.isChecked()),
             'kml': int(self.checkBoxKML.isChecked()),
