@@ -315,6 +315,7 @@ class AdjustmentPlot(FigureCanvas):
             self.axes.set_xlabel(self.tr('Horizontaldistanz [m]'), fontsize=9)
         self.axes.set_ylabel(self.tr("Hoehe [m.ue.M]"), fontsize=9)
         self.axes.tick_params(labelsize=8)
+        self.axes.tick_params(labelsize=8, labeltop=False, labelbottom=True)
         self.axes.grid(which='major', lw=0.5)
         self.axes.grid(which='minor', lw=0.5, linestyle=':')
         # Label poles
@@ -400,12 +401,8 @@ class AdjustmentPlot(FigureCanvas):
         return self.axesBirdView.get_xlim(), self.axesBirdView.get_ylim()
     
     def layoutBirdViewForPrint(self):
-        # Label axis at the top between the two subplots
-        self.axesBirdView.set_xlabel(self.tr('Horizontaldistanz [m]'), fontsize=9,
-                                     x=0, ha='left', labelpad=-6, backgroundcolor='white')
-        self.axesBirdView.xaxis.set_label_position('top')
-        # Show the tick labels
-        self.axesBirdView.tick_params(labelsize=8, labeltop=True, labelbottom=False)
+        # Show ticks
+        self.axesBirdView.tick_params(labelsize=8, labeltop=False, labelbottom=False)
         self.axesBirdView.ticklabel_format(style='plain', useOffset=False)
         self.axesBirdView.tick_params(axis="both", which="major", direction="inout",
                               length=5, width=1, bottom=False, top=True,
@@ -448,6 +445,32 @@ class AdjustmentPlot(FigureCanvas):
         # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
         return QCoreApplication.translate(type(self).__name__, message)
 
+
+def calculatePlotDimensions(xData, yData):
+    # Landscape A4 dimensions
+    width, height = 11.69, 8.27  # A4 dimensions in inch
+    # Define height to width ratio and reduce it by 4% to make up for empty
+    #  space between subplots
+    pageHeightRatio = (height / width) * 0.96
+    
+    # Data ranges
+    data_xlow = np.min(xData)
+    data_xhi = np.max(xData)
+    data_ylow = np.min(yData)
+    # Add another 40 m because there will be poles and labels
+    data_yhi = np.max(yData) + 40
+    ratio = (data_yhi - data_ylow) / 60
+    
+    # Height to width ration of data
+    dataHeightRatio = (data_yhi - data_ylow) / (data_xhi - data_xlow)
+    print(f'goal Ratio: {round((height / width) * 100, 1)}% height.  Current ratio: {round(dataHeightRatio * 100, 1)} % height. Subplot ratio: {ratio}')
+
+    # If the data does not fit on the landscape page, we turn the page to portrait
+    if dataHeightRatio > pageHeightRatio:
+        height, width = 11.69, 8.27
+        ratio = (data_yhi - data_ylow) / 60
+        
+    return width, height, ratio
 
 
 def saveImgAsPdfWithMpl(imgPath, savePath, dpi=300):

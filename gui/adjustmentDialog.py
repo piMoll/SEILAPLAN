@@ -28,7 +28,8 @@ from qgis.PyQt.QtWidgets import QDialog, QMessageBox, QTextEdit
 from qgis.PyQt.QtGui import QPixmap
 
 from .ui_adjustmentDialog import Ui_AdjustmentDialogUI
-from .adjustmentPlot import AdjustmentPlot, saveImgAsPdfWithMpl
+from .adjustmentPlot import AdjustmentPlot, saveImgAsPdfWithMpl, \
+    calculatePlotDimensions
 from .plotting_tools import MyNavigationToolbar
 from .poleWidget import CustomPoleWidget
 from .birdViewWidget import BirdViewWidget
@@ -594,12 +595,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         if self.confHandler.getOutputOption('plot'):
             includingBirdView = self.confHandler.getOutputOption('birdView')
             plotSavePath = os.path.join(outputLoc, self.tr('Diagramm.pdf'))
-            width, height = 11.69, 8.27  # A4 dimensions in inch
-            
-            # TODO: Needs to get better
-            data_ylow = np.min(self.profile.zi_disp)
-            data_yhi = np.max(self.profile.zi_disp) + 40
-            ratio = (data_yhi - data_ylow) / 60
+            width, height, ratio = calculatePlotDimensions(self.profile.di_disp, self.profile.zi_disp)
             
             printPlot = AdjustmentPlot(self, width, height, 150, withBirdView=includingBirdView, profilePlotRatio=ratio)
             printPlot.initData(self.profile.di_disp, self.profile.zi_disp,
