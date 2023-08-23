@@ -224,6 +224,8 @@ class BirdViewRow(object):
         self.fieldAbspann.setModel(self.fieldAbspannModel)
         self.layout.addWidget(self.fieldAbspann, self.rowIndex, 4)
         
+        self.fieldAbspann.setCurrentIndex(self.defaultAbspannIdx)
+        
         # Connect events
         self.fieldAbspann.currentIndexChanged.connect(
             lambda newVal: self.parent.onRowChange(self.poleIndex, 'abspann', self.fieldAbspannModel.item(newVal).data() if newVal > -1 else None))
