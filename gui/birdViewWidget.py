@@ -27,39 +27,51 @@ from ..tools.poles import Poles
 
 birdViewKatConf = {
     '-': {
+        'position': [],
         'abspann': [],
     },
     'mobiler_seilkran': {
-        'abspann': [],
+        'position': ['mitte'],
+        'abspann': ['anfang'],
     },
     'vorziehstuetze_1': {
+        'position': ['links', 'rechts'],
         'abspann': ['anfang', 'ende'],
     },
     'vorziehstuetze_2': {
+        'position': ['links', 'rechts'],
         'abspann': ['anfang', 'flach', 'ende'],
     },
     'vorgeneigte_stuetze': {
+        'position': ['links', 'rechts'],
         'abspann': ['anfang', 'ende'],
     },
     'mehrbaumanker': {
+        'position': ['mitte'],
         'abspann': ['anfang', 'ende'],
     },
     # 'endmast_mit_zugseilleitrolle': {
+    #     'position': ['links', 'rechts'],
     #     'abspann': ['anfang', 'ende'],
     # },
     # 'endmast_ohne_zugseilleitrolle': {
+    #     'position': ['links', 'rechts'],
     #     'abspann': ['anfang', 'ende'],
     # },
     'endmast': {
+        'position': ['links', 'rechts'],
         'abspann': ['anfang', 'ende'],
     },
     'totmannanker': {
+        'position': ['mitte'],
         'abspann': [],
     },
     'verstaerkter_ankerbaum': {
+        'position': ['mitte'],
         'abspann': ['anfang', 'ende'],
     },
     'normaler_ankerbaum': {
+        'position': ['mitte'],
         'abspann': [],
     },
 }
@@ -143,11 +155,14 @@ class BirdViewRow(object):
             self.addLabelNr(nr)
         self.addFieldName(name)
         self.addFieldCat(poleCat)
-        self.addFieldPos(polePos)
-        self.addFieldAbspann(abspann)
-        if poleCat == '-' or poleCat is None:
-            self.fieldPos.setEnabled(False)
-            self.fieldAbspann.setEnabled(False)
+        self.addFieldPos()
+        self.addFieldAbspann()
+        
+        # Fill in data
+        self.onCatSelection(self.poleIndex, poleCat)
+        if poleCat and poleCat != '-':
+            self.setFieldPosValue(polePos)
+            self.setFieldAbspannValue(abspann)
         
     def addLabelNr(self, nr):
         self.labelNr = QLabel(self.widget)
@@ -179,27 +194,25 @@ class BirdViewRow(object):
         self.fieldCat.setCurrentIndex(currentIdx)
         # Connect events
         self.fieldCat.currentIndexChanged.connect(
-            lambda newVal: self.onKatSelection(self.poleIndex, model.item(newVal).data()))
+            lambda newVal: self.onCatSelection(self.poleIndex, model.item(newVal).data()))
     
-    def addFieldPos(self, value):
+    def addFieldPos(self):
         self.fieldPos = QComboBox(self.widget)
         self.fieldPosModel = QStandardItemModel()
-        currentIdx = 1
+        
         for idx, name in enumerate(self.posItems):
             item = QStandardItem(self.tr(name))
             item.setData(name)
             self.fieldPosModel.appendRow(item)
-            if name == value:
-                currentIdx = idx
+            
         self.fieldPos.setModel(self.fieldPosModel)
         self.layout.addWidget(self.fieldPos, self.rowIndex, 3)
-        # Set the current value
-        self.fieldPos.setCurrentIndex(currentIdx)
+
         # Connect events
         self.fieldPos.currentIndexChanged.connect(
-            lambda newVal: self.parent.onRowChange(self.poleIndex, 'position', self.fieldPosModel.item(newVal).data()))
+            lambda newVal: self.parent.onRowChange(self.poleIndex, 'position', self.fieldPosModel.item(newVal).data() if newVal > -1 else None))
     
-    def addFieldAbspann(self, dataValue):
+    def addFieldAbspann(self):
         self.fieldAbspann = QComboBox(self.widget)
         self.fieldAbspannModel = QStandardItemModel()
         
@@ -210,12 +223,35 @@ class BirdViewRow(object):
 
         self.fieldAbspann.setModel(self.fieldAbspannModel)
         self.layout.addWidget(self.fieldAbspann, self.rowIndex, 4)
-        # Set the current value
-        self.setFieldAbspannValue(dataValue)
+        
         # Connect events
         self.fieldAbspann.currentIndexChanged.connect(
             lambda newVal: self.parent.onRowChange(self.poleIndex, 'abspann', self.fieldAbspannModel.item(newVal).data() if newVal > -1 else None))
     
+    def setFieldPosValue(self, dataValue):
+        currentIndex = self.fieldPos.currentIndex()
+        newIndex = None
+        # If the dropdown is deactivated, unselect the current selection
+        if not self.fieldPos.isEnabled():
+            newIndex = -1
+        else:
+            # Set the dropdown to the new value IF that item is active
+            for listIdx in range(self.fieldPosModel.rowCount()):
+                item = self.fieldPosModel.item(listIdx)
+                if item.data() == dataValue and item.isEnabled():
+                    newIndex = listIdx
+            if newIndex is None:
+                # Set it to the first row that is enabled
+                newIndex = 0 if self.fieldPosModel.item(0).isEnabled() else 1
+        
+        # Set the current index of the dropdown item
+        if newIndex != currentIndex:
+            self.fieldPos.setCurrentIndex(newIndex)
+        
+        # Manually trigger the event
+        dataValue = None if newIndex == -1 else self.fieldPosModel.item(newIndex).data()
+        self.parent.onRowChange(self.poleIndex, 'position', dataValue)
+
     def setFieldAbspannValue(self, dataValue):
         currentIndex = self.fieldAbspann.currentIndex()
         newIndex = None
@@ -239,28 +275,27 @@ class BirdViewRow(object):
         dataValue = None if newIndex == -1 else self.fieldAbspannModel.item(newIndex).data()
         self.parent.onRowChange(self.poleIndex, 'abspann', dataValue)
         
-    def onKatSelection(self, poleIdx, newCategory):
-        if newCategory == '-':
-            self.parent.onRowChange(poleIdx, 'category', None)
-            # Deactivate the dropdown elements
+    def toggleFieldPos(self, newCategory):
+        # Enable drop down elements
+        allowedPos = birdViewKatConf[newCategory]['position']
+        if len(allowedPos) == 0:
+            # Deactivate
             self.fieldPos.setEnabled(False)
-            self.parent.onRowChange(poleIdx, 'position', None)
-            self.fieldAbspann.setEnabled(False)
-            self.parent.onRowChange(poleIdx, 'abspann', None)
+            self.setFieldPosValue(None)
             return
         
-        # Save pole changes
-        self.parent.onRowChange(poleIdx, 'category', newCategory)
-        
-        # Enable drop down elements
         if not self.fieldPos.isEnabled():
             self.fieldPos.setEnabled(True)
-            # Trigger the change event to update the pole element
-            self.parent.onRowChange(poleIdx, 'position', self.fieldPosModel.item(self.fieldPos.currentIndex()).data())
         
-        if not self.fieldAbspann.isEnabled():
-            self.fieldAbspann.setEnabled(True)
-        
+        # Activate or deactivate option for position drop down
+        for listIdx in range(self.fieldPosModel.rowCount()):
+            item = self.fieldPosModel.item(listIdx)
+            if item.data() in allowedPos:
+                item.setEnabled(True)
+            else:
+                item.setEnabled(False)
+    
+    def toggleFieldAbspann(self, newCategory):
         # If no options are available, deactivate
         allowedAbspann = birdViewKatConf[newCategory]['abspann']
         if len(allowedAbspann) == 0:
@@ -268,7 +303,10 @@ class BirdViewRow(object):
             self.fieldAbspann.setEnabled(False)
             self.setFieldAbspannValue(None)
             return
-        
+           
+        if not self.fieldAbspann.isEnabled():
+            self.fieldAbspann.setEnabled(True)
+            
         # Activate or deactivate option for abspann drop down
         for listIdx in range(self.fieldAbspannModel.rowCount()):
             item = self.fieldAbspannModel.item(listIdx)
@@ -276,7 +314,35 @@ class BirdViewRow(object):
                 item.setEnabled(True)
             else:
                 item.setEnabled(False)
+    
+    def onCatDeselect(self, poleIdx):
+        self.parent.onRowChange(poleIdx, 'category', None)
+        # Deactivate the dropdown elements
+        self.fieldPos.setEnabled(False)
+        self.parent.onRowChange(poleIdx, 'position', None)
+        self.fieldAbspann.setEnabled(False)
+        self.parent.onRowChange(poleIdx, 'abspann', None)
         
+        
+    def onCatSelection(self, poleIdx, newCategory):
+        if newCategory is None or newCategory == '-':
+            self.onCatDeselect(poleIdx)
+            return
+        
+        # Trigger a category changes
+        self.parent.onRowChange(poleIdx, 'category', newCategory)
+        
+        # Update position field
+        self.toggleFieldPos(newCategory)
+        
+        # Trigger a position change
+        currentIdx = self.fieldPos.currentIndex()
+        self.setFieldPosValue(None if currentIdx == -1 else self.fieldPosModel.item(currentIdx).data())
+        
+        # Update position field
+        self.toggleFieldAbspann(newCategory)
+        
+        # Trigger a abspann change
         currentIdx = self.fieldAbspann.currentIndex()
         self.setFieldAbspannValue(None if currentIdx == -1 else self.fieldAbspannModel.item(currentIdx).data())
         
