@@ -56,7 +56,7 @@ def getTimestamp(tStart):
 def replaceRecursively(text, findText, replaceWith, fullReplace=True):
     """Replace text insided nested arrays or tuples"""
     if type(text) is str:
-        if findText == text or f'{findText} ' in text or f' {findText}' in text:
+        if findText in text:
             if fullReplace:
                 return replaceWith
             else:
@@ -122,7 +122,7 @@ def generateReportText(confHandler, result, projname):
             f"{confHandler.project.formatCoordinate(pole['coordx'])}",
             f"{confHandler.project.formatCoordinate(pole['coordy'])}",
             f"{round(pole['z'], 1)}"] +
-            [f"{tr(val, 'BirdViewRow')}" or 'nan' for val in [pole['category'], pole['position'], pole['abspann']]])
+            [f"{tr(val, 'BirdViewRow')}" or 'nan ' for val in [pole['category'], pole['position'], pole['abspann']]])
     # Section field survey
     str_abst = [["{}: {:.1f} {} / {:.1f} °".format(tr('Azimut'), az_gon, tr('gon'), az_grad)],
                 ["", tr('Horizontaldistanz'), tr('Schraegdistanz')]]
@@ -247,18 +247,18 @@ def generateReportText(confHandler, result, projname):
     str_wink = [
         ['', tr('am Leerseil')] + sHeader,
         ['alpha LA', tr('eingehender Winkel')] +
-        ("{:.1f}°,"*poleCount).format(*tuple(
+        ("{:.1f} °,"*poleCount).format(*tuple(
                 kraft['Anlegewinkel_Leerseil'][0])).rstrip(',').split(','),
         ['alpha LE', tr('ausgehender Winkel')] +
-        ("{:.1f}°,"*poleCount).format(*tuple(
+        ("{:.1f} °,"*poleCount).format(*tuple(
                 kraft['Anlegewinkel_Leerseil'][1])).rstrip(',').split(','),
         [''],
         ['', tr('am Lastseil')] + sHeader,
         ['alpha LA', tr('eingehender Winkel'), ''] +
-        ("{:.1f}°,"*fieldCount).format(*tuple(
+        ("{:.1f} °,"*fieldCount).format(*tuple(
                 kraft['Anlegewinkel_Lastseil'][0][1:])).rstrip(',').split(','),
         ['alpha LE', tr('ausgehender Winkel')] +
-        ("{:.1f}°,"*fieldCount).format(*tuple(
+        ("{:.1f} °,"*fieldCount).format(*tuple(
                 kraft['Anlegewinkel_Lastseil'][1][:-1])).rstrip(',').split(',')
         ]
 
@@ -268,10 +268,10 @@ def generateReportText(confHandler, result, projname):
     str_nach = [
         ['', ''] + sHeader,
         ['', tr('Lastseilknickwinkel')] +
-        ("{:.1f}°," * poleCount).format(*tuple(
+        ("{:.1f} °," * poleCount).format(*tuple(
             kraft['Lastseilknickwinkel'])).rstrip(',').split(','),
         ['beta', tr('Leerseilknickwinkel')] +
-        ("{:.1f}°,"*poleCount).format(*tuple(
+        ("{:.1f} °,"*poleCount).format(*tuple(
                 kraft['Leerseilknickwinkel'])).rstrip(',').split(','),
         ['', tr('Nachweis erfuellt')] +
         ('{},' * poleCount).format(*tuple(nachweis)).rstrip(',').split(','),
@@ -318,7 +318,7 @@ def generateReportText(confHandler, result, projname):
     text = [headers, str_time, str_posi, str_abst, str_opti, str_laen, str_durc,
             str_seil, str_stue, str_wink, str_nach, str_para]
     # Remove nan values with a minus
-    str_report = replaceRecursively(text, 'nan', '-')
+    str_report = replaceRecursively(text, 'nan ', '-')
     # Replace the often used but unsupported diameter symbol with a lower
     #  case strike trough o
     str_report = replaceRecursively(str_report, u'\u2300', u'\u00F8', False)
@@ -392,8 +392,8 @@ def generateShortReport(confHandler, result, projname, outputLoc):
         s_dimen.append([pole['nr'], pole['name'], f"{pole['h']:.1f} m",
                         f"{pole['angle']:.0f} °", f"{pole['BHD']} cm",
                         f"{pole['bundstelle']} cm",
-                        tr(pole['category'], 'BirdViewRow') or 'nan'])
-    s_dimen = replaceRecursively(s_dimen, 'nan', '-')
+                        tr(pole['category'], 'BirdViewRow') or 'nan '])
+    s_dimen = replaceRecursively(s_dimen, 'nan ', '-')
     s_dimen = replaceRecursively(s_dimen, u'\u2300', u'\u00F8', False)
     s_dimen2 = None
     if add_footnote:
@@ -420,7 +420,7 @@ def generateShortReport(confHandler, result, projname, outputLoc):
                          f"({tr(pole['maxForce'][1])})",
                          f"{leerseil:.1f} °", f"{lastseil:.1f} °",
                          f"{pole['angriff']:.1f} °"])
-    s_force2 = replaceRecursively(s_force2, 'nan', '-')
+    s_force2 = replaceRecursively(s_force2, 'nan ', '-')
     s_force2 = replaceRecursively(s_force2, u'\u2300', u'\u00F8', False)
     
     # Fields
@@ -467,7 +467,7 @@ def generateShortReport(confHandler, result, projname, outputLoc):
             f"{slack_e:.1f} m", f"{slack_f:.1f} m"])
     s_field2.append([tr('Total'), f"{total_h:.1f} m", f"{total_s:.1f} m",
                      f"{total_z:.1f} m"])
-    s_field2 = replaceRecursively(s_field2, 'nan', '-')
+    s_field2 = replaceRecursively(s_field2, 'nan ', '-')
     s_field2 = replaceRecursively(s_field2, u'\u2300', u'\u00F8', False)
 
     # Disclaimer

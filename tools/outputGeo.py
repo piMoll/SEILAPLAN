@@ -390,7 +390,7 @@ def unicode2acii(text):
                    0xf8: 'O',  # ø
                    0xd8: 'O',  # Ø
                    0x2300: 'O',     # Diameter
-                   0x2192: 'Ri.',   # Unicode Arrow
+                   0x2192: '',   # Unicode Arrow
                    }
     return text.translate(translation)
 
