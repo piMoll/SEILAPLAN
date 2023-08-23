@@ -369,7 +369,7 @@ class AdjustmentPlot(FigureCanvas):
             if pole['position'] == 'links':
                 yPos += posShiftVertical
             elif pole['position'] == 'rechts':
-                yPos += posShiftVertical
+                yPos -= posShiftVertical
             # Plot the marker
             self.axesBirdView.plot(pole['d'], yPos, marker=marker,
                                    markersize=symbol.scale * markerSize,
