@@ -162,9 +162,6 @@ class CustomPoleWidget(QObject):
             [_, _, _, _, _, labels,
              _, _, _, _] = self.poles.getAsArray(True, True)
         
-            if len(self.poleRows) != len(labels):
-                print('Error: More/Less PoleRows than actual poles')
-        
         pole: PoleRow
         for i, pole in enumerate(self.poleRows):
             pole.updateIndex(i)

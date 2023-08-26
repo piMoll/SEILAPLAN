@@ -274,15 +274,6 @@ class SeilaplanPlugin(object):
             #  algorithm. Comment out the two previous lines (self.dgl...) to
             #  stop first window from showing
             # conf.loadFromJsonFile("/home/pi/Seilaplan/Testfälle_Diagramm/kurz_flach/Projekteinstellungen.json")
-            # conf.loadFromJsonFile("/home/pi/Seilaplan/Testfälle_Diagramm/kurz_flach_2/Projekteinstellungen.json")
-            # conf.loadFromJsonFile("/home/pi/Seilaplan/Testfälle_Diagramm/kurz_mittelSteil/Projekteinstellungen.json")
-            # conf.loadFromJsonFile("/home/pi/Seilaplan/Testfälle_Diagramm/kurz_mittelSteil_2/Projekteinstellungen.json")
-            # conf.loadFromJsonFile("/home/pi/Seilaplan/Testfälle_Diagramm/mittel_mittelSteil/Projekteinstellungen.json")
-            # conf.loadFromJsonFile("/home/pi/Seilaplan/Testfälle_Diagramm/mittel_mittelSteil_aufwärts/Projekteinstellungen.json")
-            # conf.loadFromJsonFile("/home/pi/Seilaplan/Testfälle_Diagramm/mittel_mittelSteil_aufwärts_2/Projekteinstellungen.json")
-            # conf.loadFromJsonFile("/home/pi/Seilaplan/Testfälle_Diagramm/lang_mittelSteil/Projekteinstellungen.json")
-            # conf.loadFromJsonFile("/home/pi/Seilaplan/Testfälle_Diagramm/lang_steil_aufwärts/Projekteinstellungen.json")
-            # conf.loadFromJsonFile("/home/pi/Seilaplan/Testfälle_Diagramm/zu_lang/Projekteinstellungen.json")
             # conf.prepareForCalculation()
             # result, status = conf.loadCableDataFromFile()
             # self.adjustmentWindow = AdjustmentDialog(self.iface, conf)
