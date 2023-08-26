@@ -828,6 +828,9 @@
                  <property name="text">
                   <string>Klick auf Zeile markiert Position der Grenzwert-Ueberschreitung im Diagramm.</string>
                  </property>
+                 <property name="wordWrap">
+                  <bool>true</bool>
+                 </property>
                 </widget>
                </item>
               </layout>
@@ -863,11 +866,17 @@
                <item row="0" column="3">
                 <layout class="QHBoxLayout" name="horizontalLayout_5">
                  <item>
-                  <widget class="QLabel" name="label_46">
+                  <widget class="QLabel" name="label_48">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
                    <property name="minimumSize">
                     <size>
                      <width>0</width>
-                     <height>35</height>
+                     <height>20</height>
                     </size>
                    </property>
                    <property name="text">
@@ -986,7 +995,7 @@
                    </property>
                    <property name="minimumSize">
                     <size>
-                     <width>100</width>
+                     <width>0</width>
                      <height>35</height>
                     </size>
                    </property>

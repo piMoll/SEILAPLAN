@@ -19,7 +19,7 @@
  ***************************************************************************/
 """
 from qgis.PyQt.QtCore import Qt, pyqtSignal, QObject, QCoreApplication
-from qgis.PyQt.QtWidgets import (QLabel, QComboBox, QGridLayout)
+from qgis.PyQt.QtWidgets import QLabel, QComboBox, QGridLayout, QSizePolicy
 from qgis.PyQt.QtGui import QStandardItem, QStandardItemModel
 
 from ..tools.poles import Poles
@@ -145,6 +145,10 @@ class BirdViewRow(object):
         self.fieldAbspann = None
         self.fieldAbspannModel = None
         
+        self.sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.sizePolicy.setHorizontalStretch(0)
+        self.sizePolicy.setVerticalStretch(0)
+        
         # Possible drop down values
         self.katItems = [item for item in birdViewKatConf.keys()]
         self.posItems = [item for item in birdViewPosKonf]
@@ -173,13 +177,15 @@ class BirdViewRow(object):
         
     def addFieldName(self, value):
         self.fieldName = QLabel(self.widget)
-        # TODO: How to make this grow based on available size? And we need MouseOver
-        self.fieldName.setFixedWidth(120)
+        self.fieldName.setSizePolicy(self.sizePolicy)
+        self.fieldName.setMaximumWidth(120)
         self.fieldName.setText(value)
         self.layout.addWidget(self.fieldName, self.rowIndex, 1)
     
     def addFieldCat(self, value):
         self.fieldCat = QComboBox(self.widget)
+        self.fieldCat.setSizePolicy(self.sizePolicy)
+        self.fieldCat.setMaximumWidth(240)
         model = QStandardItemModel()
         currentIdx = 0
         for idx, name in enumerate(self.katItems):
@@ -198,6 +204,7 @@ class BirdViewRow(object):
     
     def addFieldPos(self):
         self.fieldPos = QComboBox(self.widget)
+        self.fieldPos.setSizePolicy(self.sizePolicy)
         self.fieldPosModel = QStandardItemModel()
         
         for idx, name in enumerate(self.posItems):
@@ -214,6 +221,7 @@ class BirdViewRow(object):
     
     def addFieldAbspann(self):
         self.fieldAbspann = QComboBox(self.widget)
+        self.fieldAbspann.setSizePolicy(self.sizePolicy)
         self.fieldAbspannModel = QStandardItemModel()
         
         for idx, name in enumerate(self.abspannItems):

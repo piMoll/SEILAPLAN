@@ -93,6 +93,7 @@ class AdjustmentDialogThresholds(QObject):
         for idx in range(2, self.model.columnCount()):
             currSize = self.tbl.sizeHintForColumn(idx)
             self.tbl.setColumnWidth(idx, max(currSize, 100))
+        self.tbl.setColumnWidth(1, min(self.tbl.sizeHintForColumn(1), 200))
         self.tbl.setFocusPolicy(Qt.NoFocus)
         self.updateTabIcon()
     

@@ -23,7 +23,7 @@ import os
 import numpy as np
 from math import floor
 
-from qgis.PyQt.QtCore import QTimer, Qt, QCoreApplication
+from qgis.PyQt.QtCore import QTimer, Qt, QCoreApplication, QSettings
 from qgis.PyQt.QtWidgets import QDialog, QMessageBox, QTextEdit
 from qgis.PyQt.QtGui import QPixmap
 
@@ -82,6 +82,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         
         # Setup GUI from UI-file
         self.setupUi(self)
+        # Language
+        self.locale = QSettings().value("locale/userLocale")[0:2]
         
         self.drawTool = MapMarkerTool(self.iface.mapCanvas())
         
