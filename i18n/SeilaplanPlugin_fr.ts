@@ -799,57 +799,57 @@ câble chargé</translation>
     <message>
         <location filename="../tools/outputGeo.py" line="155"/>
         <source>shp_kategorie</source>
-        <translation type="unfinished"></translation>
+        <translation>categorie</translation>
     </message>
     <message>
         <location filename="../tools/outputGeo.py" line="156"/>
         <source>shp_position</source>
-        <translation type="unfinished"></translation>
+        <translation>position</translation>
     </message>
     <message>
         <location filename="../tools/outputGeo.py" line="157"/>
         <source>shp_abspann</source>
-        <translation type="unfinished"></translation>
+        <translation>ancrage</translation>
     </message>
     <message>
         <location filename="../tools/outputGeo.py" line="356"/>
         <source>Kategorie</source>
-        <translation type="unfinished"></translation>
+        <translation>Catégorie</translation>
     </message>
     <message>
         <location filename="../tools/outputGeo.py" line="357"/>
         <source>Position Stuetze</source>
-        <translation type="unfinished"></translation>
+        <translation>Position du support</translation>
     </message>
     <message>
         <location filename="../tools/outputGeo.py" line="357"/>
         <source>Ausrichtung Abspannseile</source>
-        <translation type="unfinished"></translation>
+        <translation>Orientation des câbles d‘ancrage</translation>
     </message>
     <message>
         <location filename="../gui/guiHelperFunctions.py" line="121"/>
         <source>Layer bereits in Karte</source>
-        <translation type="unfinished"></translation>
+        <translation>Couche déjà présente dans la carte</translation>
     </message>
     <message>
         <location filename="../gui/guiHelperFunctions.py" line="126"/>
         <source>Layer &apos;{}&apos; zur Karte hinzugefügt</source>
-        <translation type="unfinished"></translation>
+        <translation>Couche &apos;{}&apos; ajoutée à la carte</translation>
     </message>
     <message>
         <location filename="../gui/guiHelperFunctions.py" line="129"/>
         <source>Fehler beim Hinzufügen des Layers &apos;{}&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur lors de l&apos;ajout de la couche &apos;{}&apos;</translation>
     </message>
     <message>
         <location filename="../gui/guiHelperFunctions.py" line="149"/>
         <source>Landeskarten (farbig)</source>
-        <translation type="unfinished"></translation>
+        <translation>Cartes nationales (en couleurs)</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="116"/>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Position</translation>
     </message>
 </context>
 <context>
@@ -968,52 +968,47 @@ câble chargé</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="370"/>
         <source>Hintergrundkarte laden</source>
-        <translation type="unfinished"></translation>
+        <translation>Charger la carte de fond</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="380"/>
         <source>Konfiguration Vogelperspektive</source>
-        <translation type="unfinished"></translation>
+        <translation>Configuration de la perspective d&apos;oiseau</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="381"/>
         <source>Erklaerung Vogelperspektive</source>
-        <translation type="unfinished"></translation>
+        <translation>La perspective à vol d&apos;oiseau est activée dans les options d&apos;enregistrement. Elle fait partie de l&apos;exportation des diagrammes et elle est affichée sous la vue de profil dans le PDF.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="383"/>
         <source>Stuetzenkategorie</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="384"/>
-        <source>Erklaerung Stuetzenkategorie</source>
-        <translation type="unfinished"></translation>
+        <translation>Catégorie de support</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="387"/>
         <source>Stuetzenposition</source>
-        <translation type="unfinished"></translation>
+        <translation>Catégorie de support</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="388"/>
         <source>Erklaerung Stuetzenposition</source>
-        <translation type="unfinished"></translation>
+        <translation>Position du support à gauche ou à droite du câble porteur, vu du point de départ.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="390"/>
         <source>Abspann</source>
-        <translation type="unfinished"></translation>
+        <translation>Orientation des câbles d‘ancrage</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="391"/>
         <source>Erklaerung Abspann</source>
-        <translation type="unfinished"></translation>
+        <translation>Les câbles d’ancrage sont tendus en direction du point de départ ou du point d&apos;arrivée. Si l&apos;on sélectionne &quot;plat&quot;, une étoile à trois branches est représentée.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="628"/>
         <source>Vogelperspektive Legende</source>
-        <translation type="unfinished"></translation>
+        <translation>Légende de la perspective à vol d&apos;oiseau</translation>
     </message>
 </context>
 <context>
@@ -1231,42 +1226,42 @@ dans le rapport)</translation>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="681"/>
         <source>Vogelperspektive</source>
-        <translation type="unfinished"></translation>
+        <translation>Perspective à vol d‘oiseau</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="669"/>
         <source>Position Stuetze</source>
-        <translation type="unfinished"></translation>
+        <translation>Pos. du support</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="672"/>
         <source>Kategorie</source>
-        <translation type="unfinished"></translation>
+        <translation>Catégorie</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="674"/>
         <source>Ausrichtung Abspannseile</source>
-        <translation type="unfinished"></translation>
+        <translation>Orientation des câbles d‘ancrage</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="676"/>
         <source>Stuetzenbez.</source>
-        <translation type="unfinished"></translation>
+        <translation>Désign. supp.</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="677"/>
         <source>Konfiguration Vogelperspektive</source>
-        <translation type="unfinished"></translation>
+        <translation>Configuration de la perspective d&apos;oiseau</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="679"/>
         <source>Darstellung der Seillinie und Stuetzen aus der Vogelperspektive.</source>
-        <translation type="unfinished"></translation>
+        <translation>Représentation de la ligne de câble et des supports en vue aérienne.</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="680"/>
         <source>Hintergrundkarte laden um sie in der Vogelperspektive darzustellen.</source>
-        <translation type="unfinished"></translation>
+        <translation>Charger la carte de fond pour l&apos;afficher en vue aérienne.</translation>
     </message>
 </context>
 <context>
@@ -1280,18 +1275,20 @@ favorable</translation>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="198"/>
         <source>Leerseil</source>
-        <translation>Câble non chargé</translation>
+        <translation>Câble non
+chargé</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="200"/>
         <source>Lastwegkurve nach Zweifel</source>
-        <translation>Courbe du chemin de charge
-d&apos;après Zweifel</translation>
+        <translation>Courbe du chemin de
+charge d&apos;après Zweifel</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="210"/>
         <source>Min. Bodenabstand</source>
-        <translation>Garde au sol minimale</translation>
+        <translation>Garde au sol
+minimale</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="310"/>
@@ -1311,95 +1308,95 @@ d&apos;après Zweifel</translation>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="382"/>
         <source>Vogelperspektive</source>
-        <translation type="unfinished"></translation>
+        <translation>Perspective à vol d‘oiseau</translation>
     </message>
 </context>
-    <context>
+<context>
     <name>BirdViewRow</name>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>links</source>
-        <translation type="unfinished">links</translation>
+        <translation>à gauche</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>mitte</source>
-        <translation type="unfinished">mitte</translation>
+        <translation>centre</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>rechts</source>
-        <translation type="unfinished">rechts</translation>
+        <translation>à droite</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>mobiler_seilkran</source>
-        <translation type="unfinished">Mobiler Seilkran</translation>
+        <translation>Gru à câble mobile</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>vorziehstuetze_1</source>
-        <translation type="unfinished">Vorziehstütze (1 Abspannseil)</translation>
+        <translation>Support avancé (1 câble d&apos;ancrage)</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>vorziehstuetze_2</source>
-        <translation type="unfinished">Vorziehstütze (2 Abspannseile)</translation>
+        <translation>Support avancé (2 càbles d&apos;ancrage)</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>vorgeneigte_stuetze</source>
-        <translation type="unfinished">Vorgeneigte St. / Gittermast</translation>
+        <translation>Support incliné / Pylone en treillis</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>mehrbaumanker</source>
-        <translation type="unfinished">Mehrbaumanker</translation>
+        <translation>Ancrage multi-arbre</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>endmast_mit_zugseilleitrolle</source>
-        <translation type="unfinished">Endmast mit Zugseilleitrolle</translation>
+        <translation>Mât terminal avec poulie de renvoi pour le câble tracteur</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>endmast_ohne_zugseilleitrolle</source>
-        <translation type="unfinished">Endmast ohne Zugseilleitrolle</translation>
+        <translation>Mât terminal sans poulie de renvoi pour le câble tracteur</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>endmast</source>
-        <translation type="unfinished">Endmast</translation>
+        <translation>Mât terminal</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>totmannanker</source>
-        <translation type="unfinished">Totmannanker</translation>
+        <translation>Ancrage homme mort</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>verstaerkter_ankerbaum</source>
-        <translation type="unfinished">Verstärkter Ankerbaum</translation>
+        <translation>Arbre d&apos;ancrage renforcé</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>normaler_ankerbaum</source>
-        <translation type="unfinished">Normaler Ankerbaum</translation>
+        <translation>Arbre d&apos;ancrage normal</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>anfang</source>
-        <translation type="unfinished">→ Anfangspunkt</translation>
+        <translation>→ Point initial</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>flach</source>
-        <translation type="unfinished">flach</translation>
+        <translation>plat</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>ende</source>
-        <translation type="unfinished">→ Endpunkt</translation>
+        <translation>→ Point terminal</translation>
     </message>
 </context>
 <context>
@@ -1506,12 +1503,12 @@ d&apos;après Zweifel</translation>
     <message>
         <location filename="../gui/saveDialog.py" line="184"/>
         <source>inkl. Vogelperspektive</source>
-        <translation type="unfinished"></translation>
+        <translation>y.c. la perspective à vol d‘oiseau</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="185"/>
         <source>Legende Vogelperspektive</source>
-        <translation type="unfinished"></translation>
+        <translation>Légende de la perspective à vol d&apos;oiseau</translation>
     </message>
 </context>
 <context>
@@ -2320,7 +2317,7 @@ dans le rapport)</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2018"/>
         <source>Hintergrundkarte laden</source>
-        <translation type="unfinished"></translation>
+        <translation>Charger la carte de fond</translation>
     </message>
 </context>
 <context>
@@ -2629,7 +2626,7 @@ Il est recherché la solution qui, en première priorité, minimalise le nombre 
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="831"/>
         <source>Hintergrundkarte laden</source>
-        <translation type="unfinished"></translation>
+        <translation>Charger la carte de fond</translation>
     </message>
 </context>
 <context>

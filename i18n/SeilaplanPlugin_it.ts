@@ -794,57 +794,57 @@ fune caricata</translation>
     <message>
         <location filename="../tools/outputGeo.py" line="155"/>
         <source>shp_kategorie</source>
-        <translation type="unfinished"></translation>
+        <translation>categoria</translation>
     </message>
     <message>
         <location filename="../tools/outputGeo.py" line="156"/>
         <source>shp_position</source>
-        <translation type="unfinished"></translation>
+        <translation>posizione</translation>
     </message>
     <message>
         <location filename="../tools/outputGeo.py" line="157"/>
         <source>shp_abspann</source>
-        <translation type="unfinished"></translation>
+        <translation>ancoraggio</translation>
     </message>
     <message>
         <location filename="../tools/outputGeo.py" line="356"/>
         <source>Kategorie</source>
-        <translation type="unfinished"></translation>
+        <translation>Categoria</translation>
     </message>
     <message>
         <location filename="../tools/outputGeo.py" line="357"/>
         <source>Position Stuetze</source>
-        <translation type="unfinished"></translation>
+        <translation>Posizione del cavalletto</translation>
     </message>
     <message>
         <location filename="../tools/outputGeo.py" line="357"/>
         <source>Ausrichtung Abspannseile</source>
-        <translation type="unfinished"></translation>
+        <translation>Allineamento delle funi di ancoraggio</translation>
     </message>
     <message>
         <location filename="../gui/guiHelperFunctions.py" line="121"/>
         <source>Layer bereits in Karte</source>
-        <translation type="unfinished"></translation>
+        <translation>Strato già presente nella mappa</translation>
     </message>
     <message>
         <location filename="../gui/guiHelperFunctions.py" line="126"/>
         <source>Layer &apos;{}&apos; zur Karte hinzugefügt</source>
-        <translation type="unfinished"></translation>
+        <translation>Strato &apos;{}&apos; aggiunto alla mappa</translation>
     </message>
     <message>
         <location filename="../gui/guiHelperFunctions.py" line="129"/>
         <source>Fehler beim Hinzufügen des Layers &apos;{}&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore nell&apos;aggiunta dello strato &apos;{}&apos;</translation>
     </message>
     <message>
         <location filename="../gui/guiHelperFunctions.py" line="149"/>
         <source>Landeskarten (farbig)</source>
-        <translation type="unfinished"></translation>
+        <translation>Carte nazionali (a colori)</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="116"/>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Posizione</translation>
     </message>
 </context>
 <context>
@@ -963,52 +963,47 @@ fune caricata</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="370"/>
         <source>Hintergrundkarte laden</source>
-        <translation type="unfinished"></translation>
+        <translation>Caricare la mappa di sfondo</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="380"/>
         <source>Konfiguration Vogelperspektive</source>
-        <translation type="unfinished"></translation>
+        <translation>Configurazione della vista a volo d‘ucello</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="381"/>
         <source>Erklaerung Vogelperspektive</source>
-        <translation type="unfinished"></translation>
+        <translation>La vista a volo d&apos;uccello è attivata nelle opzioni di salvataggio. Fa parte dell&apos;esportazione dei diagrammi e viene visualizzata sotto la vista del profilo nel PDF.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="383"/>
         <source>Stuetzenkategorie</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="384"/>
-        <source>Erklaerung Stuetzenkategorie</source>
-        <translation type="unfinished"></translation>
+        <translation>Categoria di cavalletto</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="387"/>
         <source>Stuetzenposition</source>
-        <translation type="unfinished"></translation>
+        <translation>Categoria di cavalletto</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="388"/>
         <source>Erklaerung Stuetzenposition</source>
-        <translation type="unfinished"></translation>
+        <translation>Posizione del cavalletto a sinistra o a destra della fune portante, vista dal punto di partenza.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="390"/>
         <source>Abspann</source>
-        <translation type="unfinished"></translation>
+        <translation>Allineamento delle funi di ancoraggio</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="391"/>
         <source>Erklaerung Abspann</source>
-        <translation type="unfinished"></translation>
+        <translation>Le funi di ancoraggio sono tese in direzione del punto di partenza o di arrivo. Se si seleziona &quot;piano&quot;, viene visualizzata una stella a tre punte.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="628"/>
         <source>Vogelperspektive Legende</source>
-        <translation type="unfinished"></translation>
+        <translation>Leggenda per la vista a volo d&apos;uccello</translation>
     </message>
 </context>
 <context>
@@ -1222,42 +1217,42 @@ nel rapporto)</translation>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="681"/>
         <source>Vogelperspektive</source>
-        <translation type="unfinished"></translation>
+        <translation>Vista a volo d‘ucello</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="669"/>
         <source>Position Stuetze</source>
-        <translation type="unfinished"></translation>
+        <translation>Pos. del cavalletto</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="672"/>
         <source>Kategorie</source>
-        <translation type="unfinished"></translation>
+        <translation>Categoria</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="674"/>
         <source>Ausrichtung Abspannseile</source>
-        <translation type="unfinished"></translation>
+        <translation>Allineamento delle funi di ancoraggio</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="676"/>
         <source>Stuetzenbez.</source>
-        <translation type="unfinished"></translation>
+        <translation>Design. cavall.</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="677"/>
         <source>Konfiguration Vogelperspektive</source>
-        <translation type="unfinished"></translation>
+        <translation>Configurazione della vista a volo d‘ucello</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="679"/>
         <source>Darstellung der Seillinie und Stuetzen aus der Vogelperspektive.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vista a volo d&apos;uccello della linea di gru a cavo e dei cavalletti.</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="680"/>
         <source>Hintergrundkarte laden um sie in der Vogelperspektive darzustellen.</source>
-        <translation type="unfinished"></translation>
+        <translation>Caricare la mappa di sfondo per visualizzarla a volo d&apos;uccello.</translation>
     </message>
 </context>
 <context>
@@ -1271,7 +1266,8 @@ favorevole</translation>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="198"/>
         <source>Leerseil</source>
-        <translation>Fune non caricata</translation>
+        <translation>Fune non
+caricata</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="200"/>
@@ -1282,7 +1278,8 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="210"/>
         <source>Min. Bodenabstand</source>
-        <translation>Altezza da terra minimale</translation>
+        <translation>Altezza da
+terra minimale</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="310"/>
@@ -1302,7 +1299,7 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="382"/>
         <source>Vogelperspektive</source>
-        <translation type="unfinished"></translation>
+        <translation>Vista a volo d‘ucello</translation>
     </message>
 </context>
 <context>
@@ -1310,87 +1307,87 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>links</source>
-        <translation type="unfinished">links</translation>
+        <translation>a sinistra</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>mitte</source>
-        <translation type="unfinished">mitte</translation>
+        <translation>centro</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>rechts</source>
-        <translation type="unfinished">rechts</translation>
+        <translation>a destra</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>mobiler_seilkran</source>
-        <translation type="unfinished">Mobiler Seilkran</translation>
+        <translation>Gru a cavo mobile</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>vorziehstuetze_1</source>
-        <translation type="unfinished">Vorziehstütze (1 Abspannseil)</translation>
+        <translation>Cavalletto tirato in avanti (1 fune di ancoraggio)</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>vorziehstuetze_2</source>
-        <translation type="unfinished">Vorziehstütze (2 Abspannseile)</translation>
+        <translation>Cavalletto tirato in avanti (2 funi di ancoraggio)</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>vorgeneigte_stuetze</source>
-        <translation type="unfinished">Vorgeneigte St. / Gittermast</translation>
+        <translation>Cavalletto inclinato / Cavalletto a traliccio</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>mehrbaumanker</source>
-        <translation type="unfinished">Mehrbaumanker</translation>
+        <translation>Ancoraggio multi-albero</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>endmast_mit_zugseilleitrolle</source>
-        <translation type="unfinished">Endmast mit Zugseilleitrolle</translation>
+        <translation>Cavalletto terminale con puleggia di rinvio per la fune traente</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>endmast_ohne_zugseilleitrolle</source>
-        <translation type="unfinished">Endmast ohne Zugseilleitrolle</translation>
+        <translation>Cavalletto terminale senza puleggia di rinvio per la fune traente</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>endmast</source>
-        <translation type="unfinished">Endmast</translation>
+        <translation>Cavalletto terminale</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>totmannanker</source>
-        <translation type="unfinished">Totmannanker</translation>
+        <translation>Ancoraggio uomo morto</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>verstaerkter_ankerbaum</source>
-        <translation type="unfinished">Verstärkter Ankerbaum</translation>
+        <translation>Albero di ancoraggio rinforzato</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>normaler_ankerbaum</source>
-        <translation type="unfinished">Normaler Ankerbaum</translation>
+        <translation>Albero di ancoraggio normale</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>anfang</source>
-        <translation type="unfinished">→ Anfangspunkt</translation>
+        <translation>→ Punto iniziale</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>flach</source>
-        <translation type="unfinished">flach</translation>
+        <translation>piano</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>ende</source>
-        <translation type="unfinished">→ Endpunkt</translation>
+        <translation>→ Punto terminale</translation>
     </message>
 </context>
 <context>
@@ -1496,12 +1493,12 @@ dopo Zweifel</translation>
     <message>
         <location filename="../gui/saveDialog.py" line="184"/>
         <source>inkl. Vogelperspektive</source>
-        <translation type="unfinished"></translation>
+        <translation>inclusa la vista a volo d‘ucello</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="185"/>
         <source>Legende Vogelperspektive</source>
-        <translation type="unfinished"></translation>
+        <translation>Leggenda per la vista a volo d&apos;uccello</translation>
     </message>
 </context>
 <context>
@@ -2315,7 +2312,7 @@ nel rapporto)</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2018"/>
         <source>Hintergrundkarte laden</source>
-        <translation type="unfinished"></translation>
+        <translation>Caricare la mappa di sfondo</translation>
     </message>
 </context>
 <context>
@@ -2626,7 +2623,7 @@ C&apos;è cercato la soluzione che, in prima priorità, minimizza il numero dei 
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="831"/>
         <source>Hintergrundkarte laden</source>
-        <translation type="unfinished"></translation>
+        <translation>Caricare la mappa di sfondo</translation>
     </message>
 </context>
 <context>
@@ -2692,7 +2689,7 @@ C&apos;è cercato la soluzione che, in prima priorità, minimizza il numero dei 
     <message>
         <location filename="../gui/surveyImportDialog.py" line="66"/>
         <source>Abbrechen</source>
-        <translation></translation>
+        <translation>Annullare</translation>
     </message>
 </context>
 <context>

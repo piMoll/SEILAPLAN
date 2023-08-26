@@ -796,7 +796,7 @@ Lastseil</translation>
         <location filename="../tools/outputGeo.py" line="157"/>
         <source>shp_abspann</source>
         <translatorcomment>Attributname für Shapefile: max. 10 Zeichen, keine Umlaute oder andere Sonderzeichen.</translatorcomment>
-        <translation>ri_abspann</translation>
+        <translation>abspannung</translation>
     </message>
     <message>
         <location filename="../tools/outputGeo.py" line="356"/>
@@ -957,12 +957,6 @@ Lastseil</translation>
         <translation>Stützenkategorie</translation>
     </message>
     <message>
-        <location filename="../gui/adjustmentDialog.py" line="384"/>
-        <source>Erklaerung Stuetzenkategorie</source>
-        <translatorcomment>Eventuell nicht notwendig. Wahrscheinlich werden Kategorien einfach mit eine Grafik erklärt.</translatorcomment>
-        <translation type="unfinished">TODO</translation>
-    </message>
-    <message>
         <location filename="../gui/adjustmentDialog.py" line="387"/>
         <source>Stuetzenposition</source>
         <translation>Stützenposition</translation>
@@ -980,7 +974,7 @@ Lastseil</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="391"/>
         <source>Erklaerung Abspann</source>
-        <translation>Abspannseile sind in Richtung des Anfangs- oder Endpunkts abgespannt. Bei Auswahl &quot;Mitte&quot; wird ein dreizackiger Stern dargestellt.</translation>
+        <translation>Die Abspannseile sind in Richtung des Anfangs- oder Endpunkts abgespannt. Bei Auswahl &quot;flach&quot; wird ein dreizackiger Stern dargestellt.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="370"/>
@@ -1307,7 +1301,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>mitte</source>
-        <translation>mitte</translation>
+        <translation>zentral</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>

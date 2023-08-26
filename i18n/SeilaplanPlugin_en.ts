@@ -794,57 +794,57 @@ loaded skyline</translation>
     <message>
         <location filename="../tools/outputGeo.py" line="155"/>
         <source>shp_kategorie</source>
-        <translation type="unfinished"></translation>
+        <translation>category</translation>
     </message>
     <message>
         <location filename="../tools/outputGeo.py" line="156"/>
         <source>shp_position</source>
-        <translation type="unfinished"></translation>
+        <translation>position</translation>
     </message>
     <message>
         <location filename="../tools/outputGeo.py" line="157"/>
         <source>shp_abspann</source>
-        <translation type="unfinished"></translation>
+        <translation>anchoring</translation>
     </message>
     <message>
         <location filename="../tools/outputGeo.py" line="356"/>
         <source>Kategorie</source>
-        <translation type="unfinished"></translation>
+        <translation>Category</translation>
     </message>
     <message>
         <location filename="../tools/outputGeo.py" line="357"/>
         <source>Position Stuetze</source>
-        <translation type="unfinished"></translation>
+        <translation>Position of support</translation>
     </message>
     <message>
         <location filename="../tools/outputGeo.py" line="357"/>
         <source>Ausrichtung Abspannseile</source>
-        <translation type="unfinished"></translation>
+        <translation>Alignment of the anchor ropes</translation>
     </message>
     <message>
         <location filename="../gui/guiHelperFunctions.py" line="121"/>
         <source>Layer bereits in Karte</source>
-        <translation type="unfinished"></translation>
+        <translation>Layer already in map</translation>
     </message>
     <message>
         <location filename="../gui/guiHelperFunctions.py" line="126"/>
         <source>Layer &apos;{}&apos; zur Karte hinzugefügt</source>
-        <translation type="unfinished"></translation>
+        <translation>Layer &apos;{}&apos; added to the map</translation>
     </message>
     <message>
         <location filename="../gui/guiHelperFunctions.py" line="129"/>
         <source>Fehler beim Hinzufügen des Layers &apos;{}&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Error when adding the layer &apos;{}&apos;</translation>
     </message>
     <message>
         <location filename="../gui/guiHelperFunctions.py" line="149"/>
         <source>Landeskarten (farbig)</source>
-        <translation type="unfinished">national map (color)</translation>
+        <translation>National maps (in colors)</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="116"/>
         <source>Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Position</translation>
     </message>
 </context>
 <context>
@@ -963,52 +963,47 @@ loaded skyline</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="370"/>
         <source>Hintergrundkarte laden</source>
-        <translation>Load base map</translation>
+        <translation>Load background map</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="380"/>
         <source>Konfiguration Vogelperspektive</source>
-        <translation type="unfinished"></translation>
+        <translation>Configuration of the bird&apos;s eye view</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="381"/>
         <source>Erklaerung Vogelperspektive</source>
-        <translation type="unfinished"></translation>
+        <translation>The bird&apos;s eye view is activated in the saving options. It is part of the diagram export and is reported below the profile view in the PDF.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="383"/>
         <source>Stuetzenkategorie</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.py" line="384"/>
-        <source>Erklaerung Stuetzenkategorie</source>
-        <translation type="unfinished"></translation>
+        <translation>Support category</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="387"/>
         <source>Stuetzenposition</source>
-        <translation type="unfinished"></translation>
+        <translation>Support category</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="388"/>
         <source>Erklaerung Stuetzenposition</source>
-        <translation type="unfinished"></translation>
+        <translation>Support position to the left or to the right of the skyline as seen from the starting point.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="390"/>
         <source>Abspann</source>
-        <translation type="unfinished"></translation>
+        <translation>Alignment of the anchor ropes</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="391"/>
         <source>Erklaerung Abspann</source>
-        <translation type="unfinished"></translation>
+        <translation>The anchor ropes are tensioned in the direction of the starting point or the end point. If &quot;flat&quot; is selected, a three-pointed star is shown.</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="628"/>
         <source>Vogelperspektive Legende</source>
-        <translation type="unfinished"></translation>
+        <translation>Legend for the bird&apos;s eye view</translation>
     </message>
 </context>
 <context>
@@ -1227,42 +1222,42 @@ to the report)</translation>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="681"/>
         <source>Vogelperspektive</source>
-        <translation type="unfinished">Bird view</translation>
+        <translation>Bird’s eye view</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="669"/>
         <source>Position Stuetze</source>
-        <translation type="unfinished"></translation>
+        <translation>Position of support</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="672"/>
         <source>Kategorie</source>
-        <translation type="unfinished"></translation>
+        <translation>Category</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="674"/>
         <source>Ausrichtung Abspannseile</source>
-        <translation type="unfinished"></translation>
+        <translation>Align. anchor ropes</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="676"/>
         <source>Stuetzenbez.</source>
-        <translation type="unfinished"></translation>
+        <translation>Supp. design.</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="677"/>
         <source>Konfiguration Vogelperspektive</source>
-        <translation type="unfinished"></translation>
+        <translation>Configuration of the bird&apos;s eye view</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="679"/>
         <source>Darstellung der Seillinie und Stuetzen aus der Vogelperspektive.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bird&apos;s eye view of the cable road and the intermediate supports.</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="680"/>
         <source>Hintergrundkarte laden um sie in der Vogelperspektive darzustellen.</source>
-        <translation type="unfinished"></translation>
+        <translation>Load background map to show it in bird&apos;s eye view.</translation>
     </message>
 </context>
 <context>
@@ -1276,7 +1271,8 @@ terrain shape</translation>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="198"/>
         <source>Leerseil</source>
-        <translation>Unloaded skyline</translation>
+        <translation>Unloaded
+skyline</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="200"/>
@@ -1287,7 +1283,8 @@ terrain shape</translation>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="210"/>
         <source>Min. Bodenabstand</source>
-        <translation>Minimum ground clearance</translation>
+        <translation>Minimum ground
+clearance</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="310"/>
@@ -1308,7 +1305,7 @@ terrain shape</translation>
     <message>
         <location filename="../gui/adjustmentPlot.py" line="382"/>
         <source>Vogelperspektive</source>
-        <translation>Bird view</translation>
+        <translation>Bird’s eye view</translation>
     </message>
 </context>
 <context>
@@ -1316,87 +1313,87 @@ terrain shape</translation>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>links</source>
-        <translation type="unfinished">links</translation>
+        <translation>on the left</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>mitte</source>
-        <translation type="unfinished">mitte</translation>
+        <translation>centre</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>rechts</source>
-        <translation type="unfinished">rechts</translation>
+        <translation>on the right</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>mobiler_seilkran</source>
-        <translation type="unfinished">Mobiler Seilkran</translation>
+        <translation>Tower Yarder</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>vorziehstuetze_1</source>
-        <translation type="unfinished">Vorziehstütze (1 Abspannseil)</translation>
+        <translation>Adv. support (1 anchor rope)</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>vorziehstuetze_2</source>
-        <translation type="unfinished">Vorziehstütze (2 Abspannseile)</translation>
+        <translation>Adv. support (2 anchor ropes)</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>vorgeneigte_stuetze</source>
-        <translation type="unfinished">Vorgeneigte St. / Gittermast</translation>
+        <translation>Inclined supp. / Lattice supp.</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>mehrbaumanker</source>
-        <translation type="unfinished">Mehrbaumanker</translation>
+        <translation>Multi-tree anchor</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>endmast_mit_zugseilleitrolle</source>
-        <translation type="unfinished">Endmast mit Zugseilleitrolle</translation>
+        <translation>Final support with pulley for the main line</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>endmast_ohne_zugseilleitrolle</source>
-        <translation type="unfinished">Endmast ohne Zugseilleitrolle</translation>
+        <translation>Final support without pulley for the main line</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>endmast</source>
-        <translation type="unfinished"></translation>
+        <translation>Final support</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>totmannanker</source>
-        <translation type="unfinished">Totmannanker</translation>
+        <translation>Dead man anchor</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>verstaerkter_ankerbaum</source>
-        <translation type="unfinished">Verstärkter Ankerbaum</translation>
+        <translation>Reinforced anchor tree</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>normaler_ankerbaum</source>
-        <translation type="unfinished">Normaler Ankerbaum</translation>
+        <translation>Normal anchor tree</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>anfang</source>
-        <translation type="unfinished">→ Anfangspunkt</translation>
+        <translation>→ Starting point</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>flach</source>
-        <translation type="unfinished">flach</translation>
+        <translation>flat</translation>
     </message>
     <message>
         <location filename="../gui/birdViewWidget.py" line="410"/>
         <source>ende</source>
-        <translation type="unfinished">→ Endpunkt</translation>
+        <translation>→ End point</translation>
     </message>
 </context>
 <context>
@@ -1504,12 +1501,12 @@ terrain shape</translation>
     <message>
         <location filename="../gui/saveDialog.py" line="184"/>
         <source>inkl. Vogelperspektive</source>
-        <translation>incl. bird view</translation>
+        <translation>incl. bird’s eye view</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="185"/>
         <source>Legende Vogelperspektive</source>
-        <translation type="unfinished"></translation>
+        <translation>Legend for the bird&apos;s eye view</translation>
     </message>
 </context>
 <context>
@@ -2251,7 +2248,7 @@ Please change the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2301"/>
         <source>Horizontaldistanz</source>
-        <translation>Horizontal distance [m]</translation>
+        <translation>Horizontal dist. [m]</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2345"/>
@@ -2319,7 +2316,7 @@ to the report)</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2018"/>
         <source>Hintergrundkarte laden</source>
-        <translation>Load base map</translation>
+        <translation>Load background map</translation>
     </message>
 </context>
 <context>
@@ -2628,7 +2625,7 @@ The algorithm calculates a solution, which in first priority is minimizing the n
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="831"/>
         <source>Hintergrundkarte laden</source>
-        <translation>Load base map</translation>
+        <translation>Load background map</translation>
     </message>
 </context>
 <context>
