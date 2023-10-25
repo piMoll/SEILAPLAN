@@ -2408,8 +2408,8 @@ Seilaplan kann nur mit Daten in einem projizierten KBS arbeiten. Die Daten werde
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="657"/>
         <source>KBS-Fehler - Bezugssystem des Rasters unbekannt</source>
-        <translation>Bezugssystem des Rasters unbekannt.
-Das Raster wird im Schweizer KBS &apos;LV95&apos; (EPSG:2056) dargestellt. Soll ein anderes KBS benutzt werden, richten Sie ihr QGIS Projekt bitte vor dem Laden der Höhendaten entsprechend ein.</translation>
+        <translation>Bezugssystem der Höhendaten unbekannt.
+Die Höhendaten werden im Schweizer KBS &apos;LV95&apos; (EPSG:2056) dargestellt. Soll ein anderes KBS benutzt werden, richten Sie ihr QGIS Projekt bitte vor dem Laden der Höhendaten entsprechend ein.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="861"/>

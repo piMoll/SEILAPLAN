@@ -2427,8 +2427,8 @@ Seilaplan ne peut traiter que des données dans un SCR projeté. Les données se
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="657"/>
         <source>KBS-Fehler - Bezugssystem des Rasters unbekannt</source>
-        <translation>Système de référence de la grille inconnu.
-La grille est visualisée dans le SCR suisse &apos;LV95&apos; (EPSG:2056). Si vous voulez utiliser un autre SCR, vous devez arranger votre projet QGIS conformément avant de charger les dates d&apos;altitude.</translation>
+        <translation>Système de référence des dates d&apos;altitude inconnu.
+Les dates d&apos;altitude sont visualisées dans le SCR suisse &apos;LV95&apos; (EPSG:2056). Si vous voulez utiliser un autre SCR, vous devez arranger votre projet QGIS conformément avant de charger les dates d&apos;altitude.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="804"/>

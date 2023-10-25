@@ -2425,8 +2425,8 @@ Seilaplan can only process data in a projected CRS. The data will be transformed
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="657"/>
         <source>KBS-Fehler - Bezugssystem des Rasters unbekannt</source>
-        <translation>Reference system of the raster unknown.
-The raster is displayed in the Swiss CRS &apos;LV95&apos; (EPSG:2056). To use another CRS system you have to set up your QGIS project accordingly before loading the height data.</translation>
+        <translation>Reference system of the height data unknown.
+The height data is displayed in the Swiss CRS &apos;LV95&apos; (EPSG:2056). To use another CRS system you have to set up your QGIS project accordingly before loading the height data.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="804"/>

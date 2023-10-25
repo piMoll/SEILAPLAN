@@ -2422,8 +2422,8 @@ Seilaplan può processare unicamente dei dati in un SCR proiettato. I dati saran
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="657"/>
         <source>KBS-Fehler - Bezugssystem des Rasters unbekannt</source>
-        <translation>Sistema di riferimento della griglia sconosciuto.
-La griglia viene figurata nel SCR svizzero &apos;LV95&apos; (EPSG:2056). Se vuole utilizzare un altro SCR, deve configurare il vostro progetto QGIS adeguatamente primo di caricare i dati di altezza.</translation>
+        <translation>Sistema di riferimento dei dati di altezza sconosciuto.
+I dati di altetta vengono visualizzati nel SCR svizzero &apos;LV95&apos; (EPSG:2056). Se vuole utilizzare un altro SCR, deve configurare il vostro progetto QGIS adeguatamente primo di caricare i dati di altezza.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="804"/>
