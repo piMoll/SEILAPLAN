@@ -171,7 +171,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="115"/>
         <source>Z-Koordinate [m.ue.M.]</source>
-        <translation>Z-Koordinate [m ü.M.]</translation>
+        <translation>Z-Koordinate</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="127"/>

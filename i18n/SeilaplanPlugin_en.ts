@@ -182,7 +182,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="115"/>
         <source>Z-Koordinate [m.ue.M.]</source>
-        <translation>Z coordinate [m a.s.l.]</translation>
+        <translation>Z coordinate</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="426"/>
