@@ -331,22 +331,26 @@ class AdjustmentPlot(FigureCanvas):
     def createBirdView(self, poles, azimut):
         # Height of y-axis (+/- from x-axis) in meter
         yLim = 30
-        # Vertical shift of poles that are not in the center (in meter)
-        posShiftVertical = 0.25 * yLim
         # Set fixed limits of the vertical axis
         self.axesBirdView.set_ylim(-yLim, yLim)
         # Horizontal line symbolizing cable line from first to last pole
-        self.axesBirdView.plot([poles[0]['d'], poles[-1]['d']], [0, 0], color='red', linewidth=1)
+        self.axesBirdView.plot([poles[0]['d'], poles[-1]['d']], [0, 0], color='red', linewidth=2)
         
         # Calculate marker size by take the height of the drawn plot into account
         # First, draw it once to get the figures size
         self.fig.canvas.draw()
         figExtent = self.axesBirdView.get_window_extent()
-        #  Diameter of the marker in the plot (in meter)
-        markerDiameter = 22
-        # Transform to marker size (in point)
+        # Diameter of the marker in the plot (in meter). This is not really a
+        #  meaningful number any more because the whole scaling has become a
+        #  bit chaotic and empirical. There is just too much transformation
+        #  between svg, matplotlib plot units, pixels and millimeters going on.
+        markerDiameter = 42
+        # Transform to marker size (in point) ... If we're lucky
         #  1 point = self.fig.dpi / 72 pixels
         markerSize = figExtent.height / (2*yLim / markerDiameter) * 72./self.fig.dpi
+        # Vertical shift of poles that are not in the center (in meter)
+        #  The 0.05 is also empirical...
+        posShiftVertical = 0.05 * self.axesBirdView.axes.get_ylim()[1]*2
         # Halo effect around markers and north arrow for better readability
         haloEffect = [pe.withStroke(linewidth=4, foreground="white")]
 
@@ -362,7 +366,8 @@ class AdjustmentPlot(FigureCanvas):
                 symbol: BirdViewSymbol = defaultCircle
             marker = symbol.mplPath
             if pole['abspann'] == 'anfang':
-                marker = symbol.mirror()
+                # Mirror symbol on y-axis
+                marker = symbol.mirror('y')
                 
             # Move marker a bit up/or down depending on pole position
             yPos = 0
@@ -370,6 +375,8 @@ class AdjustmentPlot(FigureCanvas):
                 yPos += posShiftVertical
             elif pole['position'] == 'rechts':
                 yPos -= posShiftVertical
+                # Mirror symbol on x-axis
+                marker = symbol.mirror('x')
             # Plot the marker
             self.axesBirdView.plot(pole['d'], yPos, marker=marker,
                                    markersize=symbol.scale * markerSize,
@@ -378,7 +385,7 @@ class AdjustmentPlot(FigureCanvas):
             if symbol.centerPoint:
                 self.axesBirdView.plot(pole['d'], yPos, marker=defaultCircle.mplPath,
                                        markersize=defaultCircle.scale * markerSize,
-                                       color=defaultCircle.color)
+                                       color=defaultCircle.color, path_effects=haloEffect)
         
         # Add north arrow
         yMin, yMax = self.axesBirdView.get_ylim()
