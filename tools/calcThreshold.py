@@ -15,9 +15,11 @@ class ThresholdUpdater:
         self.thresholds = []
         self.units = []
         self.poles = None
+        self.profile = None
 
-    def update(self, resultData, params, poles, noOpti):
+    def update(self, resultData, params, poles, profile, noOpti):
         self.poles = poles
+        self.profile = profile
     
         if not self.thresholds:
             # Fill table with initial data
@@ -53,14 +55,16 @@ class ThresholdUpdater:
                 thresholdData = self.checkThresholds(i, resultData[i])
                 val = ''
                 color = [1]
-                location = []
+                xLocation = []
+                zLocation = []
                 plotLabels = []
-                if len(thresholdData) == 4:
-                    val, location, color, plotLabels = thresholdData
+                labelAlign = []
+                if len(thresholdData) == 6:
+                    val, xLocation, zLocation, color, plotLabels, labelAlign = thresholdData
                 self.layout.updateData(i, 4, val)
-                self.layout.updateData(i, 5, {'loc': location, 'color': color})
+                self.layout.updateData(i, 5, {'xLoc': xLocation, 'color': color})
                 self.rows[i][4] = val
-                self.rows[i][5] = {'loc': location, 'color': color}
+                self.rows[i][5] = {'xLoc': xLocation, 'zLoc': zLocation, 'color': color, 'labelAlign': labelAlign}
                 self.plotLabels.append(plotLabels)
     
         self.callback()
@@ -144,13 +148,15 @@ class ThresholdUpdater:
             thresholdData = self.checkThresholds(i, resultData[i])
             val = ''
             color = [1]
-            location = []
+            xLocation = []
+            zLocation = []
             plotLabels = []
-            if len(thresholdData) == 4:
-                val, location, color, plotLabels = thresholdData
+            labelAlign = []
+            if len(thresholdData) == 6:
+                val, xLocation, zLocation, color, plotLabels, labelAlign = thresholdData
             self.rows[i][valColumn] = val
             self.rows[i][emptyColumn] = ''
-            self.rows[i][5] = {'loc': location, 'color': color}
+            self.rows[i][5] = {'xLoc': xLocation, 'zLoc': zLocation, 'color': color, 'labelAlign': labelAlign}
             self.plotLabels.append(plotLabels)
     
         self.layout.populate(tblHeader, self.rows, valColumn)
@@ -161,35 +167,41 @@ class ThresholdUpdater:
         valStr = ""
         # Location in relation to origin on horizontal axis (needed for
         #  plotting)
-        location = []
+        xLocation = []
+        # Location on y-Axis (z-Coordinate)
+        zLocation = []
         # Color of marked threshold
         colorList = []
         # Formatted threshold value to show in plot
         plotLabel = []
+        # Label vertical alignment (top or bottom)
+        labelAlign = []
     
         # Ground clearance
         if idx == 0:
             if np.isnan(data).all():
-                return valStr, location
+                return valStr, xLocation
             color = 1  # ok
             maxVal = np.nanmin(data)
             # Replace nan so there is no Runtime Warning in np.argwhere()
             localCopy = np.copy(data)
             localCopy[np.isnan(localCopy)] = 100.0
             # Check where the minimal ground clearance is located
-            location = np.ravel(np.argwhere(localCopy == maxVal))
-            if location:
-                plotLabel = [self.formatThreshold(loc, idx) for loc in localCopy[location]]
-            location = [int(loc + self.poles.firstPole['d']) for loc in location]
+            xLocation = np.ravel(np.argwhere(localCopy == maxVal))
+            if xLocation:
+                plotLabel = [self.formatThreshold(loc, idx) for loc in localCopy[xLocation]]
+            xLocation = [int(loc + self.poles.firstPole['d']) for loc in xLocation]
             # Check if min value is smaller than ground clearance
             if maxVal < self.thresholds[idx]:
                 color = 3  # red
-            colorList = [color] * len(location)
+            colorList = [color] * len(xLocation)
     
         # Max force on cable
         elif idx == 1:
-            maxVal = np.nanmax(data)
-            for fieldIdx, force in enumerate(data):
+            maxCableForce = data[0]
+            forceAtHighestPoint = data[1]
+            maxVal = np.nanmax(maxCableForce)
+            for fieldIdx, force in enumerate(maxCableForce):
                 # NAN values will be ignored
                 if np.isnan(force):
                     continue
@@ -201,8 +213,22 @@ class ThresholdUpdater:
                 #  marker should also be in the middle between two poles
                 leftPole = self.poles.poles[self.poles.idxA + fieldIdx]['d']
                 rightPole = self.poles.poles[self.poles.idxA + fieldIdx + 1]['d']
-                location.append(int(leftPole + floor((rightPole - leftPole) / 2)))
+                x = int(leftPole + floor((rightPole - leftPole) / 2))
+                z = self.profile.zi_disp[np.argwhere(self.profile.di_disp == x)[0][0]]
+                xLocation.append(x)
+                zLocation.append(z)
                 colorList.append(color)
+                labelAlign.append('bottom')
+            # Add a special threshold for the value at the highest point
+            plotLabel.append(self.tr('am hoechsten Punkt:') + '\n' + self.formatThreshold(forceAtHighestPoint, idx))
+            dHighest, zHighest = self.poles.getHighestPole()
+            xLocation.append(dHighest)
+            zLocation.append(zHighest)
+            color = 1  # ok
+            if forceAtHighestPoint > self.thresholds[idx]:
+                color = 3  # red
+            colorList.append(color)
+            labelAlign.append('top')
     
         elif idx == 2:
             localCopy = np.nan_to_num(data)
@@ -210,7 +236,7 @@ class ThresholdUpdater:
             for poleIdx, calcVal in enumerate(data):
                 pole = self.poles.poles[self.poles.idxA + poleIdx]
                 if not np.isnan(calcVal):
-                    location.append(pole['d'])
+                    xLocation.append(pole['d'])
                     plotLabel.append(self.formatThreshold(calcVal, idx))
                     colorList.append(1)  # ok
     
@@ -240,7 +266,7 @@ class ThresholdUpdater:
                         color = 3  # red
             
                 pole = self.poles.poles[self.poles.idxA + poleIdx]
-                location.append(pole['d'])
+                xLocation.append(pole['d'])
                 plotLabel.append(self.formatThreshold(angle, idx))
                 colorList.append(color)
             # Format the two max values
@@ -264,14 +290,25 @@ class ThresholdUpdater:
                         color = 3  # red
             
                 pole = self.poles.poles[self.poles.idxA + poleIdx]
-                location.append(pole['d'])
+                xLocation.append(pole['d'])
                 plotLabel.append(self.formatThreshold(angle, idx))
                 colorList.append(color)
     
         if isinstance(maxVal, float) and not np.isnan(maxVal):
             valStr = self.formatThreshold(maxVal, idx)
-    
-        return valStr, location, colorList, plotLabel
+        
+        if not zLocation:
+            arrIdx = []
+            # Get index of horizontal distance, so we know which height value to
+            #  chose
+            for loc in xLocation:
+                arrIdx.append(np.argwhere(self.profile.di_disp == loc)[0][0])
+            zLocation = self.profile.zi_disp[arrIdx]
+        
+        if not labelAlign:
+            labelAlign = ['bottom'] * len(xLocation)
+        
+        return valStr, xLocation, zLocation, colorList, plotLabel, labelAlign
 
     def formatThreshold(self, val, idx):
         if isinstance(val, float) and not np.isnan(val):

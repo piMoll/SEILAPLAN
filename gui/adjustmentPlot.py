@@ -251,20 +251,31 @@ class AdjustmentPlot(FigureCanvas):
             self.tbar.update()
             self.tbar.push_current()
     
-    def showMarkers(self, x, y, label, colorList):
+    def showMarkers(self, x, y, label, colorList, labelAlign):
         # Displays marker for thresholds
         self.removeMarkers()
+        spacing = 3 * abs(self.axes.get_ylim()[0] - self.axes.get_ylim()[1]) / self.height()
+        
         color = [self.COLOR_MARKER[col] for col in colorList]
-        y -= self.labelBuffer * 3
         for i, xi in enumerate(x):
+            textVa = 'top'
+            marker = '^'
+            markerPos = y[i] - spacing * 3
+            labelPos = y[i] - spacing * 5
+            if labelAlign[i] == 'top':
+                textVa = 'bottom'
+                marker = 'v'
+                markerPos = y[i] + spacing * 7
+                labelPos = y[i] + spacing * 9
+        
             self.arrowMarker.append(
-                self.axes.scatter(xi, y[i], marker='^', zorder=20, c=color[i],
-                                  s=100))
+                self.axes.scatter(xi, markerPos, marker=marker, zorder=20,
+                                  c=color[i], s=100))
             # Adds a label underneath marker with threshold value
             self.arrowLabel.append(
-                self.axes.text(xi, y[i] - 2 * self.labelBuffer, label[i],
-                               zorder=30, ha='center', backgroundcolor='white',
-                               va='top', color=color[i], fontweight='semibold'))
+                self.axes.text(xi, labelPos, label[i], zorder=30, ha='center',
+                               backgroundcolor='white', va=textVa,
+                               color=color[i], fontweight='semibold'))
         self.draw()
     
     def removeMarkers(self):

@@ -77,7 +77,7 @@ class AdjustmentDialogThresholds(QObject):
                     self.tbl.setIndexWidget(self.model.index(i, j), btnWidget)
                     continue
                 if j == 5 and isinstance(cellData, dict):
-                    loclen = len(cellData['loc'])
+                    loclen = len(cellData['xLoc'])
                     if loclen > 0:
                         # Set background color for cells where threshold is
                         #  exceeded
@@ -100,7 +100,7 @@ class AdjustmentDialogThresholds(QObject):
     def updateData(self, row, col, newVal):
         # Update background color of new values
         if col == 5 and isinstance(newVal, dict):
-            locLen = len(newVal['loc'])
+            locLen = len(newVal['xLoc'])
             color = self.COLOR[max(newVal['color'] or [1])]
             self.colorBackground(row, 4, color)
             newVal = locLen

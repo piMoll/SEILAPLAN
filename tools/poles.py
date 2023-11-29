@@ -301,6 +301,12 @@ class Poles(object):
         dtop = np.array(dtop)
         ztop = np.array(ztop)
         return [d, z, h, dtop, ztop, number, types, category, position, abspann]
+    
+    def getHighestPole(self):
+        [_, _, _, dtop, ztop, _, _, _, _, _] = self.getAsArray()
+        ztopHighest = np.max(ztop)
+        dtopHighest = dtop[np.argwhere(ztop == ztopHighest)[0][0]]
+        return dtopHighest, ztopHighest
 
     def refresh(self):
         self.updateFirstLastPole()
