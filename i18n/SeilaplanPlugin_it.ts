@@ -2814,5 +2814,10 @@ Indicazione: Al cavalletto terminale il valore limite è superiore (ca. 60°).</
         <translation>Nel caso di un angolo convesso di 1° c&apos;è il rischio che la fune portante si decolla della sella (rosso). Il cavalletto deve essere alzato.
 Nel caso di un angolo tra 1° e 3° la fune portante deve essere atrezzato con un coprifune per sella (orange).</translation>
     </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="223"/>
+        <source>am hoechsten Punkt:</source>
+        <translation>al punto il più alto:</translation>
+    </message>
 </context>
 </TS>

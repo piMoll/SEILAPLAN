@@ -2818,5 +2818,10 @@ Notice explicative: Au mât terminal la valeur limite est plus haute (env. 60°)
         <translation>En cas des angles inférieurs à 1° il y a le risque que le câble porteur s&apos;enlève de l&apos;étrier (rouge). L&apos; appui doit être surélevé.
 En cas des angles entre 1° et 3° le câble porteur doit être sécurisé par une patte de fixation (orange).</translation>
     </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="223"/>
+        <source>am hoechsten Punkt:</source>
+        <translation>au point le plus haut:</translation>
+    </message>
 </context>
 </TS>

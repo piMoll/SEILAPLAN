@@ -2814,5 +2814,10 @@ Note: At the final supports the threshold value is higher (approx. 60°).</trans
         <translation>With angles below 1°, there is a risk that the skyline lifts off at the saddle (red). The support must be raised.
 For angles between 1° and 3°, the skyline must be secured by a hold-down plate (orange).</translation>
     </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="223"/>
+        <source>am hoechsten Punkt:</source>
+        <translation>at highest point:</translation>
+    </message>
 </context>
 </TS>

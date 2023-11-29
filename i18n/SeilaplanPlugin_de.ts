@@ -2796,5 +2796,10 @@ Hinweis: Bei den beiden Endmasten liegt der Grenzwert höher (ca. 60°).</transl
         <translation>Bei Knickwinkeln unter 1° besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Die Stütze muss erhöht werden.
 Bei Knickwinkeln zwischen 1° und 3° muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</translation>
     </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="223"/>
+        <source>am hoechsten Punkt:</source>
+        <translation>am höchsten Punkt:</translation>
+    </message>
 </context>
 </TS>
