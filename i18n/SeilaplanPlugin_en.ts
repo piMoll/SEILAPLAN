@@ -530,7 +530,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="401"/>
         <source>Maximal berechnete Seilzugkraft</source>
-        <translation>Maximum tensile force (skyline)</translation>
+        <translation>Maximum tensile force (skyline), measured at highest point of cable system</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="404"/>

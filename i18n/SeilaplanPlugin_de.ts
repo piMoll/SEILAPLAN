@@ -520,7 +520,7 @@
         <location filename="../tools/outputReport.py" line="401"/>
         <source>Maximal berechnete Seilzugkraft</source>
         <translatorcomment>evtl. Deutsche Variante ändern (Max. auftretende / berechnete Seilzugkraft)</translatorcomment>
-        <translation>Maximal berechnete Seilzugkraft</translation>
+        <translation>Maximal berechnete Seilzugkraft, gemessen am höchsten Punkt des Seilsystems</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="404"/>

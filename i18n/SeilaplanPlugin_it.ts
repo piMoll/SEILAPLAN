@@ -529,7 +529,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="401"/>
         <source>Maximal berechnete Seilzugkraft</source>
-        <translation>Forza di trazione massimale</translation>
+        <translation>Forza di trazione massimale, misurata al punto il più alto della sistema teleferica</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="404"/>

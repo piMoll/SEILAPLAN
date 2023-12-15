@@ -532,7 +532,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="401"/>
         <source>Maximal berechnete Seilzugkraft</source>
-        <translation>Force de traction maximale</translation>
+        <translation>Force de traction maximale, mesurée au point le plus haut du système à câble</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="404"/>
