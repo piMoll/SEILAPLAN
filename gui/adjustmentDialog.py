@@ -216,9 +216,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         
         # Create layout to modify poles
-        lowerDistRange = floor(-1 * self.anchorBuffer[0])
-        upperDistRange = floor(self.profile.profileLength + self.anchorBuffer[1])
-        self.poleLayout.setInitialGui([lowerDistRange, upperDistRange])
+        self.poleLayout.setInitialGui([self.profile.di_disp[0], self.profile.di_disp[-1]])
         self.birdViewLayout.updateGui()
 
         # Fill in cable parameters
