@@ -21,10 +21,11 @@ email=leo.bont@gmail.com
 # Recommended items:
 
 # Uncomment the following line and add your changelog:
-changelog=Version 3.5.0 (August 2023)
+changelog=Version 3.5.1 (Januar 2024)
 
-    - Neues Tab Vogelperspektive: Darstellung der Seillinie, Stützen und Abspannseile aus der Vogelperspektive und Export als Diagramm
-    - Hintergrundkarte darstellen: Bei QGIS-Projekten im CH-Koordinatensystem wird neu die Schweizer Landeskarte statt der OSM-Karte geladen
+    - Vogelperspektive: Überarbeite Stützensymbole, passe Länge der Abspannseile an
+    - Ergänze Kennwerte im Bearbeitungsfenster: Zeige die max. Seilzugkraft am höchsten Punkt im Diagramm an
+    - Fehler: Verschieben der Stütze ans Ende oder Anfang des Profils verursacht Plugin-Absturz
 
     Vollständiger Changelog unter: https://github.com/piMoll/SEILAPLAN/blob/master/changelog.md
 
