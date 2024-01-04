@@ -238,9 +238,23 @@ class AdjustmentPlot(FigureCanvas):
             self.axes.axvline(lw=1, ls='dotted', color='black', x=d)
             self.axes.axhline(lw=1, ls='dotted', color='black', y=z)
             self.axes.axhline(lw=1, ls='dotted', color='black', y=ztop)
-
-        # Add labels
-        if not printPdf:
+            
+        if printPdf:
+            # Make sure plot has enough buffer at start and end of cable line
+            #  to fit bird view symbols.
+            symbolBuffer = 40
+            cableStart = cable['xaxis'][0]
+            if cable['anchorA']:
+                cableStart = cable['anchorA']['d'][0]
+            cableEnd = cable['xaxis'][-1]
+            if cable['anchorE']:
+                cableEnd = cable['anchorE']['d'][-1]
+            if abs(cableStart - self.axes.get_xlim()[0]) < symbolBuffer:
+                self.axes.set_xlim(cableStart - symbolBuffer, self.axes.get_xlim()[1])
+            if abs(cableEnd - self.axes.get_xlim()[1]) < symbolBuffer:
+                self.axes.set_xlim(self.axes.get_xlim()[0], cableEnd + symbolBuffer)
+        else:
+            # Add labels
             self.placeLabels(pole_dtop, pole_ztop, pole_nr)
         # Legend
         self.axes.legend(loc='lower center', fontsize=fontSize,
@@ -345,7 +359,7 @@ class AdjustmentPlot(FigureCanvas):
         # Set fixed limits of the vertical axis
         self.axesBirdView.set_ylim(-yLim, yLim)
         # Horizontal line symbolizing cable line from first to last pole
-        self.axesBirdView.plot([poles[0]['d'], poles[-1]['d']], [0, 0], color='red', linewidth=2)
+        self.axesBirdView.plot([poles[0]['d'], poles[-1]['d']], [0, 0], color='red', linewidth=2.5)
         
         # Calculate marker size by take the height of the drawn plot into account
         # First, draw it once to get the figures size
@@ -402,9 +416,9 @@ class AdjustmentPlot(FigureCanvas):
         yMin, yMax = self.axesBirdView.get_ylim()
         xMin, xMax = self.axesBirdView.get_xlim()
         # Label font size for north arrow is fixed to 30
-        labelSize = 30
+        labelSize = 25
         # Place arrow in upper right corner, with distance in points
-        baseShiftInPointsY = 50
+        baseShiftInPointsY = 45
         baseShiftInPointsX = 40
         # Calculate shift in plot units
         labelXShift = (baseShiftInPointsX / figExtent.width) * (xMax - xMin)
