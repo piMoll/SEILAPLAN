@@ -181,7 +181,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="115"/>
         <source>Z-Koordinate [m.ue.M.]</source>
-        <translation>Coordonnée Z [m/mer]</translation>
+        <translation>Coordonnée Z</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="426"/>
@@ -532,7 +532,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="401"/>
         <source>Maximal berechnete Seilzugkraft</source>
-        <translation>Force de traction maximale</translation>
+        <translation>Force de traction maximale, mesurée au point le plus haut du système à câble</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="404"/>
@@ -2427,8 +2427,8 @@ Seilaplan ne peut traiter que des données dans un SCR projeté. Les données se
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="657"/>
         <source>KBS-Fehler - Bezugssystem des Rasters unbekannt</source>
-        <translation>Système de référence de la grille inconnu.
-La grille est visualisée dans le SCR suisse &apos;LV95&apos; (EPSG:2056). Si vous voulez utiliser un autre SCR, vous devez arranger votre projet QGIS conformément avant de charger les dates d&apos;altitude.</translation>
+        <translation>Système de référence des dates d&apos;altitude inconnu.
+Les dates d&apos;altitude sont visualisées dans le SCR suisse &apos;LV95&apos; (EPSG:2056). Si vous voulez utiliser un autre SCR, vous devez arranger votre projet QGIS conformément avant de charger les dates d&apos;altitude.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="804"/>
@@ -2817,6 +2817,11 @@ Notice explicative: Au mât terminal la valeur limite est plus haute (env. 60°)
         <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
         <translation>En cas des angles inférieurs à 1° il y a le risque que le câble porteur s&apos;enlève de l&apos;étrier (rouge). L&apos; appui doit être surélevé.
 En cas des angles entre 1° et 3° le câble porteur doit être sécurisé par une patte de fixation (orange).</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="223"/>
+        <source>am hoechsten Punkt:</source>
+        <translation>au point le plus haut:</translation>
     </message>
 </context>
 </TS>

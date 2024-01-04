@@ -171,7 +171,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="115"/>
         <source>Z-Koordinate [m.ue.M.]</source>
-        <translation>Z-Koordinate [m ü.M.]</translation>
+        <translation>Z-Koordinate</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="127"/>
@@ -520,7 +520,7 @@
         <location filename="../tools/outputReport.py" line="401"/>
         <source>Maximal berechnete Seilzugkraft</source>
         <translatorcomment>evtl. Deutsche Variante ändern (Max. auftretende / berechnete Seilzugkraft)</translatorcomment>
-        <translation>Maximal berechnete Seilzugkraft</translation>
+        <translation>Maximal berechnete Seilzugkraft, gemessen am höchsten Punkt des Seilsystems</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="404"/>
@@ -2408,8 +2408,8 @@ Seilaplan kann nur mit Daten in einem projizierten KBS arbeiten. Die Daten werde
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="657"/>
         <source>KBS-Fehler - Bezugssystem des Rasters unbekannt</source>
-        <translation>Bezugssystem des Rasters unbekannt.
-Das Raster wird im Schweizer KBS &apos;LV95&apos; (EPSG:2056) dargestellt. Soll ein anderes KBS benutzt werden, richten Sie ihr QGIS Projekt bitte vor dem Laden der Höhendaten entsprechend ein.</translation>
+        <translation>Bezugssystem der Höhendaten unbekannt.
+Die Höhendaten werden im Schweizer KBS &apos;LV95&apos; (EPSG:2056) dargestellt. Soll ein anderes KBS benutzt werden, richten Sie ihr QGIS Projekt bitte vor dem Laden der Höhendaten entsprechend ein.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="861"/>
@@ -2795,6 +2795,11 @@ Hinweis: Bei den beiden Endmasten liegt der Grenzwert höher (ca. 60°).</transl
         <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
         <translation>Bei Knickwinkeln unter 1° besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Die Stütze muss erhöht werden.
 Bei Knickwinkeln zwischen 1° und 3° muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="223"/>
+        <source>am hoechsten Punkt:</source>
+        <translation>am höchsten Punkt:</translation>
     </message>
 </context>
 </TS>

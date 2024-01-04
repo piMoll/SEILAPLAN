@@ -182,7 +182,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="115"/>
         <source>Z-Koordinate [m.ue.M.]</source>
-        <translation>Z coordinate [m a.s.l.]</translation>
+        <translation>Z coordinate</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="426"/>
@@ -530,7 +530,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="401"/>
         <source>Maximal berechnete Seilzugkraft</source>
-        <translation>Maximum tensile force (skyline)</translation>
+        <translation>Maximum tensile force (skyline), measured at highest point of cable system</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="404"/>
@@ -2425,8 +2425,8 @@ Seilaplan can only process data in a projected CRS. The data will be transformed
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="657"/>
         <source>KBS-Fehler - Bezugssystem des Rasters unbekannt</source>
-        <translation>Reference system of the raster unknown.
-The raster is displayed in the Swiss CRS &apos;LV95&apos; (EPSG:2056). To use another CRS system you have to set up your QGIS project accordingly before loading the height data.</translation>
+        <translation>Reference system of the height data unknown.
+The height data is displayed in the Swiss CRS &apos;LV95&apos; (EPSG:2056). To use another CRS system you have to set up your QGIS project accordingly before loading the height data.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="804"/>
@@ -2813,6 +2813,11 @@ Note: At the final supports the threshold value is higher (approx. 60°).</trans
         <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
         <translation>With angles below 1°, there is a risk that the skyline lifts off at the saddle (red). The support must be raised.
 For angles between 1° and 3°, the skyline must be secured by a hold-down plate (orange).</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="223"/>
+        <source>am hoechsten Punkt:</source>
+        <translation>at highest point:</translation>
     </message>
 </context>
 </TS>

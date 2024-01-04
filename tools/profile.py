@@ -102,8 +102,12 @@ class Profile(object):
             yi = np.arange(self.Ay, self.Ey, dy)
     
         # Number of sampling points between start/end point and end of profile
-        pCount_dA = floor(self.heightSource.buffer[0] / self.sampling_dist)
-        pCount_dE = floor(self.heightSource.buffer[1] / self.sampling_dist)
+        pCount_dA_exact = self.heightSource.buffer[0] / self.sampling_dist
+        pCount_dA = floor(pCount_dA_exact)
+        # Since the end point is not included in the profile, we have to add the
+        #  difference (dp - floor(dp)) to the end buffer
+        pCount_dE_exact = (dp - floor(dp) + self.heightSource.buffer[1]) / self.sampling_dist
+        pCount_dE = floor(pCount_dE_exact)
     
         xiA_d = np.linspace(self.Ax - dx, self.Ax - pCount_dA * dx, pCount_dA)
         yiA_d = np.linspace(self.Ay - dy, self.Ay - pCount_dA * dy, pCount_dA)

@@ -216,9 +216,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         
         # Create layout to modify poles
-        lowerDistRange = floor(-1 * self.anchorBuffer[0])
-        upperDistRange = floor(self.profile.profileLength + self.anchorBuffer[1])
-        self.poleLayout.setInitialGui([lowerDistRange, upperDistRange])
+        self.poleLayout.setInitialGui([self.profile.di_disp[0], self.profile.di_disp[-1]])
         self.birdViewLayout.updateGui()
 
         # Fill in cable parameters
@@ -227,11 +225,14 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         # Fill in Threshold data
         self.thdUpdater.update([
             self.cableline['groundclear_rel'],  # Distance cable - terrain
-            self.result['force']['MaxSeilzugkraft'][0],  # Max force on cable
+            [
+                self.result['force']['MaxSeilzugkraft'][0],   # Max force on cable
+                self.result['force']['MaxSeilzugkraft_L'][0]    # Cable force at highest point
+            ],
             self.result['force']['Sattelkraft_Total'][0],  # Max force on pole
             self.result['force']['Lastseilknickwinkel'],  # Cable angle on pole
             self.result['force']['Leerseilknickwinkel']],  # Cable angle on pole
-            self.confHandler.params, self.poles,
+            self.confHandler.params, self.poles, self.profile,
             (self.status in ['jumpedOver', 'savedFile'])
         )
         
@@ -505,11 +506,14 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         # Update Threshold data
         self.thdUpdater.update([
             self.cableline['groundclear_rel'],  # Distance cable - terrain
-            self.result['force']['MaxSeilzugkraft'][0],  # Max force on cable
+            [
+                self.result['force']['MaxSeilzugkraft'][0],   # Max force on cable
+                self.result['force']['MaxSeilzugkraft_L'][0]    # Cable force at highest point
+            ],
             self.result['force']['Sattelkraft_Total'][0],  # Max force on pole
             self.result['force']['Lastseilknickwinkel'],  # Cable angle on pole
             self.result['force']['Leerseilknickwinkel']],  # Cable angle on pole
-            self.confHandler.params, self.poles,
+            self.confHandler.params, self.poles, self.profile,
             (self.status in ['jumpedOver', 'savedFile'])
         )
         
@@ -540,18 +544,14 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             # Nothing is selected at the moment
             else:
                 return
-    
-        location = self.thdUpdater.rows[row][5]['loc']
+        
+        x = self.thdUpdater.rows[row][5]['xLoc']
+        y = self.thdUpdater.rows[row][5]['zLoc']
         color = self.thdUpdater.rows[row][5]['color']
+        labelAlign = self.thdUpdater.rows[row][5]['labelAlign']
         plotLabels = self.thdUpdater.plotLabels[row]
-        arrIdx = []
-        # Get index of horizontal distance so we know which height value to
-        #  chose
-        for loc in location:
-            arrIdx.append(np.argwhere(self.profile.di_disp == loc)[0][0])
-        z = self.profile.zi_disp[arrIdx]
     
-        self.plot.showMarkers(location, z, plotLabels, color)
+        self.plot.showMarkers(x, y, plotLabels, color, labelAlign)
         self.selectedThdRow = row
 
     def onClose(self):

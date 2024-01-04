@@ -181,7 +181,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="115"/>
         <source>Z-Koordinate [m.ue.M.]</source>
-        <translation>Coordinata Z [m s.l.m.]</translation>
+        <translation>Coordinata Z</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="426"/>
@@ -529,7 +529,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="401"/>
         <source>Maximal berechnete Seilzugkraft</source>
-        <translation>Forza di trazione massimale</translation>
+        <translation>Forza di trazione massimale, misurata al punto il più alto della sistema teleferica</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="404"/>
@@ -2422,8 +2422,8 @@ Seilaplan può processare unicamente dei dati in un SCR proiettato. I dati saran
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="657"/>
         <source>KBS-Fehler - Bezugssystem des Rasters unbekannt</source>
-        <translation>Sistema di riferimento della griglia sconosciuto.
-La griglia viene figurata nel SCR svizzero &apos;LV95&apos; (EPSG:2056). Se vuole utilizzare un altro SCR, deve configurare il vostro progetto QGIS adeguatamente primo di caricare i dati di altezza.</translation>
+        <translation>Sistema di riferimento dei dati di altezza sconosciuto.
+I dati di altetta vengono visualizzati nel SCR svizzero &apos;LV95&apos; (EPSG:2056). Se vuole utilizzare un altro SCR, deve configurare il vostro progetto QGIS adeguatamente primo di caricare i dati di altezza.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="804"/>
@@ -2813,6 +2813,11 @@ Indicazione: Al cavalletto terminale il valore limite è superiore (ca. 60°).</
         <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
         <translation>Nel caso di un angolo convesso di 1° c&apos;è il rischio che la fune portante si decolla della sella (rosso). Il cavalletto deve essere alzato.
 Nel caso di un angolo tra 1° e 3° la fune portante deve essere atrezzato con un coprifune per sella (orange).</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="223"/>
+        <source>am hoechsten Punkt:</source>
+        <translation>al punto il più alto:</translation>
     </message>
 </context>
 </TS>

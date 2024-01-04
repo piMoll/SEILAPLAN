@@ -1,5 +1,11 @@
 # Seilaplan Changelog
 
+## Version 3.5.1 (Januar 2024)
+### Fehlerbehebung
+* Vogelperspektive: Überarbeite Stützensymbole, passe Länge der Abspannseile an
+* Ergänze Kennwerte im Bearbeitungsfenster: Zeige die max. Seilzugkraft am höchsten Punkt im Diagramm an
+* Fehler: Verschieben der Stütze ans Ende oder Anfang des Profils verursacht Plugin-Absturz
+
 ## Version 3.5.0 (August 2023)
 ### Neue Features
 * Vogelperspektive: Darstellung der Seillinie, Stützen und Abspannseile aus der Vogelperspektive

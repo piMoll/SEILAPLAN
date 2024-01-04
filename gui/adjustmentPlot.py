@@ -238,9 +238,23 @@ class AdjustmentPlot(FigureCanvas):
             self.axes.axvline(lw=1, ls='dotted', color='black', x=d)
             self.axes.axhline(lw=1, ls='dotted', color='black', y=z)
             self.axes.axhline(lw=1, ls='dotted', color='black', y=ztop)
-
-        # Add labels
-        if not printPdf:
+            
+        if printPdf:
+            # Make sure plot has enough buffer at start and end of cable line
+            #  to fit bird view symbols.
+            symbolBuffer = 40
+            cableStart = cable['xaxis'][0]
+            if cable['anchorA']:
+                cableStart = cable['anchorA']['d'][0]
+            cableEnd = cable['xaxis'][-1]
+            if cable['anchorE']:
+                cableEnd = cable['anchorE']['d'][-1]
+            if abs(cableStart - self.axes.get_xlim()[0]) < symbolBuffer:
+                self.axes.set_xlim(cableStart - symbolBuffer, self.axes.get_xlim()[1])
+            if abs(cableEnd - self.axes.get_xlim()[1]) < symbolBuffer:
+                self.axes.set_xlim(self.axes.get_xlim()[0], cableEnd + symbolBuffer)
+        else:
+            # Add labels
             self.placeLabels(pole_dtop, pole_ztop, pole_nr)
         # Legend
         self.axes.legend(loc='lower center', fontsize=fontSize,
@@ -251,20 +265,31 @@ class AdjustmentPlot(FigureCanvas):
             self.tbar.update()
             self.tbar.push_current()
     
-    def showMarkers(self, x, y, label, colorList):
+    def showMarkers(self, x, y, label, colorList, labelAlign):
         # Displays marker for thresholds
         self.removeMarkers()
+        spacing = 3 * abs(self.axes.get_ylim()[0] - self.axes.get_ylim()[1]) / self.height()
+        
         color = [self.COLOR_MARKER[col] for col in colorList]
-        y -= self.labelBuffer * 3
         for i, xi in enumerate(x):
+            textVa = 'top'
+            marker = '^'
+            markerPos = y[i] - spacing * 3
+            labelPos = y[i] - spacing * 5
+            if labelAlign[i] == 'top':
+                textVa = 'bottom'
+                marker = 'v'
+                markerPos = y[i] + spacing * 7
+                labelPos = y[i] + spacing * 9
+        
             self.arrowMarker.append(
-                self.axes.scatter(xi, y[i], marker='^', zorder=20, c=color[i],
-                                  s=100))
+                self.axes.scatter(xi, markerPos, marker=marker, zorder=20,
+                                  c=color[i], s=100))
             # Adds a label underneath marker with threshold value
             self.arrowLabel.append(
-                self.axes.text(xi, y[i] - 2 * self.labelBuffer, label[i],
-                               zorder=30, ha='center', backgroundcolor='white',
-                               va='top', color=color[i], fontweight='semibold'))
+                self.axes.text(xi, labelPos, label[i], zorder=30, ha='center',
+                               backgroundcolor='white', va=textVa,
+                               color=color[i], fontweight='semibold'))
         self.draw()
     
     def removeMarkers(self):
@@ -331,22 +356,26 @@ class AdjustmentPlot(FigureCanvas):
     def createBirdView(self, poles, azimut):
         # Height of y-axis (+/- from x-axis) in meter
         yLim = 30
-        # Vertical shift of poles that are not in the center (in meter)
-        posShiftVertical = 0.25 * yLim
         # Set fixed limits of the vertical axis
         self.axesBirdView.set_ylim(-yLim, yLim)
         # Horizontal line symbolizing cable line from first to last pole
-        self.axesBirdView.plot([poles[0]['d'], poles[-1]['d']], [0, 0], color='red', linewidth=1)
+        self.axesBirdView.plot([poles[0]['d'], poles[-1]['d']], [0, 0], color='red', linewidth=2.5)
         
         # Calculate marker size by take the height of the drawn plot into account
         # First, draw it once to get the figures size
         self.fig.canvas.draw()
         figExtent = self.axesBirdView.get_window_extent()
-        #  Diameter of the marker in the plot (in meter)
-        markerDiameter = 22
-        # Transform to marker size (in point)
+        # Diameter of the marker in the plot (in meter). This is not really a
+        #  meaningful number any more because the whole scaling has become a
+        #  bit chaotic and empirical. There is just too much transformation
+        #  between svg, matplotlib plot units, pixels and millimeters going on.
+        markerDiameter = 42
+        # Transform to marker size (in point) ... If we're lucky
         #  1 point = self.fig.dpi / 72 pixels
         markerSize = figExtent.height / (2*yLim / markerDiameter) * 72./self.fig.dpi
+        # Vertical shift of poles that are not in the center (in meter)
+        #  The 0.05 is also empirical...
+        posShiftVertical = 0.05 * self.axesBirdView.axes.get_ylim()[1]*2
         # Halo effect around markers and north arrow for better readability
         haloEffect = [pe.withStroke(linewidth=4, foreground="white")]
 
@@ -362,7 +391,8 @@ class AdjustmentPlot(FigureCanvas):
                 symbol: BirdViewSymbol = defaultCircle
             marker = symbol.mplPath
             if pole['abspann'] == 'anfang':
-                marker = symbol.mirror()
+                # Mirror symbol on y-axis
+                marker = symbol.mirror('y')
                 
             # Move marker a bit up/or down depending on pole position
             yPos = 0
@@ -370,6 +400,8 @@ class AdjustmentPlot(FigureCanvas):
                 yPos += posShiftVertical
             elif pole['position'] == 'rechts':
                 yPos -= posShiftVertical
+                # Mirror symbol on x-axis
+                marker = symbol.mirror('x')
             # Plot the marker
             self.axesBirdView.plot(pole['d'], yPos, marker=marker,
                                    markersize=symbol.scale * markerSize,
@@ -378,15 +410,15 @@ class AdjustmentPlot(FigureCanvas):
             if symbol.centerPoint:
                 self.axesBirdView.plot(pole['d'], yPos, marker=defaultCircle.mplPath,
                                        markersize=defaultCircle.scale * markerSize,
-                                       color=defaultCircle.color)
+                                       color=defaultCircle.color, path_effects=haloEffect)
         
         # Add north arrow
         yMin, yMax = self.axesBirdView.get_ylim()
         xMin, xMax = self.axesBirdView.get_xlim()
         # Label font size for north arrow is fixed to 30
-        labelSize = 30
+        labelSize = 25
         # Place arrow in upper right corner, with distance in points
-        baseShiftInPointsY = 50
+        baseShiftInPointsY = 45
         baseShiftInPointsX = 40
         # Calculate shift in plot units
         labelXShift = (baseShiftInPointsX / figExtent.width) * (xMax - xMin)
