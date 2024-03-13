@@ -389,10 +389,20 @@ class AdjustmentPlot(FigureCanvas):
                 symbol: BirdViewSymbol = self.birdViewMarkers[pole['category']]
             else:
                 symbol: BirdViewSymbol = defaultCircle
-            marker = symbol.mplPath
-            if pole['abspann'] == 'anfang':
+            
+            # Mirror symbol depending on whether pole is facing start or end
+            #  and if it's left or right of cable
+            if pole['abspann'] == 'anfang' and pole['position'] == 'rechts':
+                # Mirror symbol on x and y-axis
+                marker = symbol.mirror('xy')
+            elif pole['abspann'] == 'anfang':
                 # Mirror symbol on y-axis
                 marker = symbol.mirror('y')
+            elif pole['position'] == 'rechts':
+                # Mirror symbol on x-axis
+                marker = symbol.mirror('x')
+            else:
+                marker = symbol.mplPath
                 
             # Move marker a bit up/or down depending on pole position
             yPos = 0
@@ -400,8 +410,7 @@ class AdjustmentPlot(FigureCanvas):
                 yPos += posShiftVertical
             elif pole['position'] == 'rechts':
                 yPos -= posShiftVertical
-                # Mirror symbol on x-axis
-                marker = symbol.mirror('x')
+            
             # Plot the marker
             self.axesBirdView.plot(pole['d'], yPos, marker=marker,
                                    markersize=symbol.scale * markerSize,

@@ -82,6 +82,8 @@ class BirdViewSymbol:
             return self.mplPath.transformed(transforms.Affine2D().scale(-1, 1))
         elif axis == 'x':
             return self.mplPath.transformed(transforms.Affine2D().scale(1, -1))
+        elif axis == 'xy':
+            return self.mplPath.transformed(transforms.Affine2D().scale(-1, 1)).transformed(transforms.Affine2D().scale(1, -1))
 
 
 class BirdViewSymbolLoader:
