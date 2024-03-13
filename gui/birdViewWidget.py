@@ -46,8 +46,8 @@ birdViewKatConf = {
         'position': ['links', 'rechts'],
         'abspann': ['anfang', 'ende'],
     },
-    'mehrbaumanker': {
-        'position': ['mitte'],
+    'endmast': {
+        'position': ['links', 'rechts'],
         'abspann': ['anfang', 'ende'],
     },
     # 'endmast_mit_zugseilleitrolle': {
@@ -58,8 +58,12 @@ birdViewKatConf = {
     #     'position': ['links', 'rechts'],
     #     'abspann': ['anfang', 'ende'],
     # },
-    'endmast': {
-        'position': ['links', 'rechts'],
+    'normaler_ankerbaum': {
+        'position': ['mitte'],
+        'abspann': [],
+    },
+    'mehrbaumanker': {
+        'position': ['mitte'],
         'abspann': ['anfang', 'ende'],
     },
     'totmannanker': {
@@ -69,10 +73,6 @@ birdViewKatConf = {
     'verstaerkter_ankerbaum': {
         'position': ['mitte'],
         'abspann': ['anfang', 'ende'],
-    },
-    'normaler_ankerbaum': {
-        'position': ['mitte'],
-        'abspann': [],
     },
 }
 
