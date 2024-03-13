@@ -133,9 +133,11 @@ class BirdViewRow(object):
         self.rowIndex = rowIdx      # Row number in grid layout: starts at 1
         self.poleIndex = poleIdx    # Pole number in Poles.poles array: can start at 0 or 1
         self.rowType = rowType
-        # Default direction is towards endpoint if the cable line goes downhill
-        #  Exception: First element of cable line always goes in direction of start
-        self.defaultAbspannIdx = 0 if self.rowIndex == 1 or self.parent.direction == 'uphill' else 2
+        # Default direction towards start point (abspannIdx = 0) if:
+        #  - it's the first pole / anchor of the cable
+        #  - we're going uphill, and it's not an anchor (= last pole of cable)
+        #  Else: direction towards end point (abspannIdx = 2)
+        self.defaultAbspannIdx = 0 if self.rowIndex == 1 or (self.parent.direction == 'uphill' and self.rowType != 'anchor') else 2
         
         self.labelNr = None
         self.fieldName = None
