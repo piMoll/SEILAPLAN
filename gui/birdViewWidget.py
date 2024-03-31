@@ -137,7 +137,7 @@ class BirdViewRow(object):
         #  - it's the first pole / anchor of the cable
         #  - we're going uphill, and it's not an anchor (= last pole of cable)
         #  Else: direction towards end point (abspannIdx = 2)
-        self.defaultAbspannIdx = 0 if self.rowIndex == 1 or (self.parent.direction == 'uphill' and self.rowType != 'anchor') else 2
+        self.defaultAbspannIdx = (0 if self.rowIndex == 1 or (self.parent.direction == 'uphill' and (self.rowType not in ['anchor', 'pole_anchor'])) else 2)
         
         self.labelNr = None
         self.fieldName = None
