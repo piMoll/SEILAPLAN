@@ -1,5 +1,11 @@
 # Seilaplan Changelog
 
+## Version 3.5.2 (März 2024)
+### Fehlerbehebung
+* Vogelperspektive
+  * Korrigiere Stützensymbole, wenn sie rechts des Seils und in Richtung des Anfangspunkts orientiert sein sollten
+  * Passe Reihenfolge von Stützentypen in Auswahlliste an; erst Stützen-, dann Ankertypen
+
 ## Version 3.5.1 (Januar 2024)
 ### Fehlerbehebung
 * Vogelperspektive: Überarbeite Stützensymbole, passe Länge der Abspannseile an
