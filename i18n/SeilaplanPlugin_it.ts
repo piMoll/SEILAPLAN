@@ -213,7 +213,7 @@
         <location filename="../tools/outputReport.py" line="137"/>
         <source>gewaehlte Grundspannung bei der Anfangsstuetze</source>
         <translatorcomment>Tensione della fune scelta al primo cavalletto</translatorcomment>
-        <translation>Forza di trazione iniziale al primo cavalletto</translation>
+        <translation>Forza di trazione iniziale al punto iniziale</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="142"/>

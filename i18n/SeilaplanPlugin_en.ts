@@ -215,7 +215,7 @@
         <location filename="../tools/outputReport.py" line="137"/>
         <source>gewaehlte Grundspannung bei der Anfangsstuetze</source>
         <translatorcomment>Selected cable tensile force at first support</translatorcomment>
-        <translation>Pre-stress tensile force of unloaded skyline at first support</translation>
+        <translation>Pre-stress tensile force of unloaded skyline at starting point</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="142"/>

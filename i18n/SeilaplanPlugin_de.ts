@@ -182,7 +182,7 @@
         <location filename="../tools/outputReport.py" line="137"/>
         <source>gewaehlte Grundspannung bei der Anfangsstuetze</source>
         <translatorcomment>Gewählte Seilzugkraft bei der Anfangsstütze</translatorcomment>
-        <translation>Tragseilspannkraft bei der Anfangsstütze</translation>
+        <translation>Tragseilspannkraft beim Anfangspunkt</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="142"/>

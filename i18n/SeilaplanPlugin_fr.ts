@@ -213,7 +213,7 @@
         <location filename="../tools/outputReport.py" line="137"/>
         <source>gewaehlte Grundspannung bei der Anfangsstuetze</source>
         <translatorcomment>Tension du câble choisie au premier support</translatorcomment>
-        <translation>Force de traction initiale au premier support</translation>
+        <translation>Force de traction initiale au point initial</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="142"/>
