@@ -1,5 +1,12 @@
 # Seilaplan Changelog
 
+## Version 3.6.0 (Juli 2024)
+### Neue Features
+* Vogelperspektive:
+  * Passe Symbol für Mehrbaumanker an: Abspannseile enden am Anfangs- / Endpunkt der Seillinie, nicht dahinter
+
+### Fehlerbehebung
+
 ## Version 3.5.2 (März 2024)
 ### Fehlerbehebung
 * Vogelperspektive
