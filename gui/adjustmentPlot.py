@@ -369,7 +369,7 @@ class AdjustmentPlot(FigureCanvas):
         #  meaningful number any more because the whole scaling has become a
         #  bit chaotic and empirical. There is just too much transformation
         #  between svg, matplotlib plot units, pixels and millimeters going on.
-        markerDiameter = 42
+        markerDiameter = 35
         # Transform to marker size (in point) ... If we're lucky
         #  1 point = self.fig.dpi / 72 pixels
         markerSize = figExtent.height / (2*yLim / markerDiameter) * 72./self.fig.dpi
@@ -377,7 +377,7 @@ class AdjustmentPlot(FigureCanvas):
         #  The 0.05 is also empirical...
         posShiftVertical = 0.05 * self.axesBirdView.axes.get_ylim()[1]*2
         # Halo effect around markers and north arrow for better readability
-        haloEffect = [pe.withStroke(linewidth=4, foreground="white")]
+        haloEffect = [pe.withStroke(linewidth=3, foreground="white")]
 
         # Draw bird view markers
         defaultCircle: BirdViewSymbol = self.birdViewMarkers['default']
