@@ -136,6 +136,11 @@
         <translation>Inclinaison</translation>
     </message>
     <message>
+        <location filename="../tools/outputReport.py" line="45"/>
+        <source>St.</source>
+        <translation>Supp.</translation>
+    </message>
+    <message>
         <location filename="../tools/outputReport.py" line="431"/>
         <source>Feld</source>
         <translatorcomment>Champs de tension</translatorcomment>

@@ -134,6 +134,11 @@
         <translation>Pendenza</translation>
     </message>
     <message>
+        <location filename="../tools/outputReport.py" line="45"/>
+        <source>St.</source>
+        <translation>Cav.</translation>
+    </message>
+    <message>
         <location filename="../tools/outputReport.py" line="431"/>
         <source>Feld</source>
         <translation>Campata</translation>

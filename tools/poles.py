@@ -40,7 +40,7 @@ class Poles(object):
     INIT_POLE_ANGLE = 0.0
     POLE_DIST_STEP = 1.0
     POLE_HEIGHT_STEP = 0.1
-    POLE_NAME_MAX_LENGTH = 22
+    POLE_NAME_MAX_LENGTH = 42
     
     def __init__(self, project):
         """

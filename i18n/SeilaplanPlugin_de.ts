@@ -129,6 +129,11 @@
         <translation>Felddaten-Messpunkte</translation>
     </message>
     <message>
+        <location filename="../tools/outputReport.py" line="45"/>
+        <source>St.</source>
+        <translation>St.</translation>
+    </message>
+    <message>
         <location filename="../tools/outputReport.py" line="101"/>
         <source>Berechnungsdauer</source>
         <translation>Berechnungsdauer</translation>

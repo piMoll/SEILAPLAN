@@ -137,6 +137,11 @@
         <translation>Slope</translation>
     </message>
     <message>
+        <location filename="../tools/outputReport.py" line="45"/>
+        <source>St.</source>
+        <translation>Supp.</translation>
+    </message>
+    <message>
         <location filename="../tools/outputReport.py" line="435"/>
         <source>Feld</source>
         <translation>Span</translation>

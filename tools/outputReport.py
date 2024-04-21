@@ -35,6 +35,20 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 
 p = 21
 nl = os.linesep
+# When line has more than 9 poles, we start squashing labels and paddings
+SHORTEN_THRESHOLD = 9
+ONLY_NUMBERS_THRESHOLD = 12
+
+
+def textEllipsisByPoleAmount(text, poleCount, poleNumber):
+    if poleCount >= ONLY_NUMBERS_THRESHOLD:
+        return f"{poleNumber}. {tr('St.')}"
+    elif poleCount >= SHORTEN_THRESHOLD and len(text) > 15:
+        return text[:13].strip() + '…'
+    elif len(text) > 20:
+        return text[:18].strip() + '…'
+    else:
+        return text
 
 
 def getTimestamp(tStart):
@@ -92,7 +106,7 @@ def generateReportText(confHandler, result, projname):
 
     poleCount = len(polesWithoutAnchors)
     fieldCount = poleCount - 1
-    sHeader = [i['name'] for i in polesWithoutAnchors]
+    sHeader = [textEllipsisByPoleAmount(p['name'], poleCount, p['nr']) for p in polesWithoutAnchors]
     fHeader = [f"{i+1}. " + tr('Feld') for i in range(fieldCount)]
 
     # First section with duration, dhm and several comments
@@ -111,14 +125,14 @@ def generateReportText(confHandler, result, projname):
                 'sind in der Dokumentation zu finden.')]]
 
     # Section poles
-    str_posi = [["", tr('Hoehe Sattel [m]'), tr('Neigung []'), tr('X-Koordinate'),
+    str_posi = [[tr('Nr.'), tr('Bezeichnung'), tr('Hoehe Sattel [m]'), tr('Neigung []'), tr('X-Koordinate'),
                  tr('Y-Koordinate'), tr('Z-Koordinate [m.ue.M.]'),
                  tr('Kategorie'), tr('Position'), tr('Ausrichtung Abspannseile')]]
     for pole in polesWithAnchors:
         if not pole['active']:
             continue
         str_posi.append([
-            f"{pole['name']}", f"{pole['h']:.1f}", f"{round(pole['angle'], 0)}",
+            f"{pole['nr']}", f"{pole['name']}", f"{pole['h']:.1f}", f"{round(pole['angle'], 0)}",
             f"{confHandler.project.formatCoordinate(pole['coordx'])}",
             f"{confHandler.project.formatCoordinate(pole['coordy'])}",
             f"{round(pole['z'], 1)}"] +
@@ -443,9 +457,10 @@ def generateShortReport(confHandler, result, projname, outputLoc):
     total_s = 0
     for i, pole in enumerate(polesArray[:-1]):
         nextPole = polesArray[i+1]
-        poleName = pole['name'] + (f" ({pole['nr']})" if pole['nr'] else '')
-        nextPoleName = nextPole['name'] + \
-                       (f" ({nextPole['nr']})" if nextPole['nr'] else '')
+        poleName = ((nextPole['name'][:25].strip() + '…' if len(nextPole['name']) > 27 else nextPole['name'])
+                    + (f" ({pole['nr']})" if pole['nr'] else ''))
+        nextPoleName = ((nextPole['name'][:25].strip() + '…' if len(nextPole['name']) > 27 else nextPole['name'])
+                       + (f" ({nextPole['nr']})" if nextPole['nr'] else ''))
         dist_h = nextPole['d'] - pole['d']
         dist_z = nextPole['z'] - pole['z']
         dist_s = (dist_h**2 + dist_z**2)**0.5
@@ -462,7 +477,7 @@ def generateShortReport(confHandler, result, projname, outputLoc):
         
         fieldIdent = "{} -> {}".format(poleName, nextPoleName)
         s_field2.append([
-            (fieldIdent[:42] + '...') if len(fieldIdent) > 42 else fieldIdent,
+            fieldIdent,
             f"{dist_h:.1f} m", f"{dist_s:.1f} m", f"{h_diff:.1f} m",
             f"{slack_e:.1f} m", f"{slack_f:.1f} m"])
     s_field2.append([tr('Total'), f"{total_h:.1f} m", f"{total_s:.1f} m",
@@ -668,14 +683,15 @@ def generateReport(reportText, outputLoc):
                                  ('LEFTPADDING', (0, 0), (0, -1), lPadd)]))
 
     t_posi1 = Table(h_posi, wi_doc, he_rowT)
-    t_posi2 = Table(str_posi, [None] + 5*wi_clo + 3*[None], len(str_posi) * he_row)
+    t_posi2 = Table(str_posi, [None] + 9*[None], len(str_posi) * he_row)
     t_posi1.setStyle(title_style)
     t_posi2.setStyle(TableStyle(stdStyleA + [
+        ('ALIGN', (1, 0), (1, -1), 'LEFT'),
         ('FONT', (0, 0), (-1, 0), fontHeader, smallfontSize)]
-        + [('ALIGN', (6, 0), (8, -1), 'LEFT')]))    # style for 3 bird view rows
+        + [('ALIGN', (7, 0), (9, -1), 'LEFT')]))    # style for 3 bird view rows
 
     t_abst1 = Table(h_abst, wi_doc, he_rowT)
-    t_abst2 = Table(str_abst, [None] + 2*wi_clo, len(str_abst) * he_row)
+    t_abst2 = Table(str_abst, 3*[None], len(str_abst) * he_row)
     t_abst1.setStyle(title_style)
     t_abst2.setStyle(TableStyle(stdStyleA + [
         ('FONT', (0, 1), (-1, 1), fontHeader, smallfontSize)]))
@@ -686,23 +702,44 @@ def generateReport(reportText, outputLoc):
     t_opti2.setStyle(TableStyle(stdStyleA))
 
     t_laen1 = Table(h_leng, wi_doc, he_rowT)
-    t_laen2 = Table(str_laen, [None] + [2*cm] + [1.5*cm]*fieldCount, 4*he_row)
+    t_laen2 = Table(str_laen, [None] + [None] + [1.5*cm]*fieldCount, 4*he_row)
     t_laen1.setStyle(title_style)
     t_laen2.setStyle(TableStyle(stdStyleA + [
         ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize)]))  # field headers
 
     t_durc1 = Table(h_durc, wi_doc, he_rowT)
-    t_durc2 = Table(str_durc, wi_abk + [None] + [1.7*cm]*fieldCount, 4*he_row)
+    t_durc2 = Table(str_durc, wi_abk + [None] + [1.5*cm]*fieldCount, 4*he_row)
     t_durc1.setStyle(title_style)
     t_durc2.setStyle(TableStyle(stdStyleB + [
         ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),  # field headers
         ('FONT', (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
+    
+    
+    # Control font sizes and widths for cases with lots of poles
+    labelWidth = [6.8 * cm]
+    colWidth = [2.4 * cm]
+    colWidthHalf = [1.2 * cm]
+    colFontSize = fontSize
+    padding = 4
+    # Make everything smaller when there are a lot of poles
+    if poleCount >= ONLY_NUMBERS_THRESHOLD:
+        labelWidth = [6.0 * cm]
+        colWidth = [1.4 * cm]
+        colWidthHalf = [0.7 * cm]
+        colFontSize = fontSize - 1
+        padding = 1
+    elif poleCount >= SHORTEN_THRESHOLD:
+        labelWidth = [6.0 * cm]
+        colWidth = [1.8 * cm]
+        colWidthHalf = [0.9 * cm]
+        colFontSize = fontSize - 1
+        padding = 1
 
     t_seil0 = Table(h_seil, wi_doc, he_rowT)
-    t_seil1 = Table(str_seil1, wi_abk + [None] + [1*cm] + [None]*fieldCount, len(str_seil1)*he_row)
-    t_seil2 = Table(str_seil2, wi_abk + [None] + [None]*poleCount, len(str_seil2)*he_row)
+    t_seil1 = Table(str_seil1, wi_abk + [None] + [0.0*cm] + colWidth*poleCount, len(str_seil1)*he_row)
+    t_seil2 = Table(str_seil2, wi_abk + [None] + [1.5*cm]*fieldCount, len(str_seil2)*he_row)
     t_seil3 = Table(str_seil3, wi_abk + [None] + [1*cm], len(str_seil3)*he_row)
-    t_seil4 = Table(str_seil4, wi_abk + [None] + [None]*fieldCount, len(str_seil4)*he_row)
+    t_seil4 = Table(str_seil4, wi_abk + [None] + [1.5*cm]*fieldCount, len(str_seil4)*he_row)
     t_seil0.setStyle(title_style)
     t_seil1.setStyle(TableStyle(stdStyleB + [
         ('FONT', (0, 0), (-1, 0), fontHeader, fontSize),  # first row = subsection
@@ -722,20 +759,6 @@ def generateReport(reportText, outputLoc):
         ('FONT', (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
 
     t_stue1 = Table(h_stue, wi_doc, he_rowT)
-    # Control font sizes and widths for cases with lots of poles
-    labelWidth = [6.8 * cm]
-    colWidth = [2.4 * cm]
-    colWidthHalf = [1.2 * cm]
-    colFontSize = fontSize
-    padding = 6
-    # Make everything smaller when there are a lot of poles
-    if len(str_stue1[0]) > 8:
-        labelWidth = [6.0 * cm]
-        colWidth = [1.8 * cm]
-        colWidthHalf = [0.9 * cm]
-        colFontSize = fontSize - 1
-        padding = 1
-        
     t_stue2 = Table(str_stue1, wi_abk + labelWidth + colWidth*poleCount, len(str_stue1)*he_row)
     t_stue3 = Table(str_stue2, wi_abk + labelWidth + colWidthHalf*poleCount, len(str_stue2)*he_row)
     t_stue1.setStyle(title_style)
@@ -748,20 +771,24 @@ def generateReport(reportText, outputLoc):
     ]
     t_stue2.setStyle(TableStyle(stueStyle + [
         ('FONT', (1, 1), (1, -1), font, colFontSize),       # Label
-        ('FONT', (2, 1), (-1, -1), font, colFontSize)]))    # Number values
+        ('FONT', (2, 1), (-1, -1), font, colFontSize)       # Number values
+    ]))
     steuStyleHalfCol = stueStyle + [
-        ('FONT', (2, 0), (-1, 1), fontHeader, smallfontSize),   # field header
-        ('FONT', (1, 2), (1, -1), font, colFontSize),       # Label
-        ('FONT', (2, 2), (-1, -1), font, colFontSize),      # Number values
+        ('FONT', (2, 0), (-1, 1), fontHeader, smallfontSize),       # field header
+        ('FONT', (1, 2), (1, -1), font, colFontSize),               # Label
+        ('FONT', (2, 2), (-1, -1), font, colFontSize),              # Number values
         ('ALIGN', (2, 1), (2, -1), 'CENTER'),
         ('ALIGN', (-2, 1), (-2, -1), 'CENTER')]
     for i in range(2, poleCount*2+2, 2):
         steuStyleHalfCol += [
-                         ('RIGHTPADDING', (i, 1), (i, -1), 1)]
+                         ('LINEBEFORE', (i, 0), (i, 0), 0.5, colors.lightgrey),     # line left of pole title
+                         ('LINEBEFORE', (i, 1), (i, -1), 0.5, colors.lightgrey),     # line left of left pole value
+                         ('RIGHTPADDING', (i, 1), (i, -1), 1),
+        ]
     t_stue3.setStyle(TableStyle(steuStyleHalfCol))
 
     t_wink1 = Table(h_wink, wi_doc, he_rowT)
-    t_wink2 = Table(str_wink, wi_abk + [None] + [None]*fieldCount, 7*he_row)
+    t_wink2 = Table(str_wink, wi_abk + [None] + colWidth*fieldCount, 7*he_row)
     t_wink1.setStyle(title_style)
     t_wink2.setStyle(TableStyle(stdStyleB + [
         ('FONT', (1, 0), (1, 0), fontHeader, fontSize),  # heading empty cable
@@ -771,7 +798,7 @@ def generateReport(reportText, outputLoc):
         ('FONT', (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
 
     t_nach1 = Table(h_nach, wi_doc, he_rowT)
-    t_nach2 = Table(str_nach, wi_abk + [5*cm] + [None]*fieldCount, len(str_nach) * he_row)
+    t_nach2 = Table(str_nach, wi_abk + [None] + colWidth*fieldCount, len(str_nach) * he_row)
     t_nach1.setStyle(title_style)
     t_nach2.setStyle(TableStyle(stdStyleB + [
         ('FONT', (2, 0), (-1, 0), fontHeader, smallfontSize),  # field header

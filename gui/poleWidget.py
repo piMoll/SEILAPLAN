@@ -320,7 +320,7 @@ class PoleRow(object):
     def addFieldName(self, value):
         self.fieldName = QLineEditWithFocus(self.widget)
         self.fieldName.setFocusPolicy(Qt.ClickFocus)
-        self.fieldName.setFixedWidth(200)
+        self.fieldName.setFixedWidth(250)
         self.fieldName.setText(value)
         self.row.addWidget(self.fieldName)
 
