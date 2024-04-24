@@ -333,7 +333,7 @@ class AdjustmentPlot(FigureCanvas):
                                fontsize=12, ha='center', fontweight='semibold',
                                color=self.COLOR_MARKER[0])
         
-    def layoutDiagrammForPrint(self, title, poles):
+    def layoutDiagrammForPrint(self, title, poles, direction):
         self.axes.set_title(self.tr('Seilaplan Plot  -  {}').format(title),
                             fontsize=10, multialignment='center')
         if not self.axesBirdView:
@@ -348,10 +348,14 @@ class AdjustmentPlot(FigureCanvas):
             # Don't label anchors
             if pole['poleType'] == 'anchor':
                 continue
-            poleNr = f"({pole['nr']})" if pole['nr'] else ''
+            poleNr = f"{pole['nr']}: " if pole['nr'] else ''
+            poleName = pole['name'][:16].strip() + '…' if len(pole['name']) > 18 else pole['name']
+            rotation = 30 if direction == 'downhill' else -30
+            ha = 'left' if direction == 'downhill' else 'right'
             self.axes.text(pole['dtop'], pole['ztop'] + self.labelBuffer * 4,
-                           f"{pole['name']} {poleNr}\nH = {pole['h']:.1f} m",
-                           ha='center', fontsize=8)
+                           f"{poleNr}{poleName}\nH = {pole['h']:.1f} m",
+                           ha=ha, fontsize=8, rotation=rotation,
+                           rotation_mode='anchor', transform_rotates_text=True)
         
     def createBirdView(self, poles, azimut):
         # Height of y-axis (+/- from x-axis) in meter

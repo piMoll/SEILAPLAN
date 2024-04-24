@@ -604,7 +604,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
                                self.profile.peakLoc_x, self.profile.peakLoc_z,
                                self.profile.surveyPnts)
             printPlot.updatePlot(self.poles.getAsArray(), self.cableline, True)
-            printPlot.layoutDiagrammForPrint(projName, poles)
+            printPlot.layoutDiagrammForPrint(projName, poles, self.poles.direction)
             imgPath = None
             if includingBirdView:
                 # Create second plot
