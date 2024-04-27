@@ -4,6 +4,7 @@
 ### Neue Features
 * Vogelperspektive:
   * Passe Symbol für Mehrbaumanker an: Abspannseile enden am Anfangs- / Endpunkt der Seillinie, nicht dahinter
+* Erlaube längere Stützenbezeichungen (42 statt 22 Zeichen). Lange Bezeichnungen werden in Berichten und dem Diagramm gekürzt, um die Lesbarkeit zu verbessern.
 
 ### Fehlerbehebung
 
