@@ -344,18 +344,22 @@ class AdjustmentPlot(FigureCanvas):
         self.axes.grid(which='major', lw=0.5)
         self.axes.grid(which='minor', lw=0.5, linestyle=':')
         # Label poles
+        # Halo effect around text for better readability
+        haloEffect = [pe.withStroke(linewidth=2, foreground="white")]
         for idx, pole in enumerate(poles):
             # Don't label anchors
             if pole['poleType'] == 'anchor':
                 continue
             poleNr = f"{pole['nr']}: " if pole['nr'] else ''
-            poleName = pole['name'][:16].strip() + '…' if len(pole['name']) > 18 else pole['name']
+            poleName = pole['name'][:28].strip() + '…' if len(pole['name']) > 30 else pole['name']
             rotation = 30 if direction == 'downhill' else -30
             ha = 'left' if direction == 'downhill' else 'right'
+            
             self.axes.text(pole['dtop'], pole['ztop'] + self.labelBuffer * 4,
                            f"{poleNr}{poleName}\nH = {pole['h']:.1f} m",
-                           ha=ha, fontsize=8, rotation=rotation,
-                           rotation_mode='anchor', transform_rotates_text=True)
+                           ha=ha, fontsize=7, rotation=rotation,
+                           rotation_mode='anchor', transform_rotates_text=True,
+                           path_effects=haloEffect)
         
     def createBirdView(self, poles, azimut):
         # Height of y-axis (+/- from x-axis) in meter
