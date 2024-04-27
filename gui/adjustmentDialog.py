@@ -116,7 +116,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         
         # Fill bird view widget with data
         self.birdViewLayout = BirdViewWidget(self.tabBirdView, self.birdViewGrid, self.poles)
-        self.birdViewLayout.sig_updatePole.connect(self.updateBirdViewParams)
+        self.birdViewLayout.sig_updatePole.connect(self.onUpdateBirdViewParams)
         self.tabWidget.currentChanged.connect(self.onBirdViewVisible)
         
         # Project header
@@ -349,7 +349,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.confHandler.params.setOptSTA(newVal)
         return str(self.confHandler.params.optSTA)
 
-    def updateBirdViewParams(self, idx, property_name, newVal):
+    def onUpdateBirdViewParams(self, idx, property_name, newVal):
         self.poles.update(idx, property_name, newVal)
     
     def onBirdViewVisible(self, tabIdx):
