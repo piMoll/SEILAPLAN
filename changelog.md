@@ -3,11 +3,15 @@
 ## Version 3.6.0 (Juli 2024)
 ### Neue Features
 * Vogelperspektive:
-  * Passe Symbol für Mehrbaumanker an: Abspannseile enden am Anfangs- / Endpunkt der Seillinie, nicht dahinter
+    * Passe Symbol für Mehrbaumanker an: Abspannseile enden am Anfangs- / Endpunkt der Seillinie, nicht dahinter
 * Erlaube längere Stützenbezeichungen (42 statt 22 Zeichen). Lange Bezeichnungen werden in Berichten und dem Diagramm gekürzt, um die Lesbarkeit zu verbessern.
 
 ### Fehlerbehebung
 
+## Version 3.5.3 (Mai 2024)
+### Fehlerbehebung
+* Fehler beim Start des Plugins auf Windows mit QGIS Version 3.36, weil eine scipy-Bibliothek fehlt
+  * 
 ## Version 3.5.2 (März 2024)
 ### Fehlerbehebung
 * Vogelperspektive
