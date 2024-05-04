@@ -1,5 +1,9 @@
 # Seilaplan Changelog
 
+## Version 3.5.3 (Mai 2024)
+### Fehlerbehebung
+* Fehler beim Start des Plugins auf Windows mit QGIS Version 3.36, weil eine scipy-Bibliothek fehlt
+  * 
 ## Version 3.5.2 (März 2024)
 ### Fehlerbehebung
 * Vogelperspektive
