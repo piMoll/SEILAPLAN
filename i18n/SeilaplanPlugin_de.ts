@@ -1810,8 +1810,18 @@ Bitte passen Sie die Eingabe an.</translation>
     <name>ProjectConfHandler</name>
     <message>
         <location filename="../tools/configHandler_project.py" line="446"/>
-        <source>Bitte definieren Sie gueltige Start- und Endkoordinaten</source>
-        <translation>Bitte definieren Sie gültige Start- und Endkoordinaten</translation>
+        <source>Bitte definieren Sie Terraindaten</source>
+        <translation>Bitte definieren Sie Terraindaten</translation>
+    </message>
+    <message>
+        <location filename="../tools/configHandler_project.py" line="446"/>
+        <source>Bitte zeichnen Sie Start- und Endpunkt der Seillinie in die Karte ein (Schaltflaeche zeichnen)</source>
+        <translation>Bitte zeichnen Sie Start- und Endpunkt der Seillinie in die Karte ein (Schaltfläche &quot;zeichnen&quot;)</translation>
+    </message>
+    <message>
+        <location filename="../tools/configHandler_project.py" line="446"/>
+        <source>Bitte zeichnen Sie die Seillinie in die Karte (Schaltflaeche zeichnen) oder definieren sie Start- und Endkoordinaten manuell</source>
+        <translation>Bitte zeichnen Sie die Seillinie in die Karte (Schaltfläche &quot;zeichnen&quot;) oder definieren sie Start- und Endkoordinaten manuell</translation>
     </message>
     <message>
         <location filename="../tools/configHandler_project.py" line="448"/>
@@ -2353,6 +2363,21 @@ Bericht übertragen)</translation>
 </context>
 <context>
     <name>SeilaplanPluginDialog</name>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
+        <source>Start- Endpunkt auf dem Gelaendeprofil definieren</source>
+        <translation>Start-/ Endpunkt auf dem Geländeprofil definieren</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
+        <source>Koordinate kann nicht manuell veraendert werden, benutzen Sie die Schaltflaeche zeichnen</source>
+        <translation>Koordinate kann nicht manuell verändert werden, benutzen Sie die Schaltfläche &quot;zeichnen&quot;</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
+        <source>Bitte erst Terraindaten definieren</source>
+        <translation>Bitte erst Terraindaten definieren</translation>
+    </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
         <source>Parameterset loeschen</source>

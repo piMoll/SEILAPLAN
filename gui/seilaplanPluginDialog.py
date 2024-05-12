@@ -136,13 +136,15 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         
         Processing.initialize()
     
-    # noinspection PyMethodMayBeStati
-    def tr(self, message, **kwargs):
+    def tr(self, message, context='', **kwargs):
         """Get the translation for a string using Qt translation API.
         We implement this ourselves since we do not inherit QObject.
 
         :param message: String for translation.
         :type message: str, QString
+        
+        :param context: String for translation.
+        :type context: str, QString
 
         :returns: Translated version of message.
         :rtype: QString
@@ -151,8 +153,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         ----------
         **kwargs
         """
-        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
-        return QCoreApplication.translate(type(self).__name__, message)
+        if context == '':
+            context = type(self).__name__
+        return QCoreApplication.translate(context, message, **kwargs)
     
     def connectGuiElements(self):
         """Connect GUI elements with functions.
