@@ -293,6 +293,14 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.rasterField.blockSignals(False)
         self.buttonRefreshRa.setEnabled(True)
         self.buttonLoadSurveyData.setEnabled(False)
+        # Enable coordinate fields
+        for field in self.coordFields.values():
+            self.setFieldReadOnly(field, False)
+        # Change label next to draw button
+        self.labelDraw.setText(self.tr("Seillinie in Karte einzeichnen", "SeilaplanDialogUI"))
+        self.labelCoords.setText(self.tr("oder Koordinaten der Seillinie manuell angeben:", "SeilaplanDialogUI"))
+        # Deactivate ui elements in group cableline
+        self.toggleCableLineUI(False)
 
     def enableSurveyDataHeightSource(self):
         if not self.radioSurveyData.isChecked():
@@ -307,7 +315,26 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.rasterField.blockSignals(False)
         self.buttonRefreshRa.setEnabled(False)
         self.buttonLoadSurveyData.setEnabled(True)
-
+        # Disable coordinate fields
+        for field in self.coordFields.values():
+            self.setFieldReadOnly(field, True)
+        # Change label next to draw button
+        self.labelDraw.setText(self.tr('Start- Endpunkt auf dem Gelaendeprofil definieren'))
+        self.labelCoords.setText("")
+        # Deactivate ui elements in group cableline
+        self.toggleCableLineUI(False)
+    
+    
+    def setFieldReadOnly(self, field, readonly):
+        field.setReadOnly(readonly)
+        field.blockSignals(readonly)
+        if readonly:
+            field.setStyleSheet("color: rgb(136, 138, 133);")
+            field.setToolTip(self.tr('Koordinate kann nicht manuell veraendert werden, benutzen Sie die Schaltflaeche zeichnen'))
+        else:
+            field.setStyleSheet("")
+            field.setToolTip("")
+    
     def getListenerLineEdit(self, property_name):
         return lambda: self.parameterChangedLineEdit(property_name)
     
@@ -562,11 +589,10 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         if rasterValid and singleRasterLayer:
             self.iface.setActiveLayer(singleRasterLayer)
             
-        # If a raster was selected, OSM and Contour Layers can be generated,
-        #  else buttons are disabled
-        self.osmLyrButton.setEnabled(rasterValid)
+        # If a raster was selected, a contour layer can be generated
         self.contourLyrButton.setEnabled(rasterValid)
-        self.draw.setEnabled(rasterValid)
+        # Activate/Deactivate other ui elements
+        self.toggleCableLineUI(rasterValid)
     
     def searchForRaster(self, rasterpaths):
         """ Checks if a raster from a saved project is present in the table
@@ -705,14 +731,14 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             self.fieldSurveyDataPath.setText(self.projectHandler.getHeightSourceAsStr())
             # Activate draw tool
             self.drawTool.surveyDataMode = True
-            self.draw.setEnabled(True)
-            # Activate OSM button
-            self.osmLyrButton.setEnabled(True)
+            
+            # Activate ui elements
+            self.toggleCableLineUI(True)
+            highlightButton(self.draw)
         else:
             self.fieldSurveyDataPath.setText('')
             self.drawTool.surveyDataMode = False
-            self.draw.setEnabled(False)
-            self.osmLyrButton.setEnabled(False)
+            self.toggleCableLineUI(False)
     
     def removeSurveyDataLayer(self):
         try:
@@ -734,6 +760,19 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
     #     if isinstance(focused_widget, QtGui.QLineEdit):
     #         focused_widget.clearFocus()
     #     QtGui.QDialog.mousePressEvent(self, event)
+    
+    def toggleCableLineUI(self, isEnabled):
+        # Activate draw button
+        self.draw.setEnabled(isEnabled)
+        if not isEnabled:
+            self.draw.setToolTip(self.tr('Bitte erst Terraindaten definieren'))
+            unHighlightButton(self.draw)
+        else:
+            self.draw.setToolTip('')
+        self.osmLyrButton.setEnabled(isEnabled)
+        # Enable coordinate fields
+        for field in self.coordFields.values():
+            field.setEnabled(isEnabled)
 
     def drawLine(self):
         if self.drawTool.isActive:
@@ -843,8 +882,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.projectHandler.resetProfile()
         self.updateLineByMapDraw(linecoord[0], 'A')
         self.updateLineByMapDraw(linecoord[1], 'E')
-        # Stop pressing down button
+        # Stop pressing button down
         self.draw.setChecked(False)
+        unHighlightButton(self.draw)
     
     def onShowProfile(self):
         try:
@@ -1047,3 +1087,16 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             self.drawTool.reset()
         else:
             self.cleanUp()
+
+
+
+
+def highlightButton(button):
+    button.setStyleSheet("QPushButton { padding: 3px; border: 2px solid; border-radius: 4px; border-color: red }")
+
+
+def unHighlightButton(button):
+    button.setStyleSheet("")
+
+
+    

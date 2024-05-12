@@ -442,10 +442,15 @@ class ProjectConfHandler(AbstractConfHandler):
     
     def checkValidState(self):
         msg = ''
-        if not self.profileIsValid():
-            msg = self.tr('Bitte definieren Sie gueltige Start- und Endkoordinaten')
         if not self.projectName:
             msg = self.tr('Bitte definieren Sie einen Projektnamen')
+        elif not self.heightSource:
+            msg = self.tr('Bitte definieren Sie Terraindaten')
+        elif not self.profileIsValid():
+            if self.heightSourceType == 'survey':
+                msg = self.tr('Bitte zeichnen Sie Start- und Endpunkt der Seillinie in die Karte ein (Schaltflaeche zeichnen)')
+            else:
+                msg = self.tr('Bitte zeichnen Sie die Seillinie in die Karte (Schaltflaeche zeichnen) oder definieren sie Start- und Endkoordinaten manuell')
         if msg:
             self.onError(msg, self.tr('Ungueltige Daten'))
         return self.profileIsValid() and self.projectName
