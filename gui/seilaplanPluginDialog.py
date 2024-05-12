@@ -736,6 +736,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
     #     QtGui.QDialog.mousePressEvent(self, event)
 
     def drawLine(self):
+        if self.drawTool.isActive:
+            self.drawTool.reset()
+            return
         if self.projectHandler.heightSourceType in ['dhm', 'dhm_list']:
             self.drawTool.drawLine()
         elif self.projectHandler.heightSourceType == 'survey':

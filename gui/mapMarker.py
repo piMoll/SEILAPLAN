@@ -73,6 +73,7 @@ class MapMarkerTool(QgsMapTool):
         
         # Backup the last active Tool before the profile tool became active
         self.savedTool = self.canvas.mapTool()
+        self.isActive = False
 
     def drawLine(self, transformFunc=None):
         if not transformFunc:
@@ -86,10 +87,12 @@ class MapMarkerTool(QgsMapTool):
     def activate(self):
         self.removeMarker()
         self.canvas.setCursor(self.cursor)
+        self.isActive = True
 
     def deactivate(self):
         self.canvas.setCursor(QCursor(Qt.OpenHandCursor))
         self.linePoints = []
+        self.isActive = False
 
     def reset(self):
         self.removeMarker()
@@ -118,7 +121,7 @@ class MapMarkerTool(QgsMapTool):
             self.dblclktemp = None
             return
         else:
-            # Click ist first point of line
+            # Click is first point of line
             if len(self.linePoints) == 0:
                 # Mark point with marker symbol
                 self.drawMarker(mapPos, firstPoint=True)
