@@ -226,10 +226,7 @@ class ProjectConfHandler(AbstractConfHandler):
         :param sourcePath: path to file
         :param surveySourceType: Type of survey file to load
          """
-        self.heightSource = None
-        self.heightSourceType = None
-        self.surveyType = None
-        self.virtRasterSource = None
+        self.resetHeightSource()
         heights = None
         if sourceType == 'dhm':
             heights = Raster(layer, sourcePath)
@@ -573,6 +570,13 @@ class ProjectConfHandler(AbstractConfHandler):
         }
         self.noPoleSection = []
         self.polesFromFile = []
+    
+    def resetHeightSource(self):
+        del self.heightSource
+        self.heightSource = None
+        self.heightSourceType = None
+        self.surveyType = None
+        self.virtRasterSource = None
     
     def reset(self):
         self.poles = None

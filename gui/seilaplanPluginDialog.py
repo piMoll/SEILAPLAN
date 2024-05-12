@@ -124,15 +124,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         # Dialog windows for saving parameter and cable sets
         self.paramSetWindow = DialogSaveParamset(self)
 
-        # Set initial sate of some buttons
-        # Choosing height data
+        # Set initial state of terrain data group
         self.enableRasterHeightSource()
-        # Button to show profile
-        self.buttonShowProf.setEnabled(False)
-        # Button that activates drawing on map
-        self.draw.setEnabled(False)
-        # Button stays down when pressed
-        self.draw.setCheckable(True)
         
         Processing.initialize()
     
@@ -170,7 +163,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.buttonInfo.clicked.connect(self.onInfo)
 
         self.radioRaster.toggled.connect(self.onToggleHeightSource)
-        self.radioSurveyData.toggled.connect(self.onToggleHeightSource)
+        # self.radioSurveyData.toggled.connect(self.onToggleHeightSource) # Second trigger not necessary
         self.buttonLoadSurveyData.clicked.connect(self.onLoadSurveyData)
         
         self.fieldTypeA.currentTextChanged.connect(self.onTypeAChange)
@@ -278,6 +271,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         else:
             self.enableSurveyDataHeightSource()
         # Reset profile data
+        self.projectHandler.resetHeightSource()
         self.projectHandler.resetProfile()
         self.drawTool.surveyDataMode = False
         self.removeSurveyDataLayer()
@@ -575,13 +569,12 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             self.projectHandler.setHeightSource(rasterLyrList, 'dhm_list')
             rasterValid = True
         else:
-            self.projectHandler.setHeightSource(None)
             rasterValid = False
 
         # Check spatial reference of raster and show message
         if not rasterValid or not self.checkEqualSpatialRef():
             # Unset raster
-            self.projectHandler.setHeightSource(None)
+            self.projectHandler.resetHeightSource()
             # Remove raster selection
             self.rasterField.blockSignals(True)
             self.rasterField.deselectAllOptions()
@@ -718,7 +711,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
 
         # Check the spatial reference and inform user if necessary
         if not self.checkEqualSpatialRef():
-            self.projectHandler.setHeightSource(None)
+            self.projectHandler.resetHeightSource()
             self.projectHandler.resetProfile()
         
         heightSource = self.projectHandler.heightSource
