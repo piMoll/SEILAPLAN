@@ -1821,7 +1821,7 @@ Bitte passen Sie die Eingabe an.</translation>
     <message>
         <location filename="../tools/configHandler_project.py" line="446"/>
         <source>Bitte zeichnen Sie die Seillinie in die Karte (Schaltflaeche zeichnen) oder definieren sie Start- und Endkoordinaten manuell</source>
-        <translation>Bitte zeichnen Sie die Seillinie in die Karte (Schaltfläche &quot;zeichnen&quot;) oder definieren sie Start- und Endkoordinaten manuell</translation>
+        <translation>Bitte zeichnen Sie die Seillinie in die Karte (Schaltfläche &quot;zeichnen&quot;) oder definieren sie Start- und Endkoordinaten manuell.</translation>
     </message>
     <message>
         <location filename="../tools/configHandler_project.py" line="448"/>

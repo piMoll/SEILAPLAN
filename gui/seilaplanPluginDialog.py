@@ -410,6 +410,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         
         # Update start and end point
         self.checkPoints()
+        unHighlightButton(self.draw)
         
         # Load all predefined and user-defined parameter sets from the
         # config folder (maybe a new set was added when project was opened)
