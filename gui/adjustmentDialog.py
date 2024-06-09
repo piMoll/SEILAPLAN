@@ -41,6 +41,7 @@ from .mapMarker import MapMarkerTool
 from ..tools.birdViewMapExtractor import extractMapBackground
 from ..core.cablelineFinal import preciseCable, updateWithCableCoordinates
 from ..tools.calcThreshold import ThresholdUpdater
+from ..tools.poles import Poles
 from ..tools.outputReport import generateReportText, generateReport, \
     createOutputFolder, generateShortReport
 from ..tools.outputGeo import organizeDataForExport, addToMap, \
@@ -67,7 +68,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.confHandler = confHandler
         self.confHandler.setDialog(self)
         self.profile = self.confHandler.project.profile
-        self.poles = self.confHandler.project.poles
+        self.poles: Poles = self.confHandler.project.poles
         # Max distance the anchors can move away from initial position
         self.anchorBuffer = self.confHandler.project.heightSource.buffer
         # Path to plugin root
@@ -93,11 +94,14 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         tbar = MyNavigationToolbar(self.plot, self)
         tbar.pan()
         self.plot.setToolbar(tbar)
-        self.plotLayout.addWidget(self.plot)
-        self.plotLayout.addWidget(tbar, alignment=Qt.AlignHCenter | Qt.AlignTop)
+        self.plotContainer.addWidget(self.plot)
+        self.toolbarContainer.addWidget(tbar, alignment=Qt.AlignLeft | Qt.AlignTop)
+        self.fieldPlotTopic.addItem("Max. res. Seilkraft")
+        self.fieldPlotTopic.addItem("BHD & O Bundstelle")
+        self.fieldPlotTopic.addItem("Leer- und Lastseildurchhang in Feldmitte")
         
         # Fill tab widget with data
-        self.poleLayout = CustomPoleWidget(self.tabPoles, self.poleVGrid, self.poles)
+        self.poleLayout = CustomPoleWidget(self.tabPoles, self.poleGrid, self.poles)
         # self.poleLayout.sig_zoomIn.connect(self.zoomToPole)
         # self.poleLayout.sig_zoomOut.connect(self.zoomOut)
         self.poleLayout.sig_createPole.connect(self.addPole)
@@ -131,6 +135,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         # Thread for instant recalculation when poles or parameters are changed
         self.timer = QTimer()
         self.configurationHasChanged = False
+        self.refreshPoleWidgetRows = False
         self.isRecalculating = False
         self.unsavedChanges = True
         
@@ -267,7 +272,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
                 self.updateMarkerOnMap(i)
         self.updateLineOnMap()
         # Update anchors
-        self.updateAnchorState(prevAnchorA, prevAnchorE)
+        self.updateAnchorMarkerState(prevAnchorA, prevAnchorE)
         # self.plot.zoomTo(self.poles.poles[idx])
         self.poleLayout.changeRow(idx, property_name, newVal, prevAnchorA, prevAnchorE)
         if property_name == 'name':
@@ -279,7 +284,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
     def addPole(self, idx):
         newPoleIdx = idx + 1
         self.poles.add(newPoleIdx, None, manually=True)
-        self.poleLayout.addRow(newPoleIdx)
+        self.refreshPoleWidgetRows = True
         self.addMarkerToMap(newPoleIdx)
         # self.plot.zoomOut()
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
@@ -287,13 +292,13 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
     
     def deletePole(self, idx):
         self.poles.delete(idx)
-        self.poleLayout.deleteRow(idx)
+        self.refreshPoleWidgetRows = True
         self.drawTool.removeMarker(idx)
         # self.plot.zoomOut()
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         self.configurationHasChanged = True
     
-    def updateAnchorState(self, prevAnchorA, prevAnchorE):
+    def updateAnchorMarkerState(self, prevAnchorA, prevAnchorE):
         """Update anchor markers on map: depending on nature of pole change,
         anchors can be activated or deactivated in self.poles.update."""
         if prevAnchorA is not self.poles.hasAnchorA:
@@ -522,6 +527,10 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             self.updateRecalcStatus('liftsOff')
         else:
             self.updateRecalcStatus('cableSuccess')
+        
+        if self.refreshPoleWidgetRows:
+            self.refreshPoleWidgetRows = False
+            self.poleLayout.refresh()
         self.configurationHasChanged = False
         self.isRecalculating = False
         self.unsavedChanges = True

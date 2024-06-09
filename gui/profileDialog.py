@@ -27,7 +27,7 @@ import numpy as np
 from math import floor
 from qgis.PyQt.QtCore import QSize, Qt, QCoreApplication
 from qgis.PyQt.QtWidgets import (QDialog, QWidget, QLabel, QDialogButtonBox,
-    QHBoxLayout, QPushButton, QVBoxLayout, QFrame, QSpacerItem, QSizePolicy)
+    QHBoxLayout, QPushButton, QVBoxLayout, QFrame, QSpacerItem, QSizePolicy, QGridLayout)
 from qgis.PyQt.QtGui import QIcon, QPixmap
 
 from .profilePlot import ProfilePlot
@@ -69,7 +69,7 @@ class ProfileDialog(QDialog):
         # Layout
         main_widget = QWidget(self)
         self.container = QVBoxLayout(main_widget)
-        self.outerLayout = QVBoxLayout()
+        self.layout = QGridLayout()
 
         # GUI fields
         stueTitle = QLabel('<b>' + self.tr('Stuetzenoptimierung einschraenken') + '</b>')
@@ -108,7 +108,7 @@ class ProfileDialog(QDialog):
         self.container.addWidget(line1)
         self.container.addWidget(stueTitle)
         self.container.addLayout(hbox)
-        self.container.addLayout(self.outerLayout)
+        self.container.addLayout(self.layout)
         self.container.addItem(btnBoxSpacer)
         self.container.addWidget(self.buttonBox)
 
@@ -120,10 +120,10 @@ class ProfileDialog(QDialog):
         self.setLayout(self.container)
         
         # Gui's functionality for fixed pole gui fields
-        self.buildPoleHeader()
-        self.poleLayout = CustomPoleWidget(self, self.outerLayout, self.poleData)
+        self.poleLayout = CustomPoleWidget(self, self.layout, self.poleData, 'profileDialog')
         self.poleLayout.sig_updatePole.connect(self.updatePole)
         self.poleLayout.sig_deletePole.connect(self.deletePole)
+        self.poleLayout.setInitialGui([self.profileMin, self.profileMax])
 
     # noinspection PyMethodMayBeStatic
     def tr(self, message, **kwargs):
@@ -169,9 +169,12 @@ class ProfileDialog(QDialog):
         # Make sure the pole layout has the correct reference to the pole data
         self.poleLayout.poleArr = self.poleData
         # Set the max ranges
-        self.poleLayout.setInitialGui([self.profileMin, self.profileMax])
+        self.poleLayout.distRange = [self.profileMin, self.profileMax]
+        
         for pole in poles:
-            self.addPole(pole['d'], pole['z'], pole['h'], name=pole['name'])
+            self.addPole(pole['d'], pole['z'], pole['h'], name=pole['name'], layoutUpdate=False)
+        self.poleLayout.refresh()
+        
         for section in sections:
             # Draw line onto map
             self.activateMapLine(section[0])
@@ -181,28 +184,8 @@ class ProfileDialog(QDialog):
                 z = self.getZValue(x)
                 self.sc.drawSection(x, z)
         self.sc.draw()
-
-    def buildPoleHeader(self):
-        headerRow = QHBoxLayout()
-        spacerItemA = QSpacerItem(60, 20, QSizePolicy.Fixed,
-                                 QSizePolicy.Minimum)
-        spacerItemE = QSpacerItem(60, 20, QSizePolicy.Expanding,
-                                 QSizePolicy.Minimum)
-        headername = QLabel(self.tr('Stuetzenbezeichnung'))
-        headername.setMinimumSize(QSize(180, 30))
-        headerDist = QLabel(self.tr('Hori.distanz'))
-        headerDist.setMinimumSize(QSize(95, 30))
-        headerHeight = QLabel(self.tr('Hoehe'))
-        headerHeight.setMinimumSize(QSize(85, 30))
-
-        headerRow.addItem(spacerItemA)
-        headerRow.addWidget(headername)
-        headerRow.addWidget(headerDist)
-        headerRow.addWidget(headerHeight)
-        headerRow.addItem(spacerItemE)
-        self.outerLayout.addLayout(headerRow)
     
-    def addPole(self, d, z, h=None, name='', angle=False):
+    def addPole(self, d, z, h=None, name='', angle=False, layoutUpdate=True):
         """Called when user clicks onto plot window to create fixed pole.
         Function creates a new row in gui with properties of pole, creates a
         point in the plot and a marker on the map."""
@@ -232,7 +215,8 @@ class ProfileDialog(QDialog):
             'active': True,
             'plotPoint': drawnPoint
         })
-        self.poleLayout.addRow(idx, addBtn=False)
+        if layoutUpdate:
+            self.poleLayout.refresh()
         
     def updatePole(self, idx, property_name, val):
         """Called when user manually changes distance or height values in
@@ -261,8 +245,8 @@ class ProfileDialog(QDialog):
         removes point in plot, marker on map and row in gui."""
         self.sc.deletePoint(self.poleData[idx]['plotPoint'])
         self.drawTool.removeMarker(idx+1)
-        self.poleLayout.deleteRow(idx)
         self.poleData.pop(idx)
+        self.poleLayout.refresh()
     
     def getZValue(self, dist):
         return self.zdata[np.argmax(self.xdata >= dist)]
