@@ -1060,32 +1060,6 @@ Lastseil</translation>
         <translation>Feinjustierung der Stützen</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="671"/>
-        <source>Nr.</source>
-        <translation>Nr.</translation>
-    </message>
-    <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="642"/>
-        <source>Stuetzenbezeichnung</source>
-        <translation>Stützenbezeichnung</translation>
-    </message>
-    <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="643"/>
-        <source>Horiz.distanz</source>
-        <translation>Horiz.distanz</translation>
-    </message>
-    <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="644"/>
-        <source>Stuetzenhoehe</source>
-        <translation>Sattelhöhe</translation>
-    </message>
-    <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="645"/>
-        <source>Neigung</source>
-        <translatorcomment>Neigung der Stütze und nicht Geländeneigung</translatorcomment>
-        <translation>Neigung</translation>
-    </message>
-    <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="665"/>
         <source>Tragsystem</source>
         <translation>Tragsystem</translation>
@@ -1622,7 +1596,39 @@ Bitte passen Sie die Eingabe an.</translation>
     </message>
 </context>
 <context>
-    <name>PoleRow</name>
+    <name>CustomPoleWidget</name>
+    <message>
+        <location filename="../gui/poleWidget.py" line="103"/>
+        <source>Nr.</source>
+        <translation>Nr.</translation>
+    </message>
+    <message>
+        <location filename="../gui/poleWidget.py" line="103"/>
+        <source>Stuetzenbezeichnung</source>
+        <translation>Stützenbezeichnung</translation>
+    </message>
+    <message>
+        <location filename="../gui/poleWidget.py" line="103"/>
+        <source>Horiz.distanz</source>
+        <translation>Horiz.distanz</translation>
+    </message>
+    <message>
+        <location filename="../gui/poleWidget.py" line="103"/>
+        <source>Stuetzenhoehe</source>
+        <translation>Sattelhöhe</translation>
+    </message>
+    <message>
+        <location filename="../gui/poleWidget.py" line="103"/>
+        <source>Neigung</source>
+        <translatorcomment>Neigung der Stütze und nicht Geländeneigung</translatorcomment>
+        <translation>Neigung</translation>
+    </message>
+    <message>
+        <location filename="../gui/poleWidget.py" line="103"/>
+        <source>O Bundst.</source>
+        <translatorcomment>Achtung, Platzprobleme!</translatorcomment>
+        <translation>Ø Bundst.</translation>
+    </message>
     <message>
         <location filename="../gui/poleWidget.py" line="411"/>
         <source>Fuegt eine neue Stuetze nach dieser hinzu</source>

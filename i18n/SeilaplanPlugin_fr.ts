@@ -1078,32 +1078,6 @@ câble chargé</translation>
         <translation>Ajustage fin des supports</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="671"/>
-        <source>Nr.</source>
-        <translatorcomment>HeProMo</translatorcomment>
-        <translation>No.</translation>
-    </message>
-    <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="642"/>
-        <source>Stuetzenbezeichnung</source>
-        <translation>Dénomination des supports</translation>
-    </message>
-    <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="643"/>
-        <source>Horiz.distanz</source>
-        <translation>Distance horiz.</translation>
-    </message>
-    <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="644"/>
-        <source>Stuetzenhoehe</source>
-        <translation>Hauteur</translation>
-    </message>
-    <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="645"/>
-        <source>Neigung</source>
-        <translation>Inclinaison</translation>
-    </message>
-    <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="665"/>
         <source>Tragsystem</source>
         <translation>Système porteur</translation>
@@ -1642,7 +1616,39 @@ Veuillez adapter la saisie.</translation>
     </message>
 </context>
 <context>
-    <name>PoleRow</name>
+    <name>CustomPoleWidget</name>
+    <message>
+        <location filename="../gui/poleWidget.py" line="103"/>
+        <source>Nr.</source>
+        <translatorcomment>HeProMo</translatorcomment>
+        <translation>No.</translation>
+    </message>
+    <message>
+        <location filename="../gui/poleWidget.py" line="103"/>
+        <source>Stuetzenbezeichnung</source>
+        <translation>Dénomination des supports</translation>
+    </message>
+    <message>
+        <location filename="../gui/poleWidget.py" line="103"/>
+        <source>Horiz.distanz</source>
+        <translation>Distance horiz.</translation>
+    </message>
+    <message>
+        <location filename="../gui/poleWidget.py" line="103"/>
+        <source>Stuetzenhoehe</source>
+        <translation>Hauteur</translation>
+    </message>
+    <message>
+        <location filename="../gui/poleWidget.py" line="103"/>
+        <source>Neigung</source>
+        <translation>Inclinaison</translation>
+    </message>
+    <message>
+        <location filename="../gui/poleWidget.py" line="103"/>
+        <source>O Bundst.</source>
+        <translatorcomment>Achtung, Platzprobleme!</translatorcomment>
+        <translation type="unfinished">Ø p. fixation</translation>
+    </message>
     <message>
         <location filename="../gui/poleWidget.py" line="411"/>
         <source>Fuegt eine neue Stuetze nach dieser hinzu</source>
