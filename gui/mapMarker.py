@@ -164,13 +164,13 @@ class MapMarkerTool(QgsMapTool):
     
     def deleteSectionLines(self):
         for line in self.lineFeatureS:
-            line.reset(False)
+            line.reset()
             self.linePoints = []
         self.lineFeatureS = []
     
     def clearUnfinishedLines(self):
         if len(self.linePointsS) == 1:
-            self.lineFeatureS[-1].reset(False)
+            self.lineFeatureS[-1].reset()
             self.lineFeatureS.pop(-1)
             self.linePointsS = []
 
@@ -209,7 +209,7 @@ class MapMarkerTool(QgsMapTool):
     def removeIntermediateMarkers(self):
         if not len(self.markers) >= 3:
             return
-        for idx in range(1, len(self.markers)-1):
+        for idx in reversed(range(1, len(self.markers)-1)):
             marker = self.markers[idx]
             self.canvas.scene().removeItem(marker)
             self.markers.pop(idx)
