@@ -228,6 +228,8 @@ class ProfileDialog(QDialog):
             'z': z,
             'h': h,
             'angle': angle,
+            'bundstelle': False,
+            'active': True,
             'plotPoint': drawnPoint
         })
         self.poleLayout.addRow(idx, addBtn=False)

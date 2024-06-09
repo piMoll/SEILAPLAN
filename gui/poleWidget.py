@@ -85,7 +85,7 @@ class CustomPoleWidget(QObject):
                 PoleRow(self, self.widget, self.layout, idx, pole['nr'],
                         pole['name'], pole['poleType'], pole['d'],
                         [lowerRange, upperRange], pole['h'], pole['angle'],
-                        delBtn, addBtn))
+                        pole['bundstelle'], delBtn, addBtn))
             if not pole['active']:
                 self.poleRows[-1].deactivate()
 
@@ -118,6 +118,7 @@ class CustomPoleWidget(QObject):
     def changeRow(self, idx, property_name, newVal, prevAnchorA=None, prevAnchorE=None):
         self.updateAnchorState(prevAnchorA, prevAnchorE)
         
+        self.updateBundstelle()
         if property_name == 'd':
             self.updateNeighbourDistRange(idx, newVal, newVal)
         elif property_name == 'h':
@@ -169,6 +170,11 @@ class CustomPoleWidget(QObject):
             if labels:
                 nr = labels[i]
             pole.updateLabelNr(nr)
+    
+    def updateBundstelle(self):
+        pole: PoleRow
+        for i, pole in enumerate(self.poleRows):
+            pole.updateBundstelle(self.poleArr[i]['bundstelle'])
     
     def updateNeighbourDistRange(self, idx, rightLimit, leftLimit):
         if idx > 0:
@@ -247,7 +253,7 @@ class PoleRow(object):
     ICON_DEL_ROW = ":/plugins/SeilaplanPlugin/gui/icons/icon_bin.png"
     
     def __init__(self, parent, widget, layout, idx, nr, name, rowType, dist, distRange,
-                 height=False, angle=False, delBtn=False, addBtn=False):
+                 height=False, angle=False, bundstelle=False, delBtn=False, addBtn=False):
         self.parent = parent
         self.widget = widget
         self.layout = layout
@@ -264,6 +270,7 @@ class PoleRow(object):
         self.fieldDist = None
         self.fieldHeight = None
         self.fieldAngle = None
+        self.fieldBundstelle = None
         self.addBtn = None
         self.delBtn = None
 
@@ -278,6 +285,7 @@ class PoleRow(object):
         if self.rowType not in ['anchor']:
             self.addFieldHeight(height)
             self.addFieldAngle(angle)
+        self.addFieldBundstelle(bundstelle)
         self.addBtnDel(delBtn)
 
     def addRowToLayout(self):
@@ -393,7 +401,22 @@ class PoleRow(object):
         self.fieldAngle.outFocus.connect(self.parent.zoomOut)
         self.fieldAngle.valueChanged.connect(
             lambda newVal: self.parent.onRowChange(newVal, self.index, 'angle'))
-
+        
+    def addFieldBundstelle(self, value):
+        if value is False:
+            return
+        self.fieldBundstelle = QLabel(self.widget)
+        self.updateBundstelle(value)
+        self.layout.addWidget(self.fieldBundstelle, self.index + 1, 6, 1, 1, Qt.AlignLeft)
+        
+    def updateBundstelle(self, value):
+        if self.fieldBundstelle:
+            if value is False or value is nan:
+                value = '-'
+            else:
+                value = f"{value} cm"
+            self.fieldBundstelle.setText(value)
+    
     def addBtnPlus(self, createButton):
         if createButton is False:
             self.row.addSpacing(33)

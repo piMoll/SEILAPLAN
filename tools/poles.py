@@ -154,7 +154,11 @@ class Poles(object):
             'active': active,
             'category': category,
             'position': position,
-            'abspann': abspann
+            'abspann': abspann,
+            'BHD': np.nan,
+            'bundstelle': np.nan,
+            'angriff': np.nan,
+            'maxForce': np.nan,
         })
         if refresh:
             self.refresh()
