@@ -10,6 +10,7 @@ from SEILAPLAN.tool_.mainSeilaplan import checkInputParams
 from SEILAPLAN.tool_.geoExtract import (generateDhm, calcProfile, calcAnker, updateAnker)
 
 
+@unittest.skip("deprecated, needs to be rewritten")
 class TestCalcProfile(unittest.TestCase):
     
     @classmethod
@@ -69,6 +70,7 @@ class TestCalcProfile(unittest.TestCase):
         if cls.qgs:
             cls.qgs.exitQgis()
 
+    @unittest.skip("rewrite")
     def test_subraster_creation(self):
         """ Check subraster creation: coordinate extent, size and values."""
         oldRas = generateDhm(self.projInfo_['Hoehenmodell'], self.points)

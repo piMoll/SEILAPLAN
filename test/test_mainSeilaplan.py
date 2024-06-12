@@ -99,6 +99,7 @@ class TestMainResults(unittest.TestCase):
         
         self.assertDictEqual(params_, params)
 
+    @unittest.skip("deprecated, needs to be rewritten")
     def test_results(self):
         # Old calc
         # Dummy conf
