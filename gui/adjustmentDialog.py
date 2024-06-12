@@ -20,8 +20,6 @@
 """
 import pickle
 import os
-import numpy as np
-from math import floor
 
 from qgis.PyQt.QtCore import QTimer, Qt, QCoreApplication, QSettings
 from qgis.PyQt.QtWidgets import QDialog, QMessageBox, QTextEdit
@@ -38,13 +36,13 @@ from .adjustmentDialog_thresholds import AdjustmentDialogThresholds
 from .saveDialog import DialogOutputOptions
 from .guiHelperFunctions import DialogWithImage, addBackgroundMap
 from .mapMarker import MapMarkerTool
-from ..tools.birdViewMapExtractor import extractMapBackground
-from ..core.cablelineFinal import preciseCable, updateWithCableCoordinates
-from ..tools.calcThreshold import ThresholdUpdater
-from ..tools.poles import Poles
-from ..tools.outputReport import generateReportText, generateReport, \
+from SEILAPLAN.tools.birdViewMapExtractor import extractMapBackground
+from SEILAPLAN.core.cablelineFinal import preciseCable, updateWithCableCoordinates
+from SEILAPLAN.tools.calcThreshold import ThresholdUpdater
+from SEILAPLAN.tools.poles import Poles
+from SEILAPLAN.tools.outputReport import generateReportText, generateReport, \
     createOutputFolder, generateShortReport
-from ..tools.outputGeo import organizeDataForExport, addToMap, \
+from SEILAPLAN.tools.outputGeo import organizeDataForExport, addToMap, \
     generateCoordTable, writeGeodata
 
 

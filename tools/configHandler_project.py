@@ -31,7 +31,7 @@ from .survey import SurveyData
 from .profile import Profile
 from .poles import Poles
 from .outputGeo import createVirtualRaster
-from .. import __version__ as version
+from SEILAPLAN import __version__ as version
 
 
 def castToNum(formattedNum):
@@ -53,9 +53,6 @@ class ProjectConfHandler(AbstractConfHandler):
         1: 'pole',
         2: 'crane'
     }
-    heightSource: AbstractHeightSource
-    profile: Profile
-    poles: Poles
 
     def __init__(self, params):
         """
@@ -67,7 +64,7 @@ class ProjectConfHandler(AbstractConfHandler):
         
         # Project data
         self.projectName = None
-        self.heightSource = None
+        self.heightSource: AbstractHeightSource = None
         self.heightSourceType = None
         self.surveyType = None
         self.virtRasterSource = []
@@ -91,8 +88,8 @@ class ProjectConfHandler(AbstractConfHandler):
         self.noPoleSection = []
         self.prHeader = {}
         
-        self.profile = None
-        self.poles = None
+        self.profile: Profile = None
+        self.poles: Poles = None
         # Poles from a loaded project file
         self.polesFromFile = []
     

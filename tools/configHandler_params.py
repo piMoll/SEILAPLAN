@@ -26,7 +26,7 @@ from math import pi, sqrt
 from qgis.core import QgsSettings
 
 from .configHandler_abstract import AbstractConfHandler
-from ..gui.guiHelperFunctions import sanitizeFilename
+from SEILAPLAN.gui.guiHelperFunctions import sanitizeFilename
 
 # Constants
 HOMEPATH = os.path.join(os.path.dirname(__file__))

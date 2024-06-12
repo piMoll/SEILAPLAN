@@ -5,10 +5,10 @@ from qgis.core import QgsTask
 from qgis.core import QgsApplication
 from qgis.PyQt.QtCore import pyqtSignal
 
-from . import PROJECT_FILE
-from ..tools.configHandler import ConfigHandler
-from ..tool_.mainSeilaplan import main as main_
-from ..core.mainSeilaplan import main as main
+from . import BASIC_PROJECT_FILE
+from SEILAPLAN.tools.configHandler import ConfigHandler
+from SEILAPLAN.tool_.mainSeilaplan import main as main_
+from SEILAPLAN.core.mainSeilaplan import main as main
 
 
 class ProcessingTask(QgsTask):
@@ -57,7 +57,7 @@ class TestMainResults(unittest.TestCase):
         # Old calc
         ##
         cls.conf_ = ConfigHandler()
-        cls.conf_.loadSettings(PROJECT_FILE)
+        cls.conf_.loadSettings(BASIC_PROJECT_FILE)
         cls.conf_.prepareForCalculation()
         proj_ = cls.conf_.project
         param_ = cls.conf_.params.getSimpleParameterDict()
@@ -80,7 +80,7 @@ class TestMainResults(unittest.TestCase):
         # New calc
         ##
         cls.conf = ConfigHandler()
-        cls.conf.loadSettings(PROJECT_FILE)
+        cls.conf.loadSettings(BASIC_PROJECT_FILE)
         cls.conf.prepareForCalculation()
     
         # import processing
@@ -103,7 +103,7 @@ class TestMainResults(unittest.TestCase):
         # Old calc
         # Dummy conf
         conf_ = ConfigHandler()
-        conf_.loadSettings(PROJECT_FILE)
+        conf_.loadSettings(BASIC_PROJECT_FILE)
         conf_.prepareForCalculation()
         rslt_ = main_(ProcessingTask(conf_), self.inputData_, self.projInfo_)
         result_, resultStatus_ = rslt_

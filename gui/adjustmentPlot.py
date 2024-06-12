@@ -30,7 +30,7 @@ from matplotlib.pyplot import imread
 import matplotlib.patheffects as pe
 
 from .plotting_tools import zoom_with_wheel
-from ..tools.birdViewSymbol import BirdViewSymbol, BirdViewSymbolLoader
+from SEILAPLAN.tools.birdViewSymbol import BirdViewSymbol, BirdViewSymbolLoader
 
 
 class AdjustmentPlot(FigureCanvas):

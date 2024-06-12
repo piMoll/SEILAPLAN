@@ -4,10 +4,10 @@ import sys
 
 from qgis.core import QgsApplication
 
-from . import PROJECT_FILE
-from ..tools.configHandler import ConfigHandler
-from ..tool_.mainSeilaplan import checkInputParams
-from ..tool_.geoExtract import (generateDhm, calcProfile, calcAnker, updateAnker)
+from . import BASIC_PROJECT_FILE
+from SEILAPLAN.tools.configHandler import ConfigHandler
+from SEILAPLAN.tool_.mainSeilaplan import checkInputParams
+from SEILAPLAN.tool_.geoExtract import (generateDhm, calcProfile, calcAnker, updateAnker)
 
 
 class TestCalcProfile(unittest.TestCase):
@@ -23,13 +23,13 @@ class TestCalcProfile(unittest.TestCase):
         cls.qgs = QgsApplication([], False)
         cls.qgs.initQgis()
 
-        from processing.core.Processing import Processing
-        Processing.initialize()
+        # from processing.core.Processing import Processing
+        # Processing.initialize()
 
         # Old calc
         ##
         cls.conf_ = ConfigHandler()
-        cls.conf_.loadSettings(PROJECT_FILE)
+        cls.conf_.loadSettings(BASIC_PROJECT_FILE)
         cls.conf_.prepareForCalculation()
         proj_ = cls.conf_.project
         param_ = cls.conf_.params.getSimpleParameterDict()

@@ -35,9 +35,9 @@ from processing.core.Processing import Processing
 from .guiHelperFunctions import (DialogWithImage, createContours,
                                  addBackgroundMap, createProfileLayers)
 from .surveyImportDialog import SurveyImportDialog
-from ..tools.outputGeo import CH_CRS
-from ..tools.configHandler import ConfigHandler
-from ..tools.configHandler_project import castToNum
+from SEILAPLAN.tools.outputGeo import CH_CRS
+from SEILAPLAN.tools.configHandler import ConfigHandler
+from SEILAPLAN.tools.configHandler_project import castToNum
 # GUI elements
 from .checkableComboBoxOwn import QgsCheckableComboBoxOwn
 from .saveDialog import DialogSaveParamset

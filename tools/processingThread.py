@@ -26,7 +26,7 @@ from qgis.core import QgsTask
 from qgis.PyQt.QtCore import pyqtSignal
 
 # Import Tool Scripts
-from ..core.mainSeilaplan import main
+from SEILAPLAN.core.mainSeilaplan import main
 from .outputReport import getTimestamp
 
 

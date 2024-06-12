@@ -24,6 +24,8 @@
 
 __version__ = '3.5.3'
 
+DEBUG = False
+
 
 # noinspection PyPep8Naming
 def classFactory(iface):  # pylint: disable=invalid-name

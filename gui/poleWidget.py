@@ -26,7 +26,7 @@ from qgis.PyQt.QtWidgets import (QDoubleSpinBox, QSpinBox, QPushButton, QHBoxLay
 from qgis.PyQt.QtGui import QIcon, QPixmap
 from numpy import nan
 
-from ..tools.poles import Poles
+from SEILAPLAN.tools.poles import Poles
 
 
 class CustomPoleWidget(QObject):

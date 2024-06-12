@@ -24,6 +24,7 @@ import os
 import sys
 
 # Add shipped libraries to python path
+# TODO: Not sure if still needed
 libPath = os.path.join(os.path.dirname(__file__), 'lib')
 if libPath not in sys.path:
     sys.path.insert(-1, libPath)
@@ -53,12 +54,12 @@ except ImportError:
     
 if not ERROR:
     # Main dialog window
-    from .gui.seilaplanPluginDialog import SeilaplanPluginDialog
+    from SEILAPLAN.gui.seilaplanPluginDialog import SeilaplanPluginDialog
     # Further dialog windows and helpers
-    from .gui.progressDialog import ProgressDialog
-    from .tools.configHandler import ConfigHandler
-    from .tools.processingThread import ProcessingTask
-    from .gui.adjustmentDialog import AdjustmentDialog
+    from SEILAPLAN.gui.progressDialog import ProgressDialog
+    from SEILAPLAN.tools.configHandler import ConfigHandler
+    from SEILAPLAN.tools.processingThread import ProcessingTask
+    from SEILAPLAN.gui.adjustmentDialog import AdjustmentDialog
 
 
 class SeilaplanPlugin(object):

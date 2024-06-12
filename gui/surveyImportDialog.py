@@ -21,8 +21,8 @@
 import os
 from qgis.PyQt.QtWidgets import QDialog, QFileDialog, QDialogButtonBox, QMessageBox
 from .ui_surveyImportDialog import Ui_SurveyImportDialogUI
-from ..tools.survey import SurveyData
-from ..tools.fileFetcher import FileFetcher
+from SEILAPLAN.tools.survey import SurveyData
+from SEILAPLAN.tools.fileFetcher import FileFetcher
 
 
 class SurveyImportDialog(QDialog, Ui_SurveyImportDialogUI):

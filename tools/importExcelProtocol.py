@@ -18,7 +18,7 @@
  *                                                                         *
  ***************************************************************************/
 """
-from ..lib.pylightxl import pylightxl as xl
+from SEILAPLAN.lib.pylightxl import pylightxl as xl
 import numpy as np
 from .heightSource import AbstractSurveyReader
 from .outputGeo import reprojectToCrs, GPS_CRS

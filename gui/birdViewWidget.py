@@ -22,7 +22,7 @@ from qgis.PyQt.QtCore import Qt, pyqtSignal, QObject, QCoreApplication
 from qgis.PyQt.QtWidgets import QLabel, QComboBox, QGridLayout, QSizePolicy, QWidget
 from qgis.PyQt.QtGui import QStandardItem, QStandardItemModel
 
-from ..tools.poles import Poles
+from SEILAPLAN.tools.poles import Poles
 
 
 birdViewKatConf = {
