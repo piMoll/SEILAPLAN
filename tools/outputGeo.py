@@ -28,7 +28,16 @@ from qgis.core import (QgsRasterLayer, QgsProcessing, QgsProcessingException,
                        QgsFeature, QgsGeometry, QgsCoordinateTransform, QgsPoint,
                        QgsCoordinateReferenceSystem, QgsProject,
                        QgsCoordinateTransformContext)
-from processing import run
+from SEILAPLAN import DEBUG
+
+try:
+    from processing import run
+except ModuleNotFoundError as e:
+    if DEBUG:
+        pass
+    else:
+        raise e
+
 # Checking for deprecations needs a deprecation check...
 try:
     from qgis.core.Qgis import QGIS_VERSION_INT

@@ -29,7 +29,15 @@ from qgis.PyQt.QtWidgets import (QDialog, QWidget, QLabel, QDialogButtonBox,
 from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject, QgsPoint,
     QgsFeature, QgsGeometry, QgsVectorLayer, QgsField, QgsPalLayerSettings,
     QgsTextFormat, QgsTextBufferSettings,  QgsVectorLayerSimpleLabeling, Qgis)
-from processing import run
+import SEILAPLAN
+
+try:
+    from processing import run
+except ModuleNotFoundError as e:
+    if SEILAPLAN.DEBUG:
+        pass
+    else:
+        raise e
 
 # Path to plugin root
 HOMEPATH = os.path.dirname(os.path.dirname(__file__))
