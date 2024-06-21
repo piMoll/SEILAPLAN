@@ -18,6 +18,7 @@
  *                                                                         *
  ***************************************************************************/
 """
+from typing import List
 import numpy as np
 from math import degrees
 from qgis.PyQt.QtCore import Qt, QSize, QCoreApplication
@@ -31,6 +32,16 @@ import matplotlib.patheffects as pe
 
 from .plotting_tools import zoom_with_wheel
 from SEILAPLAN.tools.birdViewSymbol import BirdViewSymbol, BirdViewSymbolLoader
+
+
+class PlotMarker(object):
+    
+    def __init__(self, label, x, z, color, alignment):
+        self.label = label
+        self.x = x
+        self.z = z
+        self.color = color
+        self.alignment = alignment
 
 
 class AdjustmentPlot(FigureCanvas):
@@ -265,31 +276,31 @@ class AdjustmentPlot(FigureCanvas):
             self.tbar.update()
             self.tbar.push_current()
     
-    def showMarkers(self, x, y, label, colorList, labelAlign):
+    def showMarkers(self, plotMarkers: List[PlotMarker]):
         # Displays marker for thresholds
         self.removeMarkers()
         spacing = 3 * abs(self.axes.get_ylim()[0] - self.axes.get_ylim()[1]) / self.height()
         
-        color = [self.COLOR_MARKER[col] for col in colorList]
-        for i, xi in enumerate(x):
+        for marker in plotMarkers:
             textVa = 'top'
-            marker = '^'
-            markerPos = y[i] - spacing * 3
-            labelPos = y[i] - spacing * 5
-            if labelAlign[i] == 'top':
+            symbol = '^'
+            markerZ = marker.z - spacing * 3
+            labelZ = marker.z - spacing * 5
+            if marker.alignment == 'top':
                 textVa = 'bottom'
-                marker = 'v'
-                markerPos = y[i] + spacing * 7
-                labelPos = y[i] + spacing * 9
+                symbol = 'v'
+                markerZ = marker.z + spacing * 7
+                labelZ = marker.z + spacing * 9
         
             self.arrowMarker.append(
-                self.axes.scatter(xi, markerPos, marker=marker, zorder=20,
-                                  c=color[i], s=100))
+                self.axes.scatter(marker.x, markerZ, marker=symbol, zorder=20,
+                                  c=self.COLOR_MARKER[marker.color], s=100))
             # Adds a label underneath marker with threshold value
             self.arrowLabel.append(
-                self.axes.text(xi, labelPos, label[i], zorder=30, ha='center',
-                               backgroundcolor='white', va=textVa,
-                               color=color[i], fontweight='semibold'))
+                self.axes.text(marker.x, labelZ, marker.label, zorder=30,
+                               ha='center', backgroundcolor='white', va=textVa,
+                               color=self.COLOR_MARKER[marker.color],
+                               fontweight='semibold'))
         self.draw()
     
     def removeMarkers(self):
@@ -538,4 +549,4 @@ def saveImgAsPdfWithMpl(imgPath, savePath, dpi=300):
     # Save to pdf
     canvas = FigureCanvas(fig)
     canvas.print_figure(savePath, dpi, facecolor='white')
-    
+

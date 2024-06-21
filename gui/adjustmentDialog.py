@@ -107,12 +107,10 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.poleLayout.sig_deletePole.connect(self.deletePole)
         
         # Threshold (thd) tab
-        thdTblSize = [5, 6]
-        self.thdLayout = AdjustmentDialogThresholds(self, thdTblSize)
+        self.thdLayout = AdjustmentDialogThresholds(self)
         self.thdLayout.sig_clickedRow.connect(self.showThresholdInPlot)
         self.selectedThdRow = None
-        self.thdUpdater = ThresholdUpdater(self.thdLayout, thdTblSize,
-                                           self.showThresholdInPlot)
+        self.thdUpdater = ThresholdUpdater(self.thdLayout, self.showThresholdInPlot)
         
         self.paramLayout = AdjustmentDialogParams(self, self.confHandler.params)
         
@@ -226,18 +224,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.paramLayout.fillInParams()
         
         # Fill in Threshold data
-        self.thdUpdater.update([
-            self.cableline['groundclear_rel'],  # Distance cable - terrain
-            [
-                self.result['force']['MaxSeilzugkraft'][0],   # Max force on cable
-                self.result['force']['MaxSeilzugkraft_L'][0]    # Cable force at highest point
-            ],
-            self.result['force']['Sattelkraft_Total'][0],  # Max force on pole
-            self.result['force']['Lastseilknickwinkel'],  # Cable angle on pole
-            self.result['force']['Leerseilknickwinkel']],  # Cable angle on pole
-            self.confHandler.params, self.poles, self.profile,
-            (self.status in ['jumpedOver', 'savedFile'])
-        )
+        self.thdUpdater.update(self.result, self.confHandler.params, self.poles,
+            self.profile, self.status == 'optiSuccess')
         
         # Mark profile line and poles on map
         self.updateLineOnMap()
@@ -491,7 +479,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             self.updateRecalcStatus('cableError')
             self.isRecalculating = False
             self.configurationHasChanged = False
-            # TODO: Error handling when shape mismach
+            # TODO: Error handling when shape mismatch
             # QMessageBox.critical(self, 'Unerwarteter Fehler bei Neuberechnung '
             #     'der Seillinie', str(e), QMessageBox.Ok)
             return
@@ -507,18 +495,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         
         # Update Threshold data
-        self.thdUpdater.update([
-            self.cableline['groundclear_rel'],  # Distance cable - terrain
-            [
-                self.result['force']['MaxSeilzugkraft'][0],   # Max force on cable
-                self.result['force']['MaxSeilzugkraft_L'][0]    # Cable force at highest point
-            ],
-            self.result['force']['Sattelkraft_Total'][0],  # Max force on pole
-            self.result['force']['Lastseilknickwinkel'],  # Cable angle on pole
-            self.result['force']['Leerseilknickwinkel']],  # Cable angle on pole
-            self.confHandler.params, self.poles, self.profile,
-            (self.status in ['jumpedOver', 'savedFile'])
-        )
+        self.thdUpdater.update(self.result, self.confHandler.params,
+                               self.poles, self.profile, False)
         
         # cable line lifts off of pole
         if not seil_possible:
@@ -534,7 +512,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.unsavedChanges = True
 
     def showThresholdInPlot(self, row=None):
-        """This function is ether called by the Threshold updater when
+        """This function is either called by the Threshold updater when
          the cable has been recalculated or when user clicks on a table row."""
         
         # Click on row was emitted but row is already selected -> deselect
@@ -552,13 +530,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             else:
                 return
         
-        x = self.thdUpdater.rows[row][5]['xLoc']
-        y = self.thdUpdater.rows[row][5]['zLoc']
-        color = self.thdUpdater.rows[row][5]['color']
-        labelAlign = self.thdUpdater.rows[row][5]['labelAlign']
-        plotLabels = self.thdUpdater.plotLabels[row]
-    
-        self.plot.showMarkers(x, y, plotLabels, color, labelAlign)
+        self.plot.showMarkers(self.thdUpdater.items[row].plotMarkers)
         self.selectedThdRow = row
 
     def onClose(self):

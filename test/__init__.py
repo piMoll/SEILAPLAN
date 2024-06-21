@@ -9,5 +9,6 @@ if libPath not in sys.path:
 
 test_dir = os.path.dirname(__file__)
 BASIC_PROJECT_FILE = os.path.join(test_dir, 'testdata', 'unittest_dhm_crane_anchor_6_poles.json')
+MINIMAL_PROJECT_FILE = os.path.join(test_dir, 'testdata', 'unittest_dhm_anchor_anchor_0_poles.json')
 
 SEILAPLAN.DEBUG = True

@@ -18,10 +18,9 @@
  *                                                                         *
  ***************************************************************************/
 """
-
 from qgis.PyQt.QtCore import (Qt, QObject, QAbstractTableModel, QModelIndex,
                               pyqtSignal, QSize)
-from qgis.PyQt.QtGui import (QColor, QBrush, QStandardItem, QStandardItemModel,
+from qgis.PyQt.QtGui import (QColor, QBrush, QStandardItemModel,
                              QIcon, QPixmap)
 from qgis.PyQt.QtWidgets import QPushButton, QHBoxLayout, QWidget, QMessageBox
 
@@ -39,19 +38,15 @@ class AdjustmentDialogThresholds(QObject):
     
     sig_clickedRow = pyqtSignal(int)
     
-    def __init__(self, parent, datasetSize):
+    def __init__(self, parent):
         """
         :type parent: gui.adjustmentDialog.AdjustmentDialog
         """
         super().__init__()
         self.parent = parent
         self.tbl = self.parent.tableThresholds
-        self.model = QStandardItemModel(datasetSize[0], datasetSize[1], self.tbl)
-        self.initState = True
-        self.thresholdExeeded = False
-        self.tbl.setModel(self.model)
-        self.tbl.resizeColumnsToContents()
-        self.tbl.resizeRowsToContents()
+        self.model = None
+        
         # Icons
         self.iconOk = QIcon()
         self.iconOk.addPixmap(
@@ -64,74 +59,42 @@ class AdjustmentDialogThresholds(QObject):
 
         self.tbl.clicked.connect(self.onClick)
     
-    def populate(self, header, dataset, valueColumn):
+    def initTableGrid(self, header, rowCount):
+        self.model = QStandardItemModel(rowCount, len(header), self.tbl)
+        self.tbl.setModel(self.model)
         self.model.setHorizontalHeaderLabels(header)
-        self.tbl.hideColumn(5)
-        
-        # Insert data into cells
-        for i, rowData in enumerate(dataset):
-            for j, cellData in enumerate(rowData):
-                if j == 0:
+    
+    def updateData(self, tblData, init=False):
+        # Update value itself
+        for row, rowData in enumerate(tblData):
+            for col, cellData in enumerate(rowData):
+                if init and col == 0:
                     # Create clickable info button in first column
                     btnWidget = self.createInfoBtn(cellData)
-                    self.tbl.setIndexWidget(self.model.index(i, j), btnWidget)
-                    continue
-                if j == 5 and isinstance(cellData, dict):
-                    loclen = len(cellData['xLoc'])
-                    if loclen > 0:
-                        # Set background color for cells where threshold is
-                        #  exceeded
-                        color = self.COLOR[max(cellData['color'] or [1])]
-                        self.colorBackground(i, valueColumn, color)
-                    cellData = loclen
-                item = QStandardItem(cellData)
-                self.model.setItem(i, j, item)
-                self.model.setData(self.model.index(i, j), cellData)
+                    self.tbl.setIndexWidget(self.model.index(row, col), btnWidget)
+                
+                self.model.setData(self.model.index(row, col), cellData)
         
-        # Adjust column widths
-        self.tbl.resizeColumnsToContents()
-        for idx in range(2, self.model.columnCount()):
-            currSize = self.tbl.sizeHintForColumn(idx)
-            self.tbl.setColumnWidth(idx, max(currSize, 100))
-        self.tbl.setColumnWidth(1, min(self.tbl.sizeHintForColumn(1), 200))
-        self.tbl.setFocusPolicy(Qt.NoFocus)
-        self.updateTabIcon()
-    
-    def updateData(self, row, col, newVal):
-        # Update background color of new values
-        if col == 5 and isinstance(newVal, dict):
-            locLen = len(newVal['xLoc'])
-            color = self.COLOR[max(newVal['color'] or [1])]
-            self.colorBackground(row, 4, color)
-            newVal = locLen
-        # Update value itself
-        self.model.setData(self.model.index(row, col), newVal)
-        self.updateTabIcon()
-
-        # Remove the background color from initially calculated
-        # cable line data
-        if self.initState:
-            self.initState = False
-            for row in range(self.model.rowCount()):
-                self.colorBackground(row, 3, self.COLOR_NEUTRAL)
+        if init:
+            # Adjust column widths to data
+            self.tbl.resizeColumnsToContents()
+            self.tbl.resizeRowsToContents()
+            for idx in range(2, self.model.columnCount()):
+                currSize = self.tbl.sizeHintForColumn(idx)
+                self.tbl.setColumnWidth(idx, max(currSize, 100))
+            self.tbl.setColumnWidth(1, min(self.tbl.sizeHintForColumn(1), 200))
+            self.tbl.setFocusPolicy(Qt.NoFocus)
     
     def colorBackground(self, row, col, color):
+        # Update background color
+        color = self.COLOR[color]
         self.model.setData(self.model.index(row, col),
                            QBrush(color), Qt.BackgroundRole)
     
-    def updateTabIcon(self):
+    def updateTabIcon(self, warn):
         """ Updates icon of QTabWidget with an exclamation mark or check
         mark depending on presents of exceeded thresholds."""
-        thresholdExceeded = False
-        for i in range(0, self.model.rowCount()):
-            if i == 2:
-                # Dont check thresholds for 'Sattelkraft'
-                continue
-            data = self.model.data(self.model.index(i, 5))
-            if data and data > 0:
-                thresholdExceeded = True
-                break
-        if thresholdExceeded:
+        if warn:
             self.parent.tabWidget.setTabIcon(2, self.iconErr)
         else:
             self.parent.tabWidget.setTabIcon(2, self.iconOk)
