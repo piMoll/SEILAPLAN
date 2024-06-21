@@ -63,8 +63,6 @@ class ThresholdUpdater:
                 item.threshold = params.getParameter('Bodenabst_min')
             if item.id == 'seilzugkraft':
                 item.threshold = params.getParameter('zul_SK')
-            if item.id == 'sattelkraft':
-                item.threshold = None
             if item.id == 'lastseilknickwinkel':
                 item.threshold = [30, 60]
             if item.id == 'leerseilknickwinkel':
@@ -90,15 +88,6 @@ class ThresholdUpdater:
                 'message': self.tr('Es wird die maximal auftretende Seilzugkraft am Lastseil mit der Last in Feldmitte berechnet.'),
             },
         )
-        sattelkraft = ThresholdItem(
-            ident='sattelkraft',
-            name=self.tr('Max. resultierende Sattelkraft'),
-            unit=params.params['SK']['unit'],
-            description={
-                'title': self.tr('Max. resultierende Sattelkraft'),
-                'message': self.tr('Es wird die maximal resultierende Sattelkraft an befahrbaren Stuetzen mit der Last auf der Stuetze berechnet.'),
-            },
-        )
         lastseilknickwinkel = ThresholdItem(
             ident='lastseilknickwinkel',
             name=self.tr('Max. Lastseilknickwinkel'),
@@ -117,7 +106,7 @@ class ThresholdUpdater:
                 'message': self.tr('Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).'),
             },
         )
-        self.items = [bodenabst, seilzugkraft, sattelkraft, lastseilknickwinkel, leerseilknickwinkel]
+        self.items = [bodenabst, seilzugkraft, lastseilknickwinkel, leerseilknickwinkel]
 
     def checkThreshold(self, item, resultData):
         item: ThresholdItem
@@ -167,16 +156,6 @@ class ThresholdUpdater:
             if forceAtHighestPoint > item.threshold:
                 color = 3  # red
             item.createPlotMarker(plotLabel, xHighest, zHighest, color, 'top')
-    
-        elif item.id == 'sattelkraft':
-            # TODO Remove
-            data = resultData['force']['Sattelkraft_Total'][0],  # Max force on pole
-            localCopy = np.nan_to_num(data)
-            item.currentExtrema = np.max(localCopy)
-            for poleIdx, calcVal in enumerate(data[0]):
-                pole = self.poles.poles[self.poles.idxA + poleIdx]
-                if not np.isnan(calcVal):
-                    item.createPlotMarker(calcVal, pole['d'], pole['z'])
     
         # Lastseilknickwinkel
         elif item.id == 'lastseilknickwinkel':

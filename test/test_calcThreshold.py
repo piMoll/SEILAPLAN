@@ -71,28 +71,18 @@ class TestCalcThreshold(unittest.TestCase):
         
         rowData = items[2].getDataRow()
         markers = items[2].plotMarkers
-        self.assertEqual(rowData[4], '61.6 kN')
-        self.assertEqual(items[2].getMaxColor(), 1)
-        self.assertEqual([marker.label for marker in markers], ['38.2 kN', '39.7 kN', '44.6 kN', '47.3 kN', '61.6 kN'])
-        self.assertEqual([marker.x for marker in markers], [40.0, 97.0, 182.0, 250.0, 290.0])
-        self.assertAlmostEqualList([marker.z for marker in markers], [1243.49, 1226.79, 1203.73, 1178.07, 1156.16])
-        self.assertEqual([marker.color for marker in markers], [1, 1, 1, 1, 1])
-        self.assertEqual([marker.alignment for marker in markers], ['bottom', 'bottom', 'bottom', 'bottom', 'bottom'])
-        
-        rowData = items[3].getDataRow()
-        markers = items[3].plotMarkers
         self.assertEqual(rowData[4], '43.4 ° / -')
-        self.assertEqual(items[3].getMaxColor(), 3)
+        self.assertEqual(items[2].getMaxColor(), 3)
         self.assertEqual([marker.label for marker in markers], ['20.0 °', '19.1 °', '21.3 °', '25.5 °', '43.4 °'])
         self.assertEqual([marker.x for marker in markers], [40.0, 97.0, 182.0, 250.0, 290.0])
         self.assertAlmostEqualList([marker.z for marker in markers], [1243.49, 1226.79, 1203.73, 1178.07, 1156.16])
         self.assertEqual([marker.color for marker in markers], [1, 1, 1, 1, 3])
         self.assertEqual([marker.alignment for marker in markers], ['bottom', 'bottom', 'bottom', 'bottom', 'bottom'])
         
-        rowData = items[4].getDataRow()
-        markers = items[4].plotMarkers
+        rowData = items[3].getDataRow()
+        markers = items[3].plotMarkers
         self.assertEqual(rowData[4], '1.6 °')
-        self.assertEqual(items[4].getMaxColor(), 2)
+        self.assertEqual(items[3].getMaxColor(), 2)
         self.assertEqual([marker.label for marker in markers], ['1.6 °', '2.2 °', '6.1 °', '9.0 °', '24.4 °'])
         self.assertEqual([marker.x for marker in markers], [40.0, 97.0, 182.0, 250.0, 290.0])
         self.assertAlmostEqualList([marker.z for marker in markers], [1243.49, 1226.79, 1203.73, 1178.07, 1156.16])
@@ -109,7 +99,7 @@ class TestCalcThreshold(unittest.TestCase):
         items: ThresholdItem
         items: List[ThresholdItem] = thdUpdater.items
     
-        for item in items[3:]:
+        for item in items[2:]:
             rowData = item.getDataRow()
             markers = item.plotMarkers
             maxCol = item.getMaxColor()
