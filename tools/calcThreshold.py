@@ -120,15 +120,27 @@ class ThresholdUpdater:
             # Replace nan so there is no Runtime Warning in np.argwhere()
             localCopy = np.copy(data)
             localCopy[np.isnan(localCopy)] = 100.0
-            # Check where the minimal ground clearance is located
-            xLocations = np.ravel(np.argwhere(localCopy == item.currentExtrema))
-            # Check if min value is smaller than ground clearance
-            if item.currentExtrema < item.threshold:
-                item.exceedsThreshold = True
-            for x in xLocations:
-                z = self.getZCoordinateFromTerrain(x)
-                item.createPlotMarker(localCopy[x], int(x + self.poles.firstPole['d']), z)
             
+            d = self.poles.getAsArray()[0]
+            for idx, poleDist in enumerate(d[:-1]):
+                fieldStartIdx = np.ravel(np.argwhere(resultData['cableline']['groundclear_di'] == int(poleDist)))[0]
+                fieldEndIdx = np.ravel(np.argwhere(resultData['cableline']['groundclear_di'] == int(d[idx + 1])))[0]
+                # Search for the minimal value in the current cable field
+                localMinima = np.nanmin(localCopy[fieldStartIdx:fieldEndIdx])
+                # NAN values will be ignored
+                if np.isnan(localMinima):
+                    continue
+                color = 1
+                # Check if local minima exceeds threshold
+                if localMinima < item.threshold:
+                    item.exceedsThreshold = True
+                    color = 3
+                # Check where the minimal ground clearance per field is located
+                localMinIdx = np.ravel(np.argwhere(resultData['cableline']['groundclear_rel'][fieldStartIdx:fieldEndIdx] == localMinima))
+                xLoc = resultData['cableline']['groundclear_di'][fieldStartIdx:fieldEndIdx][localMinIdx]
+                zLoc = resultData['cableline']['groundclear'][fieldStartIdx:fieldEndIdx][localMinIdx]
+                for x, z in zip(xLoc, zLoc):
+                    item.createPlotMarker(localMinima, x, z, color)
     
         # Max force on cable
         elif item.id == 'seilzugkraft':
