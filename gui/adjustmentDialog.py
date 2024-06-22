@@ -225,7 +225,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.thdUpdater.update(self.result, self.confHandler.params, self.poles,
             self.profile, self.status == 'optiSuccess')
         # Add plot topics in drop down
-        for item in self.thdUpdater.plotItems:
+        for item in self.thdUpdater.topics:
             self.fieldPlotTopic.addItem(item.name, userData=item.id)
         self.fieldPlotTopic.setCurrentIndex(-1)
         self.fieldPlotTopic.currentIndexChanged.connect(self.onChangePlotTopic)
@@ -525,27 +525,23 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             self.fieldPlotTopic.setCurrentIndex(-1)
             return
         
-        thItem = self.thdUpdater.thresholdItems[row]
+        thItem = self.thdUpdater.getThresholdTopics()[row]
         self.plot.showMarkers(thItem.plotMarkers)
         self.selectedPlotTopic = thItem.id
         
         # Synchronize plot topic dropdown with currently selected threshold topic
-        self.fieldPlotTopic.setCurrentIndex(-1)
-        for idx, item in enumerate(self.thdUpdater.plotItems):
+        for idx, item in enumerate(self.thdUpdater.topics):
             if self.selectedPlotTopic == item.id:
                 self.fieldPlotTopic.setCurrentIndex(idx)
     
     def onRefreshTopicInPlot(self):
-        for item in self.thdUpdater.thresholdItems + self.thdUpdater.plotItems:
+        for item in self.thdUpdater.topics:
             if self.selectedPlotTopic == item.id:
                 self.plot.showMarkers(item.plotMarkers)
         
     def onChangePlotTopic(self):
-        selectId = self.fieldPlotTopic.currentData()
-        if selectId:
-            thItem = [item for item in self.thdUpdater.plotItems if item.id == selectId][0]
-            self.selectedPlotTopic = selectId
-            self.plot.showMarkers(thItem.plotMarkers)
+        self.selectedPlotTopic = self.fieldPlotTopic.currentData()
+        self.onRefreshTopicInPlot()
 
     def onClose(self):
         self.close()
