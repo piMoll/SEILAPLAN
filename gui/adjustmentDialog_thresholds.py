@@ -101,7 +101,7 @@ class AdjustmentDialogThresholds(QObject):
     
     def onClick(self, item):
         # Row is already selected
-        if self.parent.selectedThdRow == item.row():
+        if self.parent.selectedPlotTopic == item.row():
             # Deselect
             self.tbl.clearSelection()
         # Emit select signal

@@ -94,9 +94,6 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.plot.setToolbar(tbar)
         self.plotContainer.addWidget(self.plot)
         self.toolbarContainer.addWidget(tbar, alignment=Qt.AlignLeft | Qt.AlignTop)
-        self.fieldPlotTopic.addItem("Max. res. Seilkraft")
-        self.fieldPlotTopic.addItem("BHD & O Bundstelle")
-        self.fieldPlotTopic.addItem("Leer- und Lastseildurchhang in Feldmitte")
         
         # Fill tab widget with data
         self.poleLayout = CustomPoleWidget(self.tabPoles, self.poleGrid, self.poles)
@@ -108,10 +105,11 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         
         # Threshold (thd) tab
         self.thdLayout = AdjustmentDialogThresholds(self)
-        self.thdLayout.sig_clickedRow.connect(self.showThresholdInPlot)
-        self.selectedThdRow = None
-        self.thdUpdater = ThresholdUpdater(self.thdLayout, self.showThresholdInPlot)
+        self.thdLayout.sig_clickedRow.connect(self.onChangeThresholdItem)
+        self.thdUpdater = ThresholdUpdater(self.thdLayout)
+        self.selectedPlotTopic = None
         
+        # Parameter tab
         self.paramLayout = AdjustmentDialogParams(self, self.confHandler.params)
         
         # Fill bird view widget with data
@@ -226,6 +224,11 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         # Fill in Threshold data
         self.thdUpdater.update(self.result, self.confHandler.params, self.poles,
             self.profile, self.status == 'optiSuccess')
+        # Add plot topics in drop down
+        for item in self.thdUpdater.plotItems:
+            self.fieldPlotTopic.addItem(item.name, userData=item.id)
+        self.fieldPlotTopic.setCurrentIndex(-1)
+        self.fieldPlotTopic.currentIndexChanged.connect(self.onChangePlotTopic)
         
         # Mark profile line and poles on map
         self.updateLineOnMap()
@@ -479,9 +482,6 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             self.updateRecalcStatus('cableError')
             self.isRecalculating = False
             self.configurationHasChanged = False
-            # TODO: Error handling when shape mismatch
-            # QMessageBox.critical(self, 'Unerwarteter Fehler bei Neuberechnung '
-            #     'der Seillinie', str(e), QMessageBox.Ok)
             return
         
         self.cableline = cableline
@@ -497,6 +497,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         # Update Threshold data
         self.thdUpdater.update(self.result, self.confHandler.params,
                                self.poles, self.profile, False)
+        self.onRefreshTopicInPlot()
         
         # cable line lifts off of pole
         if not seil_possible:
@@ -511,27 +512,40 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.isRecalculating = False
         self.unsavedChanges = True
 
-    def showThresholdInPlot(self, row=None):
+    def onChangeThresholdItem(self, row):
         """This function is either called by the Threshold updater when
          the cable has been recalculated or when user clicks on a table row."""
         
         # Click on row was emitted but row is already selected -> deselect
-        if row is not None and row == self.selectedThdRow:
+        if row == self.selectedPlotTopic:
             # Remove markers from plot
             self.plot.removeMarkers()
-            self.selectedThdRow = None
+            # Unselect plot topic
+            self.selectedPlotTopic = None
+            self.fieldPlotTopic.setCurrentIndex(-1)
             return
-        # There was no new selection but a redraw of the table was done, so
-        #  current selection has to be added to the plot again
-        if row is None:
-            if self.selectedThdRow is not None:
-                row = self.selectedThdRow
-            # Nothing is selected at the moment
-            else:
-                return
         
-        self.plot.showMarkers(self.thdUpdater.items[row].plotMarkers)
-        self.selectedThdRow = row
+        thItem = self.thdUpdater.thresholdItems[row]
+        self.plot.showMarkers(thItem.plotMarkers)
+        self.selectedPlotTopic = thItem.id
+        
+        # Synchronize plot topic dropdown with currently selected threshold topic
+        self.fieldPlotTopic.setCurrentIndex(-1)
+        for idx, item in enumerate(self.thdUpdater.plotItems):
+            if self.selectedPlotTopic == item.id:
+                self.fieldPlotTopic.setCurrentIndex(idx)
+    
+    def onRefreshTopicInPlot(self):
+        for item in self.thdUpdater.thresholdItems + self.thdUpdater.plotItems:
+            if self.selectedPlotTopic == item.id:
+                self.plot.showMarkers(item.plotMarkers)
+        
+    def onChangePlotTopic(self):
+        selectId = self.fieldPlotTopic.currentData()
+        if selectId:
+            thItem = [item for item in self.thdUpdater.plotItems if item.id == selectId][0]
+            self.selectedPlotTopic = selectId
+            self.plot.showMarkers(thItem.plotMarkers)
 
     def onClose(self):
         self.close()

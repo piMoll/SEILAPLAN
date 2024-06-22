@@ -7,10 +7,6 @@ from SEILAPLAN.core.cablelineFinal import preciseCable
 from SEILAPLAN.tools.configHandler import ConfigHandler
 
 
-def helper_callback():
-    pass
-
-
 class TestCalcThreshold(unittest.TestCase):
     
     @classmethod
@@ -43,12 +39,13 @@ class TestCalcThreshold(unittest.TestCase):
         result, params, poles, profile, status = self.helper_calculate_cableline()
         
         thdLayout = MockAdjustmentDialogThresholds()
-        thdUpdater = ThresholdUpdater(thdLayout, helper_callback)
+        thdUpdater = ThresholdUpdater(thdLayout)
         thdUpdater.update(result, params, poles, profile, (status == 'optiSuccess'))
         
         items: ThresholdItem
-        items: List[ThresholdItem] = thdUpdater.items
+        items: List[ThresholdItem] = thdUpdater.thresholdItems
         
+        # Bodenabstand
         rowData = items[0].getDataRow()
         markers = items[0].plotMarkers
         self.assertEqual(rowData[4], '6.0 m')
@@ -59,6 +56,7 @@ class TestCalcThreshold(unittest.TestCase):
         self.assertEqual([marker.color for marker in markers], [1, 1, 1, 3, 1])
         self.assertEqual([marker.alignment for marker in markers], ['bottom', 'bottom', 'bottom', 'bottom', 'bottom'])
         
+        # Seilzugkraft
         rowData = items[1].getDataRow()
         markers = items[1].plotMarkers
         self.assertEqual(rowData[4], '131.1 kN')
@@ -69,6 +67,7 @@ class TestCalcThreshold(unittest.TestCase):
         self.assertEqual([marker.color for marker in markers], [1, 1, 1, 1, 1, 1, 1])
         self.assertEqual([marker.alignment for marker in markers], ['bottom', 'bottom', 'bottom', 'bottom', 'bottom', 'bottom', 'top'])
         
+        # Lastseilknickwinkel
         rowData = items[2].getDataRow()
         markers = items[2].plotMarkers
         self.assertEqual(rowData[4], '43.4 ° / -')
@@ -79,6 +78,7 @@ class TestCalcThreshold(unittest.TestCase):
         self.assertEqual([marker.color for marker in markers], [1, 1, 1, 1, 3])
         self.assertEqual([marker.alignment for marker in markers], ['bottom', 'bottom', 'bottom', 'bottom', 'bottom'])
         
+        # Leerseilknickwinkel
         rowData = items[3].getDataRow()
         markers = items[3].plotMarkers
         self.assertEqual(rowData[4], '1.6 °')
@@ -93,11 +93,11 @@ class TestCalcThreshold(unittest.TestCase):
         result, params, poles, profile, status = self.helper_calculate_cableline(MINIMAL_PROJECT_FILE)
 
         thdLayout = MockAdjustmentDialogThresholds()
-        thdUpdater = ThresholdUpdater(thdLayout, helper_callback)
+        thdUpdater = ThresholdUpdater(thdLayout)
         thdUpdater.update(result, params, poles, profile, status == 'optiSuccess')
         
         items: ThresholdItem
-        items: List[ThresholdItem] = thdUpdater.items
+        items: List[ThresholdItem] = thdUpdater.thresholdItems
     
         for item in items[2:]:
             rowData = item.getDataRow()
@@ -111,9 +111,56 @@ class TestCalcThreshold(unittest.TestCase):
             self.assertAlmostEqualList([marker.z for marker in markers], [])
             self.assertEqual([marker.color for marker in markers], [])
             self.assertEqual([marker.alignment for marker in markers], [])
-
-
+    
+    def test_simple_plot_topics(self):
+        result, params, poles, profile, status = self.helper_calculate_cableline()
+        
+        thdLayout = MockAdjustmentDialogThresholds()
+        thdUpdater = ThresholdUpdater(thdLayout)
+        thdUpdater.update(result, params, poles, profile, (status == 'optiSuccess'))
+        
+        items: ThresholdItem
+        items: List[ThresholdItem] = thdUpdater.plotItems
+        
+        # Sattelkraft
+        markers = items[0].plotMarkers
+        self.assertEqual(items[0].getMaxColor(), 1)
+        self.assertEqual([marker.label for marker in markers], ['38.2 kN', '39.7 kN', '44.6 kN', '47.3 kN', '61.6 kN'])
+        self.assertEqual([marker.x for marker in markers], [40.0, 97.0, 182.0, 250.0, 290.0])
+        self.assertAlmostEqualList([marker.z for marker in markers], [1243.49, 1226.79, 1203.73, 1178.07, 1156.16])
+        self.assertEqual([marker.color for marker in markers], [1, 1, 1, 1, 1])
+        self.assertEqual([marker.alignment for marker in markers], ['bottom', 'bottom', 'bottom', 'bottom', 'bottom'])
+        
+        # BHD
+        markers = items[1].plotMarkers
+        self.assertEqual(items[1].getMaxColor(), 1)
+        self.assertEqual([marker.label for marker in markers], ['36 cm', '39 cm', '35 cm', '39 cm', '40 cm', '52 cm'])
+        self.assertEqual([marker.x for marker in markers], [40.0, 97.0, 182.0, 250.0, 290.0, 305.0])
+        self.assertAlmostEqualList([marker.z for marker in markers], [1243.49, 1226.79, 1203.73, 1178.07, 1156.16, 1148.56])
+        self.assertEqual([marker.color for marker in markers], [1, 1, 1, 1, 1, 1])
+        self.assertEqual([marker.alignment for marker in markers], ['bottom', 'bottom', 'bottom', 'bottom', 'bottom', 'bottom'])
+        
+        # Leerseildurchhang
+        markers = items[2].plotMarkers
+        self.assertEqual(items[2].getMaxColor(), 1)
+        self.assertEqual([marker.label for marker in markers], ['0.1 m', '0.1 m', '0.3 m', '0.2 m', '0.1 m', '0.0 m'])
+        self.assertEqual([marker.x for marker in markers], [20, 68, 139, 216, 270, 297])
+        self.assertAlmostEqualList([marker.z for marker in markers], [1248.95, 1235.63, 1211.94, 1191.59, 1164.86, 1153.03])
+        self.assertEqual([marker.color for marker in markers], [1, 1, 1, 1, 1, 1])
+        self.assertEqual([marker.alignment for marker in markers], ['bottom', 'bottom', 'bottom', 'bottom', 'bottom', 'bottom'])
+        
+        # Lastseildurchhang
+        markers = items[3].plotMarkers
+        self.assertEqual(items[3].getMaxColor(), 1)
+        self.assertEqual([marker.label for marker in markers], ['3.3 m', '4.4 m', '6.3 m', '5.2 m', '3.8 m', '2.6 m'])
+        self.assertEqual([marker.x for marker in markers], [20, 68, 139, 216, 270, 297])
+        self.assertAlmostEqualList([marker.z for marker in markers], [1248.95, 1235.63, 1211.94, 1191.59, 1164.86, 1153.03])
+        self.assertEqual([marker.color for marker in markers], [1, 1, 1, 1, 1, 1])
+        self.assertEqual([marker.alignment for marker in markers], ['bottom', 'bottom', 'bottom', 'bottom', 'bottom', 'bottom'])
+    
+    
     def assertAlmostEqualList(self, list1, list2, places=1):
+        self.assertEqual(len(list1), len(list2))
         for locTrue, locTest in zip(list(list1), list(list2)):
             self.assertAlmostEqual(locTrue, locTest, places)
 

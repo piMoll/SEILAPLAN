@@ -10,10 +10,12 @@ from SEILAPLAN.gui.adjustmentDialog_thresholds import AdjustmentDialogThresholds
 
 class ThresholdUpdater:
     
-    def __init__(self, layout: AdjustmentDialogThresholds, updateCallback):
+    def __init__(self, layout: AdjustmentDialogThresholds):
         self.layout: AdjustmentDialogThresholds = layout
-        self.callback = updateCallback
-        self.items: List[ThresholdItem] = []
+        # Displayed in the threshold tab
+        self.thresholdItems: List[ThresholdItem] = []
+        # Displayed as plot topic in the dropdown
+        self.plotItems: List[ThresholdItem] = []
         self.poles = None
         self.profile = None
         self.tblHeader = [
@@ -29,14 +31,14 @@ class ThresholdUpdater:
         self.profile = profile
         firstRun = False
     
-        if not self.items:
+        if not self.thresholdItems:
             # Create threshold item objects
             self.initThresholdItems(params)
             firstRun = True
         
         self.setThreshold(params)
         
-        for item in self.items:
+        for item in self.thresholdItems + self.plotItems:
             item.reset()
             item.isOpti = resultFromOptimization
             # Calculate new extrema
@@ -44,21 +46,19 @@ class ThresholdUpdater:
         
         # Update layout with new extrema
         if firstRun:
-            self.layout.initTableGrid(self.tblHeader, len(self.items))
+            self.layout.initTableGrid(self.tblHeader, len(self.thresholdItems))
         
-        tblData = [item.getDataRow() for item in self.items]
+        tblData = [item.getDataRow() for item in self.thresholdItems]
         self.layout.updateData(tblData, firstRun)
         # Update cell color
-        for row, item in enumerate(self.items):
+        for row, item in enumerate(self.thresholdItems):
             self.layout.colorBackground(row, item.getColumnIndexToColor(), item.getMaxColor())
         
         # Update warn icon of the tap title
-        self.layout.updateTabIcon(any([item.exceedsThreshold for item in self.items]))
-    
-        self.callback()
+        self.layout.updateTabIcon(any([item.exceedsThreshold for item in self.thresholdItems]))
     
     def setThreshold(self, params):
-        for item in self.items:
+        for item in self.thresholdItems:
             if item.id == 'bodenabstand':
                 item.threshold = params.getParameter('Bodenabst_min')
             if item.id == 'seilzugkraft':
@@ -106,7 +106,47 @@ class ThresholdUpdater:
                 'message': self.tr('Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).'),
             },
         )
-        self.items = [bodenabst, seilzugkraft, lastseilknickwinkel, leerseilknickwinkel]
+        self.thresholdItems = [bodenabst, seilzugkraft, lastseilknickwinkel, leerseilknickwinkel]
+        
+        # TODO: Translations
+        sattelkraft = ThresholdItem(
+            ident='sattelkraft',
+            name=self.tr('Max. resultierende Sattelkraft'),
+            unit=params.params['SK']['unit'],
+            description={
+                'title': self.tr('Max. resultierende Sattelkraft'),
+                'message': self.tr('Es wird die maximal resultierende Sattelkraft an befahrbaren Stuetzen mit der Last auf der Stuetze berechnet.'),
+            },
+        )
+        bhd = ThresholdItem(
+            ident='bhd',
+            name=self.tr('BHD'),
+            unit='cm',
+            description={
+                'title': self.tr('BHD'),
+                'message': self.tr(''),
+            },
+        )
+        leerseildurchhang = ThresholdItem(
+            ident='leerseildurchhang',
+            name=self.tr('Leerseildurchhang'),
+            unit='m',
+            description={
+                'title': self.tr('Leerseildurchhang'),
+                'message': self.tr(''),
+            },
+        )
+        lastseildurchhang = ThresholdItem(
+            ident='lastseildurchhang',
+            name=self.tr('Lastseildurchhang'),
+            unit='m',
+            description={
+                'title': self.tr('Lastseildurchhang'),
+                'message': self.tr(''),
+            },
+        )
+        # Plot items include even more topics
+        self.plotItems = [sattelkraft, bhd, leerseildurchhang, lastseildurchhang, leerseilknickwinkel, lastseilknickwinkel]
 
     def checkThreshold(self, item, resultData):
         item: ThresholdItem
@@ -154,10 +194,7 @@ class ThresholdUpdater:
                     item.exceedsThreshold = True
                 # Force is calculated in the middle of the field, so
                 #  marker should also be in the middle between two poles
-                leftPole = self.poles.poles[self.poles.idxA + fieldIdx]['d']
-                rightPole = self.poles.poles[self.poles.idxA + fieldIdx + 1]['d']
-                x = int(leftPole + floor((rightPole - leftPole) / 2))
-                z = self.getZCoordinateFromTerrain(x)
+                x, z = self.getLocationInFieldCenter(fieldIdx)
                 item.createPlotMarker(maxValPerField, x, z)
             
             # Add a special threshold for the value at the highest point
@@ -171,13 +208,13 @@ class ThresholdUpdater:
     
         # Lastseilknickwinkel
         elif item.id == 'lastseilknickwinkel':
-            data = resultData['force']['Lastseilknickwinkel'],  # Cable angle on pole
+            data = resultData['force']['Lastseilknickwinkel']  # Cable angle on pole
             if np.all(np.isnan(data)):
                 return
             maxValArr = [np.nan, np.nan]
             # Loop through all angles and test poles in between start and end
             #   with threshold 1, start and end pole with threshold 2
-            for poleIdx, angle in enumerate(data[0]):
+            for poleIdx, angle in enumerate(data):
                 # NAN values will be ignored
                 if np.isnan(angle):
                     continue
@@ -205,13 +242,13 @@ class ThresholdUpdater:
     
         # Leerseilknickwinkel
         elif item.id == 'leerseilknickwinkel':
-            data = resultData['force']['Leerseilknickwinkel'],  # Cable angle on pole
+            data = resultData['force']['Leerseilknickwinkel']  # Cable angle on pole
             if np.all(np.isnan(data)):
                 return
             # Get lowest value, ignore any nan values
             item.currentExtrema = np.nanmin(data)
             # Loop through all angles and test poles with thresholds
-            for poleIdx, angle in enumerate(data[0]):
+            for poleIdx, angle in enumerate(data):
                 # NAN values will be ignored
                 if np.isnan(angle):
                     continue
@@ -227,6 +264,32 @@ class ThresholdUpdater:
                 pole = self.poles.poles[self.poles.idxA + poleIdx]
                 item.createPlotMarker(angle, pole['d'], pole['z'], color)
         
+        elif item.id == 'sattelkraft':
+            data = resultData['force']['Sattelkraft_Total'][0]  # Max force on pole
+            for poleIdx, calcVal in enumerate(data):
+                pole = self.poles.poles[self.poles.idxA + poleIdx]
+                if not np.isnan(calcVal):
+                    item.createPlotMarker(calcVal, pole['d'], pole['z'])
+                
+        elif item.id == 'bhd':
+            for i, pole in enumerate(self.poles.poles):
+                if not np.isnan(pole['BHD']):
+                    item.createPlotMarker(pole['BHD'], pole['d'], pole['z'])
+                
+        elif item.id == 'leerseildurchhang':
+            data = resultData['force']['Durchhang'][0]
+            for fieldIdx, calcVal in enumerate(data):
+                if not np.isnan(calcVal):
+                    x, z = self.getLocationInFieldCenter(fieldIdx)
+                    item.createPlotMarker(calcVal, x, z)
+                
+        elif item.id == 'lastseildurchhang':
+            data = resultData['force']['Durchhang'][1]
+            for fieldIdx, calcVal in enumerate(data):
+                if not np.isnan(calcVal):
+                    x, z = self.getLocationInFieldCenter(fieldIdx)
+                    item.createPlotMarker(calcVal, x, z)
+        
         if item.isOpti:
             item.optiExtrema = deepcopy(item.currentExtrema)
         
@@ -234,6 +297,13 @@ class ThresholdUpdater:
     
     def getZCoordinateFromTerrain(self, xLocation):
         return self.profile.zi_disp[np.argwhere(self.profile.di_disp == xLocation)[0][0]]
+    
+    def getLocationInFieldCenter(self, fieldIdx):
+        leftPole = self.poles.poles[self.poles.idxA + fieldIdx]['d']
+        rightPole = self.poles.poles[self.poles.idxA + fieldIdx + 1]['d']
+        x = int(leftPole + floor((rightPole - leftPole) / 2))
+        z = self.getZCoordinateFromTerrain(x)
+        return x, z
 
     # noinspection PyMethodMayBeStatic
     def tr(self, message, **kwargs):
