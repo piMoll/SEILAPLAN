@@ -147,6 +147,12 @@ class ThresholdUpdater:
     def getThresholdTopics(self):
         return [topic for topic in self.topics if topic.threshold is not None]
 
+    def getPlotTopicById(self, ident):
+        try:
+            return [topic for topic in self.topics if topic.id == ident][0]
+        except IndexError:
+            return None
+    
     def checkThreshold(self, topic, resultData):
         topic: PlotTopic
         

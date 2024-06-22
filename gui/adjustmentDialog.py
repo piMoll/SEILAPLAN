@@ -105,7 +105,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         
         # Threshold (thd) tab
         self.thdLayout = AdjustmentDialogThresholds(self)
-        self.thdLayout.sig_clickedRow.connect(self.onChangeThresholdItem)
+        self.thdLayout.sig_clickedRow.connect(self.onChangeThresholdTopic)
         self.thdUpdater = ThresholdUpdater(self.thdLayout)
         self.selectedPlotTopic = None
         
@@ -146,6 +146,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         for field in self.prHeaderFields.values():
             field.textChanged.connect(self.onPrHeaderChanged)
         self.mapBackgroundButton.clicked.connect(self.onClickMapButton)
+        self.infoPlotTopic.clicked.connect(self.onInfo)
         self.infoQ.clicked.connect(self.onInfo)
         self.infoBirdViewGeneral.clicked.connect(self.onInfo)
         self.infoBirdViewCategory.clicked.connect(self.onInfo)
@@ -225,8 +226,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.thdUpdater.update(self.result, self.confHandler.params, self.poles,
             self.profile, self.status == 'optiSuccess')
         # Add plot topics in drop down
-        for item in self.thdUpdater.topics:
-            self.fieldPlotTopic.addItem(item.name, userData=item.id)
+        for topic in self.thdUpdater.topics:
+            self.fieldPlotTopic.addItem(topic.name, userData=topic.id)
         self.fieldPlotTopic.setCurrentIndex(-1)
         self.fieldPlotTopic.currentIndexChanged.connect(self.onChangePlotTopic)
         
@@ -374,6 +375,11 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         elif self.sender().objectName() == 'infoBirdViewAbspann':
             title = self.tr('Abspann')
             msg = self.tr('Erklaerung Abspann')
+        elif self.sender().objectName() == 'infoPlotTopic':
+            plotTopic = self.thdUpdater.getPlotTopicById(self.selectedPlotTopic)
+            if plotTopic:
+                title = self.tr(plotTopic.description['title'])
+                msg = self.tr(plotTopic.description['message'])
         
         if imageName:
             # Show an info image
@@ -512,7 +518,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.isRecalculating = False
         self.unsavedChanges = True
 
-    def onChangeThresholdItem(self, row):
+    def onChangeThresholdTopic(self, row):
         """This function is either called by the Threshold updater when
          the cable has been recalculated or when user clicks on a table row."""
         
@@ -533,11 +539,11 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         for idx, item in enumerate(self.thdUpdater.topics):
             if self.selectedPlotTopic == item.id:
                 self.fieldPlotTopic.setCurrentIndex(idx)
+                break
     
     def onRefreshTopicInPlot(self):
-        for item in self.thdUpdater.topics:
-            if self.selectedPlotTopic == item.id:
-                self.plot.showMarkers(item.plotMarkers)
+        item = self.thdUpdater.getPlotTopicById(self.selectedPlotTopic)
+        self.plot.showMarkers(item.plotMarkers)
         
     def onChangePlotTopic(self):
         self.selectedPlotTopic = self.fieldPlotTopic.currentData()
