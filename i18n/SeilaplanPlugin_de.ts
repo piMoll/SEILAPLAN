@@ -1223,6 +1223,21 @@ Bericht übertragen)</translation>
         <source>Hintergrundkarte laden um sie in der Vogelperspektive darzustellen.</source>
         <translation>Hintergrundkarte laden um sie in der Vogelperspektive darzustellen.</translation>
     </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="656"/>
+        <source>Nr.</source>
+        <translation>Nr.</translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="675"/>
+        <source>Navigation</source>
+        <translation>Navigation</translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="676"/>
+        <source>Diagrammanzeige</source>
+        <translation>Diagrammanzeige</translation>
+    </message>
 </context>
 <context>
     <name>AdjustmentPlot</name>
@@ -1598,33 +1613,33 @@ Bitte passen Sie die Eingabe an.</translation>
 <context>
     <name>CustomPoleWidget</name>
     <message>
-        <location filename="../gui/poleWidget.py" line="103"/>
+        <location filename="../gui/poleWidget.py" line="104"/>
         <source>Nr.</source>
         <translation>Nr.</translation>
     </message>
     <message>
-        <location filename="../gui/poleWidget.py" line="103"/>
+        <location filename="../gui/poleWidget.py" line="105"/>
         <source>Stuetzenbezeichnung</source>
         <translation>Stützenbezeichnung</translation>
     </message>
     <message>
-        <location filename="../gui/poleWidget.py" line="103"/>
+        <location filename="../gui/poleWidget.py" line="106"/>
         <source>Horiz.distanz</source>
         <translation>Horiz.distanz</translation>
     </message>
     <message>
-        <location filename="../gui/poleWidget.py" line="103"/>
+        <location filename="../gui/poleWidget.py" line="107"/>
         <source>Stuetzenhoehe</source>
         <translation>Sattelhöhe</translation>
     </message>
     <message>
-        <location filename="../gui/poleWidget.py" line="103"/>
+        <location filename="../gui/poleWidget.py" line="109"/>
         <source>Neigung</source>
         <translatorcomment>Neigung der Stütze und nicht Geländeneigung</translatorcomment>
         <translation>Neigung</translation>
     </message>
     <message>
-        <location filename="../gui/poleWidget.py" line="103"/>
+        <location filename="../gui/poleWidget.py" line="110"/>
         <source>O Bundst.</source>
         <translatorcomment>Achtung, Platzprobleme!</translatorcomment>
         <translation>Ø Bundst.</translation>
@@ -2805,35 +2820,65 @@ Lösung</translation>
         <translation>Min. Leerseilknickwinkel</translation>
     </message>
     <message>
-        <location filename="../tools/calcThreshold.py" line="97"/>
+        <location filename="../tools/calcThreshold.py" line="71"/>
         <source>Es wird der im Parameterset definierte minimale Bodenabstand mit einer Aufloesung von 1m getestet.</source>
         <translation>Es wird der im Parameterset definierte minimale Bodenabstand mit einer Auflösung von 1m getestet.</translation>
     </message>
     <message>
-        <location filename="../tools/calcThreshold.py" line="105"/>
+        <location filename="../tools/calcThreshold.py" line="80"/>
         <source>Es wird die maximal auftretende Seilzugkraft am Lastseil mit der Last in Feldmitte berechnet.</source>
         <translation>In der Praxis oft auch als maximale Betriebsspannung bezeichnet.
 Es wird die maximal auftretende Seilzugkraft am Lastseil mit der Last in Feldmitte berechnet. Falls der zulässige Wert überschritten wird (rot hinterlegt), müssen ein oder mehrere Spannfelder verkürzt werden (zusätzliche Stützen).</translation>
     </message>
     <message>
-        <location filename="../tools/calcThreshold.py" line="113"/>
+        <location filename="../tools/calcThreshold.py" line="107"/>
         <source>Es wird die maximal resultierende Sattelkraft an befahrbaren Stuetzen mit der Last auf der Stuetze berechnet.</source>
         <translation>Es wird die maximal resultierende Sattelkraft an befahrbaren Stützen mit der Last auf der Stütze berechnet.</translation>
     </message>
     <message>
-        <location filename="../tools/calcThreshold.py" line="121"/>
+        <location filename="../tools/calcThreshold.py" line="89"/>
         <source>Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften.</source>
         <translation>Grössere Knickwinkel reduzieren die Bruchlast des Tragseils und führen zu höheren Sattelkräften.
 Hinweis: Bei den beiden Endmasten liegt der Grenzwert höher (ca. 60°).</translation>
     </message>
     <message>
-        <location filename="../tools/calcThreshold.py" line="129"/>
+        <location filename="../tools/calcThreshold.py" line="98"/>
         <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
         <translation>Bei Knickwinkeln unter 1° besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Die Stütze muss erhöht werden.
 Bei Knickwinkeln zwischen 1° und 3° muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</translation>
     </message>
     <message>
-        <location filename="../tools/calcThreshold.py" line="223"/>
+        <location filename="../tools/calcThreshold.py" line="116"/>
+        <source>BHD</source>
+        <translation>BHD</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="116"/>
+        <source>BHD Erklaerung</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="125"/>
+        <source>Leerseildurchhang</source>
+        <translation>Leerseildurchhang</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="125"/>
+        <source>Leerseildurchhang Erklaerung</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="134"/>
+        <source>Lastseildurchhang</source>
+        <translation>Lastseildurchhang</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="134"/>
+        <source>Lastseildurchhang Erklaerung</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="206"/>
         <source>am hoechsten Punkt:</source>
         <translation>am höchsten Punkt:</translation>
     </message>

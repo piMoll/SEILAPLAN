@@ -104,7 +104,6 @@ class ThresholdUpdater:
                 'message': self.tr('Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).'),
             },
         )
-        # TODO: Translations
         sattelkraft = PlotTopic(
             ident='sattelkraft',
             name=self.tr('Max. resultierende Sattelkraft'),
@@ -120,7 +119,7 @@ class ThresholdUpdater:
             unit='cm',
             description={
                 'title': self.tr('BHD'),
-                'message': self.tr(''),
+                'message': self.tr('BHD Erklaerung'),
             },
         )
         leerseildurchhang = PlotTopic(
@@ -129,7 +128,7 @@ class ThresholdUpdater:
             unit='m',
             description={
                 'title': self.tr('Leerseildurchhang'),
-                'message': self.tr(''),
+                'message': self.tr('Leerseildurchhang Erklaerung'),
             },
         )
         lastseildurchhang = PlotTopic(
@@ -138,7 +137,7 @@ class ThresholdUpdater:
             unit='m',
             description={
                 'title': self.tr('Lastseildurchhang'),
-                'message': self.tr(''),
+                'message': self.tr('Lastseildurchhang Erklaerung'),
             },
         )
         

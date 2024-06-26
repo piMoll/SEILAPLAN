@@ -1233,6 +1233,21 @@ nel rapporto)</translation>
         <source>Hintergrundkarte laden um sie in der Vogelperspektive darzustellen.</source>
         <translation>Caricare la mappa di sfondo per visualizzarla a volo d&apos;uccello.</translation>
     </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="656"/>
+        <source>Nr.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="675"/>
+        <source>Navigation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="676"/>
+        <source>Diagrammanzeige</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AdjustmentPlot</name>
@@ -2849,6 +2864,36 @@ Indicazione: Al cavalletto terminale il valore limite è superiore (ca. 60°).</
         <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
         <translation>Nel caso di un angolo convesso di 1° c&apos;è il rischio che la fune portante si decolla della sella (rosso). Il cavalletto deve essere alzato.
 Nel caso di un angolo tra 1° e 3° la fune portante deve essere atrezzato con un coprifune per sella (orange).</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="117"/>
+        <source>BHD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="117"/>
+        <source>BHD Erklaerung</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="117"/>
+        <source>Leerseildurchhang</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="117"/>
+        <source>Leerseildurchhang Erklaerung</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="117"/>
+        <source>Lastseildurchhang</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="117"/>
+        <source>Lastseildurchhang Erklaerung</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="223"/>

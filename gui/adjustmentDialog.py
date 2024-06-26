@@ -367,7 +367,6 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             msg = self.tr('Erklaerung Vogelperspektive')
         elif self.sender().objectName() == 'infoBirdViewCategory':
             title = self.tr('Stuetzenkategorie')
-            msg = self.tr('Erklaerung Stuetzenkategorie')
             imageName = 'Vogelperspektive_Kategorie.png'
         elif self.sender().objectName() == 'infoBirdViewPosition':
             title = self.tr('Stuetzenposition')
@@ -378,8 +377,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         elif self.sender().objectName() == 'infoPlotTopic':
             plotTopic = self.thdUpdater.getPlotTopicById(self.selectedPlotTopic)
             if plotTopic:
-                title = self.tr(plotTopic.description['title'])
-                msg = self.tr(plotTopic.description['message'])
+                title = plotTopic.description['title']
+                msg = plotTopic.description['message']
         
         if imageName:
             # Show an info image
