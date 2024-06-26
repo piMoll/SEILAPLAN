@@ -107,6 +107,12 @@ class AdjustmentDialogThresholds(QObject):
         # Emit select signal
         self.sig_clickedRow.emit(item.row())
     
+    def select(self, row):
+        if row >= 0:
+            self.tbl.selectRow(row)
+        else:
+            self.tbl.clearSelection()
+    
     def createInfoBtn(self, cellData):
         button = QPushButton('?')
         button.setMaximumSize(QSize(22, 22))

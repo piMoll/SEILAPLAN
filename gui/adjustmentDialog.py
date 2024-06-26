@@ -549,6 +549,9 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         
     def onChangePlotTopic(self):
         self.selectedPlotTopic = self.fieldPlotTopic.currentData()
+        # Select topic in threshold table
+        self.thdLayout.select(self.thdUpdater.getSortIdxByThresholdTopicId(self.selectedPlotTopic))
+        # Paint the new topic
         self.onRefreshTopicInPlot()
 
     def onClose(self):

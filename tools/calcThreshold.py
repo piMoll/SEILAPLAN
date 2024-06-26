@@ -152,6 +152,12 @@ class ThresholdUpdater:
         except IndexError:
             return None
     
+    def getSortIdxByThresholdTopicId(self, ident):
+        for idx, topic in enumerate(self.getThresholdTopics()):
+            if topic.id == ident:
+                return idx
+        return None
+    
     def checkThreshold(self, topic, resultData):
         topic: PlotTopic
         
