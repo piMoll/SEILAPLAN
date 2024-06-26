@@ -2372,7 +2372,7 @@ Bericht übertragen)</translation>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
         <source>Start- Endpunkt auf dem Gelaendeprofil definieren</source>
-        <translation>Start-/ Endpunkt auf dem Geländeprofil definieren</translation>
+        <translation>Anfangs-/Endpunkt auf dem Geländeprofil definieren</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="478"/>

@@ -2388,7 +2388,7 @@ to the report)</translation>
     <name>SeilaplanPluginDialog</name>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
-        <source>Start-/ Endpunkt auf dem Gelaendeprofil definieren</source>
+        <source>Start- Endpunkt auf dem Gelaendeprofil definieren</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

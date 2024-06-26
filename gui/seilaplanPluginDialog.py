@@ -1089,11 +1089,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
 
 
 def highlightButton(button):
-    button.setStyleSheet("QPushButton { padding: 3px; border: 2px solid; border-radius: 4px; border-color: red }")
+    button.setStyleSheet("QPushButton { color: blue; }")
 
 
 def unHighlightButton(button):
     button.setStyleSheet("")
-
-
-    
