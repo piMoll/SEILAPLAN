@@ -532,6 +532,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             return
         
         thItem = self.thdUpdater.getThresholdTopics()[row]
+        if not thItem:
+            return
         self.plot.showMarkers(thItem.plotMarkers)
         self.selectedPlotTopic = thItem.id
         
@@ -543,7 +545,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
     
     def onRefreshTopicInPlot(self):
         item = self.thdUpdater.getPlotTopicById(self.selectedPlotTopic)
-        self.plot.showMarkers(item.plotMarkers)
+        if item:
+            self.plot.showMarkers(item.plotMarkers)
         
     def onChangePlotTopic(self):
         self.selectedPlotTopic = self.fieldPlotTopic.currentData()
