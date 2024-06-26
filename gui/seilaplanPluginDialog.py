@@ -181,6 +181,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.infoFieldE.clicked.connect(self.onInfo)
         self.infoFieldFuellF.clicked.connect(self.onInfo)
         self.infoFieldSFT.clicked.connect(self.onInfo)
+        self.infoFieldLeerKnick.clicked.connect(self.onInfo)
+        self.infoFieldLastKnick.clicked.connect(self.onInfo)
+        self.infoFieldBundst.clicked.connect(self.onInfo)
         self.infoBerechnung.clicked.connect(self.onInfo)
         
         # OSM map and contour buttons
@@ -239,6 +242,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             'qR': self.fieldqR,
             'SK': self.fieldSK,
             'Anlagetyp': self.fieldAnlagetyp,
+            'SF_T': self.fieldSFT,
             
             'Min_Dist_Mast': self.fieldMinDist,
             'L_Delta': self.fieldLdelta,
@@ -249,7 +253,11 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             
             'E': self.fieldE,
             'FuellF': self.fieldFuellF,
-            'SF_T': self.fieldSFT
+            'LeerKnick': self.fieldLeerKnick,
+            'LastKnickSt': self.fieldLastKnickSt,
+            'LastKnickEnd': self.fieldLastKnickEnd,
+            'Bundstelle': self.fieldBundst,
+            
         }
         self.coordFields = {
             'Ax': self.coordAx,
@@ -998,6 +1006,15 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         elif self.sender().objectName() == 'infoFieldSFT':
             title = self.tr("Sicherheitsfaktor Tragseil")
             msg = self.tr('Sicherheitsfaktor Tragseil Erklaerung')
+        elif self.sender().objectName() == 'infoFieldLeerKnick':
+            title = self.tr("Grenzwert Leerseilknickwinkel")
+            msg = self.tr('Grenzwert Leerseilknickwinkel Erklaerung')
+        elif self.sender().objectName() == 'infoFieldLastKnick':
+            title = self.tr("Grenzwert Lastseilknickwinkel")
+            msg = self.tr('Grenzwert Lastseilknickwinkel Erklaerung')
+        elif self.sender().objectName() == 'infoFieldBundst':
+            title = self.tr("Bundstelle ueber Sattelleiste")
+            msg = self.tr('Bundstelle ueber Sattelleiste Erklaerung')
         
         elif self.sender().objectName() == 'infoBerechnung':
             title = self.tr("Naechste Schritte")

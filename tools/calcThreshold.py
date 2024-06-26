@@ -62,9 +62,9 @@ class ThresholdUpdater:
             if topic.id == 'seilzugkraft':
                 topic.threshold = params.getParameter('zul_SK')
             if topic.id == 'lastseilknickwinkel':
-                topic.threshold = [30, 60]
+                topic.threshold = [params.getParameter('LastKnickSt'), params.getParameter('LastKnickEnd')]
             if topic.id == 'leerseilknickwinkel':
-                topic.threshold = [1, 3]
+                topic.threshold = params.getParameter('LeerKnick')
 
     def initThresholdItems(self, params):
         # Define thresholds that should be checked
@@ -263,13 +263,10 @@ class ThresholdUpdater:
                 if np.isnan(angle):
                     continue
                 color = 1  # ok
-                # Angle under first threshold (1 to 3 degrees -> error level 'attention')
-                if angle < topic.threshold[1]:
-                    color = 2  # orange
-                    # Angle under second threshold
-                    if angle < topic.threshold[0]:
-                        color = 3
-                        topic.exceedsThreshold = True
+                # Angle under threshold
+                if angle < topic.threshold:
+                    color = 3
+                    topic.exceedsThreshold = True
                 
                 pole = self.poles.poles[self.poles.idxA + poleIdx]
                 topic.createPlotMarker(angle, pole['d'], pole['z'], color)

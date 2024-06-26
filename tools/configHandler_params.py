@@ -492,5 +492,14 @@ class ParameterConfHandler(AbstractConfHandler):
             self.p[key] = p['value']
         return self.p
     
+    def migrateParameters(self):
+        newParams = [
+            'LeerKnick',
+            'LastKnickSt',
+            'LastKnickEnd',
+            'Bundstelle',
+        ]
+            
+    
     def reset(self):
         self.optSTA = None

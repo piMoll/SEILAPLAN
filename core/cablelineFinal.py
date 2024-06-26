@@ -460,7 +460,7 @@ def preciseCable(IS, poles, STA):
     kraft['Spannkraft'] = [ST[0], ST[-1]]
     kraft['Seilzugkraft'] = [ST, Hs]
 
-    poles.calculateAdvancedProperties(kraft)
+    poles.calculateAdvancedProperties(kraft, IS['Bundstelle'])
     
     anchorField = poles.getAnchorCable()
     cableline = {

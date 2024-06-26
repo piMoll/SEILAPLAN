@@ -741,6 +741,26 @@ Lastseil</translation>
         <translation>Sicherheitsfaktor Tragseil</translation>
     </message>
     <message>
+        <location filename="../tools/outputReport.py" line="298"/>
+        <source>Grenzwert Leerseilknickwinkel</source>
+        <translation>Grenzwert Leerseilknickwinkel</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="298"/>
+        <source>Grenzwert Lastseilknickwinkel Stuetze</source>
+        <translation>Grenzwert Lastseilknickwinkel Stütze</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="298"/>
+        <source>Grenzwert Lastseilknickwinkel Endmast</source>
+        <translation>Grenzwert Lastseilknickwinkel Endmast</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="298"/>
+        <source>Bundstelle ueber Sattelleiste</source>
+        <translation>Bundstelle über Sattelleiste</translation>
+    </message>
+    <message>
         <location filename="../tools/outputReport.py" line="372"/>
         <source>Parameterset</source>
         <translation>Parameterset</translation>
@@ -2578,6 +2598,36 @@ Die optimale Tragseilspannkraft wird berechnet. Die Optimierung wird bei 75 Proz
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Sicherheitsfaktor Tragseil</source>
         <translation>Sicherheitsfaktor Tragseil</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
+        <source>Grenzwert Leerseilknickwinkel</source>
+        <translation>Grenzwert Leerseilknickwinkel</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
+        <source>Grenzwert Leerseilknickwinkel Erklaerung</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
+        <source>Grenzwert Lastseilknickwinkel</source>
+        <translation>Grenzwert Lastseilknickwinkel</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
+        <source>Grenzwert Lastseilknickwinkel Erklaerung</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
+        <source>Bundstelle ueber Sattelleiste</source>
+        <translation>Bundstelle über Sattelleiste</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
+        <source>Bundstelle ueber Sattelleiste Erklaerung</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="965"/>

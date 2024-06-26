@@ -23,3 +23,7 @@ HM_nat	Kuenstliche Stuetze ab Stuetzenhoehe von	m	field	int	0	100	35
 E	Elastizitaetsmodul Tragseil	kN/mm2	field	float	10	1000	36
 FuellF	Fuellfaktor		field	float	0	1	37
 SF_T	Sicherheitsfaktor Tragseil		field	float	0	20	38
+LeerKnick	Grenzwert Leerseilknickwinkel	°	field	float	0	15	39
+LastKnickSt	Grenzwert Lastseilknickwinkel Stuetze	°	field	float	0	90	40
+LastKnickEnd	Grenzwert Lastseilknickwinkel Endmast	°	field	float	0	90	41
+Bundstelle	Bundstelle ueber Sattelleiste	m	field	float	0	30	42

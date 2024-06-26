@@ -473,7 +473,7 @@ class Poles(object):
         elif not self.hasAnchorE and self.lastPole['h'] == 0:
             self.poles[self.idxE]['poleType'] = 'pole_anchor'
 
-    def calculateAdvancedProperties(self, forces):
+    def calculateAdvancedProperties(self, forces, bundstelle):
         """ Calculates additional pole properties that are used in the report.
         - Angriffswinkel for anchors
         - Max force and force type
@@ -534,7 +534,7 @@ class Poles(object):
                     if not np.all(np.isnan(forces['Sattelkraft_beiStuetze'][0][-2:])):
                         maxForce = np.nanmax(forces['Sattelkraft_beiStuetze'][0][-2:])
                 if maxForce:
-                    [bhd, bundst] = self.getBhdForPole(pole['h'], maxForce)
+                    [bhd, bundst] = self.getBhdForPole(pole['h'], maxForce, bundstelle)
 
             # pole in between --> passable
             elif pole['poleType'] == 'pole':
@@ -550,7 +550,7 @@ class Poles(object):
                 else:
                     maxForce = maxForceB
                 
-                [bhd, bundst] = self.getBhdForPole(pole['h'], maxForce)
+                [bhd, bundst] = self.getBhdForPole(pole['h'], maxForce, bundstelle)
               
             # Special crane start pole with h: > 0 --> not passable
             elif pole['poleType'] == 'crane':
@@ -581,11 +581,11 @@ class Poles(object):
         return BHD_ANCHOR[angle][force_array[force_idx]]
     
     @staticmethod
-    def getBhdForPole(height, max_force):
+    def getBhdForPole(height, max_force, bundstelle):
         idx_force = (np.abs(BHD_POLE_Force - max_force)).argmin()
         height_array = np.array(list(BHD_POLE[BHD_POLE_Force[idx_force]].keys()))
-        # Abbundstelle 1.5m higher than cable
-        height += 1.5
+        # Bundstelle is above cable, default 3m
+        height += bundstelle
         idx_height = (np.abs(height_array - height)).argmin()
         # Diameter of tree next to cable
         bundst = BHD_POLE[BHD_POLE_Force[idx_force]][height_array[idx_height]]

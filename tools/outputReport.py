@@ -299,19 +299,22 @@ def generateReportText(confHandler, result, projname):
     str_para = [[tr('Parameterset:'), setname, '', ''],
                 ['']*4]     # empty row
 
-    maxColLen = 10
-    columns = [[['', '']]*maxColLen, [['', '']]*maxColLen, [['', '']]*maxColLen]
+    maxRows = math.ceil(len(orderedParams) / 3)
+    columns = [[['', '']]*maxRows, [['', '']]*maxRows, [['', '']]*maxRows]
+    col = 0
+    row = 0
     for key in orderedParams:
         param = confHandler.params.params[key]
         paramStr = confHandler.params.getParameterAsStr(key) + ''
         if key == 'Seilsys':
             paramStr = tr(paramStr)
-        sort = param['sort']
-        col = int(sort/10) - 1
-        row = int(sort % 10)
         columns[col][row] = ([tr(param['label']), f"{paramStr} {param['unit']}"])
+        row += 1
+        if row >= maxRows:
+            col += 1
+            row = 0
 
-    for i in range(maxColLen):
+    for i in range(maxRows):
         str_para.append(columns[0][i] + [''] + columns[1][i] + [''] + columns[2][i])
 
     # Section headers
