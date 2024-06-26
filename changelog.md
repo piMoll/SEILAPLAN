@@ -2,14 +2,15 @@
 
 ## Version 3.6.0 (Juli 2024)
 ### Neue Features
+* Möglichkeit, benutzerspezifische Grenzwerte für Knickwinkel zu definieren
+* Möglichkeit, die Höhe der Bundstelle über der Sattelleiste zu definieren
 * Bearbeitungsfenster:
-  * Im Diagramm können zusätzliche Informationen (BHD, Durchhang, Knickwinkel, etc.) angezeigt werden.
-  * Im Diagramm wird der Seildurchhang statt einmalig für die gesamte Seillinie neu für jedes Seilfeld ausgegeben.
-  * In der Stützenauflistung wird der Bundstellendurchmesser angegeben.
-  * Stützenbezeichungen können neu 42 statt 22 Zeichen lang sein. Im Diagramm-PDF wurde die Lesbarkeit der Bezeichnungen verbessert.
-* Vogelperspektive:
-    * Passe Symbol für Mehrbaumanker an: Abspannseile enden am Anfangs- / Endpunkt der Seillinie, nicht dahinter
-* Diverse Verbesserung der Benutzerführung: Anpassung von Bezeichnungen und Ergänzen von Hinweisen.
+  * Im Diagramm können zusätzliche Informationen (BHD, Durchhang, Knickwinkel, etc.) angezeigt werden
+  * Im Diagramm wird der Seildurchhang statt einmalig für die gesamte Seillinie neu für jedes Seilfeld ausgegeben
+  * In der Stützenauflistung wird der Bundstellendurchmesser angegeben
+  * Stützenbezeichungen können neu 42 statt 22 Zeichen lang sein. Im Diagramm-PDF wurde die Lesbarkeit der Bezeichnungen verbessert
+* Vogelperspektive: Passe Symbol für Mehrbaumanker an; Abspannseile enden am Anfangs- / Endpunkt der Seillinie, nicht dahinter
+* Diverse Verbesserung der Benutzerführung: Anpassung von Bezeichnungen und Ergänzen von Hinweisen
 
 ### Fehlerbehebung
 
