@@ -997,8 +997,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             msg = self.tr('Fuellfaktor Erklaerung')
         elif self.sender().objectName() == 'infoFieldSFT':
             title = self.tr("Sicherheitsfaktor Tragseil")
-            msg = self.tr('Europaweit wird ein Sicherheitsfaktor von 3.0 fuer das '
-                          'Tragseil verwendet.')
+            msg = self.tr('Sicherheitsfaktor Tragseil Erklaerung')
         
         elif self.sender().objectName() == 'infoBerechnung':
             title = self.tr("Naechste Schritte")

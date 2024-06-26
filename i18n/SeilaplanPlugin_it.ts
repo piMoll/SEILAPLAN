@@ -2639,8 +2639,8 @@ Viene calcolata la forza di trazione iniziale ottimale. L&apos;ottimizzazione av
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="960"/>
-        <source>Europaweit wird ein Sicherheitsfaktor von 3.0 fuer das Tragseil verwendet.</source>
-        <translation>A livello europeo, per la fune portante c&apos;è utilizzata un fattore di sicurezza di 3.0.</translation>
+        <source>Sicherheitsfaktor Tragseil Erklaerung</source>
+        <translation type="unfinished">A livello europeo, per la fune portante c&apos;è utilizzata un fattore di sicurezza di 3.0.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>

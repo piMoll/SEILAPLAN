@@ -2642,8 +2642,8 @@ L&apos;optimum de la force de traction initiale est calculé. L&apos;optimisatio
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="960"/>
-        <source>Europaweit wird ein Sicherheitsfaktor von 3.0 fuer das Tragseil verwendet.</source>
-        <translation>Dans l&apos;ensemble de l&apos;Europe, pour le câble porteur il est utilisé un facteur de sécurité de 3.0.</translation>
+        <source>Sicherheitsfaktor Tragseil Erklaerung</source>
+        <translation type="unfinished">Dans l&apos;ensemble de l&apos;Europe, pour le câble porteur il est utilisé un facteur de sécurité de 3.0.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>

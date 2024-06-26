@@ -2641,8 +2641,8 @@ The optimal pre-stress tensile force (unloaded skyline) is calculated. The optim
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="960"/>
-        <source>Europaweit wird ein Sicherheitsfaktor von 3.0 fuer das Tragseil verwendet.</source>
-        <translation>Throughout Europe, a safety factor of 3.0 is used for the skyline.</translation>
+        <source>Sicherheitsfaktor Tragseil Erklaerung</source>
+        <translation type="unfinished">Throughout Europe, a safety factor of 3.0 is used for the skyline.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>

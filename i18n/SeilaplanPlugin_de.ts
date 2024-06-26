@@ -2571,8 +2571,8 @@ Die optimale Tragseilspannkraft wird berechnet. Die Optimierung wird bei 75 Proz
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="960"/>
-        <source>Europaweit wird ein Sicherheitsfaktor von 3.0 fuer das Tragseil verwendet.</source>
-        <translation>Europaweit wird ein Sicherheitsfaktor von 3.0 für das Tragseil verwendet.</translation>
+        <source>Sicherheitsfaktor Tragseil Erklaerung</source>
+        <translation>Europaweit (DIN EN 16517, Stand April 2022) gilt ein Sicherheitsfaktor von 3.0 für das Tragseil bzw. 2.5 für Tragseile mit einer effektiven Lastbegrenzung im Betrieb (*Rutsch-Überlastkupplung oder einstellbaren Überlastsicherung, bei den meisten Seilgeräten verbaut und seitens Hersteller bestätigt).</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
