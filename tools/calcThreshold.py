@@ -64,7 +64,7 @@ class ThresholdUpdater:
             if topic.id == 'lastseilknickwinkel':
                 topic.threshold = [params.getParameter('LastKnickSt'), params.getParameter('LastKnickEnd')]
             if topic.id == 'leerseilknickwinkel':
-                topic.threshold = params.getParameter('LeerKnick')
+                topic.threshold = [params.getParameter('LeerKnickMit'), params.getParameter('LeerKnickOhne')]
 
     def initThresholdItems(self, params):
         # Define thresholds that should be checked
@@ -234,7 +234,7 @@ class ThresholdUpdater:
                     # Check if current value is new max value
                     if not np.all(np.isnan([maxValArr[1], angle])):
                         maxValArr[1] = np.nanmax([maxValArr[1], angle])
-                    # Check if angle is higher than second threshold
+                    # Check if over threshold for end poles
                     if angle > topic.threshold[1]:
                         color = 3  # red
                         topic.exceedsThreshold = True
@@ -242,6 +242,7 @@ class ThresholdUpdater:
                     # Check if current value is new max value
                     if not np.all(np.isnan([maxValArr[0], angle])):
                         maxValArr[0] = np.nanmax([maxValArr[0], angle])
+                    # Check if over threshold for in-between poles
                     if angle > topic.threshold[0]:
                         color = 3  # red
                         topic.exceedsThreshold = True
@@ -263,10 +264,13 @@ class ThresholdUpdater:
                 if np.isnan(angle):
                     continue
                 color = 1  # ok
-                # Angle under threshold
-                if angle < topic.threshold:
-                    color = 3
-                    topic.exceedsThreshold = True
+                # Angle under first threshold (1 to 3 degrees -> error level 'attention')
+                if angle < topic.threshold[1]:
+                    color = 2  # orange
+                    # Angle under second threshold
+                    if angle < topic.threshold[0]:
+                        color = 3
+                        topic.exceedsThreshold = True
                 
                 pole = self.poles.poles[self.poles.idxA + poleIdx]
                 topic.createPlotMarker(angle, pole['d'], pole['z'], color)

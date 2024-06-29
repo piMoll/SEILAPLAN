@@ -485,7 +485,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="277"/>
         <source>(Leerseilknickwinkel 2)</source>
-        <translation>(Rope deflection angle of the unloaded skyline &gt; 1°)</translation>
+        <translation>(Rope deflection angle of the unloaded skyline &gt; _LeerKnickMit_°)</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="270"/>
@@ -752,17 +752,22 @@ loaded skyline</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
-        <source>Grenzwert Leerseilknickwinkel</source>
+        <source>Grenzwert min. Leerseilknickwinkel mit Niederhaltelasche</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
-        <source>Grenzwert Lastseilknickwinkel Stuetze</source>
+        <source>Grenzwert min. Leerseilknickwinkel ohne Niederhaltelasche</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
-        <source>Grenzwert Lastseilknickwinkel Endmast</source>
+        <source>Grenzwert max. Lastseilknickwinkel Stuetze</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="298"/>
+        <source>Grenzwert max. Lastseilknickwinkel Endmast</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2374,6 +2379,28 @@ to the report)</translation>
         <source>Hintergrundkarte laden</source>
         <translation>Load background map</translation>
     </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1888"/>
+        <source>Grenzwert min. Leerseilknickwinkel
+mit ohne Niederhaltelasche</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1986"/>
+        <source>Grenzwert max. Lastseilknickwinkel
+Stuetze Endmast</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="2171"/>
+        <source>°</source>
+        <translation>°</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="2038"/>
+        <source>Bundstelle ueber Sattelleiste</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SeilaplanPlugin</name>
@@ -2912,7 +2939,8 @@ Note: At the final supports the threshold value is higher (approx. 60°).</trans
     <message>
         <location filename="../tools/calcThreshold.py" line="129"/>
         <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
-        <translation>With angles below 1°, there is a risk that the skyline lifts off at the saddle (red). The support must be raised.
+        <translatorcomment>TODO: Text anpassen da diese Grenzwerte jetzt dynamisch sind</translatorcomment>
+        <translation type="unfinished">With angles below 1°, there is a risk that the skyline lifts off at the saddle (red). The support must be raised.
 For angles between 1° and 3°, the skyline must be secured by a hold-down plate (orange).</translation>
     </message>
     <message>

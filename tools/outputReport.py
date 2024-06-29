@@ -289,7 +289,7 @@ def generateReportText(confHandler, result, projname):
                 kraft['Leerseilknickwinkel'])).rstrip(',').split(','),
         ['', tr('Nachweis erfuellt')] +
         ('{},' * poleCount).format(*tuple(nachweis)).rstrip(',').split(','),
-        ["", "  " + tr('(Leerseilknickwinkel 2)')]
+        ["", "  " + tr('(Leerseilknickwinkel 2)').replace('_LeerKnickMit_', confHandler.params.getParameterAsStr('LeerKnickMit'))]
     ]
     
     orderedParams = confHandler.params.paramOrder
@@ -308,6 +308,8 @@ def generateReportText(confHandler, result, projname):
         paramStr = confHandler.params.getParameterAsStr(key) + ''
         if key == 'Seilsys':
             paramStr = tr(paramStr)
+        if key == 'Anlagetyp':
+            continue
         columns[col][row] = ([tr(param['label']), f"{paramStr} {param['unit']}"])
         row += 1
         if row >= maxRows:

@@ -493,8 +493,10 @@ class ParameterConfHandler(AbstractConfHandler):
         return self.p
     
     def migrateParameters(self):
+        # TODO
         newParams = [
-            'LeerKnick',
+            'LeerKnickMit',
+            'LeerKnickOhne',
             'LastKnickSt',
             'LastKnickEnd',
             'Bundstelle',

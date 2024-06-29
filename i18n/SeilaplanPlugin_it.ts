@@ -423,7 +423,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="277"/>
         <source>(Leerseilknickwinkel 2)</source>
-        <translation>(Angolo della fune non caricata &amp;gt; 1°)</translation>
+        <translation>(Angolo della fune non caricata &amp;gt; _LeerKnickMit_°)</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="284"/>
@@ -752,17 +752,22 @@ fune caricata</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
-        <source>Grenzwert Leerseilknickwinkel</source>
+        <source>Grenzwert min. Leerseilknickwinkel mit Niederhaltelasche</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
-        <source>Grenzwert Lastseilknickwinkel Stuetze</source>
+        <source>Grenzwert min. Leerseilknickwinkel ohne Niederhaltelasche</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
-        <source>Grenzwert Lastseilknickwinkel Endmast</source>
+        <source>Grenzwert max. Lastseilknickwinkel Stuetze</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="298"/>
+        <source>Grenzwert max. Lastseilknickwinkel Endmast</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2370,6 +2375,28 @@ nel rapporto)</translation>
         <source>Hintergrundkarte laden</source>
         <translation>Caricare la mappa di sfondo</translation>
     </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1888"/>
+        <source>Grenzwert min. Leerseilknickwinkel
+mit ohne Niederhaltelasche</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1986"/>
+        <source>Grenzwert max. Lastseilknickwinkel
+Stuetze Endmast</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="2171"/>
+        <source>°</source>
+        <translation>°</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="2038"/>
+        <source>Bundstelle ueber Sattelleiste</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SeilaplanPlugin</name>
@@ -2912,7 +2939,8 @@ Indicazione: Al cavalletto terminale il valore limite è superiore (ca. 60°).</
     <message>
         <location filename="../tools/calcThreshold.py" line="129"/>
         <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
-        <translation>Nel caso di un angolo convesso di 1° c&apos;è il rischio che la fune portante si decolla della sella (rosso). Il cavalletto deve essere alzato.
+        <translatorcomment>TODO: Text anpassen da diese Grenzwerte jetzt dynamisch sind</translatorcomment>
+        <translation type="unfinished">Nel caso di un angolo convesso di 1° c&apos;è il rischio che la fune portante si decolla della sella (rosso). Il cavalletto deve essere alzato.
 Nel caso di un angolo tra 1° e 3° la fune portante deve essere atrezzato con un coprifune per sella (orange).</translation>
     </message>
     <message>

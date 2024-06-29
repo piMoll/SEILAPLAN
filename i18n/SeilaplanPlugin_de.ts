@@ -474,7 +474,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="277"/>
         <source>(Leerseilknickwinkel 2)</source>
-        <translation>(Leerseilknickwinkel &gt; 1°)</translation>
+        <translation>(Leerseilknickwinkel &gt; _LeerKnickMit_°)</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="270"/>
@@ -742,18 +742,23 @@ Lastseil</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
-        <source>Grenzwert Leerseilknickwinkel</source>
-        <translation>Grenzwert Leerseilknickwinkel</translation>
+        <source>Grenzwert min. Leerseilknickwinkel mit Niederhaltelasche</source>
+        <translation>Grenzwert min. Leerseilknickwinkel mit Niederhaltelasche</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
-        <source>Grenzwert Lastseilknickwinkel Stuetze</source>
-        <translation>Grenzwert Lastseilknickwinkel Stütze</translation>
+        <source>Grenzwert min. Leerseilknickwinkel ohne Niederhaltelasche</source>
+        <translation>Grenzwert min. Leerseilknickwinkel ohne Niederhaltelasche</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
-        <source>Grenzwert Lastseilknickwinkel Endmast</source>
-        <translation>Grenzwert Lastseilknickwinkel Endmast</translation>
+        <source>Grenzwert max. Lastseilknickwinkel Stuetze</source>
+        <translation>Grenzwert max. Lastseilknickwinkel Stütze</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="298"/>
+        <source>Grenzwert max. Lastseilknickwinkel Endmast</source>
+        <translation>Grenzwert max. Lastseilknickwinkel Endmast</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
@@ -2358,6 +2363,30 @@ Bericht übertragen)</translation>
         <source>Hintergrundkarte laden</source>
         <translation>Hintergrundkarte laden</translation>
     </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1888"/>
+        <source>Grenzwert min. Leerseilknickwinkel
+mit ohne Niederhaltelasche</source>
+        <translation>Grenzwert min. Leerseilknickwinkel
+(mit / ohne Niederhaltelasche)</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1986"/>
+        <source>Grenzwert max. Lastseilknickwinkel
+Stuetze Endmast</source>
+        <translation>Grenzwert max. Lastseilknickwinkel
+(Stütze / Endmast)</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="2171"/>
+        <source>°</source>
+        <translation>°</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="2038"/>
+        <source>Bundstelle ueber Sattelleiste</source>
+        <translation>Bundstelle über Sattelleiste</translation>
+    </message>
 </context>
 <context>
     <name>SeilaplanPlugin</name>
@@ -2894,7 +2923,8 @@ Hinweis: Bei den beiden Endmasten liegt der Grenzwert höher (ca. 60°).</transl
     <message>
         <location filename="../tools/calcThreshold.py" line="98"/>
         <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
-        <translation>Bei Knickwinkeln unter 1° besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Die Stütze muss erhöht werden.
+        <translatorcomment>TODO: Text anpassen da diese Grenzwerte jetzt dynamisch sind</translatorcomment>
+        <translation type="unfinished">Bei Knickwinkeln unter 1° besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Die Stütze muss erhöht werden.
 Bei Knickwinkeln zwischen 1° und 3° muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</translation>
     </message>
     <message>

@@ -253,7 +253,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             
             'E': self.fieldE,
             'FuellF': self.fieldFuellF,
-            'LeerKnick': self.fieldLeerKnick,
+            'LeerKnickMit': self.fieldLeerKnickMit,
+            'LeerKnickOhne': self.fieldLeerKnickOhne,
             'LastKnickSt': self.fieldLastKnickSt,
             'LastKnickEnd': self.fieldLastKnickEnd,
             'Bundstelle': self.fieldBundst,
