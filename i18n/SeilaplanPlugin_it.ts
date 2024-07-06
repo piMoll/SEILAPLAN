@@ -1096,8 +1096,8 @@ fune caricata</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="665"/>
-        <source>Tragsystem</source>
-        <translation>Sistema di supporto</translation>
+        <source>Parameter</source>
+        <translation>Parametri</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="654"/>
@@ -1261,7 +1261,7 @@ nel rapporto)</translation>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="656"/>
         <source>Nr.</source>
-        <translation type="unfinished"></translation>
+        <translation>N°</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="675"/>
@@ -1271,6 +1271,11 @@ nel rapporto)</translation>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="676"/>
         <source>Diagrammanzeige</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="546"/>
+        <source>Parameterset auswaehlen</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1676,7 +1681,7 @@ Si prega di adattare l&apos;input.</translation>
     <message>
         <location filename="../gui/poleWidget.py" line="103"/>
         <source>O Bundst.</source>
-        <translatorcomment>Achtung, Platzprobleme!</translatorcomment>
+        <translatorcomment>Achtung, Platzprobleme! Bitte Übersetzung prüfen.</translatorcomment>
         <translation type="unfinished">Ø p. attaco</translation>
     </message>
     <message>
@@ -2939,7 +2944,7 @@ Indicazione: Al cavalletto terminale il valore limite è superiore (ca. 60°).</
     <message>
         <location filename="../tools/calcThreshold.py" line="129"/>
         <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
-        <translatorcomment>TODO: Text anpassen da diese Grenzwerte jetzt dynamisch sind</translatorcomment>
+        <translatorcomment>TODO: Text anpassen da diese Grenzwerte jetzt dynamisch definiert werden können.</translatorcomment>
         <translation type="unfinished">Nel caso di un angolo convesso di 1° c&apos;è il rischio che la fune portante si decolla della sella (rosso). Il cavalletto deve essere alzato.
 Nel caso di un angolo tra 1° e 3° la fune portante deve essere atrezzato con un coprifune per sella (orange).</translation>
     </message>

@@ -1086,8 +1086,8 @@ Lastseil</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="665"/>
-        <source>Tragsystem</source>
-        <translation>Tragsystem</translation>
+        <source>Parameter</source>
+        <translation>Parameter</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="654"/>
@@ -1262,6 +1262,11 @@ Bericht übertragen)</translation>
         <location filename="../gui/ui_adjustmentDialog.py" line="676"/>
         <source>Diagrammanzeige</source>
         <translation>Diagrammanzeige</translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="546"/>
+        <source>Parameterset auswaehlen</source>
+        <translation>Parameterset auswählen</translation>
     </message>
 </context>
 <context>
@@ -1867,7 +1872,7 @@ Bitte passen Sie die Eingabe an.</translation>
     <message>
         <location filename="../tools/configHandler_project.py" line="446"/>
         <source>Bitte zeichnen Sie die Seillinie in die Karte (Schaltflaeche zeichnen) oder definieren sie Start- und Endkoordinaten manuell</source>
-        <translation>Bitte zeichnen Sie die Seillinie in die Karte (Schaltfläche &quot;zeichnen&quot;) oder definieren sie Start- und Endkoordinaten manuell.</translation>
+        <translation>Bitte zeichnen Sie die Seillinie in die Karte (Schaltfläche &quot;zeichnen&quot;) oder definieren Sie Start- und Endkoordinaten manuell.</translation>
     </message>
     <message>
         <location filename="../tools/configHandler_project.py" line="448"/>
@@ -2636,6 +2641,7 @@ Die optimale Tragseilspannkraft wird berechnet. Die Optimierung wird bei 75 Proz
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Grenzwert Leerseilknickwinkel Erklaerung</source>
+        <translatorcomment>Hier braucht es einen Erklärungstext, was der neue Grenzwert genau bedeutet. Siehe auch Erklärungstext in ThresholdUpdater</translatorcomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2646,6 +2652,7 @@ Die optimale Tragseilspannkraft wird berechnet. Die Optimierung wird bei 75 Proz
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Grenzwert Lastseilknickwinkel Erklaerung</source>
+        <translatorcomment>Hier braucht es einen Erklärungstext, was der neue Grenzwert genau bedeutet. Siehe auch Erklärungstext in ThresholdUpdater</translatorcomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2656,6 +2663,7 @@ Die optimale Tragseilspannkraft wird berechnet. Die Optimierung wird bei 75 Proz
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Bundstelle ueber Sattelleiste Erklaerung</source>
+        <translatorcomment>Hier braucht es einen Erklärungstext, was der neue Grenzwert genau bedeutet</translatorcomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2923,7 +2931,7 @@ Hinweis: Bei den beiden Endmasten liegt der Grenzwert höher (ca. 60°).</transl
     <message>
         <location filename="../tools/calcThreshold.py" line="98"/>
         <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
-        <translatorcomment>TODO: Text anpassen da diese Grenzwerte jetzt dynamisch sind</translatorcomment>
+        <translatorcomment>TODO: Text anpassen da diese Grenzwerte jetzt dynamisch definiert werden können.</translatorcomment>
         <translation type="unfinished">Bei Knickwinkeln unter 1° besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Die Stütze muss erhöht werden.
 Bei Knickwinkeln zwischen 1° und 3° muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</translation>
     </message>
@@ -2935,6 +2943,7 @@ Bei Knickwinkeln zwischen 1° und 3° muss das Tragseil mittels Niederhaltelasch
     <message>
         <location filename="../tools/calcThreshold.py" line="116"/>
         <source>BHD Erklaerung</source>
+        <translatorcomment>Dieser Erklärungstext wird im Fragezeichen Button neben dem &quot;Diagrammanzeige&quot; Dropdown gezeigt.</translatorcomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2945,6 +2954,7 @@ Bei Knickwinkeln zwischen 1° und 3° muss das Tragseil mittels Niederhaltelasch
     <message>
         <location filename="../tools/calcThreshold.py" line="125"/>
         <source>Leerseildurchhang Erklaerung</source>
+        <translatorcomment>Dieser Erklärungstext wird im Fragezeichen Button neben dem &quot;Diagrammanzeige&quot; Dropdown gezeigt.</translatorcomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2955,6 +2965,7 @@ Bei Knickwinkeln zwischen 1° und 3° muss das Tragseil mittels Niederhaltelasch
     <message>
         <location filename="../tools/calcThreshold.py" line="134"/>
         <source>Lastseildurchhang Erklaerung</source>
+        <translatorcomment>Dieser Erklärungstext wird im Fragezeichen Button neben dem &quot;Diagrammanzeige&quot; Dropdown gezeigt.</translatorcomment>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -1104,8 +1104,8 @@ câble chargé</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="665"/>
-        <source>Tragsystem</source>
-        <translation>Système porteur</translation>
+        <source>Parameter</source>
+        <translation>Paramètres</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="654"/>
@@ -1270,7 +1270,7 @@ dans le rapport)</translation>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="656"/>
         <source>Nr.</source>
-        <translation type="unfinished"></translation>
+        <translation>No.</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="675"/>
@@ -1280,6 +1280,11 @@ dans le rapport)</translation>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="676"/>
         <source>Diagrammanzeige</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="546"/>
+        <source>Parameterset auswaehlen</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1686,7 +1691,7 @@ Veuillez adapter la saisie.</translation>
     <message>
         <location filename="../gui/poleWidget.py" line="103"/>
         <source>O Bundst.</source>
-        <translatorcomment>Achtung, Platzprobleme!</translatorcomment>
+        <translatorcomment>Achtung, Platzprobleme! Bitte Übersetzung prüfen.</translatorcomment>
         <translation type="unfinished">Ø p. fixation</translation>
     </message>
     <message>
@@ -2943,7 +2948,7 @@ Notice explicative: Au mât terminal la valeur limite est plus haute (env. 60°)
     <message>
         <location filename="../tools/calcThreshold.py" line="129"/>
         <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
-        <translatorcomment>TODO: Text anpassen da diese Grenzwerte jetzt dynamisch sind</translatorcomment>
+        <translatorcomment>TODO: Text anpassen da diese Grenzwerte jetzt dynamisch definiert werden können.</translatorcomment>
         <translation type="unfinished">En cas des angles inférieurs à 1° il y a le risque que le câble porteur s&apos;enlève de l&apos;étrier (rouge). L&apos; appui doit être surélevé.
 En cas des angles entre 1° et 3° le câble porteur doit être sécurisé par une patte de fixation (orange).</translation>
     </message>

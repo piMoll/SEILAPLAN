@@ -1101,8 +1101,8 @@ loaded skyline</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="665"/>
-        <source>Tragsystem</source>
-        <translation>Design parameters</translation>
+        <source>Parameter</source>
+        <translation>Parameters</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="654"/>
@@ -1266,7 +1266,7 @@ to the report)</translation>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="656"/>
         <source>Nr.</source>
-        <translation type="unfinished"></translation>
+        <translation>No.</translation>
     </message>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="675"/>
@@ -1276,6 +1276,11 @@ to the report)</translation>
     <message>
         <location filename="../gui/ui_adjustmentDialog.py" line="676"/>
         <source>Diagrammanzeige</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/ui_adjustmentDialog.py" line="546"/>
+        <source>Parameterset auswaehlen</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1684,7 +1689,7 @@ Please change the input.</translation>
     <message>
         <location filename="../gui/poleWidget.py" line="103"/>
         <source>O Bundst.</source>
-        <translatorcomment>Achtung, Platzprobleme!</translatorcomment>
+        <translatorcomment>Achtung, Platzprobleme! Bitte Übersetzung prüfen.</translatorcomment>
         <translation type="unfinished">Ø attach. p.</translation>
     </message>
     <message>
@@ -2939,7 +2944,7 @@ Note: At the final supports the threshold value is higher (approx. 60°).</trans
     <message>
         <location filename="../tools/calcThreshold.py" line="129"/>
         <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
-        <translatorcomment>TODO: Text anpassen da diese Grenzwerte jetzt dynamisch sind</translatorcomment>
+        <translatorcomment>TODO: Text anpassen da diese Grenzwerte jetzt dynamisch definiert werden können.</translatorcomment>
         <translation type="unfinished">With angles below 1°, there is a risk that the skyline lifts off at the saddle (red). The support must be raised.
 For angles between 1° and 3°, the skyline must be secured by a hold-down plate (orange).</translation>
     </message>
