@@ -354,9 +354,8 @@ class ConfigHandler(object):
             success = self.project.prepareForCalculation()
         return success
     
-    def loadCableDataFromFile(self):
+    def prepareResultWithoutOptimization(self):
         self.project.updatePoles()
-        
         return {
             'cableline': None,
             'optSTA': self.params.getTensileForce(),
