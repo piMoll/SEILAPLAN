@@ -37,28 +37,18 @@ class AdjustmentDialogParams(object):
         self.params = {}
         self.fields = {
             'Q': self.parent.fieldQ,
-            'qT': self.parent.fieldqT,
-            'D': self.parent.fieldD,
-            'MBK': self.parent.fieldMBK,
-            'qZ': self.parent.fieldqZ,
-            'qR': self.parent.fieldqR,
-            'Vorsp': self.parent.fieldVorsp,
+            'SK': self.parent.fieldVorsp,
             'Bodenabst_min': self.parent.fieldBabstMin,
-            'Anlagetyp': self.parent.fieldAnlagetyp,
         }
+        self.fillParametersetList()
         self.connectFields()
 
     def fillInParams(self):
         self.params = {
             'Q': self.paramHandler.getParameterAsStr('Q'),
-            'qT': self.paramHandler.getParameterAsStr('qT'),
-            'D': self.paramHandler.getParameterAsStr('D'),
-            'MBK': self.paramHandler.getParameterAsStr('MBK'),
-            'qZ': self.paramHandler.getParameterAsStr('qZ'),
-            'qR': self.paramHandler.getParameterAsStr('qR'),
+            # Fill in parameter SK or - if an optimization run - optSTA
+            'SK': str(self.paramHandler.getTensileForce()),
             'Bodenabst_min': self.paramHandler.getParameterAsStr('Bodenabst_min'),
-            'Anlagetyp': self.paramHandler.getParameterAsStr('Anlagetyp'),
-            'Vorsp': str(self.paramHandler.optSTA),
         }
         for key, field in self.fields.items():
             field.blockSignals(True)
@@ -68,42 +58,35 @@ class AdjustmentDialogParams(object):
     def connectFields(self):
         self.parent.fieldQ.editingFinished.connect(
             lambda: self.paramHasChanged('Q'))
-        self.parent.fieldqT.editingFinished.connect(
-            lambda: self.paramHasChanged('qT'))
-        self.parent.fieldD.editingFinished.connect(
-            lambda: self.paramHasChanged('D'))
-        self.parent.fieldMBK.editingFinished.connect(
-            lambda: self.paramHasChanged('MBK'))
-        self.parent.fieldqZ.editingFinished.connect(
-            lambda: self.paramHasChanged('qZ'))
-        self.parent.fieldqR.editingFinished.connect(
-            lambda: self.paramHasChanged('qR'))
         self.parent.fieldVorsp.editingFinished.connect(
-            lambda: self.paramHasChanged('Vorsp'))
+            lambda: self.paramHasChanged('SK'))
         self.parent.fieldBabstMin.editingFinished.connect(
             lambda: self.paramHasChanged('Bodenabst_min'))
-        self.parent.fieldAnlagetyp.editingFinished.connect(
-            lambda: self.paramHasChanged('Anlagetyp'))
+        
+        self.parent.fieldParamSet.currentIndexChanged.connect(self.onParameterSetChange)
+    
+    def onParameterSetChange(self):
+        name = self.parent.fieldParamSet.currentText()
+        if name:
+            self.paramHandler.setParameterSet(name)
+            # Inform parent of parameter changes
+            self.parent.onUpdateCableParam()
+            # Fill in values
+            self.fillInParams()
 
     def paramHasChanged(self, fieldName=''):
         newVal = self.fields[fieldName].text()
-        if fieldName != 'Anlagetyp':
-            try:
-                newVal = float(newVal)
-            except ValueError:
-                newVal = False
+        try:
+            newVal = float(newVal)
+        except ValueError:
+            newVal = False
         
         if newVal is not False:
-            if fieldName == 'Vorsp':
-                newVal = self.parent.updateOptSTA(newVal)
-            elif fieldName in ['D', 'MBK']:
-                newVal = self.paramHandler.setParameter(fieldName, newVal)
-                self.paramHandler.prepareForCalculation()
-            elif fieldName in ['qZ', 'qR']:
-                newVal = self.paramHandler.setParameter(fieldName, newVal)
-                self.paramHandler.setPullRope(self.parent.profile.direction)
-            else:
-                newVal = self.paramHandler.setParameter(fieldName, newVal)
+            if fieldName == 'SK':
+                # Unset optSTA from the optimization and instead update SK from
+                #  the parameterset
+                self.paramHandler.setOptSTA(None)
+            newVal = self.paramHandler.setParameter(fieldName, newVal)
                 
         if newVal is False:
             newVal = ''
@@ -111,4 +94,14 @@ class AdjustmentDialogParams(object):
         self.fields[fieldName].blockSignals(True)
         self.fields[fieldName].setText(str(newVal))
         self.fields[fieldName].blockSignals(False)
-        self.parent.updateCableParam()
+        self.parent.onUpdateCableParam()
+    
+    def fillParametersetList(self):
+        self.parent.fieldParamSet.blockSignals(True)
+        self.parent.fieldParamSet.clear()
+        self.parent.fieldParamSet.addItems(self.paramHandler.getParametersetNames())
+        if self.paramHandler.currentSetName:
+            self.parent.fieldParamSet.setCurrentText(self.paramHandler.currentSetName)
+        else:
+            self.parent.fieldParamSet.setCurrentIndex(-1)
+        self.parent.fieldParamSet.blockSignals(False)

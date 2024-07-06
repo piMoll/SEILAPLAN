@@ -51,7 +51,8 @@ class ParameterConfHandler(AbstractConfHandler):
         self.paramOrder = []
         # Shorthand dictionary for use in algorithm
         self.p = {}
-        # Optimal cable tension (result of optimization or user input)
+        # Optimal cable tension (result of optimization) - is None if
+        #  optimization algorithm didn't run
         self.optSTA = None
         
         # Parameter sets
@@ -413,10 +414,21 @@ class ParameterConfHandler(AbstractConfHandler):
             return sysStr
 
     def setOptSTA(self, optSTA):
-        if optSTA:
+        if optSTA is None or int(round(float(optSTA))) == self.getParameter('SK'):
+            # Don't set optSTA if it is equal to the base tensile force parameter.
+            #  This will be the case when loading project files because optSTA
+            #  was set fromthe parameterset value SK in previous versions.
+            self.optSTA = None
+        else:
             self.optSTA = int(round(float(optSTA)))
     
-    def prepareForCalculation(self):
+    def getTensileForce(self):
+        # This will either return the tensile force calculated by the optimization
+        #  algorithm (optSTA) or the base tensile force (Grundspannung) defined
+        #  by the parameter set.
+        return self.optSTA or self.getParameter('SK')
+    
+    def prepareForCalculation(self, profileDirection=None):
         # Define min_SK as 15% lower as the machine parameter 'SK'
         SK = self.getParameter('SK')
         self.derievedParams['min_SK'] = {
@@ -435,6 +447,11 @@ class ParameterConfHandler(AbstractConfHandler):
         self.derievedParams['A'] = {
             'value': pi * (diameter * 0.5)**2 * fuellF
         }
+        if profileDirection:
+            # If the direction of the profile is already known, we can set
+            #  the correct rope weights
+            self.setPullRope(profileDirection)
+            
         return True
             
     def updateAnchorLen(self, buffer, poletype_A, poletype_E):
@@ -501,7 +518,6 @@ class ParameterConfHandler(AbstractConfHandler):
             'LastKnickEnd',
             'Bundstelle',
         ]
-            
     
     def reset(self):
         self.optSTA = None

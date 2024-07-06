@@ -222,8 +222,8 @@ class Poles(object):
             ztop = z
         return x, y, z, dtop, ztop
 
-    def updateAllPoles(self, status, poles):
-        if status == 'optimization':
+    def updateAllPoles(self, mode, poles):
+        if mode == 'optimization':
             # Update height of start point
             self.update(self.idxA, 'h', poles[0]['h'])
             # Optimization was successful, line reaches end point
@@ -248,7 +248,7 @@ class Poles(object):
                 self.add(idx, p['d'], p['h'], name=p['name'], refresh=False)
                 idx += 1
         
-        elif status == 'savedFile':
+        elif mode == 'savedFile':
             # User wants to jump over the optimization and has loaded a save
             # file with poles --> all poles are being replaced with new data
             self.poles = []
@@ -259,9 +259,9 @@ class Poles(object):
                          p['position'] if 'position' in p else None,
                          p['abspann'] if 'abspann' in p else None, False)
         
-        elif status == 'jumpedOver':
+        elif mode == 'fixedPoles':
             # User wants to jump over the optimization but has not loaded a
-            # save file with pole data. But since there are some fixed poles,
+            # save file with pole data. But if there are fixed poles,
             # these are added in between first and last pole.
             idx = 1
             if self.A_type == 'pole':

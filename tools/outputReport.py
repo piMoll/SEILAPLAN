@@ -150,7 +150,7 @@ def generateReportText(confHandler, result, projname):
 
     # Section cable pull strength
     str_opti = [[tr('gewaehlte Grundspannung bei der Anfangsstuetze'),
-                 f"{confHandler.params.optSTA:.0f} kN"]]
+                 f"{confHandler.params.getTensileForce():.0f} kN"]]
 
     # Section cable length
     str_laen = [['']*2 + fHeader,
@@ -394,7 +394,7 @@ def generateShortReport(confHandler, result, projname, outputLoc):
         param['Q'],
         param['Bodenabst_min'] + param['Bodenabst_A'],
         ['', ''] + param['Bodenabst_E'],
-        [tr('Grundspannung Tragseil (Anfangssp.)'), f"{confHandler.params.optSTA:.0f} kN"]
+        [tr('Grundspannung Tragseil (Anfangssp.)'), f"{confHandler.params.getTensileForce():.0f} kN"]
             + [tr('Grundspannung (Endpunkt)'), f"{kraft['Spannkraft'][1]:.0f} kN"],
         param['SF_T'] + param['E']]
     

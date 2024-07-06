@@ -73,6 +73,10 @@ class ConfigHandler(object):
         self.params.initParameters()
         self.params.loadPredefinedParametersets()
         self.params.loadParametersetsFromSettings()
+        
+        # Remember if this is data loaded from a project file. It's used to
+        #  later show the correct message in the adjustment window
+        self.fromSavedProject = False
     
     def setDialog(self, dialog):
         self.project.setDialog(dialog)
@@ -87,6 +91,8 @@ class ConfigHandler(object):
             success = self.loadFromTxtFile(filename)
         elif filename.endswith('.json'):
             success = self.loadFromJsonFile(filename)
+        if success:
+            self.fromSavedProject = True
         return success
     
     def loadFromJsonFile(self, filename):
@@ -349,33 +355,21 @@ class ConfigHandler(object):
         return success
     
     def loadCableDataFromFile(self):
-        status = 'jumpedOver'
-        
-        # If the project file already contains pole data from an earlier run,
-        # load this data into Poles()
-        status = self.project.updatePoles(status)
-        
-        # Set optimized cable tension
-        if status == 'savedFile' and self.params.optSTA:
-            # Use the saved parameter from save file
-            optSTA = self.params.optSTA
-        else:
-            # Use machine parameter 'SK'
-            optSTA = self.params.getParameter('SK')
-            self.params.setOptSTA(optSTA)
+        self.project.updatePoles()
         
         return {
             'cableline': None,
-            'optSTA': optSTA,
-            'optSTA_arr': [optSTA],
+            'optSTA': self.params.getTensileForce(),
+            'optSTA_arr': [self.params.getTensileForce()],
             'force': None,
             'optLen': None,
             'duration': getTimestamp(time.time())
-        }, status
+        }, 'savedFile' if self.fromSavedProject else 'jumpedOver'
     
     def reset(self):
         self.project.reset()
         self.params.reset()
+        self.fromSavedProject = False
     
     def qgsSettingsMigrator(self):
         """Migrates settings to be up-to-date with the current Seilaplan

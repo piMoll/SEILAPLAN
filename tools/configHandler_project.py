@@ -535,19 +535,19 @@ class ProjectConfHandler(AbstractConfHandler):
         # Initialize pole data (start/end point and anchors)
         try:
             self.poles = Poles(self)
+            self.updatePoles()
         except ValueError:
             self.onError(self.tr('Unerwarteter Fehler bei Erstellung der Stuetzen'))
             return False
         return success
     
-    def updatePoles(self, status):
+    def updatePoles(self):
         if self.polesFromFile:
-            status = 'savedFile'
-            self.poles.updateAllPoles(status, self.polesFromFile)
+            self.poles.updateAllPoles('savedFile', self.polesFromFile)
         # If instead user has defined some fixed poles, add these to Poles()
+        #  (if the saved file included fixed poles, they would already be part of self.poles)
         elif len(self.fixedPoles['poles']) > 0:
-            self.poles.updateAllPoles(status, self.fixedPoles['poles'])
-        return status
+            self.poles.updateAllPoles('fixedPoles', self.fixedPoles['poles'])
     
     def resetProfile(self):
         self.points = {

@@ -344,11 +344,6 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         point = [self.poles.poles[idx]['coordx'],
                  self.poles.poles[idx]['coordy']]
         self.drawTool.updateMarker(point, idx)
-    
-    def updateOptSTA(self, newVal):
-        # Save new value to config Handler
-        self.confHandler.params.setOptSTA(newVal)
-        return str(self.confHandler.params.optSTA)
 
     def onUpdateBirdViewParams(self, idx, property_name, newVal):
         self.poles.update(idx, property_name, newVal)
@@ -401,7 +396,10 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             # Show a simple MessageBox with an info text
             QMessageBox.information(self, title, msg, QMessageBox.Ok)
 
-    def updateCableParam(self):
+    def onUpdateCableParam(self):
+        # Since user can change entire parameter sets, we prepare params
+        #  for recalculation
+        self.paramHandler.prepareForCalculation(self.profile.direction)
         self.configurationHasChanged = True
     
     def onPrHeaderChanged(self):
@@ -488,7 +486,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         try:
             params = self.paramHandler.getSimpleParameterDict()
             cableline, force, seil_possible = preciseCable(params, self.poles,
-                                                           self.confHandler.params.optSTA)
+                                                           self.paramHandler.getTensileForce())
         except Exception as e:
             self.updateRecalcStatus('cableError')
             self.isRecalculating = False
