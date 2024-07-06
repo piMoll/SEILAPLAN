@@ -18,6 +18,7 @@
  *                                                                         *
  ***************************************************************************/
 """
+from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
 
 
 class AdjustmentDialogParams(object):
@@ -32,7 +33,7 @@ class AdjustmentDialogParams(object):
         :type paramHandler: tools.configHandler_params.ParamConfHandler
         """
         self.parent = parent
-        self.paramHandler = paramHandler
+        self.paramHandler: ParameterConfHandler = paramHandler
         self.params = {}
         self.fields = {
             'Q': self.parent.fieldQ,

@@ -6,6 +6,7 @@ from qgis.PyQt.QtCore import QCoreApplication
 
 from SEILAPLAN.gui.adjustmentPlot import PlotMarker
 from SEILAPLAN.gui.adjustmentDialog_thresholds import AdjustmentDialogThresholds
+from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
 
 
 class ThresholdUpdater:
@@ -24,7 +25,7 @@ class ThresholdUpdater:
             self.tr('Aktuelle Loesung')
         ]
 
-    def update(self, resultData, params, poles, profile, resultFromOptimization):
+    def update(self, resultData, params: ParameterConfHandler, poles, profile, resultFromOptimization):
         self.poles = poles
         self.profile = profile
         firstRun = False
@@ -55,7 +56,7 @@ class ThresholdUpdater:
         # Update warn icon of the tap title
         self.layout.updateTabIcon(any([item.exceedsThreshold for item in self.getThresholdTopics()]))
     
-    def setThreshold(self, params):
+    def setThreshold(self, params: ParameterConfHandler):
         for topic in self.topics:
             if topic.id == 'bodenabstand':
                 topic.threshold = params.getParameter('Bodenabst_min')
@@ -66,7 +67,7 @@ class ThresholdUpdater:
             if topic.id == 'leerseilknickwinkel':
                 topic.threshold = [params.getParameter('LeerKnickMit'), params.getParameter('LeerKnickOhne')]
 
-    def initThresholdItems(self, params):
+    def initThresholdItems(self, params: ParameterConfHandler):
         # Define thresholds that should be checked
         bodenabst = PlotTopic(
             ident='bodenabstand',
@@ -89,7 +90,7 @@ class ThresholdUpdater:
         lastseilknickwinkel = PlotTopic(
             ident='lastseilknickwinkel',
             name=self.tr('Max. Lastseilknickwinkel'),
-            unit='°',
+            unit=params.params['LastKnickSt']['unit'],
             description={
                 'title': self.tr('Max. Lastseilknickwinkel'),
                 'message': self.tr('Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften.'),
@@ -98,7 +99,7 @@ class ThresholdUpdater:
         leerseilknickwinkel = PlotTopic(
             ident='leerseilknickwinkel',
             name=self.tr('Min. Leerseilknickwinkel'),
-            unit='°',
+            unit=params.params['LeerKnickMit']['unit'],
             description={
                 'title': self.tr('Min. Leerseilknickwinkel'),
                 'message': self.tr('Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).'),
@@ -385,6 +386,8 @@ class PlotTopic(object):
         self.currentExtrema = None
         self.isOpti = False
         self.exceedsThreshold = False
+        for marker in self.plotMarkers:
+            del marker
         self.plotMarkers = []
 
 

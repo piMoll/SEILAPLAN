@@ -40,10 +40,14 @@ from SEILAPLAN.tools.birdViewMapExtractor import extractMapBackground
 from SEILAPLAN.core.cablelineFinal import preciseCable, updateWithCableCoordinates
 from SEILAPLAN.tools.calcThreshold import ThresholdUpdater
 from SEILAPLAN.tools.poles import Poles
+from SEILAPLAN.tools.profile import Profile
 from SEILAPLAN.tools.outputReport import generateReportText, generateReport, \
     createOutputFolder, generateShortReport
 from SEILAPLAN.tools.outputGeo import organizeDataForExport, addToMap, \
     generateCoordTable, writeGeodata
+from SEILAPLAN.tools.configHandler import ConfigHandler
+from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
+from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
 
 
 class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
@@ -63,12 +67,14 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.msgBar = self.iface.messageBar()
         
         # Management of Parameters and settings
-        self.confHandler = confHandler
+        self.confHandler: ConfigHandler = confHandler
         self.confHandler.setDialog(self)
-        self.profile = self.confHandler.project.profile
-        self.poles: Poles = self.confHandler.project.poles
+        self.paramHandler: ParameterConfHandler = self.confHandler.params
+        self.projectHandler: ProjectConfHandler = self.confHandler.project
+        self.profile: Profile = self.projectHandler.profile
+        self.poles: Poles = self.projectHandler.poles
         # Max distance the anchors can move away from initial position
-        self.anchorBuffer = self.confHandler.project.heightSource.buffer
+        self.anchorBuffer = self.projectHandler.heightSource.buffer
         # Path to plugin root
         self.homePath = os.path.dirname(os.path.dirname(__file__))
         
@@ -110,7 +116,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.selectedPlotTopic = None
         
         # Parameter tab
-        self.paramLayout = AdjustmentDialogParams(self, self.confHandler.params)
+        self.paramLayout = AdjustmentDialogParams(self, self.paramHandler)
         
         # Fill bird view widget with data
         self.birdViewLayout = BirdViewWidget(self.tabBirdView, self.birdViewGrid, self.poles)
@@ -191,7 +197,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         # Algorithm was skipped, no optimized solution
         if status in ['jumpedOver', 'savedFile']:
             try:
-                params = self.confHandler.params.getSimpleParameterDict()
+                params = self.paramHandler.getSimpleParameterDict()
                 cableline, force, \
                 seil_possible = preciseCable(params, self.poles,
                                              self.result['optSTA'])
@@ -223,7 +229,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.paramLayout.fillInParams()
         
         # Fill in Threshold data
-        self.thdUpdater.update(self.result, self.confHandler.params, self.poles,
+        self.thdUpdater.update(self.result, self.paramHandler, self.poles,
             self.profile, self.status == 'optiSuccess')
         # Add plot topics in drop down
         for topic in self.thdUpdater.topics:
@@ -402,7 +408,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.unsavedChanges = True
 
     def fillInPrHeaderData(self):
-        for key, val in self.confHandler.project.prHeader.items():
+        for key, val in self.projectHandler.prHeader.items():
             field = self.prHeaderFields[key]
             if isinstance(field, QTextEdit):
                 field.setPlainText(val)
@@ -416,7 +422,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
                 prHeader[key] = field.toPlainText()
             else:
                 prHeader[key] = field.text()
-        self.confHandler.project.setPrHeader(prHeader)
+        self.projectHandler.setPrHeader(prHeader)
     
     def updateRecalcStatus(self, status):
         self.status = status
@@ -480,7 +486,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.isRecalculating = True
         
         try:
-            params = self.confHandler.params.getSimpleParameterDict()
+            params = self.paramHandler.getSimpleParameterDict()
             cableline, force, seil_possible = preciseCable(params, self.poles,
                                                            self.confHandler.params.optSTA)
         except Exception as e:
@@ -500,8 +506,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         
         # Update Threshold data
-        self.thdUpdater.update(self.result, self.confHandler.params,
-                               self.poles, self.profile, False)
+        self.thdUpdater.update(self.result, self.paramHandler, self.poles,
+                               self.profile, False)
         self.onRefreshTopicInPlot()
         
         # cable line lifts off of pole
@@ -573,11 +579,10 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
     
     def createOutput(self):
         outputFolder = self.confHandler.getCurrentPath()
-        project = self.confHandler.project
-        projName = project.getProjectName()
+        projName = self.projectHandler.getProjectName()
         outputLoc = createOutputFolder(os.path.join(outputFolder, projName))
-        updateWithCableCoordinates(self.cableline, project.points['A'],
-                                   project.azimut)
+        updateWithCableCoordinates(self.cableline, self.projectHandler.points['A'],
+                                   self.projectHandler.azimut)
         poles = [pole for pole in self.poles.poles if pole['active']]
         # Save project file
         self.confHandler.saveSettings(os.path.join(outputLoc,
@@ -608,10 +613,10 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             imgPath = None
             if includingBirdView:
                 # Create second plot
-                xlim, ylim = printPlot.createBirdView(poles, self.confHandler.project.azimut)
+                xlim, ylim = printPlot.createBirdView(poles, self.projectHandler.azimut)
                 # Extract the map background
                 imgPath = extractMapBackground(outputLoc, xlim, ylim,
-                            self.confHandler.project.points['A'], self.confHandler.project.azimut)
+                            self.projectHandler.points['A'], self.projectHandler.azimut)
                 printPlot.addBackgroundMap(imgPath)
             printPlot.exportPdf(plotSavePath)
             # Delete map background
@@ -634,7 +639,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             # Put geo data in separate sub folder
             savePath = os.path.join(outputLoc, 'geodata')
             os.makedirs(savePath)
-            epsg = project.heightSource.spatialRef
+            epsg = self.projectHandler.heightSource.spatialRef
             geodata = organizeDataForExport(poles, self.cableline,
                                             self.profile)
 
