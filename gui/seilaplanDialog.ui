@@ -3249,7 +3249,7 @@ Stuetze Endmast</string>
   <tabstop>infoFieldFuellF</tabstop>
  </tabstops>
  <resources>
-  <include location="resources.qrc"/>
+  
  </resources>
  <connections/>
 </ui>

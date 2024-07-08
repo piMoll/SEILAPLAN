@@ -1039,184 +1039,184 @@ loaded skyline</translation>
 <context>
     <name>AdjustmentDialogUI</name>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="638"/>
+        <location filename="../gui/adjustmentDialog.ui" line="638"/>
         <source>Manuelle Anpassung</source>
         <translatorcomment>Internet</translatorcomment>
         <translation>Manual adjustment</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="689"/>
+        <location filename="../gui/adjustmentDialog.ui" line="689"/>
         <source>Neuberechnung...</source>
         <translatorcomment>Internet</translatorcomment>
         <translation>Recalculation...</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="639"/>
+        <location filename="../gui/adjustmentDialog.ui" line="639"/>
         <source>Manuelle Anpassung der Seillinie</source>
         <translatorcomment>HeProMo</translatorcomment>
         <translation>Manual adjustment of the cable road</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="690"/>
+        <location filename="../gui/adjustmentDialog.ui" line="690"/>
         <source>Manuelle Anpassungen verwerfen und zurueck zum Startfenster wechseln</source>
         <translation>Discard the manual adjustments and return to the start window</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="691"/>
+        <location filename="../gui/adjustmentDialog.ui" line="691"/>
         <source>zurueck zum Startfenster</source>
         <translation>Return to start window</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="692"/>
+        <location filename="../gui/adjustmentDialog.ui" line="692"/>
         <source>Plugin beenden</source>
         <translation>Close plugin</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="693"/>
+        <location filename="../gui/adjustmentDialog.ui" line="693"/>
         <source>Schliessen</source>
         <translatorcomment>Internet</translatorcomment>
         <translation>Close</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="694"/>
+        <location filename="../gui/adjustmentDialog.ui" line="694"/>
         <source>Ergebnisse speichern</source>
         <translation>Save results</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="695"/>
+        <location filename="../gui/adjustmentDialog.ui" line="695"/>
         <source>Speichern</source>
         <translatorcomment>Internet</translatorcomment>
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="646"/>
+        <location filename="../gui/adjustmentDialog.ui" line="646"/>
         <source>Stuetzen</source>
         <translatorcomment>HeProMo</translatorcomment>
         <translation>Supports</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="640"/>
+        <location filename="../gui/adjustmentDialog.ui" line="640"/>
         <source>Feinjustierung der Stuetzen</source>
         <translation>Adjustment of supports</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="665"/>
+        <location filename="../gui/adjustmentDialog.ui" line="665"/>
         <source>Parameter</source>
         <translation>Parameters</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="654"/>
+        <location filename="../gui/adjustmentDialog.ui" line="654"/>
         <source>kN/m</source>
         <translation>kN/m</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="658"/>
+        <location filename="../gui/adjustmentDialog.ui" line="658"/>
         <source>Gesamtlast</source>
         <translation>Weight of the load incl. carriage</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="657"/>
+        <location filename="../gui/adjustmentDialog.ui" line="657"/>
         <source>kN</source>
         <translation>kN</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="659"/>
+        <location filename="../gui/adjustmentDialog.ui" line="659"/>
         <source>Gewicht Rueckholseil</source>
         <translatorcomment>hier gibt es unterschiedliche Schreibweisen: haul-back line</translatorcomment>
         <translation>Self-weight of haulback line</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="647"/>
+        <location filename="../gui/adjustmentDialog.ui" line="647"/>
         <source>mm</source>
         <translation>mm</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="662"/>
+        <location filename="../gui/adjustmentDialog.ui" line="662"/>
         <source>Grundspannung Tragseil (Anfangssp.)</source>
         <translation>Pre-stress tensile force of unloaded skyline (start point)</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="663"/>
+        <location filename="../gui/adjustmentDialog.ui" line="663"/>
         <source>Gewicht Tragseil</source>
         <translation>Self-weight of skyline</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="652"/>
+        <location filename="../gui/adjustmentDialog.ui" line="652"/>
         <source>Durchmesser Tragseil</source>
         <translation>Diameter of skyline</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="660"/>
+        <location filename="../gui/adjustmentDialog.ui" line="660"/>
         <source>Minimaler Abstand Tragseil - Boden</source>
         <translation>Minimal clearance between skyline and ground</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="656"/>
+        <location filename="../gui/adjustmentDialog.ui" line="656"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="648"/>
+        <location filename="../gui/adjustmentDialog.ui" line="648"/>
         <source>Gewicht Zugseil</source>
         <translation>Self-weight of mainline</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="651"/>
+        <location filename="../gui/adjustmentDialog.ui" line="651"/>
         <source>Mindestbruchkraft Tragseil</source>
         <translation>Minimum breaking strength of skyline</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="668"/>
+        <location filename="../gui/adjustmentDialog.ui" line="668"/>
         <source>Kennwerte</source>
         <translation>Structural design</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="666"/>
+        <location filename="../gui/adjustmentDialog.ui" line="666"/>
         <source>Kennwerte und Maximalwerte</source>
         <translation>Threshold and current values for structural design criteria</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="667"/>
+        <location filename="../gui/adjustmentDialog.ui" line="667"/>
         <source>Klick auf Zeile markiert Position der Grenzwert-Ueberschreitung im Diagramm.</source>
         <translation>By clicking on the row, the corresponding values are displayed in the diagram.</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="678"/>
+        <location filename="../gui/adjustmentDialog.ui" line="678"/>
         <source>?</source>
         <translation>?</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="664"/>
+        <location filename="../gui/adjustmentDialog.ui" line="664"/>
         <source>Anlagetyp</source>
         <translation>Cable yarder type</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="688"/>
+        <location filename="../gui/adjustmentDialog.ui" line="688"/>
         <source>Kopfdaten</source>
         <translation>Header data</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="682"/>
+        <location filename="../gui/adjustmentDialog.ui" line="682"/>
         <source>Projektnummer</source>
         <translation>Project number</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="683"/>
+        <location filename="../gui/adjustmentDialog.ui" line="683"/>
         <source>Gemeinde</source>
         <translation>Municipality</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="684"/>
+        <location filename="../gui/adjustmentDialog.ui" line="684"/>
         <source>Waldort</source>
         <translation>Forest site</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="685"/>
+        <location filename="../gui/adjustmentDialog.ui" line="685"/>
         <source>Projektverfasser</source>
         <translation>Project author</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="686"/>
+        <location filename="../gui/adjustmentDialog.ui" line="686"/>
         <source>Bemerkungen
 (erscheint in Berichten)</source>
         <translation>Notes
@@ -1224,62 +1224,62 @@ loaded skyline</translation>
 to the report)</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="681"/>
+        <location filename="../gui/adjustmentDialog.ui" line="681"/>
         <source>Vogelperspektive</source>
         <translation>Bird’s eye view</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="669"/>
+        <location filename="../gui/adjustmentDialog.ui" line="669"/>
         <source>Position Stuetze</source>
         <translation>Position of support</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="672"/>
+        <location filename="../gui/adjustmentDialog.ui" line="672"/>
         <source>Kategorie</source>
         <translation>Category</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="674"/>
+        <location filename="../gui/adjustmentDialog.ui" line="674"/>
         <source>Ausrichtung Abspannseile</source>
         <translation>Align. anchor ropes</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="676"/>
+        <location filename="../gui/adjustmentDialog.ui" line="676"/>
         <source>Stuetzenbez.</source>
         <translation>Supp. design.</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="677"/>
+        <location filename="../gui/adjustmentDialog.ui" line="677"/>
         <source>Konfiguration Vogelperspektive</source>
         <translation>Configuration of the bird&apos;s eye view</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="679"/>
+        <location filename="../gui/adjustmentDialog.ui" line="679"/>
         <source>Darstellung der Seillinie und Stuetzen aus der Vogelperspektive.</source>
         <translation>Bird&apos;s eye view of the cable road and the intermediate supports.</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="680"/>
+        <location filename="../gui/adjustmentDialog.ui" line="680"/>
         <source>Hintergrundkarte laden um sie in der Vogelperspektive darzustellen.</source>
         <translation>Load background map to show it in bird&apos;s eye view.</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="656"/>
+        <location filename="../gui/adjustmentDialog.ui" line="656"/>
         <source>Nr.</source>
         <translation>No.</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="675"/>
+        <location filename="../gui/adjustmentDialog.ui" line="675"/>
         <source>Navigation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="676"/>
+        <location filename="../gui/adjustmentDialog.ui" line="676"/>
         <source>Diagrammanzeige</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="546"/>
+        <location filename="../gui/adjustmentDialog.ui" line="546"/>
         <source>Parameterset auswaehlen</source>
         <translation type="unfinished"></translation>
     </message>

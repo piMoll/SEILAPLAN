@@ -23,6 +23,7 @@
 import os
 
 # GUI and QGIS libraries
+from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QFileInfo, QCoreApplication, QSettings, Qt
 from qgis.PyQt.QtWidgets import (QDialog, QMessageBox, QFileDialog, QComboBox,
                                  QTextEdit)
@@ -30,39 +31,42 @@ from qgis.PyQt.QtGui import QPixmap
 from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject,
                        QgsCoordinateReferenceSystem)
 from processing.core.Processing import Processing
-
 # Further GUI modules for functionality
 from .guiHelperFunctions import (DialogWithImage, createContours,
                                  addBackgroundMap, createProfileLayers)
 from .surveyImportDialog import SurveyImportDialog
 from SEILAPLAN.tools.outputGeo import CH_CRS
 from SEILAPLAN.tools.configHandler import ConfigHandler
-from SEILAPLAN.tools.configHandler_project import castToNum
+from SEILAPLAN.tools.configHandler_project import ProjectConfHandler, castToNum
+from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
 # GUI elements
 from .checkableComboBoxOwn import QgsCheckableComboBoxOwn
 from .saveDialog import DialogSaveParamset
 from .mapMarker import MapMarkerTool
-from .ui_seilaplanDialog import Ui_SeilaplanDialogUI
 from .profileDialog import ProfileDialog
+# This loads the .ui file so that PyQt can populate the plugin with the
+#  elements from Qt Designer
+UI_FILE = os.path.join(os.path.dirname(__file__), 'seilaplanDialog.ui')
+FORM_CLASS, _ = uic.loadUiType(UI_FILE)
 
 
-class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
+class SeilaplanPluginDialog(QDialog, FORM_CLASS):
+    
     def __init__(self, interface, confHandler):
         """
-
         :type confHandler: ConfigHandler
         """
-        QDialog.__init__(self, interface.mainWindow())
+        super(SeilaplanPluginDialog, self).__init__(interface.mainWindow())
         
         # QGIS interface
         self.iface = interface
         # QGIS map canvas
         self.canvas = self.iface.mapCanvas()
         # Management of Parameters and settings
-        self.confHandler = confHandler
+        self.confHandler: ConfigHandler = confHandler
         self.confHandler.setDialog(self)
-        self.paramHandler = confHandler.params
-        self.projectHandler = confHandler.project
+        self.paramHandler: ParameterConfHandler = confHandler.params
+        self.projectHandler: ProjectConfHandler = confHandler.project
         self.startAlgorithm = False
         self.goToAdjustment = False
         # Path to plugin root

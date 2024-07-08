@@ -34,6 +34,10 @@ def classFactory(iface):  # pylint: disable=invalid-name
     :param iface: A QGIS interface instance.
     :type iface: QgsInterface
     """
-    #
+    
+    if DEBUG:
+        from SEILAPLAN.scripts.prepare_ui_files import remove_resource_location
+        remove_resource_location()
+    
     from .seilaplanPlugin import SeilaplanPlugin
     return SeilaplanPlugin(iface)

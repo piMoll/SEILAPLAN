@@ -62,7 +62,7 @@ if not ERROR:
     from SEILAPLAN.gui.adjustmentDialog import AdjustmentDialog
 
 
-class SeilaplanPlugin(object):
+class SeilaplanPlugin:
     """QGIS Plugin Implementation."""
     
     def __init__(self, iface):
@@ -85,9 +85,7 @@ class SeilaplanPlugin(object):
 
         self.translator = QTranslator()
         self.translator.load(useLocale)
-
-        if qVersion() > '4.3.3':
-            QCoreApplication.installTranslator(self.translator)
+        QCoreApplication.installTranslator(self.translator)
 
         self.actions = []
         self.menu = self.tr('SEILAPLAN')

@@ -19,13 +19,18 @@
  ***************************************************************************/
 """
 import os
+from qgis.PyQt import uic
 from qgis.PyQt.QtWidgets import QDialog, QFileDialog, QDialogButtonBox, QMessageBox
-from .ui_surveyImportDialog import Ui_SurveyImportDialogUI
 from SEILAPLAN.tools.survey import SurveyData
 from SEILAPLAN.tools.fileFetcher import FileFetcher
+from SEILAPLAN.tools.configHandler import ConfigHandler
+# This loads the .ui file so that PyQt can populate the plugin with the
+#  elements from Qt Designer
+UI_FILE = os.path.join(os.path.dirname(__file__), 'surveyImportDialog.ui')
+FORM_CLASS, _ = uic.loadUiType(UI_FILE)
 
 
-class SurveyImportDialog(QDialog, Ui_SurveyImportDialogUI):
+class SurveyImportDialog(QDialog, FORM_CLASS):
     """
     Dialog window that allows to import different types of table bases
     survey data.
@@ -35,8 +40,9 @@ class SurveyImportDialog(QDialog, Ui_SurveyImportDialogUI):
         """
         :type confHandler: configHandler.ConfigHandler
         """
-        QDialog.__init__(self, parent)
-        self.confHandler = confHandler
+        super(SurveyImportDialog, self).__init__(parent)
+        
+        self.confHandler: ConfigHandler = confHandler
         self.surveyType = ''
         self.filePath = ''
         self.doImport = False

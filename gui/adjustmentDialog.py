@@ -21,11 +21,10 @@
 import pickle
 import os
 
+from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QTimer, Qt, QCoreApplication, QSettings
 from qgis.PyQt.QtWidgets import QDialog, QMessageBox, QTextEdit
 from qgis.PyQt.QtGui import QPixmap
-
-from .ui_adjustmentDialog import Ui_AdjustmentDialogUI
 from .adjustmentPlot import AdjustmentPlot, saveImgAsPdfWithMpl, \
     calculatePlotDimensions
 from .plotting_tools import MyNavigationToolbar
@@ -48,9 +47,13 @@ from SEILAPLAN.tools.outputGeo import organizeDataForExport, addToMap, \
 from SEILAPLAN.tools.configHandler import ConfigHandler
 from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
 from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
+# This loads the .ui file so that PyQt can populate the plugin with the
+#  elements from Qt Designer
+UI_FILE = os.path.join(os.path.dirname(__file__), 'adjustmentDialog.ui')
+FORM_CLASS, _ = uic.loadUiType(UI_FILE)
 
 
-class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
+class AdjustmentDialog(QDialog, FORM_CLASS):
     """
     Dialog window that is shown after the optimization has successfully run
     through. Users can change the calculated cable layout by changing pole
@@ -62,7 +65,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         """
         :type confHandler: configHandler.ConfigHandler
         """
-        QDialog.__init__(self, interface.mainWindow())
+        super(AdjustmentDialog, self).__init__(interface.mainWindow())
         self.iface = interface
         self.msgBar = self.iface.messageBar()
         
