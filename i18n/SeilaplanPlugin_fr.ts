@@ -1046,7 +1046,7 @@ câble chargé</translation>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="638"/>
         <source>Manuelle Anpassung</source>
-        <translation>Ajustement manuel</translation>
+        <translation>SEILAPLAN - Ajustement manuel</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="689"/>

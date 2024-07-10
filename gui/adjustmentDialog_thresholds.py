@@ -108,7 +108,7 @@ class AdjustmentDialogThresholds(QObject):
         self.sig_clickedRow.emit(item.row())
     
     def select(self, row):
-        if row >= 0:
+        if row and row >= 0:
             self.tbl.selectRow(row)
         else:
             self.tbl.clearSelection()

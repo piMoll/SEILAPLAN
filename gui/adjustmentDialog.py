@@ -90,6 +90,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         
         # Setup GUI from UI-file
         self.setupUi(self)
+        self.setDialogTitle()
         # Language
         self.locale = QSettings().value("locale/userLocale")[0:2]
         
@@ -163,12 +164,15 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         self.infoBirdViewAbspann.clicked.connect(self.onInfo)
     
     # noinspection PyMethodMayBeStatic
-    def tr(self, message, **kwargs):
+    def tr(self, message, context='', **kwargs):
         """Get the translation for a string using Qt translation API.
         We implement this ourselves since we do not inherit QObject.
 
         :param message: String for translation.
         :type message: str, QString
+        
+        :param context: String for translation.
+        :type context: str, QString
 
         :returns: Translated version of message.
         :rtype: QString
@@ -177,8 +181,9 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         ----------
         **kwargs
         """
-        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
-        return QCoreApplication.translate(type(self).__name__, message)
+        if context == '':
+            context = type(self).__name__
+        return QCoreApplication.translate(context, message)
     
     def loadData(self, pickleFile):
         """ Is used to load testdata from pickl object in debug mode """
@@ -252,6 +257,11 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         self.timer.start(300)
         
         self.plot.zoomOut()
+        
+    def setDialogTitle(self):
+        dialogTitle = self.tr('Manuelle Anpassung', 'AdjustmentDialogUI')
+        projectTitle = self.projectHandler.getProjectName()
+        self.setWindowTitle(f"{dialogTitle} // {projectTitle}")
     
     def zoomToPole(self, idx):
         self.plot.zoomTo(self.poles.poles[idx])
@@ -572,8 +582,10 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
     def onSave(self):
         self.saveDialog.doSave = False
         self.saveDialog.exec()
+        
         if self.saveDialog.doSave:
             self.readoutPrHeaderData()
+            self.setDialogTitle()
             self.confHandler.updateUserSettings()
             self.createOutput()
             self.unsavedChanges = False

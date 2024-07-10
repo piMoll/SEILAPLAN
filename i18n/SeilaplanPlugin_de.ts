@@ -1032,7 +1032,7 @@ Lastseil</translation>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="638"/>
         <source>Manuelle Anpassung</source>
-        <translation>Manuelle Anpassung</translation>
+        <translation>SEILAPLAN - Manuelle Anpassung</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="689"/>

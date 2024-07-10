@@ -763,13 +763,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
     
     def setProjName(self, projname):
         self.projectHandler.setProjectName(projname)
-    
-    # TODO Unset Focus of field when clicking on something else, doesnt work yet
-    # def mousePressEvent(self, event):
-    #     focused_widget = QtGui.QApplication.focusWidget()
-    #     if isinstance(focused_widget, QtGui.QLineEdit):
-    #         focused_widget.clearFocus()
-    #     QtGui.QDialog.mousePressEvent(self, event)
+        self.setWindowTitle(f"{self.tr('SEILAPLAN - Seilkran-Layoutplaner', 'SeilaplanDialogUI')} // {projname}")
     
     def toggleCableLineUI(self, isEnabled):
         # Activate draw button

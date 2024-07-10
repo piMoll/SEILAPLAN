@@ -1041,7 +1041,7 @@ fune caricata</translation>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="638"/>
         <source>Manuelle Anpassung</source>
-        <translation>Regolazione manuale</translation>
+        <translation>SEILAPLAN - Regolazione manuale</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="689"/>

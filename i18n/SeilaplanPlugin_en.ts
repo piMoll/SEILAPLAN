@@ -1042,7 +1042,7 @@ loaded skyline</translation>
         <location filename="../gui/adjustmentDialog.ui" line="638"/>
         <source>Manuelle Anpassung</source>
         <translatorcomment>Internet</translatorcomment>
-        <translation>Manual adjustment</translation>
+        <translation>SEILAPLAN - Manual adjustment</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="689"/>
