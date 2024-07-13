@@ -503,7 +503,7 @@ class ProjectConfHandler(AbstractConfHandler):
             except ValueError:
                 self.prHeader[propName] = ''
     
-    def prepareForCalculation(self):
+    def prepareForCalculation(self, runOptimization):
         success = True
         # Prepare raster (create subraster) or interpolate survey data
         try:
@@ -535,13 +535,16 @@ class ProjectConfHandler(AbstractConfHandler):
         # Initialize pole data (start/end point and anchors)
         try:
             self.poles = Poles(self)
-            self.updatePoles()
+            if not runOptimization:
+                self.updatePoles()
         except ValueError:
             self.onError(self.tr('Unerwarteter Fehler bei Erstellung der Stuetzen'))
             return False
         return success
     
     def updatePoles(self):
+        """Create poles from a saved project or from fixed poles. Don't call
+        this function if the optimization algorithm is going to run."""
         if self.polesFromFile:
             self.poles.updateAllPoles('savedFile', self.polesFromFile)
         # If instead user has defined some fixed poles, add these to Poles()

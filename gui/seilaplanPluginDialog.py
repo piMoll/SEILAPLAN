@@ -39,6 +39,8 @@ from SEILAPLAN.tools.outputGeo import CH_CRS
 from SEILAPLAN.tools.configHandler import ConfigHandler
 from SEILAPLAN.tools.configHandler_project import ProjectConfHandler, castToNum
 from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
+from SEILAPLAN.tools.heightSource import AbstractHeightSource
+from SEILAPLAN.tools.survey import SurveyData
 # GUI elements
 from .checkableComboBoxOwn import QgsCheckableComboBoxOwn
 from .saveDialog import DialogSaveParamset
@@ -53,11 +55,9 @@ FORM_CLASS, _ = uic.loadUiType(UI_FILE)
 class SeilaplanPluginDialog(QDialog, FORM_CLASS):
     
     def __init__(self, interface, confHandler):
-        """
-        :type confHandler: ConfigHandler
-        """
-        super(SeilaplanPluginDialog, self).__init__(interface.mainWindow())
         
+        super(SeilaplanPluginDialog, self).__init__(interface.mainWindow())
+
         # QGIS interface
         self.iface = interface
         # QGIS map canvas
@@ -65,10 +65,10 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
         # Management of Parameters and settings
         self.confHandler: ConfigHandler = confHandler
         self.confHandler.setDialog(self)
-        self.paramHandler: ParameterConfHandler = confHandler.params
-        self.projectHandler: ProjectConfHandler = confHandler.project
-        self.startAlgorithm = False
-        self.goToAdjustment = False
+        self.paramHandler: ParameterConfHandler = self.confHandler.params
+        self.projectHandler: ProjectConfHandler = self.confHandler.project
+        # Control variable so parent knows how to proceed when this dialog is closed
+        self.runOptimization = None
         # Path to plugin root
         self.homePath = os.path.dirname(os.path.dirname(__file__))
         
@@ -158,8 +158,8 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
         """Connect GUI elements with functions.
         """
         self.buttonCancel.clicked.connect(self.cancel)
-        self.buttonRun.clicked.connect(self.apply)
-        self.btnAdjustment.clicked.connect(self.goToAdjustmentWindow)
+        self.buttonRun.clicked.connect(lambda: self.onConfirm(runOptimization=True))
+        self.btnAdjustment.clicked.connect(lambda: self.onConfirm(runOptimization=False))
         self.buttonOpenPr.clicked.connect(self.onLoadProjects)
         self.buttonSavePr.clicked.connect(self.onSaveProject)
         self.rasterField.selectedItemsChanged.connect(self.onChangeRaster)
@@ -395,8 +395,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
             self.projectHandler.getPointTypeAsIdx('E'))
     
     def setupContent(self):
-        self.startAlgorithm = False
-        self.goToAdjustment = False
+        self.runOptimization = None
         # Generate project name
         self.fieldProjName.setText(self.projectHandler.getProjectName())
         
@@ -498,7 +497,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
             return
         
         # Ask before removing
-        msgBox = QMessageBox()
+        msgBox = QMessageBox(self)
         msgBox.setIcon(QMessageBox.Information)
         msgBox.setWindowTitle(self.tr('Parameterset loeschen'))
         msgBox.setText(self.tr('Moechten Sie das Parameterset wirklich loeschen?'))
@@ -507,7 +506,6 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
         noBtn.setText(self.tr("Nein"))
         yesBtn = msgBox.button(QMessageBox.Yes)
         yesBtn.setText(self.tr("Ja"))
-        msgBox.show()
         msgBox.exec()
         
         if msgBox.clickedButton() == yesBtn:
@@ -532,7 +530,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
         return rasterlist
     
     def getAvailableRaster(self):
-        """Go trough table of content and collect all raster layers.
+        """Go through table of content and collect all raster layers.
         """
         rColl = []
         for item in QgsProject.instance().layerTreeRoot().findLayers():
@@ -650,7 +648,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
     
     def checkEqualSpatialRef(self):
         # Check spatial reference of newly added raster
-        heightSource = self.projectHandler.heightSource
+        heightSource: AbstractHeightSource = self.projectHandler.heightSource
         if not heightSource:
             return False
         hsType = self.projectHandler.heightSourceType
@@ -677,11 +675,13 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
             # Survey data can be transformed to map crs
             elif hsType == 'survey' and not mapCrs.isGeographic():
                 # Survey data is transformed to map reference system
+                heightSource: SurveyData
                 heightSource.reprojectToCrs(mapCrs)
                 success = True
             
             elif hsType == 'survey' and mapCrs.isGeographic():
                 # Transform to LV95 by default
+                heightSource: SurveyData
                 heightSource.reprojectToCrs(None)
                 msg = self.tr('KBS-Fehler - Felddaten und QGIS in geografischem KBS')
                 QgsProject.instance().setCrs(lyrCrs)
@@ -877,7 +877,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
         self.msgBar.pushMessage(self.tr('Hintergrundkarte laden'), statusMsg, severity)
     
     def onClickContourButton(self):
-        """Calcluate contour lines from currently selected dhm and add them to
+        """Calculate contour lines from currently selected dhm and add them to
         as a layer."""
         if self.projectHandler.heightSource.contourLayer is None:
             createContours(self.canvas, self.projectHandler.heightSource)
@@ -1051,29 +1051,17 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
                 prHeader[key] = field.text()
         self.projectHandler.setPrHeader(prHeader)
         
-    def goToAdjustmentWindow(self):
+    def onConfirm(self, runOptimization):
+        if runOptimization and not self.paramHandler.checkBodenabstand():
+            return
         if self.confHandler.checkValidState() \
-                and self.checkEqualSpatialRef \
-                and self.confHandler.prepareForCalculation():
+                and self.checkEqualSpatialRef() \
+                and self.confHandler.prepareForCalculation(runOptimization):
             self.readoutPrHeaderData()
-            self.startAlgorithm = False
-            self.goToAdjustment = True
+            self.runOptimization = runOptimization
             self.close()
         else:
-            return False
-    
-    def apply(self):
-        if self.confHandler.checkValidState() \
-                and self.checkEqualSpatialRef \
-                and self.paramHandler.checkBodenabstand() \
-                and self.confHandler.prepareForCalculation():
-            self.readoutPrHeaderData()
-            self.startAlgorithm = True
-            self.goToAdjustment = False
-            self.close()
-        else:
-            # If project info or parameter are missing or wrong, algorithm
-            # can not start
+            # If project info or parameter are missing or wrong, don't continue
             return False
     
     def cancel(self):
@@ -1081,8 +1069,10 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
         self.close()
     
     def cleanUp(self):
-        # Save user settings
-        self.confHandler.updateUserSettings()
+        # Close child dialogs
+        self.imgBox.close()
+        if self.profileWin.isVisible():
+            self.profileWin.close()
         # Clean markers and lines from map canvas
         self.drawTool.reset()
         # Remove survey line
@@ -1090,15 +1080,8 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
     
     def closeEvent(self, QCloseEvent):
         """Last method that is called before main window is closed."""
-        # Close additional dialogs
-        self.imgBox.close()
-        if self.profileWin.isVisible():
-            self.profileWin.close()
-        
-        if self.startAlgorithm or self.goToAdjustment:
-            self.drawTool.reset()
-        else:
-            self.cleanUp()
+        self.confHandler.updateUserSettings()
+        self.cleanUp()
 
 
 

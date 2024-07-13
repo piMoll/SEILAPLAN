@@ -30,16 +30,13 @@ class ProgressDialog(QDialog):
     """ Progress dialog shows progress bar for algorithm.
     """
 
-    def __init__(self, iface):
-        QDialog.__init__(self, iface.mainWindow())
+    def __init__(self, parent):
+        
+        super(ProgressDialog, self).__init__(parent)
+
         self.workerThread = None
-        self.state = False
-        self.resultStatus = None
-        self.doReRun = False
-        self.wasCanceled = False
-        self.wasSuccessful = False
-        self.savedProj = None
-        self.result = None
+        self.continueToAdjustment = None
+        
         self.messageTxt = {
             'msg_optimierung': self.tr('Berechnung der optimalen Stuetzenpositionen...'),
             'msg_seillinie': self.tr('Berechnung der optimale Seillinie...')
@@ -71,7 +68,7 @@ class ProgressDialog(QDialog):
         self.cancelButton.clicked.connect(self.onAbort)
         self.closeButton.setStandardButtons(QDialogButtonBox.Close)
         self.closeButton.button(QDialogButtonBox.Close).setText(self.tr("Schliessen"))
-        self.closeButton.clicked.connect(self.onClose)
+        self.closeButton.clicked.connect(self.close)
         self.hbox.addWidget(self.rerunButton)
         self.hbox.addItem(spacer2)
         self.hbox.addWidget(self.cancelButton)
@@ -117,20 +114,13 @@ class ProgressDialog(QDialog):
         self.workerThread.sig_value.connect(self.valueFromThread)
         self.workerThread.sig_range.connect(self.rangeFromThread)
         self.workerThread.sig_text.connect(self.textFromThread)
-        self.workerThread.sig_result.connect(self.resultFromThread)
         self.rerunButton.clicked.connect(self.onRerun)
-        
-    def run(self):
-        # Show modal dialog window (QGIS is still responsive)
-        self.show()
-        # start event loop
-        self.exec()
     
     def jobEnded(self, success):
         self.setWindowTitle("SEILAPLAN")
         if success:
             self.progressBar.setValue(self.progressBar.maximum())
-            self.wasSuccessful = True
+            self.continueToAdjustment = True
             # Close progress dialog so that adjustment window can be opened
             self.close()
         else:  # If there was an abort by the user
@@ -150,19 +140,11 @@ class ProgressDialog(QDialog):
     def textFromThread(self, message):
         self.statusLabel.setText(self.messageTxt[message])
     
-    def resultFromThread(self, resultStatus):
-        self.resultStatus = resultStatus
-        # resultStatus:
-        #   1 = Optimization successful
-        #   2 = Cable takes off from support
-        #   3 = Optimization partially successful
-    
     def onAbort(self):
         self.setWindowTitle('SEILAPLAN')
         self.statusLabel.setText(self.tr(
             'Laufender Prozess wird abgebrochen...'))
         self.workerThread.cancel()  # Terminates process cleanly
-        self.wasCanceled = True
     
     def onError(self, exception_string):
         self.setWindowTitle(self.tr('SEILAPLAN: Berechnung fehlgeschlagen'))
@@ -174,13 +156,13 @@ class ProgressDialog(QDialog):
         self.finallyDo()
     
     def onRerun(self):
-        self.doReRun = True
-        self.onClose()
+        self.continueToAdjustment = False
+        self.close()
     
     def finallyDo(self):
         self.rerunButton.setVisible(True)
         self.cancelButton.hide()
         self.closeButton.show()
     
-    def onClose(self):
-        self.close()
+    def cleanUp(self):
+        pass

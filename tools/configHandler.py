@@ -343,7 +343,7 @@ class ConfigHandler(object):
     def checkValidState(self):
         return self.project.checkValidState() and self.params.checkValidState()
     
-    def prepareForCalculation(self):
+    def prepareForCalculation(self, runOptimization=False):
         """
         Updates some parameters and generates the subraster and profile line.
         Initializes pole data.
@@ -351,7 +351,7 @@ class ConfigHandler(object):
         """
         success = self.params.prepareForCalculation()
         if success:
-            success = self.project.prepareForCalculation()
+            success = self.project.prepareForCalculation(runOptimization)
         return success
     
     def prepareResultWithoutOptimization(self):

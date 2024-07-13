@@ -24,15 +24,19 @@ import os
 from qgis.PyQt.QtCore import QSize, Qt, QCoreApplication
 from qgis.PyQt.QtWidgets import QDialog, QWidget, QLabel, QDialogButtonBox, \
     QHBoxLayout, QComboBox, QSizePolicy, QPushButton, QCheckBox, \
-    QVBoxLayout, QFileDialog, QLineEdit, QMessageBox, QSpacerItem
+    QVBoxLayout, QFileDialog, QLineEdit, QMessageBox
 from qgis.PyQt.QtGui import QIcon, QPixmap
 from .guiHelperFunctions import sanitizeFilename
+from SEILAPLAN.tools.configHandler import ConfigHandler
 
 
 class DialogSaveParamset(QDialog):
+    
     def __init__(self, parent):
-        """Small window to define the name of the saved parmeter set."""
+        """Dialog to set the name of the saved parameter set."""
+        
         QDialog.__init__(self, parent)
+        
         self.paramData = None
         self.availableSets = None
         self.savePath = None
@@ -100,14 +104,6 @@ class DialogSaveParamset(QDialog):
         if not fileName:
             return False
         return True
-        # savePath = os.path.join(self.savePath, f'{fileName}.txt')
-        # if not os.access(savePath, os.W_OK):
-        #     try:
-        #         open(savePath, 'w').close()
-        #         os.unlink(savePath)
-        #     except IOError:
-        #         return False
-        # return True
     
     def apply(self):
         setname = self.setnameField.text()
@@ -126,13 +122,15 @@ class DialogSaveParamset(QDialog):
 
 
 class DialogOutputOptions(QDialog):
+    
     def __init__(self, parent, confHandler):
         """
         :type confHandler: configHandler.ConfigHandler
         """
         QDialog.__init__(self, parent)
-        self.confHandler = confHandler
-        self.doSave = False
+        
+        self.confHandler: ConfigHandler = confHandler
+        self.saveSuccessful = False
         
         self.setWindowTitle(self.tr('Output Optionen'))
         main_widget = QWidget(self)
@@ -170,7 +168,7 @@ class DialogOutputOptions(QDialog):
                        QIcon.Off)
         openButton.setIcon(icon)
         openButton.setIconSize(QSize(24, 24))
-        openButton.clicked.connect(self.onOpenDialog)
+        openButton.clicked.connect(self.onChoosePath)
         
         hbox2.addWidget(saveLabel)
         hbox2.addWidget(self.pathField)
@@ -190,16 +188,6 @@ class DialogOutputOptions(QDialog):
         self.checkBoxKML = QCheckBox('KML')
         self.checkBoxDXF = QCheckBox(f"DXF ({self.tr('inkl. Profilansicht')})")
         
-        # Set tick correctly
-        self.checkBoxShortReport.setChecked(self.confHandler.outputOptions['shortReport'])
-        self.checkBoxReport.setChecked(self.confHandler.outputOptions['report'])
-        self.checkBoxPlot.setChecked(self.confHandler.outputOptions['plot'])
-        self.checkBoxBirdView.setChecked(self.confHandler.outputOptions['birdView'])
-        self.checkBoxBirdViewLegend.setChecked(self.confHandler.outputOptions['birdViewLegend'])
-        self.checkBoxCsv.setChecked(self.confHandler.outputOptions['csv'])
-        self.checkBoxShape.setChecked(self.confHandler.outputOptions['shape'])
-        self.checkBoxKML.setChecked(self.confHandler.outputOptions['kml'])
-        self.checkBoxDXF.setChecked(self.confHandler.outputOptions['dxf'])
         # Create Ok/Cancel Button and connect signal
         buttonBox = QDialogButtonBox(main_widget)
         buttonBox.setStandardButtons(QDialogButtonBox.Save |
@@ -236,9 +224,6 @@ class DialogOutputOptions(QDialog):
         
         self.checkBoxPlot.clicked.connect(self.onTogglePlotOption)
 
-        self.fillInData()
-
-    # noinspection PyMethodMayBeStati
     def tr(self, message, **kwargs):
         """Get the translation for a string using Qt translation API.
         We implement this ourselves since we do not inherit QObject.
@@ -256,7 +241,20 @@ class DialogOutputOptions(QDialog):
         # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
         return QCoreApplication.translate(type(self).__name__, message)
 
-    def fillInData(self):
+    def setConfigData(self):
+        self.saveSuccessful = False
+        
+        # Set ticks
+        self.checkBoxShortReport.setChecked(self.confHandler.outputOptions['shortReport'])
+        self.checkBoxReport.setChecked(self.confHandler.outputOptions['report'])
+        self.checkBoxPlot.setChecked(self.confHandler.outputOptions['plot'])
+        self.checkBoxBirdView.setChecked(self.confHandler.outputOptions['birdView'])
+        self.checkBoxBirdViewLegend.setChecked(self.confHandler.outputOptions['birdViewLegend'])
+        self.checkBoxCsv.setChecked(self.confHandler.outputOptions['csv'])
+        self.checkBoxShape.setChecked(self.confHandler.outputOptions['shape'])
+        self.checkBoxKML.setChecked(self.confHandler.outputOptions['kml'])
+        self.checkBoxDXF.setChecked(self.confHandler.outputOptions['dxf'])
+        
         # Project name
         self.projectField.setText(self.confHandler.project.getProjectName())
         
@@ -266,7 +264,7 @@ class DialogOutputOptions(QDialog):
         for path in reversed(self.confHandler.commonPaths):
             self.pathField.addItem(path)
     
-    def onOpenDialog(self):
+    def onChoosePath(self):
         title = self.tr('Output Ordner auswaehlen')
         folder = QFileDialog.getExistingDirectory(self, title,
             self.confHandler.getCurrentPath(), QFileDialog.ShowDirsOnly)
@@ -297,9 +295,9 @@ class DialogOutputOptions(QDialog):
         self.confHandler.setOutputOptions(options)
         # Update output location with currently selected path
         self.confHandler.addPath(self.pathField.currentText())
-        self.doSave = True
+        self.saveSuccessful = True
         self.close()
     
     def onCancel(self):
-        self.doSave = False
+        self.saveSuccessful = False
         self.close()

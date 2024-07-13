@@ -90,7 +90,7 @@ def optimizeCableLine(conf):
     """
     # Ready configuration data from project file
     print('Set up configuration and input values...')
-    success = conf.prepareForCalculation()
+    success = conf.prepareForCalculation(runOptimization=True)
     if not success:
         print('ERROR: Error while preparing config data for optimization.')
         exit()
@@ -120,7 +120,7 @@ def calculateFinalCableLine(conf):
     are read from a project file.
     """
     print('Set up configuration and input values...')
-    success = conf.prepareForCalculation()
+    success = conf.prepareForCalculation(runOptimization=False)
     if not success:
         print('ERROR: Error while preparing config data for optimization.')
         exit()

@@ -23,6 +23,7 @@ import numpy as np
 from .terrainAnalysis import stuePos
 from .mainOpti import optimization
 from .cablelineFinal import preciseCable
+from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
 
 
 def main(progress, project):
@@ -30,6 +31,8 @@ def main(progress, project):
     :type progress: processingThread.ProcessingTask
     :type project: projectHandler.ProjectConfHandler
     """
+    project: ProjectConfHandler
+    
     progress.status.append(1)
     if progress.isCanceled():
         return False

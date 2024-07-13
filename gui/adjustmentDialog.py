@@ -62,10 +62,9 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
     """
     
     def __init__(self, interface, confHandler):
-        """
-        :type confHandler: configHandler.ConfigHandler
-        """
+
         super(AdjustmentDialog, self).__init__(interface.mainWindow())
+        
         self.iface = interface
         self.msgBar = self.iface.messageBar()
         
@@ -76,6 +75,8 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         self.projectHandler: ProjectConfHandler = self.confHandler.project
         self.profile: Profile = self.projectHandler.profile
         self.poles: Poles = self.projectHandler.poles
+        # Control variable so parent knows how to proceed when this dialog is closed
+        self.returnToProjectWindow = None
         # Max distance the anchors can move away from initial position
         self.anchorBuffer = self.projectHandler.heightSource.buffer
         # Path to plugin root
@@ -86,7 +87,6 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         self.result = {}
         self.cableline = {}
         self.status = None
-        self.doReRun = False
         
         # Setup GUI from UI-file
         self.setupUi(self)
@@ -152,7 +152,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         # Connect signals
         self.btnClose.clicked.connect(self.onClose)
         self.btnSave.clicked.connect(self.onSave)
-        self.btnBackToStart.clicked.connect(self.onReturnToStart)
+        self.btnBackToStart.clicked.connect(self.onReturnToProjectWindow)
         for field in self.prHeaderFields.values():
             field.textChanged.connect(self.onPrHeaderChanged)
         self.mapBackgroundButton.clicked.connect(self.onClickMapButton)
@@ -572,18 +572,19 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         self.onRefreshTopicInPlot()
 
     def onClose(self):
+        self.returnToProjectWindow = False
         self.close()
     
-    def onReturnToStart(self):
+    def onReturnToProjectWindow(self):
         self.readoutPrHeaderData()
-        self.doReRun = True
+        self.returnToProjectWindow = True
         self.close()
     
     def onSave(self):
-        self.saveDialog.doSave = False
+        self.saveDialog.setConfigData()
         self.saveDialog.exec()
         
-        if self.saveDialog.doSave:
+        if self.saveDialog.saveSuccessful:
             self.readoutPrHeaderData()
             self.setDialogTitle()
             self.confHandler.updateUserSettings()
@@ -691,11 +692,19 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
     def showMessage(self, title, message):
         QMessageBox.critical(self, title, message, QMessageBox.Ok)
     
-    def closeEvent(self, event):
+    def cleanUp(self):
+        self.drawTool.reset()
+        if self.timer:
+            self.timer.stop()
+    
+    def closeEvent(self, QCloseEvent):
         if self.isRecalculating or self.configurationHasChanged:
+            QCloseEvent.ignore()
             return
+        
+        # Check for unsaved changes before closing
         if self.unsavedChanges:
-            msgBox = QMessageBox()
+            msgBox = QMessageBox(self)
             msgBox.setIcon(QMessageBox.Information)
             msgBox.setWindowTitle(self.tr('Nicht gespeicherte Aenderungen'))
             msgBox.setText(self.tr('Moechten Sie die Ergebnisse speichern?'))
@@ -707,18 +716,18 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
             noBtn.setText(self.tr("Nein"))
             yesBtn = msgBox.button(QMessageBox.Yes)
             yesBtn.setText(self.tr("Ja"))
-            msgBox.show()
             msgBox.exec()
             
             if msgBox.clickedButton() == yesBtn:
                 self.onSave()
-                self.drawTool.reset()
-            elif msgBox.clickedButton() == cancelBtn:
-                event.ignore()
+            
+            if msgBox.clickedButton() == cancelBtn:
+                # Cancel closing
+                QCloseEvent.ignore()
                 return
-            elif msgBox.clickedButton() == noBtn:
-                self.drawTool.reset()
-        else:
-            self.drawTool.reset()
+            
+            if msgBox.clickedButton() == noBtn:
+                # Nothing to do
+                pass
         
-        self.timer.stop()
+        self.cleanUp()
