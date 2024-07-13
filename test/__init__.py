@@ -50,5 +50,5 @@ def project_file_loader(fileName):
 
 
 
-BASIC_PROJECT_FILE = project_file_loader('unittest_dhm_crane_anchor_6_poles.json')
-MINIMAL_PROJECT_FILE = project_file_loader('unittest_dhm_anchor_anchor_0_poles.json')
+BASIC_PROJECT_FILE = project_file_loader('unittest_dhm_crane_poleanchor_6_poles.json')
+MINIMAL_PROJECT_FILE = project_file_loader('unittest_dhm_poleanchor_poleanchor_0_poles.json')

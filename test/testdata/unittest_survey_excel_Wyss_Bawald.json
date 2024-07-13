@@ -1,0 +1,301 @@
+{
+    "projectname": "23 ÜK-C GR 19_23 W30 Bawald",
+    "version": "3.5.3",
+    "header": {
+        "PrVerf": "K.Wyss",
+        "PrNr": "19/23",
+        "PrGmd": "Maladers",
+        "PrWald": "Bawald",
+        "PrBemerkung": ""
+    },
+    "heightsource": {
+        "type": "survey",
+        "surveyType": "excelProtocol",
+        "source": "{HOMEPATH}/test/testdata/unittest_feldaufnahmeprotokoll_Wyss_Bawald.xlsx",
+        "crs": "EPSG:2056"
+    },
+    "profile": {
+        "start": {
+            "coordinates": [
+                2762426.9999999995,
+                1190728.0
+            ],
+            "type": "pole_anchor"
+        },
+        "end": {
+            "coordinates": [
+                2762307.2982812757,
+                1190378.3798895986
+            ],
+            "type": "pole_anchor"
+        },
+        "fixedPoles": [],
+        "noPoleSection": []
+    },
+    "poles": [
+        {
+            "idx": 0,
+            "name": "TA Fi⌀ 60cm",
+            "poleType": "pole_anchor",
+            "d": 0.0,
+            "h": 0.0,
+            "z": -2.013798905413649e-11,
+            "angle": 0.0,
+            "manually": false,
+            "active": true,
+            "category": "normaler_ankerbaum",
+            "position": "mitte",
+            "abspann": null
+        },
+        {
+            "idx": 1,
+            "name": "EM Fi ⌀ 45cm, 0,3m li",
+            "poleType": "pole",
+            "d": 53.0,
+            "h": 9.0,
+            "z": -15.155329683089548,
+            "angle": 0.0,
+            "manually": true,
+            "active": true,
+            "category": "endmast",
+            "position": "rechts",
+            "abspann": "ende"
+        },
+        {
+            "idx": 2,
+            "name": "S Fi ⌀ 50cm, 0,7m re",
+            "poleType": "pole",
+            "d": 133.0,
+            "h": 14.0,
+            "z": -46.80406833686566,
+            "angle": 0.0,
+            "manually": true,
+            "active": true,
+            "category": "vorziehstuetze_2",
+            "position": "links",
+            "abspann": "ende"
+        },
+        {
+            "idx": 3,
+            "name": "S Fi ⌀ 50cm, 2,4m li",
+            "poleType": "pole",
+            "d": 206.0,
+            "h": 12.0,
+            "z": -76.23510780714636,
+            "angle": 0.0,
+            "manually": true,
+            "active": true,
+            "category": "vorziehstuetze_2",
+            "position": "rechts",
+            "abspann": "ende"
+        },
+        {
+            "idx": 4,
+            "name": "S Fi ⌀ 50cm, 1,1m re",
+            "poleType": "pole",
+            "d": 328.0,
+            "h": 10.0,
+            "z": -136.35360059221972,
+            "angle": 0.0,
+            "manually": true,
+            "active": true,
+            "category": "vorziehstuetze_1",
+            "position": "links",
+            "abspann": "ende"
+        },
+        {
+            "idx": 5,
+            "name": "TA Fi ⌀ 55cm, 1,0m li",
+            "poleType": "pole_anchor",
+            "d": 369.0,
+            "h": 0.0,
+            "z": -152.29950948334923,
+            "angle": 0.0,
+            "manually": false,
+            "active": true,
+            "category": "normaler_ankerbaum",
+            "position": "mitte",
+            "abspann": null
+        }
+    ],
+    "params": {
+        "setname": "W30 ibW",
+        "optSTA": null,
+        "parameterList": [
+            {
+                "name": "Seilsys",
+                "label": "Seilsystem",
+                "value": "Zweiseil-System",
+                "unit": ""
+            },
+            {
+                "name": "HM_Kran",
+                "label": "Höhe Mast Mobilseilkran",
+                "value": "12",
+                "unit": "m"
+            },
+            {
+                "name": "Befahr_A",
+                "label": "Tragseil befahrbar ab ... vom Anfangspunkt",
+                "value": "0",
+                "unit": "m"
+            },
+            {
+                "name": "Befahr_E",
+                "label": "Tragseil befahrbar bis ... vor dem Endpunkt",
+                "value": "0",
+                "unit": "m"
+            },
+            {
+                "name": "Bodenabst_min",
+                "label": "Min. Abstand zwischen Tragseil und Boden",
+                "value": "8",
+                "unit": "m"
+            },
+            {
+                "name": "Bodenabst_A",
+                "label": "einzuhalten ab ... vom Anfangspunkt",
+                "value": "20",
+                "unit": "m"
+            },
+            {
+                "name": "Bodenabst_E",
+                "label": "einzuhalten bis ... vor dem Endpunkt",
+                "value": "20",
+                "unit": "m"
+            },
+            {
+                "name": "Q",
+                "label": "Gesamtlast",
+                "value": "20",
+                "unit": "kN"
+            },
+            {
+                "name": "qT",
+                "label": "Metergewicht Tragseil",
+                "value": "0.025",
+                "unit": "kN/m"
+            },
+            {
+                "name": "D",
+                "label": "Durchmesser Tragseil",
+                "value": "26",
+                "unit": "mm"
+            },
+            {
+                "name": "MBK",
+                "label": "Mindestbruchkraft Tragseil",
+                "value": "439",
+                "unit": "kN"
+            },
+            {
+                "name": "qZ",
+                "label": "Metergewicht Zugseil",
+                "value": "0.0073",
+                "unit": "kN/m"
+            },
+            {
+                "name": "qR",
+                "label": "Metergewicht Rückholseil",
+                "value": "0",
+                "unit": "kN/m"
+            },
+            {
+                "name": "SK",
+                "label": "Tragseilspannkraft (Anfangspunkt)",
+                "value": "120",
+                "unit": "kN"
+            },
+            {
+                "name": "Anlagetyp",
+                "label": "Anlagetyp",
+                "value": "W30",
+                "unit": ""
+            },
+            {
+                "name": "Min_Dist_Mast",
+                "label": "Minimaler Abstand zwischen Stützen",
+                "value": "10",
+                "unit": "m"
+            },
+            {
+                "name": "L_Delta",
+                "label": "Min. Abstand mögl. Stützenstandorte",
+                "value": "10",
+                "unit": "m"
+            },
+            {
+                "name": "HM_min",
+                "label": "Minimale Sattelhöhe",
+                "value": "7",
+                "unit": "m"
+            },
+            {
+                "name": "HM_max",
+                "label": "Maximale Sattelhöhe",
+                "value": "18",
+                "unit": "m"
+            },
+            {
+                "name": "HM_Delta",
+                "label": "Abstufungsintervall",
+                "value": "2",
+                "unit": "m"
+            },
+            {
+                "name": "HM_nat",
+                "label": "Künstliche Stütze ab Sattelhöhe von",
+                "value": "22",
+                "unit": "m"
+            },
+            {
+                "name": "E",
+                "label": "Elastizitätsmodul Tragseil",
+                "value": "100",
+                "unit": "kN/mm2"
+            },
+            {
+                "name": "FuellF",
+                "label": "Füllfaktor",
+                "value": "0.7",
+                "unit": ""
+            },
+            {
+                "name": "SF_T",
+                "label": "Sicherheitsfaktor Tragseil",
+                "value": "3",
+                "unit": ""
+            },
+            {
+                "name": "LeerKnickMit",
+                "label": "Grenzwert min. Leerseilknickwinkel mit Niederhaltelasche",
+                "value": "1",
+                "unit": "°"
+            },
+            {
+                "name": "LeerKnickOhne",
+                "label": "Grenzwert min. Leerseilknickwinkel ohne Niederhaltelasche",
+                "value": "3",
+                "unit": "°"
+            },
+            {
+                "name": "LastKnickSt",
+                "label": "Grenzwert max. Lastseilknickwinkel Stütze",
+                "value": "30",
+                "unit": "°"
+            },
+            {
+                "name": "LastKnickEnd",
+                "label": "Grenzwert max. Lastseilknickwinkel Endmast",
+                "value": "60",
+                "unit": "°"
+            },
+            {
+                "name": "Bundstelle",
+                "label": "Bundstelle über Sattelleiste",
+                "value": "3",
+                "unit": "m"
+            }
+        ]
+    }
+}
