@@ -516,7 +516,7 @@ class Poles(object):
                     maxForce = forces['MaxSeilzugkraft_L'][2]       # Tmax,E
                     angleTerrain = self.getAnchorAngle(pole, self.poles[j-1])
                     # Add alpha LA: incoming angle (idx=0) of last pole (idx=-1)
-                    angle = angleTerrain - forces['Anlegewinkel_Leerseil'][0][-1]
+                    angle = forces['Anlegewinkel_Leerseil'][0][-1] - angleTerrain
                 
                 bhd = self.getBhdForAnchor(angle, maxForce)
 
