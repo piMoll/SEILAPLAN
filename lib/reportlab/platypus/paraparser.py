@@ -4,30 +4,21 @@
 __all__ = ('ParaFrag', 'ParaParser')
 __version__='3.5.20'
 __doc__='''The parser used to process markup within paragraphs'''
-import string
 import re
 import sys
-import os
 import copy
-import base64
-from pprint import pprint as pp
-from reportlab import ascii
 import unicodedata
 import reportlab.lib.sequencer
 
 from reportlab.lib.abag import ABag
-from reportlab.lib.utils import ImageReader, isPy3, annotateException, encode_label, asUnicode, asBytes, uniChr, isStr, unicodeT
-from reportlab.lib.colors import toColor, white, black, red, Color
+from reportlab.lib.utils import ImageReader, annotateException, encode_label, asUnicode
+from reportlab.lib.colors import toColor, black
 from reportlab.lib.fonts import tt2ps, ps2tt
 from reportlab.lib.enums import TA_LEFT, TA_RIGHT, TA_CENTER, TA_JUSTIFY
 from reportlab.lib.units import inch,mm,cm,pica
 from reportlab.rl_config import platypus_link_underline
-if isPy3:
-    from html.parser import HTMLParser
-    from html.entities import name2codepoint
-else:
-    from HTMLParser import HTMLParser
-    from htmlentitydefs import name2codepoint
+from html.parser import HTMLParser
+from html.entities import name2codepoint
 
 _re_para = re.compile(r'^\s*<\s*para(?:\s+|>|/>)')
 
@@ -2494,14 +2485,13 @@ greeks = {
     'zwnj': u'\u200c',                            #ZERO WIDTH NON-JOINER
     }
 
-known_entities = dict([(k,uniChr(v)) for k,v in name2codepoint.items()])
+known_entities = dict([(k,chr(v)) for k,v in name2codepoint.items()])
 for k in greeks:
     if k not in known_entities:
         known_entities[k] = greeks[k]
-f = isPy3 and asBytes or asUnicode
 #K = list(known_entities.keys())
 #for k in K:
-#   known_entities[f(k)] = known_entities[k]
+#   known_entities[asBytes(k)] = known_entities[k]
 #del k, f, K
 
 #------------------------------------------------------------------------
@@ -2527,10 +2517,7 @@ def _greekConvert(data):
             if not v:
                 u = '\0'
             else:
-                if isPy3:
-                    u = chr(v)
-                else:
-                    u = unichr(v).encode('utf8')
+                u = chr(v)
             _greek2Utf8[chr(k)] = u
     return ''.join(map(_greek2Utf8.__getitem__,data))
 
@@ -2781,7 +2768,7 @@ class ParaParser(HTMLParser):
         except ValueError:
             self.unknown_charref(name)
             return
-        self.handle_data(uniChr(n))   #.encode('utf8'))
+        self.handle_data(chr(n))   #.encode('utf8'))
 
     def syntax_error(self,lineno,message):
         self._syntax_error(message)
@@ -2814,7 +2801,7 @@ class ParaParser(HTMLParser):
                     v = int(v,16)
                 else:
                     v = int(v,0)    #treat as a python literal would be
-                v = chr(v) if isPy3 else unichr(v)
+                v = chr(v)
             except:
                 self._syntax_error('<unichar/> invalid code attribute %s' % ascii(attr['code']))
                 v = '\0'
@@ -3096,8 +3083,7 @@ class ParaParser(HTMLParser):
     #----------------------------------------------------------------
 
     def __init__(self,verbose=0, caseSensitive=0, ignoreUnknownTags=1, crashOnError=True):
-        HTMLParser.__init__(self,
-            **(dict(convert_charrefs=False) if sys.version_info>=(3,4) else {}))
+        HTMLParser.__init__(self, **(dict(convert_charrefs=False)))
         self.verbose = verbose
         #HTMLParser is case insenstive anyway, but the rml interface still needs this
         #all start/end_ methods should have a lower case version for HMTMParser
@@ -3177,7 +3163,7 @@ class ParaParser(HTMLParser):
         return style, fragList, bFragList
 
     def _tt_handle(self,tt):
-        "Iterate through a pre-parsed tuple tree (e.g. from pyRXP)"
+        "Iterate through a pre-parsed tuple tree (e.g. from pyrxp)"
         #import pprint
         #pprint.pprint(tt)
         #find the corresponding start_tagname and end_tagname methods.

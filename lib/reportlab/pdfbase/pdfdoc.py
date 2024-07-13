@@ -1,7 +1,7 @@
-#Copyright ReportLab Europe Ltd. 2000-2017
+#Copyright ReportLab Europe Ltd. 2000-2023
 #see license.txt for license details
 #history https://hg.reportlab.com/hg-public/reportlab/log/tip/src/reportlab/pdfbase/pdfdoc.py
-__version__='3.4.1'
+__version__='4.2.0'
 __doc__="""
 The module pdfdoc.py handles the 'outer structure' of PDF documents, ensuring that
 all objects are properly cross-referenced and indexed to the nearest byte.  The
@@ -14,25 +14,16 @@ The classes within this generally mirror structures in the PDF file
 and are not part of any public interface.  Instead, canvas and font
 classes are made available elsewhere for users to manipulate.
 """
-import types, binascii, codecs, time
+import binascii, codecs, zlib
 from collections import OrderedDict
 from reportlab.pdfbase import pdfutils
-from reportlab import rl_config, ascii
-from reportlab.lib.utils import import_zlib, open_for_read, makeFileName, isSeq, isBytes, isUnicode, _digester, isStr, bytestr, isPy3, annotateException, TimeStamp
+from reportlab import rl_config
+from reportlab.lib.utils import open_for_read, makeFileName, isSeq, isBytes, isUnicode, _digester, isStr, bytestr, annotateException, TimeStamp
 from reportlab.lib.rl_accel import escapePDF, fp_str, asciiBase85Encode, asciiBase85Decode
 from reportlab.pdfbase import pdfmetrics
 from hashlib import md5
 
-from sys import platform
-from sys import version_info
 from sys import stderr
-
-if platform[:4] == 'java' and version_info[:2] == (2, 1):
-    # workaround for list()-bug in Jython 2.1 (should be fixed in 2.2)
-    def list(sequence):
-        def f(x):
-            return x
-        return list(map(f, sequence))
 
 class PDFError(Exception):
     pass
@@ -59,12 +50,8 @@ PDF_SUPPORT_VERSION = dict(     #map keyword to min version that supports it
     transparency = (1, 4),
     )
 
-if isPy3:
-    def pdfdocEnc(x):
-        return x.encode('extpdfdoc') if isinstance(x,str) else x
-else:
-    def pdfdocEnc(x):
-        return x.encode('extpdfdoc') if isinstance(x,unicode) else x
+def pdfdocEnc(x):
+    return x.encode('extpdfdoc') if isinstance(x,str) else x
 
 def format(element, document, toplevel=0):
     """Indirection step for formatting.
@@ -113,7 +100,7 @@ class NoEncryption:
         # the representation of self in file if any (should be None or PDFDict)
         return None
 
-class PDFObject(object):
+class PDFObject:
     pass
 
 class DummyDoc(PDFObject):
@@ -212,7 +199,7 @@ class PDFDocument(PDFObject):
             filename = getattr(f,'name',None)
             if isinstance(filename,int):
                 filename = '<os fd:%d>'% filename
-            elif not isStr(filename): #try to fix bug reported by Robert Schroll <rschroll at gmail.com> 
+            elif not isStr(filename): #try to fix bug reported by Robert Schroll <rschroll at gmail.com>
                 filename = '<%s@0X%8.8X>' % (f.__class__.__name__,id(f))
             filename = makeFileName(filename)
         elif isStr(filename):
@@ -220,7 +207,7 @@ class PDFDocument(PDFObject):
             filename = makeFileName(filename)
             f = open(filename, "wb")
         else:
-            raise TypeError('Cannot use %s as a filename or file' % repr(filename)) 
+            raise TypeError('Cannot use %s as a filename or file' % repr(filename))
 
         data = self.GetPDFData(canvas)
         if isUnicode(data):
@@ -760,16 +747,10 @@ class ViewerPreferencesPDFDictionary(CheckedPDFDictionary):
 class PDFStreamFilterZCompress:
     pdfname = "FlateDecode"
     def encode(self, text):
-        from reportlab.lib.utils import import_zlib
-        zlib = import_zlib()
-        if not zlib: raise ImportError("cannot z-compress zlib unavailable")
         if isUnicode(text):
             text = text.encode('utf8')
         return zlib.compress(text)
     def decode(self, encoded):
-        from reportlab.lib.utils import import_zlib
-        zlib = import_zlib()
-        if not zlib: raise ImportError("cannot z-decompress zlib unavailable")
         return zlib.decompress(encoded)
 
 # need only one of these, unless we implement parameters later
@@ -1007,6 +988,35 @@ class PDFTrailer(PDFObject):
 
 #### chapter 6, doc structure
 
+class XMP(PDFStream):
+    def __init__(self,path=None,creator=None):
+        if path and creator:
+            raise ValueError('XMP is ambiguous with both path and creator arguments')
+        elif not (path or creator):
+            raise ValueError('XMP needs at least a path or creator argument')
+        super().__init__(
+            dictionary=PDFDictionary(dict(
+                Type=PDFName('Metadata'),
+                Subtype=PDFName('XML'),
+                )))
+        self.__path =  path
+        self.__pathContent = None
+        self.__creator = creator
+
+    def format(self,doc):
+        self.content = self.makeContent(doc)
+        return super(XMP,self).format(doc)
+
+    def makeContent(self,doc):
+        if self.__path:
+            if self.__pathContent is None:
+                from reportlab.lib.rparsexml import smartDecode
+                with open(self.__path,'rb') as _:
+                    self.__pathContent = smartDecode(_.read())
+            return self.__pathContent
+        else:
+            return self.__creator(doc)
+
 class PDFCatalog(PDFObject):
     __Comment__ = "Document Root"
     __RefOnly__ = 1
@@ -1017,7 +1027,8 @@ class PDFCatalog(PDFObject):
                 }
     __NoDefault__ = """
         Dests Outlines Pages Threads AcroForm Names OpenAction PageMode URI
-        ViewerPreferences PageLabels PageLayout JavaScript StructTreeRoot SpiderInfo""".split()
+        ViewerPreferences PageLabels PageLayout JavaScript StructTreeRoot SpiderInfo
+        MarkInfo Metadata Tabs""".split()
     __Refs__ = __NoDefault__
 
     def format(self, document):
@@ -1524,7 +1535,6 @@ class PDFOutlines(PDFObject):
 
 def count(tree, closedict=None):
     """utility for outline: recursively count leaves in a tuple/list tree"""
-    from operator import add
     if isinstance(tree,tuple):
         # leaf with subsections XXXX should clean up this structural usage
         (leafdict, subsections) = tree
@@ -1612,7 +1622,7 @@ class Annotation(PDFObject):
         permitted = self.permitted
         for name in d.keys():
             if name not in permitted:
-                raise ValueError("bad annotation dictionary name %s" % name)
+                raise ValueError("%s bad annotation dictionary name %s" % (self.__class__.__name__,name))
         return PDFDictionary(d)
     def Dict(self):
         raise ValueError("DictString undefined for virtual superclass Annotation, must overload")
@@ -1621,21 +1631,6 @@ class Annotation(PDFObject):
     def format(self, document):
         D = self.Dict()
         return D.format(document)
-
-class TextAnnotation(Annotation):
-    permitted = Annotation.permitted + (
-        "Open", "Name")
-    def __init__(self, Rect, Contents, **kw):
-        self.Rect = Rect
-        self.Contents = Contents
-        self.otherkw = kw
-    def Dict(self):
-        d = {}
-        d.update(self.otherkw)
-        d["Rect"] = self.Rect
-        d["Contents"] = self.Contents
-        d["Subtype"] = "/Text"
-        return self.AnnotationDict(**d)
 
 class FreeTextAnnotation(Annotation):
     permitted = Annotation.permitted + ("DA",)
@@ -1722,6 +1717,20 @@ class HighlightAnnotation(Annotation):
         d["C"] = self.Color
         return self.AnnotationDict(**d)
 
+class TextAnnotation(HighlightAnnotation):
+    permitted = HighlightAnnotation.permitted + (
+        "Open", "Name")
+    def __init__(self, Rect, Contents, **kw):
+        HighlightAnnotation.__init__(self,
+                Rect,
+                Contents,
+                QuadPoints=kw.pop("QuadPoints",None) or rect_to_quad(Rect),
+                Color=kw.pop("Color",(0,0,0)),
+                **kw)
+    def Dict(self):
+        d = HighlightAnnotation.Dict(self)
+        d["Subtype"] = "/Text"
+        return d
 
 def rect_to_quad(Rect):
     """
@@ -2185,8 +2194,6 @@ class PDFImageXObject(PDFObject):
         if fp:
             self.loadImageFromJPEG(fp)
         else:
-            zlib = import_zlib()
-            if not zlib: return
             self.width, self.height = im.getSize()
             raw = im.getRGBData()
             #assert len(raw) == self.width*self.height, "Wrong amount of data for image expected %sx%s=%s got %s" % (self.width,self.height,self.width*self.height,len(raw))

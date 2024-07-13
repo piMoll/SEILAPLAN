@@ -3,15 +3,13 @@
 #https://github.com/zopefoundation/RestrictedPython
 #https://github.com/danthedeckie/simpleeval
 #hopefully we are standing on giants' shoulders
-import sys, os, ast, re, weakref, time, copy, math
-from reportlab import isPy3
-isPy2 = not isPy3
+import sys, os, ast, re, weakref, time, copy, math, types
 eval_debug = int(os.environ.get('EVAL_DEBUG','0'))
-strTypes = basestring if isPy2 else (bytes,str)
+strTypes = (bytes,str)
 isPy39 = sys.version_info[:2]>=(3,9)
+isPy313 = sys.version_info[:2]>=(3,13)
 
 haveNameConstant = hasattr(ast,'NameConstant')
-haveMatMult = haveMultiStarred = hasattr(ast,'MatMult')
 import textwrap
 
 class BadCode(ValueError):
@@ -19,7 +17,6 @@ class BadCode(ValueError):
 
 # For AugAssign the operator must be converted to a string.
 augOps = {
-	# Shared by python2 and python3
 	ast.Add: '+=',
 	ast.Sub: '-=',
 	ast.Mult: '*=',
@@ -31,12 +28,9 @@ augOps = {
 	ast.BitOr: '|=',
 	ast.BitXor: '^=',
 	ast.BitAnd: '&=',
-	ast.FloorDiv: '//='
+	ast.FloorDiv: '//=',
+	ast.MatMult: '@=',
 }
-
-if haveMatMult:
-	augOps[ast.MatMult] = '@='
-
 
 # For creation allowed magic method names. See also
 # https://docs.python.org/3/reference/datamodel.html#special-method-names
@@ -51,6 +45,16 @@ __allowed_magic_methods__ = frozenset([
 	'__ge__',
 	])
 
+def __fix_set__(value, default=frozenset()):
+	if isinstance(value,(tuple,list,set,dict)):
+		return frozenset(value)
+	elif isinstance(value,frozenset):
+		return value
+	elif bool(value):
+		return default
+	else:
+		return frozenset()
+
 __rl_unsafe__ = frozenset('''builtins breakpoint __annotations__ co_argcount co_cellvars co_code co_consts
 						__code__ co_filename co_firstlineno co_flags co_freevars co_kwonlyargcount
 						co_lnotab co_name co_names co_nlocals co_posonlyargcount co_stacksize
@@ -60,13 +64,15 @@ __rl_unsafe__ = frozenset('''builtins breakpoint __annotations__ co_argcount co_
 						func_doc func_globals func_name gi_code gi_frame gi_running gi_yieldfrom
 						__globals__ im_class im_func im_self __iter__ __kwdefaults__ __module__
 						__name__ next __qualname__ __self__ tb_frame tb_lasti tb_lineno tb_next
-						globals vars locals'''.split()
+						globals vars locals
+						type eval exec aiter anext compile open
+						dir print classmethod staticmethod __import__ super property'''.split()
 						)
 __rl_unsafe_re__ = re.compile(r'\b(?:%s)' % '|'.join(__rl_unsafe__),re.M)
 
+
 def copy_locations(new_node, old_node):
-	new_node.lineno = old_node.lineno
-	new_node.col_offset = old_node.col_offset
+	ast.copy_location(new_node, old_node)
 	ast.fix_missing_locations(new_node)
 
 class UntrustedAstTransformer(ast.NodeTransformer):
@@ -121,10 +127,7 @@ class UntrustedAstTransformer(ast.NodeTransformer):
 		return node
 
 	def is_starred(self, ob):
-		if isPy3:
-			return isinstance(ob, ast.Starred)
-		else:
-			return False
+		return isinstance(ob, ast.Starred)
 
 	def gen_unpack_spec(self, tpl):
 		"""Generate a specification for '__rl_unpack_sequence__'.
@@ -249,11 +252,8 @@ class UntrustedAstTransformer(ast.NodeTransformer):
 		try_body = [ast.Assign(targets=[target], value=converter)]
 		finalbody = [self.gen_del_stmt(tnam)]
 
-		if isPy2:
-			cleanup = ast.TryFinally(body=try_body, finalbody=finalbody)
-		else:
-			cleanup = ast.Try(
-				body=try_body, finalbody=finalbody, handlers=[], orelse=[])
+		cleanup = ast.Try(
+			body=try_body, finalbody=finalbody, handlers=[], orelse=[])
 
 		if ctx == 'store':
 			ctx = ast.Store()
@@ -272,7 +272,7 @@ class UntrustedAstTransformer(ast.NodeTransformer):
 		return (tmp_target, cleanup)
 
 	def gen_none_node(self):
-		return ast.NameConstant(value=None) if hasNameConstant else ast.Name(id='None', ctx=ast.Load())
+		return ast.NameConstant(value=None) if haveNameConstant else ast.Name(id='None', ctx=ast.Load())
 
 	def gen_lambda(self, args, body):
 		return ast.Lambda(
@@ -343,32 +343,17 @@ class UntrustedAstTransformer(ast.NodeTransformer):
 		# which is gone in python3.
 		# See https://www.python.org/dev/peps/pep-3113/
 
-		if isPy2:
-			# Needed to handle nested 'tuple parameter unpacking'.
-			# For example 'def foo((a, b, (c, (d, e)))): pass'
-			to_check = list(node.args.args)
-			while to_check:
-				item = to_check.pop()
-				if isinstance(item, ast.Tuple):
-					to_check.extend(item.elts)
-				else:
-					self.isAllowedName(node, item.id)
+		for arg in node.args.args:
+			self.isAllowedName(node, arg.arg)
 
-			self.isAllowedName(node, node.args.vararg)
-			self.isAllowedName(node, node.args.kwarg)
+		if node.args.vararg:
+			self.isAllowedName(node, node.args.vararg.arg)
 
-		else:
-			for arg in node.args.args:
-				self.isAllowedName(node, arg.arg)
+		if node.args.kwarg:
+			self.isAllowedName(node, node.args.kwarg.arg)
 
-			if node.args.vararg:
-				self.isAllowedName(node, node.args.vararg.arg)
-
-			if node.args.kwarg:
-				self.isAllowedName(node, node.args.kwarg.arg)
-
-			for arg in node.args.kwonlyargs:
-				self.isAllowedName(node, arg.arg)
+		for arg in node.args.kwonlyargs:
+			self.isAllowedName(node, arg.arg)
 
 	def check_import_names(self, node):
 		"""Check the names being imported.
@@ -453,23 +438,12 @@ class UntrustedAstTransformer(ast.NodeTransformer):
 
 		needs_wrap = False
 
-		# In python2.7 till python3.4 '*args', '**kwargs' have dedicated
-		# attributes on the ast.Call node.
-		# In python 3.5 and greater this has changed due to the fact that
-		# multiple '*args' and '**kwargs' are possible.
-		# '*args' can be detected by 'ast.Starred' nodes.
-		# '**kwargs' can be deteced by 'keyword' nodes with 'arg=None'.
+		for pos_arg in node.args:
+			if isinstance(pos_arg, ast.Starred):
+				needs_wrap = True
 
-		if haveMultiStarred:
-			for pos_arg in node.args:
-				if isinstance(pos_arg, ast.Starred):
-					needs_wrap = True
-
-			for keyword_arg in node.keywords:
-				if keyword_arg.arg is None:
-					needs_wrap = True
-		else:
-			if (node.starargs is not None) or (node.kwargs is not None):
+		for keyword_arg in node.keywords:
+			if keyword_arg.arg is None:
 				needs_wrap = True
 
 		node = self.visit_children(node)
@@ -487,7 +461,7 @@ class UntrustedAstTransformer(ast.NodeTransformer):
 
 		'a.b' becomes '__rl_getattr__(a, "b")'
 		"""
-		if node.attr.startswith('__') and node.attr != '__':
+		if node.attr.startswith('__') and node.attr != '__' and not self.nameIsAllowed(node.attr,False):
 			self.error(node, '"%s" is an invalid attribute'%node.attr)
 
 		if isinstance(node.ctx, ast.Load):
@@ -671,31 +645,14 @@ class UntrustedAstTransformer(ast.NodeTransformer):
 		"""
 		node = self.visit_children(node)
 
-		if isPy3:
-			self.isAllowedName(node, node.name)
-			return node
-
-		if not isinstance(node.name, ast.Tuple):
-			return node
-
-		tmp_target, unpack = self.gen_unpack_wrapper(node, node.name)
-
-		# Replace the tuple with the temporary variable.
-		node.name = tmp_target
-
-		# Insert the unpack code within the body of the except clause.
-		node.body.insert(0, unpack)
-
+		self.isAllowedName(node, node.name)
 		return node
 
 	def visit_With(self, node):
 		"""Protect tuple unpacking on with statements."""
 		node = self.visit_children(node)
 
-		if isPy2:
-			items = [node]
-		else:
-			items = node.items
+		items = node.items
 
 		for item in reversed(items):
 			if isinstance(item.optional_vars, ast.Tuple):
@@ -714,24 +671,6 @@ class UntrustedAstTransformer(ast.NodeTransformer):
 		self.isAllowedName(node, node.name)
 		self.check_function_argument_names(node)
 
-		if isPy3:
-			return node
-
-		# Protect 'tuple parameter unpacking' with '__rl_getiter__'.
-
-		unpacks = []
-		for index, arg in enumerate(list(node.args.args)):
-			if isinstance(arg, ast.Tuple):
-				tmp_target, unpack = self.gen_unpack_wrapper(
-					node, arg, 'param')
-
-				# Replace the tuple with a single (temporary) parameter.
-				node.args.args[index] = tmp_target
-				unpacks.append(unpack)
-
-		# Add the unpacks at the front of the body.
-		# Keep the order, so that tuple one is unpacked first.
-		node.body[0:0] = unpacks
 		return node
 
 	def visit_Lambda(self, node):
@@ -740,64 +679,22 @@ class UntrustedAstTransformer(ast.NodeTransformer):
 
 		node = self.visit_children(node)
 
-		if isPy3:
-			# Implicit Tuple unpacking is not anymore available in Python3
-			return node
-
-		# Check for tuple parameters which need __rl_getiter__ protection
-		if not any(isinstance(arg, ast.Tuple) for arg in node.args.args):
-			return node
-
-		# Wrap this lambda function with another. Via this wrapping it is
-		# possible to protect the 'tuple arguments' with __rl_getiter__
-		outer_params = []
-		inner_args = []
-
-		for arg in node.args.args:
-			if isinstance(arg, ast.Tuple):
-				tnam = self.tmpName
-				converter = self.protect_unpack_sequence(
-					arg,
-					ast.Name(tnam, ast.Load()))
-
-				outer_params.append(ast.Name(tnam, ast.Param()))
-				inner_args.append(converter)
-
-			else:
-				outer_params.append(arg)
-				inner_args.append(ast.Name(arg.id, ast.Load()))
-
-		body = ast.Call(func=node, args=inner_args, keywords=[])
-		new_node = self.gen_lambda(outer_params, body)
-
-		if node.args.vararg:
-			new_node.args.vararg = node.args.vararg
-			body.starargs = ast.Name(node.args.vararg, ast.Load())
-
-		if node.args.kwarg:
-			new_node.args.kwarg = node.args.kwarg
-			body.kwargs = ast.Name(node.args.kwarg, ast.Load())
-
-		copy_locations(new_node, node)
-		return new_node
+		return node
 
 	def visit_ClassDef(self, node):
 		"""Check the name of a class definition."""
 		self.isAllowedName(node, node.name)
 		node = self.visit_children(node)
-		if isPy2:
-			new_class_node = node
-		else:
-			if any(keyword.arg == 'metaclass' for keyword in node.keywords):
-				self.error(node, 'The keyword argument "metaclass" is not allowed.')
-			CLASS_DEF = textwrap.dedent('''\
-				class %s(metaclass=__metaclass__):
-					pass
-			''' % node.name)
-			new_class_node = ast.parse(CLASS_DEF).body[0]
-			new_class_node.body = node.body
-			new_class_node.bases = node.bases
-			new_class_node.decorator_list = node.decorator_list
+		if any(keyword.arg == 'metaclass' for keyword in node.keywords):
+			self.error(node, 'The keyword argument "metaclass" is not allowed.')
+		CLASS_DEF = textwrap.dedent('''\
+			class %s(metaclass=__metaclass__):
+				pass
+		''' % node.name)
+		new_class_node = ast.parse(CLASS_DEF).body[0]
+		new_class_node.body = node.body
+		new_class_node.bases = node.bases
+		new_class_node.decorator_list = node.decorator_list
 		return new_class_node
 
 	# Imports
@@ -939,7 +836,7 @@ class UntrustedAstTransformer(ast.NodeTransformer):
 def astFormat(node):
 	return ast.dump(copy.deepcopy(node),annotate_fields=True, include_attributes=True,indent=4)
 
-class __rl_SafeIter__(object):
+class __rl_SafeIter__:
 	def __init__(self, it, owner):
 		self.__rl_iter__ = owner().__rl_real_iter__(it)
 		self.__rl_owner__ = owner
@@ -965,21 +862,17 @@ def safer_globals(g=None):
 
 math_log10 = math.log10
 __rl_undef__ = object()
-class __RL_SAFE_ENV__(object):
+class __RL_SAFE_ENV__:
 	__time_time__ = time.time
 	__weakref_ref__ = weakref.ref
 	__slicetype__ = type(slice(0))
-	def __init__(self, timeout=None, allowed_magic_methods=None):
+	def __init__(self, timeout=None, allowed_magic_methods=None, allowed_magic_names=None):
 		self.timeout = timeout if timeout is not None else self.__rl_tmax__
-		self.allowed_magic_methods = (__allowed_magic_methods__ if allowed_magic_methods==True
-									else allowed_magic_methods) if allowed_magic_methods else []
-		if isPy3:
-			import builtins
-			self.__rl_gen_range__ = builtins.range
-		else:
-			import __builtin__ as builtins
-			self.__rl_gen_range__ = builtins.xrange
-			
+		self.allowed_magic_methods = __fix_set__(allowed_magic_methods, __allowed_magic_methods__)
+		self.allowed_magic_names = __fix_set__(allowed_magic_names)
+		import builtins
+		self.__rl_gen_range__ = builtins.range
+
 		self.__rl_real_iter__ = builtins.iter
 
 		class __rl_dict__(dict):
@@ -993,7 +886,7 @@ class __RL_SAFE_ENV__(object):
 						args = (self.__rl_getiter__(it),)
 				return dict.__new__(cls,*args,**kwds)
 
-		class __rl_missing_func__(object):
+		class __rl_missing_func__:
 			def __init__(self,name):
 				self.__name__ = name
 			def __call__(self,*args,**kwds):
@@ -1003,12 +896,9 @@ class __RL_SAFE_ENV__(object):
 		self.bi_replace = (
 				('open',__rl_missing_func__('open')),
 				('iter',self.__rl_getiter__),
-				) + ((
-				) if isPy3 else (
-				('file',__rl_missing_func__('file')),
-				))
+				)
 
-		__rl_safe_builtins__.update({_:getattr(builtins,_) for _ in 
+		__rl_safe_builtins__.update({_:getattr(builtins,_) for _ in
 			('''None False True abs bool callable chr complex divmod float hash hex id int
 		isinstance issubclass len oct ord range repr round slice str tuple setattr
 		classmethod staticmethod property divmod next object getattr dict iter pow list
@@ -1023,8 +913,8 @@ class __RL_SAFE_ENV__(object):
 		StopIteration SyntaxError SyntaxWarning SystemError SystemExit TabError TypeError
 		UnboundLocalError UnicodeDecodeError UnicodeEncodeError UnicodeError UnicodeTranslateError
 		UnicodeWarning UserWarning ValueError Warning ZeroDivisionError
-		''' + ('__build_class__' if isPy3 
-				else 'basestring cmp long unichr unicode xrange StandardError reduce apply')).split()})
+		__build_class__'''
+				).split()})
 
 		self.__rl_builtins__ = __rl_builtins__ = {_:__rl_missing_func__(_) for _ in dir(builtins) if callable(getattr(builtins,_))}
 		__rl_builtins__.update(__rl_safe_builtins__)
@@ -1067,10 +957,6 @@ class __RL_SAFE_ENV__(object):
 		__rl_builtins__['range'] = self.__rl_range__
 		__rl_builtins__['set'] = self.__rl_set__
 		__rl_builtins__['frozenset'] = self.__rl_frozenset__
-		if not isPy3:
-			__rl_builtins__['reduce'] = self.__rl_reduce__
-			__rl_builtins__['xrange'] = self.__rl_xrange__
-			__rl_builtins__['apply'] = self.__rl_apply__
 
 	def __rl_type__(self,*args):
 		if len(args)==1: return type(*args)
@@ -1132,24 +1018,13 @@ class __RL_SAFE_ENV__(object):
 	def __rl_reversed__(self, seq):
 		return self.__rl_args_iter__(reversed(seq))
 
-	if not isPy3:
-		def __rl_reduce__(self, f, seq, initial=__rl_undef__):
-			if initial is __rl_undef__:
-				return reduce(f, self.__rl_args_iter__(seq))
-			else:
-				return reduce(f, self.__rl_args_iter__(seq), initial)
-		def __rl_range__(self,start,*args):
-			return list(self.__rl_getiter__(range(start,*args)))
-		def __rl_xrange__(self,start,*args):
-			return self.__rl_getiter__(xrange(start,*args))
-	else:
-		def __rl_range__(self,start,*args):
-			return self.__rl_getiter__(range(start,*args))
+	def __rl_range__(self,start,*args):
+		return self.__rl_getiter__(range(start,*args))
 
 	def __rl_set__(self, it):
 		return set(self.__rl_args_iter__(it))
 
-	def __rl_frozenset__(self, it):
+	def __rl_frozenset__(self, it=()):
 		return frozenset(self.__rl_args_iter__(it))
 
 	def __rl_iter_unpack_sequence__(self, it, spec, _getiter_):
@@ -1174,7 +1049,7 @@ class __RL_SAFE_ENV__(object):
 		explanation.
 		"""
 		# Do the guarded unpacking of the sequence.
-		ret = list(self.__rl__getiter__(it))
+		ret = list(self.__rl_getiter__(it))
 
 		# If the sequence is shorter then expected the interpreter will raise
 		# 'ValueError: need more than X value to unpack' anyway
@@ -1187,16 +1062,19 @@ class __RL_SAFE_ENV__(object):
 			ret[idx] = self.__rl_unpack_sequence__(ret[idx], child_spec, _getiter_)
 		return ret
 
-	def __rl_is_allowed_name__(self, name):
+	def __rl_is_allowed_name__(self, name, crash=True):
 		"""Check names if they are allowed.
 		If ``allow_magic_methods is True`` names in `__allowed_magic_methods__`
 		are additionally allowed although their names start with `_`.
 		"""
 		if isinstance(name,strTypes):
-			if name in __rl_unsafe__ or (name.startswith('__')
-				and name!='__'
-				and name not in self.allowed_magic_methods):
+			if (name not in self.allowed_magic_names
+					and (name in __rl_unsafe__ or (name.startswith('__')
+						and name!='__'
+						and name not in self.allowed_magic_methods))):
+				if not crash: return False
 				raise BadCode('unsafe access of %s' % name)
+			return True
 
 	def __rl_getattr__(self, obj, a, *args):
 		if isinstance(obj, strTypes) and a=='format':
@@ -1296,12 +1174,18 @@ class __RL_SAFE_ENV__(object):
 			bcode = compile(astc, fname, mode=mode)
 		return bcode, names_seen
 
-	def __rl_safe_eval__(self, expr, g, l, mode, timeout=None, allowed_magic_methods=None, __frame_depth__=3):
+	def __rl_safe_eval__(self, expr, g, l, mode, timeout=None, allowed_magic_methods=None, __frame_depth__=3,
+					  allowed_magic_names=None):
+		if allowed_magic_methods is not None:
+			self.allowed_magic_methods = __fix_set__(allowed_magic_methods, __allowed_magic_methods__)
+		if allowed_magic_names is not None:
+			self.allowed_magic_names = __fix_set__(allowed_magic_names)
+
 		bcode, ns = self.__rl_compile__(expr, fname='<string>', mode=mode, flags=0, inherit=True,
 				visit=UntrustedAstTransformer(nameIsAllowed=self.__rl_is_allowed_name__).visit)
 		if None in (l,g):
 			G = sys._getframe(__frame_depth__)
-			L = G.f_locals.copy() if l is None else l
+			L = {n:r for n,r in G.f_locals.items()} if l is None else l
 			G = G.f_globals.copy() if g is None else g
 		else:
 			G = g
@@ -1327,20 +1211,91 @@ class __RL_SAFE_ENV__(object):
 			if obi:
 				G['__builtins__'] = obi[0]
 
-class __rl_safe_eval__(object):
+class __rl_safe_eval__:
 	'''creates one environment and re-uses it'''
 	mode = 'eval'
 	def __init__(self):
 		self.env = None
 
-	def __call__(self, expr, g=None, l=None, timeout=None, allowed_magic_methods=None):
-		if not self.env: self.env = __RL_SAFE_ENV__(timeout=timeout, allowed_magic_methods=allowed_magic_methods)
+	def __call__(self, expr, g=None, l=None, timeout=None, allowed_magic_methods=None, allowed_magic_names=None):
+		if not self.env: self.env = __RL_SAFE_ENV__()
 		return self.env.__rl_safe_eval__(expr, g, l, self.mode, timeout=timeout,
 			allowed_magic_methods=allowed_magic_methods,
-			__frame_depth__=2)
+			__frame_depth__=2, allowed_magic_names=allowed_magic_names)
 
 class __rl_safe_exec__(__rl_safe_eval__):
 	mode = 'exec'
 
+def rl_extended_literal_eval(expr, safe_callables=None, safe_names=None):
+	if safe_callables is None:
+		safe_callables = {}
+	if safe_names is None:
+		safe_names = {}
+	safe_names = safe_names.copy()
+	safe_names.update({'None': None, 'True': True, 'False': False})
+	#make these readonly with MappingProxyType
+	safe_names = types.MappingProxyType(safe_names)
+	safe_callables = types.MappingProxyType(safe_callables)
+	if isinstance(expr, str):
+		expr = ast.parse(expr, mode='eval')
+	if isinstance(expr, ast.Expression):
+		expr = expr.body
+	try:
+		# Python 3.4 and up
+		ast.NameConstant
+		safe_test = lambda n: isinstance(n, ast.NameConstant) or isinstance(n,ast.Name) and n.id in safe_names
+		safe_extract = lambda n: n.value if isinstance(n,ast.NameConstant) else safe_names[n.id]
+	except AttributeError:
+		# Everything before
+		safe_test = lambda n: isinstance(n, ast.Name) and n.id in safe_names
+		safe_extract = lambda n: safe_names[n.id]
+	def _convert(node):
+		if isinstance(node, (ast.Str, ast.Bytes)):
+			return node.s
+		elif isinstance(node, ast.Num):
+			return node.n
+		elif isinstance(node, ast.Tuple):
+			return tuple(map(_convert, node.elts))
+		elif isinstance(node, ast.List):
+			return list(map(_convert, node.elts))
+		elif isinstance(node, ast.Dict):
+			return dict((_convert(k), _convert(v)) for k, v
+						in zip(node.keys, node.values))
+		elif safe_test(node):
+			return safe_extract(node)
+		elif isinstance(node, ast.UnaryOp) and \
+			 isinstance(node.op, (ast.UAdd, ast.USub)) and \
+			 isinstance(node.operand, (ast.Num, ast.UnaryOp, ast.BinOp)):
+			operand = _convert(node.operand)
+			if isinstance(node.op, ast.UAdd):
+				return + operand
+			else:
+				return - operand
+		elif isinstance(node, ast.BinOp) and \
+			 isinstance(node.op, (ast.Add, ast.Sub)) and \
+			 isinstance(node.right, (ast.Num, ast.UnaryOp, ast.BinOp)) and \
+			 isinstance(node.right.n, complex) and \
+			 isinstance(node.left, (ast.Num, ast.UnaryOp, astBinOp)):
+			left = _convert(node.left)
+			right = _convert(node.right)
+			if isinstance(node.op, ast.Add):
+				return left + right
+			else:
+				return left - right
+		elif isinstance(node, ast.Call) and \
+			 isinstance(node.func, ast.Name) and \
+			 node.func.id in safe_callables:
+			return safe_callables[node.func.id](
+				*[_convert(n) for n in node.args],
+				**{kw.arg: _convert(kw.value) for kw in node.keywords})
+		raise ValueError('Bad expression')
+	return _convert(expr)
+
 rl_safe_exec = __rl_safe_exec__()
 rl_safe_eval = __rl_safe_eval__()
+
+def rl_less_safe_eval(expr,NS):
+	'''eval with our so called safe globals'''
+	if not __rl_safe_builtins__:
+		rl_safe_eval('""')
+	return eval(expr,__rl_safe_builtins__,NS)

@@ -5,22 +5,19 @@
 __version__='3.3.0'
 __doc__="""This will be a collection of legends to be used with charts."""
 
-import copy, operator
+import copy
 
 from reportlab.lib import colors
 from reportlab.lib.validators import isNumber, OneOf, isString, isColorOrNone,\
-        isNumberOrNone, isListOfNumbersOrNone, isStringOrNone, isBoolean,\
+        isNumberOrNone, isListOfNumbersOrNone, isBoolean,\
         EitherOr, NoneOr, AutoOr, isAuto, Auto, isBoxAnchor, SequenceOf, isInstanceOf
 from reportlab.lib.attrmap import *
 from reportlab.pdfbase.pdfmetrics import stringWidth, getFont
 from reportlab.graphics.widgetbase import Widget, TypedPropertyCollection, PropHolder
 from reportlab.graphics.shapes import Drawing, Group, String, Rect, Line, STATE_DEFAULTS
-from reportlab.graphics.charts.areas import PlotArea
 from reportlab.graphics.widgets.markers import uSymbol2Symbol, isSymbol
 from reportlab.lib.utils import isSeq, find_locals, isStr, asNative
 from reportlab.graphics.shapes import _baseGFontName
-from functools import reduce
-from reportlab import xrange
 
 def _transMax(n,A):
     X = n*[0]
@@ -379,7 +376,7 @@ class Legend(Widget):
             dividerOffsX = self.dividerOffsX
             dividerOffsY = self.dividerOffsY
 
-        for i in xrange(n):
+        for i in range(n):
             if autoCP:
                 col = autoCP
                 col.index = i
@@ -604,24 +601,25 @@ class LineSwatch(Widget):
         width = AttrMapValue(isNumber, desc="length of swatch line"),
         height = AttrMapValue(isNumber, desc="used for line strokeWidth"),
         strokeColor = AttrMapValue(isColorOrNone, desc="color of swatch line"),
+        strokeWidth = AttrMapValue(isNumberOrNone, desc="thickness of the swatch"),
         strokeDashArray = AttrMapValue(isListOfNumbersOrNone, desc="dash array for swatch line"),
     )
 
     def __init__(self):
         from reportlab.lib.colors import red
-        from reportlab.graphics.shapes import Line
         self.x = 0
         self.y = 0
         self.width  = 20
         self.height = 1
         self.strokeColor = red
         self.strokeDashArray = None
+        self.strokeWidth = 1
 
     def draw(self):
         l = Line(self.x,self.y,self.x+self.width,self.y)
         l.strokeColor = self.strokeColor
         l.strokeDashArray  = self.strokeDashArray
-        l.strokeWidth = self.height
+        l.strokeWidth = self.strokeWidth
         return l
 
 class LineLegend(Legend):
@@ -645,4 +643,5 @@ class LineLegend(Legend):
         l.width = dx
         l.height = dy
         l.strokeColor = fillColor
+        l.strokeWidth = strokeWidth
         return l

@@ -13,21 +13,20 @@ import copy, functools
 from ast import literal_eval
 
 from reportlab.lib import colors
-from reportlab.lib.validators import isNumber, isNumberOrNone, isColor, isColorOrNone, isString,\
-            isListOfStrings, SequenceOf, isBoolean, isNoneOrShape, isStringOrNone,\
+from reportlab.lib.validators import isNumber, isNumberOrNone, isColorOrNone, isString,\
+            SequenceOf, isBoolean, isStringOrNone,\
             NoneOr, isListOfNumbersOrNone, EitherOr, OneOf, isInt
-from reportlab.lib.utils import flatten, isStr, yieldNoneSplits
+from reportlab.lib.utils import isStr, yieldNoneSplits
 from reportlab.graphics.widgets.markers import uSymbol2Symbol, isSymbol
-from reportlab.lib.formatters import Formatter
 from reportlab.lib.attrmap import AttrMap, AttrMapValue
 from reportlab.pdfbase.pdfmetrics import stringWidth
-from reportlab.graphics.widgetbase import Widget, TypedPropertyCollection, PropHolder, tpcGetItem
-from reportlab.graphics.shapes import Line, Rect, Group, Drawing, NotImplementedError, PolyLine
+from reportlab.graphics.widgetbase import TypedPropertyCollection, PropHolder, tpcGetItem
+from reportlab.graphics.shapes import Line, Rect, Group, Drawing, PolyLine
 from reportlab.graphics.charts.axes import XCategoryAxis, YValueAxis, YCategoryAxis, XValueAxis
-from reportlab.graphics.charts.textlabels import BarChartLabel, NA_Label, NoneOrInstanceOfNA_Label
+from reportlab.graphics.charts.textlabels import BarChartLabel, NoneOrInstanceOfNA_Label
 from reportlab.graphics.charts.areas import PlotArea
 from reportlab.graphics.charts.legends import _objStr
-from reportlab import xrange, cmp
+from reportlab import cmp
 
 class BarChartProperties(PropHolder):
     _attrMap = AttrMap(
@@ -198,7 +197,7 @@ class BarChart(PlotArea):
         bs = getattr(self,'seriesOrder',None)
         n = len(self.data)
         if not bs: 
-            R = [(ss,) for ss in xrange(n)]
+            R = [(ss,) for ss in range(n)]
         else:
             bars = self.bars
             unseen = set(range(n))
@@ -436,6 +435,7 @@ class BarChart(PlotArea):
         # 'Baseline' correction...
         vA = self.valueAxis
         vScale = vA.scale
+        vARD = vA.reverseDirection
         vm, vM = vA._valueMin, vA._valueMax
         if vm <= 0 <= vM:
             baseLine = vScale(0)
@@ -477,12 +477,12 @@ class BarChart(PlotArea):
                 if style not in ('parallel','parallel_3d') and not isLine:
                     if datum<=-1e-6:
                         y = vScale(accumNeg[accx])
-                        if y>baseLine: y = baseLine
+                        if (y<baseLine if vARD else y>baseLine): y = baseLine
                         accumNeg[accx] += datum
                         datum = accumNeg[accx]
                     else:
                         y = vScale(accumPos[accx])
-                        if y<baseLine: y = baseLine
+                        if (y>baseLine if vARD else y<baseLine): y = baseLine
                         accumPos[accx] += datum
                         datum = accumPos[accx]
                 else:
@@ -505,7 +505,7 @@ class BarChart(PlotArea):
                     xVal = offs+(seriesMLineCount-1)*bGap*0.5
                 else:
                     xVal -= lineSeen*bGap
-                for colNo in xrange(rowLength): #iterate over categories
+                for colNo in range(rowLength): #iterate over categories
                     _addBar(colNo,colNo)
                 aBP(barRow)
         else:
@@ -523,7 +523,7 @@ class BarChart(PlotArea):
                         xVal = offs+(barsPerGroup-1)*bGap*0.5
                     else:
                         xVal -= lineSeen*bGap
-                    for colNo in xrange(rowLength): #iterate over categories
+                    for colNo in range(rowLength): #iterate over categories
                         _addBar(colNo,colNo*barsPerGroup + sb)
                     aBP(barRow)
 
@@ -1040,7 +1040,7 @@ class BarChart3D(BarChart):
         fg_value = fg.value()
         cAStyle = self.categoryAxis.style
         if cAStyle=='stacked':
-            fg_value=fg_value.reverse()
+            fg_value.reverse()
         elif cAStyle=='mixed':
             fg_value = [_[1] for _ in sorted((((t[1],t[2],t[3],t[4]),t) for t in fg_value))]
 

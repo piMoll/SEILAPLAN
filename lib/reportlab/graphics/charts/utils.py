@@ -5,9 +5,9 @@
 __version__='3.3.0'
 __doc__="Utilities used here and there."
 from time import mktime, gmtime, strftime
-from math import log10, pi, floor, sin, cos, sqrt, hypot
+from math import log10, pi, floor, sin, cos, hypot
 import weakref
-from reportlab.graphics.shapes import transformPoint, transformPoints, inverse, Ellipse, Group, String, Path, numericXShift
+from reportlab.graphics.shapes import transformPoints, inverse, Ellipse, Group, String, numericXShift
 from reportlab.lib.utils import flatten
 from reportlab.pdfbase.pdfmetrics import stringWidth
 
@@ -212,7 +212,7 @@ def maverage(data,n=6):
 def pairMaverage(data,n=6):
     return [(x[0],s) for x,s in zip(data, maverage([x[1] for x in data],n))]
 
-class DrawTimeCollector(object):
+class DrawTimeCollector:
     '''
     generic mechanism for collecting information about nodes at the time they are about to be drawn
     '''

@@ -40,9 +40,9 @@ Traceback (most recent call last):
 ValueError: css color 'pcmyka(100,0,0,0)' has wrong number of components
 '''
 import math, re, functools
-from reportlab import isPy3, cmp
 from reportlab.lib.rl_accel import fp_str
-from reportlab.lib.utils import asNative, isStr, rl_safe_eval
+from reportlab.lib.utils import asNative, isStr, rl_safe_eval, rl_extended_literal_eval
+from reportlab import rl_config
 from ast import literal_eval
 
 class Color:
@@ -62,6 +62,7 @@ class Color:
     @property
     def __key__(self):
         '''simple comparison by component; cmyk != color ever
+        >>> from reportlab import cmp
         >>> cmp(Color(0,0,0),None)
         -1
         >>> cmp(Color(0,0,0),black)
@@ -118,7 +119,11 @@ class Color:
 
     def int_rgba(self):
         v = self.bitmap_rgba()
-        return int((v[0]<<24|v[1]<<16|v[2]<<8|v[3])&0xffffff)
+        return int(v[0]<<24|v[1]<<16|v[2]<<8|v[3])
+
+    def int_argb(self):
+        v = self.bitmap_rgba()
+        return int(v[3]<<24|v[0]<<16|v[1]<<8|v[2])
 
     _cKwds='red green blue alpha'.split()
     def cKwds(self):
@@ -146,7 +151,7 @@ class Color:
     @property
     def normalizedAlpha(self):
         return self.alpha
-if isPy3: Color = functools.total_ordering(Color)
+Color = functools.total_ordering(Color)
 
 def opaqueColor(c):
     '''utility to check we have a color that's not fully transparent'''
@@ -835,6 +840,17 @@ class cssParse:
 cssParse=cssParse()
 
 class toColor:
+    """Accepot an expression returnng a Color subclass.
+
+    This used to accept arbitrary Python expressions, which resulted in increasngly devilish CVEs and
+    security holes from tie to time.  In April 2023 we are creating explicit, "dumb" parsing code to
+    replace this.  Acceptable patterns are
+
+    a Color instance passed in by the Python programmer
+    a named list of colours ('pink' etc')
+    list of 3 or 4 numbers
+    all CSS colour expression
+    """
     _G = {} #globals we like (eventually)
 
     def __init__(self):
@@ -860,20 +876,57 @@ class toColor:
             C = getAllNamedColors()
             s = arg.lower()
             if s in C: return C[s]
-            G = C.copy()
-            G.update(self.extraColorsNS)
-            if not self._G:
-                C = globals()
-                self._G = {s:C[s] for s in '''Blacker CMYKColor CMYKColorSep Color ColorType HexColor PCMYKColor PCMYKColorSep Whiter
-                    _chooseEnforceColorSpace _enforceCMYK _enforceError _enforceRGB _enforceSEP _enforceSEP_BLACK
-                    _enforceSEP_CMYK _namedColors _re_css asNative cmyk2rgb cmykDistance color2bw colorDistance
-                    cssParse describe fade fp_str getAllNamedColors hsl2rgb hue2rgb isStr linearlyInterpolatedColor
-                    literal_eval obj_R_G_B opaqueColor rgb2cmyk setColors toColor toColorOrNone'''.split()}
-            G.update(self._G)
+
+
+            # allow expressions like 'Blacker(red, 0.5)'
+            # >>> re.compile(r"(Blacker|Whiter)\((\w+)\,\s?([0-9.]+)\)").match(msg).groups()
+            # ('Blacker', 'red', '0.5')
+            # >>> 
+            pat = re.compile(r"(Blacker|Whiter)\((\w+)\,\s?([0-9.]+)\)")
+            m = pat.match(arg)
+            if m:
+                funcname, rootcolor, num = m.groups()
+                if funcname == 'Blacker':
+                    return Blacker(rootcolor, float(num))
+                else:
+                    return Whiter(rootcolor, float(num))
+
             try:
-                return toColor(rl_safe_eval(arg,g=G,l={}))
-            except:
+                import ast
+                expr = ast.literal_eval(arg)    #safe probably only a tuple or list of values
+                return toColor(expr)
+            except (SyntaxError, ValueError):
                 pass
+
+            if rl_config.toColorCanUse=='rl_safe_eval':
+                #the most dangerous option
+                G = C.copy()
+                G.update(self.extraColorsNS)
+                if not self._G:
+                    C = globals()
+                    self._G = {s:C[s] for s in '''Blacker CMYKColor CMYKColorSep Color ColorType HexColor PCMYKColor PCMYKColorSep Whiter
+                        _chooseEnforceColorSpace _enforceCMYK _enforceError _enforceRGB _enforceSEP _enforceSEP_BLACK
+                        _enforceSEP_CMYK _namedColors _re_css asNative cmyk2rgb cmykDistance color2bw colorDistance
+                        cssParse describe fade fp_str getAllNamedColors hsl2rgb hue2rgb isStr linearlyInterpolatedColor
+                        literal_eval obj_R_G_B opaqueColor rgb2cmyk setColors toColor toColorOrNone'''.split()}
+                G.update(self._G)
+                try:
+                    return toColor(rl_safe_eval(arg,g=G,l={}))
+                except:
+                    pass
+            elif rl_config.toColorCanUse=='rl_extended_literal_eval':
+                C = globals()
+                S = getAllNamedColors().copy()
+                C = {k:C[k] for k in '''Blacker CMYKColor CMYKColorSep Color ColorType HexColor PCMYKColor PCMYKColorSep Whiter
+                        _chooseEnforceColorSpace _enforceCMYK _enforceError _enforceRGB _enforceSEP _enforceSEP_BLACK
+                        _enforceSEP_CMYK _namedColors _re_css asNative cmyk2rgb cmykDistance color2bw colorDistance
+                        cssParse describe fade fp_str getAllNamedColors hsl2rgb hue2rgb linearlyInterpolatedColor
+                        obj_R_G_B opaqueColor rgb2cmyk setColors toColor toColorOrNone'''.split()
+                        if callable(C.get(k,None))}
+                try:
+                    return rl_extended_literal_eval(arg,C,S)
+                except (ValueError, SyntaxError):
+                    pass
 
         try:
             return HexColor(arg)

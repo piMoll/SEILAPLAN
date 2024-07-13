@@ -353,7 +353,7 @@ class Poles(object):
         self.refresh()
     
     def calculateAnchorLength(self):
-        """ Calculate anchor cable line and interpolate ground points. This
+        """ Calculate anchor cable line and interpolate ground points. These
         values do only have to be calculated when anchors are active
         (poleType == anchor)
         """
@@ -383,8 +383,9 @@ class Poles(object):
             'len': anchor_len
         }
     
-    def getAnchorAngle(self, anchor, neighbourPole):
-        """Calculate 'Angriffwinkel' for anchors and pole_anchors"""
+    @staticmethod
+    def getAnchorAngle(anchor, neighbourPole):
+        """Calculate 'Angriffswinkel' for anchors and pole_anchors"""
         ztop_diff = neighbourPole['ztop'] - anchor['ztop']
         z_diff = neighbourPole['z'] - anchor['z']
         dtop_diff = neighbourPole['dtop'] - anchor['dtop']
@@ -400,7 +401,7 @@ class Poles(object):
             # ground point
             if d_diff == 0 or ztop_diff == 0:
                 # If anchor and pole are at the same horizontal distance or
-                # at the same height, angle calculation is not meaningfull
+                # at the same height, angle calculation is not meaningful
                 return np.nan
             try:
                 return degrees(atan(ztop_diff / dtop_diff) - atan(z_diff / d_diff))
@@ -515,8 +516,8 @@ class Poles(object):
                     maxForce = forces['MaxSeilzugkraft_L'][2]       # Tmax,E
                     angleTerrain = self.getAnchorAngle(pole, self.poles[j-1])
                     # Add alpha LA: incoming angle (idx=0) of last pole (idx=-1)
-                    angle = forces['Anlegewinkel_Leerseil'][0][-1] - angleTerrain
-    
+                    angle = angleTerrain - forces['Anlegewinkel_Leerseil'][0][-1]
+                
                 bhd = self.getBhdForAnchor(angle, maxForce)
 
             # Start or end pole with h > 0 --> not passable

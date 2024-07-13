@@ -23,7 +23,7 @@ del reportlab
 for fn in __all__:
     D={}
     try:
-        exec('from reportlab.lib._rl_accel import %s as f' % fn,D)
+        exec('from _rl_accel import %s as f' % fn,D)
         _c_funcs[fn] = D['f']
         if testing: _py_funcs[fn] = None
     except ImportError:
@@ -31,7 +31,7 @@ for fn in __all__:
     del D
 
 if _py_funcs:
-    from reportlab.lib.utils import isBytes, isUnicode, isSeq, isPy3, rawBytes, asNative, asUnicode, asBytes
+    from reportlab.lib.utils import isUnicode, isSeq, rawBytes, asNative, asBytes
     from math import log
     from struct import unpack
 
@@ -96,16 +96,10 @@ if 'unicode2T1' in _py_funcs:
     _py_funcs['unicode2T1'] = unicode2T1
 
 if 'instanceStringWidthT1' in _py_funcs:
-    if isPy3:
-        def instanceStringWidthT1(self, text, size, encoding='utf8'):
-            """This is the "purist" approach to width"""
-            if not isUnicode(text): text = text.decode(encoding)
-            return sum([sum(map(f.widths.__getitem__,t)) for f, t in unicode2T1(text,[self]+self.substitutionFonts)])*0.001*size
-    else:
-        def instanceStringWidthT1(self, text, size, encoding='utf8'):
-            """This is the "purist" approach to width"""
-            if not isUnicode(text): text = text.decode(encoding)
-            return sum([sum(map(f.widths.__getitem__,list(map(ord,t)))) for f, t in unicode2T1(text,[self]+self.substitutionFonts)])*0.001*size
+    def instanceStringWidthT1(self, text, size, encoding='utf8'):
+        """This is the "purist" approach to width"""
+        if not isUnicode(text): text = text.decode(encoding)
+        return sum((sum(map(f.widths.__getitem__,t)) for f, t in unicode2T1(text,[self]+self.substitutionFonts)))*0.001*size
     _py_funcs['instanceStringWidthT1'] = instanceStringWidthT1
 
 if 'instanceStringWidthTTF' in _py_funcs:
@@ -115,7 +109,7 @@ if 'instanceStringWidthTTF' in _py_funcs:
             text = text.decode(encoding or 'utf-8')
         g = self.face.charWidths.get
         dw = self.face.defaultWidth
-        return 0.001*size*sum([g(ord(u),dw) for u in text])
+        return 0.001*size*sum((g(ord(u),dw) for u in text))
     _py_funcs['instanceStringWidthTTF'] = instanceStringWidthTTF
 
 if 'hex32' in _py_funcs:
@@ -164,7 +158,7 @@ if 'asciiBase85Encode' in _py_funcs:
         This is a compact encoding used for binary data within
         a PDF file.  Four bytes of binary data become five bytes of
         ASCII.  This is the default method used for encoding images."""
-        doOrd =  not isPy3 or isUnicode(input)
+        doOrd =  isUnicode(input)
         # special rules apply if not a multiple of four bytes.
         whole_word_count, remainder_size = divmod(len(input), 4)
         cut = 4 * whole_word_count
@@ -336,19 +330,32 @@ for fn in __all__:
 del fn, f, G
 
 if __name__=='__main__':
-    import sys, os, subprocess
-    for modname in 'reportlab.lib.rl_accel','reportlab.lib._rl_accel':
-        for cmd  in (
-            #"unicode2T1('abcde fghi . jkl ; mno',fonts)",
-            #"unicode2T1(u'abcde fghi . jkl ; mno',fonts)",
-            "instanceStringWidthT1(font,'abcde fghi . jkl ; mno',10)",
-            "instanceStringWidthT1(font,u'abcde fghi . jkl ; mno',10)",
+    import sys, subprocess
+    funclist = ','.join("""add32 asciiBase85Decode asciiBase85Encode
+                    calcChecksum escapePDF fp_str hex32
+                    instanceStringWidthT1 instanceStringWidthTTF
+                    sameFrag unicode2T1""".split())
+    for cmd,xs  in (
+            ("instanceStringWidthTTF(font,text,10)",("font=TTFont('Vera','Vera.ttf')","text='abcde fghi . jkl ; mno'")),
+            ("instanceStringWidthT1(font,'abcde fghi . jkl ; mno',10)",
+                ("fonts=[getFont('Helvetica')]+getFont('Helvetica').substitutionFonts""",
+                    "font=fonts[0]","text='abcde fghi . jkl ; mno'")),
+            ("escapePDF(text)",("text='\x11abcdefghijkl\xf3'",)),
+            ("fp_str(1.23456,2.7891666,2,13,11)",()),
+            ("calcChecksum(text)",("text=5*' abcdefgiijklMnoPQrstuvwxyz1234567890'",)),
+            ("hex32(0x12345678)",()),
+            ("add32(0x12345678,123456789)",()),
+            ("asciiBase85Encode(src)",("src=5*' abcdefgiijklMnoPQrstuvwxyz1234567890'",)),
+            ("asciiBase85Decode(_85text)",("_85text=asciiBase85Encode(5*' abcdefgiijklMnoPQrstuvwxyz1234567890')",)),
             ):
-            print('%s %s' % (modname,cmd))
-            s=';'.join((
+        for modname in '_rl_accel','reportlab.lib.rl_accel':
+            s = ';'.join((
                 "from reportlab.pdfbase.pdfmetrics import getFont",
-                "from %s import unicode2T1,instanceStringWidthT1" % modname,
-                "fonts=[getFont('Helvetica')]+getFont('Helvetica').substitutionFonts""",
-                "font=fonts[0]",
-                ))
-            subprocess.check_call([sys.executable,'-mtimeit','-s',s,cmd])
+                "from reportlab.pdfbase.ttfonts import TTFont",
+                f"from {modname} import {funclist}",
+                )+xs)
+            if modname!='_rl_accel':
+                s = "import sys;sys.modules['_rl_accel']=None;"+s
+            print(f'timing {modname} {cmd}')
+            for i in range(2):
+                subprocess.check_call([sys.executable,'-mtimeit','-s',s,cmd])

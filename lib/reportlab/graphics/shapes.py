@@ -7,7 +7,6 @@ __doc__='''Core of the graphics library - defines Drawing and Shapes'''
 
 import os, sys
 from math import pi, cos, sin, sqrt, radians, floor
-from pprint import pprint
 
 from reportlab.platypus import Flowable
 from reportlab.rl_config import shapeChecking, verbose, defaultGraphicsFontName as _baseGFontName, _unset_, decimalSymbol
@@ -21,13 +20,9 @@ from reportlab.lib.rl_accel import fp_str
 from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.lib.fonts import tt2ps
 from reportlab.pdfgen.canvas import FILL_EVEN_ODD, FILL_NON_ZERO
-from reportlab import xrange
 _baseGFontNameB = tt2ps(_baseGFontName,1,0)
 _baseGFontNameI = tt2ps(_baseGFontName,0,1)
 _baseGFontNameBI = tt2ps(_baseGFontName,1,1)
-
-class NotImplementedError(Exception):
-    pass
 
 # two constants for filling rules
 NON_ZERO_WINDING = 'Non-Zero Winding'
@@ -390,7 +385,6 @@ class Group(Shape):
 
     def _explode(self):
         ''' return a fully expanded object'''
-        from reportlab.graphics.widgetbase import Widget
         obj = Group()
         if hasattr(self,'__label__'):
             obj.__label__=self.__label__
@@ -522,8 +516,8 @@ def _repr(self,I=None):
         return 'EmptyClipPath'
     elif isinstance(self,Shape):
         if I: _addObjImport(self,I)
-        from inspect import getargspec
-        args, varargs, varkw, defaults = getargspec(self.__init__)
+        from inspect import getfullargspec
+        args, varargs, varkw, defaults, kwonlyargs, kwonlydefaults, annotations = getfullargspec(self.__init__)
         if defaults:
             kargs = args[-len(defaults):]
             del args[-len(defaults):]
@@ -532,16 +526,14 @@ def _repr(self,I=None):
         P = self.getProperties()
         s = self.__class__.__name__+'('
         for n in args[1:]:
-            v = P[n]
-            del P[n]
-            s = s + '%s,' % _repr(v,I)
+            v = P.pop(n,None)
+            s += '%s,' % _repr(v,I)
         for n in kargs:
-            v = P[n]
-            del P[n]
-            s = s + '%s=%s,' % (n,_repr(v,I))
+            v = P.pop(n,None)
+            s += '%s=%s,' % (n,_repr(v,I))
         for n,v in P.items():
             v = P[n]
-            s = s + '%s=%s,' % (n, _repr(v,I))
+            s += '%s=%s,' % (n, _repr(v,I))
         return s[:-1]+')'
     else:
         return repr(self)
@@ -566,12 +558,8 @@ def _renderGroupPy(G,pfx,I,i=0,indent='\t\t'):
 
 def _extraKW(self,pfx,**kw):
     kw.update(self.__dict__)
-    R = {}
     n = len(pfx)
-    for k in kw.keys():
-        if k.startswith(pfx):
-            R[k[n:]] = kw[k]
-    return R
+    return {k[n:]:v for k,v in kw.items() if k.startswith(pfx)}
 
 class Drawing(Group, Flowable):
     """Outermost container; the thing a renderer works on.
@@ -1139,7 +1127,7 @@ def definePath(pathSegs=[],isClipPath=0, dx=0, dy=0, **kw):
                 #if   there's a  lower bound shift so min is lower bound
                 #else there's an upper bound shift so max is upper bound
                 c = d[0] - a if d[0] is not None else d[1] - b
-                for i in range(i,len(P),2):
+                for i in range(j,len(P),2):
                     P[i] += c
 
     return Path(P,O,isClipPath,**kw)
@@ -1314,7 +1302,7 @@ class Wedge(SolidShape):
         CA = []
         CAA = CA.append
         a = points.append
-        for angle in xrange(n):
+        for angle in range(n):
             angle = startangle+angle*radiansdelta
             CAA((cos(angle),sin(angle)))
         for c,s in CA:
@@ -1330,11 +1318,11 @@ class Wedge(SolidShape):
         if self.annular:
             P = Path(fillMode=getattr(self,'fillMode', FILL_EVEN_ODD))
             P.moveTo(points[0],points[1])
-            for x in xrange(2,2*n,2):
+            for x in range(2,2*n,2):
                 P.lineTo(points[x],points[x+1])
             P.closePath()
             P.moveTo(points[2*n],points[2*n+1])
-            for x in xrange(2*n+2,4*n,2):
+            for x in range(2*n+2,4*n,2):
                 P.lineTo(points[x],points[x+1])
             P.closePath()
             return P

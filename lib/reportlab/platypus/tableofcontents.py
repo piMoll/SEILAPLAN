@@ -2,7 +2,7 @@
 #see license.txt for license details
 #history https://hg.reportlab.com/hg-public/reportlab/log/tip/src/reportlab/platypus/tableofcontents.py
 
-__version__='3.5.32'
+__version__='4.2.1.1'
 __doc__="""Experimental class to generate Tables of Contents easily
 
 This module defines a single TableOfContents() class that can be used to
@@ -44,7 +44,6 @@ lines after the first are indented by the same constant named
 epsilon.
 """
 
-from reportlab.lib import enums
 from reportlab.lib.units import cm
 from reportlab.lib.utils import commasplit, escapeOnce, encode_label, decode_label, strTypes, asUnicode, asNative
 from reportlab.lib.styles import ParagraphStyle, _baseFontName
@@ -52,7 +51,7 @@ from reportlab.lib import sequencer as rl_sequencer
 from reportlab.platypus.paragraph import Paragraph
 from reportlab.platypus.doctemplate import IndexingFlowable
 from reportlab.platypus.tables import TableStyle, Table
-from reportlab.platypus.flowables import Spacer, Flowable
+from reportlab.platypus.flowables import Spacer
 from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.pdfgen import canvas
 import unicodedata
@@ -166,6 +165,7 @@ class TableOfContents(IndexingFlowable):
         self.tableStyle = kwds.pop('tableStyle',defaultTableStyle)
         self.dotsMinLevel = kwds.pop('dotsMinLevel',1)
         self.formatter = kwds.pop('formatter',None)
+        self._notifyKind = kwds.pop('notifyKind','TOCEntry')
         if kwds: raise ValueError('unexpected keyword arguments %s' % ', '.join(kwds.keys()))
         self._table = None
         self._entries = []
@@ -185,9 +185,9 @@ class TableOfContents(IndexingFlowable):
     def notify(self, kind, stuff):
         """The notification hook called to register all kinds of events.
 
-        Here we are interested in 'TOCEntry' events only.
+        Here we are interested in self._notifyKind (default TOCEntry) events only.
         """
-        if kind == 'TOCEntry':
+        if kind == self._notifyKind:
             self.addEntry(*stuff)
 
     def clearEntries(self):
@@ -305,6 +305,7 @@ class SimpleIndex(IndexingFlowable):
         self._entries = {}
         self._lastEntries = {}
         self._flowable = None
+        self._notifyKind = kwargs.pop('notifyKind','IndexEntry')
         self.setup(**kwargs)
 
     def getFormatFunc(self,formatName):
@@ -398,9 +399,9 @@ class SimpleIndex(IndexingFlowable):
     def notify(self, kind, stuff):
         """The notification hook called to register all kinds of events.
 
-        Here we are interested in 'IndexEntry' events only.
+        Here we are interested in self._notifyKind (default IndexEntry) events only.
         """
-        if kind == 'IndexEntry':
+        if kind == self._notifyKind:
             text, pageNum = stuff
             self.addEntry(text, (self._canv.getPageNumber(),pageNum))
 

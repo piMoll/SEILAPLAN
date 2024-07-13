@@ -23,7 +23,7 @@ import os
 import numpy as np
 
 from qgis.PyQt.QtGui import QFont, QColor
-from qgis.PyQt.QtCore import QSize, Qt, QFileInfo, QVariant, QCoreApplication
+from qgis.PyQt.QtCore import QSize, Qt, QFileInfo, QCoreApplication, QMetaType
 from qgis.PyQt.QtWidgets import (QDialog, QWidget, QLabel, QDialogButtonBox,
     QLayout, QVBoxLayout)
 from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject, QgsPoint,
@@ -189,7 +189,7 @@ def createProfileLayers(heightSource):
     surveyPointLayer = QgsVectorLayer('Point?crs=' + lyrCrs,
                                       tr('Felddaten-Messpunkte'), 'memory')
     pr = surveyPointLayer.dataProvider()
-    pr.addAttributes([QgsField("nr", QVariant.String)])
+    pr.addAttributes([QgsField("nr", QMetaType.Char)])
     surveyPointLayer.updateFields()
     features = []
     # TODO: Survey points are NOT rounded
