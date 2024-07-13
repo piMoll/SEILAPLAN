@@ -125,7 +125,7 @@ def calculateFinalCableLine(conf):
         print('ERROR: Error while preparing config data for optimization.')
         exit()
     print('Load pole setup from file...')
-    optiResults, _ = conf.loadCableDataFromFile()
+    optiResults, _ = conf.prepareResultWithoutOptimization()
     parameters = conf.params.getSimpleParameterDict()
 
     print('Calculate precise cable line..')

@@ -209,6 +209,36 @@
                 "label": "Sicherheitsfaktor Tragseil",
                 "value": "3",
                 "unit": ""
+            },
+            {
+                "name": "LeerKnickMit",
+                "label": "Grenzwert min. Leerseilknickwinkel mit Niederhaltelasche",
+                "value": "1",
+                "unit": "°"
+            },
+            {
+                "name": "LeerKnickOhne",
+                "label": "Grenzwert min. Leerseilknickwinkel ohne Niederhaltelasche",
+                "value": "3",
+                "unit": "°"
+            },
+            {
+                "name": "LastKnickSt",
+                "label": "Grenzwert max. Lastseilknickwinkel Stütze",
+                "value": "30",
+                "unit": "°"
+            },
+            {
+                "name": "LastKnickEnd",
+                "label": "Grenzwert max. Lastseilknickwinkel Endmast",
+                "value": "60",
+                "unit": "°"
+            },
+            {
+                "name": "Bundstelle",
+                "label": "Bundstelle über Sattelleiste",
+                "value": "3",
+                "unit": "m"
             }
         ]
     }

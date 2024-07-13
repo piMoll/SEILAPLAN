@@ -1,17 +1,21 @@
 from typing import List
 from qgis.testing import unittest
+from qgis.core import QgsApplication
 
 from . import BASIC_PROJECT_FILE, MINIMAL_PROJECT_FILE
 from SEILAPLAN.tools.calcThreshold import ThresholdUpdater, PlotTopic
 from SEILAPLAN.core.cablelineFinal import preciseCable
 from SEILAPLAN.tools.configHandler import ConfigHandler
+from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
+from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
 
 
 class TestCalcThreshold(unittest.TestCase):
     
     @classmethod
     def setUpClass(cls):
-        pass
+        cls.qgs = QgsApplication([], False)
+        cls.qgs.initQgis()
     
     @classmethod
     def tearDownClass(cls):
@@ -19,12 +23,12 @@ class TestCalcThreshold(unittest.TestCase):
     
     @staticmethod
     def helper_calculate_cableline(project_file=BASIC_PROJECT_FILE):
-        conf = ConfigHandler()
+        conf: ConfigHandler = ConfigHandler()
         conf.loadSettings(project_file)
         conf.prepareForCalculation()
-        result, status = conf.loadCableDataFromFile()
-        project = conf.project
-        params = conf.params
+        result, status = conf.prepareResultWithoutOptimization()
+        project: ProjectConfHandler = conf.project
+        params: ParameterConfHandler = conf.params
         profile = project.profile
         poles = project.poles
         simpleParams = params.getSimpleParameterDict()
