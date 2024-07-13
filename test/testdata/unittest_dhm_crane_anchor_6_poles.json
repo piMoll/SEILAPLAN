@@ -11,7 +11,7 @@
     "heightsource": {
         "type": "dhm",
         "surveyType": null,
-        "source": "/home/pi/.local/share/QGIS/QGIS3/profiles/default/python/plugins/SEILAPLAN/test/testdata/dhm.tiff",
+        "source": "{HOMEPATH}/test/testdata/dhm.tiff",
         "crs": "EPSG:2056"
     },
     "profile": {

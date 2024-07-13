@@ -1,46 +1,24 @@
 from typing import List
 from qgis.testing import unittest
-from qgis.core import QgsApplication
-
-from . import BASIC_PROJECT_FILE, MINIMAL_PROJECT_FILE
+from . import MINIMAL_PROJECT_FILE
+from ._test_helper import calculate_cable_line
 from SEILAPLAN.tools.calcThreshold import ThresholdUpdater, PlotTopic
-from SEILAPLAN.core.cablelineFinal import preciseCable
 from SEILAPLAN.tools.configHandler import ConfigHandler
-from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
-from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
 
 
 class TestCalcThreshold(unittest.TestCase):
     
     @classmethod
     def setUpClass(cls):
-        cls.qgs = QgsApplication([], False)
-        cls.qgs.initQgis()
+        pass
     
     @classmethod
     def tearDownClass(cls):
         pass
     
-    @staticmethod
-    def helper_calculate_cableline(project_file=BASIC_PROJECT_FILE):
-        conf: ConfigHandler = ConfigHandler()
-        conf.loadSettings(project_file)
-        conf.prepareForCalculation()
-        result, status = conf.prepareResultWithoutOptimization()
-        project: ProjectConfHandler = conf.project
-        params: ParameterConfHandler = conf.params
-        profile = project.profile
-        poles = project.poles
-        simpleParams = params.getSimpleParameterDict()
-        cableline, force, seil_possible = preciseCable(simpleParams, poles, result['optSTA'])
-        result['cableline'] = cableline
-        result['force'] = force
-        profile.updateProfileAnalysis(cableline)
-        result['maxDistToGround'] = cableline['maxDistToGround']
-        return result, params, poles, profile, status
-    
     def test_threshold_update(self):
-        result, params, poles, profile, status = self.helper_calculate_cableline()
+        conf: ConfigHandler = ConfigHandler()
+        result, params, poles, profile, status = calculate_cable_line(conf)
         
         thdLayout = MockAdjustmentDialogThresholds()
         thdUpdater = ThresholdUpdater(thdLayout)
@@ -121,7 +99,8 @@ class TestCalcThreshold(unittest.TestCase):
                 self.assertEqual([marker.alignment for marker in markers], ['bottom', 'bottom', 'bottom', 'bottom', 'bottom', 'bottom'])
         
     def test_threshold_update_with_empty_extrema(self):
-        result, params, poles, profile, status = self.helper_calculate_cableline(MINIMAL_PROJECT_FILE)
+        conf: ConfigHandler = ConfigHandler()
+        result, params, poles, profile, status = calculate_cable_line(conf, MINIMAL_PROJECT_FILE)
 
         thdLayout = MockAdjustmentDialogThresholds()
         thdUpdater = ThresholdUpdater(thdLayout)
