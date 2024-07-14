@@ -1,16 +1,20 @@
 # Seilaplan Changelog
 
 ## Version 3.6.0 (Juli 2024)
+### Fehlerbehebung
+* Kurzbericht: Korrektur der Angriffswinkel-Berechnung für befahrbare Endstützen
+* Bundstelle ist neu 3.0 m statt bisher 1.5 m über Sattelleiste, Wert kann angepasst werden
+
 ### Neue Features
-* Seilaplan kann mehrfach gestartet werden, damit Projekte (bzw. Varianten) parallel bearbeiten werden können
-* Möglichkeit, benutzerspezifische Grenzwerte für Leer- und Lastseilknickwinkel zu definieren (bisher 1/3° und 30/60°)
-* Möglichkeit, die Höhe der Bundstelle über der Sattelleiste zu definieren
+* Seilaplan kann mehrfach gestartet werden, um Projekte (bzw. Varianten) parallel bearbeiten zu können
+* Neue Parameter um Grenzwerte für Leer- und Lastseilknickwinkel zu definieren (bisher fix 1/3° und 30/60°)
+* Neuer Parameter um die Höhe der Bundstelle über der Sattelleiste zu definieren (bisher fix 1.5 m)
 * Bearbeitungsfenster:
-  * Im Diagramm können zusätzliche Informationen (BHD, Durchhang, Knickwinkel, etc.) über eine Auswahlliste angezeigt werden
-  * Im neuen Tab "Parameter" kann das verwendete Parameterset ausgetauscht werden, statt bisher einzelne Parameter anzupassen
-  * Im Diagramm wird der Seildurchhang statt einmal für die Seillinie, neu für jedes Seilfeld einzeln ausgegeben
-  * In der Stützenauflistung wird der Bundstellendurchmesser angegeben
-  * Stützenbezeichungen können neu 42 statt 22 Zeichen lang sein. Im Diagramm-PDF wurde die Lesbarkeit der Bezeichnungen verbessert
+  * Im Diagramm können über eine Auswahlliste zusätzliche Informationen (BHD, Durchhang, Knickwinkel, etc.) angezeigt werden
+  * Im neuen Tab "Parameter" kann das verwendete Parameterset ausgetauscht werden
+  * Im Diagramm wird der Seildurchhang statt einmal für die gesamte Seillinie, neu für jedes Seilfeld einzeln ausgegeben
+  * Pro Stütze wird der Bundstellendurchmesser angegeben
+  * Stützenbezeichnungen können neu 42 statt 22 Zeichen lang sein. Im Diagramm-PDF wurde die Lesbarkeit der Bezeichnungen verbessert
 * Vogelperspektive: Passe Symbol für Mehrbaumanker an; Abspannseile enden am Anfangs- / Endpunkt der Seillinie, nicht dahinter
 * Diverse Verbesserung der Benutzerführung: Anpassung von Bezeichnungen und Ergänzen von Hinweisen
 
