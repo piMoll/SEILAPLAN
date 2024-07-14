@@ -1,10 +1,6 @@
 # Seilaplan Changelog
 
 ## Version 3.6.0 (Juli 2024)
-### Fehlerbehebung
-* Kurzbericht: Korrektur der Angriffswinkel-Berechnung für befahrbare Endstützen
-* Bundstelle ist neu 3.0 m statt bisher 1.5 m über Sattelleiste, Wert kann angepasst werden
-
 ### Neue Features
 * Seilaplan kann mehrfach gestartet werden, um Projekte (bzw. Varianten) parallel bearbeiten zu können
 * Neue Parameter um Grenzwerte für Leer- und Lastseilknickwinkel zu definieren (bisher fix 1/3° und 30/60°)
@@ -19,6 +15,8 @@
 * Diverse Verbesserung der Benutzerführung: Anpassung von Bezeichnungen und Ergänzen von Hinweisen
 
 ### Fehlerbehebung
+* Kurzbericht: Korrektur der Angriffswinkel-Berechnung für befahrbare Endstützen
+* Bundstelle ist neu 3.0 m statt bisher 1.5 m über Sattelleiste, Wert ist anpassbar
 
 ## Version 3.5.3 (Mai 2024)
 ### Fehlerbehebung

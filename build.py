@@ -22,6 +22,7 @@ ZIP_EXCLUDES = [
     'templates'
 ]
 
+
 def create_zip(zip_path, folder_path, ignore_patterns):
     print('Creating ZIP archive ' + zip_path)
     with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
