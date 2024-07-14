@@ -22,7 +22,7 @@ from qgis.PyQt.QtCore import (Qt, QObject, QAbstractTableModel, QModelIndex,
                               pyqtSignal, QSize)
 from qgis.PyQt.QtGui import (QColor, QBrush, QStandardItemModel,
                              QIcon, QPixmap)
-from qgis.PyQt.QtWidgets import QPushButton, QHBoxLayout, QWidget, QMessageBox
+from qgis.PyQt.QtWidgets import QPushButton, QHBoxLayout, QWidget, QMessageBox, QTableView
 
 
 class AdjustmentDialogThresholds(QObject):
@@ -44,8 +44,9 @@ class AdjustmentDialogThresholds(QObject):
         """
         super().__init__()
         self.parent = parent
-        self.tbl = self.parent.tableThresholds
+        self.tbl: QTableView = self.parent.tableThresholds
         self.model = None
+        self.selectedRow = None
         
         # Icons
         self.iconOk = QIcon()
@@ -101,17 +102,21 @@ class AdjustmentDialogThresholds(QObject):
     
     def onClick(self, item):
         # Row is already selected
-        if self.parent.selectedPlotTopic == item.row():
+        if self.selectedRow == item.row():
             # Deselect
             self.tbl.clearSelection()
+            self.selectedRow = None
+        else:
+            self.selectedRow = item.row()
         # Emit select signal
         self.sig_clickedRow.emit(item.row())
     
     def select(self, row):
-        if row and row >= 0:
-            self.tbl.selectRow(row)
-        else:
+        if row is None:
             self.tbl.clearSelection()
+        elif row >= 0:
+            self.tbl.selectRow(row)
+        self.selectedRow = row
     
     def createInfoBtn(self, cellData):
         button = QPushButton('?')

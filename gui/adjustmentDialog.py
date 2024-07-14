@@ -240,9 +240,10 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         self.thdUpdater.update(self.result, self.paramHandler, self.poles,
             self.profile, self.status == 'optiSuccess')
         # Add plot topics in drop down
+        self.fieldPlotTopic.addItem('-', userData=-1)
         for topic in self.thdUpdater.topics:
             self.fieldPlotTopic.addItem(topic.name, userData=topic.id)
-        self.fieldPlotTopic.setCurrentIndex(-1)
+        self.fieldPlotTopic.setCurrentIndex(0)
         self.fieldPlotTopic.currentIndexChanged.connect(self.onChangePlotTopic)
         
         # Mark profile line and poles on map
@@ -537,31 +538,39 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         """This function is either called by the Threshold updater when
          the cable has been recalculated or when user clicks on a table row."""
         
+        try:
+            thItem = self.thdUpdater.getThresholdTopics()[row]
+        except IndexError:
+            thItem = None
+        
         # Click on row was emitted but row is already selected -> deselect
-        if row == self.selectedPlotTopic:
+        if thItem is None or thItem.id == self.selectedPlotTopic:
             # Remove markers from plot
             self.plot.removeMarkers()
             # Unselect plot topic
             self.selectedPlotTopic = None
-            self.fieldPlotTopic.setCurrentIndex(-1)
+            self.fieldPlotTopic.blockSignals(True)
+            self.fieldPlotTopic.setCurrentIndex(0)
+            self.fieldPlotTopic.blockSignals(False)
             return
-        
-        thItem = self.thdUpdater.getThresholdTopics()[row]
-        if not thItem:
-            return
+
         self.plot.showMarkers(thItem.plotMarkers)
         self.selectedPlotTopic = thItem.id
         
         # Synchronize plot topic dropdown with currently selected threshold topic
         for idx, item in enumerate(self.thdUpdater.topics):
             if self.selectedPlotTopic == item.id:
-                self.fieldPlotTopic.setCurrentIndex(idx)
+                self.fieldPlotTopic.blockSignals(True)
+                self.fieldPlotTopic.setCurrentIndex(idx+1)
+                self.fieldPlotTopic.blockSignals(False)
                 break
     
     def onRefreshTopicInPlot(self):
         item = self.thdUpdater.getPlotTopicById(self.selectedPlotTopic)
         if item:
             self.plot.showMarkers(item.plotMarkers)
+        else:
+            self.plot.removeMarkers()
         
     def onChangePlotTopic(self):
         self.selectedPlotTopic = self.fieldPlotTopic.currentData()
