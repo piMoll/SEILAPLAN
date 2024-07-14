@@ -183,7 +183,7 @@ class ThresholdUpdater:
                     continue
                 color = 1
                 # Check if local minima exceeds threshold
-                if localMinima < topic.threshold:
+                if round(localMinima, 1) < topic.threshold:
                     topic.exceedsThreshold = True
                     color = 3
                 # Check where the minimal ground clearance per field is located
@@ -201,7 +201,7 @@ class ThresholdUpdater:
                 # NAN values will be ignored
                 if np.isnan(maxValPerField):
                     continue
-                if maxValPerField > topic.threshold:
+                if round(maxValPerField, 1) > topic.threshold:
                     topic.exceedsThreshold = True
                 # Force is calculated in the middle of the field, so
                 #  marker should also be in the middle between two poles
@@ -213,7 +213,7 @@ class ThresholdUpdater:
             plotLabel = self.tr('am hoechsten Punkt:') + '\n' + topic.formatValue(forceAtHighestPoint)
             xHighest, zHighest = self.poles.getHighestPole()
             color = 1  # ok
-            if forceAtHighestPoint > topic.threshold:
+            if round(forceAtHighestPoint, 1) > topic.threshold:
                 color = 3  # red
             topic.createPlotMarker(plotLabel, xHighest, zHighest, color, 'top')
     
@@ -230,6 +230,7 @@ class ThresholdUpdater:
                 if np.isnan(angle):
                     continue
                 color = 1  # ok
+                angle = round(angle, 1)
                 # Test first and last pole of optimization with second threshold
                 if poleIdx + self.poles.idxA in [self.poles.idxA, self.poles.idxE]:
                     # Check if current value is new max value
@@ -265,6 +266,7 @@ class ThresholdUpdater:
                 if np.isnan(angle):
                     continue
                 color = 1  # ok
+                angle = round(angle, 1)
                 # Angle under first threshold (1 to 3 degrees -> error level 'attention')
                 if angle < topic.threshold[1]:
                     color = 2  # orange
