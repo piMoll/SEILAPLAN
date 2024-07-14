@@ -1,4 +1,4 @@
-from . import BASIC_PROJECT_FILE, TMP_FILE_PREFIX
+from . import BASIC_PROJECT_FILE
 from SEILAPLAN.core.cablelineFinal import preciseCable
 from SEILAPLAN.tools.configHandler import ConfigHandler
 from SEILAPLAN.tools.configHandler_project import ProjectConfHandler

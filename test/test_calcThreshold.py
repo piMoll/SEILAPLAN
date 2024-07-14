@@ -76,7 +76,7 @@ class TestCalcThreshold(unittest.TestCase):
             
             if topic.id == 'bhd':
                 self.assertEqual(topic.getMaxColor(), 1)
-                self.assertEqual([marker.label for marker in markers], ['36 cm', '39 cm', '35 cm', '39 cm', '40 cm', '52 cm'])
+                self.assertEqual([marker.label for marker in markers], ['36 cm', '39 cm', '35 cm', '39 cm', '40 cm', '65 cm'])
                 self.assertEqual([marker.x for marker in markers], [40.0, 97.0, 182.0, 250.0, 290.0, 305.0])
                 self.assertAlmostEqualList([marker.z for marker in markers], [1243.49, 1226.79, 1203.73, 1178.07, 1156.16, 1148.56])
                 self.assertEqual([marker.color for marker in markers], [1, 1, 1, 1, 1, 1])

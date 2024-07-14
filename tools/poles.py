@@ -386,17 +386,18 @@ class Poles(object):
     @staticmethod
     def getAnchorAngle(anchor, neighbourPole):
         """Calculate 'Angriffswinkel' for anchors and pole_anchors"""
+        # At start point
         ztop_diff = neighbourPole['ztop'] - anchor['ztop']
         z_diff = neighbourPole['z'] - anchor['z']
         dtop_diff = neighbourPole['dtop'] - anchor['dtop']
-        d_diff = neighbourPole['d'] - anchor['d']
-        
-        # end point
-        if anchor['d'] > neighbourPole['d']:
-            dtop_diff *= -1
-            d_diff *= -1
+        d_diff = neighbourPole['d'] - anchor['d']  
         
         if anchor['poleType'] == 'anchor':
+            # At end point
+            if anchor['d'] > neighbourPole['d']:
+                dtop_diff *= -1
+                d_diff *= -1
+            
             # Angle between anchor -> pole top point and anchor -> pole
             # ground point
             if d_diff == 0 or ztop_diff == 0:
@@ -414,6 +415,8 @@ class Poles(object):
             #  is calculated from horizontal line to cable.
             if d_diff == 0:
                 return np.nan
+            # No correction for end point necessary like for 'anchor', we're
+            #  calculating a partial angle
             return degrees(atan(z_diff / d_diff))
             
 
@@ -516,7 +519,7 @@ class Poles(object):
                     maxForce = forces['MaxSeilzugkraft_L'][2]       # Tmax,E
                     angleTerrain = self.getAnchorAngle(pole, self.poles[j-1])
                     # Add alpha LA: incoming angle (idx=0) of last pole (idx=-1)
-                    angle = forces['Anlegewinkel_Leerseil'][0][-1] - angleTerrain
+                    angle = angleTerrain - forces['Anlegewinkel_Leerseil'][0][-1]
                 
                 bhd = self.getBhdForAnchor(angle, maxForce)
 

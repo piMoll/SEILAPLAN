@@ -8,11 +8,12 @@ from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
 from SEILAPLAN.tools.poles import Poles
 
 
-TEST_PROJECT = project_file_loader('unittest_survey_excel_Wyss_Bawald.json')
-TEST_PROJECT_2 = project_file_loader('unittest_dhm_anchor_anchor_6_poles.json')
+TEST_PROJECT_Bawald = project_file_loader('unittest_survey_excel_Wyss_Bawald.json')
+TEST_PROJECT_A_A = project_file_loader('unittest_dhm_anchor_anchor_6_poles.json')
+TEST_PROJECT_A_A_UPHILL = project_file_loader('unittest_dhm_anchor_anchor_4_poles_uphill.json')
 
 
-class TestPoles(unittest.TestCase):
+class TestPolesAngriffswinkel(unittest.TestCase):
     
     @classmethod
     def setUpClass(cls):
@@ -22,18 +23,27 @@ class TestPoles(unittest.TestCase):
     def tearDownClass(cls):
         pass
         
-    def test_angriffswinkel_anchor_anchor(self):
+    def test_anchor_anchor(self):
         conf: ConfigHandler = ConfigHandler()
         poles: Poles
-        result, params, poles, profile, status = calculate_cable_line(conf, TEST_PROJECT_2)
+        result, params, poles, profile, status = calculate_cable_line(conf, TEST_PROJECT_A_A)
         firstPole = poles.poles[0]
         lastPoles = poles.poles[-1]
         
-        # No Angriffswinkel for start point because it's a cran
         self.assertAlmostEqual(firstPole['angriff'], 21.0, 1)
         self.assertAlmostEqual(lastPoles['angriff'], 24.4, 1)
     
-    def test_angriffswinkel_crane_pole_anchor(self):
+    def test_anchor_anchor_uphill(self):
+        conf: ConfigHandler = ConfigHandler()
+        poles: Poles
+        result, params, poles, profile, status = calculate_cable_line(conf, TEST_PROJECT_A_A_UPHILL)
+        firstPole = poles.poles[0]
+        lastPoles = poles.poles[-1]
+        
+        self.assertAlmostEqual(firstPole['angriff'], 23.6, 1)
+        self.assertAlmostEqual(lastPoles['angriff'], 33.3, 1)
+    
+    def test_crane_pole_anchor(self):
         conf: ConfigHandler = ConfigHandler()
         poles: Poles
         result, params, poles, profile, status = calculate_cable_line(conf)
@@ -42,19 +52,18 @@ class TestPoles(unittest.TestCase):
         
         # No Angriffswinkel for start point because it's a cran
         self.assertIs(firstPole['angriff'], nan)
-        # TODO: This one is wrong
-        self.assertAlmostEqual(lastPoles['angriff'], -79.3, 1)
+        # Last point is a pole anchor
+        self.assertAlmostEqual(lastPoles['angriff'], 25.6, 1)
     
-    def test_angriffswinkel_pole_anchors(self):
+    def test_pole_anchors(self):
         conf: ConfigHandler = ConfigHandler()
         poles: Poles
-        result, params, poles, profile, status = calculate_cable_line(conf, TEST_PROJECT)
+        result, params, poles, profile, status = calculate_cable_line(conf, TEST_PROJECT_Bawald)
         firstPole = poles.poles[0]
         lastPoles = poles.poles[-1]
         
         self.assertAlmostEqual(firstPole['angriff'], 9.0, 1)
-        # TODO: This one is wrong
-        self.assertAlmostEqual(lastPoles['angriff'], -53.3, 1)
+        self.assertAlmostEqual(lastPoles['angriff'], 10.8, 1)
 
 
 
