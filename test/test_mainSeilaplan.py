@@ -1,8 +1,6 @@
-import unittest
+from qgis.testing import unittest
 import numpy as np
-import sys
 from qgis.core import QgsTask
-from qgis.core import QgsApplication
 from qgis.PyQt.QtCore import pyqtSignal
 
 from . import BASIC_PROJECT_FILE
@@ -45,14 +43,6 @@ class TestMainResults(unittest.TestCase):
     
     @classmethod
     def setUpClass(cls):
-        
-        if 'linux' in sys.platform:
-            QgsApplication.setPrefixPath('/usr', True)
-        elif 'win' in sys.platform:
-            pass
-    
-        cls.qgs = QgsApplication([], False)
-        cls.qgs.initQgis()
         
         # Old calc
         ##
