@@ -602,22 +602,23 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
     def createOutput(self):
         outputFolder = self.confHandler.getCurrentPath()
         projName = self.projectHandler.getProjectName()
-        outputLoc = createOutputFolder(os.path.join(outputFolder, projName))
+        outputLoc, projName_unique = createOutputFolder(outputFolder, projName)
+        
         updateWithCableCoordinates(self.cableline, self.projectHandler.points['A'],
                                    self.projectHandler.azimut)
         poles = [pole for pole in self.poles.poles if pole['active']]
         # Save project file
         self.confHandler.saveSettings(os.path.join(outputLoc,
-                                      self.tr('Projekteinstellungen') + '.json'))
+                                      f"{self.tr('Projekteinstellungen')}.json"))
 
         # Create short report
         if self.confHandler.getOutputOption('shortReport'):
-            generateShortReport(self.confHandler, self.result, projName,
+            generateShortReport(self.confHandler, self.result, projName_unique,
                                 outputLoc)
 
         # Create technical report
         if self.confHandler.getOutputOption('report'):
-            reportText = generateReportText(self.confHandler, self.result, projName)
+            reportText = generateReportText(self.confHandler, self.result, projName_unique)
             generateReport(reportText, outputLoc)
         
         # Create plot
@@ -631,7 +632,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
                                self.profile.peakLoc_x, self.profile.peakLoc_z,
                                self.profile.surveyPnts)
             printPlot.updatePlot(self.poles.getAsArray(), self.cableline, True)
-            printPlot.layoutDiagrammForPrint(projName, poles, self.poles.direction)
+            printPlot.layoutDiagrammForPrint(projName_unique, poles, self.poles.direction)
             imgPath = None
             if includingBirdView:
                 # Create second plot
@@ -678,7 +679,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
             if self.confHandler.getOutputOption('shape'):
                 try:
                     shapeFiles = writeGeodata(geodata, 'SHP', epsg, savePath)
-                    addToMap(shapeFiles, projName)
+                    addToMap(shapeFiles, projName_unique)
                 except Exception as e:
                     msg = f'{msg}:\n{e}'
                     self.showMessage(title, msg)

@@ -839,15 +839,19 @@ def generateReport(reportText, outputLoc):
     del elements
 
 
-def createOutputFolder(location):
+def createOutputFolder(outputPath, projectName):
     i = 1
-    while os.path.exists(location):
+    outputFolder = os.path.join(outputPath, projectName)
+    while os.path.exists(outputFolder):
         if i == 1:
-            location = "{}_{}".format(location, i)
-        location = "{}_{}".format(location[:-2], i)
+            projectName = "{}_{}".format(projectName, i)
+        else:
+            projectName = "{}_{}".format('_'.join(projectName.split('_')[:-1]), i)
+        outputFolder = os.path.join(outputPath, projectName)
         i += 1
-    os.makedirs(location)
-    return location
+    
+    os.makedirs(outputFolder)
+    return outputFolder, projectName
 
 
 # noinspection PyMethodMayBeStatic
