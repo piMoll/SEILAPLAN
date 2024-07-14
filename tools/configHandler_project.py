@@ -469,7 +469,11 @@ class ProjectConfHandler(AbstractConfHandler):
             self.A_type = pType
         elif point == 'E':
             self.E_type = pType
-
+        
+        # Reset in-between poles, so they don't hang around after start or
+        #  end pole has been changed
+        self.resetPoles()
+        
     @staticmethod
     def formatCoordinate(number, digits=1):
         """Format coordinates to one digit except otherwise"""
@@ -568,8 +572,7 @@ class ProjectConfHandler(AbstractConfHandler):
             'HM_fix_d': [],
             'HM_fix_h': []
         }
-        self.noPoleSection = []
-        self.polesFromFile = []
+        self.resetPoles()
     
     def resetHeightSource(self):
         del self.heightSource
@@ -578,6 +581,6 @@ class ProjectConfHandler(AbstractConfHandler):
         self.surveyType = None
         self.virtRasterSource = None
     
-    def reset(self):
+    def resetPoles(self):
         self.poles = None
         self.polesFromFile = []

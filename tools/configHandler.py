@@ -366,7 +366,7 @@ class ConfigHandler(object):
         }, 'savedFile' if self.fromSavedProject else 'jumpedOver'
     
     def reset(self):
-        self.project.reset()
+        self.project.resetPoles()
         self.params.reset()
         self.fromSavedProject = False
     
