@@ -217,9 +217,9 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
                     'bei Berechnung der Seillinie'), str(e), QMessageBox.Ok)
                 return
         
-        self.cableline = self.result['cableline']
-        self.profile.updateProfileAnalysis(self.cableline)
-        self.result['maxDistToGround'] = self.cableline['maxDistToGround']
+        groundClear = self.profile.updateProfileAnalysis(self.result['cableline'])
+        self.cableline = {**self.result['cableline'], **groundClear}
+        self.result['cableline'] = self.cableline
         
         self.updateRecalcStatus(status)
         
@@ -506,13 +506,12 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
             self.configurationHasChanged = False
             return
         
-        self.cableline = cableline
-        self.result['force'] = force
-        
         # Ground clearance
-        self.profile.updateProfileAnalysis(self.cableline)
-        self.result['maxDistToGround'] = self.cableline['maxDistToGround']
-        
+        groundClear = self.profile.updateProfileAnalysis(cableline)
+        self.cableline = {**cableline, **groundClear}
+        self.result['cableline'] = self.cableline
+        self.result['force'] = force
+
         # Update Plot
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         

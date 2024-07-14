@@ -101,6 +101,7 @@ def generateReportText(confHandler, result, projname):
         hmpath[-1] += ' ...'
     hmodell = '\n'.join(hmpath)
     kraft = result['force']
+    cableline = result['cableline']
     az_grad = math.degrees(poles.azimut)
     az_gon = az_grad * 1.11111
 
@@ -167,7 +168,7 @@ def generateReportText(confHandler, result, projname):
                     *tuple(kraft['Durchhang'][0])).rstrip(',').split(',', fieldCount),
                 ['yLA', tr('Lastseil')] + ("{:.1f} m," * fieldCount).format(
                     *tuple(kraft['Durchhang'][1])).rstrip(',').split(',', fieldCount),
-                ['', tr('Max. Abstand Leerseil - Boden'), f"{result['maxDistToGround']:.1f} m"]
+                ['', tr('Max. Abstand Leerseil - Boden'), f"{cableline['maxDistToGround']:.1f} m"]
     ]
 
     str_seil1 = [
@@ -359,6 +360,7 @@ def generateShortReport(confHandler, result, projname, outputLoc):
             continue
         polesArray.append(pole)
     kraft = result['force']
+    cableline = result['cableline']
     
     setname = confHandler.params.currentSetName
     setname = setname if setname else '-'
@@ -447,7 +449,7 @@ def generateShortReport(confHandler, result, projname, outputLoc):
     s_field1 = [
         [tr('Azimut'), "{:.1f} {} / {:.1f} °".format(az_gon, tr('gon'), az_grad)],
         [tr('Berechnete Seillaenge'), f"{kraft['LaengeSeil'][1]:.1f} m"],
-        [tr('Max. Abstand Leerseil - Boden'), f"{result['maxDistToGround']:.1f} m"],
+        [tr('Max. Abstand Leerseil - Boden'), f"{cableline['maxDistToGround']:.1f} m"],
         []]
     s_field2 = [
         [tr('Feld'),
