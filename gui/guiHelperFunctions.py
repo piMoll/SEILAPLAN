@@ -29,12 +29,12 @@ from qgis.PyQt.QtWidgets import (QDialog, QWidget, QLabel, QDialogButtonBox,
 from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject, QgsPoint,
     QgsFeature, QgsGeometry, QgsVectorLayer, QgsField, QgsPalLayerSettings,
     QgsTextFormat, QgsTextBufferSettings,  QgsVectorLayerSimpleLabeling, Qgis)
-import SEILAPLAN
+from SEILAPLAN import DEBUG
 
 try:
     from processing import run
 except ModuleNotFoundError as e:
-    if SEILAPLAN.DEBUG:
+    if DEBUG:
         pass
     else:
         raise e
@@ -189,7 +189,13 @@ def createProfileLayers(heightSource):
     surveyPointLayer = QgsVectorLayer('Point?crs=' + lyrCrs,
                                       tr('Felddaten-Messpunkte'), 'memory')
     pr = surveyPointLayer.dataProvider()
-    pr.addAttributes([QgsField("nr", QMetaType.Char)])
+
+    if Qgis.QGIS_VERSION_INT >= 33800:
+        from qgis.PyQt.QtCore import QMetaType
+        pr.addAttributes([QgsField("nr", QMetaType.Char)])
+    else:
+        from qgis.PyQt.QtCore import QVariant
+        pr.addAttributes([QgsField("nr", QVariant.String)])
     surveyPointLayer.updateFields()
     features = []
     # TODO: Survey points are NOT rounded
