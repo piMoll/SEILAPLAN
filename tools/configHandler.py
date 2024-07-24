@@ -355,7 +355,6 @@ class ConfigHandler(object):
         return success
     
     def prepareResultWithoutOptimization(self):
-        self.project.updatePoles()
         return {
             'cableline': None,
             'optSTA': self.params.getTensileForce(),
