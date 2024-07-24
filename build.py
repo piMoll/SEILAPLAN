@@ -7,8 +7,6 @@ from shutil import rmtree
 PKG_NAME = 'SEILAPLAN'
 ZIP_EXCLUDES = [
     '__pycache__',
-    '.ui',
-    'resources.qrc',
     '.pro',
     '.ts',
     'set_german_translation',
