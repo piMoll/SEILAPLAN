@@ -17,7 +17,8 @@ ZIP_EXCLUDES = [
     'help/source',
     'help/Makefile',
     'help/make.bat',
-    'templates'
+    'templates',
+    '_pole_symbols.svg'
 ]
 
 
