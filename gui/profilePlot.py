@@ -187,8 +187,8 @@ class ProfilePlot(FigureCanvas):
         xa = self.x_data[indx]
         ya = self.y_data[indx]
         # Update the line positions
-        self.lx.set_ydata(ya)
-        self.ly.set_xdata(xa)
+        self.lx.set_ydata([ya])
+        self.ly.set_xdata([xa])
         self.xcursor = xa
         self.ycursor = ya
         self.draw()
@@ -245,8 +245,8 @@ class ProfilePlot(FigureCanvas):
         xa = self.x_data[indx]
         ya = self.y_data[indx]
         # Update the line positions
-        self.lx.set_ydata(ya)
-        self.ly.set_xdata(xa)
+        self.lx.set_ydata([ya])
+        self.ly.set_xdata([xa])
         self.xcursor = xa
         self.ycursor = ya
         # Overdraw profile line
