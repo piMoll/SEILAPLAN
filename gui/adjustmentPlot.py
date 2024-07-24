@@ -369,8 +369,7 @@ class AdjustmentPlot(FigureCanvas):
             self.axes.text(pole['dtop'], pole['ztop'] + self.labelBuffer * 4,
                            f"{poleNr}{poleName}\nH = {pole['h']:.1f} m",
                            ha=ha, fontsize=7, rotation=rotation,
-                           rotation_mode='anchor', transform_rotates_text=True,
-                           path_effects=haloEffect)
+                           rotation_mode='anchor', path_effects=haloEffect)
         
     def createBirdView(self, poles, azimut):
         # Height of y-axis (+/- from x-axis) in meter
