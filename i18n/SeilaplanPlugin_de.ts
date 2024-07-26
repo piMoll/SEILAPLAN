@@ -896,6 +896,16 @@ Lastseil</translation>
         <translation>Gesamtlast</translation>
     </message>
     <message>
+        <location filename="../gui/adjustmentDialog.py" line="378"/>
+        <source>Erklaerung Tragseilspannkraft (Anfangspunkt)</source>
+        <translation type="unfinished">Erklaerung Tragseilspannkraft (Anfangspunkt)</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="377"/>
+        <source>Tragseilspannkraft (Anfangspunkt)</source>
+        <translation>Tragseilspannkraft (Anfangspunkt)</translation>
+    </message>
+    <message>
         <location filename="../gui/adjustmentDialog.py" line="439"/>
         <source>Optimierung erfolgreich abgeschlossen</source>
         <translation>Optimierung erfolgreich abgeschlossen</translation>

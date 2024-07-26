@@ -158,6 +158,8 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         self.mapBackgroundButton.clicked.connect(self.onClickMapButton)
         self.infoPlotTopic.clicked.connect(self.onInfo)
         self.infoQ.clicked.connect(self.onInfo)
+        self.infoSK.clicked.connect(self.onInfo)
+        self.infoSFT.clicked.connect(self.onInfo)
         self.infoBirdViewGeneral.clicked.connect(self.onInfo)
         self.infoBirdViewCategory.clicked.connect(self.onInfo)
         self.infoBirdViewPosition.clicked.connect(self.onInfo)
@@ -377,6 +379,12 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         if self.sender().objectName() == 'infoQ':
             title = self.tr('Gesamtlast')
             msg = self.tr('Erklaerung Gesamtlast')
+        if self.sender().objectName() == 'infoSK':
+            title = self.tr('Tragseilspannkraft (Anfangspunkt)')
+            msg = self.tr('Erklaerung Tragseilspannkraft (Anfangspunkt)')
+        if self.sender().objectName() == 'infoSFT':
+            title = self.tr('Sicherheitsfaktor Tragseil', 'SeilaplanPluginDialog')
+            msg = self.tr('Sicherheitsfaktor Tragseil Erklaerung', 'SeilaplanPluginDialog')
         elif self.sender().objectName() == 'infoBirdViewGeneral':
             title = self.tr('Konfiguration Vogelperspektive')
             msg = self.tr('Erklaerung Vogelperspektive')

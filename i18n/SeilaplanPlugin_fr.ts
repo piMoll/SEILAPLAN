@@ -909,6 +909,16 @@ câble chargé</translation>
         <translation>Charge totale</translation>
     </message>
     <message>
+        <location filename="../gui/adjustmentDialog.py" line="378"/>
+        <source>Erklaerung Tragseilspannkraft (Anfangspunkt)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="377"/>
+        <source>Tragseilspannkraft (Anfangspunkt)</source>
+        <translation>Force de traction initiale (point de départ)</translation>
+    </message>
+    <message>
         <location filename="../gui/adjustmentDialog.py" line="439"/>
         <source>Optimierung erfolgreich abgeschlossen</source>
         <translation>Optimisation accomplie avec succès</translation>

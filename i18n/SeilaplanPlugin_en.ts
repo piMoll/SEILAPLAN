@@ -904,6 +904,16 @@ loaded skyline</translation>
         <translation>Total load</translation>
     </message>
     <message>
+        <location filename="../gui/adjustmentDialog.py" line="378"/>
+        <source>Erklaerung Tragseilspannkraft (Anfangspunkt)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="377"/>
+        <source>Tragseilspannkraft (Anfangspunkt)</source>
+        <translation>Pre-stress tensile (start point)</translation>
+    </message>
+    <message>
         <location filename="../gui/adjustmentDialog.py" line="439"/>
         <source>Optimierung erfolgreich abgeschlossen</source>
         <translation>Optimisation successful</translation>
