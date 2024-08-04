@@ -25,6 +25,7 @@ import json
 from qgis.core import (QgsPointXY, QgsDistanceArea, QgsRasterLayer)
 
 from .configHandler_abstract import AbstractConfHandler
+from .configHandler_params import ParameterConfHandler
 from .heightSource import AbstractHeightSource
 from .raster import Raster
 from .survey import SurveyData
@@ -54,13 +55,13 @@ class ProjectConfHandler(AbstractConfHandler):
         2: 'crane'
     }
 
-    def __init__(self, params):
+    def __init__(self, params: ParameterConfHandler):
         """
         :type params: tools.configHandler_params.ParamConfHandler
         """
         AbstractConfHandler.__init__(self)
         
-        self.params = params
+        self.params: ParameterConfHandler = params
         
         # Project data
         self.projectName = None

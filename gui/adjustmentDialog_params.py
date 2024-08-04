@@ -116,6 +116,9 @@ class AdjustmentDialogParams(object):
                 #  the parameterset
                 self.paramHandler.setOptSTA(None)
             newVal = self.paramHandler.setParameter(fieldName, newVal)
+            # Unset the selected parameter set
+            if self.paramHandler.currentSetName == '':
+                self.parent.fieldParamSet.setCurrentIndex(-1)
                 
         if newVal is False:
             newVal = ''
