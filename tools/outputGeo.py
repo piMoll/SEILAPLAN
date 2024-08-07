@@ -22,7 +22,7 @@ import numpy as np
 import os
 import csv
 
-from qgis.PyQt.QtCore import QVariant, QCoreApplication
+from qgis.PyQt.QtCore import QCoreApplication
 from qgis.core import (QgsRasterLayer, QgsProcessing, QgsProcessingException,
                        QgsWkbTypes, QgsFields, QgsField, QgsVectorFileWriter,
                        QgsFeature, QgsGeometry, QgsCoordinateTransform, QgsPoint,
@@ -49,6 +49,17 @@ except (ImportError, ModuleNotFoundError):
 GPS_CRS = 'EPSG:4326'
 CH_CRS = 'EPSG:2056'
 VIRTUALRASTER = 'SEILAPLAN Virtuelles Raster'
+
+
+# Defining attribute types: QVariant has been deprecated as of QGIS 3.38
+if QGIS_VERSION_INT >= 33800:
+    from qgis.PyQt.QtCore import QMetaType
+    type_string = QMetaType.QString
+    type_double = QMetaType.Double
+else:
+    from qgis.PyQt.QtCore import QVariant
+    type_string = QVariant.String
+    type_double = QVariant.Double
 
 
 def organizeDataForExport(poles, cableline, profile):
@@ -168,14 +179,14 @@ def savePointGeometry(filePath, poles, spatialRef, geoFormat):
     if geoFormat != 'DXF':
         # Define fields for feature attributes, DXF-format does not support
         #  fields
-        fields.append(QgsField(headerName, QVariant.String, 'text', 254))
-        fields.append(QgsField('x', QVariant.Double))
-        fields.append(QgsField('y', QVariant.Double))
-        fields.append(QgsField('z', QVariant.Double))
-        fields.append(QgsField('h', QVariant.Double))
-        fields.append(QgsField(headerCategory, QVariant.String, 'text', 254))
-        fields.append(QgsField(headerPosition, QVariant.String, 'text', 254))
-        fields.append(QgsField(headerAbspann, QVariant.String, 'text', 254))
+        fields.append(QgsField(headerName, type_string, typeName='text', len=254))
+        fields.append(QgsField('x', type_double))
+        fields.append(QgsField('y', type_double))
+        fields.append(QgsField('z', type_double))
+        fields.append(QgsField('h', type_double))
+        fields.append(QgsField(headerCategory, type_string, typeName='text', len=254))
+        fields.append(QgsField(headerPosition, type_string, typeName='text', len=254))
+        fields.append(QgsField(headerAbspann, type_string, typeName='text', len=254))
 
     if QGIS_VERSION_INT >= 31030:
         # Use newer QgsVectorFileWriter.create() function
