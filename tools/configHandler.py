@@ -31,12 +31,13 @@ from qgis.core import QgsSettings
 from .configHandler_project import ProjectConfHandler
 from .configHandler_params import ParameterConfHandler
 from .outputReport import getTimestamp
+from .globals import PolesOrigin
 
 # Constants
 HOMEPATH = os.path.join(os.path.dirname(__file__))
 
 
-class ConfigHandler(object):
+class ConfigHandler:
     
     DEFAULT_SAVE_PATH = os.path.join(os.path.expanduser('~'), 'Seilaplan')
     SETTING_PREFIX = 'PluginSeilaplan/output/'
@@ -362,7 +363,7 @@ class ConfigHandler(object):
             'force': None,
             'optLen': None,
             'duration': getTimestamp(time.time())
-        }, 'savedFile' if self.fromSavedProject else 'jumpedOver'
+        }, PolesOrigin.SavedFile if self.fromSavedProject else PolesOrigin.OnlyStartEnd
     
     def reset(self):
         self.project.resetPoles()

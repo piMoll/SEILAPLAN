@@ -74,8 +74,8 @@ class ProcessingTask(QgsTask):
             self.exception = traceback.format_exc()
             return False
 
-        # Check if there was an error
         if not result:
+            # Result will be False if there was an error or the user canceled
             return False
         self.sig_value.emit(result['optLen'] * 1.01)
 
@@ -83,13 +83,6 @@ class ProcessingTask(QgsTask):
         result['duration'] = getTimestamp(t_start)
 
         self.result = result
-
-        statusNames = {
-            1: 'optiSuccess',   # Optimization successful
-            2: 'liftsOff',      # Cable takes off from support
-            3: 'notComplete'    # Optimization partially successful
-        }
-        self.status = statusNames[max(self.status)]
 
         # import pickle
         # import os
@@ -104,7 +97,7 @@ class ProcessingTask(QgsTask):
         return True
         
     def getResult(self):
-        return self.result, self.status
+        return self.result, max(self.status)
     
     def finished(self, result):
         """This method is automatically called when self.run returns. result

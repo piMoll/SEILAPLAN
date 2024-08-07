@@ -3,9 +3,9 @@ from qgis.core import QgsApplication
 from SEILAPLAN.gui.seilaplanPluginDialog import SeilaplanPluginDialog
 # Further dialog windows and helpers
 from SEILAPLAN.gui.progressDialog import ProgressDialog
+from SEILAPLAN.gui.adjustmentDialog import AdjustmentDialog
 from SEILAPLAN.tools.configHandler import ConfigHandler
 from SEILAPLAN.tools.processingThread import ProcessingTask
-from SEILAPLAN.gui.adjustmentDialog import AdjustmentDialog
 
 
 class SeilaplanRun:
@@ -23,9 +23,6 @@ class SeilaplanRun:
         self.workerThread = None
         self.progressDialog = None
         self.adjustmentWindow = None
-        
-        self.result = False
-        self.status = False
     
     def showProjectWindow(self):
         if not self.projectWindow:
@@ -49,8 +46,8 @@ class SeilaplanRun:
         elif runOptimization is False:
             # Continue by skipping over optimization and go straight to the
             #  adjustment window
-            self.result, self.status = self.confHandler.prepareResultWithoutOptimization()
-            self.showAdjustmentWindow()
+            result, resultQuality = self.confHandler.prepareResultWithoutOptimization()
+            self.showAdjustmentWindow(result, resultQuality)
         else:  # None: runOptimization not set --> user canceled dialog
             self.close()
     
@@ -71,33 +68,31 @@ class SeilaplanRun:
     def onCloseProgressWindow(self, continueToAdjustment: bool):
         """Gets called by the Progress dialog on closing."""
         # Get result if calculation was successful
+        result, resultQuality = None, None
         if continueToAdjustment:
-            self.result, self.status = self.workerThread.getResult()
+            result, resultQuality = self.workerThread.getResult()
         
         # Cleanup
         self.progressDialog.deleteLater()
         del self.workerThread
         
         if continueToAdjustment is True:
-            self.showAdjustmentWindow()
+            self.showAdjustmentWindow(result, resultQuality)
         elif continueToAdjustment is False:
             # User chose to go back to project window
             self.showProjectWindow()
         else:  # None: continueToAdjustment not set --> user canceled dialog
             self.close()
     
-    def showAdjustmentWindow(self):
+    def showAdjustmentWindow(self, result, resultQuality):
         # Show adjustment window to modify calculated cable line
         self.adjustmentWindow = AdjustmentDialog(self.iface, self.confHandler, self.onCloseAdjustmentWindow)
-        self.adjustmentWindow.initData(self.result, self.status)
+        self.adjustmentWindow.initData(result, resultQuality)
         self.adjustmentWindow.show()
     
     def onCloseAdjustmentWindow(self, returnToProjectWindow: bool):
         """Gets called by the Adjustment dialog on closing."""
         if returnToProjectWindow is True:
-            # User wants to go back to project window dialog: reset result and status
-            self.result = False
-            self.status = False
             self.adjustmentWindow.deleteLater()
             # Reset configuration
             self.confHandler.reset()

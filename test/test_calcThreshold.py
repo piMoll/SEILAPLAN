@@ -2,6 +2,7 @@ from typing import List
 from qgis.testing import unittest
 from . import MINIMAL_PROJECT_FILE
 from ._test_helper import calculate_cable_line
+from SEILAPLAN.tools.globals import ResultQuality
 from SEILAPLAN.tools.calcThreshold import ThresholdUpdater, PlotTopic
 from SEILAPLAN.tools.configHandler import ConfigHandler
 
@@ -18,11 +19,11 @@ class TestCalcThreshold(unittest.TestCase):
     
     def test_threshold_update(self):
         conf: ConfigHandler = ConfigHandler()
-        result, params, poles, profile, status = calculate_cable_line(conf)
+        result, params, poles, profile, quality = calculate_cable_line(conf)
         
         thdLayout = MockAdjustmentDialogThresholds()
         thdUpdater = ThresholdUpdater(thdLayout)
-        thdUpdater.update(result, params, poles, profile, (status == 'optiSuccess'))
+        thdUpdater.update(result, params, poles, profile, (quality == ResultQuality.SuccessfulOptimization))
         
         topic: PlotTopic
         for topic in thdUpdater.topics:
@@ -100,11 +101,11 @@ class TestCalcThreshold(unittest.TestCase):
         
     def test_threshold_update_with_empty_extrema(self):
         conf: ConfigHandler = ConfigHandler()
-        result, params, poles, profile, status = calculate_cable_line(conf, MINIMAL_PROJECT_FILE)
+        result, params, poles, profile, quality = calculate_cable_line(conf, MINIMAL_PROJECT_FILE)
 
         thdLayout = MockAdjustmentDialogThresholds()
         thdUpdater = ThresholdUpdater(thdLayout)
-        thdUpdater.update(result, params, poles, profile, status == 'optiSuccess')
+        thdUpdater.update(result, params, poles, profile, quality == ResultQuality.SuccessfulOptimization)
         
         items: PlotTopic
         items: List[PlotTopic] = thdUpdater.getThresholdTopics()

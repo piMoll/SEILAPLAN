@@ -47,6 +47,7 @@ from SEILAPLAN.tools.outputGeo import organizeDataForExport, addToMap, \
 from SEILAPLAN.tools.configHandler import ConfigHandler
 from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
 from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
+from SEILAPLAN.tools.globals import ResultQuality, PolesOrigin
 # This loads the .ui file so that PyQt can populate the plugin with the
 #  elements from Qt Designer
 UI_FILE = os.path.join(os.path.dirname(__file__), 'adjustmentDialog.ui')
@@ -89,10 +90,8 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         self.homePath = os.path.dirname(os.path.dirname(__file__))
         
         # Load data
-        self.originalData = {}
         self.result = {}
         self.cableline = {}
-        self.status = None
         
         # Setup GUI from UI-file
         self.setupUi(self)
@@ -200,23 +199,22 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         f.close()
         
         self.poles.poles = dump['poles']
-        self.initData(dump, 'optiSuccess')
+        self.initData(dump, ResultQuality.SuccessfulOptimization)
     
-    def initData(self, result, status):
+    def initData(self, result, resultQuality):
         if not result:
             self.close()
-        # Save original data from optimization
-        self.originalData = result
         # result properties: cable line, optSTA, force, optLen, optLen_arr,
         #  duration
         self.result = result
-        # Algorithm was skipped, no optimized solution
-        if status in ['jumpedOver', 'savedFile']:
+        # If only poles are defined but cable line hasn't been calculated yet,
+        #  run the cable calculation now
+        if not self.result['cableline']:
             try:
                 params = self.paramHandler.getSimpleParameterDict()
                 cableline, force, \
-                seil_possible = preciseCable(params, self.poles,
-                                             self.result['optSTA'])
+                    seil_possible = preciseCable(params, self.poles,
+                                                 self.result['optSTA'])
                 self.result['cableline'] = cableline
                 self.result['force'] = force
             
@@ -229,7 +227,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         self.cableline = {**self.result['cableline'], **groundClear}
         self.result['cableline'] = self.cableline
         
-        self.updateRecalcStatus(status)
+        self.updateRecalcStatus(resultQuality)
         
         # Draw profile in diagram
         self.plot.initData(self.profile.di_disp, self.profile.zi_disp,
@@ -246,7 +244,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         
         # Fill in Threshold data
         self.thdUpdater.update(self.result, self.paramHandler, self.poles,
-            self.profile, self.status == 'optiSuccess')
+            self.profile, resultQuality == ResultQuality.SuccessfulOptimization)
         # Add plot topics in drop down
         self.fieldPlotTopic.addItem('-', userData=-1)
         for topic in self.thdUpdater.topics:
@@ -451,46 +449,45 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         self.projectHandler.setPrHeader(prHeader)
     
     def updateRecalcStatus(self, status):
-        self.status = status
         color = None
         green = '#b6ddb5'
         yellow = '#f4e27a'
         red = '#e8c4ca'
         ico_path = os.path.join(os.path.dirname(__file__), 'icons')
-        if status == 'optiSuccess':
+        if status == ResultQuality.SuccessfulOptimization:
             self.recalcStatus_txt.setText(
                 self.tr('Optimierung erfolgreich abgeschlossen'))
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_green.png')))
-        elif status == 'liftsOff':
+        elif status == ResultQuality.CableLiftsOff:
             self.recalcStatus_txt.setText(
                 self.tr('Tragseil hebt bei mindestens einer Stuetze ab'))
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_yellow.png')))
             color = yellow
-        elif status == 'notComplete':
+        elif status == ResultQuality.LineNotComplete:
             self.recalcStatus_txt.setText(
                 self.tr('Nicht genuegend Stuetzenstandorte bestimmbar'))
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_yellow.png')))
             color = yellow
-        elif status == 'jumpedOver':
+        elif status == PolesOrigin.OnlyStartEnd:
             self.recalcStatus_txt.setText(
                 self.tr('Stuetzen manuell platzieren'))
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_green.png')))
             color = yellow
-        elif status == 'savedFile':
+        elif status == PolesOrigin.SavedFile:
             self.recalcStatus_txt.setText(
                 self.tr('Stuetzen aus Projektdatei geladen'))
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_green.png')))
             color = yellow
-        elif status == 'cableSuccess':
+        elif status == ResultQuality.SuccessfulRerun:
             self.recalcStatus_txt.setText(self.tr('Seillinie neu berechnet.'))
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_green.png')))
-        elif status == 'cableError':
+        elif status == ResultQuality.Error:
             self.recalcStatus_txt.setText(
                 self.tr('Fehler aufgetreten'))
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
@@ -516,7 +513,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
             cableline, force, seil_possible = preciseCable(params, self.poles,
                                                            self.paramHandler.getTensileForce())
         except Exception as e:
-            self.updateRecalcStatus('cableError')
+            self.updateRecalcStatus(ResultQuality.Error)
             self.isRecalculating = False
             self.configurationHasChanged = False
             return
@@ -537,9 +534,9 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         
         # cable line lifts off of pole
         if not seil_possible:
-            self.updateRecalcStatus('liftsOff')
+            self.updateRecalcStatus(ResultQuality.CableLiftsOff)
         else:
-            self.updateRecalcStatus('cableSuccess')
+            self.updateRecalcStatus(ResultQuality.SuccessfulRerun)
         
         if self.refreshPoleWidgetRows:
             self.refreshPoleWidgetRows = False

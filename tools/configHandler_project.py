@@ -21,9 +21,7 @@
 import os
 from math import atan2, pi, cos, sin
 import json
-
 from qgis.core import (QgsPointXY, QgsDistanceArea, QgsRasterLayer)
-
 from .configHandler_abstract import AbstractConfHandler
 from .configHandler_params import ParameterConfHandler
 from .heightSource import AbstractHeightSource
@@ -32,6 +30,7 @@ from .survey import SurveyData
 from .profile import Profile
 from .poles import Poles
 from .outputGeo import createVirtualRaster
+from .globals import PolesOrigin
 from SEILAPLAN import __version__ as version
 
 
@@ -551,11 +550,11 @@ class ProjectConfHandler(AbstractConfHandler):
         """Create poles from a saved project or from fixed poles. Don't call
         this function if the optimization algorithm is going to run."""
         if self.polesFromFile:
-            self.poles.updateAllPoles('savedFile', self.polesFromFile)
+            self.poles.updateAllPoles(PolesOrigin.SavedFile, self.polesFromFile)
         # If instead user has defined some fixed poles, add these to Poles()
         #  (if the saved file included fixed poles, they would already be part of self.poles)
         elif len(self.fixedPoles['poles']) > 0:
-            self.poles.updateAllPoles('fixedPoles', self.fixedPoles['poles'])
+            self.poles.updateAllPoles(PolesOrigin.OnlyStartEnd, self.fixedPoles['poles'])
     
     def resetProfile(self):
         self.points = {

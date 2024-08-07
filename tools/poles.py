@@ -1,7 +1,7 @@
 from math import cos, sin, atan, floor, radians, degrees
 import numpy as np
 from qgis.PyQt.QtCore import QCoreApplication
-
+from SEILAPLAN.tools.globals import PolesOrigin
 
 # Notwendiger BHD [cm]: { Angriffswinkel (kleiner als 10) [°]: Tragkraft Ankerbaum [kn], ...}
 #   Angriffswinkel 0 - 10°: guenstig
@@ -223,7 +223,7 @@ class Poles(object):
         return x, y, z, dtop, ztop
 
     def updateAllPoles(self, mode, poles):
-        if mode == 'optimization':
+        if mode == PolesOrigin.Optimization:
             # Update height of start point
             self.update(self.idxA, 'h', poles[0]['h'])
             # Optimization was successful, line reaches end point
@@ -248,7 +248,7 @@ class Poles(object):
                 self.add(idx, p['d'], p['h'], name=p['name'], refresh=False)
                 idx += 1
         
-        elif mode == 'savedFile':
+        elif mode == PolesOrigin.SavedFile:
             # User wants to jump over the optimization and has loaded a save
             # file with poles --> all poles are being replaced with new data
             self.poles = []
@@ -259,7 +259,7 @@ class Poles(object):
                          p['position'] if 'position' in p else None,
                          p['abspann'] if 'abspann' in p else None, False)
         
-        elif mode == 'fixedPoles':
+        elif mode == PolesOrigin.OnlyStartEnd:
             # User wants to jump over the optimization but has not loaded a
             # save file with pole data. But if there are fixed poles,
             # these are added in between first and last pole.

@@ -185,18 +185,13 @@ if __name__ == "__main__":
         
         # Run calculation of cable line
         status, cableline, optSTA, forces, poles = calculateFinalCableLine(config)
-        
-    # status:
-    #   optiSuccess =   Optimization successful
-    #   liftsOff =      Cable is lifting off one or more poles
-    #   notComplete =   Optimization partially successful: It was not
-    #                   possible to calculate poles along the entire profile
+    
     print(f"Optimization status: {status}")
 
     # Output creation
     #################
     
-    if createOutput and status != 'notComplete':
+    if createOutput and status != ResultQuality.LineNotComplete:
         # If you dont want that a certain output type is created, comment out
         #  the related code block below
         

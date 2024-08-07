@@ -9,7 +9,7 @@ from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
 def calculate_cable_line(conf, project_file=BASIC_PROJECT_FILE):
     conf.loadSettings(project_file)
     conf.prepareForCalculation()
-    result, status = conf.prepareResultWithoutOptimization()
+    result, resultQuality = conf.prepareResultWithoutOptimization()
     project: ProjectConfHandler = conf.project
     params: ParameterConfHandler = conf.params
     profile = project.profile
@@ -20,4 +20,4 @@ def calculate_cable_line(conf, project_file=BASIC_PROJECT_FILE):
     cableline = {**cableline, **groundClear}
     result['cableline'] = cableline
     result['force'] = force
-    return result, params, poles, profile, status
+    return result, params, poles, profile, resultQuality
