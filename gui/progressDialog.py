@@ -30,11 +30,15 @@ class ProgressDialog(QDialog):
     """ Progress dialog shows progress bar for algorithm.
     """
 
-    def __init__(self, parent):
+    def __init__(self, parent, onCloseCallback):
         
         super(ProgressDialog, self).__init__(parent)
 
         self.workerThread = None
+        # Is called when window is closed (necessary for parallel run)
+        self.onCloseCallback = onCloseCallback
+        # Control variable that gets returned in callback so parent knows how
+        # to proceed when this dialog is closed
         self.continueToAdjustment = None
         
         self.messageTxt = {
@@ -166,3 +170,6 @@ class ProgressDialog(QDialog):
     
     def cleanUp(self):
         pass
+    
+    def closeEvent(self, QCloseEvent):
+        self.onCloseCallback(self.continueToAdjustment)

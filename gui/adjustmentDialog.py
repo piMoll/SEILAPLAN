@@ -61,11 +61,17 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
     line is then recalculated and the new layout is shown in a plot.
     """
     
-    def __init__(self, interface, confHandler):
+    def __init__(self, interface, confHandler, onCloseCallback):
 
         super(AdjustmentDialog, self).__init__(interface.mainWindow())
         
         self.iface = interface
+        # Is called when window is closed (necessary for parallel run)
+        self.onCloseCallback = onCloseCallback
+        # Control variable that gets returned in callback so parent knows how
+        # to proceed when this dialog is closed
+        self.returnToProjectWindow = None
+        
         self.msgBar = self.iface.messageBar()
         
         # Management of Parameters and settings
@@ -748,3 +754,4 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
                 pass
         
         self.cleanUp()
+        self.onCloseCallback(self.returnToProjectWindow)

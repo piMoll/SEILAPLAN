@@ -29,19 +29,24 @@ class SeilaplanRun:
     
     def showProjectWindow(self):
         if not self.projectWindow:
-            self.projectWindow = SeilaplanPluginDialog(self.iface, self.confHandler)
+            # Initialize first dialog window
+            self.projectWindow = SeilaplanPluginDialog(self.iface, self.confHandler, self.onCloseProjectWindow)
+            # Setup dialog for first show
             self.projectWindow.setupContentForFirstRun()
         else:
+            # Updating dialog state when coming back from the adjustment window
             self.projectWindow.setupContent()
         
-        # Show dialog and start event loop
+        # Show dialog and start event loop. No exec() because we don't want to
+        #  block the event loop in case a second Seilaplan instance is started.
         self.projectWindow.show()
-        self.projectWindow.exec()
-        
-        if self.projectWindow.runOptimization is True:
+    
+    def onCloseProjectWindow(self, runOptimization: bool):
+        """Gets called by the Project dialog on closing."""
+        if runOptimization is True:
             # Continue with optimization algorithm
             self.startOptimization()
-        elif self.projectWindow.runOptimization is False:
+        elif runOptimization is False:
             # Continue by skipping over optimization and go straight to the
             #  adjustment window
             self.result, self.status = self.confHandler.prepareResultWithoutOptimization()
@@ -54,7 +59,7 @@ class SeilaplanRun:
         self.workerThread = ProcessingTask(self.confHandler.project)
         
         # To see progress, a new dialog window shows a progress bar
-        self.progressDialog = ProgressDialog(self.iface.mainWindow())
+        self.progressDialog = ProgressDialog(self.iface.mainWindow(), self.onCloseProgressWindow)
         self.progressDialog.setThread(self.workerThread)
         
         # Add task to task manager of QGIS and start the calculations
@@ -62,19 +67,20 @@ class SeilaplanRun:
         
         # Show progress bar and start event loop
         self.progressDialog.show()
-        self.progressDialog.exec()
-        
-        # Save result if calculation was successful
-        if self.progressDialog.continueToAdjustment:
+    
+    def onCloseProgressWindow(self, continueToAdjustment: bool):
+        """Gets called by the Progress dialog on closing."""
+        # Get result if calculation was successful
+        if continueToAdjustment:
             self.result, self.status = self.workerThread.getResult()
         
         # Cleanup
         self.progressDialog.deleteLater()
         del self.workerThread
         
-        if self.progressDialog.continueToAdjustment is True:
+        if continueToAdjustment is True:
             self.showAdjustmentWindow()
-        elif self.progressDialog.continueToAdjustment is False:
+        elif continueToAdjustment is False:
             # User chose to go back to project window
             self.showProjectWindow()
         else:  # None: continueToAdjustment not set --> user canceled dialog
@@ -82,17 +88,17 @@ class SeilaplanRun:
     
     def showAdjustmentWindow(self):
         # Show adjustment window to modify calculated cable line
-        self.adjustmentWindow = AdjustmentDialog(self.iface, self.confHandler)
+        self.adjustmentWindow = AdjustmentDialog(self.iface, self.confHandler, self.onCloseAdjustmentWindow)
         self.adjustmentWindow.initData(self.result, self.status)
         self.adjustmentWindow.show()
-        self.adjustmentWindow.exec()
-        
-        if self.adjustmentWindow.returnToProjectWindow is True:
-            # User wants to go bach to project window dialog; reset result and status
+    
+    def onCloseAdjustmentWindow(self, returnToProjectWindow: bool):
+        """Gets called by the Adjustment dialog on closing."""
+        if returnToProjectWindow is True:
+            # User wants to go back to project window dialog: reset result and status
             self.result = False
             self.status = False
             self.adjustmentWindow.deleteLater()
-            
             # Reset configuration
             self.confHandler.reset()
             self.showProjectWindow()

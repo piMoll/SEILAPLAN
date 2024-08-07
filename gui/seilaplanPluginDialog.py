@@ -54,12 +54,18 @@ FORM_CLASS, _ = uic.loadUiType(UI_FILE)
 
 class SeilaplanPluginDialog(QDialog, FORM_CLASS):
     
-    def __init__(self, interface, confHandler):
+    def __init__(self, interface, confHandler, onCloseCallback):
         
         super(SeilaplanPluginDialog, self).__init__(interface.mainWindow())
 
         # QGIS interface
         self.iface = interface
+        # Is called when window is closed (necessary for parallel run)
+        self.onCloseCallback = onCloseCallback
+        # Control variable that gets returned in callback so parent knows how
+        # to proceed when this dialog is closed
+        self.runOptimization = None
+        
         # QGIS map canvas
         self.canvas = self.iface.mapCanvas()
         # Management of Parameters and settings
@@ -67,8 +73,6 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
         self.confHandler.setDialog(self)
         self.paramHandler: ParameterConfHandler = self.confHandler.params
         self.projectHandler: ProjectConfHandler = self.confHandler.project
-        # Control variable so parent knows how to proceed when this dialog is closed
-        self.runOptimization = None
         # Path to plugin root
         self.homePath = os.path.dirname(os.path.dirname(__file__))
         
@@ -1082,6 +1086,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
         """Last method that is called before main window is closed."""
         self.confHandler.updateUserSettings()
         self.cleanUp()
+        self.onCloseCallback(self.runOptimization)
 
 
 

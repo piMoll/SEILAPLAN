@@ -157,5 +157,6 @@ class SeilaplanPlugin:
         #  run the plugin multiple times in parallel
         seilaplanRun = SeilaplanRun(self.iface)
         self.pluginRuns.append(seilaplanRun)
+        
         # Start the run by showing the project window
         seilaplanRun.showProjectWindow()
