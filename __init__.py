@@ -27,8 +27,7 @@ __version__ = '3.6.0'
 DEBUG = False
 
 
-# noinspection PyPep8Naming
-def classFactory(iface):  # pylint: disable=invalid-name
+def classFactory(iface):
     """Load SeilaplanPlugin class from file SeilaplanPlugin.
 
     :param iface: A QGIS interface instance.

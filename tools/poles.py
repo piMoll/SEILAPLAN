@@ -95,7 +95,6 @@ class Poles(object):
                      poleType='anchor', refresh=False)
         self.refresh()
 
-    # noinspection PyMethodMayBeStatic
     def tr(self, message, **kwargs):
         """Get the translation for a string using Qt translation API.
         We implement this ourselves since we do not inherit QObject.
@@ -110,7 +109,6 @@ class Poles(object):
         ----------
         **kwargs
         """
-        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
         return QCoreApplication.translate(type(self).__name__, message)
 
     def add(self, idx, d, h=INIT_POLE_HEIGHT, angle=INIT_POLE_ANGLE,

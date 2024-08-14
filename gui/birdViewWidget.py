@@ -378,9 +378,7 @@ class BirdViewRow(object):
         self.fieldCat.deleteLater()
         self.fieldPos.deleteLater()
         self.fieldAbspann.deleteLater()
-        
     
-    # noinspection PyMethodMayBeStatic
     def tr(self, message, **kwargs):
         """Get the translation for a string using Qt translation API.
         We implement this ourselves since we do not inherit QObject.
@@ -395,7 +393,6 @@ class BirdViewRow(object):
         ----------
         **kwargs
         """
-        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
         return QCoreApplication.translate(type(self).__name__, message)
     
     

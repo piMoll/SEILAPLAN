@@ -18,7 +18,6 @@
  *                                                                         *
  ***************************************************************************/
 """
-import pickle
 import os
 import sys
 from qgis.PyQt import uic
@@ -205,6 +204,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
     
     def loadData(self, pickleFile):
         """ Is used to load testdata from pickl object in debug mode """
+        import pickle
         f = open(pickleFile, 'rb')
         dump = pickle.load(f)
         f.close()

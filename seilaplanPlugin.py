@@ -22,13 +22,6 @@
 
 import os
 import sys
-
-# Add shipped libraries to python path
-# TODO: Not sure if still needed
-libPath = os.path.join(os.path.dirname(__file__), 'lib')
-if libPath not in sys.path:
-    sys.path.insert(-1, libPath)
-
 from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication
 from qgis.PyQt.QtWidgets import QAction, QPushButton, QMessageBox
 from qgis.PyQt.QtGui import QIcon
@@ -36,14 +29,19 @@ from qgis.core import Qgis
 # Initialize Qt resources from file resources.py
 from .gui import resources_rc
 
+# Add shipped libraries to python path
+libPath = os.path.join(os.path.dirname(__file__), 'lib')
+if libPath not in sys.path:
+    sys.path.insert(-1, libPath)
+
 # Before continuing, we check if scipy and scipy.interpolate can be imported.
 # If not, we will not import the plugin files.
 ERROR = False
 try:
     import scipy
 except ModuleNotFoundError:
-    # On linux scipy isn't included in the standard qgis python
-    #   interpreter so the user has to add it manually
+    # On linux scipy isn't included in the standard qgis python distribution
+    #  so the user has to add it manually
     ERROR = 1
 try:
     import scipy.interpolate

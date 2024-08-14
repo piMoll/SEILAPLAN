@@ -89,7 +89,6 @@ class ProgressDialog(QDialog):
         self.container.setSizeConstraint(QLayout.SetFixedSize)
         self.setLayout(self.container)
 
-    # noinspection PyMethodMayBeStatic
     def tr(self, message, **kwargs):
         """Get the translation for a string using Qt translation API.
         We implement this ourselves since we do not inherit QObject.
@@ -104,7 +103,6 @@ class ProgressDialog(QDialog):
         ----------
         **kwargs
         """
-        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
         return QCoreApplication.translate(type(self).__name__, message)
         
     def setThread(self, workerThread):

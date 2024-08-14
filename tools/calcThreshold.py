@@ -319,7 +319,6 @@ class ThresholdUpdater:
         z = self.getZCoordinateFromTerrain(x)
         return x, z
 
-    # noinspection PyMethodMayBeStatic
     def tr(self, message, **kwargs):
         return QCoreApplication.translate(type(self).__name__, message)
 

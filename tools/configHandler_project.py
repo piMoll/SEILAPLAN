@@ -44,7 +44,6 @@ def castToNum(formattedNum):
     return num
 
 
-# noinspection PyTypeChecker
 class ProjectConfHandler(AbstractConfHandler):
     
     # Order of pole types in drop down list

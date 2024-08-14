@@ -854,7 +854,6 @@ def createOutputFolder(outputPath, projectName):
     return outputFolder, projectName
 
 
-# noinspection PyMethodMayBeStatic
 def tr(message, context='@default', **kwargs):
     """Get the translation for a string using Qt translation API.
     We implement this ourselves since we do not inherit QObject.
@@ -869,5 +868,4 @@ def tr(message, context='@default', **kwargs):
     ----------
     **kwargs
     """
-    # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
     return QCoreApplication.translate(context, message)
