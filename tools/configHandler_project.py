@@ -196,7 +196,7 @@ class ProjectConfHandler(AbstractConfHandler):
         """ Generate a unique project name."""
         import time
         now = time.time()
-        timestamp = time.strftime("%d.%m_%H'%M", time.localtime(now))
+        timestamp = time.strftime("%Y%m%d_%H%M", time.localtime(now))
         self.projectName = "seilaplan_{}".format(timestamp)
         return self.projectName
     
