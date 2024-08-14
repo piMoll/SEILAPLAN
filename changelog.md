@@ -2,21 +2,24 @@
 
 ## Version 3.6.0 (Juli 2024)
 ### Neue Features
-* Seilaplan kann mehrfach gestartet werden, um Projekte (bzw. Varianten) parallel bearbeiten zu können
+* Seilaplan kann mehrfach gestartet werden, um Projekte (bzw. Varianten) parallel zu bearbeiten
 * Neue Parameter um Grenzwerte für Leer- und Lastseilknickwinkel zu definieren (bisher fix 1/3° und 30/60°)
 * Neuer Parameter um die Höhe der Bundstelle über der Sattelleiste zu definieren (bisher fix 1.5 m)
 * Bearbeitungsfenster:
-  * Im Diagramm können über eine Auswahlliste zusätzliche Informationen (BHD, Durchhang, Knickwinkel, etc.) angezeigt werden
+  * Über eine Auswahlliste KÖNNEN zusätzliche Informationen (BHD, Durchhang, Knickwinkel, etc.) im Diagramm angezeigt werden
   * Im neuen Tab "Parameter" kann das verwendete Parameterset ausgetauscht werden
   * Im Diagramm wird der Seildurchhang statt einmal für die gesamte Seillinie, neu für jedes Seilfeld einzeln ausgegeben
   * Pro Stütze wird der Bundstellendurchmesser angegeben
   * Stützenbezeichnungen können neu 42 statt 22 Zeichen lang sein. Im Diagramm-PDF wurde die Lesbarkeit der Bezeichnungen verbessert
-* Vogelperspektive: Passe Symbol für Mehrbaumanker an; Abspannseile enden am Anfangs- / Endpunkt der Seillinie, nicht dahinter
+* Vogelperspektive: Angepasstes Symbol für Mehrbaumanker; Abspannseile enden am Anfangs- / Endpunkt der Seillinie, nicht dahinter
+* Exportierte PDFs (Diagramm, Berichte) enthalten den eindeutigen Namen des Projektordners
+* Automatisch erzeugte Projektbezeichnung enthält Jahresangabe und ist ISO-ähnlich formatiert
 * Diverse Verbesserung der Benutzerführung: Anpassung von Bezeichnungen und Ergänzen von Hinweisen
 
 ### Fehlerbehebung
 * Kurzbericht: Korrektur der Angriffswinkel-Berechnung für befahrbare Endstützen
 * Bundstelle ist neu 3.0 m statt bisher 1.5 m über Sattelleiste, Wert ist anpassbar
+* Behebe Problem beim Erzeugen des Diagramm-PDFs, das ältere QGIS-Versionen zum Absturz bringt
 
 ## Version 3.5.3 (Mai 2024)
 ### Fehlerbehebung
