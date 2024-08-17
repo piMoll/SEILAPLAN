@@ -104,7 +104,7 @@ def createContours(canvas, heightSource):
     
     # contourLyr the same CRS as qgis project
     contourLyr.setCrs(crs)
-    QgsProject.instance().addMapLayer(contourLyr)
+    addLayerToQgis(contourLyr, 'top')
     canvas.refresh()
     heightSource.contourLyr = contourLyr
 
@@ -127,7 +127,7 @@ def addBackgroundMap(canvas):
         return tr("Layer bereits in Karte"), Qgis.Info
     
     if layer.isValid():
-        QgsProject.instance().addMapLayer(layer)
+        addLayerToQgis(layer, 'bottom')
         canvas.refresh()
         return tr("Layer '{}' zur Karte hinzugefügt").format(
             layer.name()), Qgis.Success
@@ -181,7 +181,8 @@ def createProfileLayers(heightSource):
         [QgsPoint(*tuple(pointA)), QgsPoint(*tuple(pointE))]))
     pr.addFeatures([feature])
     surveyLineLayer.updateExtents()
-    QgsProject.instance().addMapLayers([surveyLineLayer])
+    # Add at the top of the layer tree
+    addLayerToQgis(surveyLineLayer, 'top')
 
     # Create survey point layer
     surveyPointLayer = QgsVectorLayer('Point?crs=' + lyrCrs,
@@ -206,7 +207,8 @@ def createProfileLayers(heightSource):
         features.append(feature)
     pr.addFeatures(features)
     surveyPointLayer.updateExtents()
-    QgsProject.instance().addMapLayers([surveyPointLayer])
+    # Add at the top of the layer tree
+    addLayerToQgis(surveyPointLayer, 'top')
     
     # Add Labels for point layer
     layer_settings = QgsPalLayerSettings()
@@ -234,3 +236,21 @@ def sanitizeFilename(name):
     """ Replace all prohibited chars with underline."""
     invalid_chars = ['/', '\\']
     return ''.join('_' if c in invalid_chars else c for c in name)
+
+
+def addLayerToQgis(layer, position: str = '', layerGroupName: str = ''):
+    layerTree = QgsProject.instance().layerTreeRoot()
+    QgsProject.instance().addMapLayer(layer, False)
+    
+    if layerGroupName:
+        layerGroup = layerTree.findGroup(layerGroupName)
+        if not layerGroup:
+            layerGroup = layerTree.insertGroup(0, layerGroupName)
+        layerGroup.addLayer(layer)
+
+    else:
+        if position == 'top':
+            layerTree.insertLayer(0, layer)
+        elif position == 'bottom':
+            layerTree.insertLayer(-1, layer)
+        

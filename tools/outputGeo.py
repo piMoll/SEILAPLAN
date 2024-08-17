@@ -29,6 +29,7 @@ from qgis.core import (QgsRasterLayer, QgsProcessing, QgsProcessingException,
                        QgsCoordinateReferenceSystem, QgsProject,
                        QgsCoordinateTransformContext)
 from SEILAPLAN import DEBUG
+from SEILAPLAN.gui.guiHelperFunctions import addLayerToQgis
 
 try:
     from processing import run
@@ -288,11 +289,7 @@ def checkShpPath(path):
 
 def addToMap(geodata, projName):
     """ Adds the shape file to the qgis project."""
-    from qgis.core import QgsVectorLayer, QgsProject
-
-    # Create new layer group in table of content
-    root = QgsProject.instance().layerTreeRoot()
-    projGroup = root.insertGroup(0, projName)
+    from qgis.core import QgsVectorLayer
     
     polesLyr = QgsVectorLayer(geodata['stuetzen'], tr('stuetzen'), 'ogr')
     emptyLineLyr = QgsVectorLayer(geodata['leerseil'], tr('leerseil'), 'ogr')
@@ -304,10 +301,7 @@ def addToMap(geodata, projName):
         layer.dataProvider().setEncoding('UTF-8')
 
         # Add layer to map
-        QgsProject.instance().addMapLayer(layer, False)
-        
-        # Add to group
-        projGroup.addLayer(layer)
+        addLayerToQgis(layer, '', projName)
 
 
 def createVirtualRaster(rasterList):

@@ -33,7 +33,8 @@ from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject,
 from processing.core.Processing import Processing
 # Further GUI modules for functionality
 from .guiHelperFunctions import (DialogWithImage, createContours,
-                                 addBackgroundMap, createProfileLayers)
+                                 addBackgroundMap, createProfileLayers,
+                                 addLayerToQgis)
 from .surveyImportDialog import SurveyImportDialog
 from SEILAPLAN.tools.outputGeo import CH_CRS
 from SEILAPLAN.tools.configHandler import ConfigHandler
@@ -340,6 +341,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
         self.rasterField.blockSignals(False)
         self.buttonRefreshRa.setEnabled(False)
         self.buttonLoadSurveyData.setEnabled(True)
+        self.contourLyrButton.setEnabled(False)
         # Disable coordinate fields
         for field in self.coordFields.values():
             self.setFieldReadOnly(field, True)
@@ -644,7 +646,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
                     # Load raster
                     newRaster = QFileInfo(path).baseName()
                     rasterLyr = QgsRasterLayer(path, newRaster)
-                    QgsProject.instance().addMapLayer(rasterLyr)
+                    addLayerToQgis(rasterLyr, 'top')
                     # Update drop down menu
                     
                     dropdownItems = self.updateRasterList()
@@ -894,7 +896,8 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
     def onClickContourButton(self):
         """Calculate contour lines from currently selected dhm and add them to
         as a layer."""
-        if self.projectHandler.heightSource.contourLayer is None:
+        if (self.projectHandler.heightSource.contourLayer is None
+        and self.projectHandler.heightSourceType in ['dhm', 'dhm_list']):
             createContours(self.canvas, self.projectHandler.heightSource)
     
     def onFinishedLineDraw(self, linecoord):
