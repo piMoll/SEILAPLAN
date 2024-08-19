@@ -93,7 +93,7 @@ class ThresholdUpdater:
             unit=params.params['LastKnickSt']['unit'],
             description={
                 'title': self.tr('Max. Lastseilknickwinkel'),
-                'message': self.tr('Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften.'),
+                'message': self.tr('Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften. Hinweis: Bei den beiden Endmasten liegt der Grenzwert hoeher _threshold_2_'),
             },
         )
         leerseilknickwinkel = PlotTopic(
@@ -102,7 +102,7 @@ class ThresholdUpdater:
             unit=params.params['LeerKnickMit']['unit'],
             description={
                 'title': self.tr('Min. Leerseilknickwinkel'),
-                'message': self.tr('Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).'),
+                'message': self.tr('Bei Knickwinkeln unter _threshold_1_ besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen _threshold_1_ und _threshold_2_ muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).'),
             },
         )
         sattelkraft = PlotTopic(
@@ -366,11 +366,11 @@ class PlotTopic(object):
         
     def getDataRow(self):
         if self.isOpti:
-            return [self.description, self.name,
+            return [self.getDescription(), self.name,
                     self.getFormatedValue(self.threshold),
                     self.getFormatedValue(self.optiExtrema), None]
         else:
-            return [self.description, self.name,
+            return [self.getDescription(), self.name,
                     self.getFormatedValue(self.threshold),
                     self.getFormatedValue(self.optiExtrema),
                     self.getFormatedValue(self.currentExtrema)]
@@ -382,6 +382,15 @@ class PlotTopic(object):
         else:
             # When this value stems from a recalculations, it's the fifth column
             return 4
+    
+    def getDescription(self):
+        descriptionWithThresholdValue = {}
+        for part in self.description.keys():
+            text = self.description[part]
+            for idx, threshold in enumerate(self.threshold if isinstance(self.threshold, list) else [self.threshold]):
+                text = text.replace(f'_threshold_{idx+1}_', f'{threshold}')
+            descriptionWithThresholdValue[part] = text
+        return descriptionWithThresholdValue
         
     def reset(self):
         self.currentExtrema = None

@@ -415,8 +415,9 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         elif self.sender().objectName() == 'infoPlotTopic':
             plotTopic = self.thdUpdater.getPlotTopicById(self.selectedPlotTopic)
             if plotTopic:
-                title = plotTopic.description['title']
-                msg = plotTopic.description['message']
+                desc = plotTopic.getDescription()
+                title = desc['title']
+                msg = desc['message']
         
         if imageName:
             # Show an info image
@@ -429,7 +430,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
             self.imgBox.label.setPixmap(myPixmap)
             self.imgBox.setLayout(self.imgBox.container)
             self.imgBox.show()
-        else:
+        elif title and msg:
             # Show a simple MessageBox with an info text
             QMessageBox.information(self, title, msg, QMessageBox.Ok)
 

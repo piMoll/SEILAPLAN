@@ -2947,9 +2947,9 @@ attuale</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="121"/>
-        <source>Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften.</source>
+        <source>Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften. Hinweis: Bei den beiden Endmasten liegt der Grenzwert hoeher _threshold_2_</source>
         <translation>Angoli più grandi causano un carico di rottura ridotto della fune portante e delle forze aumentate sulle selle.
-Indicazione: Al cavalletto terminale il valore limite è superiore (ca. 60°).</translation>
+Indicazione: Al cavalletto terminale il valore limite è superiore (_threshold_2_°).</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="131"/>
@@ -2958,10 +2958,9 @@ Indicazione: Al cavalletto terminale il valore limite è superiore (ca. 60°).</
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="129"/>
-        <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
-        <translatorcomment>TODO: Text anpassen da diese Grenzwerte jetzt dynamisch definiert werden können.</translatorcomment>
-        <translation type="unfinished">Nel caso di un angolo convesso di 1° c&apos;è il rischio che la fune portante si decolla della sella (rosso). Il cavalletto deve essere alzato.
-Nel caso di un angolo tra 1° e 3° la fune portante deve essere atrezzato con un coprifune per sella (orange).</translation>
+        <source>Bei Knickwinkeln unter _threshold_1_ besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen _threshold_1_ und _threshold_2_ muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
+        <translation>Nel caso di un angolo convesso di _threshold_1_° c&apos;è il rischio che la fune portante si decolla della sella (rosso). Il cavalletto deve essere alzato.
+Nel caso di un angolo tra _threshold_1_° e _threshold_2_° la fune portante deve essere atrezzato con un coprifune per sella (orange).</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="117"/>

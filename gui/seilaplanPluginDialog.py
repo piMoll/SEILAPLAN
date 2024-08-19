@@ -413,6 +413,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
     
     def setupContent(self):
         self.runOptimization = None
+        self.confHandler.setDialog(self)
         # Generate project name
         self.fieldProjName.setText(self.projectHandler.getProjectName())
         

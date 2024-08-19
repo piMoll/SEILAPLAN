@@ -2933,16 +2933,15 @@ Es wird die maximal auftretende Seilzugkraft am Lastseil mit der Last in Feldmit
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="89"/>
-        <source>Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften.</source>
+        <source>Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften. Hinweis: Bei den beiden Endmasten liegt der Grenzwert hoeher _threshold_2_</source>
         <translation>Grössere Knickwinkel reduzieren die Bruchlast des Tragseils und führen zu höheren Sattelkräften.
-Hinweis: Bei den beiden Endmasten liegt der Grenzwert höher (ca. 60°).</translation>
+Hinweis: Bei den beiden Endmasten liegt der Grenzwert höher (_threshold_2_°).</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="98"/>
-        <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
-        <translatorcomment>TODO: Text anpassen da diese Grenzwerte jetzt dynamisch definiert werden können.</translatorcomment>
-        <translation type="unfinished">Bei Knickwinkeln unter 1° besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Die Stütze muss erhöht werden.
-Bei Knickwinkeln zwischen 1° und 3° muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</translation>
+        <source>Bei Knickwinkeln unter _threshold_1_ besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen _threshold_1_ und _threshold_2_ muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
+        <translation>Bei Knickwinkeln unter _threshold_1_° besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Die Stütze muss erhöht werden.
+Bei Knickwinkeln zwischen _threshold_1_° und _threshold_2_° muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="116"/>
