@@ -753,17 +753,17 @@ Lastseil</translation>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Grenzwert max. Lastseilknickwinkel Stuetze</source>
-        <translation>Grenzwert max. Lastseilknickwinkel Stütze</translation>
+        <translation>Grenzwert max. Lastseilknickwinkel bei Stütze</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Grenzwert max. Lastseilknickwinkel Endmast</source>
-        <translation>Grenzwert max. Lastseilknickwinkel Endmast</translation>
+        <translation>Grenzwert max. Lastseilknickwinkel bei Endmast</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Bundstelle ueber Sattelleiste</source>
-        <translation>Bundstelle über Sattelleiste</translation>
+        <translation>Bundstelle über Tragseilsattel</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="372"/>
@@ -898,7 +898,7 @@ Lastseil</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="378"/>
         <source>Erklaerung Tragseilspannkraft (Anfangspunkt)</source>
-        <translation type="unfinished">Erklaerung Tragseilspannkraft (Anfangspunkt)</translation>
+        <translation>Grundspannung am Anfangspunkt</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="377"/>
@@ -1872,7 +1872,7 @@ Bitte passen Sie die Eingabe an.</translation>
     <message>
         <location filename="../tools/configHandler_project.py" line="446"/>
         <source>Bitte definieren Sie Terraindaten</source>
-        <translation>Bitte definieren Sie Terraindaten</translation>
+        <translation>Bitte definieren Sie die Terraindaten</translation>
     </message>
     <message>
         <location filename="../tools/configHandler_project.py" line="446"/>
@@ -2400,7 +2400,7 @@ Stuetze Endmast</source>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2038"/>
         <source>Bundstelle ueber Sattelleiste</source>
-        <translation>Bundstelle über Sattelleiste</translation>
+        <translation>Bundstelle über Tragseilsattel</translation>
     </message>
 </context>
 <context>
@@ -2461,7 +2461,7 @@ Stuetze Endmast</source>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
         <source>Bitte erst Terraindaten definieren</source>
-        <translation>Bitte erst Terraindaten definieren</translation>
+        <translation>Bitte zuerst Terraindaten definieren</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
@@ -2636,7 +2636,7 @@ Die optimale Tragseilspannkraft wird berechnet. Die Optimierung wird bei 75 Proz
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="960"/>
         <source>Sicherheitsfaktor Tragseil Erklaerung</source>
-        <translation>Europaweit (DIN EN 16517, Stand April 2022) gilt ein Sicherheitsfaktor von 3.0 für das Tragseil bzw. 2.5 für Tragseile mit einer effektiven Lastbegrenzung im Betrieb (*Rutsch-Überlastkupplung oder einstellbaren Überlastsicherung, bei den meisten Seilgeräten verbaut und seitens Hersteller bestätigt).</translation>
+        <translation>Europaweit (DIN EN 16517, Stand April 2022) gilt ein Sicherheitsfaktor von 3.0 für das Tragseil bzw. 2.5 für Tragseile mit einer effektiven Lastbegrenzung im Betrieb.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
@@ -2652,7 +2652,7 @@ Die optimale Tragseilspannkraft wird berechnet. Die Optimierung wird bei 75 Proz
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Grenzwert Leerseilknickwinkel Erklaerung</source>
         <translatorcomment>Hier braucht es einen Erklärungstext, was der neue Grenzwert genau bedeutet. Siehe auch Erklärungstext in ThresholdUpdater</translatorcomment>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie die Grenzwerte für den minimalen Leerseilknickwinkel gemäss Angaben des Sattelherstellers an. Im ersten Eingabefeld können Sie den Grenzwert mit montierter Niederhaltelasche, im zweiten Eingabefeld den Grenzwert ohne montierte Niederhaltelasche angeben.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
@@ -2663,18 +2663,17 @@ Die optimale Tragseilspannkraft wird berechnet. Die Optimierung wird bei 75 Proz
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Grenzwert Lastseilknickwinkel Erklaerung</source>
         <translatorcomment>Hier braucht es einen Erklärungstext, was der neue Grenzwert genau bedeutet. Siehe auch Erklärungstext in ThresholdUpdater</translatorcomment>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie den Grenzwert für den maximalen Lastseilknickwinkel gemäss Angaben des Sattelherstellers an.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Bundstelle ueber Sattelleiste</source>
-        <translation>Bundstelle über Sattelleiste</translation>
+        <translation>Bundstelle über Tragseilsattel</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Bundstelle ueber Sattelleiste Erklaerung</source>
-        <translatorcomment>Hier braucht es einen Erklärungstext, was der neue Grenzwert genau bedeutet</translatorcomment>
-        <translation type="unfinished"></translation>
+        <translation>Seilaplan berechnet die benötigte Höhe des Tragseils bei einer Stütze (Sattelhöhe). Die Bundstelle befindet sich einige Meter über dem Sattel. Die Höhendifferenz zwischen Tragseilsattel und Bundstelle kann hier angepasst werden.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="965"/>
@@ -2954,7 +2953,7 @@ Bei Knickwinkeln zwischen 1° und 3° muss das Tragseil mittels Niederhaltelasch
         <location filename="../tools/calcThreshold.py" line="116"/>
         <source>BHD Erklaerung</source>
         <translatorcomment>Dieser Erklärungstext wird im Fragezeichen Button neben dem &quot;Diagrammanzeige&quot; Dropdown gezeigt.</translatorcomment>
-        <translation type="unfinished"></translation>
+        <translation>Es wird der minimal erforderliche BHD des Stützenbaums berechnet. Dies ist ein Richtwert für vitale Bäume. Die Stabilität und Vitalität des Baumes müssen fachkundlich im Feld überprüft werden.</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="125"/>
@@ -2965,7 +2964,7 @@ Bei Knickwinkeln zwischen 1° und 3° muss das Tragseil mittels Niederhaltelasch
         <location filename="../tools/calcThreshold.py" line="125"/>
         <source>Leerseildurchhang Erklaerung</source>
         <translatorcomment>Dieser Erklärungstext wird im Fragezeichen Button neben dem &quot;Diagrammanzeige&quot; Dropdown gezeigt.</translatorcomment>
-        <translation type="unfinished"></translation>
+        <translation>Es wird der Durchhang des Leerseils für jedes Spannfeld in Feldmitte (Vertikaler Abstand Tragseil - Feldsehne) angezeigt.</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="134"/>
@@ -2976,7 +2975,7 @@ Bei Knickwinkeln zwischen 1° und 3° muss das Tragseil mittels Niederhaltelasch
         <location filename="../tools/calcThreshold.py" line="134"/>
         <source>Lastseildurchhang Erklaerung</source>
         <translatorcomment>Dieser Erklärungstext wird im Fragezeichen Button neben dem &quot;Diagrammanzeige&quot; Dropdown gezeigt.</translatorcomment>
-        <translation type="unfinished"></translation>
+        <translation>Es wird der Durchhang des Lastseils für jedes Spannfeld mit beladenem Laufwagen in Feldmitte (Vertikaler Abstand Tragseil - Feldsehne) angezeigt.</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="206"/>

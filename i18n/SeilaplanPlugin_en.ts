@@ -753,27 +753,27 @@ loaded skyline</translation>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Grenzwert min. Leerseilknickwinkel mit Niederhaltelasche</source>
-        <translation type="unfinished"></translation>
+        <translation>Threshold value for min. rope deflection angle (unloaded) with a hold-down lug</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Grenzwert min. Leerseilknickwinkel ohne Niederhaltelasche</source>
-        <translation type="unfinished"></translation>
+        <translation>Threshold value for min. rope deflection angle (unloaded) without a hold-down lug</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Grenzwert max. Lastseilknickwinkel Stuetze</source>
-        <translation type="unfinished"></translation>
+        <translation>Threshold value for max. rope deflection angle (loaded) at support</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Grenzwert max. Lastseilknickwinkel Endmast</source>
-        <translation type="unfinished"></translation>
+        <translation>Threshold value for max. rope deflection angle (loaded) at final support</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Bundstelle ueber Sattelleiste</source>
-        <translation type="unfinished"></translation>
+        <translation>Mounting height of the skyline saddle</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="465"/>
@@ -906,7 +906,7 @@ loaded skyline</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="378"/>
         <source>Erklaerung Tragseilspannkraft (Anfangspunkt)</source>
-        <translation type="unfinished"></translation>
+        <translation>Basic tension force at the starting point</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="377"/>
@@ -1281,17 +1281,17 @@ to the report)</translation>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="675"/>
         <source>Navigation</source>
-        <translation type="unfinished"></translation>
+        <translation>Navigation</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="676"/>
         <source>Diagrammanzeige</source>
-        <translation type="unfinished"></translation>
+        <translation>Diagram display</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="546"/>
         <source>Parameterset auswaehlen</source>
-        <translation type="unfinished"></translation>
+        <translation>Select a parameter set</translation>
     </message>
 </context>
 <context>
@@ -1700,7 +1700,7 @@ Please change the input.</translation>
         <location filename="../gui/poleWidget.py" line="103"/>
         <source>O Bundst.</source>
         <translatorcomment>Achtung, Platzprobleme! Bitte Übersetzung prüfen.</translatorcomment>
-        <translation type="unfinished">Ø attach. p.</translation>
+        <translation>Ø attach. p.</translation>
     </message>
     <message>
         <location filename="../gui/poleWidget.py" line="411"/>
@@ -1888,17 +1888,17 @@ Please change the input.</translation>
     <message>
         <location filename="../tools/configHandler_project.py" line="446"/>
         <source>Bitte definieren Sie Terraindaten</source>
-        <translation type="unfinished"></translation>
+        <translation>Please define the terrain data</translation>
     </message>
     <message>
         <location filename="../tools/configHandler_project.py" line="446"/>
         <source>Bitte zeichnen Sie Start- und Endpunkt der Seillinie in die Karte ein (Schaltflaeche zeichnen)</source>
-        <translation type="unfinished"></translation>
+        <translation>Please draw the starting point and the end point of the cable road on the map (&quot;draw&quot; button)</translation>
     </message>
     <message>
         <location filename="../tools/configHandler_project.py" line="446"/>
         <source>Bitte zeichnen Sie die Seillinie in die Karte (Schaltflaeche zeichnen) oder definieren sie Start- und Endkoordinaten manuell</source>
-        <translation type="unfinished"></translation>
+        <translation>Please draw the cable road on the map (&quot;draw&quot; button) or define the coordinates of the cable road manually.</translation>
     </message>
     <message>
         <location filename="../tools/configHandler_project.py" line="448"/>
@@ -2398,13 +2398,15 @@ to the report)</translation>
         <location filename="../gui/seilaplanDialog.ui" line="1888"/>
         <source>Grenzwert min. Leerseilknickwinkel
 mit ohne Niederhaltelasche</source>
-        <translation type="unfinished"></translation>
+        <translation>Threshold value for min. rope deflection angle (unloaded) 
+(with/without a hold-down lug)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1986"/>
         <source>Grenzwert max. Lastseilknickwinkel
 Stuetze Endmast</source>
-        <translation type="unfinished"></translation>
+        <translation>Threshold value for max. rope deflection angle (loaded) 
+(with/without a hold-down lug)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2171"/>
@@ -2414,7 +2416,7 @@ Stuetze Endmast</source>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2038"/>
         <source>Bundstelle ueber Sattelleiste</source>
-        <translation type="unfinished"></translation>
+        <translation>Mounting height of the skyline saddle</translation>
     </message>
 </context>
 <context>
@@ -2466,17 +2468,17 @@ Stuetze Endmast</source>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
         <source>Start- Endpunkt auf dem Gelaendeprofil definieren</source>
-        <translation type="unfinished"></translation>
+        <translation>Define starting / end point on the terrain profile</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
         <source>Koordinate kann nicht manuell veraendert werden, benutzen Sie die Schaltflaeche zeichnen</source>
-        <translation type="unfinished"></translation>
+        <translation>Coordinate cannot be changed manually, use the &quot;draw&quot; button</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
         <source>Bitte erst Terraindaten definieren</source>
-        <translation type="unfinished"></translation>
+        <translation>Please define terrain data first</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
@@ -2704,7 +2706,7 @@ The optimal pre-stress tensile force (unloaded skyline) is calculated. The optim
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="960"/>
         <source>Sicherheitsfaktor Tragseil Erklaerung</source>
-        <translation type="unfinished">Throughout Europe, a safety factor of 3.0 is used for the skyline.</translation>
+        <translation>Throughout Europe (DIN EN 16517, as of april 2022), a safety factor of 3.0 is used for the skyline, or 2.5 for skylines with an effective load limitation during operation.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
@@ -2714,32 +2716,32 @@ The optimal pre-stress tensile force (unloaded skyline) is calculated. The optim
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Grenzwert Leerseilknickwinkel</source>
-        <translation type="unfinished"></translation>
+        <translation>Threshold value for rope deflection angle (unloaded)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Grenzwert Leerseilknickwinkel Erklaerung</source>
-        <translation type="unfinished"></translation>
+        <translation>Enter the threshold value for the minimum rope deflection angle of the unloaded skyline according to the saddle manufacturer&apos;s specifications. In the first input field, you can enter the threshold value with the hold-down lug mounted, in the second input field, you can enter the threshold value without the hold-down lug mounted.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Grenzwert Lastseilknickwinkel</source>
-        <translation type="unfinished"></translation>
+        <translation>Treshold value rope deflection angle (loaded)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Grenzwert Lastseilknickwinkel Erklaerung</source>
-        <translation type="unfinished"></translation>
+        <translation>Enter the threshold value for the maximum rope deflection angle of the loaded skyline according to the saddle manufacturer&apos;s specifications.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Bundstelle ueber Sattelleiste</source>
-        <translation type="unfinished"></translation>
+        <translation>Mounting height of the skyline saddle</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Bundstelle ueber Sattelleiste Erklaerung</source>
-        <translation type="unfinished"></translation>
+        <translation>Seilaplan calculates the required height of the skyline at a support (saddle height). The mounting of the skyline saddle on the support is located a few metres above the saddle. The height difference between the saddle and the location of the mounting of the skyline saddle on the support can be adjusted here.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="965"/>
@@ -2956,37 +2958,37 @@ Note: At the final supports the threshold value is higher (approx. 60°).</trans
         <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
         <translatorcomment>TODO: Text anpassen da diese Grenzwerte jetzt dynamisch definiert werden können.</translatorcomment>
         <translation type="unfinished">With angles below 1°, there is a risk that the skyline lifts off at the saddle (red). The support must be raised.
-For angles between 1° and 3°, the skyline must be secured by a hold-down plate (orange).</translation>
+For angles between 1° and 3°, the skyline must be secured by a hold-down lug (orange).</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="117"/>
         <source>BHD</source>
-        <translation type="unfinished"></translation>
+        <translation>DBH</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="117"/>
         <source>BHD Erklaerung</source>
-        <translation type="unfinished"></translation>
+        <translation>The minimum required DBH of the support tree is calculated. This is a guide value for vital trees. The stability and vitality of the tree must be checked in the field.</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="117"/>
         <source>Leerseildurchhang</source>
-        <translation type="unfinished"></translation>
+        <translation>Sag of the unloaded skyline</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="117"/>
         <source>Leerseildurchhang Erklaerung</source>
-        <translation type="unfinished"></translation>
+        <translation>For each span, the sag of the unloaded skyline is displayed in the middle of the span (vertical distance skyline – field chord).</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="117"/>
         <source>Lastseildurchhang</source>
-        <translation type="unfinished"></translation>
+        <translation>Sag of the loaded skyline</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="117"/>
         <source>Lastseildurchhang Erklaerung</source>
-        <translation type="unfinished"></translation>
+        <translation>There is shown the sag of the loaded skyline in mid span (with loaded carriage in mid-span position) (vertical distance between skyline and field chord).</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="223"/>

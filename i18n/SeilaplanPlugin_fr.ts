@@ -758,27 +758,31 @@ câble chargé</translation>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Grenzwert min. Leerseilknickwinkel mit Niederhaltelasche</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Übersetzung Leerseil gem. Seilkranlehrmittel</translatorcomment>
+        <translation>Valeur limite pour l’angle minimal du câble à vide  avec cavalier</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Grenzwert min. Leerseilknickwinkel ohne Niederhaltelasche</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Übersetzung Leerseil gem. Seilkranlehrmittel</translatorcomment>
+        <translation>Valeur limite pour l’angle minimal du câble à vide sans cavalier</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Grenzwert max. Lastseilknickwinkel Stuetze</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Übersetzung Lastseil gem. Seilkranlehrmittel</translatorcomment>
+        <translation>Valeur limite pour l’angle maximal du câble en charge au support</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Grenzwert max. Lastseilknickwinkel Endmast</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Übersetzung Lastseil gem. Seilkranlehrmittel</translatorcomment>
+        <translation>Valeur limite pour l’angle maximal du câble en charge au mât terminal</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Bundstelle ueber Sattelleiste</source>
-        <translation type="unfinished"></translation>
+        <translation>Hauteur de fixation au-dessus de l‘étrier</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="465"/>
@@ -911,7 +915,7 @@ câble chargé</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="378"/>
         <source>Erklaerung Tragseilspannkraft (Anfangspunkt)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tension de base au point de départ</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="377"/>
@@ -1285,17 +1289,17 @@ dans le rapport)</translation>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="675"/>
         <source>Navigation</source>
-        <translation type="unfinished"></translation>
+        <translation>Navigation</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="676"/>
         <source>Diagrammanzeige</source>
-        <translation type="unfinished"></translation>
+        <translation>Affichage du diagramme</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="546"/>
         <source>Parameterset auswaehlen</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisir un bloc de paramètres</translation>
     </message>
 </context>
 <context>
@@ -1702,7 +1706,7 @@ Veuillez adapter la saisie.</translation>
         <location filename="../gui/poleWidget.py" line="103"/>
         <source>O Bundst.</source>
         <translatorcomment>Achtung, Platzprobleme! Bitte Übersetzung prüfen.</translatorcomment>
-        <translation type="unfinished">Ø p. fixation</translation>
+        <translation>Ø p. fixation</translation>
     </message>
     <message>
         <location filename="../gui/poleWidget.py" line="411"/>
@@ -1889,17 +1893,17 @@ Veuillez adapter la saisie.</translation>
     <message>
         <location filename="../tools/configHandler_project.py" line="446"/>
         <source>Bitte definieren Sie Terraindaten</source>
-        <translation type="unfinished"></translation>
+        <translation>Veuillez définir les dates du terrain</translation>
     </message>
     <message>
         <location filename="../tools/configHandler_project.py" line="446"/>
         <source>Bitte zeichnen Sie Start- und Endpunkt der Seillinie in die Karte ein (Schaltflaeche zeichnen)</source>
-        <translation type="unfinished"></translation>
+        <translation>Veuillez dessiner le point initial et le point terminal de la ligne de câble sur la carte (bouton “dessiner”)</translation>
     </message>
     <message>
         <location filename="../tools/configHandler_project.py" line="446"/>
         <source>Bitte zeichnen Sie die Seillinie in die Karte (Schaltflaeche zeichnen) oder definieren sie Start- und Endkoordinaten manuell</source>
-        <translation type="unfinished"></translation>
+        <translation>Veuillez dessiner la ligne de câble sur la carte (bouton “dessiner”) ou définir manuellement les coordonnées de la ligne de câble</translation>
     </message>
     <message>
         <location filename="../tools/configHandler_project.py" line="448"/>
@@ -2399,13 +2403,14 @@ dans le rapport)</translation>
         <location filename="../gui/seilaplanDialog.ui" line="1888"/>
         <source>Grenzwert min. Leerseilknickwinkel
 mit ohne Niederhaltelasche</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeur limite pour l’angle minimal du câble à vide (avec/sans cavalier)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1986"/>
         <source>Grenzwert max. Lastseilknickwinkel
 Stuetze Endmast</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Übersetzung gem. Seilkranlehrmittel</translatorcomment>
+        <translation>Valeur limite pour l’angle maximal du câble en charge (support / mât terminal)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2171"/>
@@ -2415,7 +2420,7 @@ Stuetze Endmast</source>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2038"/>
         <source>Bundstelle ueber Sattelleiste</source>
-        <translation type="unfinished"></translation>
+        <translation>Hauteur de fixation au-dessus de l‘étrier</translation>
     </message>
 </context>
 <context>
@@ -2467,17 +2472,17 @@ Stuetze Endmast</source>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
         <source>Start- Endpunkt auf dem Gelaendeprofil definieren</source>
-        <translation type="unfinished"></translation>
+        <translation>Définir le point initial et le point terminal sur le profil du terrain</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
         <source>Koordinate kann nicht manuell veraendert werden, benutzen Sie die Schaltflaeche zeichnen</source>
-        <translation type="unfinished"></translation>
+        <translation>La coordonnée ne peut pas être modifiée manuellement, utilisez le bouton “dessiner”</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
         <source>Bitte erst Terraindaten definieren</source>
-        <translation type="unfinished"></translation>
+        <translation>Veuillez d’abord définir les données du terrain</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
@@ -2705,7 +2710,7 @@ L&apos;optimum de la force de traction initiale est calculé. L&apos;optimisatio
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="960"/>
         <source>Sicherheitsfaktor Tragseil Erklaerung</source>
-        <translation type="unfinished">Dans l&apos;ensemble de l&apos;Europe, pour le câble porteur il est utilisé un facteur de sécurité de 3.0.</translation>
+        <translation>Dans l&apos;ensemble de l&apos;Europe (DIN EN 16517, mise à jour avril 2022), il est utilisé un facteur de sécurité de 3.0 pour le câble porteur respectivement de 2.5 pour des câbles porteurs avec une limitation effective de la charge en cours d’exploitation.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
@@ -2715,32 +2720,34 @@ L&apos;optimum de la force de traction initiale est calculé. L&apos;optimisatio
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Grenzwert Leerseilknickwinkel</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Übersetzung gem. Seilkranlehrmittel</translatorcomment>
+        <translation>Valeur limite pour l’angle du câble à vide</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Grenzwert Leerseilknickwinkel Erklaerung</source>
-        <translation type="unfinished"></translation>
+        <translation>Indiquez les valeurs limites pour l&apos;angle minimal du câble à vide selon les indications du fabricant de l’étrier. Dans le premier champ de saisie, vous pouvez indiquer la valeur limite avec le cavalier monté, dans le deuxième champ de saisie la valeur limite sans cavalier monté.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Grenzwert Lastseilknickwinkel</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Übersetzung Lastseil gem. Seilkranlehrmittel</translatorcomment>
+        <translation>Valeur limite pour l’angle du câble en charge</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Grenzwert Lastseilknickwinkel Erklaerung</source>
-        <translation type="unfinished"></translation>
+        <translation>Indiquez la valeur limite pour l’angle maximal du câble en charge selon les indications du fabricant de l’étrier.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Bundstelle ueber Sattelleiste</source>
-        <translation type="unfinished"></translation>
+        <translation>Hauteur de fixation au-dessus de l‘étrier</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Bundstelle ueber Sattelleiste Erklaerung</source>
-        <translation type="unfinished"></translation>
+        <translation>Seilaplan calcule la hauteur nécessaire du câble porteur pour un support (hauteur de l’étrier). Le point de fixation se trouve à quelques mètres au-dessus de l’étrier. La différence de hauteur entre l’étrier et le point de fixation peut être adaptée ici.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="965"/>
@@ -2965,32 +2972,32 @@ En cas des angles entre 1° et 3° le câble porteur doit être sécurisé par u
     <message>
         <location filename="../tools/calcThreshold.py" line="117"/>
         <source>BHD</source>
-        <translation type="unfinished"></translation>
+        <translation>DHP</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="117"/>
         <source>BHD Erklaerung</source>
-        <translation type="unfinished"></translation>
+        <translation>Il est calculé le DHP minimal requis pour l’arbre de support. Il s&apos;agit d&apos;une valeur indicative pour les arbres vitaux. La stabilité et la vitalité de l&apos;arbre doivent être vérifiées sur le terrain par un spécialiste.</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="117"/>
         <source>Leerseildurchhang</source>
-        <translation type="unfinished"></translation>
+        <translation>Flexion du câble non chargé</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="117"/>
         <source>Leerseildurchhang Erklaerung</source>
-        <translation type="unfinished"></translation>
+        <translation>Pour chaque champ de tension il est affiché la flexion du câble à vide au milieu du champ de tension (distance verticale entre câble porteur et corde).</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="117"/>
         <source>Lastseildurchhang</source>
-        <translation type="unfinished"></translation>
+        <translation>Flexion du câble chargé </translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="117"/>
         <source>Lastseildurchhang Erklaerung</source>
-        <translation type="unfinished"></translation>
+        <translation>Pour chaque champ de tension il est affiché la flexion du câble chargé avec chariot chargé au milieu du champ de tension (distance verticale entre câble porteur et corde).</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="223"/>

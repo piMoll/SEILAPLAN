@@ -753,27 +753,29 @@ fune caricata</translation>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Grenzwert min. Leerseilknickwinkel mit Niederhaltelasche</source>
-        <translation type="unfinished"></translation>
+        <translation>Valore limite per l’angolo minimale della fune senza carico con coprifune</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Grenzwert min. Leerseilknickwinkel ohne Niederhaltelasche</source>
-        <translation type="unfinished"></translation>
+        <translation>Valore limite per l’angolo minimale della fune senza carico senza coprifune</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Grenzwert max. Lastseilknickwinkel Stuetze</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Übersetzung Lastseil gem. Seilkranlehrmittel</translatorcomment>
+        <translation>Valore limite per l’angolo massimo della fune con carico  al cavalletto</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Grenzwert max. Lastseilknickwinkel Endmast</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Übersetzung Lastseil gem. Seilkranlehrmittel</translatorcomment>
+        <translation>Valore limite per l’angolo massimo della fune con carico al cavalletto terminale</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Bundstelle ueber Sattelleiste</source>
-        <translation type="unfinished"></translation>
+        <translation>Punto d’attacco sopra scanalatura della sella</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="465"/>
@@ -906,7 +908,7 @@ fune caricata</translation>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="378"/>
         <source>Erklaerung Tragseilspannkraft (Anfangspunkt)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tensione di base al punto di partenza</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="377"/>
@@ -1276,17 +1278,17 @@ nel rapporto)</translation>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="675"/>
         <source>Navigation</source>
-        <translation type="unfinished"></translation>
+        <translation>Navigazione</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="676"/>
         <source>Diagrammanzeige</source>
-        <translation type="unfinished"></translation>
+        <translation>Visualizzazione del diagramma</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="546"/>
         <source>Parameterset auswaehlen</source>
-        <translation type="unfinished"></translation>
+        <translation>Scegliere una serie di parametri</translation>
     </message>
 </context>
 <context>
@@ -1692,7 +1694,7 @@ Si prega di adattare l&apos;input.</translation>
         <location filename="../gui/poleWidget.py" line="103"/>
         <source>O Bundst.</source>
         <translatorcomment>Achtung, Platzprobleme! Bitte Übersetzung prüfen.</translatorcomment>
-        <translation type="unfinished">Ø p. attaco</translation>
+        <translation>Ø p. attaco</translation>
     </message>
     <message>
         <location filename="../gui/poleWidget.py" line="411"/>
@@ -1879,17 +1881,17 @@ Si prega di adattare l&apos;input.</translation>
     <message>
         <location filename="../tools/configHandler_project.py" line="446"/>
         <source>Bitte definieren Sie Terraindaten</source>
-        <translation type="unfinished"></translation>
+        <translation>Per favore definisca i dati del terreno</translation>
     </message>
     <message>
         <location filename="../tools/configHandler_project.py" line="446"/>
         <source>Bitte zeichnen Sie Start- und Endpunkt der Seillinie in die Karte ein (Schaltflaeche zeichnen)</source>
-        <translation type="unfinished"></translation>
+        <translation>Disegni il punto iniziale e il punto terminale della linea teleferica sulla mappa (pulsante “disegnare”)</translation>
     </message>
     <message>
         <location filename="../tools/configHandler_project.py" line="446"/>
         <source>Bitte zeichnen Sie die Seillinie in die Karte (Schaltflaeche zeichnen) oder definieren sie Start- und Endkoordinaten manuell</source>
-        <translation type="unfinished"></translation>
+        <translation>Disegni la linea di teleferica sulla mappa (pulsante “disegnare”) o definisca manualmente le coordinate della linea.</translation>
     </message>
     <message>
         <location filename="../tools/configHandler_project.py" line="448"/>
@@ -2394,13 +2396,14 @@ nel rapporto)</translation>
         <location filename="../gui/seilaplanDialog.ui" line="1888"/>
         <source>Grenzwert min. Leerseilknickwinkel
 mit ohne Niederhaltelasche</source>
-        <translation type="unfinished"></translation>
+        <translation>Valore limite per l’angolo minimale della fune senza carico (con/senza coprifune)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1986"/>
         <source>Grenzwert max. Lastseilknickwinkel
 Stuetze Endmast</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Übersetzung gem. Seilkranlehrmittel</translatorcomment>
+        <translation>Valore limite per l’angolo massimo della fune con carico (cavalletto / cav. terminale)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2171"/>
@@ -2410,7 +2413,7 @@ Stuetze Endmast</source>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2038"/>
         <source>Bundstelle ueber Sattelleiste</source>
-        <translation type="unfinished"></translation>
+        <translation>Punto d’attacco sopra scanalatura della sella</translation>
     </message>
 </context>
 <context>
@@ -2462,17 +2465,17 @@ Stuetze Endmast</source>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
         <source>Start- Endpunkt auf dem Gelaendeprofil definieren</source>
-        <translation type="unfinished"></translation>
+        <translation>Definire il punto iniziale e il punto terminale sul profilo del terreno</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
         <source>Koordinate kann nicht manuell veraendert werden, benutzen Sie die Schaltflaeche zeichnen</source>
-        <translation type="unfinished"></translation>
+        <translation>La coordinata non può essere modificata manualmente, utilizzate il pulsante “disegnare”</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
         <source>Bitte erst Terraindaten definieren</source>
-        <translation type="unfinished"></translation>
+        <translation>Prima di tutto, definire i dati del terreno</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
@@ -2702,7 +2705,7 @@ Viene calcolata la forza di trazione iniziale ottimale. L&apos;ottimizzazione av
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="960"/>
         <source>Sicherheitsfaktor Tragseil Erklaerung</source>
-        <translation type="unfinished">A livello europeo, per la fune portante c&apos;è utilizzata un fattore di sicurezza di 3.0.</translation>
+        <translation>A livello europeo (DIN EN 16517, stato aprile 2022), si applica un fattore di sicurezza di 3.0 per la fune portante e di 2.5 per le funi portanti con limitazione del carico effettivo durante l’esercizio.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
@@ -2712,32 +2715,34 @@ Viene calcolata la forza di trazione iniziale ottimale. L&apos;ottimizzazione av
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Grenzwert Leerseilknickwinkel</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Übersetzung gem. Seilkranlehrmittel</translatorcomment>
+        <translation>Valore limite per l’angolo della fune senza carico</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Grenzwert Leerseilknickwinkel Erklaerung</source>
-        <translation type="unfinished"></translation>
+        <translation>Inserisca i valori limite per l&apos;angolo minimo della fune senza carico secondo le specifiche del produttore della sella d’appoggio. Nel primo campo d’inserimento può inserire il valore limite con coprifune montato, nel secondo campo d’inserimento il valore limite senza coprifune montato.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Grenzwert Lastseilknickwinkel</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Übersetzung Lastseil gem. Seilkranlehrmittel</translatorcomment>
+        <translation>Valore limite per l’angolo della fune con carico</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Grenzwert Lastseilknickwinkel Erklaerung</source>
-        <translation type="unfinished"></translation>
+        <translation>Inserisca  il valore limite per l’angolo massimo della fune con carico in base alle specifiche del produttore della sella d’appoggio.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Bundstelle ueber Sattelleiste</source>
-        <translation type="unfinished"></translation>
+        <translation>Punto d’attacco sopra scanalatura della sella</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Bundstelle ueber Sattelleiste Erklaerung</source>
-        <translation type="unfinished"></translation>
+        <translation>Seilaplan calcola l&apos;altezza necessaria della fune portante per un cavalletto (altezza della sella d’appoggio). Il punto d’attaco si trova alcuni metri sopra la scanalatura della sella. La differenza d’altezza tra la scanalatura della sella e il punto d’attacco può essere aggiustata qui.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="965"/>
@@ -2961,32 +2966,32 @@ Nel caso di un angolo tra 1° e 3° la fune portante deve essere atrezzato con u
     <message>
         <location filename="../tools/calcThreshold.py" line="117"/>
         <source>BHD</source>
-        <translation type="unfinished"></translation>
+        <translation>DPU</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="117"/>
         <source>BHD Erklaerung</source>
-        <translation type="unfinished"></translation>
+        <translation>Viene calcolato il DPU minimo richiesto dell&apos;albero di cavalletto. Si tratta di un valore indicativo per gli alberi vitali. La stabilità e la vitalità dell&apos;albero devono essere verificate da uno specialista sul terreno.</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="117"/>
         <source>Leerseildurchhang</source>
-        <translation type="unfinished"></translation>
+        <translation>Flessione della fune non caricata</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="117"/>
         <source>Leerseildurchhang Erklaerung</source>
-        <translation type="unfinished"></translation>
+        <translation>Per ogni campata viene visualizzata la flessione della fune non caricata al centro della campata (distanza verticale tra la fune portante e la corda).</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="117"/>
         <source>Lastseildurchhang</source>
-        <translation type="unfinished"></translation>
+        <translation>Flessione della fune caricata</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="117"/>
         <source>Lastseildurchhang Erklaerung</source>
-        <translation type="unfinished"></translation>
+        <translation>Per ogni campata viene visualizzata la flessione della fune caricata col carello caricato al centro della campata (distanza verticale tra la fune portante e la corda).</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="223"/>
