@@ -25,12 +25,13 @@ changelog=Version 3.6.0 (Juli 2024)
 
     - Mehrere Seilaplan Fenster parallel starten
     - Neue Parameter für Leer- und Lastseilknickwinkel Grenzwert
-    - Neuer Parameter für Höhe Bundstelle über Sattelleiste
+    - Neuer Parameter für die Höhe der Bundstelle über dem Tragseilsattel
     - Bearbeitungsfenster:
-      - Neue Informationen in Diagramm (BHD, Durchhang, Knickwinkel, etc.)
+      - Kennwerte im Diagramm darstellen (BHD, Durchhang, Knickwinkel, etc.)
       - Parameterset wechseln
-      - Angabe Bundstellendurchmesser pro Stütze
+      - Angabe des Bundstellendurchmessers pro Stütze
       - Erlaube längere Stützenbezeichnungen
+    - Diverse Fehlerbehebung
 
     Vollständiger Changelog unter: https://github.com/piMoll/SEILAPLAN/blob/master/changelog.md
 

@@ -1,6 +1,5 @@
 from . import BASIC_PROJECT_FILE
 from SEILAPLAN.core.cablelineFinal import preciseCable
-from SEILAPLAN.tools.configHandler import ConfigHandler
 from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
 from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
 

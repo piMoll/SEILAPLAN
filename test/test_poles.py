@@ -1,10 +1,8 @@
 from qgis.testing import unittest
 from numpy import nan
-from . import BASIC_PROJECT_FILE, MINIMAL_PROJECT_FILE, project_file_loader
+from . import project_file_loader
 from ._test_helper import calculate_cable_line
 from SEILAPLAN.tools.configHandler import ConfigHandler
-from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
-from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
 from SEILAPLAN.tools.poles import Poles
 
 
