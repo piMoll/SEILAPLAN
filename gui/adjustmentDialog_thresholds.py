@@ -69,7 +69,10 @@ class AdjustmentDialogThresholds(QObject):
         # Update value itself
         for row, rowData in enumerate(tblData):
             for col, cellData in enumerate(rowData):
-                if init and col == 0:
+                if col == 0:
+                    if not init:
+                        # Remove button
+                        self.tbl.setIndexWidget(self.model.index(row, col), None)
                     # Create clickable info button in first column
                     btnWidget = self.createInfoBtn(cellData)
                     self.tbl.setIndexWidget(self.model.index(row, col), btnWidget)
