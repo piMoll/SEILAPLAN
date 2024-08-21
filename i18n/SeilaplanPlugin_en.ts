@@ -753,22 +753,22 @@ loaded skyline</translation>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Grenzwert min. Leerseilknickwinkel mit Niederhaltelasche</source>
-        <translation>Threshold value for min. rope deflection angle (unloaded) with a hold-down lug</translation>
+        <translation>Threshold for min. rope deflection angle (unloaded) with a hold-down lug</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Grenzwert min. Leerseilknickwinkel ohne Niederhaltelasche</source>
-        <translation>Threshold value for min. rope deflection angle (unloaded) without a hold-down lug</translation>
+        <translation>Threshold for min. rope deflection angle (unloaded) without a hold-down lug</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Grenzwert max. Lastseilknickwinkel Stuetze</source>
-        <translation>Threshold value for max. rope deflection angle (loaded) at support</translation>
+        <translation>Threshold for max. rope deflection angle (loaded) at support</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Grenzwert max. Lastseilknickwinkel Endmast</source>
-        <translation>Threshold value for max. rope deflection angle (loaded) at final support</translation>
+        <translation>Threshold for max. rope deflection angle (loaded) at final support</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
@@ -1199,6 +1199,11 @@ loaded skyline</translation>
         <location filename="../gui/adjustmentDialog.ui" line="664"/>
         <source>Anlagetyp</source>
         <translation>Cable yarder type</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.ui" line="664"/>
+        <source>Sicherheitsfaktor</source>
+        <translation>Safety factor</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="688"/>
@@ -1684,12 +1689,12 @@ Please change the input.</translation>
     <message>
         <location filename="../gui/poleWidget.py" line="103"/>
         <source>Horiz.distanz</source>
-        <translation>Horizontal dist.</translation>
+        <translation>Horiz. dist.</translation>
     </message>
     <message>
         <location filename="../gui/poleWidget.py" line="103"/>
         <source>Stuetzenhoehe</source>
-        <translation>Support height</translation>
+        <translation>Supp. height</translation>
     </message>
     <message>
         <location filename="../gui/poleWidget.py" line="103"/>
@@ -2398,15 +2403,15 @@ to the report)</translation>
         <location filename="../gui/seilaplanDialog.ui" line="1888"/>
         <source>Grenzwert min. Leerseilknickwinkel
 mit ohne Niederhaltelasche</source>
-        <translation>Threshold value for min. rope deflection angle (unloaded) 
-(with/without a hold-down lug)</translation>
+        <translation>Threshold value for min. rope deflection angle,
+unloaded (with/without a hold-down lug)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1986"/>
         <source>Grenzwert max. Lastseilknickwinkel
 Stuetze Endmast</source>
-        <translation>Threshold value for max. rope deflection angle (loaded) 
-(with/without a hold-down lug)</translation>
+        <translation>Threshold value for max. rope deflection angle,
+loaded (with/without a hold-down lug)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2171"/>

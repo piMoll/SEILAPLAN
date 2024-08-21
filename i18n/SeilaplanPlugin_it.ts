@@ -764,7 +764,7 @@ fune caricata</translation>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Grenzwert max. Lastseilknickwinkel Stuetze</source>
         <translatorcomment>Übersetzung Lastseil gem. Seilkranlehrmittel</translatorcomment>
-        <translation>Valore limite per l’angolo massimo della fune con carico  al cavalletto</translation>
+        <translation>Valore limite per l’angolo massimo della fune con carico al cavalletto</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
@@ -1196,6 +1196,11 @@ fune caricata</translation>
         <location filename="../gui/adjustmentDialog.ui" line="664"/>
         <source>Anlagetyp</source>
         <translation>Tipo di gru a cavo</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.ui" line="664"/>
+        <source>Sicherheitsfaktor</source>
+        <translation>Fattore di sicurezza</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="688"/>
@@ -1683,7 +1688,7 @@ Si prega di adattare l&apos;input.</translation>
     <message>
         <location filename="../gui/poleWidget.py" line="103"/>
         <source>Stuetzenhoehe</source>
-        <translation>Altezza dei cavalletti</translation>
+        <translation>Altezza dei cav.</translation>
     </message>
     <message>
         <location filename="../gui/poleWidget.py" line="103"/>
@@ -1886,7 +1891,7 @@ Si prega di adattare l&apos;input.</translation>
     <message>
         <location filename="../tools/configHandler_project.py" line="446"/>
         <source>Bitte zeichnen Sie Start- und Endpunkt der Seillinie in die Karte ein (Schaltflaeche zeichnen)</source>
-        <translation>Disegni il punto iniziale e il punto terminale della linea teleferica sulla mappa (pulsante “disegnare”)</translation>
+        <translation>Disegni il punto iniziale e il punto terminale della linea teleferica sulla mappa (pulsante “tracciare”)</translation>
     </message>
     <message>
         <location filename="../tools/configHandler_project.py" line="446"/>
@@ -2396,14 +2401,16 @@ nel rapporto)</translation>
         <location filename="../gui/seilaplanDialog.ui" line="1888"/>
         <source>Grenzwert min. Leerseilknickwinkel
 mit ohne Niederhaltelasche</source>
-        <translation>Valore limite per l’angolo minimale della fune senza carico (con/senza coprifune)</translation>
+        <translation>Valore limite per l’angolo minimale della fune senza carico
+(con/senza coprifune)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1986"/>
         <source>Grenzwert max. Lastseilknickwinkel
 Stuetze Endmast</source>
         <translatorcomment>Übersetzung gem. Seilkranlehrmittel</translatorcomment>
-        <translation>Valore limite per l’angolo massimo della fune con carico (cavalletto / cav. terminale)</translation>
+        <translation>Valore limite per l’angolo massimo della fune con carico
+(cavalletto / cav. terminale)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2171"/>
@@ -2732,7 +2739,7 @@ Viene calcolata la forza di trazione iniziale ottimale. L&apos;ottimizzazione av
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Grenzwert Lastseilknickwinkel Erklaerung</source>
-        <translation>Inserisca  il valore limite per l’angolo massimo della fune con carico in base alle specifiche del produttore della sella d’appoggio.</translation>
+        <translation>Inserisca il valore limite per l’angolo massimo della fune con carico in base alle specifiche del produttore della sella d’appoggio.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
@@ -2943,7 +2950,7 @@ attuale</translation>
     <message>
         <location filename="../tools/calcThreshold.py" line="123"/>
         <source>Max. Lastseilknickwinkel</source>
-        <translation>Angolo maximale della fune caricata</translation>
+        <translation>Angolo max. della fune caricata</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="121"/>
@@ -2954,7 +2961,7 @@ Indicazione: Al cavalletto terminale il valore limite è superiore (_threshold_2
     <message>
         <location filename="../tools/calcThreshold.py" line="131"/>
         <source>Min. Leerseilknickwinkel</source>
-        <translation>Angolo minimale della fune non caricata</translation>
+        <translation>Angolo min. della fune non caricata</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="129"/>

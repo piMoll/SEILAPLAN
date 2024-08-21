@@ -1186,6 +1186,11 @@ Lastseil</translation>
         <translation>Anlagetyp</translation>
     </message>
     <message>
+        <location filename="../gui/adjustmentDialog.ui" line="664"/>
+        <source>Sicherheitsfaktor</source>
+        <translation>Sicherheitsfaktor</translation>
+    </message>
+    <message>
         <location filename="../gui/adjustmentDialog.ui" line="688"/>
         <source>Kopfdaten</source>
         <translation>Kopfdaten</translation>

@@ -759,25 +759,25 @@ câble chargé</translation>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Grenzwert min. Leerseilknickwinkel mit Niederhaltelasche</source>
         <translatorcomment>Übersetzung Leerseil gem. Seilkranlehrmittel</translatorcomment>
-        <translation>Valeur limite pour l’angle minimal du câble à vide  avec cavalier</translation>
+        <translation>Valeur limite pour l’angle min. du câble à vide avec cavalier</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Grenzwert min. Leerseilknickwinkel ohne Niederhaltelasche</source>
         <translatorcomment>Übersetzung Leerseil gem. Seilkranlehrmittel</translatorcomment>
-        <translation>Valeur limite pour l’angle minimal du câble à vide sans cavalier</translation>
+        <translation>Valeur limite pour l’angle min. du câble à vide sans cavalier</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Grenzwert max. Lastseilknickwinkel Stuetze</source>
         <translatorcomment>Übersetzung Lastseil gem. Seilkranlehrmittel</translatorcomment>
-        <translation>Valeur limite pour l’angle maximal du câble en charge au support</translation>
+        <translation>Valeur limite pour l’angle max. du câble en charge au support</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
         <source>Grenzwert max. Lastseilknickwinkel Endmast</source>
         <translatorcomment>Übersetzung Lastseil gem. Seilkranlehrmittel</translatorcomment>
-        <translation>Valeur limite pour l’angle maximal du câble en charge au mât terminal</translation>
+        <translation>Valeur limite pour l’angle max. du câble en charge au mât terminal</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="298"/>
@@ -1207,6 +1207,11 @@ câble chargé</translation>
         <location filename="../gui/adjustmentDialog.ui" line="664"/>
         <source>Anlagetyp</source>
         <translation>Type de câble-grue</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.ui" line="664"/>
+        <source>Sicherheitsfaktor</source>
+        <translation>Facteur de sécurité</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="688"/>
@@ -1671,7 +1676,7 @@ Veuillez adapter la saisie.</translation>
     <message>
         <location filename="../tools/configHandler_params.py" line="189"/>
         <source>Fehler beim Laden der Parameter, moeglicherweise sind sie in einem alten Format.</source>
-        <translation>Erreur dans le chargement des paramètres, éventuellement  leur format est obsolète.</translation>
+        <translation>Erreur dans le chargement des paramètres, éventuellement leur format est obsolète.</translation>
     </message>
 </context>
 <context>
@@ -1690,7 +1695,7 @@ Veuillez adapter la saisie.</translation>
     <message>
         <location filename="../gui/poleWidget.py" line="103"/>
         <source>Horiz.distanz</source>
-        <translation>Distance horiz.</translation>
+        <translation>Dist. horiz.</translation>
     </message>
     <message>
         <location filename="../gui/poleWidget.py" line="103"/>
@@ -1898,7 +1903,7 @@ Veuillez adapter la saisie.</translation>
     <message>
         <location filename="../tools/configHandler_project.py" line="446"/>
         <source>Bitte zeichnen Sie Start- und Endpunkt der Seillinie in die Karte ein (Schaltflaeche zeichnen)</source>
-        <translation>Veuillez dessiner le point initial et le point terminal de la ligne de câble sur la carte (bouton “dessiner”)</translation>
+        <translation>Veuillez dessiner le point initial et le point terminal de la ligne de câble sur la carte (bouton “tracer”)</translation>
     </message>
     <message>
         <location filename="../tools/configHandler_project.py" line="446"/>
@@ -2403,14 +2408,16 @@ dans le rapport)</translation>
         <location filename="../gui/seilaplanDialog.ui" line="1888"/>
         <source>Grenzwert min. Leerseilknickwinkel
 mit ohne Niederhaltelasche</source>
-        <translation>Valeur limite pour l’angle minimal du câble à vide (avec/sans cavalier)</translation>
+        <translation>Valeur limite pour l’angle minimal du câble à vide
+(avec/sans cavalier)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1986"/>
         <source>Grenzwert max. Lastseilknickwinkel
 Stuetze Endmast</source>
         <translatorcomment>Übersetzung gem. Seilkranlehrmittel</translatorcomment>
-        <translation>Valeur limite pour l’angle maximal du câble en charge (support / mât terminal)</translation>
+        <translation>Valeur limite pour l’angle maximal du câble en charge
+(support / mât terminal)</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2171"/>
@@ -2929,7 +2936,7 @@ actuelle</translation>
     <message>
         <location filename="../tools/calcThreshold.py" line="115"/>
         <source>Max. resultierende Sattelkraft</source>
-        <translation>Maximum de la force résultante sur l&apos;étrier</translation>
+        <translation>Max. de la force résultante sur l&apos;étrier</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="123"/>

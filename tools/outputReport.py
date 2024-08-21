@@ -823,7 +823,7 @@ def generateReport(reportText, outputLoc):
         ('ALIGN', (1, 0), (1, -1), 'RIGHT'),
         ('ALIGN', (4, 0), (4, -1), 'RIGHT'),
         ('ALIGN', (7, 0), (7, -1), 'RIGHT'),
-        ('FONT', (0, 0), (-1, -1), font, fontSize)]))
+        ('FONT', (0, 0), (-1, -1), font, fontSize-1)]))
 
     data = [ [Table([[t_tite1], [t_tite2]])], [Table([[t_posi1], [t_posi2]])],
              [Table([[t_abst1], [t_abst2]])],
