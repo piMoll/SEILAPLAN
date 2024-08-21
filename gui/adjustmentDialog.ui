@@ -1393,6 +1393,9 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>fieldPlotTopic</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>fieldParamSet</tabstop>
   <tabstop>fieldQ</tabstop>
   <tabstop>fieldqT</tabstop>
   <tabstop>fieldD</tabstop>
@@ -1401,17 +1404,26 @@
   <tabstop>fieldqR</tabstop>
   <tabstop>fieldSK</tabstop>
   <tabstop>fieldBabstMin</tabstop>
-  <tabstop>tableThresholds</tabstop>
-  <tabstop>btnBackToStart</tabstop>
-  <tabstop>btnClose</tabstop>
-  <tabstop>btnSave</tabstop>
-  <tabstop>scrollArea</tabstop>
-  <tabstop>infoQ</tabstop>
+  <tabstop>fieldAnlagetyp</tabstop>
+  <tabstop>fieldSFT</tabstop>
   <tabstop>fieldPrVerf</tabstop>
   <tabstop>fieldPrNr</tabstop>
   <tabstop>fieldPrGmd</tabstop>
   <tabstop>fieldPrWald</tabstop>
   <tabstop>fieldPrBemerkung</tabstop>
+  <tabstop>btnBackToStart</tabstop>
+  <tabstop>btnClose</tabstop>
+  <tabstop>infoSFT</tabstop>
+  <tabstop>infoSK</tabstop>
+  <tabstop>tableThresholds</tabstop>
+  <tabstop>infoBirdViewPosition</tabstop>
+  <tabstop>infoBirdViewCategory</tabstop>
+  <tabstop>infoBirdViewAbspann</tabstop>
+  <tabstop>infoBirdViewGeneral</tabstop>
+  <tabstop>mapBackgroundButton</tabstop>
+  <tabstop>scrollArea</tabstop>
+  <tabstop>infoPlotTopic</tabstop>
+  <tabstop>infoQ</tabstop>
  </tabstops>
  <resources>
   

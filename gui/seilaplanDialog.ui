@@ -3218,6 +3218,7 @@ Stuetze Endmast</string>
   <tabstop>fieldqR</tabstop>
   <tabstop>fieldSK</tabstop>
   <tabstop>fieldAnlagetyp</tabstop>
+  <tabstop>fieldSFT</tabstop>
   <tabstop>fieldPrVerf</tabstop>
   <tabstop>fieldPrNr</tabstop>
   <tabstop>fieldPrGmd</tabstop>
@@ -3231,6 +3232,11 @@ Stuetze Endmast</string>
   <tabstop>fieldHMnat</tabstop>
   <tabstop>fieldE</tabstop>
   <tabstop>fieldFuellF</tabstop>
+  <tabstop>fieldLeerKnickMit</tabstop>
+  <tabstop>fieldLeerKnickOhne</tabstop>
+  <tabstop>fieldLastKnickSt</tabstop>
+  <tabstop>fieldLastKnickEnd</tabstop>
+  <tabstop>fieldBundst</tabstop>
   <tabstop>buttonInfo</tabstop>
   <tabstop>buttonCancel</tabstop>
   <tabstop>btnAdjustment</tabstop>
@@ -3240,16 +3246,18 @@ Stuetze Endmast</string>
   <tabstop>infoSurveyData</tabstop>
   <tabstop>infoPointA</tabstop>
   <tabstop>infoPointE</tabstop>
-  <tabstop>laenge</tabstop>
   <tabstop>infoBodenabstand</tabstop>
   <tabstop>infoQ</tabstop>
   <tabstop>infoSK</tabstop>
+  <tabstop>infoFieldSFT</tabstop>
   <tabstop>infoStuetzen</tabstop>
   <tabstop>infoFieldE</tabstop>
   <tabstop>infoFieldFuellF</tabstop>
+  <tabstop>infoFieldLeerKnick</tabstop>
+  <tabstop>infoFieldLastKnick</tabstop>
+  <tabstop>infoFieldBundst</tabstop>
+  <tabstop>laenge</tabstop>
  </tabstops>
- <resources>
-  
- </resources>
+ <resources/>
  <connections/>
 </ui>
