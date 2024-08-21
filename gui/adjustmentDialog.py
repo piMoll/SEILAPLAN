@@ -255,7 +255,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         
         # Fill in Threshold data
         self.thdUpdater.update(self.result, self.paramHandler, self.poles,
-            self.profile, resultQuality == ResultQuality.SuccessfulOptimization)
+            self.profile, resultQuality in [ResultQuality.SuccessfulOptimization, ResultQuality.CableLiftsOff])
         # Add plot topics in drop down
         self.fieldPlotTopic.addItem('-', userData=-1)
         for topic in self.thdUpdater.topics:
