@@ -32,10 +32,9 @@ the former axes in its own coordinate system.
 """
 
 from math import log10 as math_log10
-from reportlab import xrange
 from reportlab.lib.validators import    isNumber, isNumberOrNone, isListOfStringsOrNone, isListOfNumbers, \
                                         isListOfNumbersOrNone, isColorOrNone, OneOf, isBoolean, SequenceOf, \
-                                        isString, EitherOr, Validator, NoneOr, isInstanceOf, \
+                                        isString, EitherOr, Validator, NoneOr, \
                                         isNormalDate, isNoneOrCallable
 from reportlab.lib.attrmap import *
 from reportlab.lib import normalDate
@@ -46,15 +45,9 @@ from reportlab.graphics.charts.utils import nextRoundNumber
 from reportlab.graphics.widgets.grids import ShadedRect
 from reportlab.lib.colors import Color
 from reportlab.lib.utils import isSeq
-from reportlab import xrange
-import copy
-try:
-    reduce  # Python 2.x
-except NameError:
-    from functools import reduce
 
 # Helpers.
-def _findMinMaxValue(V, x, default, func, special=None):
+def _findMinMaxValue(V, x, default, func, special=None, extraMinMaxValues=None):
     if isSeq(V[0][0]):
         if special:
             f=lambda T,x=x,special=special,func=func: special(T,x,func)
@@ -63,15 +56,16 @@ def _findMinMaxValue(V, x, default, func, special=None):
         V=list(map(lambda e,f=f: list(map(f,e)),V))
     V = list(filter(len,[[x for x in x if x is not None] for x in V]))
     if len(V)==0: return default
-    return func(list(map(func,V)))
+    r = func(list(map(func,V)))
+    return func(func(extraMinMaxValues),r) if extraMinMaxValues else r
 
-def _findMin(V, x, default,special=None):
+def _findMin(V, x, default,special=None,extraMinMaxValues=None):
     '''find minimum over V[i][x]'''
-    return _findMinMaxValue(V,x,default,min,special=special)
+    return _findMinMaxValue(V,x,default,min,special=special,extraMinMaxValues=extraMinMaxValues)
 
-def _findMax(V, x, default,special=None):
+def _findMax(V, x, default,special=None,extraMinMaxValues=None):
     '''find maximum over V[i][x]'''
-    return _findMinMaxValue(V,x,default,max,special=special)
+    return _findMinMaxValue(V,x,default,max,special=special, extraMinMaxValues=extraMinMaxValues)
 
 def _allInt(values):
     '''true if all values are int'''
@@ -222,7 +216,7 @@ class AxisBackgroundAnnotation:
         G = Group()
         ncolors = len(colors)
         v0 = axis._get_line_pos(tv[0])
-        for i in xrange(1,len(tv)):
+        for i in range(1,len(tv)):
             v1 = axis._get_line_pos(tv[i])
             c = colors[(i-1)%ncolors]
             if c:
@@ -561,17 +555,17 @@ class CategoryAxis(_AxisG):
         self._barWidth = barWidth or ((self._length-self.loPad-self.hiPad)/float(self._catCount or 1))
         self._calcTickmarkPositions()
         if self.labelAxisMode == 'axispmv':
-            self._pmv = [sum([series[i] for series in multiSeries]) for i in xrange(self._catCount)]
+            self._pmv = [sum([series[i] for series in multiSeries]) for i in range(self._catCount)]
 
     def _calcTickmarkPositions(self):
         n = self._catCount
         if self.tickShift:
-            self._tickValues = [t+0.5 for t in xrange(n)]
+            self._tickValues = [t+0.5 for t in range(n)]
         else:
             if self.reverseDirection:
-                self._tickValues = list(xrange(-1,n))
+                self._tickValues = list(range(-1,n))
             else:
-                self._tickValues = list(xrange(n+1))
+                self._tickValues = list(range(n+1))
 
     def _scale(self,idx):
         if self.reverseDirection: idx = self._catCount-idx-1
@@ -763,7 +757,7 @@ class XCategoryAxis(_XTicks,CategoryAxis):
             _x = self._x
             pmv = self._pmv if self.labelAxisMode=='axispmv' else None
 
-            for i in xrange(catCount):
+            for i in range(catCount):
                 if reverseDirection: ic = catCount-i-1
                 else: ic = i
                 if ic>=n: continue
@@ -877,7 +871,7 @@ class YCategoryAxis(_YTicks,CategoryAxis):
             _y = self._y
             pmv = self._pmv if self.labelAxisMode=='axispmv' else None
 
-            for i in xrange(catCount):
+            for i in range(catCount):
                 if reverseDirection: ic = catCount-i-1
                 else: ic = i
                 if ic>=n: continue
@@ -982,6 +976,7 @@ class ValueAxis(_AxisG):
         skipGrid = AttrMapValue(OneOf('none','top','both','bottom'),"grid lines to skip top bottom both none"),
         requiredRange = AttrMapValue(isNumberOrNone, desc='Minimum required value range.'),
         innerTickDraw = AttrMapValue(isNoneOrCallable, desc="Callable to replace _drawInnerTicks"),
+        extraMinMaxValues = AttrMapValue(isListOfNumbersOrNone, desc='extra values to use in min max calculation'),
         )
 
     def __init__(self,**kw):
@@ -1068,6 +1063,7 @@ class ValueAxis(_AxisG):
                         loLLen=0,
                         hiLLen=0,
                         requiredRange=0,
+                        extraMinMaxValues=None,
                         )
         self.labels.angle = 0
 
@@ -1140,8 +1136,8 @@ class ValueAxis(_AxisG):
 
         oMin = valueMin = self.valueMin
         oMax = valueMax = self.valueMax
-        if valueMin is None: valueMin = self._cValueMin = _findMin(dataSeries,self._dataIndex,0)
-        if valueMax is None: valueMax = self._cValueMax = _findMax(dataSeries,self._dataIndex,0)
+        if valueMin is None: valueMin = self._cValueMin = _findMin(dataSeries,self._dataIndex,0, self.extraMinMaxValues)
+        if valueMax is None: valueMax = self._cValueMax = _findMax(dataSeries,self._dataIndex,0, self.extraMinMaxValues)
         if valueMin == valueMax:
             if valueMax==0:
                 if oMin is None and oMax is None:
@@ -1181,8 +1177,8 @@ class ValueAxis(_AxisG):
                     v = bubbleMAx*0.1
                 bubbleV *= (v/bubbleMax)**0.5
                 return func(T[x]+bubbleV,T[x]-bubbleV)
-            if oMin is None: valueMin = self._cValueMin = _findMin(dataSeries,self._dataIndex,0,special=special)
-            if oMax is None: valueMax = self._cValueMax = _findMax(dataSeries,self._dataIndex,0,special=special)
+            if oMin is None: valueMin = self._cValueMin = _findMin(dataSeries,self._dataIndex,0,special=special,extraMinMaxValues=self.extraMinMaxValues)
+            if oMax is None: valueMax = self._cValueMax = _findMax(dataSeries,self._dataIndex,0,special=special,extraMinMaxValues=self.extraMinMaxValues)
 
         valueMin, valueMax = self._preRangeAdjust(valueMin,valueMax)
 
@@ -1341,7 +1337,7 @@ class ValueAxis(_AxisG):
         if rangeRound in ('both','ceiling'):
             if v<valueMax-fuzz: i1 += 1
         elif v>valueMax+fuzz: i1 -= 1
-        return valueStep,[i*valueStep for i in xrange(i0,i1+1)]
+        return valueStep,[i*valueStep for i in range(i0,i1+1)]
 
     def _calcTickPositions(self):
         return self._calcStepAndTickPositions()[1]
@@ -1380,7 +1376,7 @@ class ValueAxis(_AxisG):
                 if OTV[-1]<vx: OTV.append(OTV[-1]+dst)
                 dst /= float(nst+1)
                 for i,x in enumerate(OTV[:-1]):
-                    for j in xrange(nst):
+                    for j in range(nst):
                         t = x+dCnv((j+1)*dst)
                         if t<=vn or t>=vx: continue
                         T(t)
@@ -1842,7 +1838,7 @@ class NormalDateXValueAxis(XValueAxis):
 
         VC = self._valueClass
         for D in data:
-            for i in xrange(len(D)):
+            for i in range(len(D)):
                 x, y = D[i]
                 if not isinstance(x,VC):
                     D[i] = (VC(x),y)
@@ -2133,14 +2129,14 @@ class LogValueAxis(ValueAxis):
     def _setRange(self,dataSeries):
         valueMin = self.valueMin
         valueMax = self.valueMax
-        aMin = _findMin(dataSeries,self._dataIndex,0)
-        aMax = _findMax(dataSeries,self._dataIndex,0)
+        aMin = _findMin(dataSeries,self._dataIndex,0,extraMinMaxValues=self.extraMinMaxValues)
+        aMax = _findMax(dataSeries,self._dataIndex,0,extraMinMaxValues=self.extraMinMaxValues)
         if valueMin is None: valueMin = aMin
         if valueMax is None: valueMax = aMax
         if valueMin>valueMax:
             raise ValueError('%s: valueMin=%r should not be greater than valueMax=%r!' % (self.__class__.__name__valueMin, valueMax))
         if valueMin<=0:
-            raise ValueError('%s: valueMin=%r negative values are not allowed!' % valueMin)
+            raise ValueError('%s: valueMin=%r negative values are not allowed!' % (self.__class__.__name__,valueMin))
         abS = self.avoidBoundSpace
         if abS:
             lMin = math_log10(aMin)
@@ -2200,7 +2196,7 @@ class LogValueAxis(ValueAxis):
                 start = 1
                 if self.subTickNum == 10: start = 2
                 while tv < valueMax:
-                    for j in xrange(start,self.subTickNum):
+                    for j in range(start,self.subTickNum):
                         v = fac*j*(10**tv)
                         if v > self._valueMin and v < self._valueMax:
                             T(v)
@@ -2234,6 +2230,17 @@ class LogAxisTickLabeller(TickLabeller):
         if e==1: return '10'
         return '10<sup>%s</sup>' % e
 
+class LogAxisTickLabellerS(TickLabeller):
+    '''simple log axis labeller tries to use integers
+    and short forms else exponential format'''
+    def __call__(self,axis,value):
+        e = math_log10(value)
+        p = int(e-0.001 if e<0 else e+0.001)
+        if p==0: return '1'
+        s = '1'+p*'0' if p>0 else '0.'+(-(1+p)*'0')+'1'
+        se = '%.0e' % value
+        return se if len(se)<len(s) else s
+
 class LogAxisLabellingSetup:
     def __init__(self):
         if DirectDrawFlowable is not None:
@@ -2248,7 +2255,7 @@ class LogAxisLabellingSetup:
                 self.labels.dy = -5
             self.labelTextFormat = LogAxisTickLabeller()
         else:
-            self.labelTextFormat = "%.0e"
+            self.labelTextFormat = LogAxisTickLabellerS()
 
 class LogXValueAxis(LogValueAxis,LogAxisLabellingSetup,XValueAxis):
     _attrMap = AttrMap(BASE=XValueAxis)

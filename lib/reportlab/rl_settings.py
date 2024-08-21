@@ -15,7 +15,6 @@ pageCompression
 useA85
 defaultPageSize
 defaultImageCaching
-ZLIB_WARNINGS
 warnOnMissingFontGlyphs
 verbose
 showBoundary
@@ -68,7 +67,11 @@ documentLang
 encryptionStrength
 trustedHosts
 trustedSchemes
-renderPMBackend'''.split())
+renderPMBackend
+xmlParser
+textPaths
+toColorCanUse
+defCWRF'''.split())
 
 allowTableBoundsErrors =    1 # set to 0 to die on too large elements in tables in debug (recommend 1 for production use)
 shapeChecking =             1
@@ -78,7 +81,6 @@ pageCompression =           1                       # default page compression m
 useA85 =                    1                       #set to 0 to disable Ascii Base 85 stream filters
 defaultPageSize =           'A4'                    #default page size
 defaultImageCaching =       0                       #set to zero to remove those annoying cached images
-ZLIB_WARNINGS =             1
 warnOnMissingFontGlyphs =   0                       #if 1, warns of each missing glyph
 verbose =                   0
 showBoundary =              0                       # turns on and off boundary behaviour in Drawing
@@ -103,11 +105,7 @@ canvas_basefontname=        'Helvetica'             #this is used to initialize 
                                                     #if the bold/italic/bold italic fonts are also registered and defined as a family.
 
 allowShortTableRows=1                               #allows some rows in a table to be short
-imageReaderFlags=0                                  #attempt to convert images into internal memory files to reduce
-                                                    #the number of open files (see lib.utils.ImageReader)
-                                                    #if imageReaderFlags&2 then attempt autoclosing of those files
-                                                    #if imageReaderFlags&4 then cache data 
-                                                    #if imageReaderFlags==-1 then use Ralf Schmitt's re-opening approach
+imageReaderFlags=0                                  #no longer in use
 paraFontSizeHeightOffset=   1                       #if true paragraphs start at height-fontSize
 canvas_baseColor=           None                    #initialize the canvas fill and stroke colors if this is set
 ignoreContainerActions=     1                       #if true then action flowables in flowable _Containers will be ignored
@@ -153,8 +151,9 @@ uriWasteReduce=0                                    #split URI if we would waste
                                                     #is attempted. suggested value = 0.3
 embeddedHyphenation=0                               #if true attempt hypenation of words with embedded hyphens
 hyphenationMinWordLength=5                          #minimum length of words that can be hyphenated
-reserveTTFNotdef=0                                  #if true force subset element 0 to be zero(.notdef)
-                                                    #helps to fix bug in edge
+reserveTTFNotdef=1                                  #if true force subset element 0 to be zero(.notdef)
+                                                    #helps to fix bug in edge; this is now ignored in code
+                                                    #PDFUA forbids index 0(.notdef) in strings
 documentLang=None                                   #pdf document catalog Lang value xx-xx not ee_xx
 encryptionStrength=40                               #the bits for standard encryption 40, 128 or 256 (AES)
 trustedHosts=None                                   #set to a list of trusted for access hosts None means
@@ -162,7 +161,14 @@ trustedHosts=None                                   #set to a list of trusted fo
                                                     #allowed. In environment use a comma separated string.
 trustedSchemes=['file', 'rml', 'data', 'https',     #these url schemes are trusted
                 'http', 'ftp']
-renderPMBackend='_renderPM'                         #or 'rlPyCairo' if available
+renderPMBackend='rlPyCairo'                         #or '_renderPM' if available
+xmlParser='lxml'                                    #or 'pyrxp' for preferred xml parsing
+textPaths='freetype'                                #freetype or _renderPM or backend
+                                                    #determines what code is used to create Paths from str
+                                                    #see reportlab/graphics/utils.py for full horror
+toColorCanUse='rl_extended_literal_eval'            #change to None or 'rl_safe_eval' depending on trust
+defCWRF=0.02                                        #fraction we can reduce defined column widths for overcommitted
+                                                    #undefined widths
 
 # places to look for T1Font information
 T1SearchPath =  (

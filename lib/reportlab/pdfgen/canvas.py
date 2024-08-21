@@ -6,29 +6,27 @@ The Canvas object is the primary interface for creating PDF files. See
 doc/reportlab-userguide.pdf for copious examples.
 """
 
-__all__ = ['Canvas']
+__all__ = [
+        'Canvas',
+        'ShowBoundaryValue',
+        ]
 ENABLE_TRACKING = 1 # turn this off to do profile testing w/o tracking
 
-import os
-import sys
 import re
 import hashlib
 from string import digits
-import tempfile
-from math import sin, cos, tan, pi, ceil
-from reportlab import rl_config, ascii, xrange
-from reportlab.pdfbase import pdfutils
+from math import sin, cos, tan, pi
+from reportlab import rl_config
 from reportlab.pdfbase import pdfdoc
 from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfgen  import pdfgeom, pathobject
+from reportlab.pdfgen  import pathobject
 from reportlab.pdfgen.textobject import PDFTextObject, _PDFColorSetter
 from reportlab.lib.colors import black, _chooseEnforceColorSpace, Color, CMYKColor, toColor
-from reportlab.lib.utils import import_zlib, ImageReader, isSeq, isStr, isUnicode, _digester, asUnicode
+from reportlab.lib.utils import ImageReader, isSeq, isStr, isUnicode, _digester, asUnicode
 from reportlab.lib.rl_accel import fp_str, escapePDF
 from reportlab.lib.boxstuff import aspectRatioFix
 
 digitPat = re.compile(r'\d')  #used in decimal alignment
-zlib = import_zlib()
 
 # Robert Kern
 # Constants for closing paths.
@@ -52,7 +50,7 @@ PATH_OPS = {(0, 0, FILL_EVEN_ODD) : 'n',  #no op
             }
 
 def _annFormat(D,color,thickness,dashArray,hradius=0,vradius=0):
-    from reportlab.pdfbase.pdfdoc import PDFArray, PDFDictionary
+    from reportlab.pdfbase.pdfdoc import PDFArray
     if color and 'C' not in D:
         D["C"] = PDFArray([color.red, color.green, color.blue])
     if 'Border' not in D:
@@ -111,7 +109,7 @@ def _buildColorFunction(colors, positions):
     # equally distribute if positions not specified
     if positions is None:
         nc = len(colors)
-        positions = [float(x)/(nc-1) for x in xrange(nc)]
+        positions = [float(x)/(nc-1) for x in range(nc)]
     else:
         # sort positions and colors in increasing order
         poscolors = list(zip(positions, colors))
@@ -206,6 +204,22 @@ class   ExtGState:
         x._d = self._d.copy()
         x._c = self._c
         return x
+
+def _gradientExtendStr(extend):
+    if isinstance(extend,(list,tuple)):
+        if len(extend)!=2:
+            raise ValueError('wrong length for extend argument' % extend)
+        return "[%s %s]" % ['true' if _ else 'false' for _ in extend]
+    return "[true true]" if extend else "[false false]"
+
+class ShowBoundaryValue:
+    def __init__(self,color=(0,0,0),width=0.1,dashArray=None):
+        self.color = color
+        self.width = width
+        self.dashArray = dashArray
+
+    def __bool__(self):
+        return self.color is not None and self.width>=0
 
 class Canvas(_PDFColorSetter):
     """This class is the programmer's interface to the PDF file format.  Methods
@@ -422,7 +436,7 @@ class Canvas(_PDFColorSetter):
      _charSpace _wordSpace _horizScale _textRenderMode _rise _textLineMatrix
      _textMatrix _lineCap _lineJoin _lineDash _lineWidth _mitreLimit _fillColorObj
      _strokeColorObj _extgstate""".split()
-    STATE_RANGE = list(xrange(len(STATE_ATTRIBUTES)))
+    STATE_RANGE = list(range(len(STATE_ATTRIBUTES)))
 
         #self._addStandardFonts()
 
@@ -872,7 +886,8 @@ class Canvas(_PDFColorSetter):
     #
     ######################################################
     def drawInlineImage(self, image, x,y, width=None,height=None,
-            preserveAspectRatio=False,anchor='c', anchorAtXY=False, showBoundary=False):
+            preserveAspectRatio=False,anchor='c', anchorAtXY=False, showBoundary=False,
+            extraReturn=None):
         """See drawImage, which should normally be used instead... 
         
         drawInlineImage behaves like drawImage, but stores the image content
@@ -891,11 +906,13 @@ class Canvas(_PDFColorSetter):
         img_obj = PDFImage(image, x,y, width, height)
         img_obj.drawInlineImage(self,
             preserveAspectRatio=preserveAspectRatio, 
-            anchor=anchor,anchorAtXY=anchorAtXY,showBoundary=showBoundary)
+            anchor=anchor,anchorAtXY=anchorAtXY,showBoundary=showBoundary,
+            extraReturn=extraReturn)
         return (img_obj.width, img_obj.height)
 
     def drawImage(self, image, x, y, width=None, height=None, mask=None, 
-            preserveAspectRatio=False, anchor='c', anchorAtXY=False, showBoundary=False):
+            preserveAspectRatio=False, anchor='c', anchorAtXY=False, showBoundary=False,
+            extraReturn=None):
         """Draws the image (ImageReader object or filename) as specified.
 
         "image" may be an image filename or an ImageReader object. 
@@ -1008,10 +1025,14 @@ class Canvas(_PDFColorSetter):
         self._code.append("/%s Do" % regName)
         self.restoreState()
         if showBoundary:
-            self.rect(x,y,width,height,stroke=1,fill=0)
+            #self.rect(x,y,width,height,stroke=1,fill=0)
+            self.drawBoundary(showBoundary,x,y,width,height)
 
         # track what's been used on this page
         self._formsinuse.append(name)
+        if extraReturn:
+            for k in extraReturn.keys():
+                extraReturn[k] = vars()[k]
 
         return (imgObj.width, imgObj.height)
 
@@ -1474,7 +1495,7 @@ class Canvas(_PDFColorSetter):
             if text:
                 self.setFillColor(strokeColor)
         if strokeWidth:
-            self.setLineWidth(StrokeWidth)
+            self.setLineWidth(strokeWidth)
         self.lines(crosshairs)
         if text:
             if fontSize is not None: self.setFontSize(fontSize)
@@ -1562,12 +1583,8 @@ class Canvas(_PDFColorSetter):
         from reportlab.pdfbase.pdfdoc import PDFAxialShading
         colorSpace, ncolors = _normalizeColors(colors)
         fcn = _buildColorFunction(ncolors, positions)
-        if extend:
-            extendStr = "[true true]"
-        else:
-            extendStr = "[false false]"
         shading = PDFAxialShading(x0, y0, x1, y1, Function=fcn,
-                ColorSpace=colorSpace, Extend=extendStr)
+                ColorSpace=colorSpace, Extend=_gradientExtendStr(extend))
         self.shade(shading)
 
     def radialGradient(self, x, y, radius, colors, positions=None, extend=True):
@@ -1575,12 +1592,8 @@ class Canvas(_PDFColorSetter):
         from reportlab.pdfbase.pdfdoc import PDFRadialShading
         colorSpace, ncolors = _normalizeColors(colors)
         fcn = _buildColorFunction(ncolors, positions)
-        if extend:
-            extendStr = "[true true]"
-        else:
-            extendStr = "[false false]"
         shading = PDFRadialShading(x, y, 0.0, x, y, radius, Function=fcn,
-                ColorSpace=colorSpace, Extend=extendStr)
+                ColorSpace=colorSpace, Extend=_gradientExtendStr(extend))
         self.shade(shading)
 
         ##################################################
@@ -1609,7 +1622,7 @@ class Canvas(_PDFColorSetter):
 
     def drawRightString(self, x, y, text, mode=None, charSpace=0, direction=None, wordSpace=None):
         """Draws a string right-aligned with the x coordinate"""
-        if sys.version_info[0] == 3 and not isinstance(text, str):
+        if not isinstance(text, str):
             text = text.decode('utf-8')
         width = self.stringWidth(text, self._fontname, self._fontsize)
         if charSpace: width += (len(text)-1)*charSpace
@@ -1628,7 +1641,7 @@ class Canvas(_PDFColorSetter):
         """Draws a string centred on the x coordinate. 
         
         We're British, dammit, and proud of our spelling!"""
-        if sys.version_info[0] == 3 and not isinstance(text, str):
+        if not isinstance(text, str):
             text = text.decode('utf-8')
         width = self.stringWidth(text, self._fontname, self._fontsize)
         if charSpace: width += (len(text)-1)*charSpace
@@ -1825,10 +1838,7 @@ class Canvas(_PDFColorSetter):
         This applies to all subsequent pages, or until setPageCompression()
         is next called."""
         if pageCompression is None: pageCompression = rl_config.pageCompression
-        if pageCompression and not zlib:
-            self._pageCompression = 0
-        else:
-            self._pageCompression = pageCompression
+        self._pageCompression = pageCompression
         self._doc.setCompression(self._pageCompression)
 
     def setPageDuration(self, duration=None):
@@ -1979,12 +1989,27 @@ class Canvas(_PDFColorSetter):
             self._doc._catalog.AcroForm = self.AcroForm = AcroForm(self)
             return self.AcroForm
 
-    @property
-    def drawBoundary(self):
-        if not hasattr(self,'_drawBoundary'):
-            from reportlab.platypus import Frame
-            self._drawBoundary = lambda sb,x,y,w,h: Frame._drawBoundary(self,sb,x,y,w,h)
-        return self._drawBoundary
+    def drawBoundary(self,sb,x1,y1,width,height):
+        "draw a boundary as a rectangle (primarily for debugging)."
+        ss = isinstance(sb,(str,tuple,list)) or isinstance(sb,Color)
+        w = -1
+        da = None
+        if ss:
+            c = toColor(sb,-1)
+            ss = c != -1
+        elif isinstance(sb,ShowBoundaryValue) and sb:
+            c = toColor(sb.color,-1)
+            ss = c != -1
+            if ss:
+                w = sb.width
+                da = sb.dashArray
+        if ss:
+            self.saveState()
+            self.setStrokeColor(c)
+            if w>=0: self.setLineWidth(w)
+            if da: self.setDash(da)
+        self.rect(x1,y1,width,height)
+        if ss: self.restoreState()
 
 if __name__ == '__main__':
     print('For test scripts, look in tests')

@@ -14,7 +14,7 @@ import codecs
 from reportlab.pdfgen.canvas import Canvas
 from reportlab.platypus import Flowable
 from reportlab.pdfbase import pdfmetrics, cidfonts
-from reportlab.graphics.shapes import Drawing, Group, String, Circle, Rect
+from reportlab.graphics.shapes import Group, String, Rect
 from reportlab.graphics.widgetbase import Widget
 from reportlab.lib import colors
 from reportlab.lib.utils import int2Byte
@@ -198,7 +198,7 @@ class KutenRowCodeChart(CodeChartBase):
             font = cidfonts.CIDFont(self.faceName, self.encodingName)
             pdfmetrics.registerFont(font)
         except:
-            # fall back to English and at least shwo we can draw the boxes
+            # fall back to English and at least show we can draw the boxes
             self.faceName = 'Helvetica'
             self.encodingName = 'WinAnsiEncoding'
         self.fontName = self.faceName + '-' + self.encodingName
@@ -252,7 +252,7 @@ class Big5CodeChart(CodeChartBase):
             font = cidfonts.CIDFont(self.faceName, self.encodingName)
             pdfmetrics.registerFont(font)
         except:
-            # fall back to English and at least shwo we can draw the boxes
+            # fall back to English and at least show we can draw the boxes
             self.faceName = 'Helvetica'
             self.encodingName = 'WinAnsiEncoding'
         self.fontName = self.faceName + '-' + self.encodingName

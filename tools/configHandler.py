@@ -31,12 +31,13 @@ from qgis.core import QgsSettings
 from .configHandler_project import ProjectConfHandler
 from .configHandler_params import ParameterConfHandler
 from .outputReport import getTimestamp
+from .globals import PolesOrigin
 
 # Constants
 HOMEPATH = os.path.join(os.path.dirname(__file__))
 
 
-class ConfigHandler(object):
+class ConfigHandler:
     
     DEFAULT_SAVE_PATH = os.path.join(os.path.expanduser('~'), 'Seilaplan')
     SETTING_PREFIX = 'PluginSeilaplan/output/'
@@ -73,6 +74,10 @@ class ConfigHandler(object):
         self.params.initParameters()
         self.params.loadPredefinedParametersets()
         self.params.loadParametersetsFromSettings()
+        
+        # Remember if this is data loaded from a project file. It's used to
+        #  later show the correct message in the adjustment window
+        self.fromSavedProject = False
     
     def setDialog(self, dialog):
         self.project.setDialog(dialog)
@@ -87,6 +92,8 @@ class ConfigHandler(object):
             success = self.loadFromTxtFile(filename)
         elif filename.endswith('.json'):
             success = self.loadFromJsonFile(filename)
+        if success:
+            self.fromSavedProject = True
         return success
     
     def loadFromJsonFile(self, filename):
@@ -337,7 +344,7 @@ class ConfigHandler(object):
     def checkValidState(self):
         return self.project.checkValidState() and self.params.checkValidState()
     
-    def prepareForCalculation(self):
+    def prepareForCalculation(self, runOptimization=False):
         """
         Updates some parameters and generates the subraster and profile line.
         Initializes pole data.
@@ -345,37 +352,23 @@ class ConfigHandler(object):
         """
         success = self.params.prepareForCalculation()
         if success:
-            success = self.project.prepareForCalculation()
+            success = self.project.prepareForCalculation(runOptimization)
         return success
     
-    def loadCableDataFromFile(self):
-        status = 'jumpedOver'
-        
-        # If the project file already contains pole data from an earlier run,
-        # load this data into Poles()
-        status = self.project.updatePoles(status)
-        
-        # Set optimized cable tension
-        if status == 'savedFile' and self.params.optSTA:
-            # Use the saved parameter from save file
-            optSTA = self.params.optSTA
-        else:
-            # Use machine parameter 'SK'
-            optSTA = self.params.getParameter('SK')
-            self.params.setOptSTA(optSTA)
-        
+    def prepareResultWithoutOptimization(self):
         return {
             'cableline': None,
-            'optSTA': optSTA,
-            'optSTA_arr': [optSTA],
+            'optSTA': self.params.getTensileForce(),
+            'optSTA_arr': [self.params.getTensileForce()],
             'force': None,
             'optLen': None,
             'duration': getTimestamp(time.time())
-        }, status
+        }, PolesOrigin.SavedFile if self.fromSavedProject else PolesOrigin.OnlyStartEnd
     
     def reset(self):
-        self.project.reset()
+        self.project.resetPoles()
         self.params.reset()
+        self.fromSavedProject = False
     
     def qgsSettingsMigrator(self):
         """Migrates settings to be up-to-date with the current Seilaplan

@@ -22,16 +22,21 @@
  This script initializes the plugin, making it known to QGIS.
 """
 
-__version__ = '3.5.3'
+__version__ = '3.6.0'
+
+DEBUG = False
 
 
-# noinspection PyPep8Naming
-def classFactory(iface):  # pylint: disable=invalid-name
+def classFactory(iface):
     """Load SeilaplanPlugin class from file SeilaplanPlugin.
 
     :param iface: A QGIS interface instance.
     :type iface: QgsInterface
     """
-    #
+    
+    if DEBUG:
+        from SEILAPLAN.scripts.prepare_ui_files import remove_resource_location
+        remove_resource_location()
+    
     from .seilaplanPlugin import SeilaplanPlugin
     return SeilaplanPlugin(iface)

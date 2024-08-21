@@ -13,22 +13,50 @@ Other functions let you create a PM drawing as string or into a PM buffer.
 Execute the script to see some test drawings."""
 
 from reportlab.graphics.shapes import *
-from reportlab.graphics.renderbase import StateTracker, getStateDelta, renderScaledDrawing
+from reportlab.graphics.renderbase import getStateDelta, renderScaledDrawing
 from reportlab.pdfbase.pdfmetrics import getFont, unicode2T1
-from math import sin, cos, pi, ceil
-from reportlab.lib.utils import getStringIO, getBytesIO, open_and_read, isUnicode
-from reportlab import rl_config, ascii
+from reportlab.lib.utils import isUnicode
+from reportlab.lib.colors import toColor, white
+from reportlab import rl_config
 from .utils import setFont as _setFont, RenderPMError
 
 import os, sys
+from io import BytesIO, StringIO
+from math import sin, cos, pi, ceil
 
-try:
-    from reportlab.graphics import _renderPM
-except ImportError as errMsg:
-    raise ImportError("""No module named _renderPM\nit may be badly or not installed!
+def _getPMBackend(backend=None):
+    if not backend: backend = rl_config.renderPMBackend
+    if backend=='_renderPM':
+        try:
+            import _rl_renderPM as M
+        except ImportError as errMsg:
+            try:
+                import rlPyCairo as M
+            except ImportError:
+                raise RenderPMError("""Cannot import desired renderPM backend, {backend}.
+No module named _rl_renderPM
+it may be badly or not installed!
 You may need to install development tools
 or seek advice at the users list see
 https://pairlist2.pair.net/mailman/listinfo/reportlab-users""")
+    elif 'cairo' in backend.lower():
+        try:
+            import rlPyCairo as M
+        except ImportError as errMsg:
+            try:
+                import _rl_renderPM as M
+            except ImportError:
+                raise RenderPMError(f"""cannot import desired renderPM backend {backend}
+Seek advice at the users list see
+https://pairlist2.pair.net/mailman/listinfo/reportlab-users""")
+    else:
+        raise RenderPMError(f'Invalid renderPM backend, {backend}')
+    return M
+
+try:
+    _pmBackend = _getPMBackend(rl_config.renderPMBackend)
+except RenderPMError:
+    _pmBackend=None
 
 def _getImage():
     try:
@@ -41,6 +69,13 @@ def Color2Hex(c):
     #assert isinstance(colorobj, colors.Color) #these checks don't work well RGB
     if c: return ((0xFF&int(255*c.red)) << 16) | ((0xFF&int(255*c.green)) << 8) | (0xFF&int(255*c.blue))
     return c
+
+def CairoColor(c):
+    '''
+    c should be None or something convertible to Color
+    rlPyCairo.GState can handle Color directly in either RGB24 or ARGB32
+    '''
+    return toColor(c) if c is not None else c
 
 # the main entry point for users...
 def draw(drawing, canvas, x, y, showBoundary=rl_config._unset_):
@@ -91,7 +126,7 @@ class _PMRenderer(Renderer):
 
     def initState(self,x,y):
         deltas = self._tracker._combined[-1]
-        deltas['transform'] = self._canvas._baseCTM[0:4]+(x,y)
+        deltas['transform'] = deltas['ctm'] = self._canvas._baseCTM[0:4]+(x,y)
         self._tracker.push(deltas)
         self.applyState()
 
@@ -256,8 +291,7 @@ def _convert2pil1(im):
 def _saveAsPICT(im,fn,fmt,transparent=None):
     im = _convert2pilp(im)
     cols, rows = im.size
-    #s = _renderPM.pil2pict(cols,rows,im.tostring(),im.im.getpalette(),transparent is not None and Color2Hex(transparent) or -1)
-    s = _renderPM.pil2pict(cols,rows,(im.tobytes if hasattr(im,'tobytes') else im.tostring)(),im.im.getpalette())
+    s = _pmBackend.pil2pict(cols,rows,(im.tobytes if hasattr(im,'tobytes') else im.tostring)(),im.im.getpalette())
     if not hasattr(fn,'write'):
         with open(os.path.splitext(fn)[0]+'.'+fmt.lower(),'wb') as f:
             f.write(s)
@@ -267,35 +301,48 @@ def _saveAsPICT(im,fn,fmt,transparent=None):
     else:
         fn.write(s)
 
+_pycairoFmtsMap = dict(ARGB='ARGB32',RGBA='ARGB32',RGB='RGB24')
 BEZIER_ARC_MAGIC = 0.5522847498     #constant for drawing circular arcs w/ Beziers
 class PMCanvas:
-    def __init__(self,w,h,dpi=72,bg=0xffffff,configPIL=None,backend=rl_config.renderPMBackend):
+    def __init__(self,w,h,dpi=72,bg=0xffffff,configPIL=None,backend=None,
+                    backendFmt='RGB'):
         '''configPIL dict is passed to image save method'''
         scale = dpi/72.0
         w = int(w*scale+0.5)
         h = int(h*scale+0.5)
-        self.__dict__['_gs'] = self._getGState(w,h,bg,backend)
+        self.__dict__['_gs'] = self._getGState(w,h,bg,backend,fmt=backendFmt)
         self.__dict__['_bg'] = bg
         self.__dict__['_baseCTM'] = (scale,0,0,scale,0,0)
         self.__dict__['_clipPaths'] = []
         self.__dict__['configPIL'] = configPIL
         self.__dict__['_dpi'] = dpi
-        self.__dict__['_backend'] = backend
+        #the _rl_renderPM.gstate object doesn't support hasattr so we use this as a proxy test for 'isbuiltin' 
+        self.__dict__['_backend'] = '_renderPM' if type(self._gs._aapixbuf)==type(pow) else 'rlPyCairo'
+        self.__dict__['_backendfmt'] = backendFmt
+        self.__dict__['_colorConverter'] = CairoColor if self._backend=='rlPyCairo' else Color2Hex
         self.ctm = self._baseCTM
 
     @staticmethod
-    def _getGState(w, h, bg, backend='_renderPM', fmt='RGB24'):
+    def _getGState(w, h, bg, backend=None, fmt='RGB24'):
+        mod = _getPMBackend(backend)
+        if backend is None:
+            backend = rl_config.renderPMBackend
         if backend=='_renderPM':
-            return _renderPM.gstate(w,h,bg=bg)
-        elif backend=='rlPyCairo':
             try:
-                from rlPyCairo import GState
-            except ImportError:
-                raise RenderPMError('cannot import rlPyCairo; perhaps it needs to be installed!')
-            else:
-                return GState(w,h,bg,fmt=fmt)
-        else:
-            raise RenderPMError('Invalid backend, %r, given to PMCanvas' % backend)
+                return mod.gstate(w,h,bg=bg)
+            except TypeError:
+                try:
+                    return mod.GState(w,h,bg,fmt=fmt)
+                except:
+                    pass
+        elif 'cairo' in backend.lower():
+            fmt = fmt.upper()
+            fmt = _pycairoFmtsMap.get(fmt,fmt)
+            try:
+                return mod.GState(w,h,bg,fmt=fmt)
+            except AttributeError:
+                return mod.gstate(w,h,bg=bg)
+        raise RuntimeError(f'Cannot obtain PM graphics state using backend {backend!r}')
 
     def _drawTimeResize(self,w,h,bg=None):
         if bg is None: bg = self._bg
@@ -306,14 +353,14 @@ class PMCanvas:
         for k in A.keys():
             A[k] = getattr(gs,k)
         del gs, self._gs
-        gs = self.__dict__['_gs'] = _renderPM.gstate(w,h,bg=bg)
+        gs = self.__dict__['_gs'] = _pmBackend.gstate(w,h,bg=bg)
         for k in A.keys():
             setattr(self,k,A[k])
         gs.setFont(fN,fS)
 
     def toPIL(self):
-        im = _getImage().new('RGB', size=(self._gs.width, self._gs.height))
-        (getattr(im,'frombytes',None) or getattr(im,'fromstring'))(self._gs.pixBuf)
+        im = _getImage().new('RGBA' if self._backend=='rlPyCairo' and getattr(self,'_fmt')=='ARGB32' else 'RGB', size=(self._gs.width, self._gs.height))
+        im.frombytes(self._gs.pixBuf)
         return im
 
     def saveToFile(self,fn,fmt=None):
@@ -342,20 +389,9 @@ class PMCanvas:
         elif fmt in ('PCT','PICT'):
             return _saveAsPICT(im,fn,fmt,transparent=configPIL.get('transparent',None))
         elif fmt in ('PNG','BMP', 'PPM'):
-            if fmt=='PNG':
-                try:
-                    from PIL import PngImagePlugin
-                except ImportError:
-                    import PngImagePlugin
-            elif fmt=='BMP':
-                try:
-                    from PIL import BmpImagePlugin
-                except ImportError:
-                    import BmpImagePlugin
+            pass
         elif fmt in ('JPG','JPEG'):
             fmt = 'JPEG'
-        elif fmt in ('GIF',):
-            pass
         else:
             raise RenderPMError("Unknown image kind %s" % fmt)
         if fmt=='TIFF':
@@ -384,7 +420,7 @@ class PMCanvas:
             markfilename(fn,ext=fmt)
 
     def saveToString(self,fmt='GIF'):
-        s = getBytesIO()
+        s = BytesIO()
         self.saveToFile(s,fmt=fmt)
         return s.getvalue()
 
@@ -395,7 +431,13 @@ class PMCanvas:
         '''
         import struct
         gs = self._gs
-        pix, width, height = gs.pixBuf, gs.width, gs.height
+        if self._backend=='rlPyCairo' and gs._fmt=='ARGB32':    #pixBuf would have 4 bytes
+            gs._fmt = 'RGB24'   #force 3 bytes out until our BMP allows Alpha
+            pix = gs.pixBuf
+            gs._fmt = 'ARGB32'
+        else:
+            pix = gs.pixBuf
+        width, height = gs.width, gs.height
         f.write(struct.pack('=2sLLLLLLhh24x','BM',len(pix)+54,0,54,40,width,height,1,24))
         rowb = width * 3
         for o in range(len(pix),0,-rowb):
@@ -649,13 +691,13 @@ class PMCanvas:
         pass
 
     def setFillColor(self,aColor):
-        self.fillColor = Color2Hex(aColor)
+        self.fillColor = self._colorConverter(aColor)
         alpha = getattr(aColor,'alpha',None)
         if alpha is not None:
             self.fillOpacity = alpha
 
     def setStrokeColor(self,aColor):
-        self.strokeColor = Color2Hex(aColor)
+        self.strokeColor = self._colorConverter(aColor)
         alpha = getattr(aColor,'alpha',None)
         if alpha is not None:
             self.strokeOpacity = alpha
@@ -672,29 +714,29 @@ class PMCanvas:
     def setLineWidth(self,width):
         self.strokeWidth = width
 
-def drawToPMCanvas(d, dpi=72, bg=0xffffff, configPIL=None, showBoundary=rl_config._unset_,backend=rl_config.renderPMBackend):
+def drawToPMCanvas(d, dpi=72, bg=0xffffff, configPIL=None, showBoundary=rl_config._unset_,backend=rl_config.renderPMBackend,backendFmt='RGB'):
     d = renderScaledDrawing(d)
-    c = PMCanvas(d.width, d.height, dpi=dpi, bg=bg, configPIL=configPIL, backend=backend)
+    c = PMCanvas(d.width, d.height, dpi=dpi, bg=bg, configPIL=configPIL, backend=backend,backendFmt=backendFmt)
     draw(d, c, 0, 0, showBoundary=showBoundary)
     return c
 
-def drawToPIL(d, dpi=72, bg=0xffffff, configPIL=None, showBoundary=rl_config._unset_,backend=rl_config.renderPMBackend):
-    return drawToPMCanvas(d, dpi=dpi, bg=bg, configPIL=configPIL, showBoundary=showBoundary, backend=backend).toPIL()
+def drawToPIL(d, dpi=72, bg=0xffffff, configPIL=None, showBoundary=rl_config._unset_,backend=rl_config.renderPMBackend,backendFmt='RGB'):
+    return drawToPMCanvas(d, dpi=dpi, bg=bg, configPIL=configPIL, showBoundary=showBoundary, backend=backend,backendFmt=backendFmt).toPIL()
 
-def drawToPILP(d, dpi=72, bg=0xffffff, configPIL=None, showBoundary=rl_config._unset_,backend=rl_config.renderPMBackend):
+def drawToPILP(d, dpi=72, bg=0xffffff, configPIL=None, showBoundary=rl_config._unset_,backend=rl_config.renderPMBackend,backendFmt='RGB'):
     Image = _getImage()
-    im = drawToPIL(d, dpi=dpi, bg=bg, configPIL=configPIL, showBoundary=showBoundary,backend=backend)
+    im = drawToPIL(d, dpi=dpi, bg=bg, configPIL=configPIL, showBoundary=showBoundary,backend=backend,backendFmt=backendFmt)
     return im.convert("P", dither=Image.NONE, palette=Image.ADAPTIVE)
 
-def drawToFile(d,fn,fmt='GIF', dpi=72, bg=0xffffff, configPIL=None, showBoundary=rl_config._unset_,backend=rl_config.renderPMBackend):
+def drawToFile(d,fn,fmt='GIF', dpi=72, bg=0xffffff, configPIL=None, showBoundary=rl_config._unset_,backend=rl_config.renderPMBackend,backendFmt='RGB'):
     '''create a pixmap and draw drawing, d to it then save as a file
     configPIL dict is passed to image save method'''
-    c = drawToPMCanvas(d, dpi=dpi, bg=bg, configPIL=configPIL, showBoundary=showBoundary,backend=backend)
+    c = drawToPMCanvas(d, dpi=dpi, bg=bg, configPIL=configPIL, showBoundary=showBoundary,backend=backend,backendFmt=backendFmt)
     c.saveToFile(fn,fmt)
 
-def drawToString(d,fmt='GIF', dpi=72, bg=0xffffff, configPIL=None, showBoundary=rl_config._unset_,backend=rl_config.renderPMBackend):
-    s = getBytesIO()
-    drawToFile(d,s,fmt=fmt, dpi=dpi, bg=bg, configPIL=configPIL,backend=backend)
+def drawToString(d,fmt='GIF', dpi=72, bg=0xffffff, configPIL=None, showBoundary=rl_config._unset_,backend=rl_config.renderPMBackend,backendFmt='RGB'):
+    s = BytesIO()
+    drawToFile(d,s,fmt=fmt, dpi=dpi, bg=bg, configPIL=configPIL,backend=backend,backendFmt=backendFmt)
     return s.getvalue()
 
 save = drawToFile
@@ -737,12 +779,12 @@ def test(outDir='pmout', shout=False):
         msg = 'Problem drawing %s fmt=%s file'%(name,fmt)
         if shout or verbose>2: print(msg)
         errs.append('<br/><h2 style="color:red">%s</h2>' % msg)
-        buf = getStringIO()
+        buf = StringIO()
         traceback.print_exc(file=buf)
         errs.append('<pre>%s</pre>' % escape(buf.getvalue()))
 
     #print in a loop, with their doc strings
-    for (drawing, docstring, name) in getAllTestDrawings(doTTF=hasattr(_renderPM,'ft_get_face')):
+    for (drawing, docstring, name) in getAllTestDrawings(doTTF=hasattr(_pmBackend,'ft_get_face')):
         i = names[name] = names.setdefault(name,0)+1
         if i>1: name += '.%02d' % (i-1)
         if argv and name not in argv: continue
@@ -760,7 +802,6 @@ def test(outDir='pmout', shout=False):
                 if os.path.isfile(fullpath):
                     os.remove(fullpath)
                 if k=='pct':
-                    from reportlab.lib.colors import white
                     drawToFile(drawing,fullpath,fmt=k,configPIL={'transparent':white})
                 elif k in ['py','svg']:
                     drawing.save(formats=['py','svg'],outDir=outDir,fnRoot=fnRoot)

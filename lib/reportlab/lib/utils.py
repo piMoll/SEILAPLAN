@@ -4,19 +4,17 @@
 __version__='3.5.34'
 __doc__='''Gazillions of miscellaneous internal utility functions'''
 
-import os, sys, time, types, datetime, ast, importlib
-from functools import reduce as functools_reduce
-literal_eval = ast.literal_eval
-try:
-    from base64 import decodebytes as base64_decodebytes, encodebytes as base64_encodebytes
-except ImportError:
-    from base64 import decodestring as base64_decodebytes, encodestring as base64_encodebytes
-from reportlab import isPy3
-from reportlab.lib.logger import warnOnce
-from reportlab.lib.rltempfile import get_rl_tempfile, get_rl_tempdir, _rl_getuid
-from . rl_safe_eval import rl_safe_exec, rl_safe_eval, safer_globals
+import os, pickle, sys, time, types, datetime, importlib
+from ast import literal_eval
+from base64 import decodebytes as base64_decodebytes, encodebytes as base64_encodebytes
+from io import BytesIO
+from hashlib import md5
 
-class __UNSET__(object):
+from reportlab.lib.rltempfile import get_rl_tempfile, get_rl_tempdir
+from . rl_safe_eval import rl_safe_exec, rl_safe_eval, safer_globals, rl_extended_literal_eval
+from PIL import Image
+
+class __UNSET__:
     @staticmethod
     def __bool__():
         return False
@@ -25,16 +23,6 @@ class __UNSET__(object):
         return '__UNSET__'
     __repr__ = __str__
 __UNSET__ = __UNSET__()
-
-try:
-    import cPickle as pickle
-except ImportError:
-    import pickle
-
-try:
-    from hashlib import md5
-except ImportError:
-    import md5
 
 try:
     import platform
@@ -64,231 +52,95 @@ def isNative(v):
 #isStr is supposed to be for arbitrary stringType
 #isBytes for bytes strings only
 #isUnicode for proper unicode
-if isPy3:
-    _rl_NoneType=type(None)
-    bytesT = bytes
-    unicodeT = str
-    strTypes = (str,bytes)
-    def _digester(s):
-        return md5(s if isBytes(s) else s.encode('utf8')).hexdigest()
+_rl_NoneType=type(None)
+strTypes = (str,bytes)
+def _digester(s):
+    return md5(s if isBytes(s) else s.encode('utf8')).hexdigest()
 
-    def asBytes(v,enc='utf8'):
-        if isinstance(v,bytes): return v
-        try:
-            return v.encode(enc)
-        except:
-            annotateException('asBytes(%s,enc=%s) error: ' % (ascii(v),ascii(enc)))
+def asBytes(v,enc='utf8'):
+    if isinstance(v,bytes): return v
+    try:
+        return v.encode(enc)
+    except:
+        annotateException('asBytes(%s,enc=%s) error: ' % (ascii(v),ascii(enc)))
 
-    def asUnicode(v,enc='utf8'):
-        if isinstance(v,str): return v
-        try:
-            return v.decode(enc)
-        except:
-            annotateException('asUnicode(%s,enc=%s) error: ' % (ascii(v),ascii(enc)))
+def asUnicode(v,enc='utf8'):
+    if isinstance(v,str): return v
+    try:
+        return v.decode(enc)
+    except:
+        annotateException('asUnicode(%s,enc=%s) error: ' % (ascii(v),ascii(enc)))
 
-    def asUnicodeEx(v,enc='utf8'):
-        if isinstance(v,str): return v
-        try:
-            return v.decode(enc) if isinstance(v,bytes) else str(v)
-        except:
-            annotateException('asUnicodeEx(%s,enc=%s) error: ' % (ascii(v),ascii(enc)))
-        
-    def asNative(v,enc='utf8'):
-        return asUnicode(v,enc=enc)
+def asUnicodeEx(v,enc='utf8'):
+    if isinstance(v,str): return v
+    try:
+        return v.decode(enc) if isinstance(v,bytes) else str(v)
+    except:
+        annotateException('asUnicodeEx(%s,enc=%s) error: ' % (ascii(v),ascii(enc)))
+    
+def asNative(v,enc='utf8'):
+    return asUnicode(v,enc=enc)
 
-    uniChr = chr
+def int2Byte(i):
+    return bytes([i])
 
-    def int2Byte(i):
-        return bytes([i])
+def isStr(v):
+    return isinstance(v, (str,bytes))
 
-    def isStr(v):
-        return isinstance(v, (str,bytes))
+def isBytes(v):
+    return isinstance(v, bytes)
 
-    def isBytes(v):
-        return isinstance(v, bytes)
+def isUnicode(v):
+    return isinstance(v, str)
 
-    def isUnicode(v):
-        return isinstance(v, str)
+def isClass(v):
+    return isinstance(v, type)
 
-    def isClass(v):
-        return isinstance(v, type)
+def isNonPrimitiveInstance(x):
+    return not isinstance(x,(float,int,type,tuple,list,dict,str,bytes,complex,bool,slice,_rl_NoneType,
+        types.FunctionType,types.LambdaType,types.CodeType,
+        types.MappingProxyType,types.SimpleNamespace,
+        types.GeneratorType,types.MethodType,types.BuiltinFunctionType,
+        types.BuiltinMethodType,types.ModuleType,types.TracebackType,
+        types.FrameType,types.GetSetDescriptorType,types.MemberDescriptorType))
 
-    def isNonPrimitiveInstance(x):
-        return not isinstance(x,(float,int,type,tuple,list,dict,str,bytes,complex,bool,slice,_rl_NoneType,
-            types.FunctionType,types.LambdaType,types.CodeType,
-            types.MappingProxyType,types.SimpleNamespace,
-            types.GeneratorType,types.MethodType,types.BuiltinFunctionType,
-            types.BuiltinMethodType,types.ModuleType,types.TracebackType,
-            types.FrameType,types.GetSetDescriptorType,types.MemberDescriptorType))
+def instantiated(v):
+    return not isinstance(v,type)
 
-    def instantiated(v):
-        return not isinstance(v,type)
-
-    from string import ascii_letters, ascii_uppercase, ascii_lowercase
-
-    from io import BytesIO, StringIO
-    def getBytesIO(buf=None):
-        '''unified StringIO instance interface'''
-        if buf:
-            return BytesIO(buf)
-        return BytesIO()
-    _bytesIOType = BytesIO 
-
-    def getStringIO(buf=None):
-        '''unified StringIO instance interface'''
-        if buf:
-            return StringIO(buf)
-        return StringIO()
-
-    def bytestr(x,enc='utf8'):
-        if isinstance(x,str):
-            return x.encode(enc)
-        elif isinstance(x,bytes):
-            return x
-        else:
-            return str(x).encode(enc)
-
-    def encode_label(args):
-        return base64_encodebytes(pickle.dumps(args)).strip().decode('latin1')
-
-    def decode_label(label):
-        return pickle.loads(base64_decodebytes(label.encode('latin1')))
-
-    def rawUnicode(s):
-        '''converts first 256 unicodes 1-1'''
-        return s.decode('latin1') if not isinstance(s,str) else s
-
-    def rawBytes(s):
-        '''converts first 256 unicodes 1-1'''
-        return s.encode('latin1') if isinstance(s,str) else s
-    import builtins
-    rl_exec = getattr(builtins,'exec')
-    del builtins
-    def char2int(s):
-        return  s if isinstance(s,int) else ord(s if isinstance(s,str) else s.decode('latin1'))
-    def rl_reraise(t, v, b=None):
-        if v.__traceback__ is not b:
-            raise v.with_traceback(b)
-        raise v
-    def rl_add_builtins(**kwd):
-        import builtins
-        for k,v in kwd.items():
-            setattr(builtins,k,v)
-else:
-    bytesT = str
-    unicodeT = unicode
-    strTypes = basestring
-    if sys.hexversion >= 0x02000000:
-        def _digester(s):
-            return md5(s).hexdigest()
+def bytestr(x,enc='utf8'):
+    if isinstance(x,str):
+        return x.encode(enc)
+    elif isinstance(x,bytes):
+        return x
     else:
-        # hexdigest not available in 1.5
-        def _digester(s):
-            return join(["%02x" % ord(x) for x in md5(s).digest()], '')
+        return str(x).encode(enc)
 
-    def asBytes(v,enc='utf8'):
-        if isinstance(v,str): return v
-        try:
-            return v.encode(enc)
-        except:
-            annotateException('asBytes(%s,enc=%s) error: ' % (repr(v),repr(enc)))
+def encode_label(args):
+    return base64_encodebytes(pickle.dumps(args)).strip().decode('latin1')
 
-    def asNative(v,enc='utf8'):
-        return asBytes(v,enc=enc)
+def decode_label(label):
+    return pickle.loads(base64_decodebytes(label.encode('latin1')))
 
-    def uniChr(v):
-        return unichr(v)
+def rawUnicode(s):
+    '''converts first 256 unicodes 1-1'''
+    return s.decode('latin1') if not isinstance(s,str) else s
 
-    def isStr(v):
-        return isinstance(v, basestring)
-
-    def isBytes(v):
-        return isinstance(v, str)
-
-    def isUnicode(v):
-        return isinstance(v, unicode)
-
-    def asUnicode(v,enc='utf8'):
-        if isinstance(v,unicode): return v
-        try:
-            return v.decode(enc)
-        except:
-            annotateException('asUnicode(%s,enc=%s) error: ' % (repr(v),repr(enc)))
-
-    def asUnicodeEx(v,enc='utf8'):
-        if isinstance(v,unicode): return v
-        try:
-            return v.decode(enc) if isinstance(v,str) else str(v)
-        except:
-            annotateException('asUnicodeEx(%s,enc=%s) error: ' % (repr(v),repr(enc)))
-
-    def isClass(v):
-        return isinstance(v,(types.ClassType,type))
-
-    def isNonPrimitiveInstance(x):
-        return isinstance(x,types.InstanceType) or not isinstance(x,(float,int,long,type,tuple,list,dict,bool,unicode,str,buffer,complex,slice,types.NoneType,
-                    types.FunctionType,types.LambdaType,types.CodeType,types.GeneratorType,
-                    types.ClassType,types.UnboundMethodType,types.MethodType,types.BuiltinFunctionType,
-                    types.BuiltinMethodType,types.ModuleType,types.FileType,types.XRangeType,
-                    types.TracebackType,types.FrameType,types.EllipsisType,types.DictProxyType,
-                    types.NotImplementedType,types.GetSetDescriptorType,types.MemberDescriptorType
-                    ))
-
-    def instantiated(v):
-        return not isinstance(v,type) and hasattr(v,'__class__')
-
-    int2Byte = chr
-
-    from StringIO import StringIO
-    def getBytesIO(buf=None):
-        '''unified StringIO instance interface'''
-        if buf:
-            return StringIO(buf)
-        return StringIO()
-    getStringIO = getBytesIO
-    _bytesIOType = StringIO 
-
-    def bytestr(x,enc='utf8'):
-        if isinstance(x,unicode):
-            return x.encode(enc)
-        elif isinstance(x,str):
-            return x
-        else:
-            return str(x).encode(enc)
-    from string import letters as ascii_letters, uppercase as ascii_uppercase, lowercase as ascii_lowercase
-
-    def encode_label(args):
-        return base64_encodebytes(pickle.dumps(args)).strip()
-
-    def decode_label(label):
-        return pickle.loads(base64_decodebytes(label))
-
-    def rawUnicode(s):
-        '''converts first 256 unicodes 1-1'''
-        return s.decode('latin1') if not isinstance(s,unicode) else s
-
-    def rawBytes(s):
-        '''converts first 256 unicodes 1-1'''
-        return s.encode('latin1') if isinstance(s,unicode) else s
-
-    def rl_exec(obj, G=None, L=None):
-        '''this is unsafe'''
-        if G is None:
-            frame = sys._getframe(1)
-            G = frame.f_globals
-            if L is None:
-                L = frame.f_locals
-            del frame
-        elif L is None:
-            L = G
-        exec(obj,G, L)
-    rl_exec("""def rl_reraise(t, v, b=None):\n\traise t, v, b\n""")
-
-    char2int = ord
-    def rl_add_builtins(**kwd):
-        import __builtin__
-        for k,v in kwd.items():
-            setattr(__builtin__,k,v)
+def rawBytes(s):
+    '''converts first 256 unicodes 1-1'''
+    return s.encode('latin1') if isinstance(s,str) else s
+import builtins
+rl_exec = getattr(builtins,'exec')
+del builtins
+def char2int(s):
+    return  s if isinstance(s,int) else ord(s if isinstance(s,str) else s.decode('latin1'))
+def rl_reraise(t, v, b=None):
+    if v.__traceback__ is not b:
+        raise v.with_traceback(b)
+    raise v
+def rl_add_builtins(**kwd):
+    import builtins
+    for k,v in kwd.items():
+        setattr(builtins,k,v)
 
 def zipImported(ldr=None):
     try:
@@ -534,35 +386,7 @@ def recursiveImport(modulename, baseDir=None, noCWD=0, debug=0):
         if debug:
             print('===== restore sys.path=%s' % repr(opath))
 
-def import_zlib():
-    try:
-        import zlib
-    except ImportError:
-        zlib = None
-        from reportlab.rl_config import ZLIB_WARNINGS
-        if ZLIB_WARNINGS: warnOnce('zlib not available')
-    return zlib
-
-# Image Capability Detection.  Set a flag haveImages
-# to tell us if either PIL or Java imaging libraries present.
-# define PIL_Image as either None, or an alias for the PIL.Image
-# module, as there are 2 ways to import it
-if sys.platform[0:4] == 'java':
-    try:
-        import javax.imageio
-        import java.awt.image
-        haveImages = 1
-    except:
-        haveImages = 0
-else:
-    try:
-        from PIL import Image
-    except ImportError:
-        try:
-            import Image
-        except ImportError:
-            Image = None
-    haveImages = Image is not None
+haveImages = Image is not None
 
 class ArgvDictValue:
     '''A type to allow clients of getArgvDict to specify a conversion function'''
@@ -644,50 +468,45 @@ def open_for_read_by_name(name,mode='b'):
         name = _startswith_rl(name)
         s = __rl_loader__.get_data(name)
         if 'b' not in mode and os.linesep!='\n': s = s.replace(os.linesep,'\n')
-        return getBytesIO(s)
+        return BytesIO(s)
+
+from urllib.parse import unquote, urlparse
+from urllib.request import urlopen
+def rlUrlRead(name):
+    return urlopen(name).read()
 
 def open_for_read(name,mode='b'):
     #auto initialized function`
-    if not isPy3:
-        import urllib2, urllib
-        from urlparse import urlparse
-        urlopen=urllib2.urlopen
-        def datareader(url,opener=urllib.URLopener().open):
-            return opener(url).read()
-        del urllib, urllib2
-    else:
-        from urllib.request import urlopen
-        from urllib.parse import unquote, urlparse
-        #copied here from urllib.URLopener.open_data because
-        # 1) they want to remove it
-        # 2) the existing one is borken
-        def datareader(url, unquote=unquote):
-            """Use "data" URL."""
-            # ignore POSTed data
-            #
-            # syntax of data URLs:
-            # dataurl   := "data:" [ mediatype ] [ ";base64" ] "," data
-            # mediatype := [ type "/" subtype ] *( ";" parameter )
-            # data      := *urlchar
-            # parameter := attribute "=" value
-            try:
-                typ, data = url.split(',', 1)
-            except ValueError:
-                raise IOError('data error', 'bad data URL')
-            if not typ:
-                typ = 'text/plain;charset=US-ASCII'
-            semi = typ.rfind(';')
-            if semi >= 0 and '=' not in typ[semi:]:
-                encoding = typ[semi+1:]
-                typ = typ[:semi]
-            else:
-                encoding = ''
-            if encoding == 'base64':
-                # XXX is this encoding/decoding ok?
-                data = base64_decodebytes(data.encode('ascii'))
-            else:
-                data = unquote(data).encode('latin-1')
-            return data
+    #copied here from urllib.URLopener.open_data because
+    # 1) they want to remove it
+    # 2) the existing one is borken
+    def datareader(url, unquote=unquote):
+        """Use "data" URL."""
+        # ignore POSTed data
+        #
+        # syntax of data URLs:
+        # dataurl   := "data:" [ mediatype ] [ ";base64" ] "," data
+        # mediatype := [ type "/" subtype ] *( ";" parameter )
+        # data      := *urlchar
+        # parameter := attribute "=" value
+        try:
+            typ, data = url.split(',', 1)
+        except ValueError:
+            raise IOError('data error', 'bad data URL')
+        if not typ:
+            typ = 'text/plain;charset=US-ASCII'
+        semi = typ.rfind(';')
+        if semi >= 0 and '=' not in typ[semi:]:
+            encoding = typ[semi+1:]
+            typ = typ[:semi]
+        else:
+            encoding = ''
+        if encoding == 'base64':
+            # XXX is this encoding/decoding ok?
+            data = base64_decodebytes(data.encode('ascii'))
+        else:
+            data = unquote(data).encode('latin-1')
+        return data
     from reportlab.rl_config import trustedHosts, trustedSchemes
     if trustedHosts:
         import re, fnmatch
@@ -708,7 +527,7 @@ def open_for_read(name,mode='b'):
                     purl = urlparse(name)
                     if purl[0] and not ((purl[0] in ('data','file') or trustedHosts.match(purl[1])) and (purl[0] in trustedSchemes)):
                         raise ValueError('Attempted untrusted host access')
-                return getBytesIO(datareader(name) if name[:5].lower()=='data:' else urlopen(name).read())
+                return BytesIO((datareader if name[:5].lower()=='data:' else rlUrlRead)(name))
             except:
                 raise IOError('Cannot open resource "%s"' % name)
     globals()['open_for_read'] = open_for_read
@@ -756,24 +575,14 @@ def rl_getmtime(pn,os_path_isfile=os.path.isfile,os_path_normpath=os.path.normpa
     d = e[6]
     return time_mktime((((d>>9)&0x7f)+1980,(d>>5)&0xf,d&0x1f,(s>>11)&0x1f,(s>>5)&0x3f,(s&0x1f)<<1,0,0,0))
 
-if isPy3 and sys.version_info[:2]>=(3,4):
-    from importlib import util as importlib_util
-    def __rl_get_module__(name,dir):
-        for ext in ('.py','.pyw','.pyo','.pyc','.pyd'):
-            path = os.path.join(dir,name+ext)
-            if os.path.isfile(path):
-                spec = importlib_util.spec_from_file_location(name,path)
-                return spec.loader.load_module()
-        raise ImportError('no suitable file found')
-else:
-    import imp
-    def __rl_get_module__(name,dir):
-        f, p, desc= imp.find_module(name,[dir])
-        try:
-            return imp.load_module(name,f,p,desc)
-        finally:
-            if f:
-                f.close()
+from importlib import util as importlib_util
+def __rl_get_module__(name,dir):
+    for ext in ('.py','.pyw','.pyo','.pyc','.pyd'):
+        path = os.path.join(dir,name+ext)
+        if os.path.isfile(path):
+            spec = importlib_util.spec_from_file_location(name,path)
+            return spec.loader.load_module()
+    raise ImportError('no suitable file found')
 
 def rl_get_module(name,dir):
     if name in sys.modules:
@@ -802,8 +611,8 @@ def _isPILImage(im):
     except AttributeError:
         return 0
 
-class ImageReader(object):
-    "Wraps up either PIL or Java to get data from bitmaps"
+class ImageReader:
+    "Wraps up PIL to get data from bitmaps"
     _cache={}
     _max_image_size = None
     def __init__(self, fileName,ident=None):
@@ -829,46 +638,19 @@ class ImageReader(object):
         else:
             try:
                 from reportlab.rl_config import imageReaderFlags
-                self.fp = open_for_read(fileName,'b')
-                if isinstance(self.fp,_bytesIOType): imageReaderFlags=0 #avoid messing with already internal files
-                if imageReaderFlags>0:  #interning
-                    data = self.fp.read()
-                    if imageReaderFlags&2:  #autoclose
-                        try:
-                            self.fp.close()
-                        except:
-                            pass
-                    if imageReaderFlags&4:  #cache the data
-                        if not self._cache:
-                            from rl_config import register_reset
-                            register_reset(self._cache.clear)
-                        data=self._cache.setdefault(_digester(data),data)
-                    self.fp=getBytesIO(data)
-                elif imageReaderFlags==-1 and isinstance(fileName,str):
-                    #try Ralf Schmitt's re-opening technique of avoiding too many open files
-                    self.fp.close()
-                    del self.fp #will become a property in the next statement
-                    self.__class__=LazyImageReader
-                if haveImages:
-                    #detect which library we are using and open the image
-                    if not self._image:
-                        self._image = self._read_image(self.fp)
-                        self.check_pil_image_size(self._image)
-                    if getattr(self._image,'format',None)=='JPEG': self.jpeg_fh = self._jpeg_fh
-                else:
-                    from reportlab.pdfbase.pdfutils import readJPEGInfo
-                    try:
-                        self._width,self._height, c, dpi = readJPEGInfo(self.fp)
-                    except:
-                        annotateException('\nImaging Library not available, unable to import bitmaps only jpegs\nfileName=%r identity=%s'%(fileName,self.identity()))
-                    size = self._width*self._height*c
-                    if self._max_image_size is not None and size>self._max+image_size:
-                        raise MemoryError('JPEG %s color %s x %s image would use %s > %s bytes'
-                                            %(c,self._width,self._height,size,self._max_image_size))
+                if imageReaderFlags != 0:
+                    raise ValueError('imageReaderFlags values other than 0 are no longer supported; all images are interned now')
+                fp = open_for_read(fileName,'b')
+                if not isinstance(fp, BytesIO):
+                    tfp, fp = fp, BytesIO(fp.read())
+                    tfp.close()
+                    del tfp
+                self.fp = fp
+                self._image = self._read_image(self.fp)
+                self._image.fileName = fileName if isinstance(fileName,str) else repr(fileName)
+                self.check_pil_image_size(self._image)
+                if getattr(self._image,'format',None)=='JPEG':
                     self.jpeg_fh = self._jpeg_fh
-                    self._data = self.fp.read()
-                    self._dataA=None
-                    self.fp.seek(0)
             except:
                 annotateException('\nfileName=%r identity=%s'%(fileName,self.identity()))
 
@@ -881,11 +663,7 @@ class ImageReader(object):
         return '[%s@%s%s%s]' % (self.__class__.__name__,hex(id(self)),ident and (' ident=%r' % ident) or '',fn and (' filename=%r' % fn) or '')
 
     def _read_image(self,fp):
-        if sys.platform[0:4] == 'java':
-            from javax.imageio import ImageIO
-            return ImageIO.read(fp)
-        else:
-            return Image.open(fp)
+        return Image.open(fp)
 
     @classmethod
     def check_pil_image_size(cls, im):
@@ -914,11 +692,7 @@ class ImageReader(object):
 
     def getSize(self):
         if (self._width is None or self._height is None):
-            if sys.platform[0:4] == 'java':
-                self._width = self._image.getWidth()
-                self._height = self._image.getHeight()
-            else:
-                self._width, self._height = self._image.size
+            self._width, self._height = self._image.size
         return (self._width, self._height)
 
     def getRGBData(self):
@@ -926,42 +700,24 @@ class ImageReader(object):
         try:
             if self._data is None:
                 self._dataA = None
-                if sys.platform[0:4] == 'java':
-                    import jarray
-                    from java.awt.image import PixelGrabber
-                    width, height = self.getSize()
-                    buffer = jarray.zeros(width*height, 'i')
-                    pg = PixelGrabber(self._image, 0,0,width,height,buffer,0,width)
-                    pg.grabPixels()
-                    # there must be a way to do this with a cast not a byte-level loop,
-                    # I just haven't found it yet...
-                    pixels = []
-                    a = pixels.append
-                    for i in range(len(buffer)):
-                        rgb = buffer[i]
-                        a(chr((rgb>>16)&0xff))
-                        a(chr((rgb>>8)&0xff))
-                        a(chr(rgb&0xff))
-                    self._data = ''.join(pixels)
+                im = self._image
+                mode = self.mode = im.mode
+                if mode in ('LA','RGBA'):
+                    if getattr(Image,'VERSION','').startswith('1.1.7'):
+                        im.load()
+                    self._dataA = ImageReader(im.split()[3 if mode=='RGBA' else 1])
+                    nm = mode[:-1]
+                    im = im.convert(nm)
+                    self.mode = nm
+                elif mode not in ('L','RGB','CMYK'):
+                    if im.format=='PNG' and im.mode=='P' and 'transparency' in im.info:
+                        im = im.convert('RGBA')
+                        self._dataA = ImageReader(im.split()[3])
+                        im = im.convert('RGB')
+                    else:
+                        im = im.convert('RGB')
                     self.mode = 'RGB'
-                else:
-                    im = self._image
-                    mode = self.mode = im.mode
-                    if mode in ('LA','RGBA'):
-                        if getattr(Image,'VERSION','').startswith('1.1.7'): im.load()
-                        self._dataA = ImageReader(im.split()[3 if mode=='RGBA' else 1])
-                        nm = mode[:-1]
-                        im = im.convert(nm)
-                        self.mode = nm
-                    elif mode not in ('L','RGB','CMYK'):
-                        if im.format=='PNG' and im.mode=='P' and 'transparency' in im.info:
-                            im = im.convert('RGBA')
-                            self._dataA = ImageReader(im.split()[3])
-                            im = im.convert('RGB')
-                        else:
-                            im = im.convert('RGB')
-                        self.mode = 'RGB'
-                    self._data = (im.tobytes if hasattr(im, 'tobytes') else im.tostring)()  #make pillow and PIL both happy, for now
+                self._data = (im.tobytes if hasattr(im, 'tobytes') else im.tostring)()  #make pillow and PIL both happy, for now
             return self._data
         except:
             annotateException('\nidentity=%s'%self.identity())
@@ -971,37 +727,25 @@ class ImageReader(object):
         return width, height, self.getRGBData()
 
     def getTransparent(self):
-        if sys.platform[0:4] == 'java':
-            return None
-        else:
-            if "transparency" in self._image.info:
-                transparency = self._image.info["transparency"] * 3
-                palette = self._image.palette
+        if "transparency" in self._image.info:
+            transparency = self._image.info["transparency"] * 3
+            palette = self._image.palette
+            try:
+                palette = palette.palette
+            except:
                 try:
-                    palette = palette.palette
+                    palette = palette.data
                 except:
-                    try:
-                        palette = palette.data
-                    except:
-                        return None
-                if isPy3:
-                    return palette[transparency:transparency+3]
-                else:
-                    return [ord(c) for c in palette[transparency:transparency+3]]
-            else:
-                return None
+                    return None
+            return palette[transparency:transparency+3]
+        else:
+            return None
 
 class LazyImageReader(ImageReader): 
-    def fp(self): 
-        return open_for_read(self.fileName, 'b') 
-    fp=property(fp) 
-
-    def _image(self):
-        return self._read_image(self.fp)
-    _image=property(_image) 
+    pass #now same as base class since we intern everything
 
 def getImageData(imageFileName):
-    "Get width, height and RGB pixels from image file.  Wraps Java/PIL"
+    "Get width, height and RGB pixels from image file.  Wraps PIL"
     try:
         return imageFileName.getImageData()
     except AttributeError:
@@ -1034,7 +778,7 @@ class DebugMemo:
     of information which are also printed in the show() method.
     '''
     def __init__(self,fn='rl_dbgmemo.dbg',mode='w',getScript=1,modules=(),capture_traceback=1, stdout=None, **kw):
-        import time, socket
+        import socket
         self.fn = fn
         if not stdout: 
             self.stdout = sys.stdout
@@ -1047,7 +791,7 @@ class DebugMemo:
         self.store = store = {}
         if capture_traceback and sys.exc_info() != (None,None,None):
             import traceback
-            s = getBytesIO()
+            s = BytesIO()
             traceback.print_exc(None,s)
             store['__traceback'] = s.getvalue()
         cwd=os.getcwd()
@@ -1138,7 +882,7 @@ class DebugMemo:
             pickle.dump(self.store,f)
         except:
             S=self.store.copy()
-            ff=getBytesIO()
+            ff=BytesIO()
             for k,v in S.items():
                 try:
                     pickle.dump({k:v},ff)
@@ -1155,7 +899,7 @@ class DebugMemo:
             f.close()
 
     def dumps(self):
-        f = getBytesIO()
+        f = BytesIO()
         self._dump(f)
         return f.getvalue()
 
@@ -1170,7 +914,7 @@ class DebugMemo:
             f.close()
 
     def loads(self,s):
-        self._load(getBytesIO(s))
+        self._load(BytesIO(s))
 
     def _show_module_versions(self,k,v):
         self._writeln(k[2:])
@@ -1330,30 +1074,16 @@ def escapeTextOnce(text):
     text = text.replace(u'&amp;lt;', u'&lt;')
     return text
 
-if isPy3:
-    def fileName2FSEnc(fn):
-        if isUnicode(fn):
-            return  fn
-        else:
-            for enc in fsEncodings:
-                try:
-                    return fn.decode(enc)
-                except:
-                    pass
-        raise ValueError('cannot convert %r to filesystem encoding' % fn)
-else:
-    def fileName2FSEnc(fn):
-        '''attempt to convert a filename to utf8'''
-        from reportlab.rl_config import fsEncodings
-        if isUnicode(fn):
-            return asBytes(fn)
-        else:
-            for enc in fsEncodings:
-                try:
-                    return fn.decode(enc).encode('utf8')
-                except:
-                    pass
-        raise ValueError('cannot convert %r to utf8 for file path name' % fn)
+def fileName2FSEnc(fn):
+    if isUnicode(fn):
+        return  fn
+    else:
+        for enc in fsEncodings:
+            try:
+                return fn.decode(enc)
+            except:
+                pass
+    raise ValueError('cannot convert %r to filesystem encoding' % fn)
 
 import itertools
 def prev_this_next(items):
@@ -1519,7 +1249,7 @@ class FixedOffsetTZ(datetime.tzinfo):
     def dst(self, dt):
         return datetime.timedelta(0)
 
-class TimeStamp(object):
+class TimeStamp:
     def __init__(self,invariant=None):
         if invariant is None:
             from reportlab.rl_config import invariant
@@ -1550,19 +1280,14 @@ class TimeStamp(object):
 
     @property
     def asctime(self):
-        a = time.asctime(self.lt)
-        if not isPy3:
-            a = a.split()
-            a[2] = a[2].lstrip('0')
-            a = ' '.join(a)
-        return a
+        return time.asctime(self.lt)
 
 def recursiveGetAttr(obj, name, g=None):
     "Can call down into e.g. object1.object2[4].attr"
-    if not isStr(name): raise TypeError('invalid reursive acess using %r' % name)
+    if not isStr(name): raise TypeError('invalid recursive access of %s.%s' % (repr(obj),name))
     name = asNative(name)
     name = name.strip()
-    if not name: raise ValueError('empty recursive access')
+    if not name: raise ValueError('empty recursive access of %s' % repr(obj))
     dot = '.' if name and name[0] not in '[.(' else ''
     return rl_safe_eval('obj%s%s'%(dot,name), g={}, l=dict(obj=obj))
 

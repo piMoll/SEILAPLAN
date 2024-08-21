@@ -6,11 +6,12 @@ __doc__=''
 # pdfutils.py - everything to do with images, streams,
 # compression, and some constants
 
-import sys
 import os
 import binascii
+from io import BytesIO
+
 from reportlab import rl_config
-from reportlab.lib.utils import getBytesIO, ImageReader, isUnicode, isPy3
+from reportlab.lib.utils import ImageReader, isUnicode
 from reportlab.lib.rl_accel import asciiBase85Encode, asciiBase85Decode
 
 def _chunker(src,dst=[],chunkSize=60):
@@ -172,7 +173,7 @@ def _AsciiHexEncode(input):
     Helper function used by images."""
     if isUnicode(input):
         input = input.encode('utf-8')
-    output = getBytesIO()
+    output = BytesIO()
     output.write(binascii.b2a_hex(input))
     output.write(b'>')
     return output.getvalue()

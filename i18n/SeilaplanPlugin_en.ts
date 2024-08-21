@@ -137,6 +137,11 @@
         <translation>Slope</translation>
     </message>
     <message>
+        <location filename="../tools/outputReport.py" line="45"/>
+        <source>St.</source>
+        <translation>Supp.</translation>
+    </message>
+    <message>
         <location filename="../tools/outputReport.py" line="435"/>
         <source>Feld</source>
         <translation>Span</translation>
@@ -215,7 +220,7 @@
         <location filename="../tools/outputReport.py" line="137"/>
         <source>gewaehlte Grundspannung bei der Anfangsstuetze</source>
         <translatorcomment>Selected cable tensile force at first support</translatorcomment>
-        <translation>Pre-stress tensile force of unloaded skyline at first support</translation>
+        <translation>Pre-stress tensile force of unloaded skyline at starting point</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="142"/>
@@ -480,7 +485,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="277"/>
         <source>(Leerseilknickwinkel 2)</source>
-        <translation>(Rope deflection angle of the unloaded skyline &gt; 1°)</translation>
+        <translation>(Rope deflection angle of the unloaded skyline &gt; _LeerKnickMit_°)</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="270"/>
@@ -746,6 +751,31 @@ loaded skyline</translation>
         <translation>Safety factor of skyline</translation>
     </message>
     <message>
+        <location filename="../tools/outputReport.py" line="298"/>
+        <source>Grenzwert min. Leerseilknickwinkel mit Niederhaltelasche</source>
+        <translation>Threshold for min. rope deflection angle (unloaded) with a hold-down lug</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="298"/>
+        <source>Grenzwert min. Leerseilknickwinkel ohne Niederhaltelasche</source>
+        <translation>Threshold for min. rope deflection angle (unloaded) without a hold-down lug</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="298"/>
+        <source>Grenzwert max. Lastseilknickwinkel Stuetze</source>
+        <translation>Threshold for max. rope deflection angle (loaded) at support</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="298"/>
+        <source>Grenzwert max. Lastseilknickwinkel Endmast</source>
+        <translation>Threshold for max. rope deflection angle (loaded) at final support</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="298"/>
+        <source>Bundstelle ueber Sattelleiste</source>
+        <translation>Mounting height of the skyline saddle</translation>
+    </message>
+    <message>
         <location filename="../tools/outputReport.py" line="465"/>
         <source>Total</source>
         <translation>Total</translation>
@@ -872,6 +902,16 @@ loaded skyline</translation>
         <location filename="../gui/adjustmentDialog.py" line="377"/>
         <source>Gesamtlast</source>
         <translation>Total load</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="378"/>
+        <source>Erklaerung Tragseilspannkraft (Anfangspunkt)</source>
+        <translation>Basic tension force at the starting point</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="377"/>
+        <source>Tragseilspannkraft (Anfangspunkt)</source>
+        <translation>Pre-stress tensile (start point)</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="439"/>
@@ -1009,210 +1049,189 @@ loaded skyline</translation>
 <context>
     <name>AdjustmentDialogUI</name>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="638"/>
+        <location filename="../gui/adjustmentDialog.ui" line="638"/>
         <source>Manuelle Anpassung</source>
         <translatorcomment>Internet</translatorcomment>
-        <translation>Manual adjustment</translation>
+        <translation>SEILAPLAN - Manual adjustment</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="689"/>
+        <location filename="../gui/adjustmentDialog.ui" line="689"/>
         <source>Neuberechnung...</source>
         <translatorcomment>Internet</translatorcomment>
         <translation>Recalculation...</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="639"/>
+        <location filename="../gui/adjustmentDialog.ui" line="639"/>
         <source>Manuelle Anpassung der Seillinie</source>
         <translatorcomment>HeProMo</translatorcomment>
         <translation>Manual adjustment of the cable road</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="690"/>
+        <location filename="../gui/adjustmentDialog.ui" line="690"/>
         <source>Manuelle Anpassungen verwerfen und zurueck zum Startfenster wechseln</source>
         <translation>Discard the manual adjustments and return to the start window</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="691"/>
+        <location filename="../gui/adjustmentDialog.ui" line="691"/>
         <source>zurueck zum Startfenster</source>
         <translation>Return to start window</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="692"/>
+        <location filename="../gui/adjustmentDialog.ui" line="692"/>
         <source>Plugin beenden</source>
         <translation>Close plugin</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="693"/>
+        <location filename="../gui/adjustmentDialog.ui" line="693"/>
         <source>Schliessen</source>
         <translatorcomment>Internet</translatorcomment>
         <translation>Close</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="694"/>
+        <location filename="../gui/adjustmentDialog.ui" line="694"/>
         <source>Ergebnisse speichern</source>
         <translation>Save results</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="695"/>
+        <location filename="../gui/adjustmentDialog.ui" line="695"/>
         <source>Speichern</source>
         <translatorcomment>Internet</translatorcomment>
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="646"/>
+        <location filename="../gui/adjustmentDialog.ui" line="646"/>
         <source>Stuetzen</source>
         <translatorcomment>HeProMo</translatorcomment>
         <translation>Supports</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="640"/>
+        <location filename="../gui/adjustmentDialog.ui" line="640"/>
         <source>Feinjustierung der Stuetzen</source>
         <translation>Adjustment of supports</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="671"/>
-        <source>Nr.</source>
-        <translatorcomment>Internet</translatorcomment>
-        <translation>No.</translation>
+        <location filename="../gui/adjustmentDialog.ui" line="665"/>
+        <source>Parameter</source>
+        <translation>Parameters</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="642"/>
-        <source>Stuetzenbezeichnung</source>
-        <translation>Support designation</translation>
-    </message>
-    <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="643"/>
-        <source>Horiz.distanz</source>
-        <translation>Horizontal dist.</translation>
-    </message>
-    <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="644"/>
-        <source>Stuetzenhoehe</source>
-        <translation>Support height</translation>
-    </message>
-    <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="645"/>
-        <source>Neigung</source>
-        <translation>Slope</translation>
-    </message>
-    <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="665"/>
-        <source>Tragsystem</source>
-        <translation>Design parameters</translation>
-    </message>
-    <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="654"/>
+        <location filename="../gui/adjustmentDialog.ui" line="654"/>
         <source>kN/m</source>
         <translation>kN/m</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="658"/>
+        <location filename="../gui/adjustmentDialog.ui" line="658"/>
         <source>Gesamtlast</source>
         <translation>Weight of the load incl. carriage</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="657"/>
+        <location filename="../gui/adjustmentDialog.ui" line="657"/>
         <source>kN</source>
         <translation>kN</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="659"/>
+        <location filename="../gui/adjustmentDialog.ui" line="659"/>
         <source>Gewicht Rueckholseil</source>
         <translatorcomment>hier gibt es unterschiedliche Schreibweisen: haul-back line</translatorcomment>
         <translation>Self-weight of haulback line</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="647"/>
+        <location filename="../gui/adjustmentDialog.ui" line="647"/>
         <source>mm</source>
         <translation>mm</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="662"/>
+        <location filename="../gui/adjustmentDialog.ui" line="662"/>
         <source>Grundspannung Tragseil (Anfangssp.)</source>
         <translation>Pre-stress tensile force of unloaded skyline (start point)</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="663"/>
+        <location filename="../gui/adjustmentDialog.ui" line="663"/>
         <source>Gewicht Tragseil</source>
         <translation>Self-weight of skyline</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="652"/>
+        <location filename="../gui/adjustmentDialog.ui" line="652"/>
         <source>Durchmesser Tragseil</source>
         <translation>Diameter of skyline</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="660"/>
+        <location filename="../gui/adjustmentDialog.ui" line="660"/>
         <source>Minimaler Abstand Tragseil - Boden</source>
         <translation>Minimal clearance between skyline and ground</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="656"/>
+        <location filename="../gui/adjustmentDialog.ui" line="656"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="648"/>
+        <location filename="../gui/adjustmentDialog.ui" line="648"/>
         <source>Gewicht Zugseil</source>
         <translation>Self-weight of mainline</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="651"/>
+        <location filename="../gui/adjustmentDialog.ui" line="651"/>
         <source>Mindestbruchkraft Tragseil</source>
         <translation>Minimum breaking strength of skyline</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="668"/>
+        <location filename="../gui/adjustmentDialog.ui" line="668"/>
         <source>Kennwerte</source>
         <translation>Structural design</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="666"/>
+        <location filename="../gui/adjustmentDialog.ui" line="666"/>
         <source>Kennwerte und Maximalwerte</source>
         <translation>Threshold and current values for structural design criteria</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="667"/>
+        <location filename="../gui/adjustmentDialog.ui" line="667"/>
         <source>Klick auf Zeile markiert Position der Grenzwert-Ueberschreitung im Diagramm.</source>
         <translation>By clicking on the row, the corresponding values are displayed in the diagram.</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="678"/>
+        <location filename="../gui/adjustmentDialog.ui" line="678"/>
         <source>?</source>
         <translation>?</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="664"/>
+        <location filename="../gui/adjustmentDialog.ui" line="664"/>
         <source>Anlagetyp</source>
         <translation>Cable yarder type</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="688"/>
+        <location filename="../gui/adjustmentDialog.ui" line="664"/>
+        <source>Sicherheitsfaktor</source>
+        <translation>Safety factor</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.ui" line="688"/>
         <source>Kopfdaten</source>
         <translation>Header data</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="682"/>
+        <location filename="../gui/adjustmentDialog.ui" line="682"/>
         <source>Projektnummer</source>
         <translation>Project number</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="683"/>
+        <location filename="../gui/adjustmentDialog.ui" line="683"/>
         <source>Gemeinde</source>
         <translation>Municipality</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="684"/>
+        <location filename="../gui/adjustmentDialog.ui" line="684"/>
         <source>Waldort</source>
         <translation>Forest site</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="685"/>
+        <location filename="../gui/adjustmentDialog.ui" line="685"/>
         <source>Projektverfasser</source>
         <translation>Project author</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="686"/>
+        <location filename="../gui/adjustmentDialog.ui" line="686"/>
         <source>Bemerkungen
 (erscheint in Berichten)</source>
         <translation>Notes
@@ -1220,44 +1239,64 @@ loaded skyline</translation>
 to the report)</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="681"/>
+        <location filename="../gui/adjustmentDialog.ui" line="681"/>
         <source>Vogelperspektive</source>
         <translation>Bird’s eye view</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="669"/>
+        <location filename="../gui/adjustmentDialog.ui" line="669"/>
         <source>Position Stuetze</source>
         <translation>Position of support</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="672"/>
+        <location filename="../gui/adjustmentDialog.ui" line="672"/>
         <source>Kategorie</source>
         <translation>Category</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="674"/>
+        <location filename="../gui/adjustmentDialog.ui" line="674"/>
         <source>Ausrichtung Abspannseile</source>
         <translation>Align. anchor ropes</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="676"/>
+        <location filename="../gui/adjustmentDialog.ui" line="676"/>
         <source>Stuetzenbez.</source>
         <translation>Supp. design.</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="677"/>
+        <location filename="../gui/adjustmentDialog.ui" line="677"/>
         <source>Konfiguration Vogelperspektive</source>
         <translation>Configuration of the bird&apos;s eye view</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="679"/>
+        <location filename="../gui/adjustmentDialog.ui" line="679"/>
         <source>Darstellung der Seillinie und Stuetzen aus der Vogelperspektive.</source>
         <translation>Bird&apos;s eye view of the cable road and the intermediate supports.</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="680"/>
+        <location filename="../gui/adjustmentDialog.ui" line="680"/>
         <source>Hintergrundkarte laden um sie in der Vogelperspektive darzustellen.</source>
         <translation>Load background map to show it in bird&apos;s eye view.</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.ui" line="656"/>
+        <source>Nr.</source>
+        <translation>No.</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.ui" line="675"/>
+        <source>Navigation</source>
+        <translation>Navigation</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.ui" line="676"/>
+        <source>Diagrammanzeige</source>
+        <translation>Diagram display</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.ui" line="546"/>
+        <source>Parameterset auswaehlen</source>
+        <translation>Select a parameter set</translation>
     </message>
 </context>
 <context>
@@ -1635,7 +1674,39 @@ Please change the input.</translation>
     </message>
 </context>
 <context>
-    <name>PoleRow</name>
+    <name>CustomPoleWidget</name>
+    <message>
+        <location filename="../gui/poleWidget.py" line="103"/>
+        <source>Nr.</source>
+        <translatorcomment>Internet</translatorcomment>
+        <translation>No.</translation>
+    </message>
+    <message>
+        <location filename="../gui/poleWidget.py" line="103"/>
+        <source>Stuetzenbezeichnung</source>
+        <translation>Support designation</translation>
+    </message>
+    <message>
+        <location filename="../gui/poleWidget.py" line="103"/>
+        <source>Horiz.distanz</source>
+        <translation>Horiz. dist.</translation>
+    </message>
+    <message>
+        <location filename="../gui/poleWidget.py" line="103"/>
+        <source>Stuetzenhoehe</source>
+        <translation>Supp. height</translation>
+    </message>
+    <message>
+        <location filename="../gui/poleWidget.py" line="103"/>
+        <source>Neigung</source>
+        <translation>Slope</translation>
+    </message>
+    <message>
+        <location filename="../gui/poleWidget.py" line="103"/>
+        <source>O Bundst.</source>
+        <translatorcomment>Achtung, Platzprobleme! Bitte Übersetzung prüfen.</translatorcomment>
+        <translation>Ø attach. p.</translation>
+    </message>
     <message>
         <location filename="../gui/poleWidget.py" line="411"/>
         <source>Fuegt eine neue Stuetze nach dieser hinzu</source>
@@ -1821,8 +1892,18 @@ Please change the input.</translation>
     <name>ProjectConfHandler</name>
     <message>
         <location filename="../tools/configHandler_project.py" line="446"/>
-        <source>Bitte definieren Sie gueltige Start- und Endkoordinaten</source>
-        <translation>Please define valid start and end coordinates</translation>
+        <source>Bitte definieren Sie Terraindaten</source>
+        <translation>Please define the terrain data</translation>
+    </message>
+    <message>
+        <location filename="../tools/configHandler_project.py" line="446"/>
+        <source>Bitte zeichnen Sie Start- und Endpunkt der Seillinie in die Karte ein (Schaltflaeche zeichnen)</source>
+        <translation>Please draw the starting point and the end point of the cable road on the map (&quot;draw&quot; button)</translation>
+    </message>
+    <message>
+        <location filename="../tools/configHandler_project.py" line="446"/>
+        <source>Bitte zeichnen Sie die Seillinie in die Karte (Schaltflaeche zeichnen) oder definieren sie Start- und Endkoordinaten manuell</source>
+        <translation>Please draw the cable road on the map (&quot;draw&quot; button) or define the coordinates of the cable road manually.</translation>
     </message>
     <message>
         <location filename="../tools/configHandler_project.py" line="448"/>
@@ -2318,6 +2399,30 @@ to the report)</translation>
         <source>Hintergrundkarte laden</source>
         <translation>Load background map</translation>
     </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1888"/>
+        <source>Grenzwert min. Leerseilknickwinkel
+mit ohne Niederhaltelasche</source>
+        <translation>Threshold value for min. rope deflection angle,
+unloaded (with/without a hold-down lug)</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1986"/>
+        <source>Grenzwert max. Lastseilknickwinkel
+Stuetze Endmast</source>
+        <translation>Threshold value for max. rope deflection angle,
+loaded (with/without a hold-down lug)</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="2171"/>
+        <source>°</source>
+        <translation>°</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="2038"/>
+        <source>Bundstelle ueber Sattelleiste</source>
+        <translation>Mounting height of the skyline saddle</translation>
+    </message>
 </context>
 <context>
     <name>SeilaplanPlugin</name>
@@ -2365,6 +2470,21 @@ to the report)</translation>
 </context>
 <context>
     <name>SeilaplanPluginDialog</name>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
+        <source>Start- Endpunkt auf dem Gelaendeprofil definieren</source>
+        <translation>Define starting / end point on the terrain profile</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
+        <source>Koordinate kann nicht manuell veraendert werden, benutzen Sie die Schaltflaeche zeichnen</source>
+        <translation>Coordinate cannot be changed manually, use the &quot;draw&quot; button</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
+        <source>Bitte erst Terraindaten definieren</source>
+        <translation>Please define terrain data first</translation>
+    </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
         <source>Parameterset loeschen</source>
@@ -2590,13 +2710,43 @@ The optimal pre-stress tensile force (unloaded skyline) is calculated. The optim
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="960"/>
-        <source>Europaweit wird ein Sicherheitsfaktor von 3.0 fuer das Tragseil verwendet.</source>
-        <translation>Throughout Europe, a safety factor of 3.0 is used for the skyline.</translation>
+        <source>Sicherheitsfaktor Tragseil Erklaerung</source>
+        <translation>Throughout Europe (DIN EN 16517, as of april 2022), a safety factor of 3.0 is used for the skyline, or 2.5 for skylines with an effective load limitation during operation.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Sicherheitsfaktor Tragseil</source>
         <translation>Safety factor of the skyline</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
+        <source>Grenzwert Leerseilknickwinkel</source>
+        <translation>Threshold value for rope deflection angle (unloaded)</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
+        <source>Grenzwert Leerseilknickwinkel Erklaerung</source>
+        <translation>Enter the threshold value for the minimum rope deflection angle of the unloaded skyline according to the saddle manufacturer&apos;s specifications. In the first input field, you can enter the threshold value with the hold-down lug mounted, in the second input field, you can enter the threshold value without the hold-down lug mounted.</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
+        <source>Grenzwert Lastseilknickwinkel</source>
+        <translation>Treshold value rope deflection angle (loaded)</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
+        <source>Grenzwert Lastseilknickwinkel Erklaerung</source>
+        <translation>Enter the threshold value for the maximum rope deflection angle of the loaded skyline according to the saddle manufacturer&apos;s specifications.</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
+        <source>Bundstelle ueber Sattelleiste</source>
+        <translation>Mounting height of the skyline saddle</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
+        <source>Bundstelle ueber Sattelleiste Erklaerung</source>
+        <translation>Seilaplan calculates the required height of the skyline at a support (saddle height). The mounting of the skyline saddle on the support is located a few metres above the saddle. The height difference between the saddle and the location of the mounting of the skyline saddle on the support can be adjusted here.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="965"/>
@@ -2804,15 +2954,45 @@ solution</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="121"/>
-        <source>Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften.</source>
+        <source>Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften. Hinweis: Bei den beiden Endmasten liegt der Grenzwert hoeher _threshold_2_</source>
         <translation>Greater angles reduce the rupture load of the skyline and result in higher saddle forces.
-Note: At the final supports the threshold value is higher (approx. 60°).</translation>
+Note: At the final supports the threshold value is higher (_threshold_2_°).</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="129"/>
-        <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
-        <translation>With angles below 1°, there is a risk that the skyline lifts off at the saddle (red). The support must be raised.
-For angles between 1° and 3°, the skyline must be secured by a hold-down plate (orange).</translation>
+        <source>Bei Knickwinkeln unter _threshold_1_ besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen _threshold_1_ und _threshold_2_ muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
+        <translation>With angles below _threshold_1_°, there is a risk that the skyline lifts off at the saddle (red). The support must be raised.
+For angles between _threshold_1_° and _threshold_2_°, the skyline must be secured by a hold-down lug (orange).</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="117"/>
+        <source>BHD</source>
+        <translation>DBH</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="117"/>
+        <source>BHD Erklaerung</source>
+        <translation>The minimum required DBH of the support tree is calculated. This is a guide value for vital trees. The stability and vitality of the tree must be checked in the field.</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="117"/>
+        <source>Leerseildurchhang</source>
+        <translation>Sag of the unloaded skyline</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="117"/>
+        <source>Leerseildurchhang Erklaerung</source>
+        <translation>For each span, the sag of the unloaded skyline is displayed in the middle of the span (vertical distance skyline – field chord).</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="117"/>
+        <source>Lastseildurchhang</source>
+        <translation>Sag of the loaded skyline</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="117"/>
+        <source>Lastseildurchhang Erklaerung</source>
+        <translation>There is shown the sag of the loaded skyline in mid span (with loaded carriage in mid-span position) (vertical distance between skyline and field chord).</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="223"/>

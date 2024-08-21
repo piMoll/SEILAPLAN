@@ -21,8 +21,9 @@
 """
 
 import os
-
+import sys
 # GUI and QGIS libraries
+from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QFileInfo, QCoreApplication, QSettings, Qt
 from qgis.PyQt.QtWidgets import (QDialog, QMessageBox, QFileDialog, QComboBox,
                                  QTextEdit)
@@ -30,41 +31,49 @@ from qgis.PyQt.QtGui import QPixmap
 from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject,
                        QgsCoordinateReferenceSystem)
 from processing.core.Processing import Processing
-
 # Further GUI modules for functionality
 from .guiHelperFunctions import (DialogWithImage, createContours,
-                                 addBackgroundMap, createProfileLayers)
+                                 addBackgroundMap, createProfileLayers,
+                                 addLayerToQgis)
 from .surveyImportDialog import SurveyImportDialog
-from ..tools.outputGeo import CH_CRS
-from ..tools.configHandler import ConfigHandler
-from ..tools.configHandler_project import castToNum
+from SEILAPLAN.tools.outputGeo import CH_CRS
+from SEILAPLAN.tools.configHandler import ConfigHandler
+from SEILAPLAN.tools.configHandler_project import ProjectConfHandler, castToNum
+from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
+from SEILAPLAN.tools.heightSource import AbstractHeightSource
+from SEILAPLAN.tools.survey import SurveyData
 # GUI elements
 from .checkableComboBoxOwn import QgsCheckableComboBoxOwn
 from .saveDialog import DialogSaveParamset
 from .mapMarker import MapMarkerTool
-from .ui_seilaplanDialog import Ui_SeilaplanDialogUI
 from .profileDialog import ProfileDialog
+# This loads the .ui file so that PyQt can populate the plugin with the
+#  elements from Qt Designer
+UI_FILE = os.path.join(os.path.dirname(__file__), 'seilaplanDialog.ui')
+FORM_CLASS, _ = uic.loadUiType(UI_FILE)
 
 
-class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
-    def __init__(self, interface, confHandler):
-        """
-
-        :type confHandler: ConfigHandler
-        """
-        QDialog.__init__(self, interface.mainWindow())
+class SeilaplanPluginDialog(QDialog, FORM_CLASS):
+    
+    def __init__(self, interface, confHandler, onCloseCallback):
         
+        super(SeilaplanPluginDialog, self).__init__(interface.mainWindow())
+
         # QGIS interface
         self.iface = interface
+        # Is called when window is closed (necessary for parallel run)
+        self.onCloseCallback = onCloseCallback
+        # Control variable that gets returned in callback so parent knows how
+        # to proceed when this dialog is closed
+        self.runOptimization = None
+        
         # QGIS map canvas
         self.canvas = self.iface.mapCanvas()
         # Management of Parameters and settings
-        self.confHandler = confHandler
+        self.confHandler: ConfigHandler = confHandler
         self.confHandler.setDialog(self)
-        self.paramHandler = confHandler.params
-        self.projectHandler = confHandler.project
-        self.startAlgorithm = False
-        self.goToAdjustment = False
+        self.paramHandler: ParameterConfHandler = self.confHandler.params
+        self.projectHandler: ProjectConfHandler = self.confHandler.project
         # Path to plugin root
         self.homePath = os.path.dirname(os.path.dirname(__file__))
         
@@ -124,25 +133,31 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         # Dialog windows for saving parameter and cable sets
         self.paramSetWindow = DialogSaveParamset(self)
 
-        # Set initial sate of some buttons
-        # Choosing height data
+        # Set initial state of terrain data group
         self.enableRasterHeightSource()
-        # Button to show profile
-        self.buttonShowProf.setEnabled(False)
-        # Button that activates drawing on map
-        self.draw.setEnabled(False)
-        # Button stays down when pressed
-        self.draw.setCheckable(True)
+        
+        if 'DARWIN' in sys.platform.upper():
+            # Explicitly set the windows flags on macOS so the plugin window
+            #  stays on top of QGIS when drawing in the map
+            self.setWindowFlags(
+                Qt.Window |
+                Qt.CustomizeWindowHint |
+                Qt.WindowTitleHint |
+                Qt.WindowCloseButtonHint |
+                Qt.WindowStaysOnTopHint
+            )
         
         Processing.initialize()
     
-    # noinspection PyMethodMayBeStati
-    def tr(self, message, **kwargs):
+    def tr(self, message, context='', **kwargs):
         """Get the translation for a string using Qt translation API.
         We implement this ourselves since we do not inherit QObject.
 
         :param message: String for translation.
         :type message: str, QString
+        
+        :param context: String for translation.
+        :type context: str, QString
 
         :returns: Translated version of message.
         :rtype: QString
@@ -151,15 +166,16 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         ----------
         **kwargs
         """
-        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
-        return QCoreApplication.translate(type(self).__name__, message)
+        if context == '':
+            context = type(self).__name__
+        return QCoreApplication.translate(context, message, **kwargs)
     
     def connectGuiElements(self):
         """Connect GUI elements with functions.
         """
         self.buttonCancel.clicked.connect(self.cancel)
-        self.buttonRun.clicked.connect(self.apply)
-        self.btnAdjustment.clicked.connect(self.goToAdjustmentWindow)
+        self.buttonRun.clicked.connect(lambda: self.onConfirm(runOptimization=True))
+        self.btnAdjustment.clicked.connect(lambda: self.onConfirm(runOptimization=False))
         self.buttonOpenPr.clicked.connect(self.onLoadProjects)
         self.buttonSavePr.clicked.connect(self.onSaveProject)
         self.rasterField.selectedItemsChanged.connect(self.onChangeRaster)
@@ -167,7 +183,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.buttonInfo.clicked.connect(self.onInfo)
 
         self.radioRaster.toggled.connect(self.onToggleHeightSource)
-        self.radioSurveyData.toggled.connect(self.onToggleHeightSource)
+        # self.radioSurveyData.toggled.connect(self.onToggleHeightSource) # Second trigger not necessary
         self.buttonLoadSurveyData.clicked.connect(self.onLoadSurveyData)
         
         self.fieldTypeA.currentTextChanged.connect(self.onTypeAChange)
@@ -185,6 +201,9 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.infoFieldE.clicked.connect(self.onInfo)
         self.infoFieldFuellF.clicked.connect(self.onInfo)
         self.infoFieldSFT.clicked.connect(self.onInfo)
+        self.infoFieldLeerKnick.clicked.connect(self.onInfo)
+        self.infoFieldLastKnick.clicked.connect(self.onInfo)
+        self.infoFieldBundst.clicked.connect(self.onInfo)
         self.infoBerechnung.clicked.connect(self.onInfo)
         
         # OSM map and contour buttons
@@ -243,6 +262,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             'qR': self.fieldqR,
             'SK': self.fieldSK,
             'Anlagetyp': self.fieldAnlagetyp,
+            'SF_T': self.fieldSFT,
             
             'Min_Dist_Mast': self.fieldMinDist,
             'L_Delta': self.fieldLdelta,
@@ -253,7 +273,12 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             
             'E': self.fieldE,
             'FuellF': self.fieldFuellF,
-            'SF_T': self.fieldSFT
+            'LeerKnickMit': self.fieldLeerKnickMit,
+            'LeerKnickOhne': self.fieldLeerKnickOhne,
+            'LastKnickSt': self.fieldLastKnickSt,
+            'LastKnickEnd': self.fieldLastKnickEnd,
+            'Bundstelle': self.fieldBundst,
+            
         }
         self.coordFields = {
             'Ax': self.coordAx,
@@ -275,6 +300,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         else:
             self.enableSurveyDataHeightSource()
         # Reset profile data
+        self.projectHandler.resetHeightSource()
         self.projectHandler.resetProfile()
         self.drawTool.surveyDataMode = False
         self.removeSurveyDataLayer()
@@ -293,6 +319,14 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.rasterField.blockSignals(False)
         self.buttonRefreshRa.setEnabled(True)
         self.buttonLoadSurveyData.setEnabled(False)
+        # Enable coordinate fields
+        for field in self.coordFields.values():
+            self.setFieldReadOnly(field, False)
+        # Change label next to draw button
+        self.labelDraw.setText(self.tr("Seillinie in Karte einzeichnen", "SeilaplanDialogUI"))
+        self.labelCoords.setText(self.tr("oder Koordinaten der Seillinie manuell angeben:", "SeilaplanDialogUI"))
+        # Deactivate ui elements in group cableline
+        self.toggleCableLineUI(False)
 
     def enableSurveyDataHeightSource(self):
         if not self.radioSurveyData.isChecked():
@@ -307,7 +341,27 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.rasterField.blockSignals(False)
         self.buttonRefreshRa.setEnabled(False)
         self.buttonLoadSurveyData.setEnabled(True)
-
+        self.contourLyrButton.setEnabled(False)
+        # Disable coordinate fields
+        for field in self.coordFields.values():
+            self.setFieldReadOnly(field, True)
+        # Change label next to draw button
+        self.labelDraw.setText(self.tr('Start- Endpunkt auf dem Gelaendeprofil definieren'))
+        self.labelCoords.setText("")
+        # Deactivate ui elements in group cableline
+        self.toggleCableLineUI(False)
+    
+    
+    def setFieldReadOnly(self, field, readonly):
+        field.setReadOnly(readonly)
+        field.blockSignals(readonly)
+        if readonly:
+            field.setStyleSheet("color: rgb(136, 138, 133);")
+            field.setToolTip(self.tr('Koordinate kann nicht manuell veraendert werden, benutzen Sie die Schaltflaeche zeichnen'))
+        else:
+            field.setStyleSheet("")
+            field.setToolTip("")
+    
     def getListenerLineEdit(self, property_name):
         return lambda: self.parameterChangedLineEdit(property_name)
     
@@ -358,8 +412,8 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             self.projectHandler.getPointTypeAsIdx('E'))
     
     def setupContent(self):
-        self.startAlgorithm = False
-        self.goToAdjustment = False
+        self.runOptimization = None
+        self.confHandler.setDialog(self)
         # Generate project name
         self.fieldProjName.setText(self.projectHandler.getProjectName())
         
@@ -386,6 +440,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         
         # Update start and end point
         self.checkPoints()
+        unHighlightButton(self.draw)
         
         # Load all predefined and user-defined parameter sets from the
         # config folder (maybe a new set was added when project was opened)
@@ -460,7 +515,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             return
         
         # Ask before removing
-        msgBox = QMessageBox()
+        msgBox = QMessageBox(self)
         msgBox.setIcon(QMessageBox.Information)
         msgBox.setWindowTitle(self.tr('Parameterset loeschen'))
         msgBox.setText(self.tr('Moechten Sie das Parameterset wirklich loeschen?'))
@@ -469,7 +524,6 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         noBtn.setText(self.tr("Nein"))
         yesBtn = msgBox.button(QMessageBox.Yes)
         yesBtn.setText(self.tr("Ja"))
-        msgBox.show()
         msgBox.exec()
         
         if msgBox.clickedButton() == yesBtn:
@@ -494,7 +548,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         return rasterlist
     
     def getAvailableRaster(self):
-        """Go trough table of content and collect all raster layers.
+        """Go through table of content and collect all raster layers.
         """
         rColl = []
         for item in QgsProject.instance().layerTreeRoot().findLayers():
@@ -545,13 +599,12 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             self.projectHandler.setHeightSource(rasterLyrList, 'dhm_list')
             rasterValid = True
         else:
-            self.projectHandler.setHeightSource(None)
             rasterValid = False
 
         # Check spatial reference of raster and show message
         if not rasterValid or not self.checkEqualSpatialRef():
             # Unset raster
-            self.projectHandler.setHeightSource(None)
+            self.projectHandler.resetHeightSource()
             # Remove raster selection
             self.rasterField.blockSignals(True)
             self.rasterField.deselectAllOptions()
@@ -562,11 +615,10 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         if rasterValid and singleRasterLayer:
             self.iface.setActiveLayer(singleRasterLayer)
             
-        # If a raster was selected, OSM and Contour Layers can be generated,
-        #  else buttons are disabled
-        self.osmLyrButton.setEnabled(rasterValid)
+        # If a raster was selected, a contour layer can be generated
         self.contourLyrButton.setEnabled(rasterValid)
-        self.draw.setEnabled(rasterValid)
+        # Activate/Deactivate other ui elements
+        self.toggleCableLineUI(rasterValid)
     
     def searchForRaster(self, rasterpaths):
         """ Checks if a raster from a saved project is present in the table
@@ -595,7 +647,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
                     # Load raster
                     newRaster = QFileInfo(path).baseName()
                     rasterLyr = QgsRasterLayer(path, newRaster)
-                    QgsProject.instance().addMapLayer(rasterLyr)
+                    addLayerToQgis(rasterLyr, 'top')
                     # Update drop down menu
                     
                     dropdownItems = self.updateRasterList()
@@ -614,7 +666,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
     
     def checkEqualSpatialRef(self):
         # Check spatial reference of newly added raster
-        heightSource = self.projectHandler.heightSource
+        heightSource: AbstractHeightSource = self.projectHandler.heightSource
         if not heightSource:
             return False
         hsType = self.projectHandler.heightSourceType
@@ -641,11 +693,13 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             # Survey data can be transformed to map crs
             elif hsType == 'survey' and not mapCrs.isGeographic():
                 # Survey data is transformed to map reference system
+                heightSource: SurveyData
                 heightSource.reprojectToCrs(mapCrs)
                 success = True
             
             elif hsType == 'survey' and mapCrs.isGeographic():
                 # Transform to LV95 by default
+                heightSource: SurveyData
                 heightSource.reprojectToCrs(None)
                 msg = self.tr('KBS-Fehler - Felddaten und QGIS in geografischem KBS')
                 QgsProject.instance().setCrs(lyrCrs)
@@ -689,7 +743,7 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
 
         # Check the spatial reference and inform user if necessary
         if not self.checkEqualSpatialRef():
-            self.projectHandler.setHeightSource(None)
+            self.projectHandler.resetHeightSource()
             self.projectHandler.resetProfile()
         
         heightSource = self.projectHandler.heightSource
@@ -705,14 +759,14 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             self.fieldSurveyDataPath.setText(self.projectHandler.getHeightSourceAsStr())
             # Activate draw tool
             self.drawTool.surveyDataMode = True
-            self.draw.setEnabled(True)
-            # Activate OSM button
-            self.osmLyrButton.setEnabled(True)
+            
+            # Activate ui elements
+            self.toggleCableLineUI(True)
+            highlightButton(self.draw)
         else:
             self.fieldSurveyDataPath.setText('')
             self.drawTool.surveyDataMode = False
-            self.draw.setEnabled(False)
-            self.osmLyrButton.setEnabled(False)
+            self.toggleCableLineUI(False)
     
     def removeSurveyDataLayer(self):
         try:
@@ -727,15 +781,25 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
     
     def setProjName(self, projname):
         self.projectHandler.setProjectName(projname)
+        self.setWindowTitle(f"{self.tr('SEILAPLAN - Seilkran-Layoutplaner', 'SeilaplanDialogUI')} // {projname}")
     
-    # TODO Unset Focus of field when clicking on something else, doesnt work yet
-    # def mousePressEvent(self, event):
-    #     focused_widget = QtGui.QApplication.focusWidget()
-    #     if isinstance(focused_widget, QtGui.QLineEdit):
-    #         focused_widget.clearFocus()
-    #     QtGui.QDialog.mousePressEvent(self, event)
+    def toggleCableLineUI(self, isEnabled):
+        # Activate draw button
+        self.draw.setEnabled(isEnabled)
+        if not isEnabled:
+            self.draw.setToolTip(self.tr('Bitte erst Terraindaten definieren'))
+            unHighlightButton(self.draw)
+        else:
+            self.draw.setToolTip('')
+        self.osmLyrButton.setEnabled(isEnabled)
+        # Enable coordinate fields
+        for field in self.coordFields.values():
+            field.setEnabled(isEnabled)
 
     def drawLine(self):
+        if self.drawTool.isActive:
+            self.drawTool.reset()
+            return
         if self.projectHandler.heightSourceType in ['dhm', 'dhm_list']:
             self.drawTool.drawLine()
         elif self.projectHandler.heightSourceType == 'survey':
@@ -831,17 +895,19 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.msgBar.pushMessage(self.tr('Hintergrundkarte laden'), statusMsg, severity)
     
     def onClickContourButton(self):
-        """Calcluate contour lines from currently selected dhm and add them to
+        """Calculate contour lines from currently selected dhm and add them to
         as a layer."""
-        if self.projectHandler.heightSource.contourLayer is None:
+        if (self.projectHandler.heightSource.contourLayer is None
+        and self.projectHandler.heightSourceType in ['dhm', 'dhm_list']):
             createContours(self.canvas, self.projectHandler.heightSource)
     
     def onFinishedLineDraw(self, linecoord):
         self.projectHandler.resetProfile()
         self.updateLineByMapDraw(linecoord[0], 'A')
         self.updateLineByMapDraw(linecoord[1], 'E')
-        # Stop pressing down button
+        # Stop pressing button down
         self.draw.setChecked(False)
+        unHighlightButton(self.draw)
     
     def onShowProfile(self):
         try:
@@ -957,8 +1023,16 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
             msg = self.tr('Fuellfaktor Erklaerung')
         elif self.sender().objectName() == 'infoFieldSFT':
             title = self.tr("Sicherheitsfaktor Tragseil")
-            msg = self.tr('Europaweit wird ein Sicherheitsfaktor von 3.0 fuer das '
-                          'Tragseil verwendet.')
+            msg = self.tr('Sicherheitsfaktor Tragseil Erklaerung')
+        elif self.sender().objectName() == 'infoFieldLeerKnick':
+            title = self.tr("Grenzwert Leerseilknickwinkel")
+            msg = self.tr('Grenzwert Leerseilknickwinkel Erklaerung')
+        elif self.sender().objectName() == 'infoFieldLastKnick':
+            title = self.tr("Grenzwert Lastseilknickwinkel")
+            msg = self.tr('Grenzwert Lastseilknickwinkel Erklaerung')
+        elif self.sender().objectName() == 'infoFieldBundst':
+            title = self.tr("Bundstelle ueber Sattelleiste")
+            msg = self.tr('Bundstelle ueber Sattelleiste Erklaerung')
         
         elif self.sender().objectName() == 'infoBerechnung':
             title = self.tr("Naechste Schritte")
@@ -996,29 +1070,17 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
                 prHeader[key] = field.text()
         self.projectHandler.setPrHeader(prHeader)
         
-    def goToAdjustmentWindow(self):
+    def onConfirm(self, runOptimization):
+        if runOptimization and not self.paramHandler.checkBodenabstand():
+            return
         if self.confHandler.checkValidState() \
-                and self.checkEqualSpatialRef \
-                and self.confHandler.prepareForCalculation():
+                and self.checkEqualSpatialRef() \
+                and self.confHandler.prepareForCalculation(runOptimization):
             self.readoutPrHeaderData()
-            self.startAlgorithm = False
-            self.goToAdjustment = True
+            self.runOptimization = runOptimization
             self.close()
         else:
-            return False
-    
-    def apply(self):
-        if self.confHandler.checkValidState() \
-                and self.checkEqualSpatialRef \
-                and self.paramHandler.checkBodenabstand() \
-                and self.confHandler.prepareForCalculation():
-            self.readoutPrHeaderData()
-            self.startAlgorithm = True
-            self.goToAdjustment = False
-            self.close()
-        else:
-            # If project info or parameter are missing or wrong, algorithm
-            # can not start
+            # If project info or parameter are missing or wrong, don't continue
             return False
     
     def cancel(self):
@@ -1026,8 +1088,10 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
         self.close()
     
     def cleanUp(self):
-        # Save user settings
-        self.confHandler.updateUserSettings()
+        # Close child dialogs
+        self.imgBox.close()
+        if self.profileWin.isVisible():
+            self.profileWin.close()
         # Clean markers and lines from map canvas
         self.drawTool.reset()
         # Remove survey line
@@ -1035,12 +1099,16 @@ class SeilaplanPluginDialog(QDialog, Ui_SeilaplanDialogUI):
     
     def closeEvent(self, QCloseEvent):
         """Last method that is called before main window is closed."""
-        # Close additional dialogs
-        self.imgBox.close()
-        if self.profileWin.isVisible():
-            self.profileWin.close()
-        
-        if self.startAlgorithm or self.goToAdjustment:
-            self.drawTool.reset()
-        else:
-            self.cleanUp()
+        self.confHandler.updateUserSettings()
+        self.cleanUp()
+        self.onCloseCallback(self.runOptimization)
+
+
+
+
+def highlightButton(button):
+    button.setStyleSheet("QPushButton { color: blue; }")
+
+
+def unHighlightButton(button):
+    button.setStyleSheet("")

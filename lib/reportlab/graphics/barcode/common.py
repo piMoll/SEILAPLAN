@@ -32,10 +32,9 @@
 
 from reportlab.platypus.flowables import Flowable
 from reportlab.lib.units import inch
-from reportlab.lib.utils import ascii_uppercase, ascii_lowercase
-from string import digits as string_digits
+from string import ascii_lowercase, ascii_uppercase, digits as string_digits
 
-class Barcode(Flowable,object):
+class Barcode(Flowable):
     """Abstract Base for barcodes. Includes implementations of
     some methods suitable for the more primitive barcode types"""
 
@@ -104,15 +103,21 @@ class Barcode(Flowable,object):
         self._height = self.barHeight
         self._width = w
 
+    @property
     def width(self):
         self._calculate()
         return self._width
-    width = property(width)
+    @width.setter
+    def width(self,v):
+        pass
 
+    @property
     def height(self):
         self._calculate()
         return self._height
-    height = property(height)
+    @height.setter
+    def height(self,v):
+        pass
 
     def draw(self):
         self._calculate()
@@ -139,10 +144,21 @@ class Barcode(Flowable,object):
                 left = left + wx
 
         if self.bearers:
-            self.rect(self.lquiet, 0, \
-                self._width - (self.lquiet + self.rquiet), b)
-            self.rect(self.lquiet, self.barHeight - b, \
-                self._width - (self.lquiet + self.rquiet), b)
+            if getattr(self,'bearerBox', None):
+                canv = self.canv
+                if hasattr(canv,'_Gadd'):
+                    #this is a widget rect takes other arguments
+                    canv.rect(bb, bb, self.width, self.barHeight-b,
+                            strokeWidth=b, strokeColor=self.barFillColor or self.barStrokeColor, fillColor=None)
+                else:
+                    canv.saveState()
+                    canv.setLineWidth(b)
+                    canv.rect(bb, bb, self.width, self.barHeight-b, stroke=1, fill=0)
+                    canv.restoreState()
+            else:
+                w = self._width - (self.lquiet + self.rquiet)
+                self.rect(self.lquiet, 0, w, b)
+                self.rect(self.lquiet, self.barHeight - b, w, b)
 
         self.drawHumanReadable()
 
@@ -261,6 +277,9 @@ class I2of5(Barcode):
             Set to zero for no bearer bars. (Bearer bars help detect
             misscans, so it is suggested to leave them on).
 
+        bearerBox (bool default False)
+            if true draw a  true rectangle of width bearers around the barcode.
+
         quiet (bool, default 1):
             Whether to include quiet zones in the symbol.
 
@@ -305,6 +324,7 @@ class I2of5(Barcode):
     ratio = 2.2
     checksum = 1
     bearers = 3.0
+    bearerBox = False
     quiet = 1
     lquiet = None
     rquiet = None

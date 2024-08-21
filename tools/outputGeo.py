@@ -22,13 +22,23 @@ import numpy as np
 import os
 import csv
 
-from qgis.PyQt.QtCore import QVariant, QCoreApplication
+from qgis.PyQt.QtCore import QCoreApplication
 from qgis.core import (QgsRasterLayer, QgsProcessing, QgsProcessingException,
                        QgsWkbTypes, QgsFields, QgsField, QgsVectorFileWriter,
                        QgsFeature, QgsGeometry, QgsCoordinateTransform, QgsPoint,
                        QgsCoordinateReferenceSystem, QgsProject,
                        QgsCoordinateTransformContext)
-from processing import run
+from SEILAPLAN import DEBUG
+from SEILAPLAN.gui.guiHelperFunctions import addLayerToQgis
+
+try:
+    from processing import run
+except ModuleNotFoundError as e:
+    if DEBUG:
+        pass
+    else:
+        raise e
+
 # Checking for deprecations needs a deprecation check...
 try:
     from qgis.core.Qgis import QGIS_VERSION_INT
@@ -40,6 +50,17 @@ except (ImportError, ModuleNotFoundError):
 GPS_CRS = 'EPSG:4326'
 CH_CRS = 'EPSG:2056'
 VIRTUALRASTER = 'SEILAPLAN Virtuelles Raster'
+
+
+# Defining attribute types: QVariant has been deprecated as of QGIS 3.38
+if QGIS_VERSION_INT >= 33800:
+    from qgis.PyQt.QtCore import QMetaType
+    type_string = QMetaType.QString
+    type_double = QMetaType.Double
+else:
+    from qgis.PyQt.QtCore import QVariant
+    type_string = QVariant.String
+    type_double = QVariant.Double
 
 
 def organizeDataForExport(poles, cableline, profile):
@@ -159,14 +180,14 @@ def savePointGeometry(filePath, poles, spatialRef, geoFormat):
     if geoFormat != 'DXF':
         # Define fields for feature attributes, DXF-format does not support
         #  fields
-        fields.append(QgsField(headerName, QVariant.String, 'text', 254))
-        fields.append(QgsField('x', QVariant.Double))
-        fields.append(QgsField('y', QVariant.Double))
-        fields.append(QgsField('z', QVariant.Double))
-        fields.append(QgsField('h', QVariant.Double))
-        fields.append(QgsField(headerCategory, QVariant.String, 'text', 254))
-        fields.append(QgsField(headerPosition, QVariant.String, 'text', 254))
-        fields.append(QgsField(headerAbspann, QVariant.String, 'text', 254))
+        fields.append(QgsField(headerName, type_string, typeName='text', len=254))
+        fields.append(QgsField('x', type_double))
+        fields.append(QgsField('y', type_double))
+        fields.append(QgsField('z', type_double))
+        fields.append(QgsField('h', type_double))
+        fields.append(QgsField(headerCategory, type_string, typeName='text', len=254))
+        fields.append(QgsField(headerPosition, type_string, typeName='text', len=254))
+        fields.append(QgsField(headerAbspann, type_string, typeName='text', len=254))
 
     if QGIS_VERSION_INT >= 31030:
         # Use newer QgsVectorFileWriter.create() function
@@ -268,11 +289,7 @@ def checkShpPath(path):
 
 def addToMap(geodata, projName):
     """ Adds the shape file to the qgis project."""
-    from qgis.core import QgsVectorLayer, QgsProject
-
-    # Create new layer group in table of content
-    root = QgsProject.instance().layerTreeRoot()
-    projGroup = root.insertGroup(0, projName)
+    from qgis.core import QgsVectorLayer
     
     polesLyr = QgsVectorLayer(geodata['stuetzen'], tr('stuetzen'), 'ogr')
     emptyLineLyr = QgsVectorLayer(geodata['leerseil'], tr('leerseil'), 'ogr')
@@ -284,10 +301,7 @@ def addToMap(geodata, projName):
         layer.dataProvider().setEncoding('UTF-8')
 
         # Add layer to map
-        QgsProject.instance().addMapLayer(layer, False)
-        
-        # Add to group
-        projGroup.addLayer(layer)
+        addLayerToQgis(layer, '', projName)
 
 
 def createVirtualRaster(rasterList):
@@ -469,7 +483,6 @@ def reprojectToCrs(x, y, sourceCrs, destinationCrs=CH_CRS):
     return xnew, ynew
 
 
-# noinspection PyMethodMayBeStatic
 def tr(message, context='@default', **kwargs):
     """Get the translation for a string using Qt translation API.
     We implement this ourselves since we do not inherit QObject.
@@ -484,5 +497,4 @@ def tr(message, context='@default', **kwargs):
     ----------
     **kwargs
     """
-    # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
     return QCoreApplication.translate(context, message)

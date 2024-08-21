@@ -4,18 +4,18 @@
 __version__='3.3.0'
 __doc__="""Render drawing objects in Postscript"""
 
-from reportlab.pdfbase.pdfmetrics import getFont, stringWidth, unicode2T1 # for font info
-from reportlab.lib.utils import getBytesIO, getStringIO, asBytes, char2int, rawBytes, asNative, isUnicode
-from reportlab.lib.rl_accel import fp_str
-from reportlab.lib.colors import black
-from reportlab.graphics.renderbase import Renderer, StateTracker, getStateDelta, renderScaledDrawing
-from reportlab.graphics.shapes import STATE_DEFAULTS
 import math
-from operator import getitem
-from reportlab import rl_config, xrange, ascii
-from reportlab.pdfgen.canvas import FILL_EVEN_ODD, FILL_NON_ZERO
+from io import BytesIO, StringIO
+from reportlab.pdfbase.pdfmetrics import getFont, stringWidth, unicode2T1 # for font info
+from reportlab.lib.utils import asBytes, char2int, rawBytes, asNative, isUnicode
+from reportlab.lib.rl_accel import fp_str
+from reportlab.graphics.renderbase import Renderer, getStateDelta, renderScaledDrawing
+from reportlab.graphics.shapes import STATE_DEFAULTS
+from reportlab import rl_config
+from reportlab.pdfgen.canvas import FILL_EVEN_ODD
+
 _ESCAPEDICT={}
-for c in xrange(256):
+for c in range(256):
     if c<32 or c>=127:
         _ESCAPEDICT[c]= '\\%03o' % c
     elif c in (ord('\\'),ord('('),ord(')')):
@@ -618,7 +618,7 @@ class PSCanvas:
         hex_encoded = self._AsciiHexEncode(rawimage)
 
         # write in blocks of 78 chars per line
-        outstream = getStringIO(hex_encoded)
+        outstream = StringIO(hex_encoded)
 
         dataline = outstream.read(78)
         while dataline != "":
@@ -630,7 +630,7 @@ class PSCanvas:
     # end of drawImage
     def _AsciiHexEncode(self, input):  # also based on piddlePDF
         "Helper function used by images"
-        output = getStringIO()
+        output = StringIO()
         for char in asBytes(input):
             output.write('%02x' % char2int(char))
         return output.getvalue()
@@ -686,7 +686,7 @@ class PSCanvas:
         hex_encoded = self._AsciiHexEncode(rawimage)
 
         # write in blocks of 78 chars per line
-        outstream = getStringIO(hex_encoded)
+        outstream = StringIO(hex_encoded)
 
         dataline = outstream.read(78)
         while dataline != "":
@@ -925,7 +925,7 @@ def drawToFile(d,fn, showBoundary=rl_config.showBoundary,**kwd):
 
 def drawToString(d, showBoundary=rl_config.showBoundary):
     "Returns a PS as a string in memory, without touching the disk"
-    s = getBytesIO()
+    s = BytesIO()
     drawToFile(d, s, showBoundary=showBoundary)
     return s.getvalue()
 

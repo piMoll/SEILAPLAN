@@ -1,12 +1,15 @@
 # execute everything in plugin/
 
-# Compile resources
+# Compile resources (still necessary, even with uic.loadUiType()
 pyrcc5 -o resources/resources.py resources/resources.qrc
 
-# Compile gui
-pyuic5 gui/seilaplanDialog.ui -o gui/ui_seilaplanDialog.py
-pyuic5 gui/adjustmentDialog.ui -o gui/ui_adjustmentDialog.py
-pyuic5 gui/surveyImportDialog.ui -o gui/ui_surveyImportDialog.py
+# [deprecated] Compile gui -> ui files are  loaded directly via uic.loadUiType()
+#pyuic5 gui/seilaplanDialog.ui -o gui/ui_seilaplanDialog.py
+#pyuic5 gui/adjustmentDialog.ui -o gui/ui_adjustmentDialog.py
+#pyuic5 gui/surveyImportDialog.ui -o gui/ui_surveyImportDialog.py
+
+# When DEBUG is True, the resources path in ui files is removed, so loadUiType() works.
+# When opening the ui file in the QtDesigner, resources have to be selected again.
 
 # get new translation texts
 bash scripts/update-strings.sh SeilaplanPlugin_de SeilaplanPlugin_en SeilaplanPlugin_fr SeilaplanPlugin_it

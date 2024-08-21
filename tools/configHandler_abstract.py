@@ -40,7 +40,6 @@ class AbstractConfHandler(object):
         QMessageBox.information(self.dialog, title, message,
                                 QMessageBox.Ok)
 
-    # noinspection PyMethodMayBeStatic
     def tr(self, message, context=None, **kwargs):
         """Get the translation for a string using Qt translation API.
         We implement this ourselves since we do not inherit QObject.
@@ -60,5 +59,4 @@ class AbstractConfHandler(object):
         """
         if not context:
             context = type(self).__name__
-        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
         return QCoreApplication.translate(context, message)

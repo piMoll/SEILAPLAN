@@ -23,6 +23,8 @@ import numpy as np
 from .terrainAnalysis import stuePos
 from .mainOpti import optimization
 from .cablelineFinal import preciseCable
+from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
+from SEILAPLAN.tools.globals import PolesOrigin, ResultQuality
 
 
 def main(progress, project):
@@ -30,7 +32,8 @@ def main(progress, project):
     :type progress: processingThread.ProcessingTask
     :type project: projectHandler.ProjectConfHandler
     """
-    progress.status.append(1)
+    project: ProjectConfHandler
+    
     if progress.isCanceled():
         return False
     
@@ -70,7 +73,7 @@ def main(progress, project):
     # Corresponds last optimized pole with end point?
     if int(poles.lastPole['d']) != int(stuetzDist[-1]):
         # It was not possible to calculate poles along the entire profile
-        progress.status.append(3)
+        progress.status.append(ResultQuality.LineNotComplete)
     
     # Save optimized poles to Pole() object
     optiPoles = []
@@ -85,16 +88,17 @@ def main(progress, project):
             'h': HM[idx],
             'name': name
         })
-    poles.updateAllPoles('optimization', optiPoles)
+    poles.updateAllPoles(PolesOrigin.Optimization, optiPoles)
 
     # Calculate precise cable line data
     cableline, force, seil_possible = preciseCable(params, poles, optSTA[0])
     if not seil_possible:
         # Cable is lifting off the poles
-        progress.status.append(2)
+        progress.status.append(ResultQuality.CableLiftsOff)
+    else:
+        progress.status.append(ResultQuality.SuccessfulOptimization)
 
     progress.sig_value.emit(optiLen * 1.005)
-    
     return {
         'cableline': cableline,
         'optSTA': optSTA[0],

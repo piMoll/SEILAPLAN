@@ -6,12 +6,12 @@ __version__='3.3.0'
 __doc__="""This modules defines a very preliminary Line Chart example."""
 
 from reportlab.lib import colors
-from reportlab.lib.validators import isNumber, isNumberOrNone, isColor, isColorOrNone, isListOfStrings, \
-                                    isListOfStringsOrNone, SequenceOf, isBoolean, NoneOr, \
+from reportlab.lib.validators import isNumber, isNumberOrNone, isColorOrNone, \
+                                    isListOfStringsOrNone, isBoolean, NoneOr, \
                                     isListOfNumbersOrNone, isStringOrNone, OneOf, Percentage
 from reportlab.lib.attrmap import *
 from reportlab.lib.utils import flatten
-from reportlab.graphics.widgetbase import Widget, TypedPropertyCollection, PropHolder, tpcGetItem
+from reportlab.graphics.widgetbase import TypedPropertyCollection, PropHolder, tpcGetItem
 from reportlab.graphics.shapes import Line, Rect, Group, Drawing, Polygon, PolyLine
 from reportlab.graphics.widgets.signsandsymbols import NoEntry
 from reportlab.graphics.charts.axes import XCategoryAxis, YValueAxis
@@ -319,6 +319,7 @@ class HorizontalLineChart(LineChart):
             inFillX1 = inFillX0 + self.categoryAxis._length
             inFillG = getattr(self,'_inFillG',g)
         yzero = self._yzero
+        bypos = None
 
         # Iterate over data rows.
         for rowNo, row in enumerate(reversed(P) if self.reversePlotOrder else P):
@@ -339,13 +340,18 @@ class HorizontalLineChart(LineChart):
 
             # Iterate over data columns.
             if lineStyle=='bar':
+                if bypos is None:
+                    x = self.valueAxis
+                    bypos = max(x._y,yzero)
+                    byneg = min(x._y+x._length,yzero)
                 barWidth = getattr(rowStyle,'barWidth',Percentage(50))
                 if isinstance(barWidth,Percentage):
                     hbw = self._hngs*barWidth*0.01
                 else:
                     hbw = barWidth*0.5
                 for x, y in row:
-                    g.add(Rect(x-hbw,min(y,yzero),2*hbw,abs(y-yzero),strokeWidth=strokeWidth,strokeColor=strokeColor,fillColor=fillColor))
+                    _y0 = byneg if y<yzero else bypos
+                    g.add(Rect(x-hbw,_y0,2*hbw,y-_y0,strokeWidth=strokeWidth,strokeColor=strokeColor,fillColor=fillColor))
             elif self.joinedLines or lineStyle=='joinedLine':
                 points = flatten(row)
                 if inFill or isinstance(row,FillPairedData):

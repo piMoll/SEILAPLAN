@@ -26,17 +26,15 @@ higher level components).
 """
 import os
 from copy import deepcopy, copy
-from reportlab.lib.colors import red, gray, lightgrey
+from reportlab.lib.colors import gray, lightgrey
 from reportlab.lib.rl_accel import fp_str
-from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_RIGHT, TA_JUSTIFY
+from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_RIGHT
 from reportlab.lib.styles import _baseFontName
-from reportlab.lib.utils import strTypes, rl_safe_exec
+from reportlab.lib.utils import strTypes, rl_safe_exec, annotateException
 from reportlab.lib.abag import ABag
 from reportlab.pdfbase import pdfutils
 from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.rl_config import _FUZZ, overlapAttachedSpace, ignoreContainerActions, listWrapOnFakeWidth
-from reportlab import xrange
-import collections
 
 __all__ = '''AnchorFlowable BalancedColumns BulletDrawer CallerMacro CondPageBreak DDIndenter DocAssert
         DocAssign DocExec DocIf DocPara DocWhile FailOnDraw FailOnWrap Flowable FrameBG FrameSplitter
@@ -641,7 +639,7 @@ def _listWrapOn(F,availWidth,canv,mergeSpace=1,obj=None,dims=None,fakeWidth=None
             if dims is not None: dims.append((w,h))
             if cframe:
                 _addGeneratedContent(F,cframe)
-            if w<=_FUZZ or h<=_FUZZ: continue
+            if (w<=_FUZZ and False) or h<=_FUZZ: continue
             W = max(W,min(w,availWidth) if fakeWidth else w)
             H += h
             if not atTop:
@@ -693,10 +691,8 @@ class KeepTogether(_ContainerSpace,Flowable):
             #cache these on the class
             from reportlab.platypus.doctemplate import NullActionFlowable
             from reportlab.platypus.doctemplate import FrameBreak
-            from reportlab.lib.utils import annotateException
             KeepTogether.NullActionFlowable = NullActionFlowable
             KeepTogether.FrameBreak = FrameBreak
-            KeepTogether.annotateException = annotateException
 
         if not flowables:
             flowables = [self.NullActionFlowable()]
@@ -715,7 +711,7 @@ class KeepTogether(_ContainerSpace,Flowable):
         try:
             W,H = _listWrapOn(self._content,aW,self.canv,dims=dims)
         except:
-            self.annotateException('\nraised by class %s(%s)@0x%8.8x wrap\n' % (self.__class__.__name__,self.__class__.__module__,id(self)))
+            annotateException('\nraised by class %s(%s)@0x%8.8x wrap\n' % (self.__class__.__name__,self.__class__.__module__,id(self)))
         self._H = H
         self._H0 = dims and dims[0][1] or 0
         self._wrapInfo = aW,aH
@@ -947,7 +943,7 @@ class _Container(_ContainerSpace):  #Abstract some common container like behavio
                 aW -= (c.left+c.right)*scale
                 continue
             w, h = c.wrapOn(canv,aW,0xfffffff)
-            if (w<_FUZZ or h<_FUZZ) and not getattr(c,'_ZEROSIZE',None): continue
+            if h<_FUZZ and not getattr(c,'_ZEROSIZE',None): continue
             if yt!=y:
                 s = c.getSpaceBefore()
                 if not getattr(c,'_SPACETRANSFER',False):
@@ -1011,7 +1007,7 @@ class PTOContainer(_Container,Flowable):
         n = len(C)
         I2W = {}
         dLeft = dRight = 0
-        for x in xrange(n):
+        for x in range(n):
             c = C[x]
             I = c._ptoinfo
             if I not in I2W.keys():
@@ -1264,7 +1260,10 @@ class _FindSplitterMixin:
                         if nH<aH: nH += leading
                         availHeight += nH-aH
                         aH = nH
-                S = cdeepcopy(f).splitOn(canv,availWidth,aH)
+                try:
+                    S = cdeepcopy(f).splitOn(canv,availWidth,aH)
+                except:
+                    S  = None   #sometimes the deepcopy cannot be done
                 if not S:
                     return W, availHeight, F[:i],F[i:]
                 else:
@@ -1280,7 +1279,7 @@ class _FindSplitterMixin:
         C = content if content is not None else self._content
         for f in C:
             if isinstance(f,ListFlowable):
-                F.extend(self._getContent(f._content))
+                F.extend(f._getContent())
             else:
                 F.append(f)
         return F
@@ -1527,7 +1526,7 @@ class BalancedColumns(_FindSplitterMixin,NullDraw):
     def _generated_content(self,aW,aH):
         G = []
         frame = self._frame
-        from reportlab.platypus.doctemplate import CurrentFrameFlowable,LayoutError, ActionFlowable, Indenter
+        from reportlab.platypus.doctemplate import LayoutError, ActionFlowable, Indenter
         from reportlab.platypus.frames import Frame
         from reportlab.platypus.doctemplate import FrameBreak
         lpad = frame._leftPadding if self._leftPadding is None else self._leftPadding
@@ -1558,7 +1557,7 @@ class BalancedColumns(_FindSplitterMixin,NullDraw):
                 h = 0
                 cn = None
                 icheck = nCols-2 if endSlack else -1
-                for i in xrange(nCols):
+                for i in range(nCols):
                     wi, hi, c0, c1 = self._findSplit(canv,cw,ah,content=cn,paraFix=False)
                     w = max(w,wi)
                     h = max(h,hi)
@@ -1655,7 +1654,7 @@ class BalancedColumns(_FindSplitterMixin,NullDraw):
                 id='%s-%d' %(self.name,i),
                 showBoundary=showBoundary,
                 overlapAttachedSpace=frame._oASpace,
-                _debug=frame._debug) for i in xrange(nCols)]
+                _debug=frame._debug) for i in range(nCols)]
 
 
         #we are going to modify the current template
@@ -1723,7 +1722,7 @@ class BalancedColumns(_FindSplitterMixin,NullDraw):
                         )
             if doVLines:
                 vLines = []
-                for i in xrange(1,nCols):
+                for i in range(1,nCols):
                     vlx = 0.5*(F[i]._x1 + F[i-1]._x1+F[i-1]._width)
                     vLines.append(_AbsLine(vlx,oby2,vlx,oby1,strokeWidth=self._vLinesStrokeWidth,strokeColor=self._vLinesStrokeColor))
         else:
@@ -1733,7 +1732,7 @@ class BalancedColumns(_FindSplitterMixin,NullDraw):
         if doBox: G.append(box)
         if doVLines: G.extend(vLines)
         sa = self.getSpaceAfter()
-        for i in xrange(nCols):
+        for i in range(nCols):
             Ci = C[i]
             if Ci:
                 Ci = KeepInFrame(W1,H1,Ci,mode='shrink')
@@ -1770,14 +1769,22 @@ class BalancedColumns(_FindSplitterMixin,NullDraw):
 
     def wrap(self,aW,aH):
         #here's where we mess with everything
+        self_frame = getattr(self,'_frame',None)
         if aH<self.spaceBefore+self._needed-_FUZZ:
             #we are going straight to the nextTemplate with no attempt to modify the frames
             G = [PageBreak(), self]
             H1 = 0
         else:
+            if not self_frame:
+                #probably in some kind of container
+                from reportlab.platypus.frames import Frame
+                self._frame = Frame(0,0,aW,0x7fffffff,leftPadding=0, rightPadding=0,
+                                    topPadding=0,bottomPadding=0)
             H1, G = self._generated_content(aW,aH)
+            if not self_frame:
+                del self._frame
 
-        self._frame.add_generated_content(*G)
+        if self_frame: self_frame.add_generated_content(*G)
         return 0,min(H1,aH)
 
 class AnchorFlowable(Spacer):
@@ -2055,7 +2062,7 @@ class DDIndenter(Flowable):
                 return self.__dict__[a]
             except KeyError:
                 if a not in ('spaceBefore','spaceAfter'):
-                    raise AttributeError('%r has no attribute %s' % (self,a))
+                    raise AttributeError(f'{self!r} has no attribute {a} dict={self.__dict__}')
         return getattr(self._flowable,a)
 
     def __setattr__(self,a,v):
@@ -2088,14 +2095,22 @@ class LIIndenter(DDIndenter):
             self.spaceAfter = spaceAfter
 
     def split(self, aW, aH):
-        S = self._flowable.split(aW-self._leftIndent-self._rightIndent, aH)
+        f = self._flowable
+        S = f.split(aW-self._leftIndent-self._rightIndent, aH)
+        if len(S)>1 and hasattr(f,'blPara'):
+            cnl = len(f.blPara.lines)
+            nnl = len(S[0].blPara.lines)
+            #avoid 1/2 line widow when justified else avoid 1 line widow
+            if ((getattr(getattr(f,'style',None),'alignment',None)==4 and nnl>=(cnl-2)) 
+                    or nnl==(cnl-1)):
+                S = []
         return [
                 LIIndenter(s,
                         leftIndent=self._leftIndent,
                         rightIndent=self._rightIndent,
                         bullet = (s is S[0] and self._bullet or None),
                         ) for s in S
-                ]
+                ] if S else []
 
     def drawOn(self, canv, x, y, _sW=0):
         if self._bullet:
@@ -2212,6 +2227,7 @@ class ListFlowable(_Container,Flowable):
 
         self._list_content = None
         self._dims = None
+        self._caption = kwds.pop('caption',None)
 
     @property
     def _content(self):
@@ -2402,6 +2418,9 @@ class ListFlowable(_Container,Flowable):
         if spaceAfter is not None:
             f=S[-1]
             f.__dict__['spaceAfter'] = max(f.__dict__.get('spaceAfter',0),spaceAfter)
+
+        if self._caption: S.insert(0,self._caption)
+
         return S
 
 class TopPadder(Flowable):

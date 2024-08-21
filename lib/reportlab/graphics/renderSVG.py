@@ -7,18 +7,17 @@ objects download the svglib module here:
   http://python.net/~gherman/#svglib
 """
 
-import math, types, sys, os, codecs, base64
-from operator import getitem
+import math, sys, os, codecs, base64
+from io import BytesIO, StringIO
 
 from reportlab.pdfbase.pdfmetrics import stringWidth # for font info
 from reportlab.lib.rl_accel import fp_str
-from reportlab.lib.colors import black
-from reportlab.lib.utils import asNative, getBytesIO
-from reportlab.graphics.renderbase import StateTracker, getStateDelta, Renderer, renderScaledDrawing
+from reportlab.lib.utils import asNative
+from reportlab.graphics.renderbase import getStateDelta, Renderer, renderScaledDrawing
 from reportlab.graphics.shapes import STATE_DEFAULTS, Path, UserNode
 from reportlab.graphics.shapes import * # (only for test0)
-from reportlab import rl_config, ascii
-from reportlab.lib.utils import getStringIO, RLString, isPy3, isUnicode, isBytes
+from reportlab import rl_config
+from reportlab.lib.utils import RLString, isUnicode, isBytes
 from reportlab.pdfgen.canvas import FILL_EVEN_ODD, FILL_NON_ZERO
 from .renderPM import _getImage
 
@@ -39,7 +38,7 @@ EXTRA_FILL_STYLES = 'fill fill-opacity'.split()
 ### top-level user function ###
 def drawToString(d, showBoundary=rl_config.showBoundary,**kwds):
     "Returns a SVG as a string in memory, without touching the disk"
-    s = getStringIO()
+    s = StringIO()
     drawToFile(d, s, showBoundary=showBoundary,**kwds)
     return s.getvalue()
 
@@ -265,16 +264,13 @@ class SVGCanvas:
         if hasattr(fn,'write'):
             f = fn
         else:
-            if isPy3:
-                f = open(fn, 'w',encoding=self.encoding)
-            else:
-                f = open(fn, 'w')
+            f = open(fn, 'w',encoding=self.encoding)
 
         svg = writer.getvalue()
         exd = self.extraXmlDecl
         if exd:
             svg = svg.replace('?>','?>'+exd)
-        f.write(svg if isPy3 else svg.encode(self.encoding))
+        f.write(svg)
         if f is not fn:
             f.close()
 
@@ -524,7 +520,7 @@ class SVGCanvas:
         # self.currGroup.appendChild(comment)
 
     def drawImage(self, image, x, y, width, height, embed=True):
-        buf = getBytesIO()
+        buf = BytesIO()
         image.save(buf,'png')
         buf = asNative(base64.b64encode(buf.getvalue()))
         self.currGroup.appendChild(

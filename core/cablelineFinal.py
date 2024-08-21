@@ -344,7 +344,7 @@ def preciseCable(IS, poles, STA):
     ST = STA + z*qT
     Vi = ST * (np.sin(phi_o) - np.sin(phi_u))      # Vi darf nicht negativ sein
     # Nachweis basierend auf Leerseilknickwinkel
-    kraft['Nachweis'] = np.where(phi_leer_knick >= 1, ['Ja'], ['Nein'])
+    kraft['Nachweis'] = np.where(phi_leer_knick >= IS['LeerKnickMit'], ['Ja'], ['Nein'])
     # Do not test for np.nan values (crane, anchor)
     kraft['Nachweis'][np.isnan(phi_leer_knick)] = '-'
     if 'Nein' in kraft['Nachweis'][1:-1]:  # Test für die Zwischenstützen
@@ -460,7 +460,7 @@ def preciseCable(IS, poles, STA):
     kraft['Spannkraft'] = [ST[0], ST[-1]]
     kraft['Seilzugkraft'] = [ST, Hs]
 
-    poles.calculateAdvancedProperties(kraft)
+    poles.calculateAdvancedProperties(kraft, IS['Bundstelle'])
     
     anchorField = poles.getAnchorCable()
     cableline = {

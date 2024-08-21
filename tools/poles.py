@@ -1,7 +1,7 @@
 from math import cos, sin, atan, floor, radians, degrees
 import numpy as np
 from qgis.PyQt.QtCore import QCoreApplication
-
+from SEILAPLAN.tools.globals import PolesOrigin
 
 # Notwendiger BHD [cm]: { Angriffswinkel (kleiner als 10) [°]: Tragkraft Ankerbaum [kn], ...}
 #   Angriffswinkel 0 - 10°: guenstig
@@ -40,7 +40,7 @@ class Poles(object):
     INIT_POLE_ANGLE = 0.0
     POLE_DIST_STEP = 1.0
     POLE_HEIGHT_STEP = 0.1
-    POLE_NAME_MAX_LENGTH = 22
+    POLE_NAME_MAX_LENGTH = 42
     
     def __init__(self, project):
         """
@@ -95,7 +95,6 @@ class Poles(object):
                      poleType='anchor', refresh=False)
         self.refresh()
 
-    # noinspection PyMethodMayBeStatic
     def tr(self, message, **kwargs):
         """Get the translation for a string using Qt translation API.
         We implement this ourselves since we do not inherit QObject.
@@ -110,7 +109,6 @@ class Poles(object):
         ----------
         **kwargs
         """
-        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
         return QCoreApplication.translate(type(self).__name__, message)
 
     def add(self, idx, d, h=INIT_POLE_HEIGHT, angle=INIT_POLE_ANGLE,
@@ -154,7 +152,11 @@ class Poles(object):
             'active': active,
             'category': category,
             'position': position,
-            'abspann': abspann
+            'abspann': abspann,
+            'BHD': np.nan,
+            'bundstelle': np.nan,
+            'angriff': np.nan,
+            'maxForce': np.nan,
         })
         if refresh:
             self.refresh()
@@ -218,8 +220,8 @@ class Poles(object):
             ztop = z
         return x, y, z, dtop, ztop
 
-    def updateAllPoles(self, status, poles):
-        if status == 'optimization':
+    def updateAllPoles(self, mode, poles):
+        if mode == PolesOrigin.Optimization:
             # Update height of start point
             self.update(self.idxA, 'h', poles[0]['h'])
             # Optimization was successful, line reaches end point
@@ -244,7 +246,7 @@ class Poles(object):
                 self.add(idx, p['d'], p['h'], name=p['name'], refresh=False)
                 idx += 1
         
-        elif status == 'savedFile':
+        elif mode == PolesOrigin.SavedFile:
             # User wants to jump over the optimization and has loaded a save
             # file with poles --> all poles are being replaced with new data
             self.poles = []
@@ -255,9 +257,9 @@ class Poles(object):
                          p['position'] if 'position' in p else None,
                          p['abspann'] if 'abspann' in p else None, False)
         
-        elif status == 'jumpedOver':
+        elif mode == PolesOrigin.OnlyStartEnd:
             # User wants to jump over the optimization but has not loaded a
-            # save file with pole data. But since there are some fixed poles,
+            # save file with pole data. But if there are fixed poles,
             # these are added in between first and last pole.
             idx = 1
             if self.A_type == 'pole':
@@ -349,7 +351,7 @@ class Poles(object):
         self.refresh()
     
     def calculateAnchorLength(self):
-        """ Calculate anchor cable line and interpolate ground points. This
+        """ Calculate anchor cable line and interpolate ground points. These
         values do only have to be calculated when anchors are active
         (poleType == anchor)
         """
@@ -379,24 +381,26 @@ class Poles(object):
             'len': anchor_len
         }
     
-    def getAnchorAngle(self, anchor, neighbourPole):
-        """Calculate 'Angriffwinkel' for anchors and pole_anchors"""
+    @staticmethod
+    def getAnchorAngle(anchor, neighbourPole):
+        """Calculate 'Angriffswinkel' for anchors and pole_anchors"""
+        # At start point
         ztop_diff = neighbourPole['ztop'] - anchor['ztop']
         z_diff = neighbourPole['z'] - anchor['z']
         dtop_diff = neighbourPole['dtop'] - anchor['dtop']
-        d_diff = neighbourPole['d'] - anchor['d']
-        
-        # end point
-        if anchor['d'] > neighbourPole['d']:
-            dtop_diff *= -1
-            d_diff *= -1
+        d_diff = neighbourPole['d'] - anchor['d']  
         
         if anchor['poleType'] == 'anchor':
+            # At end point
+            if anchor['d'] > neighbourPole['d']:
+                dtop_diff *= -1
+                d_diff *= -1
+            
             # Angle between anchor -> pole top point and anchor -> pole
             # ground point
             if d_diff == 0 or ztop_diff == 0:
                 # If anchor and pole are at the same horizontal distance or
-                # at the same height, angle calculation is not meaningfull
+                # at the same height, angle calculation is not meaningful
                 return np.nan
             try:
                 return degrees(atan(ztop_diff / dtop_diff) - atan(z_diff / d_diff))
@@ -409,6 +413,8 @@ class Poles(object):
             #  is calculated from horizontal line to cable.
             if d_diff == 0:
                 return np.nan
+            # No correction for end point necessary like for 'anchor', we're
+            #  calculating a partial angle
             return degrees(atan(z_diff / d_diff))
             
 
@@ -469,7 +475,7 @@ class Poles(object):
         elif not self.hasAnchorE and self.lastPole['h'] == 0:
             self.poles[self.idxE]['poleType'] = 'pole_anchor'
 
-    def calculateAdvancedProperties(self, forces):
+    def calculateAdvancedProperties(self, forces, bundstelle):
         """ Calculates additional pole properties that are used in the report.
         - Angriffswinkel for anchors
         - Max force and force type
@@ -511,8 +517,8 @@ class Poles(object):
                     maxForce = forces['MaxSeilzugkraft_L'][2]       # Tmax,E
                     angleTerrain = self.getAnchorAngle(pole, self.poles[j-1])
                     # Add alpha LA: incoming angle (idx=0) of last pole (idx=-1)
-                    angle = forces['Anlegewinkel_Leerseil'][0][-1] - angleTerrain
-    
+                    angle = angleTerrain - forces['Anlegewinkel_Leerseil'][0][-1]
+                
                 bhd = self.getBhdForAnchor(angle, maxForce)
 
             # Start or end pole with h > 0 --> not passable
@@ -530,7 +536,7 @@ class Poles(object):
                     if not np.all(np.isnan(forces['Sattelkraft_beiStuetze'][0][-2:])):
                         maxForce = np.nanmax(forces['Sattelkraft_beiStuetze'][0][-2:])
                 if maxForce:
-                    [bhd, bundst] = self.getBhdForPole(pole['h'], maxForce)
+                    [bhd, bundst] = self.getBhdForPole(pole['h'], maxForce, bundstelle)
 
             # pole in between --> passable
             elif pole['poleType'] == 'pole':
@@ -546,7 +552,7 @@ class Poles(object):
                 else:
                     maxForce = maxForceB
                 
-                [bhd, bundst] = self.getBhdForPole(pole['h'], maxForce)
+                [bhd, bundst] = self.getBhdForPole(pole['h'], maxForce, bundstelle)
               
             # Special crane start pole with h: > 0 --> not passable
             elif pole['poleType'] == 'crane':
@@ -577,11 +583,11 @@ class Poles(object):
         return BHD_ANCHOR[angle][force_array[force_idx]]
     
     @staticmethod
-    def getBhdForPole(height, max_force):
+    def getBhdForPole(height, max_force, bundstelle):
         idx_force = (np.abs(BHD_POLE_Force - max_force)).argmin()
         height_array = np.array(list(BHD_POLE[BHD_POLE_Force[idx_force]].keys()))
-        # Abbundstelle 1.5m higher than cable
-        height += 1.5
+        # Bundstelle is above cable, default 3m
+        height += bundstelle
         idx_height = (np.abs(height_array - height)).argmin()
         # Diameter of tree next to cable
         bundst = BHD_POLE[BHD_POLE_Force[idx_force]][height_array[idx_height]]

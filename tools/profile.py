@@ -222,12 +222,13 @@ class Profile(object):
 
         # Calculate distance between cable and ground
         maxDistToGround = np.nanmax(cableline['empty'][::10] - self.zi)
-
-        cableline['groundclear_di'] = gclear_xaxis
-        cableline['groundclear'] = gclear_cable
-        cableline['groundclear_under'] = gclear_abs
-        cableline['groundclear_rel'] = gclear_rel
-        cableline['maxDistToGround'] = maxDistToGround
+        return {
+            'groundclear_di': gclear_xaxis,
+            'groundclear': gclear_cable,
+            'groundclear_under': gclear_abs,
+            'groundclear_rel': gclear_rel,
+            'maxDistToGround': maxDistToGround,
+        }
     
     def setPeakLocations(self, peakLoc):
         self.peakLoc_x = peakLoc

@@ -19,10 +19,10 @@
  ***************************************************************************/
 """
 from qgis.PyQt.QtCore import Qt, pyqtSignal, QObject, QCoreApplication
-from qgis.PyQt.QtWidgets import QLabel, QComboBox, QGridLayout, QSizePolicy
+from qgis.PyQt.QtWidgets import QLabel, QComboBox, QGridLayout, QSizePolicy, QWidget
 from qgis.PyQt.QtGui import QStandardItem, QStandardItemModel
 
-from ..tools.poles import Poles
+from SEILAPLAN.tools.poles import Poles
 
 
 birdViewKatConf = {
@@ -84,17 +84,17 @@ class BirdViewWidget(QObject):
     
     sig_updatePole = pyqtSignal(int, str, object)
     
-    def __init__(self, widget, layout, poles):
+    def __init__(self, widget: QWidget, layout: QGridLayout, poles: Poles):
         """
         :type widget: qgis.PyQt.QtWidgets.QWidget
         :type layout: qgis.PyQt.QtWidgets.QLayout
         :type poles: Poles|Array
         """
         super().__init__()
-        self.widget = widget
+        self.widget: QWidget = widget
         self.layout: QGridLayout = layout
-        self.poles = poles.poles
-        self.direction = poles.direction
+        self.poles: Poles = poles.poles
+        self.direction: str = poles.direction
         self.layout.setAlignment(Qt.AlignTop)
         self.poleRows = []
         
@@ -180,8 +180,9 @@ class BirdViewRow(object):
     def addFieldName(self, value):
         self.fieldName = QLabel(self.widget)
         self.fieldName.setSizePolicy(self.sizePolicy)
-        self.fieldName.setMaximumWidth(120)
+        self.fieldName.setMaximumWidth(110)
         self.fieldName.setText(value)
+        shortenTextToFitLabel(self.fieldName)
         self.layout.addWidget(self.fieldName, self.rowIndex, 1)
     
     def addFieldCat(self, value):
@@ -377,9 +378,7 @@ class BirdViewRow(object):
         self.fieldCat.deleteLater()
         self.fieldPos.deleteLater()
         self.fieldAbspann.deleteLater()
-        
     
-    # noinspection PyMethodMayBeStatic
     def tr(self, message, **kwargs):
         """Get the translation for a string using Qt translation API.
         We implement this ourselves since we do not inherit QObject.
@@ -394,5 +393,23 @@ class BirdViewRow(object):
         ----------
         **kwargs
         """
-        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
         return QCoreApplication.translate(type(self).__name__, message)
+    
+    
+    
+def shortenTextToFitLabel(labelField):
+    # Compare length of displayed text with max length of label field
+    #  If text is longer than the field, shorten it until it fits
+    if labelField.fontMetrics().boundingRect(labelField.text()).width() > labelField.size().width():
+        textFromLabel = labelField.text()
+        # Add a tooltip if there is none yet
+        if labelField.toolTip() == '':
+            labelField.setToolTip(textFromLabel)
+        # If this isn't the first time the text gets shortened, remove the ellipsis
+        if textFromLabel[-1] == '…':
+            textFromLabel = textFromLabel[:-1]
+        # Shorten the text by 2 character
+        labelField.setText(textFromLabel[:-2].strip() + '…')
+        shortenTextToFitLabel(labelField)
+    else:
+        return labelField

@@ -26,7 +26,8 @@ from qgis.core import QgsTask
 from qgis.PyQt.QtCore import pyqtSignal
 
 # Import Tool Scripts
-from ..core.mainSeilaplan import main
+from SEILAPLAN.core.mainSeilaplan import main
+from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
 from .outputReport import getTimestamp
 
 
@@ -42,17 +43,14 @@ class ProcessingTask(QgsTask):
     sig_value = pyqtSignal(float)
     sig_range = pyqtSignal(list)
     sig_text = pyqtSignal(str)
-    sig_result = pyqtSignal(str)
     
-    def __init__(self, confHandler, description='SEILAPLAN'):
-        """
-        :type confHandler: configHandler.ConfigHandler
-        """
+    def __init__(self, projectConfig, description='SEILAPLAN'):
+
         super().__init__(description, QgsTask.CanCancel)
+
         self.state = False
         self.exception = None
-        self.confHandler = confHandler
-        self.projInfo = confHandler.project
+        self.projectConfig: ProjectConfHandler = projectConfig
         self.result = None
         self.status = []
     
@@ -70,16 +68,14 @@ class ProcessingTask(QgsTask):
 
         t_start = time.time()
         try:
-            # Create profile, initialize poles
-            self.confHandler.prepareForCalculation()
-            # Calculate pole positions
-            result = main(self, self.projInfo)
+            # Run optimization
+            result = main(self, self.projectConfig)
         except Exception as e:
             self.exception = traceback.format_exc()
             return False
 
-        # Check if there was an error
         if not result:
+            # Result will be False if there was an error or the user canceled
             return False
         self.sig_value.emit(result['optLen'] * 1.01)
 
@@ -87,14 +83,6 @@ class ProcessingTask(QgsTask):
         result['duration'] = getTimestamp(t_start)
 
         self.result = result
-
-        statusNames = {
-            1: 'optiSuccess',
-            2: 'liftsOff',
-            3: 'notComplete'
-        }
-        self.status = statusNames[max(self.status)]
-        self.sig_result.emit(self.status)
 
         # import pickle
         # import os
@@ -109,7 +97,7 @@ class ProcessingTask(QgsTask):
         return True
         
     def getResult(self):
-        return self.result, self.status
+        return self.result, max(self.status)
     
     def finished(self, result):
         """This method is automatically called when self.run returns. result

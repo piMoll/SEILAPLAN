@@ -21,17 +21,17 @@
 import os
 from math import atan2, pi, cos, sin
 import json
-
 from qgis.core import (QgsPointXY, QgsDistanceArea, QgsRasterLayer)
-
 from .configHandler_abstract import AbstractConfHandler
+from .configHandler_params import ParameterConfHandler
 from .heightSource import AbstractHeightSource
 from .raster import Raster
 from .survey import SurveyData
 from .profile import Profile
 from .poles import Poles
 from .outputGeo import createVirtualRaster
-from .. import __version__ as version
+from .globals import PolesOrigin
+from SEILAPLAN import __version__ as version
 
 
 def castToNum(formattedNum):
@@ -44,7 +44,6 @@ def castToNum(formattedNum):
     return num
 
 
-# noinspection PyTypeChecker
 class ProjectConfHandler(AbstractConfHandler):
     
     # Order of pole types in drop down list
@@ -53,21 +52,18 @@ class ProjectConfHandler(AbstractConfHandler):
         1: 'pole',
         2: 'crane'
     }
-    heightSource: AbstractHeightSource
-    profile: Profile
-    poles: Poles
 
-    def __init__(self, params):
+    def __init__(self, params: ParameterConfHandler):
         """
         :type params: tools.configHandler_params.ParamConfHandler
         """
         AbstractConfHandler.__init__(self)
         
-        self.params = params
+        self.params: ParameterConfHandler = params
         
         # Project data
         self.projectName = None
-        self.heightSource = None
+        self.heightSource: AbstractHeightSource = None
         self.heightSourceType = None
         self.surveyType = None
         self.virtRasterSource = []
@@ -91,8 +87,8 @@ class ProjectConfHandler(AbstractConfHandler):
         self.noPoleSection = []
         self.prHeader = {}
         
-        self.profile = None
-        self.poles = None
+        self.profile: Profile = None
+        self.poles: Poles = None
         # Poles from a loaded project file
         self.polesFromFile = []
     
@@ -200,7 +196,7 @@ class ProjectConfHandler(AbstractConfHandler):
         """ Generate a unique project name."""
         import time
         now = time.time()
-        timestamp = time.strftime("%d.%m_%H'%M", time.localtime(now))
+        timestamp = time.strftime("%Y%m%d_%H%M", time.localtime(now))
         self.projectName = "seilaplan_{}".format(timestamp)
         return self.projectName
     
@@ -226,10 +222,7 @@ class ProjectConfHandler(AbstractConfHandler):
         :param sourcePath: path to file
         :param surveySourceType: Type of survey file to load
          """
-        self.heightSource = None
-        self.heightSourceType = None
-        self.surveyType = None
-        self.virtRasterSource = None
+        self.resetHeightSource()
         heights = None
         if sourceType == 'dhm':
             heights = Raster(layer, sourcePath)
@@ -442,10 +435,15 @@ class ProjectConfHandler(AbstractConfHandler):
     
     def checkValidState(self):
         msg = ''
-        if not self.profileIsValid():
-            msg = self.tr('Bitte definieren Sie gueltige Start- und Endkoordinaten')
         if not self.projectName:
             msg = self.tr('Bitte definieren Sie einen Projektnamen')
+        elif not self.heightSource:
+            msg = self.tr('Bitte definieren Sie Terraindaten')
+        elif not self.profileIsValid():
+            if self.heightSourceType == 'survey':
+                msg = self.tr('Bitte zeichnen Sie Start- und Endpunkt der Seillinie in die Karte ein (Schaltflaeche zeichnen)')
+            else:
+                msg = self.tr('Bitte zeichnen Sie die Seillinie in die Karte (Schaltflaeche zeichnen) oder definieren sie Start- und Endkoordinaten manuell')
         if msg:
             self.onError(msg, self.tr('Ungueltige Daten'))
         return self.profileIsValid() and self.projectName
@@ -470,7 +468,11 @@ class ProjectConfHandler(AbstractConfHandler):
             self.A_type = pType
         elif point == 'E':
             self.E_type = pType
-
+        
+        # Reset in-between poles, so they don't hang around after start or
+        #  end pole has been changed
+        self.resetPoles()
+        
     @staticmethod
     def formatCoordinate(number, digits=1):
         """Format coordinates to one digit except otherwise"""
@@ -504,7 +506,7 @@ class ProjectConfHandler(AbstractConfHandler):
             except ValueError:
                 self.prHeader[propName] = ''
     
-    def prepareForCalculation(self):
+    def prepareForCalculation(self, runOptimization):
         success = True
         # Prepare raster (create subraster) or interpolate survey data
         try:
@@ -536,19 +538,22 @@ class ProjectConfHandler(AbstractConfHandler):
         # Initialize pole data (start/end point and anchors)
         try:
             self.poles = Poles(self)
+            if not runOptimization:
+                self.updatePoles()
         except ValueError:
             self.onError(self.tr('Unerwarteter Fehler bei Erstellung der Stuetzen'))
             return False
         return success
     
-    def updatePoles(self, status):
+    def updatePoles(self):
+        """Create poles from a saved project or from fixed poles. Don't call
+        this function if the optimization algorithm is going to run."""
         if self.polesFromFile:
-            status = 'savedFile'
-            self.poles.updateAllPoles(status, self.polesFromFile)
+            self.poles.updateAllPoles(PolesOrigin.SavedFile, self.polesFromFile)
         # If instead user has defined some fixed poles, add these to Poles()
+        #  (if the saved file included fixed poles, they would already be part of self.poles)
         elif len(self.fixedPoles['poles']) > 0:
-            self.poles.updateAllPoles(status, self.fixedPoles['poles'])
-        return status
+            self.poles.updateAllPoles(PolesOrigin.OnlyStartEnd, self.fixedPoles['poles'])
     
     def resetProfile(self):
         self.points = {
@@ -566,9 +571,15 @@ class ProjectConfHandler(AbstractConfHandler):
             'HM_fix_d': [],
             'HM_fix_h': []
         }
-        self.noPoleSection = []
-        self.polesFromFile = []
+        self.resetPoles()
     
-    def reset(self):
+    def resetHeightSource(self):
+        del self.heightSource
+        self.heightSource = None
+        self.heightSourceType = None
+        self.surveyType = None
+        self.virtRasterSource = None
+    
+    def resetPoles(self):
         self.poles = None
         self.polesFromFile = []

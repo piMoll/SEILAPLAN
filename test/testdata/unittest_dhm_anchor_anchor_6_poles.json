@@ -1,0 +1,329 @@
+{
+    "projectname": "unittest_dhm_anchor_anchor_6_poles",
+    "version": "3.5.3",
+    "header": {
+        "PrVerf": "Unittest",
+        "PrNr": "Unittest 000",
+        "PrGmd": "Oberägeri",
+        "PrWald": "Hinterwald",
+        "PrBemerkung": "Test project"
+    },
+    "heightsource": {
+        "type": "dhm",
+        "surveyType": null,
+        "source": "{HOMEPATH}/test/testdata/dhm.tiff",
+        "crs": "EPSG:2056"
+    },
+    "profile": {
+        "start": {
+            "coordinates": [
+                2744855.616961695,
+                1189660.624561445
+            ],
+            "type": "pole"
+        },
+        "end": {
+            "coordinates": [
+                2744623.5336833997,
+                1189461.696037192
+            ],
+            "type": "pole"
+        },
+        "fixedPoles": [],
+        "noPoleSection": []
+    },
+    "poles": [
+        {
+            "idx": 0,
+            "name": "Verankerung",
+            "poleType": "anchor",
+            "d": -20.0,
+            "h": 0.0,
+            "z": 1244.0292061105945,
+            "angle": 0.0,
+            "manually": false,
+            "active": true,
+            "category": null,
+            "position": null,
+            "abspann": null
+        },
+        {
+            "idx": 1,
+            "name": "Anfangsstütze",
+            "poleType": "pole",
+            "d": 0.0,
+            "h": 12.0,
+            "z": 1253.9126660529864,
+            "angle": 1,
+            "manually": false,
+            "active": true,
+            "category": null,
+            "position": null,
+            "abspann": null
+        },
+        {
+            "idx": 2,
+            "name": "neue Stütze",
+            "poleType": "pole",
+            "d": 76.0,
+            "h": 12.0,
+            "z": 1233.7329502885796,
+            "angle": 0.0,
+            "manually": true,
+            "active": true,
+            "category": null,
+            "position": null,
+            "abspann": null
+        },
+        {
+            "idx": 3,
+            "name": "neue Stütze",
+            "poleType": "pole",
+            "d": 152.0,
+            "h": 13.1,
+            "z": 1208.5946345853422,
+            "angle": 0,
+            "manually": true,
+            "active": true,
+            "category": null,
+            "position": null,
+            "abspann": null
+        },
+        {
+            "idx": 4,
+            "name": "neue Stütze",
+            "poleType": "pole",
+            "d": 198.0,
+            "h": 12.6,
+            "z": 1198.518224470363,
+            "angle": 0.0,
+            "manually": true,
+            "active": true,
+            "category": null,
+            "position": null,
+            "abspann": null
+        },
+        {
+            "idx": 5,
+            "name": "neue Stütze",
+            "poleType": "pole",
+            "d": 253.0,
+            "h": 12.0,
+            "z": 1176.702902928115,
+            "angle": 6,
+            "manually": true,
+            "active": true,
+            "category": null,
+            "position": null,
+            "abspann": null
+        },
+        {
+            "idx": 6,
+            "name": "Endstütze",
+            "poleType": "pole",
+            "d": 305.0,
+            "h": 12.0,
+            "z": 1148.5659519567498,
+            "angle": 0.0,
+            "manually": false,
+            "active": true,
+            "category": null,
+            "position": null,
+            "abspann": null
+        },
+        {
+            "idx": 7,
+            "name": "Verankerung",
+            "poleType": "anchor",
+            "d": 325.0,
+            "h": 0.0,
+            "z": 1141.737094113212,
+            "angle": 0.0,
+            "manually": false,
+            "active": true,
+            "category": null,
+            "position": null,
+            "abspann": null
+        }
+    ],
+    "params": {
+        "setname": "",
+        "optSTA": null,
+        "parameterList": [
+            {
+                "name": "Seilsys",
+                "label": "Seilsystem",
+                "value": "Zweiseil-System",
+                "unit": ""
+            },
+            {
+                "name": "HM_Kran",
+                "label": "Höhe Mast Mobilseilkran",
+                "value": "12",
+                "unit": "m"
+            },
+            {
+                "name": "Befahr_A",
+                "label": "Tragseil befahrbar ab ... vom Anfangspunkt",
+                "value": "0",
+                "unit": "m"
+            },
+            {
+                "name": "Befahr_E",
+                "label": "Tragseil befahrbar bis ... vor dem Endpunkt",
+                "value": "0",
+                "unit": "m"
+            },
+            {
+                "name": "Bodenabst_min",
+                "label": "Min. Abstand zwischen Tragseil und Boden",
+                "value": "6.8",
+                "unit": "m"
+            },
+            {
+                "name": "Bodenabst_A",
+                "label": "einzuhalten ab ... vom Anfangspunkt",
+                "value": "20",
+                "unit": "m"
+            },
+            {
+                "name": "Bodenabst_E",
+                "label": "einzuhalten bis ... vor dem Endpunkt",
+                "value": "20",
+                "unit": "m"
+            },
+            {
+                "name": "Q",
+                "label": "Gesamtlast",
+                "value": "35",
+                "unit": "kN"
+            },
+            {
+                "name": "qT",
+                "label": "Metergewicht Tragseil",
+                "value": "0.0232",
+                "unit": "kN/m"
+            },
+            {
+                "name": "D",
+                "label": "Durchmesser Tragseil",
+                "value": "22",
+                "unit": "mm"
+            },
+            {
+                "name": "MBK",
+                "label": "Mindestbruchkraft Tragseil",
+                "value": "424",
+                "unit": "kN"
+            },
+            {
+                "name": "qZ",
+                "label": "Metergewicht Zugseil",
+                "value": "0.0073",
+                "unit": "kN/m"
+            },
+            {
+                "name": "qR",
+                "label": "Metergewicht Rückholseil",
+                "value": "0",
+                "unit": "kN/m"
+            },
+            {
+                "name": "SK",
+                "label": "Tragseilspannkraft (Anfangspunkt)",
+                "value": "70",
+                "unit": "kN"
+            },
+            {
+                "name": "Anlagetyp",
+                "label": "Anlagetyp",
+                "value": "Spezieller Anlagetyp Rosa",
+                "unit": ""
+            },
+            {
+                "name": "Min_Dist_Mast",
+                "label": "Minimaler Abstand zwischen Stützen",
+                "value": "10",
+                "unit": "m"
+            },
+            {
+                "name": "L_Delta",
+                "label": "Min. Abstand mögl. Stützenstandorte",
+                "value": "10",
+                "unit": "m"
+            },
+            {
+                "name": "HM_min",
+                "label": "Minimale Sattelhöhe",
+                "value": "8",
+                "unit": "m"
+            },
+            {
+                "name": "HM_max",
+                "label": "Maximale Sattelhöhe",
+                "value": "22",
+                "unit": "m"
+            },
+            {
+                "name": "HM_Delta",
+                "label": "Abstufungsintervall",
+                "value": "2",
+                "unit": "m"
+            },
+            {
+                "name": "HM_nat",
+                "label": "Künstliche Stütze ab Sattelhöhe von",
+                "value": "22",
+                "unit": "m"
+            },
+            {
+                "name": "E",
+                "label": "Elastizitätsmodul Tragseil",
+                "value": "100",
+                "unit": "kN/mm2"
+            },
+            {
+                "name": "FuellF",
+                "label": "Füllfaktor",
+                "value": "0.7",
+                "unit": ""
+            },
+            {
+                "name": "SF_T",
+                "label": "Sicherheitsfaktor Tragseil",
+                "value": "3",
+                "unit": ""
+            },
+            {
+                "name": "LeerKnickMit",
+                "label": "Grenzwert min. Leerseilknickwinkel mit Niederhaltelasche",
+                "value": "1",
+                "unit": "°"
+            },
+            {
+                "name": "LeerKnickOhne",
+                "label": "Grenzwert min. Leerseilknickwinkel ohne Niederhaltelasche",
+                "value": "3",
+                "unit": "°"
+            },
+            {
+                "name": "LastKnickSt",
+                "label": "Grenzwert max. Lastseilknickwinkel Stütze",
+                "value": "30",
+                "unit": "°"
+            },
+            {
+                "name": "LastKnickEnd",
+                "label": "Grenzwert max. Lastseilknickwinkel Endmast",
+                "value": "60",
+                "unit": "°"
+            },
+            {
+                "name": "Bundstelle",
+                "label": "Bundstelle über Sattelleiste",
+                "value": "3",
+                "unit": "m"
+            }
+        ]
+    }
+}

@@ -18,16 +18,12 @@
  *                                                                         *
  ***************************************************************************/
 """
-import pickle
 import os
-import numpy as np
-from math import floor
-
+import sys
+from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QTimer, Qt, QCoreApplication, QSettings
 from qgis.PyQt.QtWidgets import QDialog, QMessageBox, QTextEdit
 from qgis.PyQt.QtGui import QPixmap
-
-from .ui_adjustmentDialog import Ui_AdjustmentDialogUI
 from .adjustmentPlot import AdjustmentPlot, saveImgAsPdfWithMpl, \
     calculatePlotDimensions
 from .plotting_tools import MyNavigationToolbar
@@ -38,16 +34,26 @@ from .adjustmentDialog_thresholds import AdjustmentDialogThresholds
 from .saveDialog import DialogOutputOptions
 from .guiHelperFunctions import DialogWithImage, addBackgroundMap
 from .mapMarker import MapMarkerTool
-from ..tools.birdViewMapExtractor import extractMapBackground
-from ..core.cablelineFinal import preciseCable, updateWithCableCoordinates
-from ..tools.calcThreshold import ThresholdUpdater
-from ..tools.outputReport import generateReportText, generateReport, \
+from SEILAPLAN.tools.birdViewMapExtractor import extractMapBackground
+from SEILAPLAN.core.cablelineFinal import preciseCable, updateWithCableCoordinates
+from SEILAPLAN.tools.calcThreshold import ThresholdUpdater
+from SEILAPLAN.tools.poles import Poles
+from SEILAPLAN.tools.profile import Profile
+from SEILAPLAN.tools.outputReport import generateReportText, generateReport, \
     createOutputFolder, generateShortReport
-from ..tools.outputGeo import organizeDataForExport, addToMap, \
+from SEILAPLAN.tools.outputGeo import organizeDataForExport, addToMap, \
     generateCoordTable, writeGeodata
+from SEILAPLAN.tools.configHandler import ConfigHandler
+from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
+from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
+from SEILAPLAN.tools.globals import ResultQuality, PolesOrigin
+# This loads the .ui file so that PyQt can populate the plugin with the
+#  elements from Qt Designer
+UI_FILE = os.path.join(os.path.dirname(__file__), 'adjustmentDialog.ui')
+FORM_CLASS, _ = uic.loadUiType(UI_FILE)
 
 
-class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
+class AdjustmentDialog(QDialog, FORM_CLASS):
     """
     Dialog window that is shown after the optimization has successfully run
     through. Users can change the calculated cable layout by changing pole
@@ -55,33 +61,40 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
     line is then recalculated and the new layout is shown in a plot.
     """
     
-    def __init__(self, interface, confHandler):
-        """
-        :type confHandler: configHandler.ConfigHandler
-        """
-        QDialog.__init__(self, interface.mainWindow())
+    def __init__(self, interface, confHandler, onCloseCallback):
+
+        super(AdjustmentDialog, self).__init__(interface.mainWindow())
+        
         self.iface = interface
+        # Is called when window is closed (necessary for parallel run)
+        self.onCloseCallback = onCloseCallback
+        # Control variable that gets returned in callback so parent knows how
+        # to proceed when this dialog is closed
+        self.returnToProjectWindow = None
+        
         self.msgBar = self.iface.messageBar()
         
         # Management of Parameters and settings
-        self.confHandler = confHandler
+        self.confHandler: ConfigHandler = confHandler
         self.confHandler.setDialog(self)
-        self.profile = self.confHandler.project.profile
-        self.poles = self.confHandler.project.poles
+        self.paramHandler: ParameterConfHandler = self.confHandler.params
+        self.projectHandler: ProjectConfHandler = self.confHandler.project
+        self.profile: Profile = self.projectHandler.profile
+        self.poles: Poles = self.projectHandler.poles
+        # Control variable so parent knows how to proceed when this dialog is closed
+        self.returnToProjectWindow = None
         # Max distance the anchors can move away from initial position
-        self.anchorBuffer = self.confHandler.project.heightSource.buffer
+        self.anchorBuffer = self.projectHandler.heightSource.buffer
         # Path to plugin root
         self.homePath = os.path.dirname(os.path.dirname(__file__))
         
         # Load data
-        self.originalData = {}
         self.result = {}
         self.cableline = {}
-        self.status = None
-        self.doReRun = False
         
         # Setup GUI from UI-file
         self.setupUi(self)
+        self.setDialogTitle()
         # Language
         self.locale = QSettings().value("locale/userLocale")[0:2]
         
@@ -93,11 +106,11 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         tbar = MyNavigationToolbar(self.plot, self)
         tbar.pan()
         self.plot.setToolbar(tbar)
-        self.plotLayout.addWidget(self.plot)
-        self.plotLayout.addWidget(tbar, alignment=Qt.AlignHCenter | Qt.AlignTop)
+        self.plotContainer.addWidget(self.plot)
+        self.toolbarContainer.addWidget(tbar, alignment=Qt.AlignLeft | Qt.AlignTop)
         
         # Fill tab widget with data
-        self.poleLayout = CustomPoleWidget(self.tabPoles, self.poleVGrid, self.poles)
+        self.poleLayout = CustomPoleWidget(self.tabPoles, self.poleGrid, self.poles)
         # self.poleLayout.sig_zoomIn.connect(self.zoomToPole)
         # self.poleLayout.sig_zoomOut.connect(self.zoomOut)
         self.poleLayout.sig_createPole.connect(self.addPole)
@@ -105,18 +118,17 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.poleLayout.sig_deletePole.connect(self.deletePole)
         
         # Threshold (thd) tab
-        thdTblSize = [5, 6]
-        self.thdLayout = AdjustmentDialogThresholds(self, thdTblSize)
-        self.thdLayout.sig_clickedRow.connect(self.showThresholdInPlot)
-        self.selectedThdRow = None
-        self.thdUpdater = ThresholdUpdater(self.thdLayout, thdTblSize,
-                                           self.showThresholdInPlot)
+        self.thdLayout = AdjustmentDialogThresholds(self)
+        self.thdLayout.sig_clickedRow.connect(self.onChangeThresholdTopic)
+        self.thdUpdater = ThresholdUpdater(self.thdLayout)
+        self.selectedPlotTopic = None
         
-        self.paramLayout = AdjustmentDialogParams(self, self.confHandler.params)
+        # Parameter tab
+        self.paramLayout = AdjustmentDialogParams(self, self.paramHandler)
         
         # Fill bird view widget with data
         self.birdViewLayout = BirdViewWidget(self.tabBirdView, self.birdViewGrid, self.poles)
-        self.birdViewLayout.sig_updatePole.connect(self.updateBirdViewParams)
+        self.birdViewLayout.sig_updatePole.connect(self.onUpdateBirdViewParams)
         self.tabWidget.currentChanged.connect(self.onBirdViewVisible)
         
         # Project header
@@ -131,6 +143,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         # Thread for instant recalculation when poles or parameters are changed
         self.timer = QTimer()
         self.configurationHasChanged = False
+        self.refreshPoleWidgetRows = False
         self.isRecalculating = False
         self.unsavedChanges = True
         
@@ -143,23 +156,40 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         # Connect signals
         self.btnClose.clicked.connect(self.onClose)
         self.btnSave.clicked.connect(self.onSave)
-        self.btnBackToStart.clicked.connect(self.onReturnToStart)
+        self.btnBackToStart.clicked.connect(self.onReturnToProjectWindow)
         for field in self.prHeaderFields.values():
             field.textChanged.connect(self.onPrHeaderChanged)
         self.mapBackgroundButton.clicked.connect(self.onClickMapButton)
+        self.infoPlotTopic.clicked.connect(self.onInfo)
         self.infoQ.clicked.connect(self.onInfo)
+        self.infoSK.clicked.connect(self.onInfo)
+        self.infoSFT.clicked.connect(self.onInfo)
         self.infoBirdViewGeneral.clicked.connect(self.onInfo)
         self.infoBirdViewCategory.clicked.connect(self.onInfo)
         self.infoBirdViewPosition.clicked.connect(self.onInfo)
         self.infoBirdViewAbspann.clicked.connect(self.onInfo)
+        
+        if 'DARWIN' in sys.platform.upper():
+            # Explicitly set the windows flags on macOS so the plugin window
+            #  stays on top of QGIS when drawing in the map
+            self.setWindowFlags(
+                Qt.Window |
+                Qt.CustomizeWindowHint |
+                Qt.WindowTitleHint |
+                Qt.WindowCloseButtonHint |
+                Qt.WindowStaysOnTopHint
+            )
     
     # noinspection PyMethodMayBeStatic
-    def tr(self, message, **kwargs):
+    def tr(self, message, context='', **kwargs):
         """Get the translation for a string using Qt translation API.
         We implement this ourselves since we do not inherit QObject.
 
         :param message: String for translation.
         :type message: str, QString
+        
+        :param context: String for translation.
+        :type context: str, QString
 
         :returns: Translated version of message.
         :rtype: QString
@@ -168,33 +198,34 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         ----------
         **kwargs
         """
-        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
-        return QCoreApplication.translate(type(self).__name__, message)
+        if context == '':
+            context = type(self).__name__
+        return QCoreApplication.translate(context, message)
     
     def loadData(self, pickleFile):
         """ Is used to load testdata from pickl object in debug mode """
+        import pickle
         f = open(pickleFile, 'rb')
         dump = pickle.load(f)
         f.close()
         
         self.poles.poles = dump['poles']
-        self.initData(dump, 'optiSuccess')
+        self.initData(dump, ResultQuality.SuccessfulOptimization)
     
-    def initData(self, result, status):
+    def initData(self, result, resultQuality):
         if not result:
             self.close()
-        # Save original data from optimization
-        self.originalData = result
         # result properties: cable line, optSTA, force, optLen, optLen_arr,
         #  duration
         self.result = result
-        # Algorithm was skipped, no optimized solution
-        if status in ['jumpedOver', 'savedFile']:
+        # If only poles are defined but cable line hasn't been calculated yet,
+        #  run the cable calculation now
+        if not self.result['cableline']:
             try:
-                params = self.confHandler.params.getSimpleParameterDict()
+                params = self.paramHandler.getSimpleParameterDict()
                 cableline, force, \
-                seil_possible = preciseCable(params, self.poles,
-                                             self.result['optSTA'])
+                    seil_possible = preciseCable(params, self.poles,
+                                                 self.result['optSTA'])
                 self.result['cableline'] = cableline
                 self.result['force'] = force
             
@@ -203,11 +234,11 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
                     'bei Berechnung der Seillinie'), str(e), QMessageBox.Ok)
                 return
         
-        self.cableline = self.result['cableline']
-        self.profile.updateProfileAnalysis(self.cableline)
-        self.result['maxDistToGround'] = self.cableline['maxDistToGround']
+        groundClear = self.profile.updateProfileAnalysis(self.result['cableline'])
+        self.cableline = {**self.result['cableline'], **groundClear}
+        self.result['cableline'] = self.cableline
         
-        self.updateRecalcStatus(status)
+        self.updateRecalcStatus(resultQuality)
         
         # Draw profile in diagram
         self.plot.initData(self.profile.di_disp, self.profile.zi_disp,
@@ -223,18 +254,14 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.paramLayout.fillInParams()
         
         # Fill in Threshold data
-        self.thdUpdater.update([
-            self.cableline['groundclear_rel'],  # Distance cable - terrain
-            [
-                self.result['force']['MaxSeilzugkraft'][0],   # Max force on cable
-                self.result['force']['MaxSeilzugkraft_L'][0]    # Cable force at highest point
-            ],
-            self.result['force']['Sattelkraft_Total'][0],  # Max force on pole
-            self.result['force']['Lastseilknickwinkel'],  # Cable angle on pole
-            self.result['force']['Leerseilknickwinkel']],  # Cable angle on pole
-            self.confHandler.params, self.poles, self.profile,
-            (self.status in ['jumpedOver', 'savedFile'])
-        )
+        self.thdUpdater.update(self.result, self.paramHandler, self.poles,
+            self.profile, resultQuality in [ResultQuality.SuccessfulOptimization, ResultQuality.CableLiftsOff])
+        # Add plot topics in drop down
+        self.fieldPlotTopic.addItem('-', userData=-1)
+        for topic in self.thdUpdater.topics:
+            self.fieldPlotTopic.addItem(topic.name, userData=topic.id)
+        self.fieldPlotTopic.setCurrentIndex(0)
+        self.fieldPlotTopic.currentIndexChanged.connect(self.onChangePlotTopic)
         
         # Mark profile line and poles on map
         self.updateLineOnMap()
@@ -248,6 +275,11 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.timer.start(300)
         
         self.plot.zoomOut()
+        
+    def setDialogTitle(self):
+        dialogTitle = self.tr('Manuelle Anpassung', 'AdjustmentDialogUI')
+        projectTitle = self.projectHandler.getProjectName()
+        self.setWindowTitle(f"{dialogTitle} // {projectTitle}")
     
     def zoomToPole(self, idx):
         self.plot.zoomTo(self.poles.poles[idx])
@@ -267,7 +299,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
                 self.updateMarkerOnMap(i)
         self.updateLineOnMap()
         # Update anchors
-        self.updateAnchorState(prevAnchorA, prevAnchorE)
+        self.updateAnchorMarkerState(prevAnchorA, prevAnchorE)
         # self.plot.zoomTo(self.poles.poles[idx])
         self.poleLayout.changeRow(idx, property_name, newVal, prevAnchorA, prevAnchorE)
         if property_name == 'name':
@@ -279,7 +311,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
     def addPole(self, idx):
         newPoleIdx = idx + 1
         self.poles.add(newPoleIdx, None, manually=True)
-        self.poleLayout.addRow(newPoleIdx)
+        self.refreshPoleWidgetRows = True
         self.addMarkerToMap(newPoleIdx)
         # self.plot.zoomOut()
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
@@ -287,13 +319,13 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
     
     def deletePole(self, idx):
         self.poles.delete(idx)
-        self.poleLayout.deleteRow(idx)
+        self.refreshPoleWidgetRows = True
         self.drawTool.removeMarker(idx)
         # self.plot.zoomOut()
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         self.configurationHasChanged = True
     
-    def updateAnchorState(self, prevAnchorA, prevAnchorE):
+    def updateAnchorMarkerState(self, prevAnchorA, prevAnchorE):
         """Update anchor markers on map: depending on nature of pole change,
         anchors can be activated or deactivated in self.poles.update."""
         if prevAnchorA is not self.poles.hasAnchorA:
@@ -343,13 +375,8 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         point = [self.poles.poles[idx]['coordx'],
                  self.poles.poles[idx]['coordy']]
         self.drawTool.updateMarker(point, idx)
-    
-    def updateOptSTA(self, newVal):
-        # Save new value to config Handler
-        self.confHandler.params.setOptSTA(newVal)
-        return str(self.confHandler.params.optSTA)
 
-    def updateBirdViewParams(self, idx, property_name, newVal):
+    def onUpdateBirdViewParams(self, idx, property_name, newVal):
         self.poles.update(idx, property_name, newVal)
     
     def onBirdViewVisible(self, tabIdx):
@@ -367,12 +394,17 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         if self.sender().objectName() == 'infoQ':
             title = self.tr('Gesamtlast')
             msg = self.tr('Erklaerung Gesamtlast')
+        if self.sender().objectName() == 'infoSK':
+            title = self.tr('Tragseilspannkraft (Anfangspunkt)')
+            msg = self.tr('Erklaerung Tragseilspannkraft (Anfangspunkt)')
+        if self.sender().objectName() == 'infoSFT':
+            title = self.tr('Sicherheitsfaktor Tragseil', 'SeilaplanPluginDialog')
+            msg = self.tr('Sicherheitsfaktor Tragseil Erklaerung', 'SeilaplanPluginDialog')
         elif self.sender().objectName() == 'infoBirdViewGeneral':
             title = self.tr('Konfiguration Vogelperspektive')
             msg = self.tr('Erklaerung Vogelperspektive')
         elif self.sender().objectName() == 'infoBirdViewCategory':
             title = self.tr('Stuetzenkategorie')
-            msg = self.tr('Erklaerung Stuetzenkategorie')
             imageName = 'Vogelperspektive_Kategorie.png'
         elif self.sender().objectName() == 'infoBirdViewPosition':
             title = self.tr('Stuetzenposition')
@@ -380,6 +412,12 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         elif self.sender().objectName() == 'infoBirdViewAbspann':
             title = self.tr('Abspann')
             msg = self.tr('Erklaerung Abspann')
+        elif self.sender().objectName() == 'infoPlotTopic':
+            plotTopic = self.thdUpdater.getPlotTopicById(self.selectedPlotTopic)
+            if plotTopic:
+                desc = plotTopic.getDescription()
+                title = desc['title']
+                msg = desc['message']
         
         if imageName:
             # Show an info image
@@ -392,18 +430,21 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             self.imgBox.label.setPixmap(myPixmap)
             self.imgBox.setLayout(self.imgBox.container)
             self.imgBox.show()
-        else:
+        elif title and msg:
             # Show a simple MessageBox with an info text
             QMessageBox.information(self, title, msg, QMessageBox.Ok)
 
-    def updateCableParam(self):
+    def onUpdateCableParam(self):
+        # Since user can change entire parameter sets, we prepare params
+        #  for recalculation
+        self.paramHandler.prepareForCalculation(self.profile.direction)
         self.configurationHasChanged = True
     
     def onPrHeaderChanged(self):
         self.unsavedChanges = True
 
     def fillInPrHeaderData(self):
-        for key, val in self.confHandler.project.prHeader.items():
+        for key, val in self.projectHandler.prHeader.items():
             field = self.prHeaderFields[key]
             if isinstance(field, QTextEdit):
                 field.setPlainText(val)
@@ -417,49 +458,48 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
                 prHeader[key] = field.toPlainText()
             else:
                 prHeader[key] = field.text()
-        self.confHandler.project.setPrHeader(prHeader)
+        self.projectHandler.setPrHeader(prHeader)
     
     def updateRecalcStatus(self, status):
-        self.status = status
         color = None
         green = '#b6ddb5'
         yellow = '#f4e27a'
         red = '#e8c4ca'
         ico_path = os.path.join(os.path.dirname(__file__), 'icons')
-        if status == 'optiSuccess':
+        if status == ResultQuality.SuccessfulOptimization:
             self.recalcStatus_txt.setText(
                 self.tr('Optimierung erfolgreich abgeschlossen'))
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_green.png')))
-        elif status == 'liftsOff':
+        elif status == ResultQuality.CableLiftsOff:
             self.recalcStatus_txt.setText(
                 self.tr('Tragseil hebt bei mindestens einer Stuetze ab'))
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_yellow.png')))
             color = yellow
-        elif status == 'notComplete':
+        elif status == ResultQuality.LineNotComplete:
             self.recalcStatus_txt.setText(
                 self.tr('Nicht genuegend Stuetzenstandorte bestimmbar'))
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_yellow.png')))
             color = yellow
-        elif status == 'jumpedOver':
+        elif status == PolesOrigin.OnlyStartEnd:
             self.recalcStatus_txt.setText(
                 self.tr('Stuetzen manuell platzieren'))
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_green.png')))
             color = yellow
-        elif status == 'savedFile':
+        elif status == PolesOrigin.SavedFile:
             self.recalcStatus_txt.setText(
                 self.tr('Stuetzen aus Projektdatei geladen'))
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_green.png')))
             color = yellow
-        elif status == 'cableSuccess':
+        elif status == ResultQuality.SuccessfulRerun:
             self.recalcStatus_txt.setText(self.tr('Seillinie neu berechnet.'))
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
                 ico_path, 'icon_green.png')))
-        elif status == 'cableError':
+        elif status == ResultQuality.Error:
             self.recalcStatus_txt.setText(
                 self.tr('Fehler aufgetreten'))
             self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
@@ -481,116 +521,127 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
         self.isRecalculating = True
         
         try:
-            params = self.confHandler.params.getSimpleParameterDict()
+            params = self.paramHandler.getSimpleParameterDict()
             cableline, force, seil_possible = preciseCable(params, self.poles,
-                                                           self.confHandler.params.optSTA)
+                                                           self.paramHandler.getTensileForce())
         except Exception as e:
-            self.updateRecalcStatus('cableError')
+            self.updateRecalcStatus(ResultQuality.Error)
             self.isRecalculating = False
             self.configurationHasChanged = False
-            # TODO: Error handling when shape mismach
-            # QMessageBox.critical(self, 'Unerwarteter Fehler bei Neuberechnung '
-            #     'der Seillinie', str(e), QMessageBox.Ok)
             return
         
-        self.cableline = cableline
-        self.result['force'] = force
-        
         # Ground clearance
-        self.profile.updateProfileAnalysis(self.cableline)
-        self.result['maxDistToGround'] = self.cableline['maxDistToGround']
-        
+        groundClear = self.profile.updateProfileAnalysis(cableline)
+        self.cableline = {**cableline, **groundClear}
+        self.result['cableline'] = self.cableline
+        self.result['force'] = force
+
         # Update Plot
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         
         # Update Threshold data
-        self.thdUpdater.update([
-            self.cableline['groundclear_rel'],  # Distance cable - terrain
-            [
-                self.result['force']['MaxSeilzugkraft'][0],   # Max force on cable
-                self.result['force']['MaxSeilzugkraft_L'][0]    # Cable force at highest point
-            ],
-            self.result['force']['Sattelkraft_Total'][0],  # Max force on pole
-            self.result['force']['Lastseilknickwinkel'],  # Cable angle on pole
-            self.result['force']['Leerseilknickwinkel']],  # Cable angle on pole
-            self.confHandler.params, self.poles, self.profile,
-            (self.status in ['jumpedOver', 'savedFile'])
-        )
+        self.thdUpdater.update(self.result, self.paramHandler, self.poles,
+                               self.profile, False)
+        self.onRefreshTopicInPlot()
         
         # cable line lifts off of pole
         if not seil_possible:
-            self.updateRecalcStatus('liftsOff')
+            self.updateRecalcStatus(ResultQuality.CableLiftsOff)
         else:
-            self.updateRecalcStatus('cableSuccess')
+            self.updateRecalcStatus(ResultQuality.SuccessfulRerun)
+        
+        if self.refreshPoleWidgetRows:
+            self.refreshPoleWidgetRows = False
+            self.poleLayout.refresh()
         self.configurationHasChanged = False
         self.isRecalculating = False
         self.unsavedChanges = True
 
-    def showThresholdInPlot(self, row=None):
-        """This function is ether called by the Threshold updater when
+    def onChangeThresholdTopic(self, row):
+        """This function is either called by the Threshold updater when
          the cable has been recalculated or when user clicks on a table row."""
         
+        try:
+            thItem = self.thdUpdater.getThresholdTopics()[row]
+        except IndexError:
+            thItem = None
+        
         # Click on row was emitted but row is already selected -> deselect
-        if row is not None and row == self.selectedThdRow:
+        if thItem is None or thItem.id == self.selectedPlotTopic:
             # Remove markers from plot
             self.plot.removeMarkers()
-            self.selectedThdRow = None
+            # Unselect plot topic
+            self.selectedPlotTopic = None
+            self.fieldPlotTopic.blockSignals(True)
+            self.fieldPlotTopic.setCurrentIndex(0)
+            self.fieldPlotTopic.blockSignals(False)
             return
-        # There was no new selection but a redraw of the table was done, so
-        #  current selection has to be added to the plot again
-        if row is None:
-            if self.selectedThdRow is not None:
-                row = self.selectedThdRow
-            # Nothing is selected at the moment
-            else:
-                return
+
+        self.plot.showMarkers(thItem.plotMarkers)
+        self.selectedPlotTopic = thItem.id
         
-        x = self.thdUpdater.rows[row][5]['xLoc']
-        y = self.thdUpdater.rows[row][5]['zLoc']
-        color = self.thdUpdater.rows[row][5]['color']
-        labelAlign = self.thdUpdater.rows[row][5]['labelAlign']
-        plotLabels = self.thdUpdater.plotLabels[row]
+        # Synchronize plot topic dropdown with currently selected threshold topic
+        for idx, item in enumerate(self.thdUpdater.topics):
+            if self.selectedPlotTopic == item.id:
+                self.fieldPlotTopic.blockSignals(True)
+                self.fieldPlotTopic.setCurrentIndex(idx+1)
+                self.fieldPlotTopic.blockSignals(False)
+                break
     
-        self.plot.showMarkers(x, y, plotLabels, color, labelAlign)
-        self.selectedThdRow = row
+    def onRefreshTopicInPlot(self):
+        item = self.thdUpdater.getPlotTopicById(self.selectedPlotTopic)
+        if item:
+            self.plot.showMarkers(item.plotMarkers)
+        else:
+            self.plot.removeMarkers()
+        
+    def onChangePlotTopic(self):
+        self.selectedPlotTopic = self.fieldPlotTopic.currentData()
+        # Select topic in threshold table
+        self.thdLayout.select(self.thdUpdater.getSortIdxByThresholdTopicId(self.selectedPlotTopic))
+        # Paint the new topic
+        self.onRefreshTopicInPlot()
 
     def onClose(self):
+        self.returnToProjectWindow = False
         self.close()
     
-    def onReturnToStart(self):
+    def onReturnToProjectWindow(self):
         self.readoutPrHeaderData()
-        self.doReRun = True
+        self.returnToProjectWindow = True
         self.close()
     
     def onSave(self):
-        self.saveDialog.doSave = False
+        self.saveDialog.setConfigData()
         self.saveDialog.exec()
-        if self.saveDialog.doSave:
+        
+        if self.saveDialog.saveSuccessful:
             self.readoutPrHeaderData()
+            self.setDialogTitle()
             self.confHandler.updateUserSettings()
             self.createOutput()
             self.unsavedChanges = False
     
     def createOutput(self):
         outputFolder = self.confHandler.getCurrentPath()
-        project = self.confHandler.project
-        projName = project.getProjectName()
-        outputLoc = createOutputFolder(os.path.join(outputFolder, projName))
-        updateWithCableCoordinates(self.cableline, project.points['A'],
-                                   project.azimut)
+        projName = self.projectHandler.getProjectName()
+        outputLoc, projName_unique = createOutputFolder(outputFolder, projName)
+        
+        updateWithCableCoordinates(self.cableline, self.projectHandler.points['A'],
+                                   self.projectHandler.azimut)
         poles = [pole for pole in self.poles.poles if pole['active']]
         # Save project file
         self.confHandler.saveSettings(os.path.join(outputLoc,
-                                      self.tr('Projekteinstellungen') + '.json'))
+                                      f"{self.tr('Projekteinstellungen')}.json"))
 
         # Create short report
         if self.confHandler.getOutputOption('shortReport'):
-            generateShortReport(self.confHandler, self.result, projName,
+            generateShortReport(self.confHandler, self.result, projName_unique,
                                 outputLoc)
 
         # Create technical report
         if self.confHandler.getOutputOption('report'):
-            reportText = generateReportText(self.confHandler, self.result, projName)
+            reportText = generateReportText(self.confHandler, self.result, projName_unique)
             generateReport(reportText, outputLoc)
         
         # Create plot
@@ -604,14 +655,14 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
                                self.profile.peakLoc_x, self.profile.peakLoc_z,
                                self.profile.surveyPnts)
             printPlot.updatePlot(self.poles.getAsArray(), self.cableline, True)
-            printPlot.layoutDiagrammForPrint(projName, poles)
+            printPlot.layoutDiagrammForPrint(projName_unique, poles, self.poles.direction)
             imgPath = None
             if includingBirdView:
                 # Create second plot
-                xlim, ylim = printPlot.createBirdView(poles, self.confHandler.project.azimut)
+                xlim, ylim = printPlot.createBirdView(poles, self.projectHandler.azimut)
                 # Extract the map background
                 imgPath = extractMapBackground(outputLoc, xlim, ylim,
-                            self.confHandler.project.points['A'], self.confHandler.project.azimut)
+                            self.projectHandler.points['A'], self.projectHandler.azimut)
                 printPlot.addBackgroundMap(imgPath)
             printPlot.exportPdf(plotSavePath)
             # Delete map background
@@ -634,7 +685,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             # Put geo data in separate sub folder
             savePath = os.path.join(outputLoc, 'geodata')
             os.makedirs(savePath)
-            epsg = project.heightSource.spatialRef
+            epsg = self.projectHandler.heightSource.spatialRef
             geodata = organizeDataForExport(poles, self.cableline,
                                             self.profile)
 
@@ -651,7 +702,7 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             if self.confHandler.getOutputOption('shape'):
                 try:
                     shapeFiles = writeGeodata(geodata, 'SHP', epsg, savePath)
-                    addToMap(shapeFiles, projName)
+                    addToMap(shapeFiles, projName_unique)
                 except Exception as e:
                     msg = f'{msg}:\n{e}'
                     self.showMessage(title, msg)
@@ -673,11 +724,19 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
     def showMessage(self, title, message):
         QMessageBox.critical(self, title, message, QMessageBox.Ok)
     
-    def closeEvent(self, event):
+    def cleanUp(self):
+        self.drawTool.reset()
+        if self.timer:
+            self.timer.stop()
+    
+    def closeEvent(self, QCloseEvent):
         if self.isRecalculating or self.configurationHasChanged:
+            QCloseEvent.ignore()
             return
+        
+        # Check for unsaved changes before closing
         if self.unsavedChanges:
-            msgBox = QMessageBox()
+            msgBox = QMessageBox(self)
             msgBox.setIcon(QMessageBox.Information)
             msgBox.setWindowTitle(self.tr('Nicht gespeicherte Aenderungen'))
             msgBox.setText(self.tr('Moechten Sie die Ergebnisse speichern?'))
@@ -689,18 +748,19 @@ class AdjustmentDialog(QDialog, Ui_AdjustmentDialogUI):
             noBtn.setText(self.tr("Nein"))
             yesBtn = msgBox.button(QMessageBox.Yes)
             yesBtn.setText(self.tr("Ja"))
-            msgBox.show()
             msgBox.exec()
             
             if msgBox.clickedButton() == yesBtn:
                 self.onSave()
-                self.drawTool.reset()
-            elif msgBox.clickedButton() == cancelBtn:
-                event.ignore()
+            
+            if msgBox.clickedButton() == cancelBtn:
+                # Cancel closing
+                QCloseEvent.ignore()
                 return
-            elif msgBox.clickedButton() == noBtn:
-                self.drawTool.reset()
-        else:
-            self.drawTool.reset()
+            
+            if msgBox.clickedButton() == noBtn:
+                # Nothing to do
+                pass
         
-        self.timer.stop()
+        self.cleanUp()
+        self.onCloseCallback(self.returnToProjectWindow)

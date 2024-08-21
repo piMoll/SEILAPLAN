@@ -1,9 +1,32 @@
 # Seilaplan Changelog
 
+## Version 3.6.0 (August 2024)
+### Neue Features
+* Seilaplan kann mehrfach gestartet werden, um Projekte (bzw. Varianten) parallel zu bearbeiten
+* Neue Parameter um Grenzwerte für Leer- und Lastseilknickwinkel zu definieren (bisher fix 1/3° und 30/60°)
+* Neuer Parameter um die Höhe der Bundstelle über dem Tragseilsattel zu definieren (bisher fix 1.5 m)
+* Bearbeitungsfenster:
+  * Über eine Auswahlliste können zusätzliche Kennwerte (BHD, Durchhang, Knickwinkel, etc.) im Diagramm angezeigt werden
+  * Im neuen Tab "Parameter" kann das verwendete Parameterset ausgetauscht werden
+  * Im Diagramm wird der Seildurchhang statt einmal für die gesamte Seillinie, neu für jedes Seilfeld einzeln ausgegeben
+  * Pro Stütze wird der Bundstellendurchmesser angegeben
+  * Stützenbezeichnungen können neu 42 statt 22 Zeichen lang sein. Im exportierten Diagramm wurde die Lesbarkeit der Bezeichnungen verbessert
+* Vogelperspektive: Angepasstes Symbol für Mehrbaumanker; Abspannseile enden am Anfangs- / Endpunkt der Seillinie, nicht dahinter
+* Exportierte PDFs (Diagramm, Berichte) enthalten den eindeutigen Namen des Projektordners
+* Die automatisch erzeugte Projektbezeichnung enthält die Jahresangabe und ist ISO-ähnlich formatiert
+* Diverse Verbesserung der Benutzerführung: Anpassung von Bezeichnungen und Ergänzen von Hinweisen
+
+### Fehlerbehebung
+* Kurzbericht: Korrektur der Angriffswinkel-Berechnung für befahrbare Endstützen
+* Der Standardwert für Parameter 'Bundstelle über Tragseilsattel' ist neu 3.0 m statt bisher 1.5 m, der Wert ist anpassbar
+* Behebe ein Problem beim Erzeugen des Diagramm-PDFs, das ältere QGIS-Versionen zum Absturz bringt
+* Profillinien werden immer zuoberst im QGIS Layerbaum eingefügt, statt beim aktuell ausgewählten Layer
+* Das Pluginfenster bleibt im Vordergrund, wenn in der Karte gezeichnet wird (MacOS)
+
 ## Version 3.5.3 (Mai 2024)
 ### Fehlerbehebung
 * Fehler beim Start des Plugins auf Windows mit QGIS Version 3.36, weil eine scipy-Bibliothek fehlt
-  * 
+
 ## Version 3.5.2 (März 2024)
 ### Fehlerbehebung
 * Vogelperspektive

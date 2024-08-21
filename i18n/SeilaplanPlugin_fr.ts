@@ -136,6 +136,11 @@
         <translation>Inclinaison</translation>
     </message>
     <message>
+        <location filename="../tools/outputReport.py" line="45"/>
+        <source>St.</source>
+        <translation>Supp.</translation>
+    </message>
+    <message>
         <location filename="../tools/outputReport.py" line="431"/>
         <source>Feld</source>
         <translatorcomment>Champs de tension</translatorcomment>
@@ -213,7 +218,7 @@
         <location filename="../tools/outputReport.py" line="137"/>
         <source>gewaehlte Grundspannung bei der Anfangsstuetze</source>
         <translatorcomment>Tension du câble choisie au premier support</translatorcomment>
-        <translation>Force de traction initiale au premier support</translation>
+        <translation>Force de traction initiale au point initial</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="142"/>
@@ -482,7 +487,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="277"/>
         <source>(Leerseilknickwinkel 2)</source>
-        <translation>(Angle du câble non chargé &gt; 1°)</translation>
+        <translation>(Angle du câble non chargé &gt; _LeerKnickMit_°)</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="270"/>
@@ -751,6 +756,35 @@ câble chargé</translation>
         <translation>Facteur de sécurité du câble porteur</translation>
     </message>
     <message>
+        <location filename="../tools/outputReport.py" line="298"/>
+        <source>Grenzwert min. Leerseilknickwinkel mit Niederhaltelasche</source>
+        <translatorcomment>Übersetzung Leerseil gem. Seilkranlehrmittel</translatorcomment>
+        <translation>Valeur limite pour l’angle min. du câble à vide avec cavalier</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="298"/>
+        <source>Grenzwert min. Leerseilknickwinkel ohne Niederhaltelasche</source>
+        <translatorcomment>Übersetzung Leerseil gem. Seilkranlehrmittel</translatorcomment>
+        <translation>Valeur limite pour l’angle min. du câble à vide sans cavalier</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="298"/>
+        <source>Grenzwert max. Lastseilknickwinkel Stuetze</source>
+        <translatorcomment>Übersetzung Lastseil gem. Seilkranlehrmittel</translatorcomment>
+        <translation>Valeur limite pour l’angle max. du câble en charge au support</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="298"/>
+        <source>Grenzwert max. Lastseilknickwinkel Endmast</source>
+        <translatorcomment>Übersetzung Lastseil gem. Seilkranlehrmittel</translatorcomment>
+        <translation>Valeur limite pour l’angle max. du câble en charge au mât terminal</translation>
+    </message>
+    <message>
+        <location filename="../tools/outputReport.py" line="298"/>
+        <source>Bundstelle ueber Sattelleiste</source>
+        <translation>Hauteur de fixation au-dessus de l‘étrier</translation>
+    </message>
+    <message>
         <location filename="../tools/outputReport.py" line="465"/>
         <source>Total</source>
         <translation>Total</translation>
@@ -877,6 +911,16 @@ câble chargé</translation>
         <location filename="../gui/adjustmentDialog.py" line="377"/>
         <source>Gesamtlast</source>
         <translation>Charge totale</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="378"/>
+        <source>Erklaerung Tragseilspannkraft (Anfangspunkt)</source>
+        <translation>Tension de base au point de départ</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="377"/>
+        <source>Tragseilspannkraft (Anfangspunkt)</source>
+        <translation>Force de traction initiale (point de départ)</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.py" line="439"/>
@@ -1014,209 +1058,188 @@ câble chargé</translation>
 <context>
     <name>AdjustmentDialogUI</name>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="638"/>
+        <location filename="../gui/adjustmentDialog.ui" line="638"/>
         <source>Manuelle Anpassung</source>
-        <translation>Ajustement manuel</translation>
+        <translation>SEILAPLAN - Ajustement manuel</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="689"/>
+        <location filename="../gui/adjustmentDialog.ui" line="689"/>
         <source>Neuberechnung...</source>
         <translatorcomment>Internet</translatorcomment>
         <translation>Nouveau calcul...</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="639"/>
+        <location filename="../gui/adjustmentDialog.ui" line="639"/>
         <source>Manuelle Anpassung der Seillinie</source>
         <translation>Ajustement manuel de la ligne de câble</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="690"/>
+        <location filename="../gui/adjustmentDialog.ui" line="690"/>
         <source>Manuelle Anpassungen verwerfen und zurueck zum Startfenster wechseln</source>
         <translation>Rejecter les ajustages manuels et retourner au panneu de démarrage</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="691"/>
+        <location filename="../gui/adjustmentDialog.ui" line="691"/>
         <source>zurueck zum Startfenster</source>
         <translation>Retourner au panneau de démarrage</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="692"/>
+        <location filename="../gui/adjustmentDialog.ui" line="692"/>
         <source>Plugin beenden</source>
         <translation>Terminer le plugin</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="693"/>
+        <location filename="../gui/adjustmentDialog.ui" line="693"/>
         <source>Schliessen</source>
         <translatorcomment>Internet</translatorcomment>
         <translation>Fermer</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="694"/>
+        <location filename="../gui/adjustmentDialog.ui" line="694"/>
         <source>Ergebnisse speichern</source>
         <translation>Enregistrer les résultats</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="695"/>
+        <location filename="../gui/adjustmentDialog.ui" line="695"/>
         <source>Speichern</source>
         <translatorcomment>Internet</translatorcomment>
         <translation>Enregistrer</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="646"/>
+        <location filename="../gui/adjustmentDialog.ui" line="646"/>
         <source>Stuetzen</source>
         <translatorcomment>HeProMo</translatorcomment>
         <translation>Supports</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="640"/>
+        <location filename="../gui/adjustmentDialog.ui" line="640"/>
         <source>Feinjustierung der Stuetzen</source>
         <translation>Ajustage fin des supports</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="671"/>
-        <source>Nr.</source>
-        <translatorcomment>HeProMo</translatorcomment>
-        <translation>No.</translation>
+        <location filename="../gui/adjustmentDialog.ui" line="665"/>
+        <source>Parameter</source>
+        <translation>Paramètres</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="642"/>
-        <source>Stuetzenbezeichnung</source>
-        <translation>Dénomination des supports</translation>
-    </message>
-    <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="643"/>
-        <source>Horiz.distanz</source>
-        <translation>Distance horiz.</translation>
-    </message>
-    <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="644"/>
-        <source>Stuetzenhoehe</source>
-        <translation>Hauteur</translation>
-    </message>
-    <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="645"/>
-        <source>Neigung</source>
-        <translation>Inclinaison</translation>
-    </message>
-    <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="665"/>
-        <source>Tragsystem</source>
-        <translation>Système porteur</translation>
-    </message>
-    <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="654"/>
+        <location filename="../gui/adjustmentDialog.ui" line="654"/>
         <source>kN/m</source>
         <translation>kN/m</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="658"/>
+        <location filename="../gui/adjustmentDialog.ui" line="658"/>
         <source>Gesamtlast</source>
         <translation>Poids de la charge y.c. le chariot</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="657"/>
+        <location filename="../gui/adjustmentDialog.ui" line="657"/>
         <source>kN</source>
         <translation>kN</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="659"/>
+        <location filename="../gui/adjustmentDialog.ui" line="659"/>
         <source>Gewicht Rueckholseil</source>
         <translation>Poids du câble de retour</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="647"/>
+        <location filename="../gui/adjustmentDialog.ui" line="647"/>
         <source>mm</source>
         <translation>mm</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="662"/>
+        <location filename="../gui/adjustmentDialog.ui" line="662"/>
         <source>Grundspannung Tragseil (Anfangssp.)</source>
         <translatorcomment>de base</translatorcomment>
         <translation>Force de traction initiale (point de départ)</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="663"/>
+        <location filename="../gui/adjustmentDialog.ui" line="663"/>
         <source>Gewicht Tragseil</source>
         <translation>Poids du câble porteur</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="652"/>
+        <location filename="../gui/adjustmentDialog.ui" line="652"/>
         <source>Durchmesser Tragseil</source>
         <translation>Diamètre du câble porteur</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="660"/>
+        <location filename="../gui/adjustmentDialog.ui" line="660"/>
         <source>Minimaler Abstand Tragseil - Boden</source>
         <translation>Espacement minimal entre câble porteur et sol</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="656"/>
+        <location filename="../gui/adjustmentDialog.ui" line="656"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="648"/>
+        <location filename="../gui/adjustmentDialog.ui" line="648"/>
         <source>Gewicht Zugseil</source>
         <translatorcomment>Alternative: câble de traction</translatorcomment>
         <translation>Poids du câble tracteur</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="651"/>
+        <location filename="../gui/adjustmentDialog.ui" line="651"/>
         <source>Mindestbruchkraft Tragseil</source>
         <translation>Charge de rupture minimale du câble porteur</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="668"/>
+        <location filename="../gui/adjustmentDialog.ui" line="668"/>
         <source>Kennwerte</source>
         <translation>Paramètres caractéristiques</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="666"/>
+        <location filename="../gui/adjustmentDialog.ui" line="666"/>
         <source>Kennwerte und Maximalwerte</source>
         <translation>Paramètres caractéristiques et valeurs maximales</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="667"/>
+        <location filename="../gui/adjustmentDialog.ui" line="667"/>
         <source>Klick auf Zeile markiert Position der Grenzwert-Ueberschreitung im Diagramm.</source>
         <translation>En cliquant sur la ligne, la position du dépassement de la valeur limite est marquée dans le diagramme.</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="678"/>
+        <location filename="../gui/adjustmentDialog.ui" line="678"/>
         <source>?</source>
         <translation>?</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="664"/>
+        <location filename="../gui/adjustmentDialog.ui" line="664"/>
         <source>Anlagetyp</source>
         <translation>Type de câble-grue</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="688"/>
+        <location filename="../gui/adjustmentDialog.ui" line="664"/>
+        <source>Sicherheitsfaktor</source>
+        <translation>Facteur de sécurité</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.ui" line="688"/>
         <source>Kopfdaten</source>
         <translation>Données d&apos;entête</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="682"/>
+        <location filename="../gui/adjustmentDialog.ui" line="682"/>
         <source>Projektnummer</source>
         <translation>Numéro du projet</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="683"/>
+        <location filename="../gui/adjustmentDialog.ui" line="683"/>
         <source>Gemeinde</source>
         <translation>Commune</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="684"/>
+        <location filename="../gui/adjustmentDialog.ui" line="684"/>
         <source>Waldort</source>
         <translation>Lieu forestier</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="685"/>
+        <location filename="../gui/adjustmentDialog.ui" line="685"/>
         <source>Projektverfasser</source>
         <translation>Auteur du projet</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="686"/>
+        <location filename="../gui/adjustmentDialog.ui" line="686"/>
         <source>Bemerkungen
 (erscheint in Berichten)</source>
         <translation>Remarques 
@@ -1224,44 +1247,64 @@ câble chargé</translation>
 dans le rapport)</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="681"/>
+        <location filename="../gui/adjustmentDialog.ui" line="681"/>
         <source>Vogelperspektive</source>
         <translation>Perspective à vol d‘oiseau</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="669"/>
+        <location filename="../gui/adjustmentDialog.ui" line="669"/>
         <source>Position Stuetze</source>
         <translation>Pos. du support</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="672"/>
+        <location filename="../gui/adjustmentDialog.ui" line="672"/>
         <source>Kategorie</source>
         <translation>Catégorie</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="674"/>
+        <location filename="../gui/adjustmentDialog.ui" line="674"/>
         <source>Ausrichtung Abspannseile</source>
         <translation>Orientation des câbles d‘ancrage</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="676"/>
+        <location filename="../gui/adjustmentDialog.ui" line="676"/>
         <source>Stuetzenbez.</source>
         <translation>Désign. supp.</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="677"/>
+        <location filename="../gui/adjustmentDialog.ui" line="677"/>
         <source>Konfiguration Vogelperspektive</source>
         <translation>Configuration de la perspective d&apos;oiseau</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="679"/>
+        <location filename="../gui/adjustmentDialog.ui" line="679"/>
         <source>Darstellung der Seillinie und Stuetzen aus der Vogelperspektive.</source>
         <translation>Représentation de la ligne de câble et des supports en vue aérienne.</translation>
     </message>
     <message>
-        <location filename="../gui/ui_adjustmentDialog.py" line="680"/>
+        <location filename="../gui/adjustmentDialog.ui" line="680"/>
         <source>Hintergrundkarte laden um sie in der Vogelperspektive darzustellen.</source>
         <translation>Charger la carte de fond pour l&apos;afficher en vue aérienne.</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.ui" line="656"/>
+        <source>Nr.</source>
+        <translation>No.</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.ui" line="675"/>
+        <source>Navigation</source>
+        <translation>Navigation</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.ui" line="676"/>
+        <source>Diagrammanzeige</source>
+        <translation>Affichage du diagramme</translation>
+    </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.ui" line="546"/>
+        <source>Parameterset auswaehlen</source>
+        <translation>Choisir un bloc de paramètres</translation>
     </message>
 </context>
 <context>
@@ -1633,11 +1676,43 @@ Veuillez adapter la saisie.</translation>
     <message>
         <location filename="../tools/configHandler_params.py" line="189"/>
         <source>Fehler beim Laden der Parameter, moeglicherweise sind sie in einem alten Format.</source>
-        <translation>Erreur dans le chargement des paramètres, éventuellement  leur format est obsolète.</translation>
+        <translation>Erreur dans le chargement des paramètres, éventuellement leur format est obsolète.</translation>
     </message>
 </context>
 <context>
-    <name>PoleRow</name>
+    <name>CustomPoleWidget</name>
+    <message>
+        <location filename="../gui/poleWidget.py" line="103"/>
+        <source>Nr.</source>
+        <translatorcomment>HeProMo</translatorcomment>
+        <translation>No.</translation>
+    </message>
+    <message>
+        <location filename="../gui/poleWidget.py" line="103"/>
+        <source>Stuetzenbezeichnung</source>
+        <translation>Dénomination des supports</translation>
+    </message>
+    <message>
+        <location filename="../gui/poleWidget.py" line="103"/>
+        <source>Horiz.distanz</source>
+        <translation>Dist. horiz.</translation>
+    </message>
+    <message>
+        <location filename="../gui/poleWidget.py" line="103"/>
+        <source>Stuetzenhoehe</source>
+        <translation>Hauteur</translation>
+    </message>
+    <message>
+        <location filename="../gui/poleWidget.py" line="103"/>
+        <source>Neigung</source>
+        <translation>Inclinaison</translation>
+    </message>
+    <message>
+        <location filename="../gui/poleWidget.py" line="103"/>
+        <source>O Bundst.</source>
+        <translatorcomment>Achtung, Platzprobleme! Bitte Übersetzung prüfen.</translatorcomment>
+        <translation>Ø p. fixation</translation>
+    </message>
     <message>
         <location filename="../gui/poleWidget.py" line="411"/>
         <source>Fuegt eine neue Stuetze nach dieser hinzu</source>
@@ -1822,8 +1897,18 @@ Veuillez adapter la saisie.</translation>
     <name>ProjectConfHandler</name>
     <message>
         <location filename="../tools/configHandler_project.py" line="446"/>
-        <source>Bitte definieren Sie gueltige Start- und Endkoordinaten</source>
-        <translation>Veuillez définir des coordonées de départ et de fin valables s.v.p.</translation>
+        <source>Bitte definieren Sie Terraindaten</source>
+        <translation>Veuillez définir les dates du terrain</translation>
+    </message>
+    <message>
+        <location filename="../tools/configHandler_project.py" line="446"/>
+        <source>Bitte zeichnen Sie Start- und Endpunkt der Seillinie in die Karte ein (Schaltflaeche zeichnen)</source>
+        <translation>Veuillez dessiner le point initial et le point terminal de la ligne de câble sur la carte (bouton “tracer”)</translation>
+    </message>
+    <message>
+        <location filename="../tools/configHandler_project.py" line="446"/>
+        <source>Bitte zeichnen Sie die Seillinie in die Karte (Schaltflaeche zeichnen) oder definieren sie Start- und Endkoordinaten manuell</source>
+        <translation>Veuillez dessiner la ligne de câble sur la carte (bouton “dessiner”) ou définir manuellement les coordonnées de la ligne de câble</translation>
     </message>
     <message>
         <location filename="../tools/configHandler_project.py" line="448"/>
@@ -2319,6 +2404,31 @@ dans le rapport)</translation>
         <source>Hintergrundkarte laden</source>
         <translation>Charger la carte de fond</translation>
     </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1888"/>
+        <source>Grenzwert min. Leerseilknickwinkel
+mit ohne Niederhaltelasche</source>
+        <translation>Valeur limite pour l’angle minimal du câble à vide
+(avec/sans cavalier)</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1986"/>
+        <source>Grenzwert max. Lastseilknickwinkel
+Stuetze Endmast</source>
+        <translatorcomment>Übersetzung gem. Seilkranlehrmittel</translatorcomment>
+        <translation>Valeur limite pour l’angle maximal du câble en charge
+(support / mât terminal)</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="2171"/>
+        <source>°</source>
+        <translation>°</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="2038"/>
+        <source>Bundstelle ueber Sattelleiste</source>
+        <translation>Hauteur de fixation au-dessus de l‘étrier</translation>
+    </message>
 </context>
 <context>
     <name>SeilaplanPlugin</name>
@@ -2366,6 +2476,21 @@ dans le rapport)</translation>
 </context>
 <context>
     <name>SeilaplanPluginDialog</name>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
+        <source>Start- Endpunkt auf dem Gelaendeprofil definieren</source>
+        <translation>Définir le point initial et le point terminal sur le profil du terrain</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
+        <source>Koordinate kann nicht manuell veraendert werden, benutzen Sie die Schaltflaeche zeichnen</source>
+        <translation>La coordonnée ne peut pas être modifiée manuellement, utilisez le bouton “dessiner”</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
+        <source>Bitte erst Terraindaten definieren</source>
+        <translation>Veuillez d’abord définir les données du terrain</translation>
+    </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="478"/>
         <source>Parameterset loeschen</source>
@@ -2591,13 +2716,45 @@ L&apos;optimum de la force de traction initiale est calculé. L&apos;optimisatio
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="960"/>
-        <source>Europaweit wird ein Sicherheitsfaktor von 3.0 fuer das Tragseil verwendet.</source>
-        <translation>Dans l&apos;ensemble de l&apos;Europe, pour le câble porteur il est utilisé un facteur de sécurité de 3.0.</translation>
+        <source>Sicherheitsfaktor Tragseil Erklaerung</source>
+        <translation>Dans l&apos;ensemble de l&apos;Europe (DIN EN 16517, mise à jour avril 2022), il est utilisé un facteur de sécurité de 3.0 pour le câble porteur respectivement de 2.5 pour des câbles porteurs avec une limitation effective de la charge en cours d’exploitation.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
         <source>Sicherheitsfaktor Tragseil</source>
         <translation>Facteur de sécurité du câble porteur</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
+        <source>Grenzwert Leerseilknickwinkel</source>
+        <translatorcomment>Übersetzung gem. Seilkranlehrmittel</translatorcomment>
+        <translation>Valeur limite pour l’angle du câble à vide</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
+        <source>Grenzwert Leerseilknickwinkel Erklaerung</source>
+        <translation>Indiquez les valeurs limites pour l&apos;angle minimal du câble à vide selon les indications du fabricant de l’étrier. Dans le premier champ de saisie, vous pouvez indiquer la valeur limite avec le cavalier monté, dans le deuxième champ de saisie la valeur limite sans cavalier monté.</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
+        <source>Grenzwert Lastseilknickwinkel</source>
+        <translatorcomment>Übersetzung Lastseil gem. Seilkranlehrmittel</translatorcomment>
+        <translation>Valeur limite pour l’angle du câble en charge</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
+        <source>Grenzwert Lastseilknickwinkel Erklaerung</source>
+        <translation>Indiquez la valeur limite pour l’angle maximal du câble en charge selon les indications du fabricant de l’étrier.</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
+        <source>Bundstelle ueber Sattelleiste</source>
+        <translation>Hauteur de fixation au-dessus de l‘étrier</translation>
+    </message>
+    <message>
+        <location filename="../gui/seilaplanPluginDialog.py" line="959"/>
+        <source>Bundstelle ueber Sattelleiste Erklaerung</source>
+        <translation>Seilaplan calcule la hauteur nécessaire du câble porteur pour un support (hauteur de l’étrier). Le point de fixation se trouve à quelques mètres au-dessus de l’étrier. La différence de hauteur entre l’étrier et le point de fixation peut être adaptée ici.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="965"/>
@@ -2779,7 +2936,7 @@ actuelle</translation>
     <message>
         <location filename="../tools/calcThreshold.py" line="115"/>
         <source>Max. resultierende Sattelkraft</source>
-        <translation>Maximum de la force résultante sur l&apos;étrier</translation>
+        <translation>Max. de la force résultante sur l&apos;étrier</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="123"/>
@@ -2808,15 +2965,45 @@ actuelle</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="121"/>
-        <source>Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften.</source>
+        <source>Groessere Knickwinkel reduzieren die Bruchlast des Tragseils und fuehren zu hoeheren Sattelkraeften. Hinweis: Bei den beiden Endmasten liegt der Grenzwert hoeher _threshold_2_</source>
         <translation>Des angles plus grands induisent une réduction de la charge de rupture du câble porteur et une augmentation des forces sur les étriers.
-Notice explicative: Au mât terminal la valeur limite est plus haute (env. 60°).</translation>
+Notice explicative: Au mât terminal la valeur limite est plus haute (_threshold_2_°).</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="129"/>
-        <source>Bei Knickwinkeln unter 2 besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen 2 und 4 muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
-        <translation>En cas des angles inférieurs à 1° il y a le risque que le câble porteur s&apos;enlève de l&apos;étrier (rouge). L&apos; appui doit être surélevé.
-En cas des angles entre 1° et 3° le câble porteur doit être sécurisé par une patte de fixation (orange).</translation>
+        <source>Bei Knickwinkeln unter _threshold_1_ besteht die Gefahr, dass das Tragseil beim Sattel abhebt (rot). Bei Knickwinkeln zwischen _threshold_1_ und _threshold_2_ muss das Tragseil mittels Niederhaltelasche gesichert werden (orange).</source>
+        <translation>En cas des angles inférieurs à _threshold_1_° il y a le risque que le câble porteur s&apos;enlève de l&apos;étrier (rouge). L&apos; appui doit être surélevé.
+En cas des angles entre _threshold_1_° et _threshold_2_° le câble porteur doit être sécurisé par une patte de fixation (orange).</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="117"/>
+        <source>BHD</source>
+        <translation>DHP</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="117"/>
+        <source>BHD Erklaerung</source>
+        <translation>Il est calculé le DHP minimal requis pour l’arbre de support. Il s&apos;agit d&apos;une valeur indicative pour les arbres vitaux. La stabilité et la vitalité de l&apos;arbre doivent être vérifiées sur le terrain par un spécialiste.</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="117"/>
+        <source>Leerseildurchhang</source>
+        <translation>Flexion du câble non chargé</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="117"/>
+        <source>Leerseildurchhang Erklaerung</source>
+        <translation>Pour chaque champ de tension il est affiché la flexion du câble à vide au milieu du champ de tension (distance verticale entre câble porteur et corde).</translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="117"/>
+        <source>Lastseildurchhang</source>
+        <translation>Flexion du câble chargé </translation>
+    </message>
+    <message>
+        <location filename="../tools/calcThreshold.py" line="117"/>
+        <source>Lastseildurchhang Erklaerung</source>
+        <translation>Pour chaque champ de tension il est affiché la flexion du câble chargé avec chariot chargé au milieu du champ de tension (distance verticale entre câble porteur et corde).</translation>
     </message>
     <message>
         <location filename="../tools/calcThreshold.py" line="223"/>

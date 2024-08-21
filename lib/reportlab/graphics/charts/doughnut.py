@@ -11,27 +11,17 @@ Can handle multiple series (which produce concentric 'rings' in the chart).
 
 """
 
-import copy
 from math import sin, cos, pi
 from reportlab.lib import colors
-from reportlab.lib.validators import isColor, isNumber, isListOfNumbersOrNone,\
-                                    isListOfNumbers, isColorOrNone, isString,\
-                                    isListOfStringsOrNone, OneOf, SequenceOf,\
-                                    isBoolean, isListOfColors,\
-                                    isNoneOrListOfNoneOrStrings,\
-                                    isNoneOrListOfNoneOrNumbers,\
-                                    isNumberOrNone, isListOfNoneOrNumber,\
-                                    isListOfListOfNoneOrNumber, EitherOr
+from reportlab.lib.validators import isNumber, isListOfStringsOrNone, OneOf,\
+                                    isBoolean, isNumberOrNone, isListOfNoneOrNumber,\
+                                    isListOfListOfNoneOrNumber, EitherOr, NoneOr, \
+                                    isCallable
 from reportlab.lib.attrmap import *
-from reportlab.pdfgen.canvas import Canvas
-from reportlab.graphics.shapes import Group, Drawing, Line, Rect, Polygon, Ellipse, \
-    Wedge, String, SolidShape, UserNode, STATE_DEFAULTS
-from reportlab.graphics.widgetbase import Widget, TypedPropertyCollection, PropHolder
+from reportlab.graphics.shapes import Group, Drawing, Wedge
+from reportlab.graphics.widgetbase import TypedPropertyCollection
 from reportlab.graphics.charts.piecharts import AbstractPieChart, WedgeProperties, _addWedgeLabel, fixLabelOverlaps
-from reportlab.graphics.charts.textlabels import Label
-from reportlab.graphics.widgets.markers import Marker
 from functools import reduce
-from reportlab import xrange
 
 class SectorProperties(WedgeProperties):
     """This holds descriptive information about the sectors in a doughnut chart.
@@ -61,6 +51,7 @@ class Doughnut(AbstractPieChart):
         sideLabels = AttrMapValue(isBoolean, desc="If true attempt to make chart with labels along side and pointers", advancedUsage=1),
         innerRadiusFraction = AttrMapValue(isNumberOrNone,
                 desc='None or the fraction of the radius to be used as the inner hole.\nIf not a suitable default will be used.'),
+        labelClass=AttrMapValue(NoneOr(isCallable), desc="A class factory to use for non simple labels"),
         )
 
     def __init__(self):
@@ -85,8 +76,8 @@ class Doughnut(AbstractPieChart):
         self.slices[4].fillColor = colors.pink
         self.slices[5].fillColor = colors.magenta
         self.slices[6].fillColor = colors.yellow
-        
-        
+
+
     def demo(self):
         d = Drawing(200, 100)
 
@@ -137,12 +128,12 @@ class Doughnut(AbstractPieChart):
             normData = self.normalizeData(data)
             n = len(normData)
             self._seriesCount = n
-        
+
         #labels
         checkLabelOverlap = self.checkLabelOverlap
         L = []
         L_add = L.append
-        
+
         labels = self.labels
         if labels is None:
             labels = []
@@ -178,7 +169,7 @@ class Doughnut(AbstractPieChart):
             whichWay = -1
 
         g  = Group()
-        
+
         startAngle = self.startAngle #% 360
         styleCount = len(self.slices)
         irf = self.innerRadiusFraction
@@ -253,7 +244,7 @@ class Doughnut(AbstractPieChart):
                             shda = (a2-a1)/float(nshades)
                             shsc = sectorStyle.fillColor
                             theSector.fillColor = None
-                            for ish in xrange(nshades):
+                            for ish in range(nshades):
                                 sha1 = a1 + ish*shda
                                 sha2 = a1 + (ish+1)*shda
                                 shc = shader(shsc,shf1 + dsh*ish)
@@ -348,7 +339,7 @@ class Doughnut(AbstractPieChart):
                         shda = (a2-a1)/float(nshades)
                         shsc = sectorStyle.fillColor
                         theSector.fillColor = None
-                        for ish in xrange(nshades):
+                        for ish in range(nshades):
                             sha1 = a1 + ish*shda
                             sha2 = a1 + (ish+1)*shda
                             shc = shader(shsc,shf1 + dsh*ish)
@@ -382,11 +373,11 @@ class Doughnut(AbstractPieChart):
 
         if checkLabelOverlap and L:
             fixLabelOverlaps(L)
-        
+
         for l in L: g.add(l)
-        
+
         return g
-        
+
     def draw(self):
         g = Group()
         g.add(self.makeSectors())

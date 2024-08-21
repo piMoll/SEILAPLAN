@@ -49,8 +49,7 @@ class AbstractHeightSource(object):
             self.spatialRef = QgsCoordinateReferenceSystem(GPS_CRS)
         else:
             self.spatialRef = QgsCoordinateReferenceSystem()
-
-    # noinspection PyMethodMayBeStatic
+    
     def tr(self, message, **kwargs):
         """Get the translation for a string using Qt translation API.
         We implement this ourselves since we do not inherit QObject.
@@ -65,7 +64,6 @@ class AbstractHeightSource(object):
         ----------
         **kwargs
         """
-        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
         return QCoreApplication.translate(type(self).__name__, message)
 
 
@@ -91,7 +89,6 @@ class AbstractSurveyReader:
     def formatHeader(s):
         return s.strip().upper()
 
-    # noinspection PyMethodMayBeStatic
     def tr(self, message, **kwargs):
         """Get the translation for a string using Qt translation API.
         We implement this ourselves since we do not inherit QObject.
@@ -106,5 +103,4 @@ class AbstractSurveyReader:
         ----------
         **kwargs
         """
-        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
         return QCoreApplication.translate(type(self).__name__, message)

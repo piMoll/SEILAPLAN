@@ -18,12 +18,15 @@
  *                                                                         *
  ***************************************************************************/
 """
+from typing import List
+from PyQt5.QtWidgets import QWidget
 from qgis.PyQt.QtCore import QSize, Qt, pyqtSignal, QObject, QCoreApplication
-from qgis.PyQt.QtWidgets import (QDoubleSpinBox, QSpinBox, QPushButton,
-                                 QLineEdit, QHBoxLayout, QLabel, QCheckBox)
+from qgis.PyQt.QtWidgets import (QDoubleSpinBox, QSpinBox, QPushButton, QHBoxLayout,
+                                 QLineEdit, QLabel, QCheckBox, QGridLayout)
 from qgis.PyQt.QtGui import QIcon, QPixmap
+from numpy import nan
 
-from ..tools.poles import Poles
+from SEILAPLAN.tools.poles import Poles
 
 
 class CustomPoleWidget(QObject):
@@ -38,22 +41,23 @@ class CustomPoleWidget(QObject):
     sig_updatePole = pyqtSignal(int, str, object)
     sig_deletePole = pyqtSignal(int)
     
-    def __init__(self, widget, layout, poles):
+    def __init__(self, widget, layout, poles, mode='standard'):
         """
         :type widget: qgis.PyQt.QtWidgets.QWidget
-        :type layout: qgis.PyQt.QtWidgets.QLayout
+        :type layout: qgis.PyQt.QtWidgets.QGridLayout
         :type poles: Poles|Array
         """
         super().__init__()
-        self.widget = widget
-        self.layout = layout
-        self.poles = None
-        if isinstance(poles, Poles):
-            self.poles = poles
+        self.widget: QWidget = widget
+        self.layout: QGridLayout = layout
+        self.mode = mode
+        if self.mode == 'standard':
+            self.poles: Poles = poles
             self.poleArr = poles.poles
         else:
+            self.poles = None
             self.poleArr = poles
-        self.poleRows = []
+        self.poleRows: List[PoleRow] = []
         self.editActive = False
         self.pole_dist_step = Poles.POLE_DIST_STEP
         self.pole_height_step = Poles.POLE_HEIGHT_STEP
@@ -66,7 +70,11 @@ class CustomPoleWidget(QObject):
         """
         self.distRange = distRange
         self.layout.setAlignment(Qt.AlignTop)
-
+        self.addHeader()
+        self.createPoleRows()
+    
+    def createPoleRows(self):
+        self.poleRows = []
         for idx, pole in enumerate(self.poleArr):
             delBtn = False
             addBtn = False
@@ -74,10 +82,10 @@ class CustomPoleWidget(QObject):
             # Distance input field: ranges are defined by neighbouring poles
             [lowerRange, upperRange] = self.getDistanceRange(idx)
             # Delete button: anchor and first and last pole cannot be deleted
-            if self.poles.idxA < idx < self.poles.idxE:
+            if self.mode != 'standard' or self.poles.idxA < idx < self.poles.idxE:
                 delBtn = True
             # Add button: Pole can only be added between first and last pole
-            if self.poles.idxA <= idx < self.poles.idxE:
+            if self.mode == 'standard' and self.poles.idxA <= idx < self.poles.idxE:
                 addBtn = True
 
             # Create layout
@@ -85,10 +93,27 @@ class CustomPoleWidget(QObject):
                 PoleRow(self, self.widget, self.layout, idx, pole['nr'],
                         pole['name'], pole['poleType'], pole['d'],
                         [lowerRange, upperRange], pole['h'], pole['angle'],
-                        delBtn, addBtn))
+                        pole['bundstelle'], delBtn, addBtn))
             if not pole['active']:
                 self.poleRows[-1].deactivate()
-
+        
+        self.widget.setLayout(self.layout)
+    
+    def addHeader(self):
+        self.layout.addWidget(QLabel(''), 0, 0, 1, 1, Qt.AlignLeft)
+        self.layout.addWidget(QLabel(self.tr('Nr.')), 0, 1, 1, 1, Qt.AlignLeft)
+        self.layout.addWidget(QLabel(self.tr('Stuetzenbezeichnung')), 0, 2, 1, 1, Qt.AlignLeft)
+        self.layout.addWidget(QLabel(self.tr('Horiz.distanz')), 0, 3, 1, 1, Qt.AlignLeft)
+        self.layout.addWidget(QLabel(self.tr('Stuetzenhoehe')), 0, 4, 1, 1, Qt.AlignLeft)
+        if self.mode == 'standard':
+            self.layout.addWidget(QLabel(self.tr('Neigung')), 0, 5, 1, 1, Qt.AlignLeft)
+            self.layout.addWidget(QLabel(self.tr('O Bundst.')), 0, 6, 1, 2, Qt.AlignLeft)
+            # When window grows, the second column (Stuetzenbezeichnung) should grow as well
+            self.layout.setColumnStretch(2, 1)
+        else:
+            # When in the profile dialog, the last column (Stuetzenhoehe) should grow
+            self.layout.setColumnStretch(4, 1)
+    
     def onRowChange(self, newVal=None, idx=None, property_name=None):
         if self.editActive:
             return
@@ -112,63 +137,49 @@ class CustomPoleWidget(QObject):
         if self.editActive:
             return
         self.editActive = True
+        if idx:
+            # This will remove the selected row, so user sees a UI feedback
+            # immediately.However, deleting a pole will trigger a recalculation,
+            # which will rebuild the PoleWidget completely.
+            self.poleRows[idx].remove()
+            del self.poleRows[idx]
         # Emit signal
         self.sig_deletePole.emit(idx)
     
     def changeRow(self, idx, property_name, newVal, prevAnchorA=None, prevAnchorE=None):
         self.updateAnchorState(prevAnchorA, prevAnchorE)
         
+        self.updateBundstelle()
         if property_name == 'd':
             self.updateNeighbourDistRange(idx, newVal, newVal)
         elif property_name == 'h':
-            self.updatePoleRowIdx()
-        self.editActive = False
-
-    def addRow(self, idx, delBtn=True, addBtn=True):
-        newPole = self.poleArr[idx]
-        [lowerRange, upperRange] = self.getDistanceRange(idx)
-        lowerRange += self.pole_dist_step
-        upperRange -= self.pole_dist_step
-        # Add pole row layout
-        newRow = PoleRow(self, self.widget, self.layout, idx, newPole['nr'],
-                         newPole['name'], newPole['poleType'], newPole['d'],
-                         [lowerRange, upperRange], newPole['h'],
-                         newPole['angle'], delBtn, addBtn)
-        self.poleRows.insert(idx, newRow)
-        # Update index and distance range of neighbours
-        self.updatePoleRowIdx()
-        self.updateNeighbourDistRange(idx, newPole['d'], newPole['d'])
+            # When changing first or last pole to/from 0m height, the anchor gets
+            #  deactivated/activated and the row numbers need to reflect this
+            self.updatePoleRowNumbers()
         self.editActive = False
     
-    def deleteRow(self, idx):
-        leftLimit = self.distRange[0]
-        rightLimit = self.distRange[1]
-        if idx > 0:
-            leftLimit = self.poleArr[idx - 1]['d']
-        if idx < len(self.poleRows) - 1:
-            rightLimit = self.poleArr[idx]['d']
-        # Update distance range of neighbours
-        self.updateNeighbourDistRange(idx, leftLimit, rightLimit)
-        # Remove pole row layout
-        self.poleRows[idx].remove()
-        del self.poleRows[idx]
-        # Update index of neighbours
-        self.updatePoleRowIdx()
+    def refresh(self):
+        self.removeAll()
+        self.createPoleRows()
         self.editActive = False
-        
-    def updatePoleRowIdx(self):
+  
+    def updatePoleRowNumbers(self):
         labels = None
         if self.poles:
             [_, _, _, _, _, labels,
              _, _, _, _] = self.poles.getAsArray(True, True)
-        
+
         pole: PoleRow
         for i, pole in enumerate(self.poleRows):
-            pole.updateIndex(i)
             nr = i + 1
             if labels:
                 nr = labels[i]
             pole.updateLabelNr(nr)
+    
+    def updateBundstelle(self):
+        pole: PoleRow
+        for i, pole in enumerate(self.poleRows):
+            pole.updateBundstelle(self.poleArr[i]['bundstelle'])
     
     def updateNeighbourDistRange(self, idx, rightLimit, leftLimit):
         if idx > 0:
@@ -207,13 +218,13 @@ class CustomPoleWidget(QObject):
         # Update distance range of neighbours
         self.updateNeighbourDistRange(idx, leftLimit, rightLimit)
         self.poleRows[idx].deactivate()
-        self.updatePoleRowIdx()
+        self.updatePoleRowNumbers()
     
     def activateRow(self, idx, dist):
         self.poleRows[idx].activate()
         self.poleRows[idx].fieldDist.setValue(dist)
         self.updateNeighbourDistRange(idx, dist, dist)
-        self.updatePoleRowIdx()
+        self.updatePoleRowNumbers()
     
     def getDistanceRange(self, idx):
         lowerRange = self.distRange[0]
@@ -234,9 +245,11 @@ class CustomPoleWidget(QObject):
         for pole in self.poleRows:
             pole.remove()
         self.poleRows = []
+    
+    def tr(self, message, **kwargs):
+        return QCoreApplication.translate(type(self).__name__, message)
 
 
-# noinspection PyUnresolvedReferences
 class PoleRow(object):
     """
     Creates all input fields necessary to change the properties of a pole in
@@ -246,17 +259,17 @@ class PoleRow(object):
     ICON_ADD_ROW = ":/plugins/SeilaplanPlugin/gui/icons/icon_addrow.png"
     ICON_DEL_ROW = ":/plugins/SeilaplanPlugin/gui/icons/icon_bin.png"
     
+    POLE_LABEL_WIDTH = 220
+    SPINNER_WIDTH = 85
+    
     def __init__(self, parent, widget, layout, idx, nr, name, rowType, dist, distRange,
-                 height=False, angle=False, delBtn=False, addBtn=False):
+                 height=False, angle=False, bundstelle=False, delBtn=False, addBtn=False):
         self.parent = parent
         self.widget = widget
-        self.layout = layout
+        self.layout: QGridLayout = layout
         self.index = idx
         self.rowType = rowType
         self.parent.poleCount += 1
-
-        self.row = QHBoxLayout()
-        self.row.setAlignment(Qt.AlignLeft)
         
         self.labelNr = None
         self.statusSwitcher = None
@@ -264,10 +277,10 @@ class PoleRow(object):
         self.fieldDist = None
         self.fieldHeight = None
         self.fieldAngle = None
+        self.fieldBundstelle = None
         self.addBtn = None
         self.delBtn = None
 
-        self.addRowToLayout()
         self.addBtnPlus(addBtn)
         if self.rowType == 'anchor':
             self.addSwitcher()
@@ -278,37 +291,23 @@ class PoleRow(object):
         if self.rowType not in ['anchor']:
             self.addFieldHeight(height)
             self.addFieldAngle(angle)
+        self.addFieldBundstelle(bundstelle)
         self.addBtnDel(delBtn)
 
-    def addRowToLayout(self):
-        if self.index == self.parent.poleCount:
-            # Add layout at the end
-            self.layout.addLayout(self.row)
-        else:
-            # Insert new row between existing ones
-            self.layout.insertLayout(self.index + 1, self.row)
-    
     def addSwitcher(self):
         self.statusSwitcher = QCheckBox(self.widget)
         self.statusSwitcher.setText('')
-        self.statusSwitcher.setFixedWidth(20)
         self.statusSwitcher.setChecked(True)
-        self.row.addWidget(self.statusSwitcher)
+        self.layout.addWidget(self.statusSwitcher, self.index + 1, 1, 1, 1, Qt.AlignLeft)
         
         # Connect events
         self.statusSwitcher.stateChanged.connect(
-            lambda newVal: self.parent.onRowChange(newVal==2, self.index, 'active'))
+            lambda newVal: self.parent.onRowChange(newVal == 2, self.index, 'active'))
     
     def addLabelNr(self, nr):
         self.labelNr = QLabel(self.widget)
-        self.labelNr.setFixedWidth(20)
-        self.labelNr.setAlignment(Qt.AlignVCenter | Qt.AlignRight)
-        self.row.addWidget(self.labelNr)
-        if nr:
-            self.labelNr.setText(f"{nr}:")
-    
-    def updateIndex(self, idx):
-        self.index = idx
+        self.updateLabelNr(nr)
+        self.layout.addWidget(self.labelNr, self.index + 1, 1, 1, 1, Qt.AlignLeft)
     
     def updateLabelNr(self, label):
         if self.labelNr:
@@ -320,10 +319,12 @@ class PoleRow(object):
     def addFieldName(self, value):
         self.fieldName = QLineEditWithFocus(self.widget)
         self.fieldName.setFocusPolicy(Qt.ClickFocus)
-        self.fieldName.setFixedWidth(200)
+        self.fieldName.setMinimumWidth(self.POLE_LABEL_WIDTH)
         self.fieldName.setText(value)
-        self.row.addWidget(self.fieldName)
-
+        # Add layout so the widget grows when the grid column grows
+        hLayout = QHBoxLayout()
+        hLayout.addWidget(self.fieldName)
+        self.layout.addLayout(hLayout, self.index + 1, 2, 1, 1, Qt.AlignLeft)
         # Connect events
         self.fieldName.inFocus.connect(
             lambda x: self.parent.zoomIn(self.index))
@@ -337,10 +338,13 @@ class PoleRow(object):
         self.fieldDist.setDecimals(0)
         self.fieldDist.setSingleStep(self.parent.pole_dist_step)
         self.fieldDist.setSuffix(" m")
-        self.fieldDist.setFixedWidth(95)
+        self.fieldDist.setMinimumWidth(self.SPINNER_WIDTH)
         self.fieldDist.setRange(float(distRange[0]), float(distRange[1]))
         self.fieldDist.setValue(float(value))
-        self.row.addWidget(self.fieldDist)
+        # Add layout so the widget grows when the grid column grows
+        hLayout = QHBoxLayout()
+        hLayout.addWidget(self.fieldDist)
+        self.layout.addLayout(hLayout, self.index + 1, 3, 1, 1, Qt.AlignLeft)
 
         # Connect events
         self.fieldDist.inFocus.connect(
@@ -362,11 +366,14 @@ class PoleRow(object):
             self.fieldHeight.setDecimals(0)
             self.fieldHeight.setSingleStep(1)
         self.fieldHeight.setSuffix(" m")
-        self.fieldHeight.setFixedWidth(95)
+        self.fieldHeight.setMinimumWidth(self.SPINNER_WIDTH)
         self.fieldHeight.setRange(0.0, 50.0)
         if value is not None:
             self.fieldHeight.setValue(float(value))
-        self.row.addWidget(self.fieldHeight)
+        # Add layout so the widget grows when the grid column grows
+        layout = QHBoxLayout()
+        layout.addWidget(self.fieldHeight)
+        self.layout.addLayout(layout, self.index + 1, 4, 1, 1, Qt.AlignLeft)
 
         # Connect events
         self.fieldHeight.inFocus.connect(
@@ -381,11 +388,14 @@ class PoleRow(object):
         self.fieldAngle = QSpinBoxWithFocus(self.widget)
         self.fieldAngle.setFocusPolicy(Qt.ClickFocus)
         self.fieldAngle.setSuffix(" °")
-        self.fieldAngle.setFixedWidth(60)
+        self.fieldAngle.setMinimumWidth(self.SPINNER_WIDTH - 20)
         self.fieldAngle.setRange(-180, 180)
         if value is not None:
             self.fieldAngle.setValue(int(value))
-        self.row.addWidget(self.fieldAngle)
+        # Add layout so the widget grows when the grid column grows
+        layout = QHBoxLayout()
+        layout.addWidget(self.fieldAngle)
+        self.layout.addLayout(layout, self.index + 1, 5, 1, 1, Qt.AlignLeft)
 
         # Connect events
         self.fieldAngle.inFocus.connect(
@@ -393,10 +403,24 @@ class PoleRow(object):
         self.fieldAngle.outFocus.connect(self.parent.zoomOut)
         self.fieldAngle.valueChanged.connect(
             lambda newVal: self.parent.onRowChange(newVal, self.index, 'angle'))
-
+        
+    def addFieldBundstelle(self, value):
+        if value is False:
+            return
+        self.fieldBundstelle = QLabel(self.widget)
+        self.updateBundstelle(value)
+        self.layout.addWidget(self.fieldBundstelle, self.index + 1, 6, 1, 1, Qt.AlignLeft)
+        
+    def updateBundstelle(self, value):
+        if self.fieldBundstelle:
+            if value is False or value is nan:
+                value = '-'
+            else:
+                value = f"{value} cm"
+            self.fieldBundstelle.setText(value)
+    
     def addBtnPlus(self, createButton):
         if createButton is False:
-            self.row.addSpacing(33)
             return
         self.addBtn = QPushButton(self.widget)
         self.addBtn.setMaximumSize(QSize(27, 27))
@@ -407,14 +431,13 @@ class PoleRow(object):
         self.addBtn.setIconSize(QSize(16, 16))
         self.addBtn.setToolTip(self.tr('Fuegt eine neue Stuetze nach dieser hinzu'))
         self.addBtn.setAutoDefault(False)
-        self.row.addWidget(self.addBtn)
+        self.layout.addWidget(self.addBtn, self.index + 1, 0, 1, 1, Qt.AlignLeft)
         
         self.addBtn.clicked.connect(
             lambda x: self.parent.onRowAdd(self.index))
     
     def addBtnDel(self, createButton):
         if createButton is False:
-            self.row.addSpacing(33)
             return
         self.delBtn = QPushButton(self.widget)
         self.delBtn.setMaximumSize(QSize(27, 27))
@@ -425,7 +448,7 @@ class PoleRow(object):
         self.delBtn.setIconSize(QSize(16, 16))
         self.delBtn.setToolTip(self.tr('Loescht die Stuetze'))
         self.delBtn.setAutoDefault(False)
-        self.row.addWidget(self.delBtn)
+        self.layout.addWidget(self.delBtn, self.index + 1, 7, 1, 1, Qt.AlignLeft)
 
         self.delBtn.clicked.connect(
             lambda x: self.parent.onRowDel(self.index))
@@ -452,42 +475,33 @@ class PoleRow(object):
     
     def remove(self):
         # Disconnect all widgets
-        self.fieldName.disconnect()
-        self.fieldDist.disconnect()
-        if self.fieldHeight: self.fieldHeight.disconnect()
-        if self.fieldAngle: self.fieldAngle.disconnect()
-        if self.addBtn: self.addBtn.disconnect()
-        if self.delBtn: self.delBtn.disconnect()
-        
-        for i in reversed(range(self.row.count())):
-            item = self.row.takeAt(i)
-            widget = item.widget()
-            if widget is not None:
-                widget.deleteLater()
-            else:
-                # For spacers
-                self.row.removeItem(item)
+        for widget in [self.statusSwitcher,
+                       self.addBtn,
+                       self.labelNr,
+                       self.fieldName,
+                       self.fieldDist,
+                       self.fieldHeight,
+                       self.fieldAngle,
+                       self.fieldBundstelle,
+                       self.delBtn,
+                       ]:
+            if widget:
+                if not isinstance(widget, QLabel):
+                    widget.disconnect()
             
-        self.layout.removeItem(self.row)
+                self.layout.removeWidget(widget)
+                widget.deleteLater()
+        
+        # Remove layouts
+        for column in reversed(range(self.layout.columnCount())):
+            boxLayout = self.layout.itemAtPosition(self.index + 1, column)
+            if boxLayout and isinstance(boxLayout, QHBoxLayout):
+                self.layout.removeItem(boxLayout)
+
         self.parent.poleCount -= 1
 
-    # noinspection PyMethodMayBeStatic
     def tr(self, message, **kwargs):
-        """Get the translation for a string using Qt translation API.
-        We implement this ourselves since we do not inherit QObject.
-
-        :param message: String for translation.
-        :type message: str, QString
-
-        :returns: Translated version of message.
-        :rtype: QString
-
-        Parameters
-        ----------
-        **kwargs
-        """
-        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
-        return QCoreApplication.translate(type(self).__name__, message)
+        return QCoreApplication.translate('CustomPoleWidget', message)
 
 
 class QLineEditWithFocus(QLineEdit):

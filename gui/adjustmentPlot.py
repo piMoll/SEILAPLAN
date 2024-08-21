@@ -18,6 +18,7 @@
  *                                                                         *
  ***************************************************************************/
 """
+from typing import List
 import numpy as np
 from math import degrees
 from qgis.PyQt.QtCore import Qt, QSize, QCoreApplication
@@ -30,7 +31,17 @@ from matplotlib.pyplot import imread
 import matplotlib.patheffects as pe
 
 from .plotting_tools import zoom_with_wheel
-from ..tools.birdViewSymbol import BirdViewSymbol, BirdViewSymbolLoader
+from SEILAPLAN.tools.birdViewSymbol import BirdViewSymbol, BirdViewSymbolLoader
+
+
+class PlotMarker(object):
+    
+    def __init__(self, label, x, z, color, alignment):
+        self.label = label
+        self.x = x
+        self.z = z
+        self.color = color
+        self.alignment = alignment
 
 
 class AdjustmentPlot(FigureCanvas):
@@ -265,31 +276,31 @@ class AdjustmentPlot(FigureCanvas):
             self.tbar.update()
             self.tbar.push_current()
     
-    def showMarkers(self, x, y, label, colorList, labelAlign):
+    def showMarkers(self, plotMarkers: List[PlotMarker]):
         # Displays marker for thresholds
         self.removeMarkers()
         spacing = 3 * abs(self.axes.get_ylim()[0] - self.axes.get_ylim()[1]) / self.height()
         
-        color = [self.COLOR_MARKER[col] for col in colorList]
-        for i, xi in enumerate(x):
+        for marker in plotMarkers:
             textVa = 'top'
-            marker = '^'
-            markerPos = y[i] - spacing * 3
-            labelPos = y[i] - spacing * 5
-            if labelAlign[i] == 'top':
+            symbol = '^'
+            markerZ = marker.z - spacing * 3
+            labelZ = marker.z - spacing * 5
+            if marker.alignment == 'top':
                 textVa = 'bottom'
-                marker = 'v'
-                markerPos = y[i] + spacing * 7
-                labelPos = y[i] + spacing * 9
+                symbol = 'v'
+                markerZ = marker.z + spacing * 7
+                labelZ = marker.z + spacing * 9
         
             self.arrowMarker.append(
-                self.axes.scatter(xi, markerPos, marker=marker, zorder=20,
-                                  c=color[i], s=100))
+                self.axes.scatter(marker.x, markerZ, marker=symbol, zorder=20,
+                                  c=self.COLOR_MARKER[marker.color], s=100))
             # Adds a label underneath marker with threshold value
             self.arrowLabel.append(
-                self.axes.text(xi, labelPos, label[i], zorder=30, ha='center',
-                               backgroundcolor='white', va=textVa,
-                               color=color[i], fontweight='semibold'))
+                self.axes.text(marker.x, labelZ, marker.label, zorder=30,
+                               ha='center', backgroundcolor='white', va=textVa,
+                               color=self.COLOR_MARKER[marker.color],
+                               fontweight='semibold'))
         self.draw()
     
     def removeMarkers(self):
@@ -333,7 +344,7 @@ class AdjustmentPlot(FigureCanvas):
                                fontsize=12, ha='center', fontweight='semibold',
                                color=self.COLOR_MARKER[0])
         
-    def layoutDiagrammForPrint(self, title, poles):
+    def layoutDiagrammForPrint(self, title, poles, direction):
         self.axes.set_title(self.tr('Seilaplan Plot  -  {}').format(title),
                             fontsize=10, multialignment='center')
         if not self.axesBirdView:
@@ -344,14 +355,21 @@ class AdjustmentPlot(FigureCanvas):
         self.axes.grid(which='major', lw=0.5)
         self.axes.grid(which='minor', lw=0.5, linestyle=':')
         # Label poles
+        # Halo effect around text for better readability
+        haloEffect = [pe.withStroke(linewidth=2, foreground="white")]
         for idx, pole in enumerate(poles):
             # Don't label anchors
             if pole['poleType'] == 'anchor':
                 continue
-            poleNr = f"({pole['nr']})" if pole['nr'] else ''
+            poleNr = f"{pole['nr']}: " if pole['nr'] else ''
+            poleName = pole['name'][:28].strip() + '…' if len(pole['name']) > 30 else pole['name']
+            rotation = 30 if direction == 'downhill' else -30
+            ha = 'left' if direction == 'downhill' else 'right'
+            
             self.axes.text(pole['dtop'], pole['ztop'] + self.labelBuffer * 4,
-                           f"{pole['name']} {poleNr}\nH = {pole['h']:.1f} m",
-                           ha='center', fontsize=8)
+                           f"{poleNr}{poleName}\nH = {pole['h']:.1f} m",
+                           ha=ha, fontsize=7, rotation=rotation,
+                           rotation_mode='anchor', path_effects=haloEffect)
         
     def createBirdView(self, poles, azimut):
         # Height of y-axis (+/- from x-axis) in meter
@@ -369,7 +387,7 @@ class AdjustmentPlot(FigureCanvas):
         #  meaningful number any more because the whole scaling has become a
         #  bit chaotic and empirical. There is just too much transformation
         #  between svg, matplotlib plot units, pixels and millimeters going on.
-        markerDiameter = 42
+        markerDiameter = 35
         # Transform to marker size (in point) ... If we're lucky
         #  1 point = self.fig.dpi / 72 pixels
         markerSize = figExtent.height / (2*yLim / markerDiameter) * 72./self.fig.dpi
@@ -377,7 +395,7 @@ class AdjustmentPlot(FigureCanvas):
         #  The 0.05 is also empirical...
         posShiftVertical = 0.05 * self.axesBirdView.axes.get_ylim()[1]*2
         # Halo effect around markers and north arrow for better readability
-        haloEffect = [pe.withStroke(linewidth=4, foreground="white")]
+        haloEffect = [pe.withStroke(linewidth=3, foreground="white")]
 
         # Draw bird view markers
         defaultCircle: BirdViewSymbol = self.birdViewMarkers['default']
@@ -468,7 +486,6 @@ class AdjustmentPlot(FigureCanvas):
     def setToolbar(self, tbar):
         self.tbar = tbar
     
-    # noinspection PyMethodMayBeStatic
     def tr(self, message, **kwargs):
         """Get the translation for a string using Qt translation API.
         We implement this ourselves since we do not inherit QObject.
@@ -483,7 +500,6 @@ class AdjustmentPlot(FigureCanvas):
         ----------
         **kwargs
         """
-        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
         return QCoreApplication.translate(type(self).__name__, message)
 
 
@@ -530,4 +546,4 @@ def saveImgAsPdfWithMpl(imgPath, savePath, dpi=300):
     # Save to pdf
     canvas = FigureCanvas(fig)
     canvas.print_figure(savePath, dpi, facecolor='white')
-    
+
