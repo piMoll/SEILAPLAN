@@ -22,6 +22,7 @@ import os
 import io
 from operator import itemgetter
 from math import pi, sqrt
+import copy
 
 from qgis.core import QgsSettings
 
@@ -356,7 +357,8 @@ class ParameterConfHandler(AbstractConfHandler):
         for setname in s.childGroups():
             if setname in self.parameterSets.keys():
                 continue
-            params = {}
+            # Start with default set and overwrite all properties
+            params = copy.deepcopy(self.parameterSets[self.defaultSet])
             # Switch context to the parameter set
             s.beginGroup(setname)
             for prop in s.allKeys():
