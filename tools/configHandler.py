@@ -97,7 +97,7 @@ class ConfigHandler:
         return success
     
     def loadFromJsonFile(self, filename):
-        """Read out settings from a strucutred json file."""
+        """Read out settings from a structured json file."""
         if not os.path.exists(filename):
             return False
         

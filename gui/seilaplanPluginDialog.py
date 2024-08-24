@@ -454,10 +454,10 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
         self.fillInPrHeaderData()
 
         # Set point types
-        self.fieldTypeA.setCurrentIndex(
-            self.projectHandler.getPointTypeAsIdx('A'))
-        self.fieldTypeE.setCurrentIndex(
-            self.projectHandler.getPointTypeAsIdx('E'))
+        for point, field in [('A', self.fieldTypeA), ('E', self.fieldTypeE)]:
+            field.blockSignals(True)
+            field.setCurrentIndex(self.projectHandler.getPointTypeAsIdx(point))
+            field.blockSignals(False)
     
     def fillParametersetList(self):
         self.fieldParamSet.blockSignals(True)
