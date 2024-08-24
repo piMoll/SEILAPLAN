@@ -164,6 +164,9 @@ class AdjustmentPlot(FigureCanvas):
             self.axes.set_ylim(self.data_ylow, self.data_yhi)
         
     def updatePlot(self, poles, cable, printPdf=False):
+        # Remember current view port of plot
+        currentView = (self.axes.get_xlim(), self.axes.get_ylim())
+
         scale = 1
         legendCol = 4
         fontSize = 12
@@ -270,11 +273,17 @@ class AdjustmentPlot(FigureCanvas):
         # Legend
         self.axes.legend(loc='lower center', fontsize=fontSize,
                          bbox_to_anchor=(0.5, 0), ncol=legendCol)
+        # Redraw the plot
         self.draw()
-        # Set new plot extent as home extent (for home button)
+        
         if not printPdf:
+            # Set new plot extent as home extent (for home button)
             self.tbar.update()
             self.tbar.push_current()
+            # Recreate earlier view port of plot
+            self.axes.set_xlim(currentView[0])
+            self.axes.set_ylim(currentView[1])
+            self.draw()
     
     def showMarkers(self, plotMarkers: List[PlotMarker]):
         # Displays marker for thresholds
