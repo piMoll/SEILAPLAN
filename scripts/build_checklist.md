@@ -6,7 +6,8 @@
 1. metadata.txt: Change version (2x), add short changelog
 2. plugin.xml: Change version in _<pyqgis_plugin>_ and _<download_url>_
 3. __init__.py: Change version
-4. Template of field survey profile
+4. __init__.py: Det DEBUG to False 
+5. Template of field survey profile
 
 
 ### 3. Check if build configs are still up to date

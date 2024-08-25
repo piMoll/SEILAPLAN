@@ -1,5 +1,10 @@
 # Seilaplan Changelog
 
+## Version 3.6.1 (August 2024)
+### Fehlerbehebung
+* Fehlende Zwischenstützen, wenn Projektdatei geladen wird
+* Bearbeitungsfenster: Diagramm springt zurück zu Vollansicht, wenn Seillinie neu berechnet wird
+
 ## Version 3.6.0 (August 2024)
 ### Neue Features
 * Seilaplan kann mehrfach gestartet werden, um Projekte (bzw. Varianten) parallel zu bearbeiten
