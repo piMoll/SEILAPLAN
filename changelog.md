@@ -1,5 +1,9 @@
 # Seilaplan Changelog
 
+## Version 3.6.2 (September 2024)
+### Fehlerbehebung
+* Fenstergrösse des Plugins lässt sich unter macOS nicht verändern
+
 ## Version 3.6.1 (August 2024)
 ### Fehlerbehebung
 * Fehlende Zwischenstützen, wenn Projektdatei geladen wird
