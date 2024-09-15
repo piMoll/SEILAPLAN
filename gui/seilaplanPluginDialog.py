@@ -21,7 +21,6 @@
 """
 
 import os
-import sys
 # GUI and QGIS libraries
 from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QFileInfo, QCoreApplication, QSettings, Qt
@@ -135,17 +134,6 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
 
         # Set initial state of terrain data group
         self.enableRasterHeightSource()
-        
-        if 'DARWIN' in sys.platform.upper():
-            # Explicitly set the windows flags on macOS so the plugin window
-            #  stays on top of QGIS when drawing in the map
-            self.setWindowFlags(
-                Qt.Window |
-                Qt.CustomizeWindowHint |
-                Qt.WindowTitleHint |
-                Qt.WindowCloseButtonHint |
-                Qt.WindowStaysOnTopHint
-            )
         
         Processing.initialize()
     

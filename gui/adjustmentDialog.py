@@ -19,7 +19,6 @@
  ***************************************************************************/
 """
 import os
-import sys
 from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QTimer, Qt, QCoreApplication, QSettings
 from qgis.PyQt.QtWidgets import QDialog, QMessageBox, QTextEdit
@@ -168,19 +167,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         self.infoBirdViewCategory.clicked.connect(self.onInfo)
         self.infoBirdViewPosition.clicked.connect(self.onInfo)
         self.infoBirdViewAbspann.clicked.connect(self.onInfo)
-        
-        if 'DARWIN' in sys.platform.upper():
-            # Explicitly set the windows flags on macOS so the plugin window
-            #  stays on top of QGIS when drawing in the map
-            self.setWindowFlags(
-                Qt.Window |
-                Qt.CustomizeWindowHint |
-                Qt.WindowTitleHint |
-                Qt.WindowCloseButtonHint |
-                Qt.WindowStaysOnTopHint
-            )
     
-    # noinspection PyMethodMayBeStatic
     def tr(self, message, context='', **kwargs):
         """Get the translation for a string using Qt translation API.
         We implement this ourselves since we do not inherit QObject.
