@@ -1,5 +1,9 @@
 # Seilaplan Changelog
 
+## Version 3.6.3 (November 2024)
+### Fehlerbehebung
+* Kurzbericht: Abschnitt "Anker- und Spannfelder" zeigen korrekte Stützenbezeichnungen (von -> bis)
+
 ## Version 3.6.2 (September 2024)
 ### Fehlerbehebung
 * Fenstergrösse des Plugins lässt sich unter macOS nicht verändern

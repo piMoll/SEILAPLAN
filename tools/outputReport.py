@@ -464,7 +464,7 @@ def generateShortReport(confHandler, result, projname, outputLoc):
     total_s = 0
     for i, pole in enumerate(polesArray[:-1]):
         nextPole = polesArray[i+1]
-        poleName = ((nextPole['name'][:25].strip() + '…' if len(nextPole['name']) > 27 else nextPole['name'])
+        poleName = ((pole['name'][:25].strip() + '…' if len(pole['name']) > 27 else pole['name'])
                     + (f" ({pole['nr']})" if pole['nr'] else ''))
         nextPoleName = ((nextPole['name'][:25].strip() + '…' if len(nextPole['name']) > 27 else nextPole['name'])
                        + (f" ({nextPole['nr']})" if nextPole['nr'] else ''))
