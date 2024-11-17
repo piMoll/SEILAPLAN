@@ -20,14 +20,13 @@
 """
 
 import os
-import numpy as np
 
 from qgis.PyQt.QtGui import QFont, QColor
-from qgis.PyQt.QtCore import QSize, Qt, QFileInfo, QCoreApplication, QMetaType
+from qgis.PyQt.QtCore import QSize, Qt, QFileInfo, QCoreApplication
 from qgis.PyQt.QtWidgets import (QDialog, QWidget, QLabel, QDialogButtonBox,
     QLayout, QVBoxLayout)
 from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject, QgsPoint,
-    QgsFeature, QgsGeometry, QgsVectorLayer, QgsField, QgsPalLayerSettings,
+    QgsFeature, QgsGeometry, QgsVectorLayer, QgsPalLayerSettings,
     QgsTextFormat, QgsTextBufferSettings,  QgsVectorLayerSimpleLabeling, Qgis)
 from SEILAPLAN import DEBUG
 
@@ -185,25 +184,16 @@ def createProfileLayers(heightSource):
     addLayerToQgis(surveyLineLayer, 'top')
 
     # Create survey point layer
-    surveyPointLayer = QgsVectorLayer('Point?crs=' + lyrCrs,
+    surveyPointLayer = QgsVectorLayer(f'Point?crs={lyrCrs}&field=id:integer&field=nr:string(30)',
                                       tr('Felddaten-Messpunkte'), 'memory')
     pr = surveyPointLayer.dataProvider()
-
-    if Qgis.QGIS_VERSION_INT >= 33800:
-        from qgis.PyQt.QtCore import QMetaType
-        pr.addAttributes([QgsField("nr", QMetaType.Char)])
-    else:
-        from qgis.PyQt.QtCore import QVariant
-        pr.addAttributes([QgsField("nr", QVariant.String)])
-    surveyPointLayer.updateFields()
     features = []
     # TODO: Survey points are NOT rounded
     for x, y, nr, notes in zip(heightSource.x, heightSource.y, heightSource.nr, heightSource.plotNotes):
         feature = QgsFeature()
         feature.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(x, y)))
-        feature.setId(int(nr+1))
         labelText = f"{nr}{':' if notes else ''} {notes if len(notes) <= 25 else notes[:22] + '...'}"
-        feature.setAttributes([labelText])
+        feature.setAttributes([int(nr+1), labelText])
         features.append(feature)
     pr.addFeatures(features)
     surveyPointLayer.updateExtents()
