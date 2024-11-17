@@ -108,7 +108,7 @@ class SeilaplanRun:
         for dialog in [self.projectWindow, self.progressDialog, self.adjustmentWindow]:
             if dialog:
                 try:
-                    dialog.cleanUp()
+                    dialog.cleanUp(True)
                     dialog.deleteLater()
                 except RuntimeError:
                     # Already deleted

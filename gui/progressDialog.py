@@ -166,7 +166,7 @@ class ProgressDialog(QDialog):
         self.cancelButton.hide()
         self.closeButton.show()
     
-    def cleanUp(self):
+    def cleanUp(self, endLoop=False):
         pass
     
     def closeEvent(self, QCloseEvent):

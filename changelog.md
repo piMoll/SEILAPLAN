@@ -2,7 +2,8 @@
 
 ## Version 3.6.3 (November 2024)
 ### Fehlerbehebung
-* Kurzbericht: Abschnitt "Anker- und Spannfelder" zeigen korrekte Stützenbezeichnungen (von -> bis)
+* Kurzbericht: Abschnitt "Anker- und Spannfelder" zeigt korrekte Stützenbezeichnungen (von -> bis)
+* Vogelperspektive: Punktnummerierung aus Geländeprofil wieder sichtbar
 
 ## Version 3.6.2 (September 2024)
 ### Fehlerbehebung

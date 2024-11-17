@@ -711,7 +711,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
     def showMessage(self, title, message):
         QMessageBox.critical(self, title, message, QMessageBox.Ok)
     
-    def cleanUp(self):
+    def cleanUp(self, endLoop=False):
         self.drawTool.reset()
         if self.timer:
             self.timer.stop()

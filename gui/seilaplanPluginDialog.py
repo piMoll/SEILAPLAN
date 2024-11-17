@@ -1075,15 +1075,16 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
         """ Called when 'Cancel' is pressed."""
         self.close()
     
-    def cleanUp(self):
+    def cleanUp(self, endLoop=False):
         # Close child dialogs
         self.imgBox.close()
         if self.profileWin.isVisible():
             self.profileWin.close()
         # Clean markers and lines from map canvas
         self.drawTool.reset()
-        # Remove survey line
-        self.removeSurveyDataLayer()
+        if endLoop:
+            # Remove survey line if plugin program loop ends
+            self.removeSurveyDataLayer()
     
     def closeEvent(self, QCloseEvent):
         """Last method that is called before main window is closed."""
