@@ -19,7 +19,7 @@
  ***************************************************************************/
 """
 from typing import List
-from PyQt5.QtWidgets import QWidget
+from qgis.PyQt.QtWidgets import QWidget
 from qgis.PyQt.QtCore import QSize, Qt, pyqtSignal, QObject, QCoreApplication
 from qgis.PyQt.QtWidgets import (QDoubleSpinBox, QSpinBox, QPushButton, QHBoxLayout,
                                  QLineEdit, QLabel, QCheckBox, QGridLayout)
