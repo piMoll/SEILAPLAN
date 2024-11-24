@@ -172,10 +172,13 @@ class ThresholdUpdater:
             localCopy = np.copy(data)
             localCopy[np.isnan(localCopy)] = 100.0
             
-            d = self.poles.getAsArray()[0]
-            for idx, poleDist in enumerate(d[:-1]):
-                fieldStartIdx = np.ravel(np.argwhere(resultData['cableline']['groundclear_di'] == int(poleDist)))[0]
-                fieldEndIdx = np.ravel(np.argwhere(resultData['cableline']['groundclear_di'] == int(d[idx + 1])))[0]
+            dtop = self.poles.getAsArray()[3]
+            for idx in range(0, len(dtop)-1):
+                # Get the index of the groundclear array that is nearest to the pole top point
+                d_diff = np.absolute(resultData['cableline']['groundclear_di'] - dtop[idx])
+                fieldStartIdx = d_diff.argmin()
+                d_diff = np.absolute(resultData['cableline']['groundclear_di'] - dtop[idx + 1])
+                fieldEndIdx = d_diff.argmin()
                 # Search for the minimal value in the current cable field
                 localMinima = np.nanmin(localCopy[fieldStartIdx:fieldEndIdx])
                 # NAN values will be ignored
