@@ -1,4 +1,3 @@
-﻿# -*- coding: utf-8 -*-
 """
 #------------------------------------------------------------------------------
 # Name:        Seillinienlayout - Start der Optimierungsberechnungen

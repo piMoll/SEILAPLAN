@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 /***************************************************************************
  SeilaplanPlugin
@@ -111,10 +110,10 @@ class SeilaplanPlugin:
     def handleImportErrors(self):
         def showError():
             msgBox = QMessageBox(self.iface.mainWindow())
-            msgBox.setIcon(QMessageBox.Information)
+            msgBox.setIcon(QMessageBox.Icon.Information)
             msgBox.setWindowTitle(shortMessage)
             msgBox.setText(longMessage)
-            msgBox.setStandardButtons(QMessageBox.Ok)
+            msgBox.setStandardButtons(QMessageBox.StandardButton.Ok)
             msgBox.show()
             msgBox.exec()
         
