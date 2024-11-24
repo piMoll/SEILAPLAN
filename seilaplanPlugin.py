@@ -25,8 +25,6 @@ from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication
 from qgis.PyQt.QtWidgets import QAction, QPushButton, QMessageBox
 from qgis.PyQt.QtGui import QIcon
 from qgis.core import Qgis
-# Initialize Qt resources from file resources.py
-from .gui import resources_rc
 
 # Add shipped libraries to python path
 libPath = os.path.join(os.path.dirname(__file__), 'lib')

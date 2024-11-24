@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>644</width>
-    <height>916</height>
+    <height>954</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -17,8 +17,8 @@
    <string>SEILAPLAN - Seilkran-Layoutplaner</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="resources.qrc">
-    <normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_app.png</normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_app.png</iconset>
+   <iconset>
+    <normaloff>icons/icon_app.png</normaloff>icons/icon_app.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout_4">
    <item row="0" column="0">
@@ -43,8 +43,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>612</width>
-        <height>884</height>
+        <width>626</width>
+        <height>902</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -108,8 +108,8 @@
                <string/>
               </property>
               <property name="icon">
-               <iconset resource="resources.qrc">
-                <normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_save.png</normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_save.png</iconset>
+               <iconset>
+                <normaloff>icons/icon_save.png</normaloff>icons/icon_save.png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -137,8 +137,8 @@
                <string/>
               </property>
               <property name="icon">
-               <iconset resource="resources.qrc">
-                <normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_bin.png</normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_bin.png</iconset>
+               <iconset>
+                <normaloff>icons/icon_bin.png</normaloff>icons/icon_bin.png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -156,7 +156,7 @@
           <item>
            <widget class="QTabWidget" name="tabWidget">
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="tab_3">
              <attribute name="title">
@@ -300,7 +300,6 @@
                  <widget class="QLabel" name="label_66">
                   <property name="font">
                    <font>
-                    <weight>75</weight>
                     <bold>true</bold>
                    </font>
                   </property>
@@ -1409,7 +1408,6 @@
                  <widget class="QLabel" name="label_3">
                   <property name="font">
                    <font>
-                    <weight>75</weight>
                     <bold>true</bold>
                    </font>
                   </property>
@@ -1933,7 +1931,6 @@ mit ohne Niederhaltelasche</string>
                  <widget class="QLabel" name="label_11">
                   <property name="font">
                    <font>
-                    <weight>75</weight>
                     <bold>true</bold>
                    </font>
                   </property>
@@ -2283,8 +2280,8 @@ Stuetze Endmast</string>
                <string/>
               </property>
               <property name="icon">
-               <iconset resource="resources.qrc">
-                <normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_map.png</normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_map.png</iconset>
+               <iconset>
+                <normaloff>icons/icon_map.png</normaloff>icons/icon_map.png</iconset>
               </property>
               <property name="autoDefault">
                <bool>false</bool>
@@ -2326,8 +2323,8 @@ Stuetze Endmast</string>
                <string/>
               </property>
               <property name="icon">
-               <iconset resource="resources.qrc">
-                <normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_contour.png</normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_contour.png</iconset>
+               <iconset>
+                <normaloff>icons/icon_contour.png</normaloff>icons/icon_contour.png</iconset>
               </property>
               <property name="autoDefault">
                <bool>false</bool>
@@ -2429,7 +2426,7 @@ Stuetze Endmast</string>
             <item row="2" column="3">
              <widget class="QLabel" name="symE">
               <property name="text">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/plugins/SeilaplanPlugin/gui/icons/icon_yellow.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;icons/icon_yellow.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -2692,7 +2689,7 @@ Stuetze Endmast</string>
             <item row="1" column="3">
              <widget class="QLabel" name="symA">
               <property name="text">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/plugins/SeilaplanPlugin/gui/icons/icon_yellow.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;icons/icon_yellow.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -2862,8 +2859,8 @@ Stuetze Endmast</string>
                <string/>
               </property>
               <property name="icon">
-               <iconset resource="resources.qrc">
-                <normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_reload.png</normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_reload.png</iconset>
+               <iconset>
+                <normaloff>icons/icon_reload.png</normaloff>icons/icon_reload.png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -2915,8 +2912,8 @@ Stuetze Endmast</string>
                <string/>
               </property>
               <property name="icon">
-               <iconset resource="resources.qrc">
-                <normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_open.png</normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_open.png</iconset>
+               <iconset>
+                <normaloff>icons/icon_open.png</normaloff>icons/icon_open.png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -3012,8 +3009,8 @@ Stuetze Endmast</string>
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="resources.qrc">
-              <normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_save.png</normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_save.png</iconset>
+             <iconset>
+              <normaloff>icons/icon_save.png</normaloff>icons/icon_save.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -3047,8 +3044,8 @@ Stuetze Endmast</string>
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="resources.qrc">
-              <normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_open.png</normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_open.png</iconset>
+             <iconset>
+              <normaloff>icons/icon_open.png</normaloff>icons/icon_open.png</iconset>
             </property>
             <property name="iconSize">
              <size>

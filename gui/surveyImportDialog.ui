@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>551</width>
-    <height>223</height>
+    <height>228</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -104,8 +104,8 @@
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="resources.qrc">
-           <normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_open.png</normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_open.png</iconset>
+          <iconset>
+           <normaloff>icons/icon_open.png</normaloff>icons/icon_open.png</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -144,9 +144,7 @@
    </item>
   </layout>
  </widget>
- <resources>
-  
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>buttonBox</sender>
