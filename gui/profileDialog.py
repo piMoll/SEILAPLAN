@@ -75,8 +75,8 @@ class ProfileDialog(QDialog):
         stueTitle = QLabel('<b>' + self.tr('Stuetzenoptimierung einschraenken') + '</b>')
         hbox = QHBoxLayout()
         line1 = QFrame()
-        line1.setFrameShape(QFrame.HLine)
-        line1.setFrameShadow(QFrame.Sunken)
+        line1.setFrameShape(QFrame.Shape.HLine)
+        line1.setFrameShadow(QFrame.Shadow.Sunken)
 
         # Create labels and buttons
         self.fixStueAdd = QPushButton(self.tr('Fixe Stuetze definieren'))
@@ -85,23 +85,23 @@ class ProfileDialog(QDialog):
         icon = QIcon()
         icon.addPixmap(
             QPixmap(':/plugins/SeilaplanPlugin/gui/icons/icon_bin.png'),
-            QIcon.Normal, QIcon.Off)
+            QIcon.Mode.Normal, QIcon.State.Off)
         self.noStueDel.setIcon(icon)
         self.noStueDel.setIconSize(QSize(16, 16))
         self.fixStueAdd.setToolTip(self.tr('Tooltip Fixe Stuetzen'))
         self.noStueAdd.setToolTip(self.tr('Tooltip Abschnitte ohne Stuetzen'))
         self.noStueDel.setToolTip(self.tr('Tooltip Abschnitte loeschen'))
-        spacerItem1 = QSpacerItem(40, 20, QSizePolicy.Expanding,
-                                        QSizePolicy.Minimum)
+        spacerItem1 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding,
+                                        QSizePolicy.Policy.Minimum)
         hbox.addWidget(self.fixStueAdd)
         hbox.addItem(spacerItem1)
         hbox.addWidget(self.noStueAdd)
         hbox.addWidget(self.noStueDel)
         hbox.setAlignment(self.noStueAdd, Qt.AlignRight)
-        btnBoxSpacer = QSpacerItem(40, 40, QSizePolicy.Fixed,
-                                        QSizePolicy.Fixed)
+        btnBoxSpacer = QSpacerItem(40, 40, QSizePolicy.Policy.Fixed,
+                                        QSizePolicy.Policy.Fixed)
         self.buttonBox = QDialogButtonBox(main_widget)
-        self.buttonBox.setStandardButtons(QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QDialogButtonBox.StandardButton.Ok)
         # Build up Gui
         self.container.addWidget(self.sc)
         self.container.addWidget(tbar, alignment=Qt.AlignHCenter | Qt.AlignTop)

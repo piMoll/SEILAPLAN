@@ -196,11 +196,11 @@ def savePointGeometry(filePath, poles, spatialRef, geoFormat):
         options.includeZ = True
         options.fileEncoding = 'UTF-8'
         writer = QgsVectorFileWriter.create(
-            filePath, fields, QgsWkbTypes.PointZ, spatialRef,
+            filePath, fields, QgsWkbTypes.Type.PointZ, spatialRef,
             QgsCoordinateTransformContext(), options)
     else:
         writer = QgsVectorFileWriter(filePath, 'UTF-8', fields,
-            QgsWkbTypes.PointZ, spatialRef, geoFormat)
+            QgsWkbTypes.Type.PointZ, spatialRef, geoFormat)
 
     if writer.hasError() != QgsVectorFileWriter.NoError:
         raise Exception(f'{writer.errorMessage()} ({geoFormat})')
@@ -238,9 +238,9 @@ def saveLineGeometry(filePath, geodata, spatialRef, geoFormat, is3D=True):
     """
     # Define fields for feature attributes. A QgsFields object is needed
     fields = QgsFields()
-    geomType = QgsWkbTypes.LineStringZ
+    geomType = QgsWkbTypes.Type.LineStringZ
     if not is3D:
-        geomType = QgsWkbTypes.LineString
+        geomType = QgsWkbTypes.Type.LineString
     if QGIS_VERSION_INT >= 31030:
         # Use newer QgsVectorFileWriter.create() function
         options = QgsVectorFileWriter.SaveVectorOptions()

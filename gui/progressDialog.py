@@ -59,19 +59,19 @@ class ProgressDialog(QDialog):
         self.resultLabel = QLabel(self)
         self.resultLabel.setMaximumWidth(500)
         self.resultLabel.setSizePolicy(
-            QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding))
+            QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding))
         self.resultLabel.setWordWrap(True)
-        spacer1 = QSpacerItem(20, 20, QSizePolicy.Fixed,
-                              QSizePolicy.Fixed)
+        spacer1 = QSpacerItem(20, 20, QSizePolicy.Policy.Fixed,
+                              QSizePolicy.Policy.Fixed)
         self.rerunButton = QPushButton(self.tr("zurueck zum Startfenster"))
         self.rerunButton.setVisible(False)
-        spacer2 = QSpacerItem(40, 20, QSizePolicy.Expanding,
-                             QSizePolicy.Minimum)
-        self.cancelButton.setStandardButtons(QDialogButtonBox.Cancel)
-        self.cancelButton.button(QDialogButtonBox.Cancel).setText(self.tr("Abbrechen"))
+        spacer2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding,
+                             QSizePolicy.Policy.Minimum)
+        self.cancelButton.setStandardButtons(QDialogButtonBox.StandardButton.Cancel)
+        self.cancelButton.button(QDialogButtonBox.StandardButton.Cancel).setText(self.tr("Abbrechen"))
         self.cancelButton.clicked.connect(self.onAbort)
-        self.closeButton.setStandardButtons(QDialogButtonBox.Close)
-        self.closeButton.button(QDialogButtonBox.Close).setText(self.tr("Schliessen"))
+        self.closeButton.setStandardButtons(QDialogButtonBox.StandardButton.Close)
+        self.closeButton.button(QDialogButtonBox.StandardButton.Close).setText(self.tr("Schliessen"))
         self.closeButton.clicked.connect(self.close)
         self.hbox.addWidget(self.rerunButton)
         self.hbox.addItem(spacer2)
@@ -86,7 +86,7 @@ class ProgressDialog(QDialog):
         self.container.addWidget(self.resultLabel)
         self.container.addItem(spacer1)
         self.container.addLayout(self.hbox)
-        self.container.setSizeConstraint(QLayout.SetFixedSize)
+        self.container.setSizeConstraint(QLayout.SizeConstraint.SetFixedSize)
         self.setLayout(self.container)
 
     def tr(self, message, **kwargs):

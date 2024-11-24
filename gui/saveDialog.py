@@ -50,18 +50,18 @@ class DialogSaveParamset(QDialog):
         self.setnameField = QLineEdit()
         self.setnameField.setMinimumWidth(400)
         self.setnameField.setSizePolicy(
-            QSizePolicy(QSizePolicy.Expanding,
-                        QSizePolicy.Fixed))
+            QSizePolicy(QSizePolicy.Policy.Expanding,
+                        QSizePolicy.Policy.Fixed))
         
         hbox.addWidget(setnameLabel)
         hbox.addWidget(self.setnameField)
         
         # Create Ok/Cancel Button and connect signal
         buttonBox = QDialogButtonBox(main_widget)
-        buttonBox.setStandardButtons(QDialogButtonBox.Cancel |
-                                     QDialogButtonBox.Ok)
-        buttonBox.button(QDialogButtonBox.Ok).setText(self.tr("OK"))
-        buttonBox.button(QDialogButtonBox.Cancel).setText(self.tr("Abbrechen"))
+        buttonBox.setStandardButtons(QDialogButtonBox.StandardButton.Cancel |
+                                     QDialogButtonBox.StandardButton.Ok)
+        buttonBox.button(QDialogButtonBox.StandardButton.Ok).setText(self.tr("OK"))
+        buttonBox.button(QDialogButtonBox.StandardButton.Cancel).setText(self.tr("Abbrechen"))
         buttonBox.accepted.connect(self.apply)
         buttonBox.rejected.connect(self.onCancel)
         
@@ -109,7 +109,7 @@ class DialogSaveParamset(QDialog):
         if not valid:
             QMessageBox.information(self, self.tr('Fehler'),
                 self.tr('Bitte geben Sie einen gueltigen Dateinamen fuer das '
-                        'Parameterset an'), QMessageBox.Ok)
+                        'Parameterset an'), QMessageBox.StandardButton.Ok)
             return
         self.setname = setname
         self.close()
@@ -142,8 +142,8 @@ class DialogOutputOptions(QDialog):
         self.projectField = QLineEdit()
         self.projectField.setMinimumWidth(400)
         self.projectField.setSizePolicy(
-            QSizePolicy(QSizePolicy.Expanding,
-                        QSizePolicy.Fixed))
+            QSizePolicy(QSizePolicy.Policy.Expanding,
+                        QSizePolicy.Policy.Fixed))
         hbox1.addWidget(projectNameLabel)
         hbox1.addWidget(self.projectField)
         
@@ -154,16 +154,16 @@ class DialogOutputOptions(QDialog):
         self.pathField = QComboBox()
         self.pathField.setMinimumWidth(400)
         self.pathField.setSizePolicy(
-            QSizePolicy(QSizePolicy.Expanding,
-                        QSizePolicy.Fixed))
+            QSizePolicy(QSizePolicy.Policy.Expanding,
+                        QSizePolicy.Policy.Fixed))
         
         openButton = QPushButton()
         openButton.setMaximumSize(QSize(27, 27))
         icon = QIcon()
         iconPath = os.path.join(os.path.dirname(__file__),
                                 'icons', 'icon_open.png')
-        icon.addPixmap(QPixmap(iconPath), QIcon.Normal,
-                       QIcon.Off)
+        icon.addPixmap(QPixmap(iconPath), QIcon.Mode.Normal,
+                       QIcon.State.Off)
         openButton.setIcon(icon)
         openButton.setIconSize(QSize(24, 24))
         openButton.clicked.connect(self.onChoosePath)
@@ -188,12 +188,12 @@ class DialogOutputOptions(QDialog):
         
         # Create Ok/Cancel Button and connect signal
         buttonBox = QDialogButtonBox(main_widget)
-        buttonBox.setStandardButtons(QDialogButtonBox.Save |
-                                     QDialogButtonBox.Cancel)
-        buttonBox.button(QDialogButtonBox.Save).setText(self.tr("Speichern"))
-        buttonBox.button(QDialogButtonBox.Cancel).setText(self.tr("Abbrechen"))
-        buttonBox.button(QDialogButtonBox.Cancel).clicked.connect(self.onCancel)
-        buttonBox.button(QDialogButtonBox.Save).clicked.connect(self.onSave)
+        buttonBox.setStandardButtons(QDialogButtonBox.StandardButton.Save |
+                                     QDialogButtonBox.StandardButton.Cancel)
+        buttonBox.button(QDialogButtonBox.StandardButton.Save).setText(self.tr("Speichern"))
+        buttonBox.button(QDialogButtonBox.StandardButton.Cancel).setText(self.tr("Abbrechen"))
+        buttonBox.button(QDialogButtonBox.StandardButton.Cancel).clicked.connect(self.onCancel)
+        buttonBox.button(QDialogButtonBox.StandardButton.Save).clicked.connect(self.onSave)
         # Layout
         container = QVBoxLayout(main_widget)
         container.addLayout(hbox1)
@@ -264,7 +264,7 @@ class DialogOutputOptions(QDialog):
     def onChoosePath(self):
         title = self.tr('Output Ordner auswaehlen')
         folder = QFileDialog.getExistingDirectory(self, title,
-            self.confHandler.getCurrentPath(), QFileDialog.ShowDirsOnly)
+            self.confHandler.getCurrentPath(), QFileDialog.Option.ShowDirsOnly)
         if folder:
             self.pathField.insertItem(0, folder)
             self.pathField.setCurrentIndex(0)

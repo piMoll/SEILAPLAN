@@ -498,18 +498,19 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
         # Standard set cannot be deleted
         if currParamset == self.paramHandler.defaultSet:
             QMessageBox.critical(self, self.tr('Parameterset loeschen'),
-                self.tr('Standardparameterset kann nicht geloescht werden.'), QMessageBox.Ok)
+                self.tr('Standardparameterset kann nicht geloescht werden.'),
+                QMessageBox.StandardButton.Ok)
             return
         
         # Ask before removing
         msgBox = QMessageBox(self)
-        msgBox.setIcon(QMessageBox.Information)
+        msgBox.setIcon(QMessageBox.Icon.Information)
         msgBox.setWindowTitle(self.tr('Parameterset loeschen'))
         msgBox.setText(self.tr('Moechten Sie das Parameterset wirklich loeschen?'))
-        msgBox.setStandardButtons(QMessageBox.No | QMessageBox.Yes)
-        noBtn = msgBox.button(QMessageBox.No)
+        msgBox.setStandardButtons(QMessageBox.StandardButton.No | QMessageBox.StandardButton.Yes)
+        noBtn = msgBox.button(QMessageBox.StandardButton.No)
         noBtn.setText(self.tr("Nein"))
-        yesBtn = msgBox.button(QMessageBox.Yes)
+        yesBtn = msgBox.button(QMessageBox.StandardButton.Yes)
         yesBtn.setText(self.tr("Ja"))
         msgBox.exec()
         
@@ -517,7 +518,8 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
             success = self.paramHandler.removeParameterSet(currParamset)
             if not success:
                 QMessageBox.critical(self, self.tr('Parameterset loeschen'),
-                    self.tr('Ein Fehler ist aufgetreten. Parameterset kann nicht geloescht werden.'), QMessageBox.Ok)
+                    self.tr('Ein Fehler ist aufgetreten. Parameterset kann nicht geloescht werden.'),
+                    QMessageBox.StandardButton.Ok)
             else:
                 # Set default set
                 self.paramHandler.setParameterSet(self.paramHandler.defaultSet)
@@ -1038,7 +1040,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
             self.imgBox.show()
         else:
             # Show a simple MessageBox with an info text
-            QMessageBox.information(self, title, msg, QMessageBox.Ok)
+            QMessageBox.information(self, title, msg, QMessageBox.StandardButton.Ok)
     
     def fillInPrHeaderData(self):
         for key, val in self.projectHandler.prHeader.items():

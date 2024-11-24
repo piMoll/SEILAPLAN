@@ -218,7 +218,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
             
             except Exception as e:
                 QMessageBox.critical(self, self.tr('Unerwarteter Fehler '
-                    'bei Berechnung der Seillinie'), str(e), QMessageBox.Ok)
+                    'bei Berechnung der Seillinie'), str(e), QMessageBox.StandardButton.Ok)
                 return
         
         groundClear = self.profile.updateProfileAnalysis(self.result['cableline'])
@@ -419,7 +419,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
             self.imgBox.show()
         elif title and msg:
             # Show a simple MessageBox with an info text
-            QMessageBox.information(self, title, msg, QMessageBox.Ok)
+            QMessageBox.information(self, title, msg, QMessageBox.StandardButton.Ok)
 
     def onUpdateCableParam(self):
         # Since user can change entire parameter sets, we prepare params
@@ -713,7 +713,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         self.updateRecalcStatus('saveDone')
     
     def showMessage(self, title, message):
-        QMessageBox.critical(self, title, message, QMessageBox.Ok)
+        QMessageBox.critical(self, title, message, QMessageBox.StandardButton.Ok)
     
     def cleanUp(self, endLoop=False):
         self.drawTool.reset()
@@ -728,16 +728,17 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         # Check for unsaved changes before closing
         if self.unsavedChanges:
             msgBox = QMessageBox(self)
-            msgBox.setIcon(QMessageBox.Information)
+            msgBox.setIcon(QMessageBox.Icon.Information)
             msgBox.setWindowTitle(self.tr('Nicht gespeicherte Aenderungen'))
             msgBox.setText(self.tr('Moechten Sie die Ergebnisse speichern?'))
-            msgBox.setStandardButtons(QMessageBox.Cancel |
-                                      QMessageBox.No | QMessageBox.Yes)
-            cancelBtn = msgBox.button(QMessageBox.Cancel)
+            msgBox.setStandardButtons(QMessageBox.StandardButton.Cancel |
+                                      QMessageBox.StandardButton.No |
+                                      QMessageBox.StandardButton.Yes)
+            cancelBtn = msgBox.button(QMessageBox.StandardButton.Cancel)
             cancelBtn.setText(self.tr("Abbrechen"))
-            noBtn = msgBox.button(QMessageBox.No)
+            noBtn = msgBox.button(QMessageBox.StandardButton.No)
             noBtn.setText(self.tr("Nein"))
-            yesBtn = msgBox.button(QMessageBox.Yes)
+            yesBtn = msgBox.button(QMessageBox.StandardButton.Yes)
             yesBtn.setText(self.tr("Ja"))
             msgBox.exec()
             
