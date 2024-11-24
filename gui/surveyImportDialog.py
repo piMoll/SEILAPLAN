@@ -68,8 +68,8 @@ class SurveyImportDialog(QDialog, FORM_CLASS):
 
         self.buttonBox.accepted.connect(self.onImport)
         self.buttonBox.rejected.connect(self.onCancel)
-        self.buttonBox.button(QDialogButtonBox.Ok).setText(self.tr('Import'))
-        self.buttonBox.button(QDialogButtonBox.Cancel).setText(self.tr('Abbrechen'))
+        self.buttonBox.button(QDialogButtonBox.StandardButton.Ok).setText(self.tr('Import'))
+        self.buttonBox.button(QDialogButtonBox.StandardButton.Cancel).setText(self.tr('Abbrechen'))
     
     def onSelectSurveyType(self):
         newSurveyType = None
@@ -114,18 +114,18 @@ class SurveyImportDialog(QDialog, FORM_CLASS):
         if self.surveyType:
             self.buttonOpenSurvey.setEnabled(True)
             if self.filePath:
-                self.buttonBox.button(QDialogButtonBox.Ok).setEnabled(True)
+                self.buttonBox.button(QDialogButtonBox.StandardButton.Ok).setEnabled(True)
             else:
-                self.buttonBox.button(QDialogButtonBox.Ok).setDisabled(True)
+                self.buttonBox.button(QDialogButtonBox.StandardButton.Ok).setDisabled(True)
         else:
             self.buttonOpenSurvey.setDisabled(True)
-            self.buttonBox.button(QDialogButtonBox.Ok).setDisabled(True)
+            self.buttonBox.button(QDialogButtonBox.StandardButton.Ok).setDisabled(True)
     
     def onDownloadTemplate(self, templateName):
         title = self.tr('Vorlage speichern')
         path = self.confHandler.getCurrentPath()
         folder = QFileDialog.getExistingDirectory(self, title, path,
-                                                  QFileDialog.ShowDirsOnly)
+                                                  QFileDialog.Option.ShowDirsOnly)
         if folder:
             templateUrl, filename = self.confHandler.getTemplateUrl(templateName)
             savepath = os.path.join(folder, filename)
@@ -137,7 +137,7 @@ class SurveyImportDialog(QDialog, FORM_CLASS):
                 msg = self.tr('Download nicht erfolgreich. Link fuer manuellen Download: _templateUrl_')\
                     .replace('_templateUrl_', templateUrl)
             QMessageBox.information(self, self.tr('Download Vorlage'),
-                                    msg, QMessageBox.Ok)
+                                    msg, QMessageBox.StandardButton.Ok)
     
     def onImport(self):
         if self.surveyType and self.filePath:

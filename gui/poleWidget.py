@@ -426,7 +426,7 @@ class PoleRow(object):
         self.addBtn.setMaximumSize(QSize(27, 27))
         icon = QIcon()
         icon.addPixmap(
-            QPixmap(PoleRow.ICON_ADD_ROW), QIcon.Normal, QIcon.Off)
+            QPixmap(PoleRow.ICON_ADD_ROW), QIcon.Mode.Normal, QIcon.State.Off)
         self.addBtn.setIcon(icon)
         self.addBtn.setIconSize(QSize(16, 16))
         self.addBtn.setToolTip(self.tr('Fuegt eine neue Stuetze nach dieser hinzu'))
@@ -443,7 +443,7 @@ class PoleRow(object):
         self.delBtn.setMaximumSize(QSize(27, 27))
         icon = QIcon()
         icon.addPixmap(
-            QPixmap(PoleRow.ICON_DEL_ROW), QIcon.Normal, QIcon.Off)
+            QPixmap(PoleRow.ICON_DEL_ROW), QIcon.Mode.Normal, QIcon.State.Off)
         self.delBtn.setIcon(icon)
         self.delBtn.setIconSize(QSize(16, 16))
         self.delBtn.setToolTip(self.tr('Loescht die Stuetze'))

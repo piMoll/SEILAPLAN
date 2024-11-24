@@ -103,8 +103,8 @@ class AdjustmentPlot(FigureCanvas):
         zoomFunc = zoom_with_wheel(self, self.axes, zoomScale=1.3)
 
         self.setFocusPolicy(Qt.ClickFocus)
-        FigureCanvas.setSizePolicy(self, QSizePolicy.Expanding,
-                                   QSizePolicy.Expanding)
+        FigureCanvas.setSizePolicy(self, QSizePolicy.Policy.Expanding,
+                                   QSizePolicy.Policy.Expanding)
         FigureCanvas.updateGeometry(self)
 
     def __setupAxes(self):

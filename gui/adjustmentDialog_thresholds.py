@@ -52,11 +52,11 @@ class AdjustmentDialogThresholds(QObject):
         self.iconOk = QIcon()
         self.iconOk.addPixmap(
             QPixmap(":/plugins/SeilaplanPlugin/gui/icons/icon_green.png"),
-            QIcon.Normal, QIcon.Off)
+            QIcon.Mode.Normal, QIcon.State.Off)
         self.iconErr = QIcon()
         self.iconErr.addPixmap(
             QPixmap(":/plugins/SeilaplanPlugin/gui/icons/icon_exclamation.png"),
-            QIcon.Normal, QIcon.Off)
+            QIcon.Mode.Normal, QIcon.State.Off)
 
         self.tbl.clicked.connect(self.onClick)
     
@@ -127,7 +127,8 @@ class AdjustmentDialogThresholds(QObject):
         # Fill info text into message box
         button.clicked.connect(
             lambda: QMessageBox.information(self.parent, cellData['title'],
-                                            cellData['message'], QMessageBox.Ok))
+                                            cellData['message'],
+                                            QMessageBox.StandardButton.Ok))
         cellWidget = QWidget()
         # Add layout to center button in cell
         layout = QHBoxLayout(cellWidget)
@@ -158,7 +159,7 @@ class ThresholdTblModel(QAbstractTableModel):
     def setData(self, index, value, role=Qt.EditRole):
         """ Adjust the data (set it to <value>) depending on the given
             index and role."""
-        if role != Qt.EditRole and role != Qt.BackgroundColorRole:
+        if role != Qt.EditRole and role != Qt.ItemDataRole.BackgroundRole:
             return False
         
         if index.isValid() and 0 <= index.row() < len(self.dataset) \

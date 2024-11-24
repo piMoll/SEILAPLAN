@@ -69,8 +69,8 @@ class ProfilePlot(FigureCanvas):
         
         self.axes.set_aspect('equal', 'datalim')
         self.setFocusPolicy(Qt.ClickFocus)
-        FigureCanvas.setSizePolicy(self, QSizePolicy.Expanding,
-                                   QSizePolicy.Expanding)
+        FigureCanvas.setSizePolicy(self, QSizePolicy.Policy.Expanding,
+                                   QSizePolicy.Policy.Expanding)
         self.setMinimumSize(QSize(600, 400))
         FigureCanvas.updateGeometry(self)
         
