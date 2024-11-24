@@ -17,8 +17,8 @@
    <string>Manuelle Anpassung</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="resources.qrc">
-    <normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_app.png</normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_app.png</iconset>
+   <iconset>
+    <normaloff>icons/icon_app.png</normaloff>icons/icon_app.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
@@ -44,7 +44,7 @@
         <x>0</x>
         <y>0</y>
         <width>692</width>
-        <height>856</height>
+        <height>855</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -70,7 +70,6 @@
          </property>
          <property name="font">
           <font>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -124,7 +123,6 @@
                  </property>
                  <property name="font">
                   <font>
-                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -649,7 +647,6 @@
               <widget class="QLabel" name="label_21">
                <property name="font">
                 <font>
-                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -1010,7 +1007,6 @@
                   <widget class="QLabel" name="label_7">
                    <property name="font">
                     <font>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -1079,8 +1075,8 @@
                     <string/>
                    </property>
                    <property name="icon">
-                    <iconset resource="resources.qrc">
-                     <normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_map.png</normaloff>:/plugins/SeilaplanPlugin/gui/icons/icon_map.png</iconset>
+                    <iconset>
+                     <normaloff>icons/icon_map.png</normaloff>icons/icon_map.png</iconset>
                    </property>
                    <property name="autoDefault">
                     <bool>false</bool>
@@ -1230,7 +1226,7 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="resources.qrc">:/plugins/SeilaplanPlugin/gui/icons/icon_reload.png</pixmap>
+            <pixmap>icons/icon_reload.png</pixmap>
            </property>
           </widget>
          </item>
