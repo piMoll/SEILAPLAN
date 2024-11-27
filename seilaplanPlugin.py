@@ -135,17 +135,6 @@ class SeilaplanPlugin:
         self.iface.messageBar().pushWidget(widget, Qgis.Warning)
 
     def run(self):
-        
-        # # Uncomment when debugging
-        # try:
-        #     import pydevd_pycharm
-        #     pydevd_pycharm.settrace('localhost', port=53100,
-        #                             stdoutToServer=True, stderrToServer=True)
-        # except ConnectionRefusedError:
-        #     pass
-        # except ImportError:
-        #     pass
-        
         # Check for import errors and show messages
         if ERROR:
             self.handleImportErrors()
