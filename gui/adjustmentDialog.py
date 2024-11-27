@@ -540,6 +540,10 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         if self.refreshPoleWidgetRows:
             self.refreshPoleWidgetRows = False
             self.poleLayout.refresh()
+        else:
+            # Bundstelle has to always be updated, since any property change
+            # can change this value
+            self.poleLayout.updateBundstelle()
         self.configurationHasChanged = False
         self.isRecalculating = False
         self.unsavedChanges = True

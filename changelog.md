@@ -2,8 +2,9 @@
 
 ## Version 3.6.3 (November 2024)
 ### Fehlerbehebung
-* Kurzbericht: Abschnitt "Anker- und Spannfelder" zeigt korrekte Stützenbezeichnungen (von -> bis)
-* Vogelperspektive: Punktnummerierung aus Geländeprofil wieder sichtbar
+* Kurzbericht: Abschnitt "Anker- und Spannfelder" zeigt nicht die korrekten Stützenbezeichnungen (von -> bis)
+* Vogelperspektive: Punktnummerierung aus Geländeprofil nicht sichtbar
+* Bearbeitungsfenster: Bundstelle wird nur aktualisiert, wenn Änderungen der Stützeneigenschaften mit Eingabe abgeschlossen werden
 
 ## Version 3.6.2 (September 2024)
 ### Fehlerbehebung
