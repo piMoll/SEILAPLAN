@@ -2,6 +2,7 @@ from math import cos, sin, atan, floor, radians, degrees
 import numpy as np
 from qgis.PyQt.QtCore import QCoreApplication
 from SEILAPLAN.tools.globals import PolesOrigin
+from SEILAPLAN.tools.heightSource import AbstractHeightSource
 
 # Notwendiger BHD [cm]: { Angriffswinkel (kleiner als 10) [°]: Tragkraft Ankerbaum [kn], ...}
 #   Angriffswinkel 0 - 10°: guenstig
@@ -33,6 +34,8 @@ BHD_POLE = {
 }
 BHD_POLE_Force = np.array(list(BHD_POLE.keys()))
 
+BRUSTHOEHE = 1.3
+
 
 class Poles(object):
     
@@ -46,8 +49,7 @@ class Poles(object):
         """
         :type project: projectHandler.ProjectConfHandler
         """
-        self.params = project.params
-        self.heightSource = project.heightSource
+        self.heightSource: AbstractHeightSource = project.heightSource
         [self.Ax, self.Ay] = project.points['A']
         [self.Ex, self.Ey] = project.points['E']
         self.azimut = project.azimut
@@ -67,10 +69,10 @@ class Poles(object):
         height = {
             'pole': self.INIT_POLE_HEIGHT,
             'pole_anchor': 0,
-            'crane': self.params.getParameter('HM_Kran')
+            'crane': project.params.getParameter('HM_Kran')
         }
-        self.anchorA = self.params.getParameter('d_Anker_A')
-        self.anchorE = self.params.getParameter('d_Anker_E')
+        self.anchorA = project.params.getParameter('d_Anker_A')
+        self.anchorE = project.params.getParameter('d_Anker_E')
         
         # End point is slightly moved (less than a meter) so that it is the
         # last point on profile with step size of 1m
@@ -583,21 +585,19 @@ class Poles(object):
         return BHD_ANCHOR[angle][force_array[force_idx]]
     
     @staticmethod
-    def getBhdForPole(height, max_force, bundstelle):
+    def getBhdForPole(poleHeight, max_force, bundstelle):
         idx_force = (np.abs(BHD_POLE_Force - max_force)).argmin()
         height_array = np.array(list(BHD_POLE[BHD_POLE_Force[idx_force]].keys()))
-        # Bundstelle is above cable, default 3m
-        height += bundstelle
-        idx_height = (np.abs(height_array - height)).argmin()
+        height_bundstelle = poleHeight + bundstelle
+        idx_height = (np.abs(height_array - height_bundstelle)).argmin()
         # Diameter of tree next to cable
-        bundst = BHD_POLE[BHD_POLE_Force[idx_force]][height_array[idx_height]]
-        # Diameter at 1.3m over ground
-        if bundst:
-            diam = int(round(bundst + (height - 1.5), 0))
+        diameter_bundst = BHD_POLE[BHD_POLE_Force[idx_force]][height_array[idx_height]]
+        if diameter_bundst:
+            bhd = int(round(diameter_bundst + (height_bundstelle - BRUSTHOEHE), 0))
         else:
-            diam = np.nan
-            bundst = np.nan
-        return [diam, bundst]
+            bhd = np.nan
+            diameter_bundst = np.nan
+        return [bhd, diameter_bundst]
     
     def getSettings(self):
         propList = ['name', 'poleType', 'd', 'h', 'z', 'angle',
