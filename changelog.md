@@ -5,6 +5,7 @@
 * Kurzbericht: Abschnitt "Anker- und Spannfelder" zeigt zweimal die gleiche Stützenbezeichnungen (von -> bis)
 * Vogelperspektive: Punktnummerierung aus Geländeprofil nicht sichtbar
 * Bearbeitungsfenster: Bundstelle wird nur aktualisiert, wenn Änderungen der Stützeneigenschaften mit Eingabe abgeschlossen werden
+* Bearbeitungsfenster: Plugin stürzt ab wenn Stützenneigungen verändert werden
 
 ## Version 3.6.2 (September 2024)
 ### Fehlerbehebung
