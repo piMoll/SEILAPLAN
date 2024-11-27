@@ -3,7 +3,7 @@ from fnmatch import fnmatch
 import zipfile
 from shutil import rmtree
 
-
+QGIS_USER_PROFILE = 'PluginTest'
 PKG_NAME = 'SEILAPLAN'
 ZIP_EXCLUDES = [
     '__pycache__',
@@ -41,7 +41,7 @@ def create_zip(zip_path, folder_path, ignore_patterns):
 if __name__ == '__main__':
     # Deploy to another qgis profile for testing and packing
     import subprocess
-    run_pb_tool = subprocess.check_output(['pbt', 'deploy', '--user-profile',  'pi',  '-y'])
+    run_pb_tool = subprocess.check_output(['pbt', 'deploy', '--user-profile',  QGIS_USER_PROFILE,  '-y'])
 
     # Extract deploy path
     outputList = run_pb_tool.split(b'\n')

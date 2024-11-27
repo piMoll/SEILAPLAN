@@ -18,22 +18,14 @@
 ### 4. Add git tag with new version
 
 
-### 5. Run plugin builder tool to copy plugin to other QGIS profile
-Make sure there are no local changes!
-```
-export PATH="$PATH:/home/pi/.local/bin"
-pbt deploy --user-profile pi -y
-```
-
-
-### 6. Run build script to create zip file and exclude all unnecessary files
+### 5. Run build script to deploy plugin to a different QGIS profile, create zip file and exclude all unnecessary files
 ```python3 build.py```
 
 
-### 7. Merge dev into master
+### 6. Merge dev into master
 
 
-### 8. Create release on github
+### 7. Create release on github
 1. Title: Seilaplan vx.y.z
 2. Text: Add change log
 3. Assets: Add Seilaplan.zip file
