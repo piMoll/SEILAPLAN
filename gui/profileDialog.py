@@ -22,7 +22,6 @@
  https://github.com/eliben/code-for-blog/blob/master/2009/qt_mpl_bars.py
  http://www.technicaljar.com/?p=688
 """
-
 import numpy as np
 from math import floor
 from qgis.PyQt.QtCore import QSize, Qt, QCoreApplication
@@ -33,6 +32,7 @@ from qgis.PyQt.QtGui import QIcon, QPixmap
 from .profilePlot import ProfilePlot
 from .plotting_tools import MyNavigationToolbar
 from .poleWidget import CustomPoleWidget
+from .guiHelperFunctions import getAbsoluteIconPath
 
 
 class ProfileDialog(QDialog):
@@ -83,9 +83,8 @@ class ProfileDialog(QDialog):
         self.noStueAdd = QPushButton(self.tr('Abschnitt ohne Stuetzen definieren'))
         self.noStueDel = QPushButton()
         icon = QIcon()
-        icon.addPixmap(
-            QPixmap(':/plugins/SeilaplanPlugin/gui/icons/icon_bin.png'),
-            QIcon.Mode.Normal, QIcon.State.Off)
+        icon.addPixmap(QPixmap(getAbsoluteIconPath('icon_bin.png')),
+                       QIcon.Mode.Normal, QIcon.State.Off)
         self.noStueDel.setIcon(icon)
         self.noStueDel.setIconSize(QSize(16, 16))
         self.fixStueAdd.setToolTip(self.tr('Tooltip Fixe Stuetzen'))

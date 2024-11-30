@@ -50,6 +50,7 @@ except ImportError:
 if not ERROR:
     # Import seilaplan plugin entry point
     from .seilaplanRun import SeilaplanRun
+    from SEILAPLAN.gui.guiHelperFunctions import getAbsoluteIconPath
 
 
 class SeilaplanPlugin:
@@ -85,7 +86,7 @@ class SeilaplanPlugin:
 
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
-        icon = QIcon(':/plugins/SeilaplanPlugin/gui/icons/icon_app.png')
+        icon = QIcon(getAbsoluteIconPath('icon_app.png'))
         self.action = QAction(icon, self.tr('SEILAPLAN'), self.iface.mainWindow())
         self.action.triggered.connect(self.run)
         self.action.setEnabled(True)

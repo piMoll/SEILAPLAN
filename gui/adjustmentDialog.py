@@ -31,7 +31,7 @@ from .birdViewWidget import BirdViewWidget
 from .adjustmentDialog_params import AdjustmentDialogParams
 from .adjustmentDialog_thresholds import AdjustmentDialogThresholds
 from .saveDialog import DialogOutputOptions
-from .guiHelperFunctions import DialogWithImage, addBackgroundMap
+from .guiHelperFunctions import DialogWithImage, addBackgroundMap, getAbsoluteIconPath
 from .mapMarker import MapMarkerTool
 from SEILAPLAN.tools.birdViewMapExtractor import extractMapBackground
 from SEILAPLAN.core.cablelineFinal import preciseCable, updateWithCableCoordinates
@@ -413,7 +413,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
                 imgPath = os.path.join(self.homePath, 'img', f'de_{imageName}')
             self.imgBox.setWindowTitle(title)
             # Load image
-            myPixmap = QPixmap(imgPath)
+            myPixmap = QPixmap(str(imgPath))
             self.imgBox.label.setPixmap(myPixmap)
             self.imgBox.setLayout(self.imgBox.container)
             self.imgBox.show()
@@ -452,50 +452,41 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         green = '#b6ddb5'
         yellow = '#f4e27a'
         red = '#e8c4ca'
-        ico_path = os.path.join(os.path.dirname(__file__), 'icons')
         if status == ResultQuality.SuccessfulOptimization:
             self.recalcStatus_txt.setText(
                 self.tr('Optimierung erfolgreich abgeschlossen'))
-            self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
-                ico_path, 'icon_green.png')))
+            self.recalcStatus_ico.setPixmap(QPixmap(getAbsoluteIconPath('icon_green.png')))
         elif status == ResultQuality.CableLiftsOff:
             self.recalcStatus_txt.setText(
                 self.tr('Tragseil hebt bei mindestens einer Stuetze ab'))
-            self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
-                ico_path, 'icon_yellow.png')))
+            self.recalcStatus_ico.setPixmap(QPixmap(getAbsoluteIconPath('icon_yellow.png')))
             color = yellow
         elif status == ResultQuality.LineNotComplete:
             self.recalcStatus_txt.setText(
                 self.tr('Nicht genuegend Stuetzenstandorte bestimmbar'))
-            self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
-                ico_path, 'icon_yellow.png')))
+            self.recalcStatus_ico.setPixmap(QPixmap(getAbsoluteIconPath('icon_yellow.png')))
             color = yellow
         elif status == PolesOrigin.OnlyStartEnd:
             self.recalcStatus_txt.setText(
                 self.tr('Stuetzen manuell platzieren'))
-            self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
-                ico_path, 'icon_green.png')))
+            self.recalcStatus_ico.setPixmap(QPixmap(getAbsoluteIconPath('icon_green.png')))
             color = yellow
         elif status == PolesOrigin.SavedFile:
             self.recalcStatus_txt.setText(
                 self.tr('Stuetzen aus Projektdatei geladen'))
-            self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
-                ico_path, 'icon_green.png')))
+            self.recalcStatus_ico.setPixmap(QPixmap(getAbsoluteIconPath('icon_green.png')))
             color = yellow
         elif status == ResultQuality.SuccessfulRerun:
             self.recalcStatus_txt.setText(self.tr('Seillinie neu berechnet.'))
-            self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
-                ico_path, 'icon_green.png')))
+            self.recalcStatus_ico.setPixmap(QPixmap(getAbsoluteIconPath('icon_green.png')))
         elif status == ResultQuality.Error:
             self.recalcStatus_txt.setText(
                 self.tr('Fehler aufgetreten'))
-            self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
-                ico_path, 'icon_yellow.png')))
+            self.recalcStatus_ico.setPixmap(QPixmap(getAbsoluteIconPath('icon_yellow.png')))
             color = red
         elif status == 'saveDone':
             self.recalcStatus_txt.setText(self.tr('Ergebnisse gespeichert'))
-            self.recalcStatus_ico.setPixmap(QPixmap(os.path.join(
-                ico_path, 'icon_save.png')))
+            self.recalcStatus_ico.setPixmap(QPixmap(getAbsoluteIconPath('icon_save.png')))
             color = green
         stylesheet = ''
         if color:

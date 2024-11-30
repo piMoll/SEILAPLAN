@@ -2425,8 +2425,8 @@ Stuetze Endmast</string>
             </item>
             <item row="2" column="3">
              <widget class="QLabel" name="symE">
-              <property name="text">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;icons/icon_yellow.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <property name="pixmap">
+               <pixmap>icons/icon_yellow.png</pixmap>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -2688,8 +2688,8 @@ Stuetze Endmast</string>
             </item>
             <item row="1" column="3">
              <widget class="QLabel" name="symA">
-              <property name="text">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;icons/icon_yellow.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <property name="pixmap">
+               <pixmap>icons/icon_yellow.png</pixmap>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>

@@ -32,7 +32,7 @@ from processing.core.Processing import Processing
 # Further GUI modules for functionality
 from .guiHelperFunctions import (DialogWithImage, createContours,
                                  addBackgroundMap, createProfileLayers,
-                                 addLayerToQgis)
+                                 addLayerToQgis, getAbsoluteIconPath)
 from .surveyImportDialog import SurveyImportDialog
 from SEILAPLAN.tools.outputGeo import CH_CRS
 from SEILAPLAN.tools.configHandler import ConfigHandler
@@ -845,38 +845,22 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
         if self.projectHandler.profileIsValid():
             self.drawTool.updateLine(list(self.linePoints.values()))
     
-    def updateLineByMapDraw(self, newpoint, pointType):
+    def updateLineByMapDraw(self, newPoint, pointType):
         [x, y], coordState, hasChanged = self.projectHandler.setPoint(
-            pointType, [newpoint.x(), newpoint.y()])
+            pointType, [newPoint.x(), newPoint.y()])
         self.changePoint(pointType, [x, y], coordState)
     
     def changePointSym(self, state, point):
-        iPath = '<html><head/><body><p><img src=":/plugins/SeilaplanPlugin/' \
-                'gui/icons/icon_{}.png"/></p></body></html>'
-        greenTxt = ''
-        yellowTxt = self.tr('zu definieren')
-        redTxt = self.tr('ausserhalb Raster')
+        tooltip = {
+            'green': '',
+            'yellow': self.tr('zu definieren'),
+            'red': self.tr('ausserhalb Raster'),
+        }
+        for pointName, elem in {'A': self.symA, 'E': self.symE}.items():
+            if point == pointName:
+                elem.setPixmap(QPixmap(getAbsoluteIconPath(f'icon_{state}.png')))
+                elem.setToolTip(tooltip[state])
         
-        if point == 'A':
-            if state == 'green':
-                self.symA.setText(iPath.format('green'))
-                self.symA.setToolTip(greenTxt)
-            if state == 'yellow':
-                self.symA.setText(iPath.format('yellow'))
-                self.symA.setToolTip(yellowTxt)
-            if state == 'red':
-                self.symA.setText(iPath.format('red'))
-                self.symA.setToolTip(redTxt)
-        if point == 'E':
-            if state == 'green':
-                self.symE.setText(iPath.format('green'))
-                self.symE.setToolTip(greenTxt)
-            if state == 'yellow':
-                self.symE.setText(iPath.format('yellow'))
-                self.symE.setToolTip(yellowTxt)
-            if state == 'red':
-                self.symE.setText(iPath.format('red'))
-                self.symE.setToolTip(redTxt)
     
     def onClickOsmButton(self):
         """Add a Background layer."""
@@ -1034,7 +1018,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
                 imgPath = os.path.join(self.homePath, 'img', f'de_{imageName}')
             self.imgBox.setWindowTitle(title)
             # Load image
-            myPixmap = QPixmap(imgPath)
+            myPixmap = QPixmap(str(imgPath))
             self.imgBox.label.setPixmap(myPixmap)
             self.imgBox.setLayout(self.imgBox.container)
             self.imgBox.show()

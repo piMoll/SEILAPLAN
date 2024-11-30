@@ -20,9 +20,9 @@
 """
 from qgis.PyQt.QtCore import (Qt, QObject, QAbstractTableModel, QModelIndex,
                               pyqtSignal, QSize)
-from qgis.PyQt.QtGui import (QColor, QBrush, QStandardItemModel,
-                             QIcon, QPixmap)
+from qgis.PyQt.QtGui import QColor, QBrush, QStandardItemModel, QIcon, QPixmap
 from qgis.PyQt.QtWidgets import QPushButton, QHBoxLayout, QWidget, QMessageBox, QTableView
+from .guiHelperFunctions import getAbsoluteIconPath
 
 
 class AdjustmentDialogThresholds(QObject):
@@ -51,11 +51,11 @@ class AdjustmentDialogThresholds(QObject):
         # Icons
         self.iconOk = QIcon()
         self.iconOk.addPixmap(
-            QPixmap(":/plugins/SeilaplanPlugin/gui/icons/icon_green.png"),
+            QPixmap(getAbsoluteIconPath('icon_green.png')),
             QIcon.Mode.Normal, QIcon.State.Off)
         self.iconErr = QIcon()
         self.iconErr.addPixmap(
-            QPixmap(":/plugins/SeilaplanPlugin/gui/icons/icon_exclamation.png"),
+            QPixmap(getAbsoluteIconPath('icon_exclamation.png')),
             QIcon.Mode.Normal, QIcon.State.Off)
 
         self.tbl.clicked.connect(self.onClick)

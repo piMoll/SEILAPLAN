@@ -1,6 +1,6 @@
 # execute everything in plugin/
 
-# Compile resources (still necessary, even with uic.loadUiType()
+# [deprecated] Compile resources
 pyrcc5 -o resources/resources.py resources/resources.qrc
 
 # [deprecated] Compile gui -> ui files are  loaded directly via uic.loadUiType()
@@ -19,6 +19,8 @@ bash scripts/update-strings.sh SeilaplanPlugin_de SeilaplanPlugin_en SeilaplanPl
 ##  comments.
 
 # compile translations
-lrelease i18n/SeilaplanPlugin_i18n.pro
+# Currently, this needs a conda env with Python 3.9, since the ubuntu 24.04 
+#  system python is at 3.12 and there are no pyqt6 tools currently for this version
+lrelease SeilaplanPlugin_de.ts SeilaplanPlugin_en.ts SeilaplanPlugin_fr.ts SeilaplanPlugin_it.ts
 
 

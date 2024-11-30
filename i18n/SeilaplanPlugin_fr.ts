@@ -2302,8 +2302,8 @@ Veuillez adapter la saisie.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2433"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/plugins/SeilaplanPlugin/gui/icons/icon_yellow.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/plugins/SeilaplanPlugin/gui/icons/icon_yellow.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;./icons/icon_yellow.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;./icons/icon_yellow.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2233"/>
@@ -2355,11 +2355,6 @@ Veuillez adapter la saisie.</translation>
         <location filename="../gui/seilaplanDialog.ui" line="134"/>
         <source>Parameterset loeschen</source>
         <translation>Supprimer le bloc de paramètres</translation>
-    </message>
-    <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2247"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Anfangspunkt&lt;br&gt;&lt;span style=&quot; font-size: small;&quot;&gt;(bei Maschine/Winde)&lt;/span&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Point initial&lt;br&gt;&lt;span style=&quot; font-size: small;&quot;&gt;(treuil/engin)&lt;/span&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="831"/>
