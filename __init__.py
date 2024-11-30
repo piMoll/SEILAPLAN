@@ -20,10 +20,12 @@
  ***************************************************************************/
  This script initializes the plugin, making it known to QGIS.
 """
+import os
 
 __version__ = '3.6.3'
 
 DEBUG = False
+PLUGIN_DIR = os.path.dirname(__file__)
 
 
 def classFactory(iface):

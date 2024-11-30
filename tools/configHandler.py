@@ -33,9 +33,6 @@ from .configHandler_params import ParameterConfHandler
 from .outputReport import getTimestamp
 from .globals import PolesOrigin
 
-# Constants
-HOMEPATH = os.path.join(os.path.dirname(__file__))
-
 
 class ConfigHandler:
     
