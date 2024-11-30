@@ -18,7 +18,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>icons/icon_app.png</normaloff>icons/icon_app.png</iconset>
+    <normaloff>./icons/icon_app.png</normaloff>./icons/icon_app.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
@@ -1076,7 +1076,7 @@
                    </property>
                    <property name="icon">
                     <iconset>
-                     <normaloff>icons/icon_map.png</normaloff>icons/icon_map.png</iconset>
+                     <normaloff>./icons/icon_map.png</normaloff>./icons/icon_map.png</iconset>
                    </property>
                    <property name="autoDefault">
                     <bool>false</bool>
@@ -1226,7 +1226,7 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap>icons/icon_reload.png</pixmap>
+            <pixmap>./icons/icon_reload.png</pixmap>
            </property>
           </widget>
          </item>

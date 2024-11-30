@@ -19,14 +19,14 @@
  ***************************************************************************/
 """
 from typing import List
+from numpy import nan
 from qgis.PyQt.QtWidgets import QWidget
 from qgis.PyQt.QtCore import QSize, Qt, pyqtSignal, QObject, QCoreApplication
 from qgis.PyQt.QtWidgets import (QDoubleSpinBox, QSpinBox, QPushButton, QHBoxLayout,
                                  QLineEdit, QLabel, QCheckBox, QGridLayout)
 from qgis.PyQt.QtGui import QIcon, QPixmap
-from numpy import nan
-
 from SEILAPLAN.tools.poles import Poles
+from .guiHelperFunctions import getAbsoluteIconPath
 
 
 class CustomPoleWidget(QObject):
@@ -256,9 +256,6 @@ class PoleRow(object):
     the cable layout. The layout is identified by the position (index) it has
     in the vertical layout.
     """
-    ICON_ADD_ROW = ":/plugins/SeilaplanPlugin/gui/icons/icon_addrow.png"
-    ICON_DEL_ROW = ":/plugins/SeilaplanPlugin/gui/icons/icon_bin.png"
-    
     POLE_LABEL_WIDTH = 220
     SPINNER_WIDTH = 85
     
@@ -425,8 +422,7 @@ class PoleRow(object):
         self.addBtn = QPushButton(self.widget)
         self.addBtn.setMaximumSize(QSize(27, 27))
         icon = QIcon()
-        icon.addPixmap(
-            QPixmap(PoleRow.ICON_ADD_ROW), QIcon.Mode.Normal, QIcon.State.Off)
+        icon.addPixmap(QPixmap(getAbsoluteIconPath('icon_addrow.png')), QIcon.Mode.Normal, QIcon.State.Off)
         self.addBtn.setIcon(icon)
         self.addBtn.setIconSize(QSize(16, 16))
         self.addBtn.setToolTip(self.tr('Fuegt eine neue Stuetze nach dieser hinzu'))
@@ -442,8 +438,7 @@ class PoleRow(object):
         self.delBtn = QPushButton(self.widget)
         self.delBtn.setMaximumSize(QSize(27, 27))
         icon = QIcon()
-        icon.addPixmap(
-            QPixmap(PoleRow.ICON_DEL_ROW), QIcon.Mode.Normal, QIcon.State.Off)
+        icon.addPixmap(QPixmap(getAbsoluteIconPath('icon_bin.png')), QIcon.Mode.Normal, QIcon.State.Off)
         self.delBtn.setIcon(icon)
         self.delBtn.setIconSize(QSize(16, 16))
         self.delBtn.setToolTip(self.tr('Loescht die Stuetze'))

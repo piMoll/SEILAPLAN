@@ -2296,11 +2296,6 @@ Please change the input.</translation>
         <translation>X coordinate</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="2433"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/plugins/SeilaplanPlugin/gui/icons/icon_yellow.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/plugins/SeilaplanPlugin/gui/icons/icon_yellow.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
         <location filename="../gui/seilaplanDialog.ui" line="2233"/>
         <source>Stuetze</source>
         <translation>Support</translation>

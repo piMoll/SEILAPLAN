@@ -36,9 +36,6 @@ def classFactory(iface):
     """
     
     if DEBUG:
-        from SEILAPLAN.scripts.prepare_ui_files import remove_resource_location
-        remove_resource_location()
-        
         # To allow remote debugging with PyCharm, add pydevd to the path
         import sys
         sys.path.append('/snap/pycharm-professional/current/debug-eggs/pydevd-pycharm.egg')

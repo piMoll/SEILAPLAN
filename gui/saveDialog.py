@@ -20,13 +20,12 @@
  """
 
 import os
-
 from qgis.PyQt.QtCore import QSize, Qt, QCoreApplication
 from qgis.PyQt.QtWidgets import QDialog, QWidget, QLabel, QDialogButtonBox, \
     QHBoxLayout, QComboBox, QSizePolicy, QPushButton, QCheckBox, \
     QVBoxLayout, QFileDialog, QLineEdit, QMessageBox
 from qgis.PyQt.QtGui import QIcon, QPixmap
-from .guiHelperFunctions import sanitizeFilename
+from .guiHelperFunctions import sanitizeFilename, getAbsoluteIconPath
 from SEILAPLAN.tools.configHandler import ConfigHandler
 
 
@@ -160,10 +159,8 @@ class DialogOutputOptions(QDialog):
         openButton = QPushButton()
         openButton.setMaximumSize(QSize(27, 27))
         icon = QIcon()
-        iconPath = os.path.join(os.path.dirname(__file__),
-                                'icons', 'icon_open.png')
-        icon.addPixmap(QPixmap(iconPath), QIcon.Mode.Normal,
-                       QIcon.State.Off)
+        iconPath = getAbsoluteIconPath('icon_open.png')
+        icon.addPixmap(QPixmap(iconPath), QIcon.Mode.Normal, QIcon.State.Off)
         openButton.setIcon(icon)
         openButton.setIconSize(QSize(24, 24))
         openButton.clicked.connect(self.onChoosePath)

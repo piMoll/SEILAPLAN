@@ -44,20 +44,14 @@ SWISS_CRS = ['EPSG:2056', 'EPSG:21781']
 
 
 def tr(message, **kwargs):
-    """Get the translation for a string using Qt translation API.
-    We implement this ourselves since we do not inherit QObject.
-
-    :param message: String for translation.
-    :type message: str, QString
-
-    :returns: Translated version of message.
-    :rtype: QString
-
-    Parameters
-    ----------
-    **kwargs
-    """
     return QCoreApplication.translate('@default', message)
+
+
+def getAbsoluteIconPath(iconFileName: str):
+    absPath = os.path.join(PLUGIN_DIR, 'gui', 'icons', iconFileName)
+    if not os.path.exists(absPath):
+        return str(os.path.join(PLUGIN_DIR, 'gui', 'icons', 'icon_red.png'))
+    return str(absPath)
 
 
 class DialogWithImage(QDialog):
