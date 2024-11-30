@@ -19,7 +19,7 @@
 
 
 ### 5. Run build script to deploy plugin to a different QGIS profile, create zip file and exclude all unnecessary files
-```python3 build.py```
+```python3 build.py qgis_profile='PluginTest'```
 
 
 ### 6. Merge dev into master

@@ -1,4 +1,6 @@
 import os
+import sys
+import subprocess
 from fnmatch import fnmatch
 import zipfile
 from shutil import rmtree
@@ -40,8 +42,8 @@ def create_zip(zip_path, folder_path, ignore_patterns):
 
 if __name__ == '__main__':
     # Deploy to another qgis profile for testing and packing
-    import subprocess
-    run_pb_tool = subprocess.check_output(['pbt', 'deploy', '--user-profile',  QGIS_USER_PROFILE,  '-y'])
+    qgis_profile = sys.argv[0]
+    run_pb_tool = subprocess.check_output(['pbt', 'deploy', '--user-profile',  qgis_profile,  '-y'])
 
     # Extract deploy path
     outputList = run_pb_tool.split(b'\n')
@@ -53,8 +55,9 @@ if __name__ == '__main__':
     # Zip content of deployed plugin
     create_zip(zip_file, plugin_dir, ZIP_EXCLUDES)
     
-    # Now remove deployed plugin folder and extract zip file to have the final "cleaned up" version
-    
+    # Now remove deployed plugin folder and extract zip file to have the
+    #  final "cleaned up" version
+
     rmtree(plugin_dir)
     with zipfile.ZipFile(zip_file, 'r') as zip_ref:
         zip_ref.extractall(os.path.dirname(plugin_dir))
