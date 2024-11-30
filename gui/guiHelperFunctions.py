@@ -20,7 +20,6 @@
 """
 
 import os
-
 from qgis.PyQt.QtGui import QFont, QColor
 from qgis.PyQt.QtCore import QSize, Qt, QFileInfo, QCoreApplication
 from qgis.PyQt.QtWidgets import (QDialog, QWidget, QLabel, QDialogButtonBox,
@@ -28,7 +27,7 @@ from qgis.PyQt.QtWidgets import (QDialog, QWidget, QLabel, QDialogButtonBox,
 from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject, QgsPoint,
     QgsFeature, QgsGeometry, QgsVectorLayer, QgsPalLayerSettings,
     QgsTextFormat, QgsTextBufferSettings,  QgsVectorLayerSimpleLabeling, Qgis)
-from SEILAPLAN import DEBUG
+from SEILAPLAN import DEBUG, PLUGIN_DIR
 
 try:
     from processing import run
@@ -39,7 +38,6 @@ except ModuleNotFoundError as e:
         raise e
 
 # Path to plugin root
-HOMEPATH = os.path.dirname(os.path.dirname(__file__))
 SWISSTOPO_WMS_URL = 'https://wmts.geo.admin.ch/EPSG/2056/1.0.0/WMTSCapabilities.xml?lang=de'
 OVERVIEW_MAP = 'ch.swisstopo.pixelkarte-farbe'
 SWISS_CRS = ['EPSG:2056', 'EPSG:21781']
@@ -143,7 +141,7 @@ def addOsmBackgroundMap():
     
     if layerName not in already_added:
         # Add OSM layer
-        xmlPath = os.path.join(HOMEPATH, 'config', 'OSM_Karte.xml')
+        xmlPath = os.path.join(PLUGIN_DIR, 'config', 'OSM_Karte.xml')
         baseName = QFileInfo(xmlPath).baseName()
         osmLyr = QgsRasterLayer(xmlPath, baseName)
     return osmLyr

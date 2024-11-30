@@ -27,10 +27,8 @@ import copy
 from qgis.core import QgsSettings
 
 from .configHandler_abstract import AbstractConfHandler
+from SEILAPLAN import PLUGIN_DIR
 from SEILAPLAN.gui.guiHelperFunctions import sanitizeFilename
-
-# Constants
-HOMEPATH = os.path.join(os.path.dirname(__file__))
 
 
 class ParameterConfHandler(AbstractConfHandler):
@@ -40,7 +38,7 @@ class ParameterConfHandler(AbstractConfHandler):
         1: 'Mehrseil-System'
     }
     ANCHOR_LEN = 20
-    SETS_PATH = os.path.join(HOMEPATH, '../config', 'parametersets')
+    SETS_PATH = os.path.join(PLUGIN_DIR, 'config', 'parametersets')
     SETTING_PREFIX = 'PluginSeilaplan/parameterset/'
     
     def __init__(self):
@@ -65,7 +63,7 @@ class ParameterConfHandler(AbstractConfHandler):
     def initParameters(self):
         # Load parameter definitions and rules from text file
         parameterDef = self.readParamsFromTxt(
-            os.path.join(HOMEPATH, '../config', 'params.txt'))
+            os.path.join(PLUGIN_DIR, 'config', 'params.txt'))
         
         for paramName in parameterDef.keys():
             # Set default value to None

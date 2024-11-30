@@ -48,7 +48,7 @@ def project_file_loader(fileName):
     # Replace any path placeholders with absolute path
     with open(file_path, 'r') as f:
         project_content = f.read()
-    project_content = project_content.replace('{HOMEPATH}', os.path.abspath(os.path.dirname(TEST_DIR)))
+    project_content = project_content.replace('{HOMEPATH}', SEILAPLAN.PLUGIN_DIR)
     with open(file_path_tmp, 'w') as f:
         f.write(project_content)
     return file_path_tmp
