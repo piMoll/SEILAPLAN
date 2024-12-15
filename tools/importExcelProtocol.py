@@ -59,15 +59,13 @@ class ExcelProtocolReader(AbstractSurveyReader):
         db = xl.readxl(fn=self.path)
         sheet = db.ws(ws=db.ws_names[0])
     
-        # Check if the excel file has a version in the right cell
+        # Check if the Excel file has a version in the right cell
         try:
             templateVersion = sheet.address(address=self.CELL_VERSION)
+            self.valid = templateVersion and templateVersion.startswith('v')
         except ValueError:
             self.valid = False
             return
-        
-        if templateVersion and templateVersion.startswith('v'):
-            self.valid = True
 
     def readOutData(self):
         db = xl.readxl(fn=self.path)
@@ -157,7 +155,7 @@ class ExcelProtocolReader(AbstractSurveyReader):
         elif (dist == '' and slope != '') or (dist != '' and slope == ''):
             self.errorMsg = (self.tr(
                 'Fehlende oder fehlerhafte Werte fuer Distanz oder Neigung auf Zeile _rowIdx_')).replace(
-                '_rowIdx_', self.ROW_START)
+                '_rowIdx_', str(self.ROW_START))
             return False
         
         while nextPoint is not None:
