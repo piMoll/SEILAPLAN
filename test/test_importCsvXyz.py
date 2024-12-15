@@ -2,7 +2,7 @@ import os
 import unittest
 import numpy as np
 from tools.importCsvXyz import CsvXyzReader
-from . import TESTDATA_DIR
+from . import TMP_DIR
 
 
 class TestCsvXyzReader(unittest.TestCase):
@@ -10,9 +10,9 @@ class TestCsvXyzReader(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         # Define paths for temp test files
-        cls.valid_csv_path = os.path.join(TESTDATA_DIR, "tmp_valid.csv")
-        cls.invalid_csv_path = os.path.join(TESTDATA_DIR, "tmp_invalid.csv")
-        cls.empty_csv_path = os.path.join(TESTDATA_DIR, "tmp_empty.csv")
+        cls.valid_csv_path = os.path.join(TMP_DIR, "tmp_valid.csv")
+        cls.invalid_csv_path = os.path.join(TMP_DIR, "tmp_invalid.csv")
+        cls.empty_csv_path = os.path.join(TMP_DIR, "tmp_empty.csv")
         
         # Write valid CSV file
         with open(cls.valid_csv_path, 'w') as file:
@@ -58,7 +58,7 @@ class TestCsvXyzReader(unittest.TestCase):
     
     def test_read_out_data_insufficient_points(self):
         # Create a CSV file with insufficient points
-        insufficient_csv_path = os.path.join(TESTDATA_DIR,
+        insufficient_csv_path = os.path.join(TMP_DIR,
                                              "tmp_insufficient.csv")
         with open(insufficient_csv_path, 'w') as file:
             file.write("X,Y,Z\n1,2.123,3\n")
