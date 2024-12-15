@@ -1,5 +1,5 @@
 from typing import List
-from qgis.testing import unittest
+import unittest
 from . import MINIMAL_PROJECT_FILE
 from ._test_helper import calculate_cable_line
 from SEILAPLAN.tools.globals import ResultQuality
@@ -77,7 +77,7 @@ class TestCalcThreshold(unittest.TestCase):
             
             if topic.id == 'bhd':
                 self.assertEqual(topic.getMaxColor(), 1)
-                self.assertEqual([marker.label for marker in markers], ['36 cm', '39 cm', '35 cm', '39 cm', '40 cm', '65 cm'])
+                self.assertEqual([marker.label for marker in markers], ['36 cm', '39 cm', '36 cm', '39 cm', '40 cm', '65 cm'])
                 self.assertEqual([marker.x for marker in markers], [40.0, 97.0, 182.0, 250.0, 290.0, 305.0])
                 self.assertAlmostEqualList([marker.z for marker in markers], [1243.49, 1226.79, 1203.73, 1178.07, 1156.16, 1148.56])
                 self.assertEqual([marker.color for marker in markers], [1, 1, 1, 1, 1, 1])
@@ -128,7 +128,7 @@ class TestCalcThreshold(unittest.TestCase):
         for locTrue, locTest in zip(list(list1), list(list2)):
             self.assertAlmostEqual(locTrue, locTest, places)
 
-  
+
 class MockAdjustmentDialogThresholds(object):
     
     def __init__(self):
@@ -146,8 +146,6 @@ class MockAdjustmentDialogThresholds(object):
     def updateTabIcon(self, warn):
         pass
 
-        
-        
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,4 +1,4 @@
-from qgis.testing import unittest
+import unittest
 from qgis.core import QgsCoordinateReferenceSystem
 from numpy import nan
 from copy import deepcopy
@@ -6,7 +6,7 @@ import copyreg
 from . import project_file_loader
 from ._test_helper import calculate_cable_line
 from SEILAPLAN.tools.configHandler import ConfigHandler
-from SEILAPLAN.tools.poles import Poles, BRUSTHOEHE
+from SEILAPLAN.tools.poles import Poles
 from SEILAPLAN.core.cablelineFinal import preciseCable
 
 
@@ -14,12 +14,14 @@ TEST_PROJECT_Bawald = project_file_loader('unittest_survey_excel_Wyss_Bawald.jso
 TEST_PROJECT_A_A = project_file_loader('unittest_dhm_anchor_anchor_6_poles.json')
 TEST_PROJECT_A_A_UPHILL = project_file_loader('unittest_dhm_anchor_anchor_4_poles_uphill.json')
 
+
 # deepcopy cant copy QgsCoordinateReferenceSystem because it's not pickleable.
 #  This will instead create a new instance of QgsCoordinateReferenceSystem
-#  when deepcopying
+#  when deep copying
 # https://stackoverflow.com/questions/34152758/how-to-deepcopy-when-pickling-is-not-possible
 def pickle_QgsCoordinateRef(do):
     return QgsCoordinateReferenceSystem, ()
+
 
 copyreg.pickle(QgsCoordinateReferenceSystem, pickle_QgsCoordinateRef)
 
