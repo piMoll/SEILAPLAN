@@ -14,7 +14,10 @@ SEILAPLAN.DEBUG = True
 
 TEST_DIR = os.path.dirname(__file__)
 TESTDATA_DIR = os.path.join(TEST_DIR, 'testdata')
-TMP_FILE_PREFIX = 'tmp_'
+TMP_DIR = os.path.join(TESTDATA_DIR, 'tmp')
+
+if not os.path.exists(TMP_DIR):
+    os.makedirs(TMP_DIR)
 
 # Was necessary at one point, not anymore though
 # os.environ["XDG_SESSION_TYPE"] = "xcb"
@@ -32,9 +35,8 @@ def stopTestRun(self):
         QGIS_APP.exitQgis()
     
     # Cleanup temporary project files that got created via project_file_loader()
-    for file in os.listdir(TESTDATA_DIR):
-        if file.startswith(TMP_FILE_PREFIX):
-            os.remove(os.path.join(TESTDATA_DIR, file))
+    for file in os.listdir(TMP_DIR):
+        os.remove(os.path.join(TMP_DIR, file))
 
 
 setattr(unittest.TestResult, 'stopTestRun', stopTestRun)
@@ -42,7 +44,7 @@ setattr(unittest.TestResult, 'stopTestRun', stopTestRun)
 
 def project_file_loader(fileName):
     file_path = os.path.join(TESTDATA_DIR, fileName)
-    file_path_tmp = os.path.join(TESTDATA_DIR, TMP_FILE_PREFIX + fileName)
+    file_path_tmp = os.path.join(TMP_DIR, fileName)
     # Replace any path placeholders with absolute path
     with open(file_path, 'r') as f:
         project_content = f.read()
