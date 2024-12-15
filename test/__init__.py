@@ -1,7 +1,8 @@
 import os
 import sys
-from qgis.testing import unittest
+import tempfile
 from qgis.core import QgsApplication
+from qgis.testing import unittest
 import SEILAPLAN
 
 # Add shipped libraries to python path
@@ -15,23 +16,20 @@ TEST_DIR = os.path.dirname(__file__)
 TESTDATA_DIR = os.path.join(TEST_DIR, 'testdata')
 TMP_FILE_PREFIX = 'tmp_'
 
-QGIS = QgsApplication([], False)
+# Was necessary at one point, not anymore though
+# os.environ["XDG_SESSION_TYPE"] = "xcb"
 
+QGIS_APP = QgsApplication([], False)
+tmpdir = tempfile.mkdtemp('', 'QGIS-PythonTestConfigPath-')
+os.environ['QGIS_CUSTOM_CONFIG_PATH'] = tmpdir
 
-def startTestRun(self):
-    """Runs once before any test."""
-    QGIS.initQgis()
-    
-    os.environ["XDG_SESSION_TYPE"] = "xcb"
-
-
-setattr(unittest.TestResult, 'startTestRun', startTestRun)
+QGIS_APP.initQgis()
 
 
 def stopTestRun(self):
     """Called once after all tests are executed."""
-    if QGIS:
-        QGIS.exitQgis()
+    if QGIS_APP:
+        QGIS_APP.exitQgis()
     
     # Cleanup temporary project files that got created via project_file_loader()
     for file in os.listdir(TESTDATA_DIR):
@@ -52,7 +50,6 @@ def project_file_loader(fileName):
     with open(file_path_tmp, 'w') as f:
         f.write(project_content)
     return file_path_tmp
-
 
 
 BASIC_PROJECT_FILE = project_file_loader('unittest_dhm_crane_poleanchor_6_poles.json')
