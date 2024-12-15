@@ -66,11 +66,15 @@ class CsvXyzReader(AbstractSurveyReader):
             self.valid = True
     
     def readOutData(self):
+        if not self.valid:
+            return False
         try:
             x, y, z = np.genfromtxt(self.path, delimiter=self.sep, dtype='float64',
                                     usecols=(self.idxX, self.idxY, self.idxZ),
                                     unpack=True, skip_header=1)
         except TypeError as e:
+            return False
+        if isinstance(x, float) or isinstance(y, float) or isinstance(z, float):
             return False
         # Check for missing values and remove whole row
         x = x[~(np.isnan(x) + np.isnan(y) + np.isnan(z))]
