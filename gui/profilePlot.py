@@ -23,8 +23,12 @@ import numpy as np
 from math import floor
 from qgis.PyQt.QtCore import Qt, QSize, QCoreApplication
 from qgis.PyQt.QtWidgets import QSizePolicy
-
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from qgis.PyQt.QtCore import QT_VERSION_STR
+if QT_VERSION_STR.startswith('5'):
+    from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+else:
+    # TODO qt6: Not sure, if this will work
+    from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.collections import LineCollection
 
