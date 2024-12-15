@@ -25,9 +25,10 @@ from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication
 from qgis.PyQt.QtWidgets import QAction, QPushButton, QMessageBox
 from qgis.PyQt.QtGui import QIcon
 from qgis.core import Qgis
+from . import PLUGIN_DIR
 
 # Add shipped libraries to python path
-libPath = os.path.join(os.path.dirname(__file__), 'lib')
+libPath = os.path.join(PLUGIN_DIR, 'lib')
 if libPath not in sys.path:
     sys.path.insert(-1, libPath)
 
@@ -37,8 +38,7 @@ ERROR = False
 try:
     import scipy
 except ModuleNotFoundError:
-    # On linux scipy isn't included in the standard qgis python distribution
-    #  so the user has to add it manually
+    # Depending on the os or distribution, scipy isn't available
     ERROR = 1
 try:
     import scipy.interpolate
@@ -59,16 +59,14 @@ class SeilaplanPlugin:
     def __init__(self, iface):
         # Save reference to the QGIS interface
         self.iface = iface
-        # Initialize plugin directory
-        self.plugin_dir = os.path.dirname(__file__)
         
         # Initialize locale
         # Default locale is english
-        useLocale = os.path.join(self.plugin_dir, 'i18n',
+        useLocale = os.path.join(PLUGIN_DIR, 'i18n',
                                      'SeilaplanPlugin_en.qm')
         # Get locale from QGIS settings
         qgisLocale = QSettings().value("locale/userLocale")[0:2]
-        localePath = os.path.join(self.plugin_dir, 'i18n',
+        localePath = os.path.join(PLUGIN_DIR, 'i18n',
                                   'SeilaplanPlugin_{}.qm'.format(qgisLocale))
 
         if qgisLocale in ['de', 'en', 'fr', 'it'] and os.path.exists(localePath):
