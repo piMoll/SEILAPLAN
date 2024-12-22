@@ -140,7 +140,6 @@ class ExcelProtocolReader(AbstractSurveyReader):
         nextPoint = 1
         rowIdx = self.ROW_START
         self.notes['onPoint'].append('')
-        self.notes['between'].append(sheet.address(address=f'{self.COL_NOTES}{rowIdx}'))
         
         # Check if there are measurements before first point
         dist = sheet.address(address=f'{self.COL_DIST}{self.ROW_START}')
