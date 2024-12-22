@@ -87,7 +87,7 @@ class AbstractSurveyReader:
 
     @staticmethod
     def formatHeader(s):
-        return s.strip().upper()
+        return s.strip().strip('"').strip("'").upper()
 
     def tr(self, message, **kwargs):
         """Get the translation for a string using Qt translation API.
