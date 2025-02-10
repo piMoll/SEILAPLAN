@@ -1,6 +1,5 @@
 # Seilaplan Changelog
 
-
 ## Version 3.6.3 (November 2024)
 ### Fehlerbehebung
 * Kurzbericht: Abschnitt "Anker- und Spannfelder" zeigt zweimal die gleiche Stützenbezeichnungen (von -> bis)
