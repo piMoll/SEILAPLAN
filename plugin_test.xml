@@ -5,8 +5,8 @@
   <qgis_minimum_version>3.0</qgis_minimum_version>
   <description>Append Layer to all selected map themes</description>
   <homepage><![CDATA[https://github.com/chrimohr/appendToTheme]]></homepage>
-  <file_name>appendtotheme.zip</file_name>
+  <file_name>append_to_theme.zip</file_name>
   <author_name>Christoph Mohr</author_name>
-  <download_url><![CDATA[https://github.com/piMoll/SEILAPLAN/raw/refs/heads/test-plugin-repo-migration/appendtotheme.zip]]></download_url>
+  <download_url><![CDATA[https://github.com/piMoll/SEILAPLAN/raw/refs/heads/test-plugin-repo-migration/append_to_theme.zip]]></download_url>
  </pyqgis_plugin>
 </plugins>
