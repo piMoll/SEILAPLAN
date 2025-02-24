@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <?xml-stylesheet type="text/xsl" href="plugins.xsl" ?>
 <plugins>
- <pyqgis_plugin version="0.3" name="appendToTheme">
+ <pyqgis_plugin version="0.2" name="appendToTheme">
   <qgis_minimum_version>3.0</qgis_minimum_version>
   <description>Append Layer to all selected map themes</description>
   <homepage><![CDATA[https://github.com/chrimohr/appendToTheme]]></homepage>
