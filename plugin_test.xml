@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?xml-stylesheet type="text/xsl" href="plugins.xsl" ?>
+<plugins>
+ <pyqgis_plugin version="0.3" name="appendToTheme">
+  <qgis_minimum_version>3.0</qgis_minimum_version>
+  <description>Append Layer to all selected map themes</description>
+  <homepage><![CDATA[https://github.com/chrimohr/appendToTheme]]></homepage>
+  <file_name>append_to_theme.zip</file_name>
+  <author_name>Christoph Mohr</author_name>
+  <download_url><![CDATA[https://github.com/piMoll/SEILAPLAN/blob/test-plugin-rep-migration/append_to_theme.zip]]></download_url>
+ </pyqgis_plugin>
+</plugins>
