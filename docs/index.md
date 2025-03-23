@@ -22,12 +22,12 @@ https://raw.githubusercontent.com/piMoll/SEILAPLAN/master/plugin.xml
 
 Seilaplan kann anschliessend über die Suchfunktion aufgerufen und installiert werden.
 
-Eine detaillierte Installationsanleitung, Erste Schritte und Fehlerbehebungen finden sich im PDF: [SEILAPLAN_Installation_und_erste_Schritte.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/docs/SEILAPLAN_Installation_und_erste_Schritte.pdf)
+Eine detaillierte Installationsanleitung, Erste Schritte und Fehlerbehebungen finden sich im PDF: [SEILAPLAN_Installation_und_erste_Schritte.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/SEILAPLAN_Installation_und_erste_Schritte.pdf)
 
 
 ## Dokumentation
-* Theoretische Dokumentation der Berechnungsgrundlagen: [SEILAPLAN_Theoretische_Doku.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/docs/SEILAPLAN_Theoretische_Doku.pdf)
-* Technische Dokumentation der Plugin-Implementation: [SEILAPLAN_QGIS_Plugin_Doku.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/docs/SEILAPLAN_QGIS_Plugin_Doku.pdf)
+* Theoretische Dokumentation der Berechnungsgrundlagen: [SEILAPLAN_Theoretische_Doku.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/SEILAPLAN_Theoretische_Doku.pdf)
+* Technische Dokumentation der Plugin-Implementation: [SEILAPLAN_QGIS_Plugin_Doku.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/SEILAPLAN_QGIS_Plugin_Doku.pdf)
 
 ## Bezug von Höhendaten für die Schweiz
 Seit Frühjahr 2021 stellt das Schweizer Bundesamt für Landestopografie swisstopo sehr genaue Höhendaten zum freien Download zur Verfügung. 
