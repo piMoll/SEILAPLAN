@@ -1,35 +1,47 @@
 import os
-import sys
-import subprocess
 from fnmatch import fnmatch
 import zipfile
-from shutil import rmtree
 
-QGIS_USER_PROFILE = 'PluginTest'
 PKG_NAME = 'SEILAPLAN'
-ZIP_EXCLUDES = [
+# Includes all the top level paths that should be included when building the zip file
+TOP_LEVEL_INCLUDES = [
+    'config',
+    'core',
+    'gui',
+    'help',
+    'i18n',
+    'img',
+    'lib',
+    'tools',
+    '__init__.py',
+    'changelog.md',
+    'LICENSE.txt',
+    'metadata.txt',
+    'README.md',
+    'seilaplanPlugin.py',
+    'seilaplanRun.py'
+]
+# Search for these patterns to exclude folders and files
+PATTERN_EXCLUDES = [
     '__pycache__',
     '.pro',
     '.ts',
     'set_german_translation',
-    'tool_',
-    'STANDALONE',
     'commonPaths.txt',
-    'help/build',
-    'help/source',
-    'help/Makefile',
-    'help/make.bat',
-    'templates',
-    '_pole_symbols.svg'
+    '_pole_symbols.svg',
 ]
 
 
-def create_zip(zip_path, folder_path, ignore_patterns):
+def create_zip(zip_path, folder_path, top_level_includes, ignore_patterns):
     print('Creating ZIP archive ' + zip_path)
+    includedPaths = [os.path.join(folder_path, folder) for folder in top_level_includes]
     with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
-        for root, _, files in os.walk(folder_path):
+        for root, folders, files in os.walk(folder_path):
             for file in files:
                 path = os.path.join(root, file)
+                if any([str(path).startswith(str(includedPath)) for includedPath in includedPaths]) is False:
+                    # Path does not start with a path from the include list, skip it
+                    continue
                 archive_path = os.path.relpath(os.path.join(root, file), os.path.join(folder_path, os.pardir))
                 if not any(fnmatch(path, '*' + ignore + '*') for ignore in ignore_patterns):
                     print('Adding ' + archive_path)
@@ -41,23 +53,16 @@ def create_zip(zip_path, folder_path, ignore_patterns):
 
 
 if __name__ == '__main__':
-    # Deploy to another qgis profile for testing and packing
-    qgis_profile = sys.argv[0]
-    run_pb_tool = subprocess.check_output(['pbt', 'deploy', '--user-profile',  qgis_profile,  '-y'])
+    # Path to plugin folder we want to deploy
+    plugin_dir = os.path.dirname(__file__)
+    deploy_path = os.path.dirname(plugin_dir)
+    zip_file = os.path.join(deploy_path, PKG_NAME + '.zip')
 
-    # Extract deploy path
-    outputList = run_pb_tool.split(b'\n')
-    deployPath = ([line for line in outputList if b'Deploying to ' in line])[0].split(b' ')[-1]
-
-    plugin_dir = deployPath.decode('utf-8')
-    zip_file = os.path.join(os.path.dirname(plugin_dir), PKG_NAME + '.zip')
-
-    # Zip content of deployed plugin
-    create_zip(zip_file, plugin_dir, ZIP_EXCLUDES)
+    try:
+        # Clean up
+        os.remove(zip_file)
+    except FileNotFoundError:
+        pass
     
-    # Now remove deployed plugin folder and extract zip file to have the
-    #  final "cleaned up" version
-
-    rmtree(plugin_dir)
-    with zipfile.ZipFile(zip_file, 'r') as zip_ref:
-        zip_ref.extractall(os.path.dirname(plugin_dir))
+    # Zip content of plugin
+    create_zip(zip_file, plugin_dir, TOP_LEVEL_INCLUDES, PATTERN_EXCLUDES)
