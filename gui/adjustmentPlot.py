@@ -313,10 +313,14 @@ class AdjustmentPlot(FigureCanvas):
         self.draw()
     
     def removeMarkers(self):
-        [arrow.remove() for arrow in self.arrowMarker]
-        [label.remove() for label in self.arrowLabel]
-        self.arrowMarker = []
-        self.arrowLabel = []
+        for arrow in self.arrowMarker:
+            if arrow in self.axes.collections:
+                arrow.remove()
+        for label in self.arrowLabel:
+            if label in self.axes.texts:
+                label.remove()
+        self.arrowMarker.clear()
+        self.arrowLabel.clear()
         self.draw()
 
     def zoomTo(self, pole):
