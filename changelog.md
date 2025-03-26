@@ -1,12 +1,15 @@
 # Seilaplan Changelog
 
+## Version 3.6.4 (März 2025)
+### Fehlerbehebung
+- Plugin stürzt ab, wenn Stützen im Bearbeitungsfenster editiert oder gelöscht werden
 
 ## Version 3.6.3 (November 2024)
 ### Fehlerbehebung
-* Kurzbericht: Abschnitt "Anker- und Spannfelder" zeigt zweimal die gleiche Stützenbezeichnungen (von -> bis)
+* Kurzbericht: Abschnitt "Anker- und Spannfelder" zeigt zweimal die gleiche Stützenbezeichnung (von -> bis)
 * Vogelperspektive: Punktnummerierung aus Geländeprofil nicht sichtbar
-* Bearbeitungsfenster: Bundstelle wird nur aktualisiert, wenn Änderungen der Stützeneigenschaften mit Eingabe abgeschlossen werden
-* Bearbeitungsfenster: Plugin stürzt ab wenn Stützenneigungen verändert werden
+* Bearbeitungsfenster: Bundstelle wird nur aktualisiert, wenn Änderungen der Stützeneigenschaften mit Eingabetaste abgeschlossen werden
+* Bearbeitungsfenster: Plugin stürzt ab, wenn Stützenneigungen verändert werden
 
 ## Version 3.6.2 (September 2024)
 ### Fehlerbehebung
