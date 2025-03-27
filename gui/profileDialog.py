@@ -46,7 +46,7 @@ class ProfileDialog(QDialog):
         self.projectHandler = projectHandler
         self.drawTool = drawTool
         self.setWindowTitle(self.tr('Gelaendelinie'))
-        self.setWindowModality(Qt.WindowModal)
+        self.setWindowModality(Qt.WindowModality.WindowModal)
         
         self.profile = None
         # Array with properties fixed poles
@@ -96,14 +96,14 @@ class ProfileDialog(QDialog):
         hbox.addItem(spacerItem1)
         hbox.addWidget(self.noStueAdd)
         hbox.addWidget(self.noStueDel)
-        hbox.setAlignment(self.noStueAdd, Qt.AlignRight)
+        hbox.setAlignment(self.noStueAdd, Qt.AlignmentFlag.AlignRight)
         btnBoxSpacer = QSpacerItem(40, 40, QSizePolicy.Policy.Fixed,
                                         QSizePolicy.Policy.Fixed)
         self.buttonBox = QDialogButtonBox(main_widget)
         self.buttonBox.setStandardButtons(QDialogButtonBox.StandardButton.Ok)
         # Build up Gui
         self.container.addWidget(self.sc)
-        self.container.addWidget(tbar, alignment=Qt.AlignHCenter | Qt.AlignTop)
+        self.container.addWidget(tbar, alignment=Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
         self.container.addWidget(line1)
         self.container.addWidget(stueTitle)
         self.container.addLayout(hbox)

@@ -76,9 +76,9 @@ class ProgressDialog(QDialog):
         self.hbox.addWidget(self.rerunButton)
         self.hbox.addItem(spacer2)
         self.hbox.addWidget(self.cancelButton)
-        self.hbox.setAlignment(self.cancelButton, Qt.AlignHCenter)
+        self.hbox.setAlignment(self.cancelButton, Qt.AlignmentFlag.AlignHCenter)
         self.hbox.addWidget(self.closeButton)
-        self.hbox.setAlignment(self.closeButton, Qt.AlignHCenter)
+        self.hbox.setAlignment(self.closeButton, Qt.AlignmentFlag.AlignHCenter)
         self.closeButton.hide()
         
         self.container.addWidget(self.progressBar)

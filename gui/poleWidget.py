@@ -69,7 +69,7 @@ class CustomPoleWidget(QObject):
         :type distRange: list
         """
         self.distRange = distRange
-        self.layout.setAlignment(Qt.AlignTop)
+        self.layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.addHeader()
         self.createPoleRows()
     
@@ -100,14 +100,14 @@ class CustomPoleWidget(QObject):
         self.widget.setLayout(self.layout)
     
     def addHeader(self):
-        self.layout.addWidget(QLabel(''), 0, 0, 1, 1, Qt.AlignLeft)
-        self.layout.addWidget(QLabel(self.tr('Nr.')), 0, 1, 1, 1, Qt.AlignLeft)
-        self.layout.addWidget(QLabel(self.tr('Stuetzenbezeichnung')), 0, 2, 1, 1, Qt.AlignLeft)
-        self.layout.addWidget(QLabel(self.tr('Horiz.distanz')), 0, 3, 1, 1, Qt.AlignLeft)
-        self.layout.addWidget(QLabel(self.tr('Stuetzenhoehe')), 0, 4, 1, 1, Qt.AlignLeft)
+        self.layout.addWidget(QLabel(''), 0, 0, 1, 1, Qt.AlignmentFlag.AlignLeft)
+        self.layout.addWidget(QLabel(self.tr('Nr.')), 0, 1, 1, 1, Qt.AlignmentFlag.AlignLeft)
+        self.layout.addWidget(QLabel(self.tr('Stuetzenbezeichnung')), 0, 2, 1, 1, Qt.AlignmentFlag.AlignLeft)
+        self.layout.addWidget(QLabel(self.tr('Horiz.distanz')), 0, 3, 1, 1, Qt.AlignmentFlag.AlignLeft)
+        self.layout.addWidget(QLabel(self.tr('Stuetzenhoehe')), 0, 4, 1, 1, Qt.AlignmentFlag.AlignLeft)
         if self.mode == 'standard':
-            self.layout.addWidget(QLabel(self.tr('Neigung')), 0, 5, 1, 1, Qt.AlignLeft)
-            self.layout.addWidget(QLabel(self.tr('O Bundst.')), 0, 6, 1, 2, Qt.AlignLeft)
+            self.layout.addWidget(QLabel(self.tr('Neigung')), 0, 5, 1, 1, Qt.AlignmentFlag.AlignLeft)
+            self.layout.addWidget(QLabel(self.tr('O Bundst.')), 0, 6, 1, 2, Qt.AlignmentFlag.AlignLeft)
             # When window grows, the second column (Stuetzenbezeichnung) should grow as well
             self.layout.setColumnStretch(2, 1)
         else:
@@ -295,7 +295,7 @@ class PoleRow(object):
         self.statusSwitcher = QCheckBox(self.widget)
         self.statusSwitcher.setText('')
         self.statusSwitcher.setChecked(True)
-        self.layout.addWidget(self.statusSwitcher, self.index + 1, 1, 1, 1, Qt.AlignLeft)
+        self.layout.addWidget(self.statusSwitcher, self.index + 1, 1, 1, 1, Qt.AlignmentFlag.AlignLeft)
         
         # Connect events
         self.statusSwitcher.stateChanged.connect(
@@ -304,7 +304,7 @@ class PoleRow(object):
     def addLabelNr(self, nr):
         self.labelNr = QLabel(self.widget)
         self.updateLabelNr(nr)
-        self.layout.addWidget(self.labelNr, self.index + 1, 1, 1, 1, Qt.AlignLeft)
+        self.layout.addWidget(self.labelNr, self.index + 1, 1, 1, 1, Qt.AlignmentFlag.AlignLeft)
     
     def updateLabelNr(self, label):
         if self.labelNr:
@@ -315,13 +315,13 @@ class PoleRow(object):
             
     def addFieldName(self, value):
         self.fieldName = QLineEditWithFocus(self.widget)
-        self.fieldName.setFocusPolicy(Qt.ClickFocus)
+        self.fieldName.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
         self.fieldName.setMinimumWidth(self.POLE_LABEL_WIDTH)
         self.fieldName.setText(value)
         # Add layout so the widget grows when the grid column grows
         hLayout = QHBoxLayout()
         hLayout.addWidget(self.fieldName)
-        self.layout.addLayout(hLayout, self.index + 1, 2, 1, 1, Qt.AlignLeft)
+        self.layout.addLayout(hLayout, self.index + 1, 2, 1, 1, Qt.AlignmentFlag.AlignLeft)
         # Connect events
         self.fieldName.inFocus.connect(
             lambda x: self.parent.zoomIn(self.index))
@@ -331,7 +331,7 @@ class PoleRow(object):
     
     def addFieldDist(self, value, distRange):
         self.fieldDist = QDoubleSpinBoxWithFocus(self.widget)
-        self.fieldDist.setFocusPolicy(Qt.ClickFocus)
+        self.fieldDist.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
         self.fieldDist.setDecimals(0)
         self.fieldDist.setSingleStep(self.parent.pole_dist_step)
         self.fieldDist.setSuffix(" m")
@@ -341,7 +341,7 @@ class PoleRow(object):
         # Add layout so the widget grows when the grid column grows
         hLayout = QHBoxLayout()
         hLayout.addWidget(self.fieldDist)
-        self.layout.addLayout(hLayout, self.index + 1, 3, 1, 1, Qt.AlignLeft)
+        self.layout.addLayout(hLayout, self.index + 1, 3, 1, 1, Qt.AlignmentFlag.AlignLeft)
 
         # Connect events
         self.fieldDist.inFocus.connect(
@@ -354,7 +354,7 @@ class PoleRow(object):
         if value is False:
             return
         self.fieldHeight = QDoubleSpinBoxWithFocus(self.widget)
-        self.fieldHeight.setFocusPolicy(Qt.ClickFocus)
+        self.fieldHeight.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
         self.fieldHeight.setDecimals(1)
         self.fieldHeight.setSingleStep(self.parent.pole_height_step)
         # Pole rows with type fixed are only used in profile window, so before
@@ -370,7 +370,7 @@ class PoleRow(object):
         # Add layout so the widget grows when the grid column grows
         layout = QHBoxLayout()
         layout.addWidget(self.fieldHeight)
-        self.layout.addLayout(layout, self.index + 1, 4, 1, 1, Qt.AlignLeft)
+        self.layout.addLayout(layout, self.index + 1, 4, 1, 1, Qt.AlignmentFlag.AlignLeft)
 
         # Connect events
         self.fieldHeight.inFocus.connect(
@@ -383,7 +383,7 @@ class PoleRow(object):
         if value is False:
             return
         self.fieldAngle = QSpinBoxWithFocus(self.widget)
-        self.fieldAngle.setFocusPolicy(Qt.ClickFocus)
+        self.fieldAngle.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
         self.fieldAngle.setSuffix(" °")
         self.fieldAngle.setMinimumWidth(self.SPINNER_WIDTH - 20)
         self.fieldAngle.setRange(-180, 180)
@@ -392,7 +392,7 @@ class PoleRow(object):
         # Add layout so the widget grows when the grid column grows
         layout = QHBoxLayout()
         layout.addWidget(self.fieldAngle)
-        self.layout.addLayout(layout, self.index + 1, 5, 1, 1, Qt.AlignLeft)
+        self.layout.addLayout(layout, self.index + 1, 5, 1, 1, Qt.AlignmentFlag.AlignLeft)
 
         # Connect events
         self.fieldAngle.inFocus.connect(
@@ -406,7 +406,7 @@ class PoleRow(object):
             return
         self.fieldBundstelle = QLabel(self.widget)
         self.updateBundstelle(value)
-        self.layout.addWidget(self.fieldBundstelle, self.index + 1, 6, 1, 1, Qt.AlignLeft)
+        self.layout.addWidget(self.fieldBundstelle, self.index + 1, 6, 1, 1, Qt.AlignmentFlag.AlignLeft)
         
     def updateBundstelle(self, value):
         if self.fieldBundstelle:
@@ -427,7 +427,7 @@ class PoleRow(object):
         self.addBtn.setIconSize(QSize(16, 16))
         self.addBtn.setToolTip(self.tr('Fuegt eine neue Stuetze nach dieser hinzu'))
         self.addBtn.setAutoDefault(False)
-        self.layout.addWidget(self.addBtn, self.index + 1, 0, 1, 1, Qt.AlignLeft)
+        self.layout.addWidget(self.addBtn, self.index + 1, 0, 1, 1, Qt.AlignmentFlag.AlignLeft)
         
         self.addBtn.clicked.connect(
             lambda x: self.parent.onRowAdd(self.index))
@@ -443,7 +443,7 @@ class PoleRow(object):
         self.delBtn.setIconSize(QSize(16, 16))
         self.delBtn.setToolTip(self.tr('Loescht die Stuetze'))
         self.delBtn.setAutoDefault(False)
-        self.layout.addWidget(self.delBtn, self.index + 1, 7, 1, 1, Qt.AlignLeft)
+        self.layout.addWidget(self.delBtn, self.index + 1, 7, 1, 1, Qt.AlignmentFlag.AlignLeft)
 
         self.delBtn.clicked.connect(
             lambda x: self.parent.onRowDel(self.index))

@@ -626,7 +626,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
                 # Raster has been loaded in QGIS project already
                 if lyrPath == path:
                     # Sets the dhm name in the drop down
-                    self.rasterField.setItemCheckState(i, Qt.Checked)
+                    self.rasterField.setItemCheckState(i, Qt.CheckState.Checked)
                     rasterNameList.append(rlyr['name'])
                     rasterinQGIS = True
                     break
@@ -642,7 +642,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
                     dropdownItems = self.updateRasterList()
                     for idx, item in enumerate(dropdownItems):
                         if item['name'] == newRaster:
-                            self.rasterField.setItemCheckState(idx, Qt.Checked)
+                            self.rasterField.setItemCheckState(idx, Qt.CheckState.Checked)
                             break
                     rasterNameList.append(newRaster)
         if not rasterNameList:

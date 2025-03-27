@@ -106,7 +106,7 @@ class AdjustmentPlot(FigureCanvas):
         # Enable zoom with scroll wheel
         zoomFunc = zoom_with_wheel(self, self.axes, zoomScale=1.3)
 
-        self.setFocusPolicy(Qt.ClickFocus)
+        self.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
         FigureCanvas.setSizePolicy(self, QSizePolicy.Policy.Expanding,
                                    QSizePolicy.Policy.Expanding)
         FigureCanvas.updateGeometry(self)

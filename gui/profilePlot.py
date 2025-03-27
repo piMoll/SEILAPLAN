@@ -72,7 +72,7 @@ class ProfilePlot(FigureCanvas):
         zoomFunc = zoom_with_wheel(self, self.axes, zoomScale=1.3)
         
         self.axes.set_aspect('equal', 'datalim')
-        self.setFocusPolicy(Qt.ClickFocus)
+        self.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
         FigureCanvas.setSizePolicy(self, QSizePolicy.Policy.Expanding,
                                    QSizePolicy.Policy.Expanding)
         self.setMinimumSize(QSize(600, 400))

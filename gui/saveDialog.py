@@ -68,7 +68,7 @@ class DialogSaveParamset(QDialog):
         container = QVBoxLayout(main_widget)
         container.addLayout(hbox)
         container.addWidget(buttonBox)
-        container.setAlignment(Qt.AlignLeft)
+        container.setAlignment(Qt.AlignmentFlag.AlignLeft)
         self.setLayout(container)
 
     def tr(self, message, **kwargs):
@@ -214,7 +214,7 @@ class DialogOutputOptions(QDialog):
         vboxGeodata.addWidget(self.checkBoxDXF)
         container.addLayout(vboxGeodata)
         container.addWidget(buttonBox)
-        container.setAlignment(Qt.AlignLeft)
+        container.setAlignment(Qt.AlignmentFlag.AlignLeft)
         self.setLayout(container)
         
         self.checkBoxPlot.clicked.connect(self.onTogglePlotOption)

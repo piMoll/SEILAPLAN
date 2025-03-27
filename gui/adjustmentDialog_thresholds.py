@@ -87,13 +87,13 @@ class AdjustmentDialogThresholds(QObject):
                 currSize = self.tbl.sizeHintForColumn(idx)
                 self.tbl.setColumnWidth(idx, max(currSize, 100))
             self.tbl.setColumnWidth(1, min(self.tbl.sizeHintForColumn(1), 200))
-            self.tbl.setFocusPolicy(Qt.NoFocus)
+            self.tbl.setFocusPolicy(Qt.FocusPolicy.NoFocus)
     
     def colorBackground(self, row, col, color):
         # Update background color
         color = self.COLOR[color]
         self.model.setData(self.model.index(row, col),
-                           QBrush(color), Qt.BackgroundRole)
+                           QBrush(color), Qt.ItemDataRole.BackgroundRole)
     
     def updateTabIcon(self, warn):
         """ Updates icon of QTabWidget with an exclamation mark or check
@@ -132,8 +132,8 @@ class AdjustmentDialogThresholds(QObject):
         cellWidget = QWidget()
         # Add layout to center button in cell
         layout = QHBoxLayout(cellWidget)
-        layout.addWidget(button, 0, Qt.AlignCenter)
-        layout.setAlignment(Qt.AlignCenter)
+        layout.addWidget(button, 0, Qt.AlignmentFlag.AlignCenter)
+        layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         cellWidget.setLayout(layout)
         return cellWidget
 
@@ -151,15 +151,15 @@ class ThresholdTblModel(QAbstractTableModel):
     def columnCount(self, index=QModelIndex()):
         return len(self.header)
     
-    def headerData(self, col, orientation=Qt.Horizontal, role=Qt.DisplayRole):
-        if orientation == Qt.Horizontal and role == Qt.DisplayRole:
+    def headerData(self, col, orientation=Qt.Orientation.Horizontal, role=Qt.ItemDataRole.DisplayRole):
+        if orientation == Qt.Orientation.Horizontal and role == Qt.ItemDataRole.DisplayRole:
             return self.header[col]
         return None
     
-    def setData(self, index, value, role=Qt.EditRole):
+    def setData(self, index, value, role=Qt.ItemDataRole.EditRole):
         """ Adjust the data (set it to <value>) depending on the given
             index and role."""
-        if role != Qt.EditRole and role != Qt.ItemDataRole.BackgroundRole:
+        if role != Qt.ItemDataRole.EditRole and role != Qt.ItemDataRole.BackgroundRole:
             return False
         
         if index.isValid() and 0 <= index.row() < len(self.dataset) \

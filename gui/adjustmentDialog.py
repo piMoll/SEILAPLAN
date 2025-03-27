@@ -106,7 +106,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         tbar.pan()
         self.plot.setToolbar(tbar)
         self.plotContainer.addWidget(self.plot)
-        self.toolbarContainer.addWidget(tbar, alignment=Qt.AlignLeft | Qt.AlignTop)
+        self.toolbarContainer.addWidget(tbar, alignment=Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
         
         # Fill tab widget with data
         self.poleLayout = CustomPoleWidget(self.tabPoles, self.poleGrid, self.poles)

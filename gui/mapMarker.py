@@ -42,7 +42,7 @@ class MapMarkerTool(QgsMapTool):
         self.canvas = canvas
         
         # Cross hair when drawing profile line
-        self.cursor = QCursor(Qt.CrossCursor)
+        self.cursor = QCursor(Qt.CursorShape.CrossCursor)
         # Cross hair when creating new fixed poles in profile window
         self.poleCursor = None
 
@@ -90,7 +90,7 @@ class MapMarkerTool(QgsMapTool):
         self.isActive = True
 
     def deactivate(self):
-        self.canvas.setCursor(QCursor(Qt.OpenHandCursor))
+        self.canvas.setCursor(QCursor(Qt.CursorShape.OpenHandCursor))
         self.linePoints = []
         self.isActive = False
 

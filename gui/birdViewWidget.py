@@ -95,7 +95,7 @@ class BirdViewWidget(QObject):
         self.layout: QGridLayout = layout
         self.poles: Poles = poles.poles
         self.direction: str = poles.direction
-        self.layout.setAlignment(Qt.AlignTop)
+        self.layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.poleRows = []
         
     def updateGui(self):
@@ -172,7 +172,7 @@ class BirdViewRow(object):
         
     def addLabelNr(self, nr):
         self.labelNr = QLabel(self.widget)
-        self.labelNr.setAlignment(Qt.AlignVCenter | Qt.AlignRight)
+        self.labelNr.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignRight)
         self.layout.addWidget(self.labelNr, self.rowIndex, 0)
         if nr:
             self.labelNr.setText(f"{nr}:")
