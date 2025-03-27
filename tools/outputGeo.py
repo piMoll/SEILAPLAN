@@ -55,8 +55,8 @@ VIRTUALRASTER = 'SEILAPLAN Virtuelles Raster'
 # Defining attribute types: QVariant has been deprecated as of QGIS 3.38
 if QGIS_VERSION_INT >= 33800:
     from qgis.PyQt.QtCore import QMetaType
-    type_string = QMetaType.QString
-    type_double = QMetaType.Double
+    type_string = QMetaType.Type.QString
+    type_double = QMetaType.Type.Double
 else:
     from qgis.PyQt.QtCore import QVariant
     type_string = QVariant.String
