@@ -1,10 +1,8 @@
-from qgis.PyQt.QtCore import QSize
-from qgis.PyQt.QtCore import QT_VERSION_STR
+from qgis.PyQt.QtCore import QSize, QT_VERSION_STR
 if QT_VERSION_STR.startswith('5'):
     from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT \
         as NavigationToolbar
 else:
-    # TODO qt6: Not sure, if this will work
     from matplotlib.backends.backend_qtagg import NavigationToolbar2QT \
         as NavigationToolbar
 
