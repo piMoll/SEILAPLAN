@@ -9,7 +9,7 @@
 
 [general]
 name=SEILAPLAN
-qgisMinimumVersion=3.16
+qgisMinimumVersion=3.22
 supportsQt6=yes
 description=Seilkran-Layoutplaner
 about=SEILAPLAN berechnet aufgrund eines digitalen Höhenmodells zwischen definierten Anfangs- und Endkoordinaten sowie technischen Parametern das optimale Seillinienlayout. Es werden Position und Höhe der Stütze, sowie die wichtigsten Kennwerte der Seillinie bestimmt.
