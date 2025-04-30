@@ -27,9 +27,12 @@ if 'WIN' in sys.platform.upper():
 
 import os
 # Add shipped libraries to python path (reportlab)
-libPath = os.path.join(os.path.dirname(__file__), 'lib')
-if libPath not in sys.path:
-    sys.path.insert(0, libPath)
+try:
+    import reportlab
+except ModuleNotFoundError:
+    libPath = os.path.join(os.path.dirname(__file__), 'lib')
+    if libPath not in sys.path:
+        sys.path.insert(-1, libPath)
 
 import traceback
 from qgis.core import QgsTask, QgsApplication

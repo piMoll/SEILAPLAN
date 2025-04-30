@@ -27,10 +27,13 @@ from qgis.PyQt.QtGui import QIcon
 from qgis.core import Qgis
 from . import PLUGIN_DIR
 
-# Add shipped libraries to python path
-libPath = os.path.join(PLUGIN_DIR, 'lib')
-if libPath not in sys.path:
-    sys.path.insert(-1, libPath)
+# Add shipped libraries to the python path if missing
+try:
+    import reportlab
+except ModuleNotFoundError:
+    libPath = os.path.join(PLUGIN_DIR, 'lib')
+    if libPath not in sys.path:
+        sys.path.insert(-1, libPath)
 
 # Before continuing, we check if scipy and scipy.interpolate can be imported.
 # If not, we will not import the plugin files.

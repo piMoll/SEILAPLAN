@@ -34,7 +34,7 @@ from .guiHelperFunctions import (DialogWithImage, createContours,
                                  addBackgroundMap, createProfileLayers,
                                  addLayerToQgis, getAbsoluteIconPath)
 from .surveyImportDialog import SurveyImportDialog
-from SEILAPLAN import PLUGIN_URL
+from SEILAPLAN import PROJECT_URL
 from SEILAPLAN.tools.outputGeo import CH_CRS
 from SEILAPLAN.tools.configHandler import ConfigHandler
 from SEILAPLAN.tools.configHandler_project import ProjectConfHandler, castToNum
@@ -959,7 +959,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
         
         if self.sender().objectName() == 'buttonInfo':
             title = 'SEILAPLAN Info'
-            msg = self.tr('Infotext').format(f'<a href="{PLUGIN_URL}">{PLUGIN_URL}</a>')
+            msg = self.tr('Infotext').format(f'<a href="{PROJECT_URL}">{PROJECT_URL}</a>')
             msg = msg.replace('\n', '<br>')
         
         elif self.sender().objectName() == 'infoRasterlayer':
