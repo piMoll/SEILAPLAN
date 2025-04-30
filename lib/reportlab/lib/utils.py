@@ -1328,28 +1328,14 @@ def yieldNoneSplits(L):
             yield L[i:]
             break
 
+class _rl_repr:
+    hide = True
+    @staticmethod
+    def __call__(obj):
+        klass = obj.__class__
+        return (f'<{klass.__module__}.{klass.__name__} object at 0x?hidden?>' if _rl_repr.hide
+                else super(klass,obj).__repr__())
+_rl_repr = _rl_repr()
+
 def _rl_docdent(s):
     return '\n'.join((_.lstrip() for _ in s.split('\n')))
-
-class KlassStore:
-    def __init__(self,lim=127):
-        self.lim = lim
-        self.store = {}
-
-    def add(self,k,v):
-        if not (isinstance(k,str) and isinstance(v,type)):
-            raise ValueError(f'{self.__class__.__name__}.add takes (str,type) arguments not ({type(k),type(v)})') 
-        store = self.store
-        store[k] = v
-        if len(store)>=self.lim:
-            for _ in list(store.keys())[:-self.lim]:
-                del store[_]
-
-    def __contains__(self,k):
-        return k in self.store
-
-    def __getitem__(self,k):
-        return self.store[k]
-
-    def get(self,k,default=None):
-        return self.store.get(k,default)

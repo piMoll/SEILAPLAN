@@ -53,8 +53,6 @@ class CellStyle(PropertySet):
     background = 'white'
     valign = "BOTTOM"
     href = None
-    direction = None
-    shaping = None
     destination = None
     def __init__(self, name, parent=None):
         self.name = name
@@ -1441,10 +1439,6 @@ only rows may be strings with values in {_SPECIALROWS!r}''')
             if er>=n: er -= n
             self._addCommand((c[0],)+((sc, sr), (ec, er))+tuple(c[3:]))
 
-    def _getPossibleHeight(self,default):
-        f = getattr(self,'_frame',None)
-        return default if f is None else f._height - f._topPadding - f._bottomPadding
-
     def _splitCell(self, value, style, oldHeight, newHeight, width):
         # Content height of the new top row
         height0 = newHeight - style.topPadding
@@ -1454,32 +1448,50 @@ only rows may be strings with values in {_SPECIALROWS!r}''')
         if isinstance(value, (tuple, list)):
             newCellContent = []
             postponedContent = []
-            FH = []
-            cellHeight = self._listCellGeom(value, width, style,H=FH)[1]
+            split = False
+            cellHeight = self._listCellGeom(value, width, style)[1]
 
             if style.valign == "MIDDLE":
                 usedHeight = (oldHeight - cellHeight) / 2
             else:
                 usedHeight = 0
 
-            for i,flowable in enumerate(value):
-                flowable_height = getattr(flowable,'height',FH[i])
-                if usedHeight + flowable_height <= height0:
+            for flowable in value:
+                if split:
+                    if flowable.height <= height1:
+                        postponedContent.append(flowable)
+                        # Shrink the available height:
+                        height1 -= flowable.height
+                    else:
+                        # The content doesn't fit after the split:
+                        return []
+                elif usedHeight + flowable.height <= height0:
                     newCellContent.append(flowable)
-                    usedHeight += flowable_height
+                    usedHeight += flowable.height
                 else:
                     # This is where we need to split
                     splits = flowable.split(width, height0-usedHeight)
                     if splits:
                         newCellContent.append(splits[0])
                         postponedContent.append(splits[1])
-                    elif newCellContent and ((style.valign=='BOTTOM' and flowable_height<=height1)
-                                or flowable.split(width,self._getPossibleHeight(height1))):
-                        postponedContent.extend(list(value[i:]))
-                        #some progress and we could render the rest of this cell in possible space
-                        break
                     else:
-                        return []
+                        # We couldn't split this flowable at the desired
+                        # point. If we already has added previous paragraphs
+                        # to the content, just add everything after the split.
+                        # Also try adding it after the split if valign isn't TOP
+                        if newCellContent or style.valign != "TOP":
+                            if flowable.height <= height1:
+                                postponedContent.append(flowable)
+                                # Shrink the available height:
+                                height1 -= flowable.height
+                            else:
+                                # The content doesn't fit after the split:
+                                return []
+                        else:
+                            # We could not split this, so we fail:
+                            return []
+
+                    split = True
 
             return (tuple(newCellContent), tuple(postponedContent))
 
@@ -2530,19 +2542,9 @@ only rows may be strings with values in {_SPECIALROWS!r}''')
             else:
                 raise ValueError(f'Bad valign: {valign!a}')
 
-            drawKwds = {}
-            direction = cellstyle.direction
-            if direction: drawKwds['direction'] = direction
-            shaping = cellstyle.shaping
-            if shaping: drawKwds['shaping'] = shaping
-            if drawKwds:
-                for v in vals:
-                    draw(x, y, v, **drawKwds)
-                    y -= leading
-            else:
-                for v in vals:
-                    draw(x, y, v)
-                    y -= leading
+            for v in vals:
+                draw(x, y, v)
+                y -= leading
             onDraw = getattr(cellval,'onDraw',None)
             if onDraw:
                 onDraw(self.canv,cellval.kind,cellval.label)
@@ -2644,10 +2646,6 @@ def _setCellStyle(cellStyles, i, j, op, values):
         new.href = values[0]
     elif op == 'DESTINATION':
         new.destination = values[0]
-    elif op == 'DIRECTION':
-        new.direction = values[0]
-    elif op == 'SHAPING':
-        new.shaping = values[0]
 
 GRID_STYLE = TableStyle(
     [('GRID', (0,0), (-1,-1), 0.25, colors.black),

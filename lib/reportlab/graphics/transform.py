@@ -19,29 +19,23 @@ from math import cos, sin, tan, radians
 def nullTransform():
     return (1, 0, 0, 1, 0, 0)
 
-def translate(dx, dy=0):
+def translate(dx, dy):
     return (1, 0, 0, 1, dx, dy)
 
-def scale(sx, sy=1):
+def scale(sx, sy):
     return (sx, 0, 0, sy, 0, 0)
 
-def rotate(angle, cx=0, cy=0):
+def rotate(angle):
     a = radians(angle)
     sina = sin(a)
     cosa = cos(a)
-    return (cosa, sina, -sina, cosa, cx, cy)
+    return (cosa, sina, -sina, cosa, 0, 0)
 
 def skewX(angle):
     return (1, 0, tan(radians(angle)), 1, 0, 0)
 
 def skewY(angle):
     return (1, tan(radians(angle)), 0, 1, 0, 0)
-
-def skew(ax, ay=0):
-    if ay:
-        return mmult(skewX(ax),skewY(ay))
-    else:
-        return skewX(ax)
 
 def mmult(A, B):
     "A postmultiplied by B"

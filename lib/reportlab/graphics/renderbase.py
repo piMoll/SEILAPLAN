@@ -2,7 +2,7 @@
 #see license.txt for license details
 #history https://hg.reportlab.com/hg-public/reportlab/log/tip/src/reportlab/graphics/renderbase.py
 
-__version__='3.13.0'
+__version__='3.3.0'
 __doc__='''Superclass for renderers to factor out common functionality and default implementations.'''
 
 from reportlab.graphics.shapes import *
@@ -225,21 +225,20 @@ class Renderer:
                 #print '   got value of %s' % newValue
                 node.__dict__[key] = newValue
 
-    def drawNodeDispatcher(self, anode):
+    def drawNodeDispatcher(self, node):
         """dispatch on the node's (super) class: shared code"""
+
         canvas = getattr(self,'_canvas',None)
+        # replace UserNode with its contents
 
         try:
-            # replace UserNode with its contents
-            node = _expandUserNode(anode,canvas)
+            node = _expandUserNode(node,canvas)
             if not node: return
             if hasattr(node,'_canvas'):
                 ocanvas = 1
             else:
                 node._canvas = canvas
                 ocanvas = None
-            nodeparent = node is not anode and not hasattr(node,'_parent')
-            if nodeparent: node._parent = anode
 
             self.fillDerivedValues(node)
             dtcb = getattr(node,'_drawTimeCallback',None)
@@ -248,16 +247,10 @@ class Renderer:
             #draw the object, or recurse
             if isinstance(node, Line):
                 self.drawLine(node)
-            elif isinstance(node, Path):
-                self.drawPath(node)
-            elif isinstance(node, String):
-                self.drawString(node)
-            elif isinstance(node, Group):
-                self.drawGroup(node)
-            elif isinstance(node, Rect):
-                self.drawRect(node)
             elif isinstance(node, Image):
                 self.drawImage(node)
+            elif isinstance(node, Rect):
+                self.drawRect(node)
             elif isinstance(node, Circle):
                 self.drawCircle(node)
             elif isinstance(node, Ellipse):
@@ -266,6 +259,12 @@ class Renderer:
                 self.drawPolyLine(node)
             elif isinstance(node, Polygon):
                 self.drawPolygon(node)
+            elif isinstance(node, Path):
+                self.drawPath(node)
+            elif isinstance(node, String):
+                self.drawString(node)
+            elif isinstance(node, Group):
+                self.drawGroup(node)
             elif isinstance(node, Wedge):
                 self.drawWedge(node)
             elif isinstance(node, DirectDraw):
@@ -274,7 +273,6 @@ class Renderer:
                 print('DrawingError','Unexpected element %s in drawing!' % str(node))
         finally:
             if not ocanvas: del node._canvas
-            if nodeparent: del node._parent
 
     _restores = {'stroke':'_stroke','stroke_width': '_lineWidth','stroke_linecap':'_lineCap',
                 'stroke_linejoin':'_lineJoin','fill':'_fill','font_family':'_font',
@@ -284,8 +282,8 @@ class Renderer:
         # just do the contents.  Some renderers might need to override this
         # if they need a flipped transform
         canvas = getattr(self,'_canvas',None)
-        for anode in group.getContents():
-            node = _expandUserNode(anode,canvas)
+        for node in group.getContents():
+            node = _expandUserNode(node,canvas)
             if not node: continue
 
             #here is where we do derived values - this seems to get everything. Touch wood.
@@ -296,14 +294,9 @@ class Renderer:
                 else:
                     node._canvas = canvas
                     ocanvas = None
-                if node is not anode:
-                    anode._parent = group
-                    node._parent = anode
-                else:
-                    node._parent = group
+                node._parent = group
                 self.drawNode(node)
             finally:
-                if node is not anode: del anode._parent
                 del node._parent
                 if not ocanvas: del node._canvas
 

@@ -42,6 +42,7 @@ ttfAsciiReadable
 pdfMultiLine
 pdfComments
 debug
+rtlSupport
 listWrapOnFakeWidth
 T1SearchPath
 TTFSearchPath
@@ -70,8 +71,7 @@ renderPMBackend
 xmlParser
 textPaths
 toColorCanUse
-defCWRF
-unShapedFontGlob'''.split())
+defCWRF'''.split())
 
 allowTableBoundsErrors =    1 # set to 0 to die on too large elements in tables in debug (recommend 1 for production use)
 shapeChecking =             1
@@ -113,6 +113,7 @@ ttfAsciiReadable=           1                       #smaller subsets when set to
 pdfMultiLine=               0                       #use more lines in pdf etc
 pdfComments=                0                       #put in pdf comments
 debug=                      0                       #for debugging code
+rtlSupport=                 0                       #set to 1 to attempt import of RTL assistance eg fribidi etc etc
 listWrapOnFakeWidth=        1                       #set to 0/False to force platypus.flowables._listWrapOn to report correct widths
                                                     #else it reports minimum(required,available) width
 
@@ -168,7 +169,6 @@ textPaths='freetype'                                #freetype or _renderPM or ba
 toColorCanUse='rl_extended_literal_eval'            #change to None or 'rl_safe_eval' depending on trust
 defCWRF=0.02                                        #fraction we can reduce defined column widths for overcommitted
                                                     #undefined widths
-unShapedFontGlob=None                               #None or space list of glob patterns that force off shaping
 
 # places to look for T1Font information
 T1SearchPath =  (
