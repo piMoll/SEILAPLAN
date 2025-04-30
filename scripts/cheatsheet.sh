@@ -1,7 +1,7 @@
 # execute everything in plugin/
 
 # [deprecated] Compile resources
-pyrcc5 -o resources/resources.py resources/resources.qrc
+#pyrcc5 -o resources/resources.py resources/resources.qrc
 
 # [deprecated] Compile gui -> ui files are  loaded directly via uic.loadUiType()
 #pyuic5 gui/seilaplanDialog.ui -o gui/ui_seilaplanDialog.py

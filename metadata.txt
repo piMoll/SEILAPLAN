@@ -13,7 +13,7 @@ qgisMinimumVersion=3.16
 supportsQt6=yes
 description=Seilkran-Layoutplaner
 about=SEILAPLAN berechnet aufgrund eines digitalen Höhenmodells zwischen definierten Anfangs- und Endkoordinaten sowie technischen Parametern das optimale Seillinienlayout. Es werden Position und Höhe der Stütze, sowie die wichtigsten Kennwerte der Seillinie bestimmt.
-version=3.6.4
+version=3.7.0
 author=Leo Bont, Hans Rudolf Heinimann, Patricia Moll
 email=leo.bont@gmail.com
 
@@ -22,37 +22,11 @@ email=leo.bont@gmail.com
 # Recommended items:
 
 # Uncomment the following line and add your changelog:
-changelog=Version 3.6.4 (März 2025)
-    Fehlerbehebung
-    - Plugin stürzt ab, wenn Stützen im Bearbeitungsfenster editiert oder gelöscht werden
-      
-    Version 3.6.3 (November 2024)
-    Fehlerbehebung
-    - Kurzbericht: Abschnitt "Anker- und Spannfelder" zeigt zweimal die gleiche Stützenbezeichnung (von -> bis)
-    - Vogelperspektive: Punktnummerierung aus Geländeprofil nicht sichtbar
-    - Bearbeitungsfenster: Bundstelle wird nur aktualisiert, wenn Änderungen der Stützeneigenschaften mit Eingabetaste abgeschlossen werden
-    - Bearbeitungsfenster: Plugin stürzt ab, wenn Stützenneigungen verändert werden
+changelog=Version 3.7.0 (Mai 2025)
+    Neue Features
+    - Upgrade für die Verwendung unter QGIS 4.0 und Qt6 (ab Oktober 2025)
+    - Diverse Unterhaltsarbeiten
     
-    Version 3.6.2 (September 2024)
-    Fehlerbehebung
-    - Fenstergrösse des Plugins lässt sich unter macOS nicht verändern
-    
-    Version 3.6.1 (August 2024)
-    Fehlerbehebung
-    - Fehlende Zwischenstützen, wenn Projektdatei geladen wird
-    - Bearbeitungsfenster: Diagramm springt zurück zu Vollansicht, wenn Seillinie neu berechnet wird
-    
-    Version 3.6.0 (August 2024)
-    - Mehrere Seilaplan Fenster parallel starten
-    - Neue Parameter für Leer- und Lastseilknickwinkel Grenzwert
-    - Neuer Parameter für die Höhe der Bundstelle über dem Tragseilsattel
-    - Bearbeitungsfenster:
-      - Kennwerte im Diagramm darstellen (BHD, Durchhang, Knickwinkel, etc.)
-      - Parameterset wechseln
-      - Angabe des Bundstellendurchmessers pro Stütze
-      - Erlaube längere Stützenbezeichnungen
-    - Diverse Fehlerbehebung
-
     Vollständiger Changelog unter: https://github.com/piMoll/SEILAPLAN/blob/master/changelog.md
 
 # Tags are comma separated with spaces allowed

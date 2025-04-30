@@ -1,5 +1,13 @@
 # Seilaplan Changelog
 
+## Version 3.7.0 (Mai 2025)
+### Neue Features
+- Upgrade für die Verwendung unter QGIS 4.0 und Qt6 (ab Oktober 2025)
+- Diverse Unterhaltsarbeiten
+
+### Fehlerbehebung
+- 
+
 ## Version 3.6.4 (März 2025)
 ### Fehlerbehebung
 - Plugin stürzt ab, wenn Stützen im Bearbeitungsfenster editiert oder gelöscht werden
