@@ -2593,13 +2593,13 @@ Les dates d&apos;altitude sont visualisées dans le SCR suisse &apos;LV95&apos; 
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="922"/>
         <source>Infotext</source>
-        <translation>SEILAPLAN - Seilkran-Layoutplaner
+        <translation>&lt;b>SEILAPLAN - Seilkran-Layoutplaner&lt;/b>
 
 SEILAPLAN calcule, sur la base d&apos;un modèle de terrain digital et des paramètres techniques entre des coordonnées de départ et de fin bien définies, la disposition optimale de la ligne de câble. Il seront déterminés la position et la hauteur des appuis intermédiaires ainsi que les paramètres les plus importants de la ligne de câble.
 
 Toutes les désignations de personnes s&apos;appliquent indifféremment à tous les sexes.
 
-Réalisation:
+&lt;b>Réalisation&lt;/b>
 
 Chair of Land Use Engineering
 ETH Zurich
@@ -2611,14 +2611,14 @@ Institut fédéral de recherches sur la forêt, la neige et le paysage WSL
 8903 Birmensdorf
 (Réalisation version 2.x pour QGIS 3)
 
-Personnes impliquées:
+&lt;b>Personnes impliquées&lt;/b>
 
 Leo Bont, Hans Rudolf Heinimann (concept, mécanique)
 Patricia Moll (implémentation en Python / QGIS)
 
 SEILAPLAN est un logiciel gratuit: Vous pouvez le redistribuer et/ou le modifier suivant les conventions de la GNU General Public License, publiées par la Free Software Foundation, version 2 de la licence ou (à votre choix) les versions ultérieures (www.gnu.org/licenses).
 
-Chemin d&apos;accès à la documentation:
+Informations complémentaires et documents
 {}</translation>
     </message>
     <message>

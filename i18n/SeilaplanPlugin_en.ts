@@ -2588,13 +2588,13 @@ The height data is displayed in the Swiss CRS &apos;LV95&apos; (EPSG:2056). To u
         <location filename="../gui/seilaplanPluginDialog.py" line="922"/>
         <source>Infotext</source>
         <translatorcomment>Internet</translatorcomment>
-        <translation>SEILAPLAN - Cable road layout planning
+        <translation>&lt;b>SEILAPLAN - Cable road layout planning&lt;/b>
 
 Based on a digital terrain model and technical parameters between defined start and end coordinates, SEILAPLAN is calculating the optimal cable road layout. The position and the height of the supports as well as the most important parameters of the cable road are determined.
 
 All personal designations apply equally to all genders.
 
-Realization:
+&lt;b>Realization&lt;/b>
 
 Chair of Land Use Engineering
 ETH Zurich
@@ -2606,14 +2606,14 @@ Swiss Federal Institute for Forest, Snow and Landscape Research WSL
 8903 Birmensdorf
 (Realization Version 2.x for QGIS 3)
 
-People involved:
+&lt;b>People involved&lt;/b>
 
 Leo Bont, Hans Rudolf Heinimann (Concept, Mechanics)
 Patricia Moll (Implementation in Python / QGIS)
 
 SEILAPLAN is a free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either with version 2 of the License, or any later published version of your choice (www.gnu.org/licenses).
 
-Path to documentation:
+Further information and docs
 {}</translation>
     </message>
     <message>

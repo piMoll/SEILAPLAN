@@ -2,18 +2,19 @@
 
 [**Changelog**](https://github.com/piMoll/SEILAPLAN/blob/master/changelog.md)
 
+[**Docs**](https://github.com/piMoll/SEILAPLAN/tree/master/help)
+* [de] Theoretische Dokumentation der Berechnungsgrundlagen: [SEILAPLAN_Theoretische_Doku.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/SEILAPLAN_Theoretische_Doku.pdf)
+* [de] Technische Dokumentation der Plugin-Implementation: [SEILAPLAN_QGIS_Plugin_Doku.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/SEILAPLAN_QGIS_Plugin_Doku.pdf)
+
+
 
 ![Seilaplan Bearbeitungsfenster mit Seillinien-Layout](https://github.com/piMoll/SEILAPLAN/raw/master/docs/gui_preview.png)
 
 ## Installation
-Voraussetzung für die Installation von Seilaplan ist QGIS ab Version 3.6: [QGIS herunterladen](https://www.qgis.org/de/site/forusers/download.html).
+Voraussetzung für die Verwendung von Seilaplan ist eine QGIS Installation. 
+Es wird empfohlen, eine aktuelle Langzeitversion (LTS) von QGIS zu benutzen:
 
-Es wird emfohlen eine aktuelle Langzeitversion (LTS) von QGIS zu benutzen.
-Aufgrund von internen Fehlern in QGIS, kann das Plugin in folgenden QGIS-Versionen nicht ausgeführt werden:
-* 3.10.9
-* 3.14.15
-* 3.16.12
-* 3.16.13
+[QGIS herunterladen](https://www.qgis.org/download/)
 
 Das Plugin kann direkt im QGIS Plugin-Manager eingebunden werden. Dazu im Menü unter _Erweiterungen > Erweiterungen verwalten > Einstellungen_ eine neue Online-Quelle (Repositorium) mit folgender Adresse hinzufügen:
 ```
@@ -23,11 +24,6 @@ https://raw.githubusercontent.com/piMoll/SEILAPLAN/master/plugin.xml
 Seilaplan kann anschliessend über die Suchfunktion aufgerufen und installiert werden.
 
 Eine detaillierte Installationsanleitung, Erste Schritte und Fehlerbehebungen finden sich im PDF: [SEILAPLAN_Installation_und_erste_Schritte.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/SEILAPLAN_Installation_und_erste_Schritte.pdf)
-
-
-## Dokumentation
-* Theoretische Dokumentation der Berechnungsgrundlagen: [SEILAPLAN_Theoretische_Doku.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/SEILAPLAN_Theoretische_Doku.pdf)
-* Technische Dokumentation der Plugin-Implementation: [SEILAPLAN_QGIS_Plugin_Doku.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/SEILAPLAN_QGIS_Plugin_Doku.pdf)
 
 ## Bezug von Höhendaten für die Schweiz
 Seit Frühjahr 2021 stellt das Schweizer Bundesamt für Landestopografie swisstopo sehr genaue Höhendaten zum freien Download zur Verfügung. 
@@ -55,7 +51,7 @@ ETH Zürich
 **Gruppe Forstliche Produktionssysteme FPS**  
 Eidgenössische Forschungsanstalt WSL  
 8903 Birmensdorf  
-(Realisierung Version 2.x für QGIS 3) 
+(Realisierung ab Version 2.x) 
 
 **Beteiligte Personen**  
 Leo Bont, Hansrudolf Heinimann (Konzept, Mechanik)  
@@ -70,9 +66,9 @@ seilaplanplugin@gmail.com
 ## Zitiervorschlag
 Verwendung für wissenschaftliche Zwecke:
 
-«Bont, L. G., Moll, P. E., Ramstein, L., Frutig, F., Heinimann, H. R., & Schweier, J. (2022). SEILAPLAN, a QGIS plugin for cable road layout design. Croatian Journal of Forest Engineering: Journal for Theory and Application of Forestry Engineering, 43(2), 241-255.»
+`«Bont, L. G., Moll, P. E., Ramstein, L., Frutig, F., Heinimann, H. R., & Schweier, J. (2022). SEILAPLAN, a QGIS plugin for cable road layout design. Croatian Journal of Forest Engineering: Journal for Theory and Application of Forestry Engineering, 43(2), 241-255.»`
 
 
 Zitiervorschlag Quellcode:
 
-«Moll, P. E., Bont, L. G., Ramstein, L., Frutig, F., Heinimann, H. R., & Schweier, J. (2022). SEILAPLAN, a QGIS plugin for cable road layout design, version 3.5.0, https://github.com/piMoll/SEILAPLAN»
+`«Moll, P. E., Bont, L. G., Ramstein, L., Frutig, F., Heinimann, H. R., & Schweier, J. (2022). SEILAPLAN, a QGIS plugin for cable road layout design, version 3.5.0, https://github.com/piMoll/SEILAPLAN»`

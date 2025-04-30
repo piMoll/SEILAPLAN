@@ -2588,13 +2588,13 @@ I dati di altetta vengono visualizzati nel SCR svizzero &apos;LV95&apos; (EPSG:2
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="922"/>
         <source>Infotext</source>
-        <translation>SEILAPLAN - Seilkran-Layoutplaner
+        <translation>&lt;b>SEILAPLAN - Seilkran-Layoutplaner&lt;/b>
 
 SEILAPLAN calcola, sulla base di un modello digitale del terreno e dei parametri tecnici tra le coordinate di partenza e di fine ben definiti, la disposizione ottimale della linea di gru a cavo. Saranno determinati la posizione e l&apos;altezza dei cavalletti intermedi come pure i parametri i più importanti della linea di gru a cavo.
 
 Tutte le denominazioni personali si applicano allo stesso modo a tutti i generi.
 
-Realizzazione:
+&lt;b>Realizzazione&lt;/b>
 
 Chair of Land Use Engineering
 ETH Zurich
@@ -2606,14 +2606,14 @@ Istituto federale di ricerca per la foresta, la neve e il paesaggio WSL
 8903 Birmensdorf
 (Realizzazione versione 2.x per QGIS 3)
 
-Persone implicate:
+&lt;b>Persone implicate&lt;/b>
 
 Leo Bont, Hans Rudolf Heinimann (concetto, meccanica)
 Patricia Moll (implementazione in Python / QGIS)
 
 SEILAPLAN è un software gratuito: Può distribuirlo e/o modificarlo secondo le normative della GNU General Public License, publicata dalla Free Software Foundation, versione 2 della licenza o (alla vostra scelta) delle versione ulteriori (www.gnu.org/licenses).
-.
-Percorso alla documentazione:
+
+Ulteriori informazioni e documenti
 {}</translation>
     </message>
     <message>

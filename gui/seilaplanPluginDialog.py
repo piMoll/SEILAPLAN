@@ -34,6 +34,7 @@ from .guiHelperFunctions import (DialogWithImage, createContours,
                                  addBackgroundMap, createProfileLayers,
                                  addLayerToQgis, getAbsoluteIconPath)
 from .surveyImportDialog import SurveyImportDialog
+from SEILAPLAN import PLUGIN_URL
 from SEILAPLAN.tools.outputGeo import CH_CRS
 from SEILAPLAN.tools.configHandler import ConfigHandler
 from SEILAPLAN.tools.configHandler_project import ProjectConfHandler, castToNum
@@ -958,8 +959,8 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
         
         if self.sender().objectName() == 'buttonInfo':
             title = 'SEILAPLAN Info'
-            msg = self.tr('Infotext').format(os.path.join(os.path.dirname(
-                os.path.dirname(__file__)), 'help', 'docs'))
+            msg = self.tr('Infotext').format(f'<a href="{PLUGIN_URL}">{PLUGIN_URL}</a>')
+            msg = msg.replace('\n', '<br>')
         
         elif self.sender().objectName() == 'infoRasterlayer':
             title = self.tr('Hoeheninformationen laden')

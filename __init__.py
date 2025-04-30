@@ -26,6 +26,7 @@ __version__ = '3.7.0'
 
 DEBUG = False
 PLUGIN_DIR = os.path.dirname(__file__)
+PLUGIN_URL = 'https://pimoll.github.io/SEILAPLAN/'
 
 
 def classFactory(iface):

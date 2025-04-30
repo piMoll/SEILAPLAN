@@ -2693,13 +2693,13 @@ Es wird diejenige Lösung gesucht, welche in erster Priorität eine minimale Anz
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="922"/>
         <source>Infotext</source>
-        <translation>SEILAPLAN - Seilkran-Layoutplaner
+        <translation>&lt;b>SEILAPLAN - Seilkran-Layoutplaner&lt;/b>
 
 SEILAPLAN berechnet auf Grund eines digitalen Höhenmodells und technischen Parametern zwischen definierten Anfangs- und Endkoordinaten das optimale Seillinienlayout. Es werden Position und Höhe der Stützen,sowie die wichtigsten Kennwerte der Seillinie bestimmt.
 
 Sämtliche Personenbezeichnungen gelten gleichermaßen für alle Geschlechter.
 
-Realisierung:
+&lt;b>Realisierung&lt;/b>
 
 Professur für forstliches Ingenieurwesen
 ETH Zürich
@@ -2711,15 +2711,16 @@ Eidg. Forschungsanstalt für Wald, Schnee und Landschaft WSL
 8903 Birmensdorf
 (Realisierung Version 2.x für QGIS 3)
 
-Beteiligte Personen:
+&lt;b>Beteiligte Personen&lt;/b>
 
 Leo Bont, Hans Rudolf Heinimann (Konzept, Mechanik)
 Patricia Moll (Implementation in Python / QGIS)
 
 SEILAPLAN ist eine freie Software: Sie können sie unter den Bedingungen der GNU General Public License, publiziert durch die Free Software Foundation, Version 2 der Lizenz oder (nach Ihrer Wahl) jeder neueren veröffentlichten Version, weiterverbreiten und/oder modifizieren (www.gnu.org/licenses).
 
-Pfad zu Dokumentation:
-{}</translation>
+Weitere Informationen und Dokumentation
+{}
+</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="804"/>
