@@ -11,19 +11,17 @@
 ![Seilaplan Bearbeitungsfenster mit Seillinien-Layout](https://github.com/piMoll/SEILAPLAN/raw/master/docs/gui_preview.png)
 
 ## Installation
-Voraussetzung für die Verwendung von Seilaplan ist eine QGIS Installation. 
-Es wird empfohlen, eine aktuelle Langzeitversion (LTS) von QGIS zu benutzen:
+Voraussetzung für die Verwendung von SEILAPLAN ist [QGIS](https://qgis.org/), ein frei verfügbares geografisches Informationssystem zur Betrachtung und Analyse von Geodaten.
 
-[QGIS herunterladen](https://www.qgis.org/download/)
+Es wird empfohlen, eine aktuelle Langzeitversion (LTS) von QGIS zu benutzen und diese regelmässig zu aktualisieren.
 
-Das Plugin kann direkt im QGIS Plugin-Manager eingebunden werden. Dazu im Menü unter _Erweiterungen > Erweiterungen verwalten > Einstellungen_ eine neue Online-Quelle (Repositorium) mit folgender Adresse hinzufügen:
-```
-https://raw.githubusercontent.com/piMoll/SEILAPLAN/master/plugin.xml
-```
+1. QGIS [herunterladen](https://www.qgis.org/download/) und installieren
+2. In QGIS den Plugin-Manager öffnen: Menü _Erweiterungen > Erweiterungen verwalten und installieren_
+3. Im Reiter _Alle_ nach «SEILAPLAN» suchen
+4. Eintrag auswählen und _Erweiterung installieren_ klicken
+5. Das Seilaplan Icon ![Icon](https://github.com/piMoll/SEILAPLAN/raw/master/docs/seilaplan_icon.png) sollte in der Werkzeugleiste sichtbar werden. Falls nicht, Rechtsklick auf die Werkzeugleiste und Eintrag _Erweiterungswerkzeugleiste_ aktivieren
 
-Seilaplan kann anschliessend über die Suchfunktion aufgerufen und installiert werden.
-
-Eine detaillierte Installationsanleitung, Erste Schritte und Fehlerbehebungen finden sich im PDF: [SEILAPLAN_Installation_und_erste_Schritte.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/SEILAPLAN_Installation_und_erste_Schritte.pdf)
+Weitere Informationen, erste Schritte und Fehlerbehebungen finden sich im PDF: [SEILAPLAN_Installation_und_erste_Schritte.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/SEILAPLAN_Installation_und_erste_Schritte.pdf)
 
 ## Bezug von Höhendaten für die Schweiz
 Seit Frühjahr 2021 stellt das Schweizer Bundesamt für Landestopografie swisstopo sehr genaue Höhendaten zum freien Download zur Verfügung. 
@@ -33,7 +31,7 @@ Die Installation des Plugins wird im Menü _Erweiterungen_ > _Erweiterungen verw
 Im Suchfeld _Swiss Geo Downloader_ eingeben und das Plugin auswählen. Rechts unten _Erweiterung installieren_ klicken.  
 Das Plugin kann nach erfolgreicher Installation in der Toolbar oder im Menü _Web_ geöffnet werden.
 
-## Algorithmus
+## Optimierungsalgorithmus
 Der Algorithmus berechnet auf Basis eines digitalen Höhenmodells zwischen definierten Anfangs- und Endkoordinaten sowie technischen Parametern das optimale Seillinienlayout. Es werden Position und Höhe der Stützen, sowie die wichtigsten Kennwerte der Seillinie bestimmt.
 
 Das Plugin benötigt folgende Input-Daten:  
