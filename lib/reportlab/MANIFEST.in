@@ -1,6 +1,9 @@
-global-include *.dtd *.txt *.xml *.yml
-global-include *.c *.h *.in *.mashed
-global-include *.gif *.png *.jpg .a85
-global-include *.AFM *.PFB *.ttf
-global-include README
-include changes
+include *.txt *.yml CHANGES.md
+include graphics/barcode/README
+include graphics/barcode/TODO
+include LICENSE
+include MANIFEST.in
+recursive-include demos *.py *.txt
+recursive-include docs *.py *.txt *.gif *.a85 *.png *.jpg *.rst *.html gen_epydoc *.bat Makefile *.yml *.css
+recursive-include tests *.py *.gif *.jpg *.png 00readme.txt *.tiff
+recursive-include tools *.py *.dtd *.xml *.a85 *.gif README *.jpg *.png

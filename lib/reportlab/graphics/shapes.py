@@ -333,7 +333,7 @@ class Group(Shape):
     def _addNamedNode(self,name,node):
         'if name is not None add an attribute pointing to node and add to the attrMap'
         if name:
-            if name not in list(self._attrMap.keys()):
+            if name not in self._attrMap:
                 self._attrMap[name] = AttrMapValue(isValidChild)
             setattr(self, name, node)
 
@@ -347,8 +347,8 @@ class Group(Shape):
             self.contents.append(node)
             self._addNamedNode(name,node)
 
-    def _nn(self,node):
-        self.add(node)
+    def _nn(self,node, name=None):
+        self.add(node, name=name)
         return self.contents[-1]
 
     def insert(self, i, n, name=None):
@@ -389,11 +389,11 @@ class Group(Shape):
         if hasattr(self,'__label__'):
             obj.__label__=self.__label__
         if hasattr(obj,'transform'): obj.transform = self.transform[:]
-        P = self.getContents()[:]   # pending nodes
+        P = self.getContents()[:]
         while P:
             n = P.pop(0)
             if isinstance(n, UserNode):
-                P.append(n.provideNode())
+                P.insert(0,n.provideNode())
             elif isinstance(n, Group):
                 n = n._explode()
                 if n.transform==(1,0,0,1,0,0):
@@ -430,23 +430,23 @@ class Group(Shape):
         """returns a copy"""
         return self._copy(self.__class__())
 
-    def rotate(self, theta):
+    def rotate(self, theta, cx=0, cy=0):
         """Convenience to help you set transforms"""
-        self.transform = mmult(self.transform, rotate(theta))
+        self.transform = mmult(self.transform, rotate(theta,cx,cy))
 
-    def translate(self, dx, dy):
+    def translate(self, dx, dy=0):
         """Convenience to help you set transforms"""
         self.transform = mmult(self.transform, translate(dx, dy))
 
-    def scale(self, sx, sy):
+    def scale(self, sx, sy=1):
         """Convenience to help you set transforms"""
         self.transform = mmult(self.transform, scale(sx, sy))
 
-    def skew(self, kx, ky):
+    def skew(self, kx, ky=0):
         """Convenience to help you set transforms"""
         self.transform = mmult(mmult(self.transform, skewX(kx)),skewY(ky))
 
-    def shift(self, x, y):
+    def shift(self, x, y=0):
         '''Convenience function to set the origin arbitrarily'''
         self.transform = self.transform[:-2]+(x,y)
 
@@ -504,13 +504,11 @@ def _repr(self,I=None):
     if isinstance(self,float):
         return fp_str(self)
     elif isSeq(self):
-        s = ''
-        for v in self:
-            s = s + '%s,' % _repr(v,I)
+        s = ','.join((_repr(v,I) for v in self))
         if isinstance(self,list):
-            return '[%s]' % s[:-1]
+            return f'[{s}]'
         else:
-            return '(%s%s)' % (s[:-1],len(self)==1 and ',' or '')
+            return f'({s}{"," if len(self)==1 else""})';
     elif self is EmptyClipPath:
         if I: _addObjImport(self,I,'EmptyClipPath')
         return 'EmptyClipPath'
@@ -524,36 +522,28 @@ def _repr(self,I=None):
         else:
             kargs = []
         P = self.getProperties()
-        s = self.__class__.__name__+'('
-        for n in args[1:]:
-            v = P.pop(n,None)
-            s += '%s,' % _repr(v,I)
-        for n in kargs:
-            v = P.pop(n,None)
-            s += '%s=%s,' % (n,_repr(v,I))
-        for n,v in P.items():
-            v = P[n]
-            s += '%s=%s,' % (n, _repr(v,I))
-        return s[:-1]+')'
+        s = ([_repr(P.pop(n,None),I) for n in args[1:]]
+            +[f'{n}={_repr(P.pop(n,None),I)}' for n in kargs]
+            +[f'{n}={_repr(P[n],I)}' for n,v in P.items()])
+        return f'{self.__class__.__name__}({",".join(s)})'
     else:
         return repr(self)
 
 def _renderGroupPy(G,pfx,I,i=0,indent='\t\t'):
     s = ''
     C = getattr(G,'transform',None)
-    if C: s = s + ('%s%s.transform = %s\n' % (indent,pfx,_repr(C)))
-    C  = G.contents
-    for n in C:
+    if C: s += f'{indent}{pfx}.transform = {_repr(C)}\n'
+    for n in G.getContents():
         if isinstance(n, Group):
-            npfx = 'v%d' % i
+            npfx = f'v{i}'
             i += 1
             l = getattr(n,'__label__','')
             if l: l='#'+l
-            s = s + '%s%s=%s._nn(Group())%s\n' % (indent,npfx,pfx,l)
-            s = s + _renderGroupPy(n,npfx,I,i,indent)
+            s += f'{indent}{npfx}={pfx}._nn(Group()){l}\n'
+            s += _renderGroupPy(n,npfx,I,i,indent)
             i -= 1
         else:
-            s = s + '%s%s.add(%s)\n' % (indent,pfx,_repr(n,I))
+            s += f'{indent}{pfx}.add({_repr(n,I)})\n'
     return s
 
 def _extraKW(self,pfx,**kw):
@@ -620,19 +610,18 @@ class Drawing(Group, Flowable):
 
     def _renderPy(self):
         I = {
-                'reportlab.graphics.shapes': ['_DrawingEditorMixin','Drawing','Group'],
-                'reportlab.lib.colors': ['Color','CMYKColor','PCMYKColor'],
+            'reportlab.graphics.shapes': ['_DrawingEditorMixin','Drawing','Group'],
+            'reportlab.lib.colors': ['Color','CMYKColor','PCMYKColor'],
             }
         G = _renderGroupPy(self._explode(),'self',I)
         n = 'ExplodedDrawing_' + self.__class__.__name__
         s = '#Autogenerated by ReportLab guiedit do not edit\n'
-        for m, o in I.items():
-            s = s + 'from %s import %s\n' % (m,str(o)[1:-1].replace("'",""))
-        s = s + '\nclass %s(_DrawingEditorMixin,Drawing):\n' % n
-        s = s + '\tdef __init__(self,width=%s,height=%s,*args,**kw):\n' % (self.width,self.height)
-        s = s + '\t\tDrawing.__init__(self,width,height,*args,**kw)\n'
-        s = s + G
-        s = s + '\n\nif __name__=="__main__": #NORUNTESTS\n\t%s().save(formats=[\'pdf\'],outDir=\'.\',fnRoot=None)\n' % n
+        s += ''.join((f'from {m} import {", ".join(o)}\n' for m, o in I.items()))
+        s += f'\nclass {n}(_DrawingEditorMixin,Drawing):\n'
+        s += f'\tdef __init__(self,width={self.width},height={self.height},*args,**kw):\n'
+        s += '\t\tDrawing.__init__(self,width,height,*args,**kw)\n'
+        s += G
+        s += f'\n\nif __name__=="__main__": #NORUNTESTS\n\t{n}().save(formats=[\'pdf\'],outDir=\'.\',fnRoot=None)\n'
         return s
 
     def draw(self,showBoundary=_unset_):
@@ -797,7 +786,8 @@ class Drawing(Group, Flowable):
         #verbose = verbose is not None and (verbose,) or (getattr(self,'verbose',verbose),)[0]
         if format == 'pdf':
             from reportlab.graphics import renderPDF
-            return renderPDF.drawToString(self)
+            title = kw.pop('title','')
+            return renderPDF.drawToString(self, title, showBoundary=getattr(self,'showBorder',rl_config.showBoundary),**_extraKW(self,'_renderPDF_',**kw))
         elif format in self._bmModes:
             from reportlab.graphics import renderPM
             return renderPM.drawToString(self, fmt=format,showBoundary=getattr(self,'showBorder',

@@ -52,7 +52,7 @@ from reportlab.lib.units import inch
 from reportlab.lib import rl_safe_eval
 from reportlab.platypus.paragraph import Paragraph
 from reportlab.platypus.frames import Frame
-from reportlab.rl_config import defaultPageSize, verbose
+from reportlab.rl_config import defaultPageSize, verbose, invariant
 import reportlab.lib.sequencer
 from reportlab.pdfgen import canvas
 from reportlab.lib.utils import isSeq, encode_label, decode_label, annotateException, strTypes
@@ -1276,6 +1276,10 @@ class BaseDocTemplate:
             return rl_safe_eval.rl_safe_eval(expr.strip(),{},self._nameSpace)
         except:
             annotateException('\ndocEval %s failed!\n' % expr)
+
+    def __repr__(self):
+            return (f'<{self.__class__.__module__}.{self.__class__.__name__} object at 0x?hidden?>' if invariant
+                    else super().__repr__())
 
 class SimpleDocTemplate(BaseDocTemplate):
     """A special case document template that will handle many simple documents.

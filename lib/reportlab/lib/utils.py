@@ -1261,10 +1261,11 @@ class TimeStamp:
             self.tzname = 'UTC'
         else:
             t = time.time()
-            lt = tuple(time.localtime(t))
-            dhh = int(time.timezone / (3600.0))
-            dmm = (time.timezone % 3600) % 60
-            self.tzname = '' 
+            local_time = time.localtime(t)
+            lt = tuple(local_time)
+            dhh = int(local_time.tm_gmtoff / (3600.0))
+            dmm = (local_time.tm_gmtoff % 3600) % 60
+            self.tzname = local_time.tm_zone
         self.t = t
         self.lt = lt
         self.YMDhms = tuple(lt)[:6]
@@ -1326,3 +1327,29 @@ def yieldNoneSplits(L):
         except ValueError:
             yield L[i:]
             break
+
+def _rl_docdent(s):
+    return '\n'.join((_.lstrip() for _ in s.split('\n')))
+
+class KlassStore:
+    def __init__(self,lim=127):
+        self.lim = lim
+        self.store = {}
+
+    def add(self,k,v):
+        if not (isinstance(k,str) and isinstance(v,type)):
+            raise ValueError(f'{self.__class__.__name__}.add takes (str,type) arguments not ({type(k),type(v)})') 
+        store = self.store
+        store[k] = v
+        if len(store)>=self.lim:
+            for _ in list(store.keys())[:-self.lim]:
+                del store[_]
+
+    def __contains__(self,k):
+        return k in self.store
+
+    def __getitem__(self,k):
+        return self.store[k]
+
+    def get(self,k,default=None):
+        return self.store.get(k,default)

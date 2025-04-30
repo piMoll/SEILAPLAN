@@ -225,6 +225,7 @@ _paraAttrMap = {'font': ('fontName', None),
                 'justifybreaks': ('justifyBreaks',_bool),
                 'justifylastline': ('justifyLastLine',_int),
                 'wordwrap': ('wordWrap',_wordWrapConv),
+                'shaping': ('shaping',_bool),
                 'allowwidows': ('allowWidows',_bool),
                 'alloworphans': ('allowOrphans',_bool),
                 'splitlongwords': ('splitLongWords',_bool),
@@ -3129,6 +3130,8 @@ class ParaParser(HTMLParser):
 
         # bold, italic
         frag.fontName = tt2ps(frag.fontName,frag.bold,frag.italic)
+        #in 3.14.0a1 the needed to use the commented line below
+        #frag = frag.clone(fontName=tt2ps(frag.fontName,frag.bold,frag.italic))
 
         #save our data
         frag.text = data
