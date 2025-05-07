@@ -830,7 +830,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
         self.coordFields[pointType + 'y'].blockSignals(False)
         
         # Update profile button and profile length
-        self.buttonShowProf.setEnabled(self.projectHandler.profileIsValid())
+        self.buttonShowProf.setEnabled(self.projectHandler.profilePointsAreValid())
         self.laenge.setText(self.projectHandler.getProfileLenAsStr())
     
     def checkPoints(self):
@@ -843,7 +843,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
     
     def updateLineByCoordFields(self):
         self.drawTool.reset()
-        if self.projectHandler.profileIsValid():
+        if self.projectHandler.profilePointsAreValid():
             self.drawTool.updateLine(list(self.linePoints.values()))
     
     def updateLineByMapDraw(self, newPoint, pointType):

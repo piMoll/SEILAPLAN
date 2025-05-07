@@ -338,7 +338,7 @@ class ProjectConfHandler(AbstractConfHandler):
         y = self.points['A'][1] + distance * cos(self.azimut)
         return QgsPointXY(x, y)
     
-    def profileIsValid(self):
+    def profilePointsAreValid(self):
         return self.coordState['A'] == self.coordState['E'] == 'green'
     
     def getAzimut(self):
@@ -347,7 +347,7 @@ class ProjectConfHandler(AbstractConfHandler):
     # noinspection PyUnresolvedReferences
     def setAzimut(self):
         azimut = None
-        if self.profileIsValid():
+        if self.profilePointsAreValid():
             azimut = atan2(self.points['E'][0] - self.points['A'][0],
                            self.points['E'][1] - self.points['A'][1])
             if self.points['E'][0] - self.points['A'][0] < 0:
@@ -360,7 +360,7 @@ class ProjectConfHandler(AbstractConfHandler):
     # noinspection PyUnresolvedReferences
     def setProfileLen(self):
         length = None
-        if self.profileIsValid():
+        if self.profilePointsAreValid():
             crs = self.heightSource.spatialRef
             if crs and crs.isGeographic():
                 # Create a measure object
@@ -439,14 +439,14 @@ class ProjectConfHandler(AbstractConfHandler):
             msg = self.tr('Bitte definieren Sie einen Projektnamen')
         elif not self.heightSource:
             msg = self.tr('Bitte definieren Sie Terraindaten')
-        elif not self.profileIsValid():
+        elif not self.profilePointsAreValid():
             if self.heightSourceType == 'survey':
                 msg = self.tr('Bitte zeichnen Sie Start- und Endpunkt der Seillinie in die Karte ein (Schaltflaeche zeichnen)')
             else:
                 msg = self.tr('Bitte zeichnen Sie die Seillinie in die Karte (Schaltflaeche zeichnen) oder definieren sie Start- und Endkoordinaten manuell')
         if msg:
             self.onError(msg, self.tr('Ungueltige Daten'))
-        return self.profileIsValid() and self.projectName
+        return self.profilePointsAreValid() and self.projectName
     
     def getPointTypeAsIdx(self, point):
         if point == 'A':
@@ -484,7 +484,7 @@ class ProjectConfHandler(AbstractConfHandler):
             return ''
     
     def preparePreviewProfile(self):
-        if not self.profileIsValid():
+        if not self.profilePointsAreValid():
             return False
         self.heightSource.prepareData(self.points, self.azimut, self.params.ANCHOR_LEN)
         try:
