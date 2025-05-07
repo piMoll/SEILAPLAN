@@ -18,20 +18,22 @@
  *                                                                         *
  ***************************************************************************/
 """
-import os
-from math import atan2, pi, cos, sin
 import json
-from qgis.core import (QgsPointXY, QgsDistanceArea, QgsRasterLayer)
+import os
+from math import atan2, cos, pi, sin
+
+from SEILAPLAN import __version__ as version
+from qgis.core import (QgsDistanceArea, QgsPointXY, QgsRasterLayer)
+
 from .configHandler_abstract import AbstractConfHandler
 from .configHandler_params import ParameterConfHandler
+from .globals import PolesOrigin
 from .heightSource import AbstractHeightSource
+from .outputGeo import createVirtualRaster
+from .poles import Poles
+from .profile import Profile
 from .raster import Raster
 from .survey import SurveyData
-from .profile import Profile
-from .poles import Poles
-from .outputGeo import createVirtualRaster
-from .globals import PolesOrigin
-from SEILAPLAN import __version__ as version
 
 
 def castToNum(formattedNum):
@@ -317,16 +319,21 @@ class ProjectConfHandler(AbstractConfHandler):
         return self.points[pointType], self.coordState, hasChanged
     
     def checkCoordinatePoint(self, coords):
-        [x, y] = coords
         state = 'yellow'
+        if coords is None or coords == [None, None]:
+            return state
+        
+        precision = 3
+        [x, y] = [round(c, precision) for c in coords]
         
         if self.heightSource and self.heightSource.extent and \
                 x is not None and y is not None:
-            [extLx, extHy, extHx, extLy] = self.heightSource.extent
+            [extLx, extHy, extHx, extLy] = [round(e, precision) for e in
+                                            self.heightSource.extent]
             
             # Round coordinates to avoid float imprecision
-            if round(extLx, 3) <= round(x, 3) <= round(extHx, 3) \
-                    and round(extLy, 3) <= round(y, 3) <= round(extHy, 3):
+            if (min(extLx, extHx) <= x <= max(extLx, extHx)
+                    and min(extLy, extHy) <= y <= max(extLy, extHy)):
                 state = 'green'
             else:
                 state = 'red'
@@ -486,8 +493,9 @@ class ProjectConfHandler(AbstractConfHandler):
     def preparePreviewProfile(self):
         if not self.profilePointsAreValid():
             return False
-        self.heightSource.prepareData(self.points, self.azimut, self.params.ANCHOR_LEN)
         try:
+            self.heightSource.prepareData(self.points, self.azimut,
+                                          self.params.ANCHOR_LEN)
             profile = Profile(self)
         except Exception as e:
             self.onError(f"{self.tr('Unerwarteter Fehler bei der Erstellung des Profils.')}\n{e}")

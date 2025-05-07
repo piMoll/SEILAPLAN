@@ -19,10 +19,13 @@
  ***************************************************************************/
 """
 import os
+from math import cos, pi, sin
+
 import numpy as np
 from osgeo import gdal
-from qgis.core import QgsRasterLayer, QgsCoordinateReferenceSystem
-from math import sin, cos, pi
+from osgeo.gdal import Dataset
+from qgis.core import QgsCoordinateReferenceSystem, QgsRasterLayer
+
 from .heightSource import AbstractHeightSource
 
 # Check if library scipy is present. On linux scipy isn't included in
@@ -39,8 +42,12 @@ class Raster(AbstractHeightSource):
     
     def __init__(self, layer=None, path=None):
         AbstractHeightSource.__init__(self)
-        self.layer = None
+        self.layer: QgsRasterLayer = None
         self.name = None
+        self.cols = None
+        self.ds: Dataset = None
+        self.rows = None
+        self.cellsize = None
         self.spatialRef = None
         self.subraster = None
         self.buffer = [None, None]
@@ -48,23 +55,15 @@ class Raster(AbstractHeightSource):
         self.errorMsg = ''
         self.noDataValue = None
         
-        # Get raster info from QGIS layer
+        # Get raster directly from QGIS layer object
         if layer and isinstance(layer, QgsRasterLayer):
             self.layer = layer
             self.name = layer.name()
             self.path = layer.dataProvider().dataSourceUri()
             self.spatialRef = layer.crs()
-            ext = layer.extent()
-            self.extent = [ext.xMinimum(),
-                           ext.yMaximum(),
-                           ext.xMaximum(),
-                           ext.yMinimum()]
-            self.cols = layer.width()
-            self.rows = layer.height()
-            self.cellsize = float(layer.rasterUnitsPerPixelX())
-            self.valid = True
+            self.calculateExtent()
         
-        # Get raster info from gdal raster object
+        # Get raster info from path to raster file
         elif path:
             if not os.path.exists(path):
                 self.errorMsg = self.tr(
@@ -73,23 +72,53 @@ class Raster(AbstractHeightSource):
                 self.errorMsg = self.errorMsg.replace('_path_', path)
                 return
             self.path = path
-            ds = gdal.Open(path)
-            prj = ds.GetProjection()
-            if prj:
+            self.calculateExtent()
+        
+        if self.ds:
+            prj = self.ds.GetProjection()
+            if not self.spatialRef:
                 self.spatialRef = QgsCoordinateReferenceSystem(prj)
-            self.cols = ds.RasterXSize
-            self.rows = ds.RasterYSize
-            upx, xres, xskew, upy, yskew, yres = ds.GetGeoTransform()
-            self.cellsize = xres
-            xMin = upx + 0 * xres + 0 * xskew
-            yMax = upy + 0 * yskew + 0 * yres
-            xMax = upx + self.cols * xres + self.rows * xskew
-            yMin = upy + self.cols * yskew + self.rows * yres
-            self.extent = [xMin, yMax, xMax, yMin]
             if not self.spatialRef:
                 self.guessCrs()
+            
             self.valid = True
-            del ds
+    
+    def calculateExtent(self):
+        self.ds = gdal.Open(self.path)
+        if not self.ds:
+            raise Exception
+        
+        upx, xres, xskew, upy, yskew, yres = self.ds.GetGeoTransform()
+        if yres > 0:
+            # If yres is positive, we've got a raster that has it's
+            #  origin in the bottom left instead of the top left corner.
+            #  Let's change that by saving a copy as a tiff.
+            self.ds = self.saveCopyAsTiff()
+            upx, xres, xskew, upy, yskew, yres = self.ds.GetGeoTransform()
+        
+        self.cols = self.ds.RasterXSize
+        self.rows = self.ds.RasterYSize
+        self.cellsize = xres
+        xMin = upx + 0 * xres + 0 * xskew
+        yMax = upy + 0 * yskew + 0 * yres
+        xMax = upx + self.cols * xres + self.rows * xskew
+        yMin = upy + self.cols * yskew + self.rows * yres
+        self.extent = [xMin, yMax, xMax, yMin]
+    
+    def saveCopyAsTiff(self) -> Dataset:
+        """
+        Saves a copy of the raster file as a tiff.
+        This can be necessary when the raster is oriented in a way that does
+        not work well with gdal translate, e.g. ASCII xyz files; their origin
+        is in the bottom-left corner instead of the top-left corner.
+        """
+        try:
+            gdal.Warp('/vsimem/in_memory_copy.tif', self.ds, format='GTiff')
+            del self.ds
+            self.path = '/vsimem/in_memory_copy.tif'
+            return gdal.Open(self.path)
+        except Exception as e:
+            raise Exception('Not able to copy raster into temporary tif file.')
     
     def prepareData(self, points, azimut, anchorLen):
         [Ax, Ay] = points['A']
@@ -123,29 +152,24 @@ class Raster(AbstractHeightSource):
         # same cellsize as the original raster. If needed, the coordinates in
         # 'projWin' are shifted so that the raster does not have to be
         # resampled.
-        ds = gdal.Open(self.path)
-        if not ds:
-            raise Exception
-        try:
-            subraster = gdal.Translate('/vsimem/in_memory_output.tif', ds,
-                                       projWin=[pointXmin, pointYmax, pointXmax,
-                                                pointYmin])
-        except Exception:
-            return
+        subraster = gdal.Translate('/vsimem/in_memory_output.tif', self.ds,
+                                   projWin=[pointXmin, pointYmax,
+                                            pointXmax, pointYmin],
+                                   format='GTiff')
         
         z = subraster.ReadAsArray()
         if np.ndim(z) > 2:
-            # Assumption: Height information is in first raster band
+            # Assumption: Height information is in the first raster band
             z = z[:][:][0]
         z = np.flip(z, 0)
         
         try:
-            self.noDataValue = ds.GetRasterBand(1).GetNoDataValue()
-        except Exception:
+            self.noDataValue = self.ds.GetRasterBand(1).GetNoDataValue()
+        except Exception as e:
             pass
         
         upx, xres, xskew, upy, yskew, yres = subraster.GetGeoTransform()
-        # This raster has its origin in the upper left corner, so y axis is
+        # This raster has its origin in the upper left corner, so y-axis is
         #  always descending
         cols = subraster.RasterXSize
         rows = subraster.RasterYSize
@@ -191,7 +215,6 @@ class Raster(AbstractHeightSource):
             bufferE = 0
         self.buffer = (bufferA, bufferE)
         
-        del ds
         del subraster
     
     def getHeightAtPoints(self, coords):
