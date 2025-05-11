@@ -54,6 +54,7 @@ if not ERROR:
     # Import seilaplan plugin entry point
     from .seilaplanRun import SeilaplanRun
     from SEILAPLAN.gui.guiHelperFunctions import getAbsoluteIconPath
+    from SEILAPLAN.utils.misc import removeOldSeilaplanPluginRepo
 
 
 class SeilaplanPlugin:
@@ -81,6 +82,7 @@ class SeilaplanPlugin:
 
         self.action = None
         self.pluginRuns = []
+        self.preparationTasks()
 
     def tr(self, message):
         return QCoreApplication.translate(type(self).__name__, message)
@@ -132,6 +134,14 @@ class SeilaplanPlugin:
         button.pressed.connect(showError)
         widget.layout().addWidget(button)
         self.iface.messageBar().pushWidget(widget, Qgis.Warning)
+    
+    @staticmethod
+    def preparationTasks():
+        """Contains cleanup tasks that run before the plugin is opened."""
+        
+        # All versions later than 3.7.0 are published on the official QGIS
+        # plugin repository. The old GitHub-based repo is removed.
+        removeOldSeilaplanPluginRepo()
 
     def run(self):
         # Check for import errors and show messages

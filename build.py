@@ -1,6 +1,6 @@
 import os
-from fnmatch import fnmatch
 import zipfile
+from fnmatch import fnmatch
 
 PKG_NAME = 'SEILAPLAN'
 # Includes all the top level paths that should be included when building the zip file
@@ -13,6 +13,7 @@ TOP_LEVEL_INCLUDES = [
     'img',
     'lib',
     'tools',
+    'utils',
     '__init__.py',
     'changelog.md',
     'LICENSE.txt',
