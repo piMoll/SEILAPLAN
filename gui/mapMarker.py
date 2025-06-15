@@ -20,10 +20,9 @@
 """
 
 from qgis.PyQt.QtCore import Qt, pyqtSignal
-from qgis.PyQt.QtGui import QCursor, QColor
+from qgis.PyQt.QtGui import QColor, QCursor
+from qgis.core import QgsFeature, QgsGeometry, QgsPointXY
 from qgis.gui import QgsMapTool, QgsRubberBand, QgsVertexMarker
-from qgis.core import QgsGeometry, QgsFeature, QgsPointXY
-
 
 # Colors
 CURSOR_COLOR = '#00000'
@@ -203,6 +202,7 @@ class MapMarkerTool(QgsMapTool):
         else:
             for marker in self.markers:
                 self.canvas.scene().removeItem(marker)
+                del marker
             self.markers = []
         self.canvas.refresh()
     
@@ -212,12 +212,14 @@ class MapMarkerTool(QgsMapTool):
         for idx in reversed(range(1, len(self.markers)-1)):
             marker = self.markers[idx]
             self.canvas.scene().removeItem(marker)
+            del marker
             self.markers.pop(idx)
         self.canvas.refresh()
     
     def hideMarker(self, idx):
         marker = self.markers[idx]
         self.canvas.scene().removeItem(marker)
+        del marker
         self.canvas.refresh()
         
     def showMarker(self, point, idx, pointType, color=POLE_COLOR):

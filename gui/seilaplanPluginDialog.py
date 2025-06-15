@@ -20,32 +20,35 @@
 """
 
 import os
+
+from SEILAPLAN import PROJECT_URL
+from SEILAPLAN.tools.configHandler import ConfigHandler
+from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
+from SEILAPLAN.tools.configHandler_project import ProjectConfHandler, castToNum
+from SEILAPLAN.tools.heightSource import AbstractHeightSource
+from SEILAPLAN.tools.outputGeo import CH_CRS
+from SEILAPLAN.tools.survey import SurveyData
+from processing.core.Processing import Processing
 # GUI and QGIS libraries
 from qgis.PyQt import uic
-from qgis.PyQt.QtCore import QFileInfo, QCoreApplication, QSettings, Qt
-from qgis.PyQt.QtWidgets import (QDialog, QMessageBox, QFileDialog, QComboBox,
-                                 QTextEdit)
+from qgis.PyQt.QtCore import QCoreApplication, QFileInfo, QSettings, Qt
 from qgis.PyQt.QtGui import QPixmap
-from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject,
-                       QgsCoordinateReferenceSystem)
-from processing.core.Processing import Processing
-# Further GUI modules for functionality
-from .guiHelperFunctions import (DialogWithImage, createContours,
-                                 addBackgroundMap, createProfileLayers,
-                                 addLayerToQgis, getAbsoluteIconPath)
-from .surveyImportDialog import SurveyImportDialog
-from SEILAPLAN import PROJECT_URL
-from SEILAPLAN.tools.outputGeo import CH_CRS
-from SEILAPLAN.tools.configHandler import ConfigHandler
-from SEILAPLAN.tools.configHandler_project import ProjectConfHandler, castToNum
-from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
-from SEILAPLAN.tools.heightSource import AbstractHeightSource
-from SEILAPLAN.tools.survey import SurveyData
+from qgis.PyQt.QtWidgets import (QComboBox, QDialog, QFileDialog, QMessageBox,
+                                 QTextEdit)
+from qgis.core import (QgsCoordinateReferenceSystem, QgsPointXY, QgsProject,
+                       QgsRasterLayer)
+
 # GUI elements
 from .checkableComboBoxOwn import QgsCheckableComboBoxOwn
-from .saveDialog import DialogSaveParamset
+# Further GUI modules for functionality
+from .guiHelperFunctions import (DialogWithImage, addBackgroundMap,
+                                 addLayerToQgis, createContours,
+                                 createProfileLayers, getAbsoluteIconPath)
 from .mapMarker import MapMarkerTool
 from .profileDialog import ProfileDialog
+from .saveDialog import DialogSaveParamset
+from .surveyImportDialog import SurveyImportDialog
+
 # This loads the .ui file so that PyQt can populate the plugin with the
 #  elements from Qt Designer
 UI_FILE = os.path.join(os.path.dirname(__file__), 'seilaplanDialog.ui')
@@ -1046,6 +1049,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
         
     def onConfirm(self, runOptimization):
         if runOptimization and not self.paramHandler.checkBodenabstand():
+            # Optimization can't run because there's a problem with the parameters
             return
         if self.confHandler.checkValidState() \
                 and self.checkEqualSpatialRef() \
@@ -1055,7 +1059,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
             self.close()
         else:
             # If project info or parameter are missing or wrong, don't continue
-            return False
+            return
     
     def cancel(self):
         """ Called when 'Cancel' is pressed."""

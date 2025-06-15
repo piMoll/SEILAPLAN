@@ -1,11 +1,11 @@
-from qgis.core import QgsApplication
-# Main dialog window
-from SEILAPLAN.gui.seilaplanPluginDialog import SeilaplanPluginDialog
+from SEILAPLAN.gui.adjustmentDialog import AdjustmentDialog
 # Further dialog windows and helpers
 from SEILAPLAN.gui.progressDialog import ProgressDialog
-from SEILAPLAN.gui.adjustmentDialog import AdjustmentDialog
+# Main dialog window
+from SEILAPLAN.gui.seilaplanPluginDialog import SeilaplanPluginDialog
 from SEILAPLAN.tools.configHandler import ConfigHandler
 from SEILAPLAN.tools.processingThread import ProcessingTask
+from qgis.core import QgsApplication
 
 
 class SeilaplanRun:
@@ -38,7 +38,7 @@ class SeilaplanRun:
         #  block the event loop in case a second Seilaplan instance is started.
         self.projectWindow.show()
     
-    def onCloseProjectWindow(self, runOptimization: bool):
+    def onCloseProjectWindow(self, runOptimization: bool or None):
         """Gets called by the Project dialog on closing."""
         if runOptimization is True:
             # Continue with optimization algorithm
@@ -65,7 +65,7 @@ class SeilaplanRun:
         # Show progress bar and start event loop
         self.progressDialog.show()
     
-    def onCloseProgressWindow(self, continueToAdjustment: bool):
+    def onCloseProgressWindow(self, continueToAdjustment: bool or None):
         """Gets called by the Progress dialog on closing."""
         # Get result if calculation was successful
         result, resultQuality = None, None
@@ -90,7 +90,7 @@ class SeilaplanRun:
         self.adjustmentWindow.initData(result, resultQuality)
         self.adjustmentWindow.show()
     
-    def onCloseAdjustmentWindow(self, returnToProjectWindow: bool):
+    def onCloseAdjustmentWindow(self, returnToProjectWindow: bool or None):
         """Gets called by the Adjustment dialog on closing."""
         if returnToProjectWindow is True:
             self.adjustmentWindow.deleteLater()
