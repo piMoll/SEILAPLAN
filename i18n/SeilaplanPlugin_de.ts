@@ -886,6 +886,10 @@ Lastseil</translation>
         <translation>Unerwarteter Fehler bei Berechnung der Seillinie</translation>
     </message>
     <message>
+        <source>Diagrammanzeige</source>
+        <translation>Kennwerte anzeigen</translation>
+    </message>
+    <message>
         <location filename="../gui/adjustmentDialog.py" line="378"/>
         <source>Erklaerung Gesamtlast</source>
         <translation>Die Gesamtlast berechnet sich aus der Anhängelast, dem Laufwagengewicht und dem Anschlagmittel.</translation>
@@ -1272,11 +1276,6 @@ Bericht übertragen)</translation>
         <location filename="../gui/adjustmentDialog.ui" line="675"/>
         <source>Navigation</source>
         <translation>Navigation</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.ui" line="676"/>
-        <source>Diagrammanzeige</source>
-        <translation>Diagrammanzeige</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="546"/>

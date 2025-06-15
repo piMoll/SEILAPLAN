@@ -903,6 +903,11 @@ câble chargé</translation>
         <translation>Erreur inattendu au calcul de la ligne de câble</translation>
     </message>
     <message>
+        <location filename="../gui/adjustmentDialog.py" line="253"/>
+        <source>Diagrammanzeige</source>
+        <translation>Afficher les paramètres caractéristiques</translation>
+    </message>
+    <message>
         <location filename="../gui/adjustmentDialog.py" line="378"/>
         <source>Erklaerung Gesamtlast</source>
         <translation>La charge totale est la somme de la charge en bois et du poids du chariot et des élingues.</translation>
@@ -1295,11 +1300,6 @@ dans le rapport)</translation>
         <location filename="../gui/adjustmentDialog.ui" line="675"/>
         <source>Navigation</source>
         <translation>Navigation</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.ui" line="676"/>
-        <source>Diagrammanzeige</source>
-        <translation>Affichage du diagramme</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="546"/>

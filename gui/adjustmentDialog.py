@@ -19,33 +19,39 @@
  ***************************************************************************/
 """
 import os
-from qgis.PyQt import uic
-from qgis.PyQt.QtCore import QTimer, Qt, QCoreApplication, QSettings
-from qgis.PyQt.QtWidgets import QDialog, QMessageBox, QTextEdit
-from qgis.PyQt.QtGui import QPixmap
-from .adjustmentPlot import AdjustmentPlot, saveImgAsPdfWithMpl, \
-    calculatePlotDimensions
-from .plotting_tools import MyNavigationToolbar
-from .poleWidget import CustomPoleWidget
-from .birdViewWidget import BirdViewWidget
-from .adjustmentDialog_params import AdjustmentDialogParams
-from .adjustmentDialog_thresholds import AdjustmentDialogThresholds
-from .saveDialog import DialogOutputOptions
-from .guiHelperFunctions import DialogWithImage, addBackgroundMap, getAbsoluteIconPath
-from .mapMarker import MapMarkerTool
+
+from SEILAPLAN.core.cablelineFinal import (preciseCable,
+                                           updateWithCableCoordinates)
 from SEILAPLAN.tools.birdViewMapExtractor import extractMapBackground
-from SEILAPLAN.core.cablelineFinal import preciseCable, updateWithCableCoordinates
 from SEILAPLAN.tools.calcThreshold import ThresholdUpdater
-from SEILAPLAN.tools.poles import Poles
-from SEILAPLAN.tools.profile import Profile
-from SEILAPLAN.tools.outputReport import generateReportText, generateReport, \
-    createOutputFolder, generateShortReport
-from SEILAPLAN.tools.outputGeo import organizeDataForExport, addToMap, \
-    generateCoordTable, writeGeodata
 from SEILAPLAN.tools.configHandler import ConfigHandler
 from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
 from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
-from SEILAPLAN.tools.globals import ResultQuality, PolesOrigin
+from SEILAPLAN.tools.globals import PolesOrigin, ResultQuality
+from SEILAPLAN.tools.outputGeo import (addToMap, generateCoordTable,
+                                       organizeDataForExport, writeGeodata)
+from SEILAPLAN.tools.outputReport import (createOutputFolder, generateReport,
+                                          generateReportText,
+                                          generateShortReport)
+from SEILAPLAN.tools.poles import Poles
+from SEILAPLAN.tools.profile import Profile
+from qgis.PyQt import uic
+from qgis.PyQt.QtCore import QCoreApplication, QSettings, QTimer, Qt
+from qgis.PyQt.QtGui import QPixmap
+from qgis.PyQt.QtWidgets import QDialog, QMessageBox, QTextEdit
+
+from .adjustmentDialog_params import AdjustmentDialogParams
+from .adjustmentDialog_thresholds import AdjustmentDialogThresholds
+from .adjustmentPlot import (AdjustmentPlot, calculatePlotDimensions,
+                             saveImgAsPdfWithMpl)
+from .birdViewWidget import BirdViewWidget
+from .guiHelperFunctions import (DialogWithImage, addBackgroundMap,
+                                 getAbsoluteIconPath)
+from .mapMarker import MapMarkerTool
+from .plotting_tools import MyNavigationToolbar
+from .poleWidget import CustomPoleWidget
+from .saveDialog import DialogOutputOptions
+
 # This loads the .ui file so that PyQt can populate the plugin with the
 #  elements from Qt Designer
 UI_FILE = os.path.join(os.path.dirname(__file__), 'adjustmentDialog.ui')
@@ -244,7 +250,8 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         self.thdUpdater.update(self.result, self.paramHandler, self.poles,
             self.profile, resultQuality in [ResultQuality.SuccessfulOptimization, ResultQuality.CableLiftsOff])
         # Add plot topics in drop down
-        self.fieldPlotTopic.addItem('-', userData=-1)
+        self.fieldPlotTopic.addItem(self.tr('Diagrammanzeige') + '...',
+                                    userData=-1)
         for topic in self.thdUpdater.topics:
             self.fieldPlotTopic.addItem(topic.name, userData=topic.id)
         self.fieldPlotTopic.setCurrentIndex(0)

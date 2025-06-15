@@ -894,6 +894,12 @@ loaded skyline</translation>
         <translation>Unexpected error during calculation of cable road</translation>
     </message>
     <message>
+        <location filename="../gui/adjustmentDialog.py
+        <location filename="../gui/adjustmentDialog.py" line="253"/>" line="253"/>
+        <source>Diagrammanzeige</source>
+        <translation>Display structural design data</translation>
+    </message>
+    <message>
         <location filename="../gui/adjustmentDialog.py" line="378"/>
         <source>Erklaerung Gesamtlast</source>
         <translation>The total load is the sum of the timber load, the carriage weight and the attaching ropes.</translation>
@@ -1287,11 +1293,6 @@ to the report)</translation>
         <location filename="../gui/adjustmentDialog.ui" line="675"/>
         <source>Navigation</source>
         <translation>Navigation</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.ui" line="676"/>
-        <source>Diagrammanzeige</source>
-        <translation>Diagram display</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="546"/>

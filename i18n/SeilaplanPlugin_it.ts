@@ -896,6 +896,11 @@ fune caricata</translation>
         <translation>Errore inaspettato al calcolo della linea di gru a cavo</translation>
     </message>
     <message>
+        <location filename="../gui/adjustmentDialog.py" line="253"/>
+        <source>Diagrammanzeige</source>
+        <translation>Visualizzare valori caratteristici</translation>
+    </message>
+    <message>
         <location filename="../gui/adjustmentDialog.py" line="378"/>
         <source>Erklaerung Gesamtlast</source>
         <translation>Il carico totale è la somma del carico del legname, del peso del carrello e dei funi per il fissaggio del carico.</translation>
@@ -1284,11 +1289,6 @@ nel rapporto)</translation>
         <location filename="../gui/adjustmentDialog.ui" line="675"/>
         <source>Navigation</source>
         <translation>Navigazione</translation>
-    </message>
-    <message>
-        <location filename="../gui/adjustmentDialog.ui" line="676"/>
-        <source>Diagrammanzeige</source>
-        <translation>Visualizzazione del diagramma</translation>
     </message>
     <message>
         <location filename="../gui/adjustmentDialog.ui" line="546"/>
