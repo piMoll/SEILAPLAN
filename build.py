@@ -39,18 +39,20 @@ def create_zip(zip_path, folder_path, top_level_includes, ignore_patterns):
     with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
         for root, folders, files in os.walk(folder_path):
             for file in files:
-                path = os.path.join(root, file)
-                if any([str(path).startswith(str(includedPath)) for includedPath in includedPaths]) is False:
+                path = str(os.path.join(root, file))
+                if not any([path.startswith(str(includedPath))
+                               for includedPath in includedPaths]):
                     # Path does not start with a path from the include list, skip it
                     continue
-                archive_path = os.path.relpath(os.path.join(root, file), os.path.join(folder_path, os.pardir))
+                archive_path = str(os.path.relpath(
+                        os.path.join(root, file),
+                        os.path.join(folder_path, os.pardir)))
                 if not any(fnmatch(path, '*' + ignore + '*') for ignore in ignore_patterns):
                     print('Adding ' + archive_path)
                     zipf.write(path, archive_path)
                 else:
                     print('Ignoring ' + archive_path)
     print('Created ZIP archive ' + zip_path)
-
 
 
 if __name__ == '__main__':
