@@ -23,13 +23,27 @@ email=seilaplanplugin@gmail.com
 # Recommended items:
 
 # Uncomment the following line and add your changelog:
-changelog=Version 3.7.0 (Mai 2025)
+changelog=Version 3.7.0 (Juli 2025)
     Neue Features
-    - Upgrade für die Verwendung unter QGIS 4.0 und Qt6 (ab Oktober 2025)
+    - Upgrade für die Verwendung unter QGIS 4.0 und Qt 6 (ab Oktober 2025)
+    
+    Fehlerbehebung
+    - Behebe Problem bei der Verwendung von XYZ Rastern
+    - Behebe Fehlermeldung beim Löschen von Stützensymbolen in der Karte
     - Diverse Unterhaltsarbeiten
     
     Vollständiger Changelog unter: https://github.com/piMoll/SEILAPLAN/blob/master/changelog.md
 
+    ***
+    
+    New features
+    - Upgrade for QGIS 4.0 and Qt 6 (October 2025)
+    
+    Fixes
+    - Fix bug preventing usage of XYZ rasters
+    - Fix problems when deleting support symbols in the map
+    - Various maintenance work
+        
 # Tags are comma separated with spaces allowed
 tags=analysis,forest,planning,design,optimization,switzerland,wald,schweiz,planung,optimierung
 

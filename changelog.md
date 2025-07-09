@@ -1,12 +1,13 @@
 # Seilaplan Changelog
 
-## Version 3.7.0 (Mai 2025)
+## Version 3.7.0 (Juli 2025)
 ### Neue Features
-- Upgrade für die Verwendung unter QGIS 4.0 und Qt6 (ab Oktober 2025)
-- Diverse Unterhaltsarbeiten
+- Upgrade für die Verwendung unter QGIS 4.0 und Qt 6 (ab Oktober 2025)
 
 ### Fehlerbehebung
-- 
+- Behebe Problem bei der Verwendung von XYZ Rastern
+- Behebe Fehlermeldung beim Löschen von Stützensymbolen in der Karte
+- Diverse Unterhaltsarbeiten
 
 ## Version 3.6.4 (März 2025)
 ### Fehlerbehebung

@@ -3,6 +3,7 @@
 <plugins>
  <pyqgis_plugin version="3.7.0" name="SEILAPLAN">
   <qgis_minimum_version>3.22.0</qgis_minimum_version>
+  <qgis_maximum_version>3.99</qgis_maximum_version>
   <description>Seilkran-Layoutplaner - Berechnet basierend auf einem digitalen Höhenmodell zwischen definierten Anfangs- und Endkoordinaten sowie technischer Parametern das optimale Seillinienlayout. Resultate der Berechnung sind Position und Höhe der Stützen und die wichtigsten Kennwerte der Seillinie.</description>
   <homepage><![CDATA[http://pimoll.github.io/SEILAPLAN]]></homepage>
   <file_name>SEILAPLAN.zip</file_name>
