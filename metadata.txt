@@ -10,12 +10,13 @@
 [general]
 name=SEILAPLAN
 qgisMinimumVersion=3.22
+qgisMaximumVersion=4.99
 supportsQt6=yes
 description=Seilkran-Layoutplaner
 about=SEILAPLAN berechnet aufgrund eines digitalen Höhenmodells zwischen definierten Anfangs- und Endkoordinaten sowie technischen Parametern das optimale Seillinienlayout. Es werden Position und Höhe der Stütze, sowie die wichtigsten Kennwerte der Seillinie bestimmt.
 version=3.7.0
 author=Leo Bont, Hans Rudolf Heinimann, Patricia Moll
-email=leo.bont@gmail.com
+email=seilaplanplugin@gmail.com
 
 # End of mandatory metadata
 
@@ -30,7 +31,7 @@ changelog=Version 3.7.0 (Mai 2025)
     Vollständiger Changelog unter: https://github.com/piMoll/SEILAPLAN/blob/master/changelog.md
 
 # Tags are comma separated with spaces allowed
-tags=analysis,forest,planning,design,optimization
+tags=analysis,forest,planning,design,optimization,switzerland,wald,schweiz,planung,optimierung
 
 homepage=http://pimoll.github.io/SEILAPLAN/
 tracker=https://github.com/piMoll/SEILAPLAN/issues
