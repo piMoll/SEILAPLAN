@@ -13,9 +13,18 @@ qgisMinimumVersion=3.22
 qgisMaximumVersion=4.99
 supportsQt6=yes
 description=Seilkran-Layoutplaner
-about=SEILAPLAN berechnet aufgrund eines digitalen Höhenmodells zwischen definierten Anfangs- und Endkoordinaten sowie technischen Parametern das optimale Seillinienlayout. Es werden Position und Höhe der Stütze, sowie die wichtigsten Kennwerte der Seillinie bestimmt.
+about=SEILAPLAN ermöglicht die einfache und effiziente Planung von Seillinien unter Berücksichtigung topographischer Gegebenheiten. Die implementierte Berechnungsmethode basiert auf der Methode von Zweifel (1960) und beschreibt die Kettenlinie, unter Annahme einer beidseitig fixierten Verankerung des Tragseils.
+    
+    SEILAPLAN wurde spezifisch für die Bedürfnisse von forstlichen Seilkrananlagen entwickelt. Die Berechnung ist jedoch für alle Seilsysteme mit beidseitig verankertem Tragseil anwendbar, also beispielsweise auch für Materialseilbahnen.
+    
+    Dieses QGIS-Plugin ist ein Hilfsmittel. Jede Lösung muss vor Umsetzung durch eine geschulte Fachperson geprüft werden. Jegliche Haftung wird im Rahmen der GNU General Public Licence Version 2 oder neuere ausgeschlossen (www.gnu.org/licenses).
+    
+    Dokumentation: https://seilaplan.wsl.ch
+    
+    --------------------------------------
+    Bont, Moll, Ramstein, Frutig, Heinimann, Schweier (2022). Introducing Seilaplan, a QGIS plugin for cable road layout planning. Croatian Journal of Forest Engineering, 2022. https://doi.org/10.5552/crojfe.2022.1824
 version=3.7.0
-author=Leo Bont, Hans Rudolf Heinimann, Patricia Moll
+author=Bont, Moll, Ramstein, Frutig, Heinimann, Schweier
 email=seilaplanplugin@gmail.com
 
 # End of mandatory metadata
@@ -45,9 +54,9 @@ changelog=Version 3.7.0 (Juli 2025)
     - Various maintenance work
         
 # Tags are comma separated with spaces allowed
-tags=analysis,forest,planning,design,optimization,switzerland,wald,schweiz,planung,optimierung
+tags=analysis,forest,planning,design,optimization,wald,planung,optimierung
 
-homepage=http://pimoll.github.io/SEILAPLAN/
+homepage=https://seilaplan.wsl.ch
 tracker=https://github.com/piMoll/SEILAPLAN/issues
 repository=https://github.com/piMoll/SEILAPLAN
 category=Plugins

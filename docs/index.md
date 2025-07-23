@@ -2,27 +2,38 @@
 
 [**Changelog**](https://github.com/piMoll/SEILAPLAN/blob/master/changelog.md)
 
-_[See english version below](#Seilaplan)_
-
 # SEILAPLAN
 
-SEILAPLAN ist ein QGIS Plugin zur Unterstützung der Waldbewirtschaftung und
-optimiert das Layout einer Seillinie.
+_[See english version below](#seilaplan-1)_
+
+SEILAPLAN ermöglicht die einfache und effiziente Planung von Seillinien unter
+Berücksichtigung topographischer Gegebenheiten.
+Die implementierte Berechnungsmethode basiert auf der Methode von Zweifel
+\(1960) und beschreibt die Kettenlinie,
+unter Annahme einer beidseitig fixierten Verankerung des Tragseils.
+
+SEILAPLAN wurde spezifisch für die Bedürfnisse von forstlichen Seilkrananlagen
+entwickelt. Die Berechnung ist jedoch für alle Seilsysteme mit beidseitig
+verankertem Tragseil anwendbar, also beispielsweise auch für
+Materialseilbahnen.
+
+Dieses QGIS-Plugin ist ein Hilfsmittel. Jede Lösung muss vor Umsetzung durch
+eine geschulte Fachperson geprüft werden. Jegliche Haftung wird im Rahmen der
+GNU General Public Licence Version 2 oder neuere
+ausgeschlossen (www.gnu.org/licenses).
+
+Hilfestellung, Hintergründe und Dokumentation unter https://seilaplan.wsl.ch
 
 
 ![Seilaplan Bearbeitungsfenster mit Seillinien-Layout](https://github.com/piMoll/SEILAPLAN/raw/master/docs/gui_preview.png)
-
-## [**Docs**](https://github.com/piMoll/SEILAPLAN/tree/master/help)
-
-* [de] Theoretische Dokumentation der
-  Berechnungsgrundlagen: [SEILAPLAN_Theoretische_Doku.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/SEILAPLAN_Theoretische_Doku.pdf)
-* [de] Technische Dokumentation der
-  Plugin-Implementation: [SEILAPLAN_QGIS_Plugin_Doku.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/SEILAPLAN_QGIS_Plugin_Doku.pdf)
 
 ## Installation
 Voraussetzung für die Verwendung von SEILAPLAN ist [QGIS](https://qgis.org/), ein frei verfügbares geografisches Informationssystem zur Betrachtung und Analyse von Geodaten.
 
 Es wird empfohlen, eine aktuelle Langzeitversion (LTS) von QGIS zu benutzen und diese regelmässig zu aktualisieren.
+Seilaplan kann mit QGIS Version 3 (>3.22) verwendet werden und ist kompatibel
+mit der bevorstehenden Version 4.
+Das Plugin kann unter Linux, Windows und OS X ausgeführt werden.
 
 1. QGIS [herunterladen](https://www.qgis.org/download/) und installieren
 2. In QGIS den Plugin-Manager öffnen: Menü _Erweiterungen > Erweiterungen verwalten und installieren_
@@ -31,6 +42,13 @@ Es wird empfohlen, eine aktuelle Langzeitversion (LTS) von QGIS zu benutzen und 
 5. Das Seilaplan Icon ![Icon](https://github.com/piMoll/SEILAPLAN/raw/master/docs/seilaplan_icon.png) sollte in der Werkzeugleiste sichtbar werden. Falls nicht, Rechtsklick auf die Werkzeugleiste und Eintrag _Erweiterungswerkzeugleiste_ aktivieren
 
 Weitere Informationen, erste Schritte und Fehlerbehebungen finden sich im PDF: [SEILAPLAN_Installation_und_erste_Schritte.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/SEILAPLAN_Installation_und_erste_Schritte.pdf)
+
+## **Weiterführende Dokumentation**
+
+* [de] Theoretische Dokumentation der
+  Berechnungsgrundlagen: [SEILAPLAN_Theoretische_Doku.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/SEILAPLAN_Theoretische_Doku.pdf)
+* [de] Technische Dokumentation der
+  Plugin-Implementation: [SEILAPLAN_QGIS_Plugin_Doku.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/SEILAPLAN_QGIS_Plugin_Doku.pdf)
 
 ## Bezug von Höhendaten für die Schweiz
 Seit Frühjahr 2021 stellt das Schweizer Bundesamt für Landestopografie swisstopo sehr genaue Höhendaten zum freien Download zur Verfügung. 
@@ -50,20 +68,29 @@ Das Plugin benötigt folgende Input-Daten:
 3. Auswahl oder Definition eines Seilkran-Typs 
 
 ## Realisierung
-**Professur für Forstliches Ingenieurwesen**  
-ETH Zürich  
-8092 Zürich  
-(Konzept, Realisierung Version 1.x für QGIS 2) 
-
 **Gruppe Forstliche Produktionssysteme FPS**  
 Eidgenössische Forschungsanstalt WSL  
 8903 Birmensdorf  
-(Realisierung ab Version 2.x) 
+(Realisierung der Versionen 2.x und 3.x für QGIS 3 und 4)
+
+**Professur für Forstliches Ingenieurwesen**  
+ETH Zürich  
+8092 Zürich  
+(Konzept, Realisierung Version 1.x für QGIS 2)
 
 **Beteiligte Personen**  
-Leo Bont, Hansrudolf Heinimann (Konzept, Mechanik)  
-Patricia Moll (Implementation in Python / QGIS)  
-Laura Ramstein (Koordination Weiterentwicklung)
+- Leo Bont (Projektleitung, Entwicklung, Konzept, Mechanik, Finanzierung)
+- Hansrudolf Heinimann (Konzept, Mechanik, Finanzierung)
+- Patricia Moll (Implementation in Python/QGIS, Benutzeroberfläche)
+- Laura Ramstein (Koordination Weiterentwicklung)
+- Fritz Frutig (Übersetzungen, Begleitgruppe)
+- Janine Schweier (Begleitgruppe, Finanzierung, Webseite)
+- Konrad Wyss, ibW Bildungszentrum Wald Maienfeld (Rückmeldungen aus der
+  Praxis, Lehre, Seilkranfachtagung)
+
+**Praxispartner**
+- Abächerli Forstunternehmen AG
+- Nüesch & Ammann Forstunternehmung AG
 
 ## Kontakt
 Für Fragen steht Ihnen Leo Bont zur Verfügung.  
@@ -87,10 +114,23 @@ Zitiervorschlag Quellcode:
 ---
 _english_
 
-# Seilaplan
+# SEILAPLAN
 
-SEILAPLAN is a QGIS Plugin to support forest harvest operations by optimizing
-the layout of cable roads.
+SEILAPLAN enables simple and efficient planning of cable roads, taking
+topographical conditions into account.
+The implemented calculation method is based on the method of Zweifel (1960) and
+describes a funicular curve, assuming that the skyline is fixed on both sides.
+
+SEILAPLAN was developed specifically for the requirements of forestry cable
+yarders. However, the calculation can be used for all systems with a skyline
+that is anchored on both sides, for example, material ropeways.
+
+This QGIS plugin is intended as a supporting tool only.
+Each solution must be checked by a trained
+specialist before implementation. All liability is excluded under the GNU
+General Public Licence Version 2 or newer (www.gnu.org/licenses).
+
+Help, background information and documentation at https://seilaplan.wsl.ch
 
 ![Seilaplan editing window with cable line layout](https://github.com/piMoll/SEILAPLAN/raw/master/docs/gui_preview.png)
 
@@ -101,6 +141,9 @@ geographic information system for viewing and analyzing geodata.
 
 It is recommended to use a current Long Term Support (LTS) version of QGIS and
 update it regularly.
+Seilaplan can be used in QGIS version 3 (>3.22) and is compatible with the
+upcoming version 4.
+The plugin runs on Linux, Windows and OS X.
 
 1. Download and install QGIS from [here](https://www.qgis.org/download/)
 2. Open the Plugin Manager in QGIS: Menu _Plugins > Manage and Install Plugins_
@@ -145,20 +188,29 @@ The plugin requires the following input data:
 
 ## Implementation
 
-**Chair of Forest Engineering**  
-ETH Zurich  
-8092 Zurich  
-(Concept, implementation Version 1.x for QGIS 2)
-
 **Forest Production Systems Group FPS**  
 Swiss Federal Research Institute WSL  
 8903 Birmensdorf  
-(Implementation from Version 2.x)
+(Implementation of versions 2.x and 3.x for QGIS 3 and 4)
+
+**Chair of Forest Engineering**  
+ETH Zurich  
+8092 Zurich  
+(Concept, implementation versions 1.x for QGIS 2)
 
 **Contributing people**  
-Leo Bont, Hansrudolf Heinimann (Concept, Mechanics)  
-Patricia Moll (Implementation in Python / QGIS)  
-Laura Ramstein (Coordination of further development)
+- Leo Bont (project management, development, concept, mechanics, financing)
+- Hansrudolf Heinimann (concept, mechanics, financing)
+- Patricia Moll (implementation in Python/QGIS, user interface)
+- Laura Ramstein (coordination of further development)
+- Fritz Frutig (translations, support group)
+- Janine Schweier (support group, financing, website)
+- Konrad Wyss, ibW Bildungszentrum Wald Maienfeld (feedback from practice,
+  teaching, cable yarder conference)
+
+**Partners**
+- Abächerli Forstunternehmen AG
+- Nüesch & Ammann Forstunternehmung AG
 
 ## Contact
 
@@ -173,7 +225,7 @@ For scientific purposes:
 «Bont, L. G., Moll, P. E., Ramstein, L., Frutig, F., Heinimann, H. R., & Schweier, J. (2022). SEILAPLAN, a QGIS plugin for cable road layout design. Croatian Journal of Forest Engineering: Journal for Theory and Application of Forestry Engineering, 43(2), 241-255.»
 ```
 
-Citation for source code:
+Citation of source code:
 
 ```
 «Moll, P. E., Bont, L. G., Ramstein, L., Frutig, F., Heinimann, H. R., & Schweier, J. (2022). SEILAPLAN, a QGIS plugin for cable road layout design, version 3.5.0, https://github.com/piMoll/SEILAPLAN»
