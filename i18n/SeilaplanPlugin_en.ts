@@ -894,8 +894,7 @@ loaded skyline</translation>
         <translation>Unexpected error during calculation of cable road</translation>
     </message>
     <message>
-        <location filename="../gui/adjustmentDialog.py
-        <location filename="../gui/adjustmentDialog.py" line="253"/>" line="253"/>
+        <location filename="../gui/adjustmentDialog.py" line="253"/>
         <source>Diagrammanzeige</source>
         <translation>Display structural design data</translation>
     </message>
@@ -2593,29 +2592,13 @@ The height data is displayed in the Swiss CRS &apos;LV95&apos; (EPSG:2056). To u
 
 Based on a digital terrain model and technical parameters between defined start and end coordinates, SEILAPLAN is calculating the optimal cable road layout. The position and the height of the supports as well as the most important parameters of the cable road are determined.
 
+Further information and docs
+{}
+
 All personal designations apply equally to all genders.
 
-&lt;b>Realization&lt;/b>
-
-Chair of Land Use Engineering
-ETH Zurich
-8092 Zurich
-(Concept, Realization Version 1.x for QGIS 2)
-
-Group Sustainable Forestry
-Swiss Federal Institute for Forest, Snow and Landscape Research WSL
-8903 Birmensdorf
-(Realization Version 2.x for QGIS 3)
-
-&lt;b>People involved&lt;/b>
-
-Leo Bont, Hans Rudolf Heinimann (Concept, Mechanics)
-Patricia Moll (Implementation in Python / QGIS)
-
 SEILAPLAN is a free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either with version 2 of the License, or any later published version of your choice (www.gnu.org/licenses).
-
-Further information and docs
-{}</translation>
+</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="927"/>
