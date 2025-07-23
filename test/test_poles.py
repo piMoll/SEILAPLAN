@@ -1,14 +1,14 @@
-import unittest
-from qgis.core import QgsCoordinateReferenceSystem
-from numpy import nan
-from copy import deepcopy
 import copyreg
-from . import project_file_loader
-from ._test_helper import calculate_cable_line
+import unittest
+
+from SEILAPLAN.core.cablelineFinal import preciseCable
 from SEILAPLAN.tools.configHandler import ConfigHandler
 from SEILAPLAN.tools.poles import Poles
-from SEILAPLAN.core.cablelineFinal import preciseCable
+from numpy import nan
+from qgis.core import QgsCoordinateReferenceSystem
 
+from . import project_file_loader
+from ._test_helper import calculate_cable_line
 
 TEST_PROJECT_Bawald = project_file_loader('unittest_survey_excel_Wyss_Bawald.json')
 TEST_PROJECT_A_A = project_file_loader('unittest_dhm_anchor_anchor_6_poles.json')
@@ -126,7 +126,10 @@ class TestPolesBundstelleAndBHD(unittest.TestCase):
         bundstelleBefore1 = self.poles.poles[1]['bundstelle']
         bundstelleBefore2 = self.poles.poles[2]['bundstelle']
         
-        updatedPoles = deepcopy(self.poles)
+        poles: Poles
+        (_, _, updatedPoles, _, _) = calculate_cable_line(self.conf,
+                                                          TEST_PROJECT_A_A)
+        
         updatedPoles.update(1, 'h', 25)
         updatedPoles.update(2, 'h', 28)
         simpleParams = self.params.getSimpleParameterDict()
