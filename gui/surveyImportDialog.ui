@@ -105,7 +105,8 @@
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>./icons/icon_open.png</normaloff>./icons/icon_open.png</iconset>
+           <normaloff>icons/icon_open.png</normaloff>icons/icon_open.png
+          </iconset>
          </property>
          <property name="iconSize">
           <size>
