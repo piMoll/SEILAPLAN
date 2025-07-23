@@ -27,6 +27,7 @@ from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
 from SEILAPLAN.tools.configHandler_project import ProjectConfHandler, castToNum
 from SEILAPLAN.tools.heightSource import AbstractHeightSource
 from SEILAPLAN.tools.outputGeo import CH_CRS
+from SEILAPLAN.tools.raster import rasterExistsAtPath
 from SEILAPLAN.tools.survey import SurveyData
 from processing.core.Processing import Processing
 # GUI and QGIS libraries
@@ -412,9 +413,9 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
             # Enable gui elements
             self.enableRasterHeightSource()
             # Search raster and if necessary load from disk
-            rasternames = self.searchForRaster(
+            rasterNames = self.searchForRaster(
                 self.projectHandler.getHeightSourceAsStr(source=True))
-            self.setRaster(rasternames)
+            self.setRaster(rasterNames)
     
         elif self.projectHandler.heightSourceType == 'survey':
             # Enable gui elements
@@ -624,7 +625,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
         rasterNameList = []
         self.rasterField.blockSignals(True)
         for path in rasterpaths:
-            rasterinQGIS = False
+            rasterInQGIS = False
             for i, rlyr in enumerate(availRaster):
                 lyrPath = rlyr['lyr'].dataProvider().dataSourceUri()
                 # Raster has been loaded in QGIS project already
@@ -632,11 +633,11 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
                     # Sets the dhm name in the drop down
                     self.rasterField.setItemCheckState(i, Qt.CheckState.Checked)
                     rasterNameList.append(rlyr['name'])
-                    rasterinQGIS = True
+                    rasterInQGIS = True
                     break
-            if not rasterinQGIS:
+            if not rasterInQGIS:
                 # Raster is still at same location in file system
-                if os.path.exists(path):
+                if rasterExistsAtPath(path):
                     # Load raster
                     newRaster = QFileInfo(path).baseName()
                     rasterLyr = QgsRasterLayer(path, newRaster)

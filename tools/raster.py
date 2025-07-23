@@ -65,7 +65,7 @@ class Raster(AbstractHeightSource):
         
         # Get raster info from path to raster file
         elif path:
-            if not os.path.exists(path):
+            if not rasterExistsAtPath(path):
                 self.errorMsg = self.tr(
                     "Raster-Datei _path_ ist nicht vorhanden, "
                     "Raster kann nicht geladen werden.")
@@ -233,3 +233,7 @@ class Raster(AbstractHeightSource):
             self.errorMsg = self.tr(
                 'Profillinie enthaelt Datenluecken, bitte Start-/ Endpunkt anpassen.')
         return points_lin
+
+
+def rasterExistsAtPath(rasterPath) -> bool:
+    return os.path.exists(rasterPath) or rasterPath.startswith('/vsicurl/')
