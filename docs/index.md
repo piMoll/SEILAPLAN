@@ -22,7 +22,8 @@ eine geschulte Fachperson geprüft werden. Jegliche Haftung wird im Rahmen der
 GNU General Public Licence Version 2 oder neuere
 ausgeschlossen (www.gnu.org/licenses).
 
-Hilfestellung, Hintergründe und Dokumentation unter https://seilaplan.wsl.ch
+Ausführliche Hilfestellung, Hintergründe und Dokumentation
+unter https://seilaplan.wsl.ch
 
 
 ![Seilaplan Bearbeitungsfenster mit Seillinien-Layout](https://github.com/piMoll/SEILAPLAN/raw/master/docs/gui_preview.png)
@@ -68,7 +69,7 @@ Das Plugin benötigt folgende Input-Daten:
 3. Auswahl oder Definition eines Seilkran-Typs 
 
 ## Realisierung
-**Gruppe Forstliche Produktionssysteme FPS**  
+**Gruppe Nachhaltige Forstwirtschaft**  
 Eidgenössische Forschungsanstalt WSL  
 8903 Birmensdorf  
 (Realisierung der Versionen 2.x und 3.x für QGIS 3 und 4)
@@ -130,7 +131,8 @@ Each solution must be checked by a trained
 specialist before implementation. All liability is excluded under the GNU
 General Public Licence Version 2 or newer (www.gnu.org/licenses).
 
-Help, background information and documentation at https://seilaplan.wsl.ch
+Extended help, background information and documentation
+at https://seilaplan.wsl.ch
 
 ![Seilaplan editing window with cable line layout](https://github.com/piMoll/SEILAPLAN/raw/master/docs/gui_preview.png)
 
@@ -188,7 +190,7 @@ The plugin requires the following input data:
 
 ## Implementation
 
-**Forest Production Systems Group FPS**  
+**Sustainable Forestry Group**  
 Swiss Federal Research Institute WSL  
 8903 Birmensdorf  
 (Implementation of versions 2.x and 3.x for QGIS 3 and 4)
