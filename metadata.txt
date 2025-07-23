@@ -35,10 +35,12 @@ email=seilaplanplugin@gmail.com
 changelog=Version 3.7.0 (Juli 2025)
     Neue Features
     - Upgrade für die Verwendung unter QGIS 4.0 und Qt 6 (ab Oktober 2025)
+    - Umzug ins offizielle QGIS Plugin Verzeichnis (bestehende Benutzer/innen müssen nichts tun)
     
     Fehlerbehebung
-    - Behebe Problem bei der Verwendung von XYZ Rastern
+    - Behebe ein Problem, dass die Verwendung von XYZ Rastern verhindert
     - Behebe Fehlermeldung beim Löschen von Stützensymbolen in der Karte
+    - Ermögliche das Laden SEILAPLAN-Projektdateien, welche Cloud Optimized GeoTiffs (COG) enthalten
     - Diverse Unterhaltsarbeiten
     
     Vollständiger Changelog unter: https://github.com/piMoll/SEILAPLAN/blob/master/changelog.md
@@ -47,10 +49,12 @@ changelog=Version 3.7.0 (Juli 2025)
     
     New features
     - Upgrade for QGIS 4.0 and Qt 6 (October 2025)
+    - Move to the official qgis plugin repository (no action needed for existing users)
     
     Fixes
     - Fix bug preventing usage of XYZ rasters
     - Fix problems when deleting support symbols in the map
+    - Allow loading of SEILAPLAN project files that include cloud optimized GeoTIFFs
     - Various maintenance work
         
 # Tags are comma separated with spaces allowed

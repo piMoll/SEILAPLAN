@@ -3,10 +3,14 @@
 ## Version 3.7.0 (Juli 2025)
 ### Neue Features
 - Upgrade für die Verwendung unter QGIS 4.0 und Qt 6 (ab Oktober 2025)
+- Umzug ins offizielle QGIS Plugin Verzeichnis (bestehende Benutzer/innen
+  müssen nichts tun)
 
 ### Fehlerbehebung
-- Behebe Problem bei der Verwendung von XYZ Rastern
+- Behebe ein Problem, dass die Verwendung von XYZ Rastern verhindert
 - Behebe Fehlermeldung beim Löschen von Stützensymbolen in der Karte
+- Ermögliche das Laden Seilaplan-Projektdateien, welche Cloud Optimized
+  GeoTiffs (COG) enthalten
 - Diverse Unterhaltsarbeiten
 
 ## Version 3.6.4 (März 2025)
