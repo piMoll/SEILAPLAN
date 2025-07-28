@@ -30,7 +30,6 @@ from SEILAPLAN.tools.outputGeo import CH_CRS
 from SEILAPLAN.tools.raster import rasterExistsAtPath
 from SEILAPLAN.tools.survey import SurveyData
 from processing.core.Processing import Processing
-# GUI and QGIS libraries
 from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QCoreApplication, QFileInfo, QSettings, Qt
 from qgis.PyQt.QtGui import QPixmap
@@ -39,9 +38,7 @@ from qgis.PyQt.QtWidgets import (QComboBox, QDialog, QFileDialog, QMessageBox,
 from qgis.core import (QgsCoordinateReferenceSystem, QgsPointXY, QgsProject,
                        QgsRasterLayer)
 
-# GUI elements
 from .checkableComboBoxOwn import QgsCheckableComboBoxOwn
-# Further GUI modules for functionality
 from .guiHelperFunctions import (DialogWithImage, addBackgroundMap,
                                  addLayerToQgis, createContours,
                                  createProfileLayers, getAbsoluteIconPath)

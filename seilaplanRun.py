@@ -1,7 +1,5 @@
 from SEILAPLAN.gui.adjustmentDialog import AdjustmentDialog
-# Further dialog windows and helpers
 from SEILAPLAN.gui.progressDialog import ProgressDialog
-# Main dialog window
 from SEILAPLAN.gui.seilaplanPluginDialog import SeilaplanPluginDialog
 from SEILAPLAN.tools.configHandler import ConfigHandler
 from SEILAPLAN.tools.processingThread import ProcessingTask

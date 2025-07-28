@@ -20,6 +20,7 @@
 """
 import os
 
+from SEILAPLAN import PLUGIN_DIR
 from SEILAPLAN.core.cablelineFinal import (preciseCable,
                                            updateWithCableCoordinates)
 from SEILAPLAN.tools.birdViewMapExtractor import extractMapBackground
@@ -90,8 +91,6 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         self.returnToProjectWindow = None
         # Max distance the anchors can move away from initial position
         self.anchorBuffer = self.projectHandler.heightSource.buffer
-        # Path to plugin root
-        self.homePath = os.path.dirname(os.path.dirname(__file__))
         
         # Load data
         self.result = {}
@@ -415,9 +414,10 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         
         if imageName:
             # Show an info image
-            imgPath = os.path.join(self.homePath, 'img', f'{self.locale}_{imageName}')
+            imgPath = os.path.join(PLUGIN_DIR, 'img',
+                                   f'{self.locale}_{imageName}')
             if not os.path.exists(imgPath):
-                imgPath = os.path.join(self.homePath, 'img', f'de_{imageName}')
+                imgPath = os.path.join(PLUGIN_DIR, 'img', f'de_{imageName}')
             self.imgBox.setWindowTitle(title)
             # Load image
             myPixmap = QPixmap(str(imgPath))
@@ -660,9 +660,10 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         
         if self.confHandler.getOutputOption('birdViewLegend'):
             imageName = 'Vogelperspektive_Kategorie.png'
-            imgPath = os.path.join(self.homePath, 'img', f'{self.locale}_{imageName}')
+            imgPath = os.path.join(PLUGIN_DIR, 'img',
+                                   f'{self.locale}_{imageName}')
             if not os.path.exists(imgPath):
-                imgPath = os.path.join(self.homePath, 'img', f'de_{imageName}')
+                imgPath = os.path.join(PLUGIN_DIR, 'img', f'de_{imageName}')
             saveImgAsPdfWithMpl(imgPath, os.path.join(outputLoc, self.tr('Vogelperspektive Legende') + '.pdf'))
         
         # Generate geo data
