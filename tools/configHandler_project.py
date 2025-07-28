@@ -19,7 +19,6 @@
  ***************************************************************************/
 """
 import json
-import os
 from math import atan2, cos, pi, sin
 
 from SEILAPLAN import __version__ as version
@@ -32,7 +31,7 @@ from .heightSource import AbstractHeightSource
 from .outputGeo import createVirtualRaster
 from .poles import Poles
 from .profile import Profile
-from .raster import Raster
+from .raster import Raster, rasterExistsAtPath
 from .survey import SurveyData
 
 
@@ -249,7 +248,7 @@ class ProjectConfHandler(AbstractConfHandler):
                     #  loaded. We create layers first, then create virtual layer
                     layerlist = []
                     for i, path in enumerate(rasterList):
-                        if not os.path.exists(path):
+                        if not rasterExistsAtPath(path):
                             self.onError(self.tr("Raster-Datei _path_ ist "
                                 "nicht vorhanden, Raster kann nicht geladen "
                                 "werden.").replace('_path_', path))
