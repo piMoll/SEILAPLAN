@@ -16,7 +16,7 @@ TOP_LEVEL_INCLUDES = [
     'utils',
     '__init__.py',
     'changelog.md',
-    'LICENSE.txt',
+    'LICENSE',
     'metadata.txt',
     'README.md',
     'seilaplanPlugin.py',
