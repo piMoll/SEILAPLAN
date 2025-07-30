@@ -1,18 +1,9 @@
-# This file contains metadata for your plugin. Since 
-# version 2.0 of QGIS this is the proper way to supply 
-# information about a plugin. The old method of 
-# embedding metadata in __init__.py will 
-# is no longer supported since version 2.0.
-
-# This file should be included when you package your plugin.
-# Mandatory items:
-
 [general]
 name=SEILAPLAN
 qgisMinimumVersion=3.22
 qgisMaximumVersion=4.99
 supportsQt6=yes
-description=Seilkran-Layoutplaner
+description=Seilkran-Layoutplaner — A cable road layout planner
 about=SEILAPLAN ermöglicht die einfache und effiziente Planung von Seillinien unter Berücksichtigung topographischer Gegebenheiten. Die implementierte Berechnungsmethode basiert auf der Methode von Zweifel (1960) und beschreibt die Kettenlinie, unter Annahme einer beidseitig fixierten Verankerung des Tragseils.
     
     SEILAPLAN wurde spezifisch für die Bedürfnisse von forstlichen Seilkrananlagen entwickelt. Die Berechnung ist jedoch für alle Seilsysteme mit beidseitig verankertem Tragseil anwendbar, also beispielsweise auch für Materialseilbahnen.
@@ -26,13 +17,8 @@ about=SEILAPLAN ermöglicht die einfache und effiziente Planung von Seillinien u
 version=3.7.0
 author=Bont, Moll, Ramstein, Frutig, Heinimann, Schweier
 email=seilaplanplugin@gmail.com
-
-# End of mandatory metadata
-
-# Recommended items:
-
-# Uncomment the following line and add your changelog:
 changelog=Version 3.7.0 (Juli 2025)
+
     Neue Features
     - Upgrade für die Verwendung unter QGIS 4.0 und Qt 6 (ab Oktober 2025)
     - Umzug ins offizielle QGIS Plugin Verzeichnis (bestehende Benutzer/innen müssen nichts tun)
@@ -40,12 +26,13 @@ changelog=Version 3.7.0 (Juli 2025)
     Fehlerbehebung
     - Behebe ein Problem, dass die Verwendung von XYZ Rastern verhindert
     - Behebe Fehlermeldung beim Löschen von Stützensymbolen in der Karte
-    - Ermögliche das Laden SEILAPLAN-Projektdateien, welche Cloud Optimized GeoTiffs (COG) enthalten
+    - Ermögliche das Laden von SEILAPLAN-Projektdateien, welche Cloud Optimized GeoTiffs (COG) enthalten
     - Diverse Unterhaltsarbeiten
     
     Vollständiger Changelog unter: https://github.com/piMoll/SEILAPLAN/blob/master/changelog.md
 
     ***
+    [en]
     
     New features
     - Upgrade for QGIS 4.0 and Qt 6 (October 2025)
@@ -58,8 +45,7 @@ changelog=Version 3.7.0 (Juli 2025)
     - Various maintenance work
         
 # Tags are comma separated with spaces allowed
-tags=analysis,forest,planning,design,optimization,wald,planung,optimierung
-
+tags=analysis,forestry,forest,planning,design,optimization,wald,planung,optimierung
 homepage=https://seilaplan.wsl.ch
 tracker=https://github.com/piMoll/SEILAPLAN/issues
 repository=https://github.com/piMoll/SEILAPLAN
@@ -67,7 +53,6 @@ category=Plugins
 icon=gui/icons/icon_app.png
 # experimental flag
 experimental=False
-
 # deprecated flag (applies to the whole plugin, not just a single version)
 deprecated=False
 

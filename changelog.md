@@ -9,7 +9,7 @@
 ### Fehlerbehebung
 - Behebe ein Problem, dass die Verwendung von XYZ Rastern verhindert
 - Behebe Fehlermeldung beim Löschen von Stützensymbolen in der Karte
-- Ermögliche das Laden Seilaplan-Projektdateien, welche Cloud Optimized
+- Ermögliche das Laden von Seilaplan-Projektdateien, welche Cloud Optimized
   GeoTiffs (COG) enthalten
 - Diverse Unterhaltsarbeiten
 

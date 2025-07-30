@@ -138,16 +138,18 @@ at https://seilaplan.wsl.ch
 
 ## Installation
 
-To run SEILAPLAN [QGIS](https://qgis.org/) is required, a freely available
+SEILAPLAN is a plugin for the widely used [QGIS](https://qgis.org/) software, a
+freely available
 geographic information system for viewing and analyzing geodata.
 
-It is recommended to use a current Long Term Support (LTS) version of QGIS and
+It is recommended to install a current Long Term Support (LTS) version of QGIS
+and
 update it regularly.
 Seilaplan can be used in QGIS version 3 (>3.22) and is compatible with the
 upcoming version 4.
 The plugin runs on Linux, Windows and OS X.
 
-1. Download and install QGIS from [here](https://www.qgis.org/download/)
+1. Download and install QGIS [here](https://www.qgis.org/download/)
 2. Open the Plugin Manager in QGIS: Menu _Plugins > Manage and Install Plugins_
 3. In the _All_ tab, search for "SEILAPLAN"
 4. Select the entry and click _Install Plugin_
@@ -156,13 +158,14 @@ The plugin runs on Linux, Windows and OS X.
    should appear in the toolbar. If not, right-click on the toolbar and
    activate the _Plugins Toolbar_ entry
 
-Further information, first steps, and troubleshooting can be found in the PDF (
+Further information, first steps, and troubleshooting can be found in the PDF
+(in
 german): [SEILAPLAN_Installation_und_erste_Schritte.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/SEILAPLAN_Installation_und_erste_Schritte.pdf)
 
 ## Obtaining elevation data for Switzerland
 
 Since spring 2021, the Swiss Federal Office of Topography swisstopo has been
-providing very accurate elevation data for free download.
+providing very accurate elevation data for free.
 The data can be conveniently downloaded in QGIS using the _Swiss Geo
 Downloader_ QGIS plugin.  
 The plugin can be installed through the menu _Plugins_ > _Manage and Install
@@ -200,7 +203,7 @@ ETH Zurich
 8092 Zurich  
 (Concept, implementation versions 1.x for QGIS 2)
 
-**Contributing people**  
+**Contributors**
 - Leo Bont (project management, development, concept, mechanics, financing)
 - Hansrudolf Heinimann (concept, mechanics, financing)
 - Patricia Moll (implementation in Python/QGIS, user interface)

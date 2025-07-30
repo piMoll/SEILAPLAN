@@ -16,8 +16,8 @@ unter https://seilaplan.wsl.ch
 
 _english_
 
-SEILAPLAN is a QGIS Plugin to support forest harvest operations by optimizing
-the layout of cable roads.
+SEILAPLAN is a QGIS Plugin to support forest harvest operations by planning and
+optimizing the layout of cable roads.
 
 For further information, installation guide and contributors
 visit [http://pimoll.github.io/SEILAPLAN](http://pimoll.github.io/SEILAPLAN/)
