@@ -1,4 +1,4 @@
-from qgis.PyQt.QtCore import pyqtSignal
+from qgis.PyQt.QtCore import pyqtSignal, Qt
 from qgis.gui import QgsCheckableComboBox
 
 
@@ -19,5 +19,5 @@ class QgsCheckableComboBoxOwn(QgsCheckableComboBox):
     def focusInEvent(self, event):
         super(QgsCheckableComboBoxOwn, self).focusInEvent(event)
         super().focusInEvent(event)
-        if event.reason() == 4:     # Qt::PopupFocusReason
+        if event.reason() == Qt.FocusReason.PopupFocusReason:
             self.selectedItemsChanged.emit()
