@@ -14,10 +14,13 @@ about=SEILAPLAN ermöglicht die einfache und effiziente Planung von Seillinien u
     
     --------------------------------------
     Bont, Moll, Ramstein, Frutig, Heinimann, Schweier (2022). Introducing Seilaplan, a QGIS plugin for cable road layout planning. Croatian Journal of Forest Engineering, 2022. https://doi.org/10.5552/crojfe.2022.1824
-version=3.7.0
+version=3.7.1
 author=Bont, Moll, Ramstein, Frutig, Heinimann, Schweier
 email=seilaplanplugin@gmail.com
-changelog=Version 3.7.0 (Juli 2025)
+changelog=Version 3.7.1 (August 2025)
+     - Unter Qt6 kann nach Auswahl eines Rasters keine Seillinie definiert werden
+
+    Version 3.7.0 (Juli 2025)
 
     Neue Features
     - Upgrade für die Verwendung unter QGIS 4.0 und Qt 6 (ab Oktober 2025)

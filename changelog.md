@@ -1,5 +1,9 @@
 # Seilaplan Changelog
 
+## Version 3.7.1 (August 2025)
+### Fehlerbehebung
+- Unter Qt 6 kann nach Auswahl des Rasters keine Seillinie definiert werden
+
 ## Version 3.7.0 (Juli 2025)
 ### Neue Features
 - Upgrade für die Verwendung unter QGIS 4.0 und Qt 6 (ab Oktober 2025)

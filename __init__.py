@@ -22,7 +22,7 @@
 """
 import os
 
-__version__ = '3.7.0'
+__version__ = '3.7.1'
 
 DEBUG = False
 PLUGIN_DIR = os.path.dirname(__file__)
