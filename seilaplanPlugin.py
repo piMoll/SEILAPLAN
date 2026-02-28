@@ -21,10 +21,12 @@
 
 import os
 import sys
+
 from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication
-from qgis.PyQt.QtWidgets import QAction, QPushButton, QMessageBox
 from qgis.PyQt.QtGui import QIcon
+from qgis.PyQt.QtWidgets import QAction, QPushButton, QMessageBox
 from qgis.core import Qgis
+
 from . import PLUGIN_DIR
 
 # Add shipped libraries to the python path if missing
@@ -37,7 +39,7 @@ except ModuleNotFoundError:
 
 # Before continuing, we check if scipy and scipy.interpolate can be imported.
 # If not, we will not import the plugin files.
-ERROR = False
+ERROR = None
 try:
     import scipy
 except ModuleNotFoundError:
@@ -54,7 +56,6 @@ if not ERROR:
     # Import seilaplan plugin entry point
     from .seilaplanRun import SeilaplanRun
     from SEILAPLAN.gui.guiHelperFunctions import getAbsoluteIconPath
-    from SEILAPLAN.utils.misc import removeOldSeilaplanPluginRepo
 
 
 class SeilaplanPlugin:
@@ -141,6 +142,7 @@ class SeilaplanPlugin:
         
         # All versions later than 3.7.0 are published on the official QGIS
         # plugin repository. The old GitHub-based repo is removed.
+        from SEILAPLAN.utils.misc import removeOldSeilaplanPluginRepo
         removeOldSeilaplanPluginRepo()
 
     def run(self):
