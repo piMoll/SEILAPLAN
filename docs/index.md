@@ -44,9 +44,9 @@ Das Plugin kann unter Linux, Windows und OS X ausgeführt werden.
 
 Weitere Informationen, erste Schritte und Fehlerbehebungen finden sich im PDF: [SEILAPLAN_Installation_und_erste_Schritte.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/SEILAPLAN_Installation_und_erste_Schritte.pdf)
 
-> [!QGIS 3.44 unter macOS]
-> Die Auführung von SEILAPLAN ist in QGIS 3.44 unter macOS momentan nicht
-> möglich.
+> [!CAUTION]
+> In QGIS 3.44 für **macOS** fehlen Python Bilbiotheken, die SEILAPLAN
+> benötigt.
 > Es wird empfohlen, bis auf Weiteres QGIS LTR 3.40 zu verwenden.
 
 ## **Weiterführende Dokumentation**
@@ -168,8 +168,9 @@ Further information, first steps and troubleshooting can be found in the PDF
 german): [SEILAPLAN_Installation_und_erste_Schritte.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/SEILAPLAN_Installation_und_erste_Schritte.pdf)
 
 
-> [!macOS and QGIS 3.44]
-> Running SEILAPLAN IN QGIS 3.44 under macOS is currently not possible.
+> [!CAUTION]
+> In QGIS 3.44 for **macOS** some Python libraries are missing, SEILAPLAN isn't
+> working.
 > It is recommended to use QGIS LTR 3.40 instead.
 
 ## Obtaining elevation data for Switzerland
