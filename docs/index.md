@@ -7,7 +7,7 @@
 _[See english version below](#seilaplan-1)_
 
 SEILAPLAN ermöglicht die einfache und effiziente Planung von Seillinien unter
-Berücksichtigung topographischer Gegebenheiten.
+Berücksichtigung topografischer Gegebenheiten.
 Die implementierte Berechnungsmethode basiert auf der Methode von Zweifel
 \(1960) und beschreibt die Kettenlinie,
 unter Annahme einer beidseitig fixierten Verankerung des Tragseils.
@@ -19,7 +19,7 @@ Materialseilbahnen.
 
 Dieses QGIS-Plugin ist ein Hilfsmittel. Jede Lösung muss vor Umsetzung durch
 eine geschulte Fachperson geprüft werden. Jegliche Haftung wird im Rahmen der
-GNU General Public Licence Version 2 oder neuere
+GNU General Public License Version 2 oder neuere
 ausgeschlossen (www.gnu.org/licenses).
 
 Ausführliche Hilfestellung, Hintergründe und Dokumentation
@@ -36,13 +36,18 @@ Seilaplan kann mit QGIS Version 3 (>3.22) verwendet werden und ist kompatibel
 mit der bevorstehenden Version 4.
 Das Plugin kann unter Linux, Windows und OS X ausgeführt werden.
 
-1. QGIS [herunterladen](https://www.qgis.org/download/) und installieren
+1. QGIS [herunterladen](https://qgis.org/download/) und installieren
 2. In QGIS den Plugin-Manager öffnen: Menü _Erweiterungen > Erweiterungen verwalten und installieren_
 3. Im Reiter _Alle_ nach «SEILAPLAN» suchen
 4. Eintrag auswählen und _Erweiterung installieren_ klicken
 5. Das Seilaplan Icon ![Icon](https://github.com/piMoll/SEILAPLAN/raw/master/docs/seilaplan_icon.png) sollte in der Werkzeugleiste sichtbar werden. Falls nicht, Rechtsklick auf die Werkzeugleiste und Eintrag _Erweiterungswerkzeugleiste_ aktivieren
 
 Weitere Informationen, erste Schritte und Fehlerbehebungen finden sich im PDF: [SEILAPLAN_Installation_und_erste_Schritte.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/SEILAPLAN_Installation_und_erste_Schritte.pdf)
+
+> [!QGIS 3.44 unter macOS]
+> Die Auführung von SEILAPLAN ist in QGIS 3.44 unter macOS momentan nicht
+> möglich.
+> Es wird empfohlen, bis auf Weiteres QGIS LTR 3.40 zu verwenden.
 
 ## **Weiterführende Dokumentation**
 
@@ -64,7 +69,8 @@ Der Algorithmus berechnet auf Basis eines digitalen Höhenmodells zwischen defin
 
 Das Plugin benötigt folgende Input-Daten:  
 
-1. Höhenmodell (alle von QGIS unterstützen Raster-Formate) oder Längsprofil (CSV)
+1. Höhenmodell (alle von QGIS unterstützten Raster-Formate) oder Längsprofil (
+   CSV)
 2. Anfangs- und Endpunkt (können in die Karte gezeichnet oder als Koordinatenpaare angegeben werden)
 3. Auswahl oder Definition eines Seilkran-Typs 
 
@@ -109,7 +115,7 @@ Verwendung für wissenschaftliche Zwecke:
 Zitiervorschlag Quellcode:
 
 ```
-«Moll, P. E., Bont, L. G., Ramstein, L., Frutig, F., Heinimann, H. R., & Schweier, J. (2022). SEILAPLAN, a QGIS plugin for cable road layout design, version 3.5.0, https://github.com/piMoll/SEILAPLAN»
+«Moll, P. E., Bont, L. G., Ramstein, L., Frutig, F., Heinimann, H. R., & Schweier, J. (2022). SEILAPLAN, a QGIS plugin for cable road layout design, version 3.7.1, https://github.com/piMoll/SEILAPLAN»
 ```
 
 ---
@@ -129,7 +135,7 @@ that is anchored on both sides, for example, material ropeways.
 This QGIS plugin is intended as a supporting tool only.
 Each solution must be checked by a trained
 specialist before implementation. All liability is excluded under the GNU
-General Public Licence Version 2 or newer (www.gnu.org/licenses).
+Public License Version 2 or newer (www.gnu.org/licenses).
 
 Extended help, background information and documentation
 at https://seilaplan.wsl.ch
@@ -139,17 +145,16 @@ at https://seilaplan.wsl.ch
 ## Installation
 
 SEILAPLAN is a plugin for the widely used [QGIS](https://qgis.org/) software, a
-freely available
-geographic information system for viewing and analyzing geodata.
+freely available geographic information system for viewing and analyzing
+geodata.
 
 It is recommended to install a current Long Term Support (LTS) version of QGIS
-and
-update it regularly.
+and update it regularly.
 Seilaplan can be used in QGIS version 3 (>3.22) and is compatible with the
 upcoming version 4.
 The plugin runs on Linux, Windows and OS X.
 
-1. Download and install QGIS [here](https://www.qgis.org/download/)
+1. Download and install QGIS [here](https://qgis.org/download/)
 2. Open the Plugin Manager in QGIS: Menu _Plugins > Manage and Install Plugins_
 3. In the _All_ tab, search for "SEILAPLAN"
 4. Select the entry and click _Install Plugin_
@@ -158,9 +163,14 @@ The plugin runs on Linux, Windows and OS X.
    should appear in the toolbar. If not, right-click on the toolbar and
    activate the _Plugins Toolbar_ entry
 
-Further information, first steps, and troubleshooting can be found in the PDF
+Further information, first steps and troubleshooting can be found in the PDF
 (in
 german): [SEILAPLAN_Installation_und_erste_Schritte.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/SEILAPLAN_Installation_und_erste_Schritte.pdf)
+
+
+> [!macOS and QGIS 3.44]
+> Running SEILAPLAN IN QGIS 3.44 under macOS is currently not possible.
+> It is recommended to use QGIS LTR 3.40 instead.
 
 ## Obtaining elevation data for Switzerland
 
@@ -233,5 +243,5 @@ For scientific purposes:
 Citation of source code:
 
 ```
-«Moll, P. E., Bont, L. G., Ramstein, L., Frutig, F., Heinimann, H. R., & Schweier, J. (2022). SEILAPLAN, a QGIS plugin for cable road layout design, version 3.5.0, https://github.com/piMoll/SEILAPLAN»
+«Moll, P. E., Bont, L. G., Ramstein, L., Frutig, F., Heinimann, H. R., & Schweier, J. (2022). SEILAPLAN, a QGIS plugin for cable road layout design, version 3.7.1, https://github.com/piMoll/SEILAPLAN»
 ```
