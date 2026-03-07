@@ -124,6 +124,8 @@ class AdjustmentDialogThresholds(QObject):
     def createInfoBtn(self, cellData):
         button = QPushButton('?')
         button.setMaximumSize(QSize(22, 22))
+        button.setFlat(True)
+        button.setCursor(Qt.CursorShape.WhatsThisCursor)
         # Fill info text into message box
         button.clicked.connect(
             lambda: QMessageBox.information(self.parent, cellData['title'],
