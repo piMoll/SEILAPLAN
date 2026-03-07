@@ -95,7 +95,6 @@ class BirdViewWidget(QObject):
         self.layout: QGridLayout = layout
         self.poles: Poles = poles.poles
         self.direction: str = poles.direction
-        self.layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.poleRows = []
         
     def updateGui(self):
