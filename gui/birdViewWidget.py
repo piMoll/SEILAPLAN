@@ -18,12 +18,16 @@
  *                                                                         *
  ***************************************************************************/
 """
-from qgis.PyQt.QtCore import Qt, pyqtSignal, QObject, QCoreApplication
-from qgis.PyQt.QtWidgets import QLabel, QComboBox, QGridLayout, QSizePolicy, QWidget
+from qgis.PyQt.QtCore import pyqtSignal, QCoreApplication, QObject, Qt
 from qgis.PyQt.QtGui import QStandardItem, QStandardItemModel
-
+from qgis.PyQt.QtWidgets import (
+    QComboBox,
+    QGridLayout,
+    QLabel,
+    QSizePolicy,
+    QWidget
+)
 from SEILAPLAN.tools.poles import Poles
-
 
 birdViewKatConf = {
     '-': {

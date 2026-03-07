@@ -18,16 +18,27 @@
  *                                                                         *
  ***************************************************************************/
 """
-import numpy as np
-import os
 import csv
+import os
 
+import numpy as np
+from qgis.core import (
+    QgsCoordinateReferenceSystem,
+    QgsCoordinateTransform,
+    QgsCoordinateTransformContext,
+    QgsFeature,
+    QgsField,
+    QgsFields,
+    QgsGeometry,
+    QgsPoint,
+    QgsProcessing,
+    QgsProcessingException,
+    QgsProject,
+    QgsRasterLayer,
+    QgsVectorFileWriter,
+    QgsWkbTypes
+)
 from qgis.PyQt.QtCore import QCoreApplication
-from qgis.core import (QgsRasterLayer, QgsProcessing, QgsProcessingException,
-                       QgsWkbTypes, QgsFields, QgsField, QgsVectorFileWriter,
-                       QgsFeature, QgsGeometry, QgsCoordinateTransform, QgsPoint,
-                       QgsCoordinateReferenceSystem, QgsProject,
-                       QgsCoordinateTransformContext)
 from SEILAPLAN import DEBUG
 from SEILAPLAN.gui.guiHelperFunctions import addLayerToQgis
 

@@ -18,10 +18,19 @@
  *                                                                         *
  ***************************************************************************/
 """
-import os
 from math import degrees, radians
-from qgis.core import (QgsGeometry, QgsPrintLayout, QgsLayoutItemMap, QgsPointXY,
-                       QgsLayoutExporter, QgsLayoutSize, QgsProject, QgsRectangle)
+import os
+
+from qgis.core import (
+    QgsGeometry,
+    QgsLayoutExporter,
+    QgsLayoutItemMap,
+    QgsLayoutSize,
+    QgsPointXY,
+    QgsPrintLayout,
+    QgsProject,
+    QgsRectangle
+)
 
 
 def extractMapBackground(savePath, xlim, ylim, startPoint, azimut):

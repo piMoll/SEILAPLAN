@@ -10,8 +10,9 @@
 # Licence:     <your licence>
 #------------------------------------------------------------------------------
 """
-import numpy as np
 from math import inf
+
+import numpy as np
 
 
 def calcBandH(zi, di, H_Anfangsmast, H_Endmast, z_null, z_ende, d_null, d_ende):

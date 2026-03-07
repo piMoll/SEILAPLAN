@@ -19,14 +19,26 @@
  ***************************************************************************/
  """
 
-import os
-from qgis.PyQt.QtCore import QSize, Qt, QCoreApplication
-from qgis.PyQt.QtWidgets import QDialog, QWidget, QLabel, QDialogButtonBox, \
-    QHBoxLayout, QComboBox, QSizePolicy, QPushButton, QCheckBox, \
-    QVBoxLayout, QFileDialog, QLineEdit, QMessageBox
+from qgis.PyQt.QtCore import QCoreApplication, QSize, Qt
 from qgis.PyQt.QtGui import QIcon, QPixmap
-from .guiHelperFunctions import sanitizeFilename, getAbsoluteIconPath
+from qgis.PyQt.QtWidgets import (
+    QCheckBox,
+    QComboBox,
+    QDialog,
+    QDialogButtonBox,
+    QFileDialog,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QMessageBox,
+    QPushButton,
+    QSizePolicy,
+    QVBoxLayout,
+    QWidget
+)
 from SEILAPLAN.tools.configHandler import ConfigHandler
+
+from .guiHelperFunctions import getAbsoluteIconPath, sanitizeFilename
 
 
 class DialogSaveParamset(QDialog):

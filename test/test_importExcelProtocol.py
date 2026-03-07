@@ -1,9 +1,9 @@
+from copy import deepcopy
 import os
 import unittest
-from copy import deepcopy
+from unittest import mock
 
 import numpy as np
-from unittest import mock
 from test import TESTDATA_DIR
 from tools.importExcelProtocol import ExcelProtocolReader
 

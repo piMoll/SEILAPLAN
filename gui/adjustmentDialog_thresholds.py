@@ -18,10 +18,23 @@
  *                                                                         *
  ***************************************************************************/
 """
-from qgis.PyQt.QtCore import (Qt, QObject, QAbstractTableModel, QModelIndex,
-                              pyqtSignal, QSize)
-from qgis.PyQt.QtGui import QColor, QBrush, QStandardItemModel, QIcon, QPixmap
-from qgis.PyQt.QtWidgets import QPushButton, QHBoxLayout, QWidget, QMessageBox, QTableView
+from qgis.PyQt.QtCore import (
+    pyqtSignal,
+    QAbstractTableModel,
+    QModelIndex,
+    QObject,
+    QSize,
+    Qt
+)
+from qgis.PyQt.QtGui import QBrush, QColor, QIcon, QPixmap, QStandardItemModel
+from qgis.PyQt.QtWidgets import (
+    QHBoxLayout,
+    QMessageBox,
+    QPushButton,
+    QTableView,
+    QWidget
+)
+
 from .guiHelperFunctions import getAbsoluteIconPath
 
 

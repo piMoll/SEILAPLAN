@@ -1,11 +1,12 @@
-from typing import List
-import numpy as np
-from math import floor
 from copy import deepcopy
-from qgis.PyQt.QtCore import QCoreApplication
+from math import floor
+from typing import List
 
+import numpy as np
+from qgis.PyQt.QtCore import QCoreApplication
+from SEILAPLAN.gui.adjustmentDialog_thresholds import \
+    AdjustmentDialogThresholds
 from SEILAPLAN.gui.adjustmentPlot import PlotMarker
-from SEILAPLAN.gui.adjustmentDialog_thresholds import AdjustmentDialogThresholds
 from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
 
 

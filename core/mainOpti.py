@@ -14,8 +14,9 @@
 """
 import numpy as np
 
-from .terrainAnalysis import ismember
 from .optiSTA import calcSTA
+from .terrainAnalysis import ismember
+
 try:
     import scipy.sparse as sps
 except ModuleNotFoundError:

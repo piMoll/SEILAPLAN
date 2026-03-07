@@ -19,7 +19,9 @@
  ***************************************************************************/
  """
 import csv
+
 import numpy as np
+
 from .heightSource import AbstractSurveyReader
 
 

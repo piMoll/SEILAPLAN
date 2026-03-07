@@ -18,15 +18,18 @@
  *                                                                         *
  ***************************************************************************/
 """
+import copy
 import os
+
 import numpy as np
 from qgis.core import QgsCoordinateReferenceSystem
-import copy
+
 from .heightSource import AbstractHeightSource
-from .importCsvXyz import CsvXyzReader
 from .importCsvVertex import CsvVertexReader
+from .importCsvXyz import CsvXyzReader
 from .importExcelProtocol import ExcelProtocolReader
 from .outputGeo import CH_CRS, reprojectToCrs
+
 # Check if library scipy is present. On linux scipy isn't included in
 #  the standard qgis python interpreter
 try:

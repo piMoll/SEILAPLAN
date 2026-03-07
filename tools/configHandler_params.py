@@ -18,17 +18,17 @@
  *                                                                         *
  ***************************************************************************/
 """
-import os
-import io
-from operator import itemgetter
-from math import pi, sqrt
 import copy
+import io
+from math import pi, sqrt
+from operator import itemgetter
+import os
 
 from qgis.core import QgsSettings
-
-from .configHandler_abstract import AbstractConfHandler
 from SEILAPLAN import PLUGIN_DIR
 from SEILAPLAN.gui.guiHelperFunctions import sanitizeFilename
+
+from .configHandler_abstract import AbstractConfHandler
 
 
 class ParameterConfHandler(AbstractConfHandler):

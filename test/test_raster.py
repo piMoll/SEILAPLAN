@@ -1,8 +1,8 @@
 import os
 import unittest
 
-from SEILAPLAN.tools.raster import Raster
 from qgis.core import QgsCoordinateReferenceSystem, QgsRasterLayer
+from SEILAPLAN.tools.raster import Raster
 from test import TESTDATA_DIR
 
 

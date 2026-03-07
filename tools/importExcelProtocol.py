@@ -18,10 +18,11 @@
  *                                                                         *
  ***************************************************************************/
 """
-from SEILAPLAN.lib.pylightxl import pylightxl as xl
 import numpy as np
+from SEILAPLAN.lib.pylightxl import pylightxl as xl
+
 from .heightSource import AbstractSurveyReader
-from .outputGeo import reprojectToCrs, GPS_CRS
+from .outputGeo import GPS_CRS, reprojectToCrs
 
 
 class ExcelProtocolReader(AbstractSurveyReader):

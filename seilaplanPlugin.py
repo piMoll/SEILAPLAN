@@ -22,10 +22,10 @@
 import os
 import sys
 
-from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication
-from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction, QPushButton, QMessageBox
 from qgis.core import Qgis
+from qgis.PyQt.QtCore import QCoreApplication, QSettings, QTranslator
+from qgis.PyQt.QtGui import QIcon
+from qgis.PyQt.QtWidgets import QAction, QMessageBox, QPushButton
 
 from . import PLUGIN_DIR
 

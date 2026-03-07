@@ -1,12 +1,12 @@
-from qgis.testing import unittest
 import numpy as np
 from qgis.core import QgsTask
 from qgis.PyQt.QtCore import pyqtSignal
+from qgis.testing import unittest
+from SEILAPLAN.core.mainSeilaplan import main as main
+from SEILAPLAN.tool_.mainSeilaplan import main as main_
+from SEILAPLAN.tools.configHandler import ConfigHandler
 
 from . import BASIC_PROJECT_FILE
-from SEILAPLAN.tools.configHandler import ConfigHandler
-from SEILAPLAN.tool_.mainSeilaplan import main as main_
-from SEILAPLAN.core.mainSeilaplan import main as main
 
 
 class ProcessingTask(QgsTask):

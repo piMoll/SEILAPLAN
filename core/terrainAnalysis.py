@@ -10,8 +10,9 @@
 # Licence:     <your licence>
 #------------------------------------------------------------------------------
 """
-import numpy as np
 import os
+
+import numpy as np
 
 from .peakdetect import peakdetect
 

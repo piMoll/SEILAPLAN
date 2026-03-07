@@ -18,8 +18,9 @@
  *                                                                         *
  ***************************************************************************/
 """
-from qgis.PyQt.QtCore import QCoreApplication
 from qgis.core import QgsCoordinateReferenceSystem
+from qgis.PyQt.QtCore import QCoreApplication
+
 from .outputGeo import GPS_CRS
 
 

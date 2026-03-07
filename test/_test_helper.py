@@ -1,7 +1,8 @@
-from . import BASIC_PROJECT_FILE
 from SEILAPLAN.core.cablelineFinal import preciseCable
-from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
 from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
+from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
+
+from . import BASIC_PROJECT_FILE
 
 
 def calculate_cable_line(conf, project_file=BASIC_PROJECT_FILE):

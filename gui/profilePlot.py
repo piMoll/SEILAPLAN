@@ -19,11 +19,12 @@
  ***************************************************************************/
 """
 
-import numpy as np
 from math import floor
-from qgis.PyQt.QtCore import Qt, QSize, QCoreApplication
+
+import numpy as np
+from qgis.PyQt.QtCore import QCoreApplication, QSize, Qt, QT_VERSION_STR
 from qgis.PyQt.QtWidgets import QSizePolicy
-from qgis.PyQt.QtCore import QT_VERSION_STR
+
 if QT_VERSION_STR.startswith('5'):
     from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 else:

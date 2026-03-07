@@ -21,8 +21,8 @@
 import json
 from math import atan2, cos, pi, sin
 
-from SEILAPLAN import __version__ as version
 from qgis.core import (QgsDistanceArea, QgsPointXY, QgsRasterLayer)
+from SEILAPLAN import __version__ as version
 
 from .configHandler_abstract import AbstractConfHandler
 from .configHandler_params import ParameterConfHandler
