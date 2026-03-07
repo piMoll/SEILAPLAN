@@ -18,20 +18,20 @@
  *                                                                         *
  ***************************************************************************/
 """
-import os
 import io
-import re
-import numpy
-import time
 import json
+import os
+import re
+import time
 
-from qgis.PyQt.QtCore import QSettings
+import numpy
 from qgis.core import QgsSettings
+from qgis.PyQt.QtCore import QSettings
 
-from .configHandler_project import ProjectConfHandler
 from .configHandler_params import ParameterConfHandler
-from .outputReport import getTimestamp
+from .configHandler_project import ProjectConfHandler
 from .globals import PolesOrigin
+from .outputReport import getTimestamp
 
 
 class ConfigHandler:

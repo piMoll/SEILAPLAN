@@ -18,11 +18,13 @@
  *                                                                         *
  ***************************************************************************/
 """
-from typing import List
-import numpy as np
 from math import degrees
-from qgis.PyQt.QtCore import Qt, QSize, QCoreApplication, QT_VERSION_STR
+from typing import List
+
+import numpy as np
+from qgis.PyQt.QtCore import QCoreApplication, QSize, Qt, QT_VERSION_STR
 from qgis.PyQt.QtWidgets import QSizePolicy
+
 if QT_VERSION_STR.startswith('5'):
     from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 else:

@@ -18,20 +18,18 @@
  *                                                                         *
  ***************************************************************************/
 """
-import numpy as np
-
-import os
 import math
-import time
+import os
 import textwrap
+import time
 
+import numpy as np
 from qgis.PyQt.QtCore import QCoreApplication
-
-from reportlab.lib.pagesizes import A4, portrait
-from reportlab.lib.units import cm
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from reportlab.graphics.shapes import colors
+from reportlab.lib.pagesizes import A4, portrait
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import cm
+from reportlab.platypus import Paragraph, SimpleDocTemplate, Table, TableStyle
 
 p = 21
 nl = os.linesep

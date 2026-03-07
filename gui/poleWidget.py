@@ -19,13 +19,23 @@
  ***************************************************************************/
 """
 from typing import List
+
 from numpy import nan
-from qgis.PyQt.QtWidgets import QWidget
-from qgis.PyQt.QtCore import QSize, Qt, pyqtSignal, QObject, QCoreApplication
-from qgis.PyQt.QtWidgets import (QDoubleSpinBox, QSpinBox, QPushButton, QHBoxLayout,
-                                 QLineEdit, QLabel, QCheckBox, QGridLayout)
+from qgis.PyQt.QtCore import pyqtSignal, QCoreApplication, QObject, QSize, Qt
 from qgis.PyQt.QtGui import QIcon, QPixmap
+from qgis.PyQt.QtWidgets import (
+    QCheckBox,
+    QDoubleSpinBox,
+    QGridLayout,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QPushButton,
+    QSpinBox,
+    QWidget
+)
 from SEILAPLAN.tools.poles import Poles
+
 from .guiHelperFunctions import getAbsoluteIconPath
 
 

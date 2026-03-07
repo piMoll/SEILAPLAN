@@ -11,8 +11,9 @@
 #------------------------------------------------------------------------------
 """
 
+from math import cos, inf, pi, sin
+
 import numpy as np
-from math import pi, cos, sin, inf
 
 
 def xfrange(start, stop, step):

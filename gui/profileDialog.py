@@ -22,17 +22,29 @@
  https://github.com/eliben/code-for-blog/blob/master/2009/qt_mpl_bars.py
  http://www.technicaljar.com/?p=688
 """
-import numpy as np
 from math import floor
-from qgis.PyQt.QtCore import QSize, Qt, QCoreApplication
-from qgis.PyQt.QtWidgets import (QDialog, QWidget, QLabel, QDialogButtonBox,
-    QHBoxLayout, QPushButton, QVBoxLayout, QFrame, QSpacerItem, QSizePolicy, QGridLayout)
-from qgis.PyQt.QtGui import QIcon, QPixmap
 
-from .profilePlot import ProfilePlot
+import numpy as np
+from qgis.PyQt.QtCore import QCoreApplication, QSize, Qt
+from qgis.PyQt.QtGui import QIcon, QPixmap
+from qgis.PyQt.QtWidgets import (
+    QDialog,
+    QDialogButtonBox,
+    QFrame,
+    QGridLayout,
+    QHBoxLayout,
+    QLabel,
+    QPushButton,
+    QSizePolicy,
+    QSpacerItem,
+    QVBoxLayout,
+    QWidget
+)
+
+from .guiHelperFunctions import getAbsoluteIconPath
 from .plotting_tools import MyNavigationToolbar
 from .poleWidget import CustomPoleWidget
-from .guiHelperFunctions import getAbsoluteIconPath
+from .profilePlot import ProfilePlot
 
 
 class ProfileDialog(QDialog):

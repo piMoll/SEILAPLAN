@@ -19,11 +19,18 @@
  ***************************************************************************/
 """
 import os
+
 from qgis.PyQt import uic
-from qgis.PyQt.QtWidgets import QDialog, QFileDialog, QDialogButtonBox, QMessageBox
-from SEILAPLAN.tools.survey import SurveyData
-from SEILAPLAN.tools.fileFetcher import FileFetcher
+from qgis.PyQt.QtWidgets import (
+    QDialog,
+    QDialogButtonBox,
+    QFileDialog,
+    QMessageBox
+)
 from SEILAPLAN.tools.configHandler import ConfigHandler
+from SEILAPLAN.tools.fileFetcher import FileFetcher
+from SEILAPLAN.tools.survey import SurveyData
+
 # This loads the .ui file so that PyQt can populate the plugin with the
 #  elements from Qt Designer
 UI_FILE = os.path.join(os.path.dirname(__file__), 'surveyImportDialog.ui')

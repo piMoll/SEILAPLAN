@@ -1,8 +1,10 @@
 import os
-import matplotlib.pyplot as plt
+
 from matplotlib import transforms
 from matplotlib.path import Path
+import matplotlib.pyplot as plt
 import numpy as np
+
 try:
     from qgis.core import QgsMessageLog
 except ImportError:

@@ -1,5 +1,5 @@
-from SEILAPLAN import DEBUG, __version__ as current_version
 from qgis.core import QgsMessageLog, QgsSettings
+from SEILAPLAN import __version__ as current_version, DEBUG
 
 QGIS_SETTINGS_GROUP_PLUGINS = 'app/plugin_repositories'
 SEILAPLAN_PLUGIN_REPO = 'https://raw.githubusercontent.com/piMoll/SEILAPLAN/master/plugin.xml'

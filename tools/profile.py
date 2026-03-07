@@ -19,7 +19,9 @@
  ***************************************************************************/
 """
 from math import floor
+
 import numpy as np
+
 from .survey import SurveyData
 
 

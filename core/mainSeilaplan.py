@@ -20,11 +20,12 @@
 """
 
 import numpy as np
-from .terrainAnalysis import stuePos
-from .mainOpti import optimization
-from .cablelineFinal import preciseCable
 from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
 from SEILAPLAN.tools.globals import PolesOrigin, ResultQuality
+
+from .cablelineFinal import preciseCable
+from .mainOpti import optimization
+from .terrainAnalysis import stuePos
 
 
 def main(progress, project):

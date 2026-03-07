@@ -1,4 +1,5 @@
-from math import cos, sin, atan, floor, radians, degrees
+from math import atan, cos, degrees, floor, radians, sin
+
 import numpy as np
 from qgis.PyQt.QtCore import QCoreApplication
 from SEILAPLAN.tools.globals import PolesOrigin

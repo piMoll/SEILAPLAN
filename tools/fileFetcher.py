@@ -1,5 +1,5 @@
-from qgis.PyQt.QtCore import QEventLoop, QUrl
 from qgis.core import QgsFileDownloader
+from qgis.PyQt.QtCore import QEventLoop, QUrl
 
 
 class FileFetcher:

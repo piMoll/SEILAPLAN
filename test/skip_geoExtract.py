@@ -1,11 +1,17 @@
 import os
-from qgis.testing import unittest
+
 import numpy as np
+from qgis.testing import unittest
+from SEILAPLAN.tool_.geoExtract import (
+    calcAnker,
+    calcProfile,
+    generateDhm,
+    updateAnker
+)
+from SEILAPLAN.tool_.mainSeilaplan import checkInputParams
+from SEILAPLAN.tools.configHandler import ConfigHandler
 
 from . import BASIC_PROJECT_FILE, TESTDATA_DIR
-from SEILAPLAN.tools.configHandler import ConfigHandler
-from SEILAPLAN.tool_.mainSeilaplan import checkInputParams
-from SEILAPLAN.tool_.geoExtract import (generateDhm, calcProfile, calcAnker, updateAnker)
 
 
 @unittest.skip("deprecated, needs to be rewritten")

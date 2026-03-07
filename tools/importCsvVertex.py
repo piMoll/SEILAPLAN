@@ -19,10 +19,12 @@
  ***************************************************************************/
 """
 import csv
+
 import numpy as np
 from qgis.core import QgsCoordinateReferenceSystem
-from .outputGeo import GPS_CRS, latLonToUtmCode, reprojectToCrs
+
 from .heightSource import AbstractSurveyReader
+from .outputGeo import GPS_CRS, latLonToUtmCode, reprojectToCrs
 
 
 class CsvVertexReader(AbstractSurveyReader):

@@ -19,11 +19,19 @@
  ***************************************************************************/
 """
 
-import textwrap
-from qgis.PyQt.QtCore import Qt, QCoreApplication
-from qgis.PyQt.QtWidgets import (QDialog, QVBoxLayout, QProgressBar, QLabel,
-    QHBoxLayout, QDialogButtonBox, QSizePolicy, QPushButton, QSpacerItem,
-    QLayout)
+from qgis.PyQt.QtCore import QCoreApplication, Qt
+from qgis.PyQt.QtWidgets import (
+    QDialog,
+    QDialogButtonBox,
+    QHBoxLayout,
+    QLabel,
+    QLayout,
+    QProgressBar,
+    QPushButton,
+    QSizePolicy,
+    QSpacerItem,
+    QVBoxLayout
+)
 
 
 class ProgressDialog(QDialog):

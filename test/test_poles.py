@@ -1,11 +1,11 @@
 import copyreg
 import unittest
 
+from numpy import nan
+from qgis.core import QgsCoordinateReferenceSystem
 from SEILAPLAN.core.cablelineFinal import preciseCable
 from SEILAPLAN.tools.configHandler import ConfigHandler
 from SEILAPLAN.tools.poles import Poles
-from numpy import nan
-from qgis.core import QgsCoordinateReferenceSystem
 
 from . import project_file_loader
 from ._test_helper import calculate_cable_line

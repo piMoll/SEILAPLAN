@@ -20,34 +20,45 @@
 """
 import os
 
+from qgis.PyQt import uic
+from qgis.PyQt.QtCore import QCoreApplication, QSettings, Qt, QTimer
+from qgis.PyQt.QtGui import QPixmap
+from qgis.PyQt.QtWidgets import QDialog, QMessageBox, QTextEdit
 from SEILAPLAN import PLUGIN_DIR
-from SEILAPLAN.core.cablelineFinal import (preciseCable,
-                                           updateWithCableCoordinates)
+from SEILAPLAN.core.cablelineFinal import (
+    preciseCable,
+    updateWithCableCoordinates
+)
 from SEILAPLAN.tools.birdViewMapExtractor import extractMapBackground
 from SEILAPLAN.tools.calcThreshold import ThresholdUpdater
 from SEILAPLAN.tools.configHandler import ConfigHandler
 from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
 from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
 from SEILAPLAN.tools.globals import PolesOrigin, ResultQuality
-from SEILAPLAN.tools.outputGeo import (addToMap, generateCoordTable,
-                                       organizeDataForExport, writeGeodata)
-from SEILAPLAN.tools.outputReport import (createOutputFolder, generateReport,
-                                          generateReportText,
-                                          generateShortReport)
+from SEILAPLAN.tools.outputGeo import (
+    addToMap, generateCoordTable,
+    organizeDataForExport, writeGeodata
+)
+from SEILAPLAN.tools.outputReport import (
+    createOutputFolder, generateReport,
+    generateReportText,
+    generateShortReport
+)
 from SEILAPLAN.tools.poles import Poles
 from SEILAPLAN.tools.profile import Profile
-from qgis.PyQt import uic
-from qgis.PyQt.QtCore import QCoreApplication, QSettings, QTimer, Qt
-from qgis.PyQt.QtGui import QPixmap
-from qgis.PyQt.QtWidgets import QDialog, QMessageBox, QTextEdit
 
 from .adjustmentDialog_params import AdjustmentDialogParams
 from .adjustmentDialog_thresholds import AdjustmentDialogThresholds
-from .adjustmentPlot import (AdjustmentPlot, calculatePlotDimensions,
-                             saveImgAsPdfWithMpl)
+from .adjustmentPlot import (
+    AdjustmentPlot, calculatePlotDimensions,
+    saveImgAsPdfWithMpl
+)
 from .birdViewWidget import BirdViewWidget
-from .guiHelperFunctions import (DialogWithImage, addBackgroundMap,
-                                 getAbsoluteIconPath)
+from .guiHelperFunctions import (
+    addBackgroundMap,
+    DialogWithImage,
+    getAbsoluteIconPath
+)
 from .mapMarker import MapMarkerTool
 from .plotting_tools import MyNavigationToolbar
 from .poleWidget import CustomPoleWidget

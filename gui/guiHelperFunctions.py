@@ -20,13 +20,31 @@
 """
 
 import os
-from qgis.PyQt.QtGui import QFont, QColor
-from qgis.PyQt.QtCore import QSize, Qt, QFileInfo, QCoreApplication
-from qgis.PyQt.QtWidgets import (QDialog, QWidget, QLabel, QDialogButtonBox,
-    QLayout, QVBoxLayout)
-from qgis.core import (QgsRasterLayer, QgsPointXY, QgsProject, QgsPoint,
-    QgsFeature, QgsGeometry, QgsVectorLayer, QgsPalLayerSettings,
-    QgsTextFormat, QgsTextBufferSettings,  QgsVectorLayerSimpleLabeling, Qgis)
+
+from qgis.core import (
+    Qgis,
+    QgsFeature,
+    QgsGeometry,
+    QgsPalLayerSettings,
+    QgsPoint,
+    QgsPointXY,
+    QgsProject,
+    QgsRasterLayer,
+    QgsTextBufferSettings,
+    QgsTextFormat,
+    QgsVectorLayer,
+    QgsVectorLayerSimpleLabeling
+)
+from qgis.PyQt.QtCore import QCoreApplication, QFileInfo, QSize, Qt
+from qgis.PyQt.QtGui import QColor, QFont
+from qgis.PyQt.QtWidgets import (
+    QDialog,
+    QDialogButtonBox,
+    QLabel,
+    QLayout,
+    QVBoxLayout,
+    QWidget
+)
 from SEILAPLAN import DEBUG, PLUGIN_DIR
 
 try:
