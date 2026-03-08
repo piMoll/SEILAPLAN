@@ -4,15 +4,16 @@ qgisMinimumVersion=3.22
 qgisMaximumVersion=4.99
 supportsQt6=yes
 description=Seillinien-Layoutplaner — A cable road layout planner
-about=SEILAPLAN ermöglicht die einfache und effiziente Planung von Seillinien unter Berücksichtigung topographischer Gegebenheiten. Die implementierte Berechnungsmethode basiert auf der Methode von Zweifel (1960) und beschreibt die Kettenlinie, unter Annahme einer beidseitig fixierten Verankerung des Tragseils.
-    
-    SEILAPLAN wurde spezifisch für die Bedürfnisse von forstlichen Seilkrananlagen entwickelt. Die Berechnung ist jedoch für alle Seilsysteme mit beidseitig verankertem Tragseil anwendbar, also beispielsweise auch für Materialseilbahnen.
-    
+about=[DE]
+    SEILAPLAN ermöglicht die einfache und effiziente Planung von Seillinien unter Berücksichtigung topografischer Gegebenheiten. Die implementierte Berechnungsmethode basiert auf der Methode von Zweifel (1960) und beschreibt die Kettenlinie, unter Annahme einer beidseitig fixierten Verankerung des Tragseils.
     Dieses QGIS-Plugin ist ein Hilfsmittel. Jede Lösung muss vor Umsetzung durch eine geschulte Fachperson geprüft werden. Jegliche Haftung wird im Rahmen der GNU General Public Licence Version 2 oder neuere ausgeschlossen (www.gnu.org/licenses).
-    
+    ***
+    [EN]
+    SEILAPLAN enables simple and efficient planning of cable roads, taking topographical conditions into account. The implemented calculation method is based on the method developed by Zweifel (1960) and describes the catenary, assuming that the skyline is anchored at both ends.
+    This QGIS plugin is a tool. Every solution must be checked by a trained specialist before implementation. Any liability is excluded under the GNU General Public License Version 2 or later (www.gnu.org/licenses).
+    ***
     Dokumentation: https://seilaplan.wsl.ch
-    
-    --------------------------------------
+    ***
     Bont, Moll, Ramstein, Frutig, Heinimann, Schweier (2022). Introducing Seilaplan, a QGIS plugin for cable road layout planning. Croatian Journal of Forest Engineering, 2022. https://doi.org/10.5552/crojfe.2022.1824
 version=3.7.1
 author=Bont, Moll, Ramstein, Frutig, Heinimann, Schweier
@@ -35,7 +36,7 @@ changelog=Version 3.7.1 (August 2025)
     Vollständiger Changelog unter: https://github.com/piMoll/SEILAPLAN/blob/master/changelog.md
 
     ***
-    [en]
+    [EN]
     
     New features
     - Upgrade for QGIS 4.0 and Qt 6 (October 2025)
