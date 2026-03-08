@@ -3,7 +3,7 @@ name=SEILAPLAN
 qgisMinimumVersion=3.22
 qgisMaximumVersion=4.99
 supportsQt6=yes
-description=Seilkran-Layoutplaner — A cable road layout planner
+description=Seillinien-Layoutplaner — A cable road layout planner
 about=SEILAPLAN ermöglicht die einfache und effiziente Planung von Seillinien unter Berücksichtigung topographischer Gegebenheiten. Die implementierte Berechnungsmethode basiert auf der Methode von Zweifel (1960) und beschreibt die Kettenlinie, unter Annahme einer beidseitig fixierten Verankerung des Tragseils.
     
     SEILAPLAN wurde spezifisch für die Bedürfnisse von forstlichen Seilkrananlagen entwickelt. Die Berechnung ist jedoch für alle Seilsysteme mit beidseitig verankertem Tragseil anwendbar, also beispielsweise auch für Materialseilbahnen.

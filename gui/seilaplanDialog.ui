@@ -14,7 +14,7 @@
    <enum>Qt::ClickFocus</enum>
   </property>
   <property name="windowTitle">
-   <string>SEILAPLAN - Seilkran-Layoutplaner</string>
+   <string>SEILAPLAN - Seillinien-Layoutplaner</string>
   </property>
   <property name="windowIcon">
    <iconset>

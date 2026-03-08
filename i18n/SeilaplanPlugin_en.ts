@@ -1973,7 +1973,7 @@ Please change the input.</translation>
     <name>SeilaplanDialogUI</name>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="17"/>
-        <source>SEILAPLAN - Seilkran-Layoutplaner</source>
+        <source>SEILAPLAN - Seillinien-Layoutplaner</source>
         <translation>SEILAPLAN - Cable road layout planning</translation>
     </message>
     <message>

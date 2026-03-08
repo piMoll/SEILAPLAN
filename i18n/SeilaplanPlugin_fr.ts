@@ -1979,7 +1979,7 @@ Veuillez adapter la saisie.</translation>
     <name>SeilaplanDialogUI</name>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="17"/>
-        <source>SEILAPLAN - Seilkran-Layoutplaner</source>
+        <source>SEILAPLAN - Seillinien-Layoutplaner</source>
         <translation>SEILAPLAN - Planification de la disposition de lignes de câble</translation>
     </message>
     <message>
@@ -2583,7 +2583,7 @@ Les dates d&apos;altitude sont visualisées dans le SCR suisse &apos;LV95&apos; 
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="922"/>
         <source>Infotext</source>
-        <translation>&lt;b>SEILAPLAN - Seilkran-Layoutplaner&lt;/b>
+        <translation>&lt;b>SEILAPLAN - Planification de la disposition de lignes de câble&lt;/b>
 
 SEILAPLAN calcule, sur la base d&apos;un modèle de terrain digital et des paramètres techniques entre des coordonnées de départ et de fin bien définies, la disposition optimale de la ligne de câble. Il seront déterminés la position et la hauteur des appuis intermédiaires ainsi que les paramètres les plus importants de la ligne de câble.
 
