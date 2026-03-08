@@ -1,5 +1,16 @@
 # Seilaplan Changelog
 
+## NEXT
+### Neue Features
+- Verbesserung der Übersichtlichkeit im Bearbeitungsfenster
+    - Statusanzeige der Seillinienberechnung direkt im Diagramm
+    - Allgemeine Plugin-Benachrichtigungen (Speichern, Laden) im unteren Bereich
+    - Diagramm-Funktionalitäten oberhalb des Diagramms
+    - Verbessertes Scroll-Verhalten bei vielen Stützen
+    - Fragezeichen-Buttons weniger prominent
+
+### Fehlerbehebung
+
 ## Version 3.7.1 (August 2025)
 ### Fehlerbehebung
 - Unter Qt 6 kann nach Auswahl des Rasters keine Seillinie definiert werden
