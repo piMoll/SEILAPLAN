@@ -35,19 +35,24 @@ def classFactory(iface):
     :param iface: A QGIS interface instance.
     :type iface: QgsInterface
     """
+    enable_remote_debugging()
     
+    from .seilaplanPlugin import SeilaplanPlugin
+    return SeilaplanPlugin(iface)
+
+
+def enable_remote_debugging():
     if DEBUG:
         # To allow remote debugging with PyCharm, add pydevd to the path
         import sys
-        sys.path.append('/snap/pycharm-professional/current/debug-eggs/pydevd-pycharm.egg')
+        sys.path.append(
+            '/snap/pycharm-professional/current/debug-eggs/pydevd-pycharm.egg')
         try:
             import pydevd_pycharm
             pydevd_pycharm.settrace('localhost', port=53100, suspend=False,
-                                    stdoutToServer=True, stderrToServer=True)
+                                    stdout_to_server=True,
+                                    stderr_to_server=True)
         except ConnectionRefusedError:
             pass
         except ImportError:
             pass
-    
-    from .seilaplanPlugin import SeilaplanPlugin
-    return SeilaplanPlugin(iface)

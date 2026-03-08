@@ -56,14 +56,8 @@ class ProcessingTask(QgsTask):
     def run(self):
         
         # # Uncomment when trying to debug the optimization algorithm
-        # try:
-        #     import pydevd_pycharm
-        #     pydevd_pycharm.settrace('localhost', port=53100,
-        #                             stdoutToServer=True, stderrToServer=True)
-        # except ConnectionRefusedError:
-        #     pass
-        # except ImportError:
-        #     pass
+        # from SEILAPLAN import enable_remote_debugging
+        # enable_remote_debugging()
 
         t_start = time.time()
         try:
