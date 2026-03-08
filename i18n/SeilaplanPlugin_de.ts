@@ -1645,7 +1645,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../tools/configHandler_params.py" line="269"/>
         <source>Der Parameter Minimaler Abstand Tragseil Boden darf nicht groesser als der Parameter Minimale Stuetzenhoehe sein.</source>
-        <translation>Der Parameter &apos;Minimaler Abstand Tragseil - Boden&apos; (Reiter Seillinie) darf nicht grösser als der Parameter &apos;Minimale Sattelhöhe&apos; (Reiter Optional #1) sein.
+        <translation>Der Parameter &apos;Minimaler Abstand Tragseil - Boden&apos; (Reiter Seillinie) darf nicht grösser als der Parameter &apos;Minimale Sattelhöhe&apos; (Reiter Optimierung) sein.
 Bitte passen Sie die Eingabe an.</translation>
     </message>
     <message>
@@ -2119,8 +2119,8 @@ Bitte passen Sie die Eingabe an.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1261"/>
-        <source>Optional #1</source>
-        <translation>Optional #1</translation>
+        <source>Optimierung</source>
+        <translation>Optimierung</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1650"/>
@@ -2148,11 +2148,6 @@ Bitte passen Sie die Eingabe an.</translation>
         <translation>Abstufungsintervall</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1351"/>
-        <source>Optimierungsparameter</source>
-        <translation>Optimierungsparameter</translation>
-    </message>
-    <message>
         <location filename="../gui/seilaplanDialog.ui" line="1515"/>
         <source>Minimaler Abstand zwischen Stuetzen</source>
         <translation>Minimaler Abstand zwischen Stützen</translation>
@@ -2161,11 +2156,6 @@ Bitte passen Sie die Eingabe an.</translation>
         <location filename="../gui/seilaplanDialog.ui" line="805"/>
         <source>Grundspannung</source>
         <translation>Tragseilspannkraft (Grundspannung)</translation>
-    </message>
-    <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1718"/>
-        <source>Optional #2</source>
-        <translation>Optional #2</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1764"/>

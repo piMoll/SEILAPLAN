@@ -2127,7 +2127,7 @@ Si prega di adattare l&apos;input.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1261"/>
-        <source>Optional #1</source>
+        <source>Optimierung</source>
         <translation>Opzionale #1</translation>
     </message>
     <message>
@@ -2156,11 +2156,6 @@ Si prega di adattare l&apos;input.</translation>
         <translation>Intervallo di graduazione</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1351"/>
-        <source>Optimierungsparameter</source>
-        <translation>Parametri d&apos; ottimizzazione</translation>
-    </message>
-    <message>
         <location filename="../gui/seilaplanDialog.ui" line="1515"/>
         <source>Minimaler Abstand zwischen Stuetzen</source>
         <translation>Distanza minimale tra i cavalletti</translation>
@@ -2169,11 +2164,6 @@ Si prega di adattare l&apos;input.</translation>
         <location filename="../gui/seilaplanDialog.ui" line="805"/>
         <source>Grundspannung</source>
         <translation>Forza di trazione iniziale</translation>
-    </message>
-    <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1718"/>
-        <source>Optional #2</source>
-        <translation>Opzionale #2</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1764"/>

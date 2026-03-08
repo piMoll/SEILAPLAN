@@ -2135,7 +2135,7 @@ Veuillez adapter la saisie.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1261"/>
-        <source>Optional #1</source>
+        <source>Optimierung</source>
         <translation>Optionnel #1</translation>
     </message>
     <message>
@@ -2164,11 +2164,6 @@ Veuillez adapter la saisie.</translation>
         <translation>Intervalle de gradation</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1351"/>
-        <source>Optimierungsparameter</source>
-        <translation>Paramètres d&apos;optimisation</translation>
-    </message>
-    <message>
         <location filename="../gui/seilaplanDialog.ui" line="1515"/>
         <source>Minimaler Abstand zwischen Stuetzen</source>
         <translation>Distance minimale entre les supports</translation>
@@ -2177,11 +2172,6 @@ Veuillez adapter la saisie.</translation>
         <location filename="../gui/seilaplanDialog.ui" line="805"/>
         <source>Grundspannung</source>
         <translation>Force de traction initiale</translation>
-    </message>
-    <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1718"/>
-        <source>Optional #2</source>
-        <translation>Optionnel #2</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1764"/>

@@ -2130,8 +2130,8 @@ Please change the input.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1261"/>
-        <source>Optional #1</source>
-        <translation>Optional #1</translation>
+        <source>Optimierung</source>
+        <translation>Optimisation</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1650"/>
@@ -2159,11 +2159,6 @@ Please change the input.</translation>
         <translation>Stepping interval</translation>
     </message>
     <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1351"/>
-        <source>Optimierungsparameter</source>
-        <translation>Optimisation parameters</translation>
-    </message>
-    <message>
         <location filename="../gui/seilaplanDialog.ui" line="1515"/>
         <source>Minimaler Abstand zwischen Stuetzen</source>
         <translation>Minimal distance between realized supports</translation>
@@ -2172,11 +2167,6 @@ Please change the input.</translation>
         <location filename="../gui/seilaplanDialog.ui" line="805"/>
         <source>Grundspannung</source>
         <translation>Pre-stress tensile force of unloaded skyline</translation>
-    </message>
-    <message>
-        <location filename="../gui/seilaplanDialog.ui" line="1718"/>
-        <source>Optional #2</source>
-        <translation>Optional #2</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1764"/>
