@@ -1956,9 +1956,9 @@ Bitte passen Sie die Eingabe an.</translation>
     <name>SeilaplanDialogUI</name>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="17"/>
-        <source>SEILAPLAN - Seilkran-Layoutplaner</source>
+        <source>SEILAPLAN - Seillinien-Layoutplaner</source>
         <translatorcomment>Seilaplan ist der Eigenname in allen Sprachen, der Zusatz sollte meines Erachtens in die jeweilige Sprache übersetzt werden</translatorcomment>
-        <translation>SEILAPLAN - Seilkran-Layoutplaner</translation>
+        <translation>SEILAPLAN - Seillinien-Layoutplaner</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2706"/>
@@ -2682,7 +2682,7 @@ Es wird diejenige Lösung gesucht, welche in erster Priorität eine minimale Anz
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="922"/>
         <source>Infotext</source>
-        <translation>&lt;b>SEILAPLAN - Seilkran-Layoutplaner&lt;/b>
+        <translation>&lt;b>SEILAPLAN - Seillinien-Layoutplaner&lt;/b>
 
 SEILAPLAN berechnet auf Grund eines digitalen Höhenmodells und technischen Parametern zwischen definierten Anfangs- und Endkoordinaten das optimale Seillinienlayout. Es werden Position und Höhe der Stützen, sowie die wichtigsten Kennwerte der Seillinie bestimmt.
 

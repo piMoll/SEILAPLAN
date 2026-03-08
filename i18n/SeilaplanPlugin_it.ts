@@ -1967,7 +1967,7 @@ Si prega di adattare l&apos;input.</translation>
     <name>SeilaplanDialogUI</name>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="17"/>
-        <source>SEILAPLAN - Seilkran-Layoutplaner</source>
+        <source>SEILAPLAN - Seillinien-Layoutplaner</source>
         <translation>SEILAPLAN - Pianificazione del layout di linee di gru a cavo</translation>
     </message>
     <message>
@@ -2578,7 +2578,7 @@ I dati di altetta vengono visualizzati nel SCR svizzero &apos;LV95&apos; (EPSG:2
     <message>
         <location filename="../gui/seilaplanPluginDialog.py" line="922"/>
         <source>Infotext</source>
-        <translation>&lt;b>SEILAPLAN - Seilkran-Layoutplaner&lt;/b>
+        <translation>&lt;b>SEILAPLAN - Pianificazione del layout di linee di gru a cavo&lt;/b>
 
 SEILAPLAN calcola, sulla base di un modello digitale del terreno e dei parametri tecnici tra le coordinate di partenza e di fine ben definiti, la disposizione ottimale della linea di gru a cavo. Saranno determinati la posizione e l&apos;altezza dei cavalletti intermedi come pure i parametri i più importanti della linea di gru a cavo.
 
