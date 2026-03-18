@@ -47,7 +47,7 @@
          </property>
          <property name="maximumSize">
           <size>
-           <width>12</width>
+           <width>20</width>
            <height>22</height>
           </size>
          </property>
@@ -111,108 +111,6 @@
         </size>
        </property>
       </spacer>
-     </item>
-     <item>
-      <widget class="QComboBox" name="fieldChooseVariant">
-       <property name="currentText">
-        <string>Variante erstellen</string>
-       </property>
-       <property name="sizeAdjustPolicy">
-        <enum>QComboBox::AdjustToContents</enum>
-       </property>
-       <item>
-        <property name="text">
-         <string>Variante erstellen</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btnUpdateVariant">
-       <property name="maximumSize">
-        <size>
-         <width>27</width>
-         <height>27</height>
-        </size>
-       </property>
-       <property name="toolTip">
-        <string>Variante aktualisieren (ueberschreiben)</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normaloff>icons/recovery_18799165.png</normaloff>icons/recovery_18799165.png</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="autoDefault">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btnSaveVariant">
-       <property name="maximumSize">
-        <size>
-         <width>27</width>
-         <height>27</height>
-        </size>
-       </property>
-       <property name="toolTip">
-        <string>Neue Variante erstellen</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normaloff>icons/icon_save.png</normaloff>icons/icon_save.png</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>24</width>
-         <height>24</height>
-        </size>
-       </property>
-       <property name="autoDefault">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btnDeleteVariant">
-       <property name="maximumSize">
-        <size>
-         <width>27</width>
-         <height>27</height>
-        </size>
-       </property>
-       <property name="toolTip">
-        <string>Variante loeschen</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normaloff>icons/icon_bin.png</normaloff>icons/icon_bin.png</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>24</width>
-         <height>24</height>
-        </size>
-       </property>
-       <property name="autoDefault">
-        <bool>false</bool>
-       </property>
-      </widget>
      </item>
     </layout>
    </item>
@@ -672,7 +570,7 @@
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>12</width>
+                   <width>20</width>
                    <height>22</height>
                   </size>
                  </property>
@@ -744,7 +642,7 @@
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>12</width>
+                   <width>20</width>
                    <height>22</height>
                   </size>
                  </property>
@@ -795,7 +693,7 @@
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>12</width>
+                   <width>20</width>
                    <height>22</height>
                   </size>
                  </property>
