@@ -588,7 +588,7 @@
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>12</width>
+                    <width>20</width>
                     <height>22</height>
                    </size>
                   </property>
@@ -889,7 +889,7 @@
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>12</width>
+                    <width>20</width>
                     <height>22</height>
                    </size>
                   </property>
@@ -1120,7 +1120,7 @@
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>12</width>
+                    <width>20</width>
                     <height>22</height>
                    </size>
                   </property>
@@ -1192,7 +1192,7 @@
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>12</width>
+                    <width>20</width>
                     <height>22</height>
                    </size>
                   </property>
@@ -1615,7 +1615,7 @@
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>12</width>
+                    <width>20</width>
                     <height>22</height>
                    </size>
                   </property>
@@ -1801,7 +1801,7 @@
                  <widget class="QPushButton" name="infoFieldBundst">
                   <property name="maximumSize">
                    <size>
-                    <width>12</width>
+                    <width>20</width>
                     <height>22</height>
                    </size>
                   </property>
@@ -1847,7 +1847,7 @@ mit ohne Niederhaltelasche</string>
                  <widget class="QPushButton" name="infoFieldE">
                   <property name="maximumSize">
                    <size>
-                    <width>12</width>
+                    <width>20</width>
                     <height>22</height>
                    </size>
                   </property>
@@ -1906,7 +1906,7 @@ Stuetze Endmast</string>
                  <widget class="QPushButton" name="infoFieldLeerKnick">
                   <property name="maximumSize">
                    <size>
-                    <width>12</width>
+                    <width>20</width>
                     <height>22</height>
                    </size>
                   </property>
@@ -2064,7 +2064,7 @@ Stuetze Endmast</string>
                  <widget class="QPushButton" name="infoFieldFuellF">
                   <property name="maximumSize">
                    <size>
-                    <width>12</width>
+                    <width>20</width>
                     <height>22</height>
                    </size>
                   </property>
@@ -2083,7 +2083,7 @@ Stuetze Endmast</string>
                  <widget class="QPushButton" name="infoFieldLastKnick">
                   <property name="maximumSize">
                    <size>
-                    <width>12</width>
+                    <width>20</width>
                     <height>22</height>
                    </size>
                   </property>
@@ -2724,7 +2724,7 @@ Stuetze Endmast</string>
               </property>
               <property name="maximumSize">
                <size>
-                <width>12</width>
+                <width>20</width>
                 <height>22</height>
                </size>
               </property>
@@ -2758,7 +2758,7 @@ Stuetze Endmast</string>
               </property>
               <property name="maximumSize">
                <size>
-                <width>12</width>
+                <width>20</width>
                 <height>22</height>
                </size>
               </property>
@@ -2938,9 +2938,12 @@ Stuetze Endmast</string>
              <widget class="QPushButton" name="infoSurveyData">
               <property name="maximumSize">
                <size>
-                <width>12</width>
+                <width>20</width>
                 <height>22</height>
                </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>WhatsThisCursor</cursorShape>
               </property>
               <property name="text">
                <string>?</string>
@@ -2954,9 +2957,12 @@ Stuetze Endmast</string>
              <widget class="QPushButton" name="infoRasterlayer">
               <property name="maximumSize">
                <size>
-                <width>12</width>
+                <width>20</width>
                 <height>22</height>
                </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>WhatsThisCursor</cursorShape>
               </property>
               <property name="text">
                <string>?</string>
@@ -3177,15 +3183,21 @@ Stuetze Endmast</string>
        </property>
        <property name="maximumSize">
         <size>
-         <width>22</width>
+         <width>20</width>
          <height>22</height>
         </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>WhatsThisCursor</cursorShape>
        </property>
        <property name="text">
         <string>?</string>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -3212,6 +3224,7 @@ Stuetze Endmast</string>
   <tabstop>coordEx</tabstop>
   <tabstop>coordEy</tabstop>
   <tabstop>fieldTypeE</tabstop>
+  <tabstop>laenge</tabstop>
   <tabstop>buttonShowProf</tabstop>
   <tabstop>fieldParamSet</tabstop>
   <tabstop>buttonSaveParamset</tabstop>
@@ -3255,7 +3268,6 @@ Stuetze Endmast</string>
   <tabstop>buttonCancel</tabstop>
   <tabstop>btnAdjustment</tabstop>
   <tabstop>buttonRun</tabstop>
-  <tabstop>infoBerechnung</tabstop>
   <tabstop>infoRasterlayer</tabstop>
   <tabstop>infoSurveyData</tabstop>
   <tabstop>infoPointA</tabstop>
@@ -3270,7 +3282,7 @@ Stuetze Endmast</string>
   <tabstop>infoFieldLeerKnick</tabstop>
   <tabstop>infoFieldLastKnick</tabstop>
   <tabstop>infoFieldBundst</tabstop>
-  <tabstop>laenge</tabstop>
+  <tabstop>infoBerechnung</tabstop>
  </tabstops>
  <resources/>
  <connections/>
