@@ -652,11 +652,13 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
             plotSavePath = os.path.join(outputLoc, self.tr('Diagramm.pdf'))
             width, height, ratio = calculatePlotDimensions(self.profile.di_disp, self.profile.zi_disp)
             
-            printPlot = AdjustmentPlot(self, width, height, 150, withBirdView=includingBirdView, profilePlotRatio=ratio)
+            printPlot = AdjustmentPlot(self, width, height, 150,
+                                       withBirdView=includingBirdView,
+                                       profilePlotRatio=ratio, asPdf=True)
             printPlot.initData(self.profile.di_disp, self.profile.zi_disp,
                                self.profile.peakLoc_x, self.profile.peakLoc_z,
                                self.profile.surveyPnts)
-            printPlot.updatePlot(self.poles.getAsArray(), self.cableline, True)
+            printPlot.updatePlot(self.poles.getAsArray(), self.cableline)
             printPlot.layoutDiagrammForPrint(projName_unique, poles, self.poles.direction)
             imgPath = None
             if includingBirdView:

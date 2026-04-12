@@ -1,4 +1,5 @@
 from qgis.core import QgsMessageLog, QgsSettings
+from qgis.PyQt.QtCore import QSettings
 from SEILAPLAN import __version__ as current_version, DEBUG
 
 QGIS_SETTINGS_GROUP_PLUGINS = 'app/plugin_repositories'
@@ -36,3 +37,10 @@ def removeOldSeilaplanPluginRepo():
                 msg = f'Removing old SEILAPLAN plugin repository at {url}'
             QgsMessageLog.logMessage(msg, 'SEILAPLAN')
             break
+
+
+def is_dark_mode():
+    settings = QSettings()
+    theme = settings.value("UI/UITheme", "default")
+    return any([name in theme.lower() for name in
+                   ["gray", "dark", "night", "black"]])

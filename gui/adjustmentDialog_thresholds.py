@@ -34,15 +34,17 @@ from qgis.PyQt.QtWidgets import (
     QTableView,
     QWidget
 )
+from SEILAPLAN.utils.misc import is_dark_mode
 
 from .guiHelperFunctions import getAbsoluteIconPath
 
 
 class AdjustmentDialogThresholds(QObject):
-    
+    FONT_COLOR = QColor(255, 255, 255) if is_dark_mode() else QColor(0, 0, 0)
     COLOR_ERROR = QColor(224, 103, 103)
     COLOR_ATTENTION = QColor(237, 148, 76)
-    COLOR_NEUTRAL = QColor(255, 255, 255)
+    COLOR_NEUTRAL = QColor(53, 53, 53) if is_dark_mode() \
+        else QColor(255, 255, 255)
     COLOR = {
         1: COLOR_NEUTRAL,
         2: COLOR_ATTENTION,
@@ -91,6 +93,10 @@ class AdjustmentDialogThresholds(QObject):
                     self.tbl.setIndexWidget(self.model.index(row, col), btnWidget)
                 
                 self.model.setData(self.model.index(row, col), cellData)
+                # Init all cells with a neutral background
+                self.model.setData(self.model.index(row, col),
+                                   QBrush(self.COLOR[1]),
+                                   Qt.ItemDataRole.BackgroundRole)
         
         if init:
             # Adjust column widths to data
@@ -104,9 +110,13 @@ class AdjustmentDialogThresholds(QObject):
     
     def colorBackground(self, row, col, color):
         # Update background color
-        color = self.COLOR[color]
+        colorVal = self.COLOR[color]
         self.model.setData(self.model.index(row, col),
-                           QBrush(color), Qt.ItemDataRole.BackgroundRole)
+                           QBrush(colorVal), Qt.ItemDataRole.BackgroundRole)
+        # Set the font color for a good contrast, especially in dark mode
+        self.model.setData(self.model.index(row, col),
+                           QBrush(self.FONT_COLOR),
+                           Qt.ItemDataRole.ForegroundRole)
     
     def updateTabIcon(self, warn):
         """ Updates icon of QTabWidget with an exclamation mark or check
