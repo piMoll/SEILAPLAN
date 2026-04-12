@@ -18,8 +18,8 @@
  *                                                                         *
  ***************************************************************************/
 """
-import os
 from math import cos, pi, sin
+import os
 
 import numpy as np
 from osgeo import gdal

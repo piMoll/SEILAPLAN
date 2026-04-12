@@ -34,14 +34,18 @@ from matplotlib.collections import LineCollection
 
 from .mapMarker import PROFILE_COLOR, POLE_COLOR, SECTION_COLOR
 from .plotting_tools import zoom_with_wheel
+from SEILAPLAN.utils.misc import is_dark_mode
 
 
 class ProfilePlot(FigureCanvas):
     
     def __init__(self, parent=None, width=10, height=4, dpi=72):
         self.win = parent
-        self.fig = Figure(figsize=(width, height), dpi=dpi, facecolor='#efefef')
+        background_color = '#7a7a7a' if is_dark_mode() else '#efefef'
+        self.fig = Figure(figsize=(width, height), dpi=dpi,
+                          facecolor=background_color)
         self.axes = self.fig.add_subplot(111)
+        self.axes.set_facecolor(background_color)
         
         FigureCanvas.__init__(self, self.fig)
         self.setParent(parent)
@@ -102,7 +106,7 @@ class ProfilePlot(FigureCanvas):
         # Add plot data (whole profile)
         pltSegs = np.column_stack([self.profile.di_disp, self.profile.zi_disp])
         pltSegs = tuple(map(tuple, pltSegs))
-        lineColl = LineCollection([pltSegs], linewidths=1, colors='green')
+        lineColl = LineCollection([pltSegs], linewidths=1.5, colors='#004f03')
         self.axes.add_collection(lineColl)
         # Add profile section between A and E
         pltSegsAE = np.column_stack([self.x_data, self.y_data])
@@ -116,9 +120,9 @@ class ProfilePlot(FigureCanvas):
                           zorder=100, c=POLE_COLOR, s=80, marker='o')
         # Label
         self.axes.text(self.x_data[0], self.y_data[0] + self.labelScale,
-                       'A',  ha='center', fontsize=12)
+                       'A', ha='center', va='bottom', fontsize=12)
         self.axes.text(self.x_data[-1], self.y_data[-1] + self.labelScale,
-                       'E', ha='center', fontsize=12)
+                       'E', ha='center', va='bottom', fontsize=12)
         
         if self.profile.surveyPnts is not None:
             # Add markers for survey points
@@ -293,8 +297,9 @@ class ProfilePlot(FigureCanvas):
     def __setupAxes(self):
         self.axes.set_xlabel(self.tr("Horizontaldistanz [m]"), fontsize=11)
         self.axes.set_ylabel(self.tr("Hoehe [m.ue.M]"), fontsize=11)
-        self.axes.grid(which='major', lw=1)
-        self.axes.grid(which='minor', lw=1, linestyle=':')
+        grid_color = '#636363' if is_dark_mode() else '#c7c7c7'
+        self.axes.grid(which='major', color=grid_color, lw=1)
+        self.axes.grid(which='minor', color=grid_color, lw=1, linestyle=':')
         self.axes.ticklabel_format(style='plain', useOffset=False)
         self.axes.tick_params(axis="both", which="major", length=5, width=1,
                               bottom=True, top=False, left=True, right=False)

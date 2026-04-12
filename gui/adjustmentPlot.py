@@ -36,6 +36,7 @@ import matplotlib.patheffects as pe
 
 from .plotting_tools import zoom_with_wheel
 from SEILAPLAN.tools.birdViewSymbol import BirdViewSymbol, BirdViewSymbolLoader
+from SEILAPLAN.utils.misc import is_dark_mode
 
 
 class PlotMarker(object):
@@ -51,17 +52,29 @@ class PlotMarker(object):
 class AdjustmentPlot(FigureCanvas):
     
     ZOOM_TO_DISTANCE = 20
-    COLOR_MARKER = {
-        0: '#696969',   # grey = neutral
-        1: '#4a6b55',   # dark green = ok
-        2: '#e38400',   # orange = attention
-        3: '#e06767',   # red = error
-    }
     
-    def __init__(self, parent=None, width=5., height=4., dpi=72, withBirdView=False, profilePlotRatio=3):
+    def __init__(self, parent=None, width=5., height=4., dpi=72,
+                 withBirdView=False, profilePlotRatio=3, asPdf=False):
         self.win = parent
         self.dpi = dpi
-        self.fig = Figure(figsize=(width, height), dpi=self.dpi, facecolor='#efefef')
+        self.COLOR_MARKER = {
+            0: '#403e3d' if is_dark_mode() and not asPdf else '#696969',
+            # grey = neutral
+            1: '#1d6532' if is_dark_mode() and not asPdf else '#4a6b55',
+            # dark green = ok
+            2: '#b95f00' if is_dark_mode() and not asPdf else '#e38400',
+            # orange = attention
+            3: '#c04040' if is_dark_mode() and not asPdf else '#e06767',
+            # red = error
+        }
+        self.COLOR_PLOT_BG = '#7a7a7a' if is_dark_mode() and not asPdf else '#efefef'
+        self.COLOR_AXES_BG = '#7a7a7a' if is_dark_mode() and not asPdf else '#fbfbfb'
+        self.COLOR_GRID = '#636363' if is_dark_mode() and not asPdf else '#c7c7c7'
+        self.COLOR_MARKER_BG = '#a3a3a3' if is_dark_mode() and not asPdf else '#fbfbfb'
+        self.asPdf = asPdf
+        
+        self.fig = Figure(figsize=(width, height), dpi=self.dpi,
+                          facecolor=self.COLOR_PLOT_BG)
         
         FigureCanvas.__init__(self, self.fig)
         self.setParent(parent)
@@ -81,6 +94,8 @@ class AdjustmentPlot(FigureCanvas):
         else:
             self.axes = self.fig.add_subplot(111)
             self.fig.tight_layout(pad=0, w_pad=0.1, h_pad=0.1)
+        
+        self.axes.set_facecolor(self.COLOR_AXES_BG)
         
         # Profile plot should always be drawn with equal aspect
         self.axes.set_aspect('equal', 'datalim', share=True)
@@ -120,6 +135,9 @@ class AdjustmentPlot(FigureCanvas):
                               length=5, width=1, bottom=True, top=False,
                               left=True, right=False)
         self.axes.minorticks_on()
+        self.axes.grid(which='major', color=self.COLOR_GRID, lw=1)
+        self.axes.grid(which='minor', color=self.COLOR_GRID, lw=1,
+                       linestyle=':')
         self.axes.tick_params(which="minor", direction=direction)
         
     def initData(self, xdata, terrain, peakLocation_x, peakLocation_y,
@@ -166,15 +184,15 @@ class AdjustmentPlot(FigureCanvas):
         else:
             self.axes.set_xlim(self.data_xlow, self.data_xhi)
             self.axes.set_ylim(self.data_ylow, self.data_yhi)
-        
-    def updatePlot(self, poles, cable, printPdf=False):
+    
+    def updatePlot(self, poles, cable):
         # Remember current view port of plot
         currentView = (self.axes.get_xlim(), self.axes.get_ylim())
 
         scale = 1
         legendCol = 4
         fontSize = 12
-        if printPdf:
+        if self.asPdf:
             legendCol = 3
             scale = 0.5
             fontSize = 8
@@ -212,13 +230,13 @@ class AdjustmentPlot(FigureCanvas):
                                labelText, ha=ha, va=va, fontsize=fontSize,
                                color='green', rotation=rot, rotation_mode='anchor')
         
-        if not printPdf:
+        if not self.asPdf:
             # Well suited locations (peaks) for poles
             self.axes.scatter(self.peakLoc_x, self.peakLoc_y, marker='^',
                               color='#ffaa00', edgecolors='#496b48',
                               label=self.tr('Guenstige Gelaendeform'), zorder=3)
         # Cable lines
-        self.axes.plot(cable['xaxis'], cable['empty'], color='#4D83B2',
+        self.axes.plot(cable['xaxis'], cable['empty'], color='#299bff',
                        linewidth=1.5*scale, label=self.tr('Leerseil'))
         self.axes.plot(cable['xaxis'], cable['load'], color='#FF4D44',
                        linewidth=1.5*scale, label=self.tr('Lastwegkurve nach Zweifel'))
@@ -256,8 +274,8 @@ class AdjustmentPlot(FigureCanvas):
             self.axes.axvline(lw=1, ls='dotted', color='black', x=d)
             self.axes.axhline(lw=1, ls='dotted', color='black', y=z)
             self.axes.axhline(lw=1, ls='dotted', color='black', y=ztop)
-            
-        if printPdf:
+        
+        if self.asPdf:
             # Make sure plot has enough buffer at start and end of cable line
             #  to fit bird view symbols.
             symbolBuffer = 40
@@ -276,11 +294,12 @@ class AdjustmentPlot(FigureCanvas):
             self.placeLabels(pole_dtop, pole_ztop, pole_nr)
         # Legend
         self.axes.legend(loc='lower center', fontsize=fontSize,
-                         bbox_to_anchor=(0.5, 0), ncol=legendCol)
+                         bbox_to_anchor=(0.5, 0), ncol=legendCol,
+                         facecolor=self.COLOR_AXES_BG)
         # Redraw the plot
         self.draw()
         
-        if not printPdf:
+        if not self.asPdf:
             # Set new plot extent as home extent (for home button)
             self.tbar.update()
             self.tbar.push_current()
@@ -311,7 +330,8 @@ class AdjustmentPlot(FigureCanvas):
             # Adds a label underneath marker with threshold value
             self.arrowLabel.append(
                 self.axes.text(marker.x, labelZ, marker.label, zorder=30,
-                               ha='center', backgroundcolor='white', va=textVa,
+                               ha='center', va=textVa,
+                               backgroundcolor=self.COLOR_MARKER_BG,
                                color=self.COLOR_MARKER[marker.color],
                                fontweight='semibold'))
         self.draw()

@@ -252,11 +252,12 @@ if __name__ == "__main__":
         print('Create plot...')
         plotSavePath = os.path.join(outputLoc, 'Diagramm.pdf')
         width, height, ratio = calculatePlotDimensions(profile.di_disp, profile.zi_disp)
-        printPlot = AdjustmentPlot(None, width, height, 150, withBirdView=True, profilePlotRatio=ratio)
+        printPlot = AdjustmentPlot(None, width, height, 150, withBirdView=True,
+                                   profilePlotRatio=ratio, asPdf=True)
         printPlot.initData(profile.di_disp, profile.zi_disp,
                            profile.peakLoc_x, profile.peakLoc_z,
                            profile.surveyPnts)
-        printPlot.updatePlot(poles.getAsArray(), cableline, True)
+        printPlot.updatePlot(poles.getAsArray(), cableline)
         printPlot.layoutDiagrammForPrint(projName_unique, polesList, poles.direction)
         imgPath = None
         
