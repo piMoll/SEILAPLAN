@@ -20,12 +20,12 @@
 """
 import csv
 import os
+from os.path import isfile
 
 import numpy as np
 from qgis.core import (
     QgsCoordinateReferenceSystem,
     QgsCoordinateTransform,
-    QgsCoordinateTransformContext,
     QgsFeature,
     QgsField,
     QgsFields,
@@ -111,40 +111,29 @@ def organizeDataForExport(poles, cableline, profile):
 
 
 def writeGeodata(geodata, geoFormat, epsg, savePath):
-    # Create sub folder for every format
-    savePath = os.path.join(savePath, geoFormat.lower())
-    os.makedirs(savePath)
-    
     spatialRef = QgsCoordinateReferenceSystem(epsg)
+    
+    fileEnding = f".{geoFormat.lower()}"
+    if geoFormat == 'GPKG':
+        basePath = os.path.join(savePath, 'geodata' + fileEnding)
+        stuePath = basePath
+        seilLeerPath = basePath
+        seilLastPath = basePath
+        terrainPath = basePath
+    else:
+        savePath = os.path.join(savePath, geoFormat.lower())
+        os.makedirs(savePath)
+        stuePath = os.path.join(savePath, tr('stuetzen') + fileEnding)
+        seilLeerPath = os.path.join(savePath, tr('leerseil') + fileEnding)
+        seilLastPath = os.path.join(savePath, tr('lastseil') + fileEnding)
+        terrainPath = os.path.join(savePath, tr('terrain') + fileEnding)
     
     if geoFormat == 'SHP':
         geoFormat = 'ESRI Shapefile'
-        stuePath = os.path.join(savePath, tr('stuetzen') + '.shp')
-        seilLeerPath = os.path.join(savePath, tr('leerseil') + '.shp')
-        seilLastPath = os.path.join(savePath, tr('lastseil') + '.shp')
-        terrainPath = os.path.join(savePath, tr('terrain') + '.shp')
         checkShpPath(stuePath)
         checkShpPath(seilLeerPath)
         checkShpPath(seilLastPath)
         checkShpPath(terrainPath)
-    
-    elif geoFormat == 'KML':
-        stuePath = os.path.join(savePath, tr('stuetzen') + '.kml')
-        seilLeerPath = os.path.join(savePath, tr('leerseil') + '.kml')
-        seilLastPath = os.path.join(savePath, tr('lastseil') + '.kml')
-        terrainPath = os.path.join(savePath, tr('terrain') + '.kml')
-    
-    elif geoFormat == 'DXF':
-        stuePath = os.path.join(savePath, tr('stuetzen') + '.dxf')
-        seilLeerPath = os.path.join(savePath, tr('leerseil') + '.dxf')
-        seilLastPath = os.path.join(savePath, tr('lastseil') + '.dxf')
-        terrainPath = os.path.join(savePath, tr('terrain') + '.dxf')
-        # For DXF, we create an additional file containing the side view
-        #  (dist and height) of the data
-        profilePath = os.path.join(savePath, tr('profilansicht') + '.dxf')
-    
-    else:
-        raise Exception(f'Writing to {geoFormat} not implemented')
     
     # Check if qgis supports the requested geodata file type
     isGeoFormatAvailable = False
@@ -157,16 +146,24 @@ def writeGeodata(geodata, geoFormat, epsg, savePath):
         raise Exception(errorMsg.replace('_geoFormat_', geoFormat))
 
     # Save pole positions
-    savePointGeometry(stuePath, geodata['poles'], spatialRef, geoFormat)
+    savePointGeometry(stuePath, geodata['poles'], spatialRef, geoFormat,
+                      tr('stuetzen'))
     # Save empty cable line
-    saveLineGeometry(seilLeerPath, [geodata['emptyLine']], spatialRef, geoFormat)
+    saveLineGeometry(seilLeerPath, [geodata['emptyLine']], spatialRef,
+                     geoFormat, tr('leerseil'))
     # Save cable line under load
-    saveLineGeometry(seilLastPath, [geodata['loadLine']], spatialRef, geoFormat)
+    saveLineGeometry(seilLastPath, [geodata['loadLine']], spatialRef,
+                     geoFormat, tr('lastseil'))
     # Save terrain line
-    saveLineGeometry(terrainPath, [geodata['terrain']], spatialRef, geoFormat)
+    saveLineGeometry(terrainPath, [geodata['terrain']], spatialRef, geoFormat,
+                     tr('terrain'))
     # Side view
     if geoFormat == 'DXF':
-        saveLineGeometry(profilePath, geodata['profile'], spatialRef, geoFormat, False)
+        # For DXF, we create an additional file containing the side view
+        #  (dist and height) of the data
+        profilePath = os.path.join(savePath, tr('profilansicht') + fileEnding)
+        saveLineGeometry(profilePath, geodata['profile'], spatialRef,
+                         geoFormat, '', False)
     
     geoOutput = {'stuetzen': stuePath,
                  'leerseil': seilLeerPath,
@@ -175,12 +172,36 @@ def writeGeodata(geodata, geoFormat, epsg, savePath):
     return geoOutput
 
 
-def savePointGeometry(filePath, poles, spatialRef, geoFormat):
+def createFileWriter(filePath, fields, geomType, spatialRef, geoFormat,
+                     layerName):
+    context = QgsProject.instance().transformContext()
+    options = QgsVectorFileWriter.SaveVectorOptions()
+    options.driverName = geoFormat
+    options.includeZ = True
+    options.fileEncoding = 'UTF-8'
+    if geoFormat == 'GPKG':
+        options.layerName = layerName
+        # Add layer to existing gpkg file, if it exists
+        if isfile(filePath):
+            options.actionOnExistingFile = QgsVectorFileWriter.CreateOrOverwriteLayer
+    
+    writer = QgsVectorFileWriter.create(
+            filePath, fields, geomType, spatialRef, context,
+            options)
+    
+    if writer.hasError() != QgsVectorFileWriter.NoError:
+        raise Exception(f'{writer.errorMessage()} ({geoFormat})')
+    
+    return writer
+
+
+def savePointGeometry(filePath, poles, spatialRef, geoFormat, layerName):
     """
     :param filePath: Location of shape file
     :param poles: array of poles dictionaries
     :param spatialRef: current spatial reference of qgis project
     :param geoFormat: Geodata export format
+    :param layerName: Layer name for geopackage export format
     """
     fields = QgsFields()
     headerName = tr('bezeichnung')
@@ -199,22 +220,9 @@ def savePointGeometry(filePath, poles, spatialRef, geoFormat):
         fields.append(QgsField(headerCategory, type_string, typeName='text', len=254))
         fields.append(QgsField(headerPosition, type_string, typeName='text', len=254))
         fields.append(QgsField(headerAbspann, type_string, typeName='text', len=254))
-
-    if QGIS_VERSION_INT >= 31030:
-        # Use newer QgsVectorFileWriter.create() function
-        options = QgsVectorFileWriter.SaveVectorOptions()
-        options.driverName = geoFormat
-        options.includeZ = True
-        options.fileEncoding = 'UTF-8'
-        writer = QgsVectorFileWriter.create(
-            filePath, fields, QgsWkbTypes.Type.PointZ, spatialRef,
-            QgsCoordinateTransformContext(), options)
-    else:
-        writer = QgsVectorFileWriter(filePath, 'UTF-8', fields,
-            QgsWkbTypes.Type.PointZ, spatialRef, geoFormat)
-
-    if writer.hasError() != QgsVectorFileWriter.NoError:
-        raise Exception(f'{writer.errorMessage()} ({geoFormat})')
+    
+    writer = createFileWriter(filePath, fields, QgsWkbTypes.Type.PointZ,
+                              spatialRef, geoFormat, layerName)
     
     features = []
     for idx, pole in enumerate(poles):
@@ -239,12 +247,14 @@ def savePointGeometry(filePath, poles, spatialRef, geoFormat):
     del writer
 
 
-def saveLineGeometry(filePath, geodata, spatialRef, geoFormat, is3D=True):
+def saveLineGeometry(filePath, geodata, spatialRef, geoFormat, layerName,
+                     is3D=True):
     """
     :param filePath: Location of shape file
     :param geodata: x, y and z coordinate of line
     :param spatialRef: current spatial reference of qgis project
     :param geoFormat: Geodata export format
+    :param layerName: Layer name for geopackage export format
     :param is3D: Geodata in 3D, else 2D
     """
     # Define fields for feature attributes. A QgsFields object is needed
@@ -252,21 +262,9 @@ def saveLineGeometry(filePath, geodata, spatialRef, geoFormat, is3D=True):
     geomType = QgsWkbTypes.Type.LineStringZ
     if not is3D:
         geomType = QgsWkbTypes.Type.LineString
-    if QGIS_VERSION_INT >= 31030:
-        # Use newer QgsVectorFileWriter.create() function
-        options = QgsVectorFileWriter.SaveVectorOptions()
-        options.driverName = geoFormat
-        options.includeZ = True
-        options.fileEncoding = 'UTF-8'
-        writer = QgsVectorFileWriter.create(
-            filePath, fields, geomType, spatialRef,
-            QgsCoordinateTransformContext(), options)
-    else:
-        writer = QgsVectorFileWriter(filePath, 'UTF-8', fields,
-                                     geomType, spatialRef, geoFormat)
-
-    if writer.hasError() != QgsVectorFileWriter.NoError:
-        raise Exception(f'{writer.errorMessage()} ({geoFormat})')
+    
+    writer = createFileWriter(filePath, fields, geomType, spatialRef,
+                              geoFormat, layerName)
 
     features = []
     for idx, line in enumerate(geodata):
@@ -281,9 +279,9 @@ def saveLineGeometry(filePath, geodata, spatialRef, geoFormat, is3D=True):
         feature.setGeometry(QgsGeometry.fromPolyline(lineVertices))
         feature.setId(idx + 1)
         features.append(feature)
+    
     writer.addFeatures(features)
-    for featureToDel in features:
-        del featureToDel
+    
     # Delete the writer to flush features to disk
     del writer
 
