@@ -191,6 +191,7 @@ class DialogOutputOptions(QDialog):
         geodataLabel = QLabel(self.tr('Geodaten (Stuetzen, Seillinie, Gelaende)'))
         geodataLabel.setStyleSheet('padding-top: 10px;')
         self.checkBoxCsv = QCheckBox('CSV')
+        self.checkBoxGpkg = QCheckBox('GeoPackage')
         self.checkBoxShape = QCheckBox('ESRI Shapefile')
         self.checkBoxKML = QCheckBox('KML')
         self.checkBoxDXF = QCheckBox(f"DXF ({self.tr('inkl. Profilansicht')})")
@@ -220,6 +221,7 @@ class DialogOutputOptions(QDialog):
         container.addWidget(geodataLabel)
         vboxGeodata = QVBoxLayout(main_widget)
         vboxGeodata.setContentsMargins(20, 0, 0, 0)
+        vboxGeodata.addWidget(self.checkBoxGpkg)
         vboxGeodata.addWidget(self.checkBoxShape)
         vboxGeodata.addWidget(self.checkBoxCsv)
         vboxGeodata.addWidget(self.checkBoxKML)
@@ -257,6 +259,7 @@ class DialogOutputOptions(QDialog):
         self.checkBoxBirdView.setChecked(self.confHandler.outputOptions['birdView'])
         self.checkBoxBirdViewLegend.setChecked(self.confHandler.outputOptions['birdViewLegend'])
         self.checkBoxCsv.setChecked(self.confHandler.outputOptions['csv'])
+        self.checkBoxGpkg.setChecked(self.confHandler.outputOptions['gpkg'])
         self.checkBoxShape.setChecked(self.confHandler.outputOptions['shape'])
         self.checkBoxKML.setChecked(self.confHandler.outputOptions['kml'])
         self.checkBoxDXF.setChecked(self.confHandler.outputOptions['dxf'])
@@ -291,6 +294,7 @@ class DialogOutputOptions(QDialog):
             'birdView': int(self.checkBoxBirdView.isEnabled() and self.checkBoxBirdView.isChecked()),
             'birdViewLegend': int(self.checkBoxBirdViewLegend.isEnabled() and self.checkBoxBirdViewLegend.isChecked()),
             'csv': int(self.checkBoxCsv.isChecked()),
+            'gpkg': int(self.checkBoxGpkg.isChecked()),
             'shape': int(self.checkBoxShape.isChecked()),
             'kml': int(self.checkBoxKML.isChecked()),
             'dxf': int(self.checkBoxDXF.isChecked()),
