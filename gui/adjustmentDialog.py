@@ -683,6 +683,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         
         # Generate geo data
         if (self.confHandler.getOutputOption('csv') or
+                self.confHandler.outputOptions['gpkg'] or
                 self.confHandler.outputOptions['shape'] or
                 self.confHandler.outputOptions['kml'] or
                 self.confHandler.outputOptions['dxf']):
@@ -696,7 +697,8 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
 
             title = self.tr('Unerwarteter Fehler')
             msg = self.tr('Erstellen der Geodaten nicht moeglich')
-        
+            addedToMap = False
+            
             if self.confHandler.getOutputOption('csv'):
                 try:
                     generateCoordTable(self.cableline, self.profile,
@@ -704,10 +706,19 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
                 except Exception as e:
                     msg = f'{msg}:\n{e}'
                     self.showMessage(title, msg)
+            if self.confHandler.getOutputOption('gpkg'):
+                try:
+                    gpkgFiles = writeGeodata(geodata, 'GPKG', epsg, savePath)
+                    addToMap(gpkgFiles, projName_unique)
+                    addedToMap = True
+                except Exception as e:
+                    msg = f'{msg}:\n{e}'
+                    self.showMessage(title, msg)
             if self.confHandler.getOutputOption('shape'):
                 try:
                     shapeFiles = writeGeodata(geodata, 'SHP', epsg, savePath)
-                    addToMap(shapeFiles, projName_unique)
+                    if not addedToMap:
+                        addToMap(shapeFiles, projName_unique)
                 except Exception as e:
                     msg = f'{msg}:\n{e}'
                     self.showMessage(title, msg)
