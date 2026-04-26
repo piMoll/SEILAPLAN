@@ -8,6 +8,10 @@
     - Diagramm-Funktionalitäten oberhalb des Diagramms
     - Verbessertes Scroll-Verhalten bei vielen Stützen
     - Fragezeichen-Buttons weniger prominent
+- Geodaten-Export nach GeoPackage
+- Verbesserung der Benutzeroberfläche und Diagramme für QGIS Dark-Mode
+- Startfenster: Parameter-Reiter "Optimierung #1" und "Optimierung #2" zu "Optimierung" und "Diverses" umbenennen
+-
 
 ### Fehlerbehebung
 
