@@ -1653,6 +1653,11 @@ Bitte passen Sie die Eingabe an.</translation>
         <source>Fehler beim Laden der Parameter, moeglicherweise sind sie in einem alten Format.</source>
         <translation>Fehler beim Laden der Parameter, möglicherweise ist ihr Format veraltet.</translation>
     </message>
+    <message>
+        <location filename="../tools/configHandler_params.py" line="280"/>
+        <source>Fuer das Bauelement Verankerung kann der minimale Bodenabstand nicht ab 0 m eingehalten werden.</source>
+        <translation>Für das Bauelement Verankerung kann der minimale Bodenabstand nicht ab 0 m eingehalten werden. Bitte den Wert “Bodenabstand einzuhalten ab/bis” erhöhen, da er die Seillinienberechnung verunmöglicht.</translation>
+    </message>
 </context>
 <context>
     <name>CustomPoleWidget</name>

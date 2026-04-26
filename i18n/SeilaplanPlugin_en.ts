@@ -1672,6 +1672,11 @@ Please change the input.</translation>
         <source>Fehler beim Laden der Parameter, moeglicherweise sind sie in einem alten Format.</source>
         <translation>Error in loading the parameters, possibly their format is outdated.</translation>
     </message>
+    <message>
+        <location filename="../tools/configHandler_params.py" line="280"/>
+        <source>Fuer das Bauelement Verankerung kann der minimale Bodenabstand nicht ab 0 m eingehalten werden.</source>
+        <translation>For the anchor, the minimum ground clearance cannot be maintained starting at 0 m. Please increase the value for "Ground clearance: to be respectect after/up to...," as the current setting prevents the cable line calculation from being performed.</translation>
+    </message>
 </context>
 <context>
     <name>CustomPoleWidget</name>

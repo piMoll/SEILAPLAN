@@ -1055,7 +1055,10 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
         self.projectHandler.setPrHeader(prHeader)
         
     def onConfirm(self, runOptimization):
-        if runOptimization and not self.paramHandler.checkBodenabstand():
+        if runOptimization and not (self.paramHandler.checkBodenabstand()
+                                    and self.paramHandler.checkBodenabstandDistance(
+                        self.projectHandler.A_type,
+                        self.projectHandler.E_type)):
             # Optimization can't run because there's a problem with the parameters
             return
         if self.confHandler.checkValidState() \

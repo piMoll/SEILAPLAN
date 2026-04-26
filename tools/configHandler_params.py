@@ -183,7 +183,8 @@ class ParameterConfHandler(AbstractConfHandler):
         when a whole parameterset is set or parameters are loaded from a txt
         file. Checks are done after all parameters have been set.
         """
-        property_name, value = self.checkForDepricatedParams(property_name, value)
+        property_name, value = self.checkForDeprecatedParams(property_name,
+                                                             value)
         p = self._getParameterInfo(property_name)
         if not p:
             self.onError(self.tr('Fehler beim Laden der Parameter, '
@@ -196,7 +197,7 @@ class ParameterConfHandler(AbstractConfHandler):
         self.params[property_name]['value'] = cval
     
     @staticmethod
-    def checkForDepricatedParams(property_name, value):
+    def checkForDeprecatedParams(property_name, value):
         """This will check for parameters that have been depricated since
         version 3.0. It's not going to try to fix parametersets from older
         Seilaplan parametersets."""
@@ -269,8 +270,18 @@ class ParameterConfHandler(AbstractConfHandler):
             self.onError(self.tr("Der Parameter Minimaler Abstand Tragseil Boden darf nicht groesser als der Parameter Minimale Stuetzenhoehe sein."),
                          self.tr('Ungueltige Eingabe'))
             return False
-        else:
-            return True
+        return True
+    
+    def checkBodenabstandDistance(self, poleType_A, poleType_E):
+        if ((self.params['Bodenabst_A'][
+                 'value'] == 0 and poleType_A == 'pole_anchor')
+                or (self.params['Bodenabst_E']['value'] == 0
+                    and poleType_E == 'pole_anchor')):
+            self.onError(self.tr(
+                    "Fuer das Bauelement Verankerung kann der minimale Bodenabstand nicht ab 0 m eingehalten werden."),
+                    self.tr('Ungueltige Eingabe'))
+            return False
+        return True
 
     def getSettings(self):
         """Return settings in a structured dictionary to save to json file."""
