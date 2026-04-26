@@ -4,7 +4,7 @@ LOCALES=$*
 # Get newest .py files so we don't update strings unnecessarily
 
 CHANGED_FILES=0
-PYTHON_FILES=`find . -regex ".*\(ui\|py\)$" -type f`
+PYTHON_FILES=`find . -regex ".*\(\.ui\|\.py\)$" -type f`
 for PYTHON_FILE in $PYTHON_FILES
 do
   CHANGED=$(stat -c %Y $PYTHON_FILE)

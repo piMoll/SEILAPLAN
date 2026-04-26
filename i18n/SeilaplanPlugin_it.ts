@@ -1666,6 +1666,11 @@ Si prega di adattare l&apos;input.</translation>
         <source>Fehler beim Laden der Parameter, moeglicherweise sind sie in einem alten Format.</source>
         <translation>Errore nel caricamento dei parametri possibilmente il loro formato è obsoleto.</translation>
     </message>
+    <message>
+        <location filename="../tools/configHandler_params.py" line="280"/>
+        <source>Fuer das Bauelement Verankerung kann der minimale Bodenabstand nicht ab 0 m eingehalten werden.</source>
+        <translation>Per l'elemento «Ancoraggio» non è possibile rispettare la distanza minima dal suolo a partire da 0 m. Si prega di aumentare il valore «Altezza da terra: Da rispettare a partire da/fino...», poiché impedisce il calcolo delle linee di fune.</translation>
+    </message>
 </context>
 <context>
     <name>CustomPoleWidget</name>

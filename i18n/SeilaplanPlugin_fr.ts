@@ -1678,6 +1678,11 @@ Veuillez adapter la saisie.</translation>
         <source>Fehler beim Laden der Parameter, moeglicherweise sind sie in einem alten Format.</source>
         <translation>Erreur dans le chargement des paramètres, éventuellement leur format est obsolète.</translation>
     </message>
+    <message>
+        <location filename="../tools/configHandler_params.py" line="280"/>
+        <source>Fuer das Bauelement Verankerung kann der minimale Bodenabstand nicht ab 0 m eingehalten werden.</source>
+        <translation>Pour l'élément de construction «Ancrage», la distance minimale par rapport au sol ne peut pas être respectée à partir de 0 m. Veuillez augmenter la valeur «Garde au sol: A respecter à partir de/jusqu&apos;à...», car cela rend impossible le calcul des lignes de câble.</translation>
+    </message>
 </context>
 <context>
     <name>CustomPoleWidget</name>
