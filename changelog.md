@@ -11,9 +11,10 @@
 - Geodaten-Export nach GeoPackage
 - Verbesserung der Benutzeroberfläche und Diagramme für QGIS Dark-Mode
 - Startfenster: Parameter-Reiter "Optimierung #1" und "Optimierung #2" zu "Optimierung" und "Diverses" umbenennen
-- Überprüfe und warne wenn Parameterwert "Bodenabstand: einzuhalten ab / bis ..." 0 Meter beträgt und Bauelement "Verankerung" ausgewählt wurde
+- Überprüfe und warne, wenn Parameterwert "Bodenabstand: einzuhalten ab / bis ..." 0 Meter beträgt und Bauelement "Verankerung" ausgewählt ist
 
 ### Fehlerbehebung
+- Karte zentriert nicht auf Rasterlayer, wenn in der Auswahlliste mehrere Raster ausgewählt werden
 
 ## Version 3.7.1 (August 2025)
 ### Fehlerbehebung

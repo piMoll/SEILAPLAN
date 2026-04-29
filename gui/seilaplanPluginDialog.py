@@ -592,15 +592,12 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
                 rasterLyrList.append(rlyr['lyr'])
 
         if len(rasterLyrList) == 1:
-            singleRasterLayer = rasterLyrList[0]
             self.projectHandler.setHeightSource(rasterLyrList[0], 'dhm')
-            rasterValid = True
         elif len(rasterLyrList) > 1:
             self.projectHandler.setHeightSource(rasterLyrList, 'dhm_list')
-            rasterValid = True
-        else:
-            rasterValid = False
-
+        
+        rasterValid = self.projectHandler.heightSource and self.projectHandler.heightSource.valid
+        
         # Check spatial reference of raster and show message
         if not rasterValid or not self.checkEqualSpatialRef():
             # Unset raster
@@ -609,11 +606,12 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
             self.rasterField.blockSignals(True)
             self.rasterField.deselectAllOptions()
             self.rasterField.blockSignals(False)
-            rasterValid = False
-
-        # Select layer in panel if it's only one
-        if rasterValid and singleRasterLayer:
-            self.iface.setActiveLayer(singleRasterLayer)
+            return
+        
+        # Select layer in panel and zoom to it
+        if rasterValid:
+            self.iface.setActiveLayer(rasterLyrList[0])
+            self.iface.zoomToActiveLayer()
             
         # If a raster was selected, a contour layer can be generated
         self.contourLyrButton.setEnabled(rasterValid)
@@ -921,8 +919,6 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
             else:
                 QMessageBox.critical(self, self.tr('Fehler beim Laden'),
                     self.tr('Projektdatei konnte nicht geladen werden.'))
-        else:
-            return False
     
     def onSaveProject(self):
         title = self.tr('Projekt speichern')
