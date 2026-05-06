@@ -28,7 +28,7 @@ import numpy as np
 from qgis.PyQt.QtCore import QCoreApplication
 from reportlab.graphics.shapes import colors
 from reportlab.lib.pagesizes import A4, portrait
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import cm
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Table, TableStyle
 
@@ -906,10 +906,10 @@ def generateShortReport(confHandler, result, projname, outputLoc):
 
 def generateReport(reportText, outputLoc):
     """Generate PDF report with reprotlab"""
+    from reportlab.graphics.shapes import colors
     from reportlab.lib.pagesizes import A4, landscape
     from reportlab.lib.units import cm
     from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
-    from reportlab.graphics.shapes import colors
 
     savePath = os.path.join(outputLoc, tr("Bericht") + ".pdf")
     if os.path.exists(savePath):

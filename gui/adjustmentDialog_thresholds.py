@@ -20,12 +20,12 @@
 """
 
 from qgis.PyQt.QtCore import (
-    pyqtSignal,
     QAbstractTableModel,
     QModelIndex,
     QObject,
     QSize,
     Qt,
+    pyqtSignal,
 )
 from qgis.PyQt.QtGui import QBrush, QColor, QIcon, QPixmap, QStandardItemModel
 from qgis.PyQt.QtWidgets import (
@@ -35,6 +35,7 @@ from qgis.PyQt.QtWidgets import (
     QTableView,
     QWidget,
 )
+
 from SEILAPLAN.utils.misc import is_dark_mode
 
 from .guiHelperFunctions import getAbsoluteIconPath

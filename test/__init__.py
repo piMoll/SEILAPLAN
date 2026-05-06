@@ -4,6 +4,7 @@ import tempfile
 
 from qgis.core import QgsApplication
 from qgis.testing import unittest
+
 import SEILAPLAN
 
 # Add shipped libraries to python path

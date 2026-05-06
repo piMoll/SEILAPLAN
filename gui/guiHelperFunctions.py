@@ -21,6 +21,16 @@
 
 import os
 
+from qgis.PyQt.QtCore import QCoreApplication, QFileInfo, QSize, Qt
+from qgis.PyQt.QtGui import QColor, QFont
+from qgis.PyQt.QtWidgets import (
+    QDialog,
+    QDialogButtonBox,
+    QLabel,
+    QLayout,
+    QVBoxLayout,
+    QWidget,
+)
 from qgis.core import (
     Qgis,
     QgsFeature,
@@ -35,16 +45,7 @@ from qgis.core import (
     QgsVectorLayer,
     QgsVectorLayerSimpleLabeling,
 )
-from qgis.PyQt.QtCore import QCoreApplication, QFileInfo, QSize, Qt
-from qgis.PyQt.QtGui import QColor, QFont
-from qgis.PyQt.QtWidgets import (
-    QDialog,
-    QDialogButtonBox,
-    QLabel,
-    QLayout,
-    QVBoxLayout,
-    QWidget,
-)
+
 from SEILAPLAN import DEBUG, PLUGIN_DIR
 
 try:

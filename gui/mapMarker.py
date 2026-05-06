@@ -19,10 +19,10 @@
  ***************************************************************************/
 """
 
+from qgis.PyQt.QtCore import Qt, pyqtSignal
+from qgis.PyQt.QtGui import QColor, QCursor
 from qgis.core import QgsFeature, QgsGeometry, QgsPointXY
 from qgis.gui import QgsMapTool, QgsRubberBand, QgsVertexMarker
-from qgis.PyQt.QtCore import pyqtSignal, Qt
-from qgis.PyQt.QtGui import QColor, QCursor
 
 # Colors
 CURSOR_COLOR = "#00000"

@@ -1,4 +1,4 @@
-from qgis.PyQt.QtCore import QSize, QT_VERSION_STR
+from qgis.PyQt.QtCore import QT_VERSION_STR, QSize
 
 if QT_VERSION_STR.startswith("5"):
     from matplotlib.backends.backend_qt5agg import (

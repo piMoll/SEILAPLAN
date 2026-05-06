@@ -22,10 +22,10 @@
 import os
 import sys
 
-from qgis.core import Qgis
 from qgis.PyQt.QtCore import QCoreApplication, QSettings, QTranslator
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QMessageBox, QPushButton
+from qgis.core import Qgis
 
 from . import PLUGIN_DIR
 
@@ -54,8 +54,9 @@ except ImportError:
 
 if not ERROR:
     # Import seilaplan plugin entry point
-    from .seilaplanRun import SeilaplanRun
     from SEILAPLAN.gui.guiHelperFunctions import getAbsoluteIconPath
+
+    from .seilaplanRun import SeilaplanRun
 
 
 class SeilaplanPlugin:

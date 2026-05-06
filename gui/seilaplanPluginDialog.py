@@ -22,26 +22,21 @@
 import os
 
 from processing.core.Processing import Processing
+from qgis.PyQt import uic
+from qgis.PyQt.QtCore import QCoreApplication, QFileInfo, QSettings, Qt
+from qgis.PyQt.QtGui import QPixmap
+from qgis.PyQt.QtWidgets import QComboBox, QDialog, QFileDialog, QMessageBox, QTextEdit
 from qgis.core import (
     QgsCoordinateReferenceSystem,
     QgsPointXY,
     QgsProject,
     QgsRasterLayer,
 )
-from qgis.PyQt import uic
-from qgis.PyQt.QtCore import QCoreApplication, QFileInfo, QSettings, Qt
-from qgis.PyQt.QtGui import QPixmap
-from qgis.PyQt.QtWidgets import (
-    QComboBox,
-    QDialog,
-    QFileDialog,
-    QMessageBox,
-    QTextEdit,
-)
+
 from SEILAPLAN import PROJECT_URL
 from SEILAPLAN.tools.configHandler import ConfigHandler
 from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
-from SEILAPLAN.tools.configHandler_project import castToNum, ProjectConfHandler
+from SEILAPLAN.tools.configHandler_project import ProjectConfHandler, castToNum
 from SEILAPLAN.tools.heightSource import AbstractHeightSource
 from SEILAPLAN.tools.outputGeo import CH_CRS
 from SEILAPLAN.tools.raster import rasterExistsAtPath
@@ -49,11 +44,11 @@ from SEILAPLAN.tools.survey import SurveyData
 
 from .checkableComboBoxOwn import QgsCheckableComboBoxOwn
 from .guiHelperFunctions import (
+    DialogWithImage,
     addBackgroundMap,
     addLayerToQgis,
     createContours,
     createProfileLayers,
-    DialogWithImage,
     getAbsoluteIconPath,
 )
 from .mapMarker import MapMarkerTool

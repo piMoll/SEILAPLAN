@@ -26,8 +26,8 @@ import re
 import time
 
 import numpy
-from qgis.core import QgsSettings
 from qgis.PyQt.QtCore import QSettings
+from qgis.core import QgsSettings
 
 from .configHandler_params import ParameterConfHandler
 from .configHandler_project import ProjectConfHandler

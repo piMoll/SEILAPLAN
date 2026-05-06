@@ -36,31 +36,27 @@ except ModuleNotFoundError:
         sys.path.insert(-1, libPath)
 
 import traceback
-from qgis.core import QgsTask, QgsApplication
-from qgis.PyQt.QtCore import pyqtSignal, QTranslator, QCoreApplication
-from SEILAPLAN.tools.configHandler import ConfigHandler
+
+from qgis.PyQt.QtCore import QCoreApplication, QTranslator, pyqtSignal
+from qgis.core import QgsApplication, QgsTask
+
+from SEILAPLAN.core.cablelineFinal import preciseCable, updateWithCableCoordinates
 from SEILAPLAN.core.mainSeilaplan import main as mainSeilaplan
-from SEILAPLAN.core.cablelineFinal import (
-    preciseCable,
-    updateWithCableCoordinates,
-)
-from SEILAPLAN.gui.adjustmentPlot import (
-    AdjustmentPlot,
-    calculatePlotDimensions,
-)
-from SEILAPLAN.tools.outputReport import (
-    generateReportText,
-    generateReport,
-    createOutputFolder,
-    generateShortReport,
-)
+from SEILAPLAN.gui.adjustmentPlot import AdjustmentPlot, calculatePlotDimensions
+from SEILAPLAN.tools.birdViewMapExtractor import extractMapBackground
+from SEILAPLAN.tools.configHandler import ConfigHandler
+from SEILAPLAN.tools.globals import ResultQuality
 from SEILAPLAN.tools.outputGeo import (
-    organizeDataForExport,
     generateCoordTable,
+    organizeDataForExport,
     writeGeodata,
 )
-from SEILAPLAN.tools.birdViewMapExtractor import extractMapBackground
-from SEILAPLAN.tools.globals import ResultQuality
+from SEILAPLAN.tools.outputReport import (
+    createOutputFolder,
+    generateReport,
+    generateReportText,
+    generateShortReport,
+)
 
 
 class ProcessingTask(QgsTask):

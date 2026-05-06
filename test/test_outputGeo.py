@@ -4,6 +4,7 @@ import unittest
 
 import numpy as np
 from qgis.core import QgsCoordinateReferenceSystem
+
 from tools.outputGeo import saveLineGeometry, savePointGeometry
 
 from . import TMP_DIR
