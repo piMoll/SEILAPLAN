@@ -131,7 +131,6 @@ class TestPolesBundstelleAndBHD(unittest.TestCase):
         bundstelleBefore1 = self.poles.poles[1]["bundstelle"]
         bundstelleBefore2 = self.poles.poles[2]["bundstelle"]
 
-        poles: Poles
         _, _, updatedPoles, _, _ = calculate_cable_line(self.conf, TEST_PROJECT_A_A)
 
         updatedPoles.update(1, "h", 25)

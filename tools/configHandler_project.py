@@ -123,7 +123,7 @@ class ProjectConfHandler(AbstractConfHandler):
             # More than one layer, saved as json array
             try:
                 layerList = json.loads(value)
-            except:
+            except Exception:
                 self.onError(self.tr("Fehler beim Laden des Rasters"))
             else:
                 self.setHeightSource(None, sourceType="dhm_list", sourcePath=layerList)

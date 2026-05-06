@@ -342,23 +342,4 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
     Loesung_HM = [HM[i] for i in min_path]
     stueIdx = [Pos[i] for i in min_path]
 
-    ## Wert wird nur zur Kontrolle berechnet:
-    stue_pos = [Pos_gp[i] for i in min_path]
-
-    ## Weitere Kontrollwerte:
-
-    res_mat = np.array(
-        [
-            aa,
-            ee,
-            MinSTA,
-            MaxSTA,
-            HeightE,
-            HeightA,
-            Pos_gp_A,
-            Pos_gp_E,
-            KostStue,
-        ]
-    )
-
     return Loesung_HM, stueIdx, Value, OptSTA, optiLen

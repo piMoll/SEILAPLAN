@@ -18,3 +18,25 @@ extend-exclude = '''
 '''
 # Use single quotes for string normalization
 skip-string-normalization = false
+
+[tool.flake8]
+# Ignore conflicts with Black (autoformatter)
+extend-ignore = ["E203", "E266", "E501", "W503", "F403", "F401"]
+max-line-length = 88
+# Exclude typical hidden or generated directories
+exclude = [
+".git",
+"__pycache__",
+"dist",
+"build",
+".venv",
+"venv",
+"env",
+"migrations",
+"lib"]
+# Enforce complexity threshold (optional but recommended)
+max-complexity = 15
+
+# 5. Show source code and statistics
+show-source = true
+statistics = true

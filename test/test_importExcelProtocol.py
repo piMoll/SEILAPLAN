@@ -304,7 +304,7 @@ class TestExcelProtocolReader(unittest.TestCase):
         reader = ExcelProtocolReader(self.testfile_abs_point_outside_measures)
         result = reader.readOutData()
         self.assertFalse(result)
-        self.assertIn(f"Punkt-Nr. nicht in Protokoll vorhanden", reader.errorMsg)
+        self.assertIn("Punkt-Nr. nicht in Protokoll vorhanden", reader.errorMsg)
 
     def test_file_missing_x_in_abs_point(self):
         reader = ExcelProtocolReader(self.testfile_missing_x_in_abs_point)

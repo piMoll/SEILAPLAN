@@ -113,7 +113,7 @@ def generateReportText(confHandler, result, projname):
         textEllipsisByPoleAmount(p["name"], poleCount, p["nr"])
         for p in polesWithoutAnchors
     ]
-    fHeader = [f"{i+1}. " + tr("Feld") for i in range(fieldCount)]
+    fHeader = [f"{i + 1}. " + tr("Feld") for i in range(fieldCount)]
 
     # First section with duration, dhm and several comments
     str_time = [
@@ -761,7 +761,7 @@ def generateShortReport(confHandler, result, projname, outputLoc):
 
     width, height = portrait(A4)
     margin = 1 * cm
-    widthT, heightT = [width - 2 * margin, height - 2 * margin]
+    widthT, _ = [width - 2 * margin, height - 2 * margin]
     fontSize = 8
     smallfontSize = 7
     he_row = 0.42 * cm
@@ -958,7 +958,7 @@ def generateReport(reportText, outputLoc):
         h_anna,
     ] = headers
 
-    widthT, heightT = [width - 2 * margin, height - 2 * margin]
+    widthT, _ = [width - 2 * margin, height - 2 * margin]
     wi_doc = [widthT]
     wi_clo = [2.7 * cm]
     wi_abk = [1.7 * cm]

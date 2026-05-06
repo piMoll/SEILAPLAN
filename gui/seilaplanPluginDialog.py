@@ -600,7 +600,6 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
             selectedRasters = self.rasterField.checkedItems()
         rasterlist = self.getAvailableRaster()
         rasterLyrList = []
-        singleRasterLayer = None
 
         for rlyr in rasterlist:
             if rlyr["name"] in selectedRasters:

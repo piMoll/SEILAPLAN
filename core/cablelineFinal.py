@@ -38,7 +38,7 @@ def preciseCable(IS, poles, STA):
     Der Output erfolgt als array in EigSeillinie
     Bem.: Die Ausgabe der x Koordinaten hat als Ursprung den Anfangspunkt
     (Auf! der ersten Stütze)
-    .l:               y-Koordinaten des Laengenprofils
+    .laengenprofil_y: y-Koordinaten des Laengenprofils
     .x_leer:          x-Koordinaten des Leerseils
     .x_last_zweifel   x-Koordinaten des Lastseils nach Zweifel (Zw)
     .x_last_pestal    x-Koordinaten des Lastseils nach Pestal (Pe)
@@ -77,12 +77,12 @@ def preciseCable(IS, poles, STA):
         korrektur = h[0]
 
     z = np.zeros(anzStue)
-    l = np.zeros(anzStue)
+    laengenprofil_y = np.zeros(anzStue)
     z[0] = korrektur
     z[1:] = np.cumsum(h)
     zfm = z[:-1] + h * 0.5
     b_cum = np.cumsum(b)
-    l[1:] = b_cum
+    laengenprofil_y[1:] = b_cum
 
     # Berechnung der Sehne
     c = (bquad + h**2) ** 0.5
@@ -207,7 +207,7 @@ def preciseCable(IS, poles, STA):
         end = start + s_small + 1
         b1 = np.arange(0, bn + step, step)
         b2 = bn - b1
-        l_coord[start:end] = l[n] + b1
+        l_coord[start:end] = laengenprofil_y[n] + b1
         y_leer[start:end] = b1 * b2 / (bn * HT[n]) * (Q_Null + c[n] * qT / 2)
         # Interpolationsbeziehung für die Berechnung der Lastwegkurve
         H[start:end] = (
@@ -245,7 +245,7 @@ def preciseCable(IS, poles, STA):
     lastElement = h[k] + z[k]
     z_coord_leer[-1] = lastElement
     z_coord_zweifel[-1] = lastElement
-    l_coord[-1] = l[k] + b[k]
+    l_coord[-1] = laengenprofil_y[k] + b[k]
     H[-1] = Hm[k] * (1 - (1 - (Hs[k] / Hm[k]) ** 2) * (1 - 2 * b[k] / b[k]) ** 2) ** 0.5
 
     # Seilparameter berechnen
@@ -511,12 +511,12 @@ def preciseCableLight(zi, di, IS, STA, HM, LP):
         korrektur = h[0]
 
     z = np.zeros(anzStue)
-    l = np.zeros(anzStue)
+    laengenprofil_y = np.zeros(anzStue)
     z[0] = korrektur
     z[1:] = np.cumsum(h)
     zfm = z[:-1] + h * 0.5
     b_cum = np.cumsum(b)
-    l[1:] = b_cum
+    laengenprofil_y[1:] = b_cum
 
     # Berechnung der Sehne
     c = (bquad + h**2) ** 0.5

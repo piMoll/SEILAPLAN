@@ -77,7 +77,7 @@ class CsvXyzReader(AbstractSurveyReader):
                 unpack=True,
                 skip_header=1,
             )
-        except TypeError as e:
+        except TypeError:
             return False
         if isinstance(x, float) or isinstance(y, float) or isinstance(z, float):
             return False
