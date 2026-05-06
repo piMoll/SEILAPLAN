@@ -1,6 +1,6 @@
+from fnmatch import fnmatch
 import os
 import zipfile
-from fnmatch import fnmatch
 
 PKG_NAME = "SEILAPLAN"
 # Includes all the top level paths that should be included when building the zip file

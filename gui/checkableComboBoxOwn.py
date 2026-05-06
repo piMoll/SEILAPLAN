@@ -1,5 +1,5 @@
+from qgis.PyQt.QtCore import Qt, pyqtSignal
 from qgis.gui import QgsCheckableComboBox
-from qgis.PyQt.QtCore import pyqtSignal, Qt
 
 
 class QgsCheckableComboBoxOwn(QgsCheckableComboBox):

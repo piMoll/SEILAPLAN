@@ -11,7 +11,7 @@
 #------------------------------------------------------------------------------
 """
 
-from .cableline import calcCable, calcBandH
+from .cableline import calcBandH, calcCable
 
 
 def calcSTA(

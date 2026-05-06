@@ -1,6 +1,8 @@
-from qgis.core import QgsMessageLog, QgsSettings
 from qgis.PyQt.QtCore import QSettings
-from SEILAPLAN import __version__ as current_version, DEBUG
+from qgis.core import QgsMessageLog, QgsSettings
+
+from SEILAPLAN import DEBUG
+from SEILAPLAN import __version__ as current_version
 
 QGIS_SETTINGS_GROUP_PLUGINS = "app/plugin_repositories"
 SEILAPLAN_PLUGIN_REPO = (

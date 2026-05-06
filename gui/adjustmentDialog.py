@@ -25,11 +25,9 @@ from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QCoreApplication, QSettings, Qt, QTimer
 from qgis.PyQt.QtGui import QPixmap
 from qgis.PyQt.QtWidgets import QDialog, QMessageBox, QTextEdit
+
 from SEILAPLAN import PLUGIN_DIR
-from SEILAPLAN.core.cablelineFinal import (
-    preciseCable,
-    updateWithCableCoordinates,
-)
+from SEILAPLAN.core.cablelineFinal import preciseCable, updateWithCableCoordinates
 from SEILAPLAN.tools.birdViewMapExtractor import extractMapBackground
 from SEILAPLAN.tools.calcThreshold import ThresholdUpdater
 from SEILAPLAN.tools.configHandler import ConfigHandler
@@ -53,17 +51,9 @@ from SEILAPLAN.tools.profile import Profile
 
 from .adjustmentDialog_params import AdjustmentDialogParams
 from .adjustmentDialog_thresholds import AdjustmentDialogThresholds
-from .adjustmentPlot import (
-    AdjustmentPlot,
-    calculatePlotDimensions,
-    saveImgAsPdfWithMpl,
-)
+from .adjustmentPlot import AdjustmentPlot, calculatePlotDimensions, saveImgAsPdfWithMpl
 from .birdViewWidget import BirdViewWidget
-from .guiHelperFunctions import (
-    addBackgroundMap,
-    DialogWithImage,
-    getAbsoluteIconPath,
-)
+from .guiHelperFunctions import DialogWithImage, addBackgroundMap, getAbsoluteIconPath
 from .mapMarker import MapMarkerTool
 from .plotting_tools import MyNavigationToolbar
 from .poleWidget import CustomPoleWidget

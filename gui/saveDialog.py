@@ -36,6 +36,7 @@ from qgis.PyQt.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+
 from SEILAPLAN.tools.configHandler import ConfigHandler
 
 from .guiHelperFunctions import getAbsoluteIconPath, sanitizeFilename

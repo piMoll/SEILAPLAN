@@ -3,6 +3,7 @@ import unittest
 
 from numpy import nan
 from qgis.core import QgsCoordinateReferenceSystem
+
 from SEILAPLAN.core.cablelineFinal import preciseCable
 from SEILAPLAN.tools.configHandler import ConfigHandler
 from SEILAPLAN.tools.poles import Poles

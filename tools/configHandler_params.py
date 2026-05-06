@@ -26,6 +26,7 @@ from operator import itemgetter
 import os
 
 from qgis.core import QgsSettings
+
 from SEILAPLAN import PLUGIN_DIR
 from SEILAPLAN.gui.guiHelperFunctions import sanitizeFilename
 

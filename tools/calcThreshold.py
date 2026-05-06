@@ -4,9 +4,8 @@ from typing import List
 
 import numpy as np
 from qgis.PyQt.QtCore import QCoreApplication
-from SEILAPLAN.gui.adjustmentDialog_thresholds import (
-    AdjustmentDialogThresholds,
-)
+
+from SEILAPLAN.gui.adjustmentDialog_thresholds import AdjustmentDialogThresholds
 from SEILAPLAN.gui.adjustmentPlot import PlotMarker
 from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
 

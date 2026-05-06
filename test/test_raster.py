@@ -1,9 +1,10 @@
 import os
+from test import TESTDATA_DIR
 import unittest
 
 from qgis.core import QgsCoordinateReferenceSystem, QgsRasterLayer
+
 from SEILAPLAN.tools.raster import Raster
-from test import TESTDATA_DIR
 
 
 class TestRaster(unittest.TestCase):

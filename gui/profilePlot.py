@@ -22,22 +22,22 @@
 from math import floor
 
 import numpy as np
-from qgis.PyQt.QtCore import QCoreApplication, QSize, Qt, QT_VERSION_STR
+from qgis.PyQt.QtCore import QT_VERSION_STR, QCoreApplication, QSize, Qt
 from qgis.PyQt.QtWidgets import QSizePolicy
 
 if QT_VERSION_STR.startswith("5"):
-    from matplotlib.backends.backend_qt5agg import (
-        FigureCanvasQTAgg as FigureCanvas,
-    )
+    from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 else:
     from matplotlib.backends.backend_qtagg import (
         FigureCanvasQTAgg as FigureCanvas,
     )
-from matplotlib.figure import Figure
-from matplotlib.collections import LineCollection
 
-from .mapMarker import PROFILE_COLOR, POLE_COLOR, SECTION_COLOR
+from matplotlib.collections import LineCollection
+from matplotlib.figure import Figure
+
 from SEILAPLAN.utils.misc import is_dark_mode
+
+from .mapMarker import POLE_COLOR, PROFILE_COLOR, SECTION_COLOR
 
 
 class ProfilePlot(FigureCanvas):

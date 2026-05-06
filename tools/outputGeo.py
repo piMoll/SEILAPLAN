@@ -24,6 +24,7 @@ import os
 from os.path import isfile
 
 import numpy as np
+from qgis.PyQt.QtCore import QCoreApplication
 from qgis.core import (
     QgsCoordinateReferenceSystem,
     QgsCoordinateTransform,
@@ -39,7 +40,7 @@ from qgis.core import (
     QgsVectorFileWriter,
     QgsWkbTypes,
 )
-from qgis.PyQt.QtCore import QCoreApplication
+
 from SEILAPLAN import DEBUG
 from SEILAPLAN.gui.guiHelperFunctions import addLayerToQgis
 
