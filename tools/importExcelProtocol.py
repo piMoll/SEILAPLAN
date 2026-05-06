@@ -74,9 +74,7 @@ class ExcelProtocolReader(AbstractSurveyReader):
     
         # Readout data and check validity
         templateVersion = sheet.address(address=self.CELL_VERSION)
-        try:
-            assert templateVersion == self.TEMPLATE_VERSION
-        except AssertionError:
+        if templateVersion != self.TEMPLATE_VERSION:
             self.errorMsg = self.tr('Veraltetes Template, Daten koennen nicht eingelesen werden')
             return False
     
@@ -129,9 +127,7 @@ class ExcelProtocolReader(AbstractSurveyReader):
             self.errorMsg = self.tr('Azimut ist ungueltig')
             return False
         
-        try:
-            assert 0 <= azimuth <= 400
-        except AssertionError:
+        if not (0 <= azimuth <= 400):
             self.errorMsg = self.tr('Azimut ist ungueltig')
             return False
         
