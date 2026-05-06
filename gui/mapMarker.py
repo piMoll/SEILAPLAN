@@ -25,21 +25,21 @@ from qgis.PyQt.QtCore import pyqtSignal, Qt
 from qgis.PyQt.QtGui import QColor, QCursor
 
 # Colors
-CURSOR_COLOR = '#00000'
-PROFILE_COLOR = '#de0d15'
-POLE_COLOR = '#0055ff'
-SECTION_COLOR = '#ff9900'
+CURSOR_COLOR = "#00000"
+PROFILE_COLOR = "#de0d15"
+POLE_COLOR = "#0055ff"
+SECTION_COLOR = "#ff9900"
 
 
 class MapMarkerTool(QgsMapTool):
-    
+
     # Signals
     sig_lineFinished = pyqtSignal(list)
 
     def __init__(self, canvas):
         QgsMapTool.__init__(self, canvas)
         self.canvas = canvas
-        
+
         # Cross hair when drawing profile line
         self.cursor = QCursor(Qt.CursorShape.CrossCursor)
         # Cross hair when creating new fixed poles in profile window
@@ -69,7 +69,7 @@ class MapMarkerTool(QgsMapTool):
 
         # Temporary save double clicks
         self.dblclktemp = None
-        
+
         # Backup the last active Tool before the profile tool became active
         self.savedTool = self.canvas.mapTool()
         self.isActive = False
@@ -79,9 +79,10 @@ class MapMarkerTool(QgsMapTool):
             # Define a default transformation that does nothing
             def transformFunc(position):
                 return position
+
         self.transformFunc = transformFunc
         self.reset()
-        self.canvas.setMapTool(self)        # runs function self.activate()
+        self.canvas.setMapTool(self)  # runs function self.activate()
 
     def activate(self):
         self.removeMarker()
@@ -126,7 +127,7 @@ class MapMarkerTool(QgsMapTool):
                 self.drawMarker(mapPos, firstPoint=True)
                 self.rubberband.reset()
                 self.linePoints.append(mapPos)
-            
+
             # Click is second point of line
             elif len(self.linePoints) == 1:
                 # Mark point with marker symbol
@@ -135,7 +136,7 @@ class MapMarkerTool(QgsMapTool):
                 self.dblclktemp = mapPos
                 self.lineFeature = self.createLineFeature(self.linePoints)
                 self.sig_lineFinished.emit(self.linePoints)
-                self.canvas.setMapTool(self.savedTool)      # self.deactivate()
+                self.canvas.setMapTool(self.savedTool)  # self.deactivate()
                 # If we are on a survey data line, deactivate cursor
                 self.deactivateCursor()
 
@@ -146,7 +147,7 @@ class MapMarkerTool(QgsMapTool):
         if drawMarker:
             self.drawMarker(qgsPoints[0], firstPoint=True)
             self.drawMarker(qgsPoints[1])
-    
+
     def activateSectionLine(self, initPoint):
         qgsPoint = self.convertToQgsPoint(initPoint)
         rubberbandS = QgsRubberBand(self.canvas)
@@ -154,29 +155,36 @@ class MapMarkerTool(QgsMapTool):
         rubberbandS.setColor(QColor(SECTION_COLOR))
         self.lineFeatureS.append(rubberbandS)
         self.linePointsS = [qgsPoint, None]
-    
+
     def updateSectionLine(self, point):
         qgsPoint = self.convertToQgsPoint(point)
         self.linePointsS[1] = qgsPoint
         self.lineFeatureS[-1].setToGeometry(
-            QgsGeometry.fromPolylineXY(self.linePointsS), None)
-    
+            QgsGeometry.fromPolylineXY(self.linePointsS), None
+        )
+
     def deleteSectionLines(self):
         for line in self.lineFeatureS:
             line.reset()
             self.linePoints = []
         self.lineFeatureS = []
-    
+
     def clearUnfinishedLines(self):
         if len(self.linePointsS) == 1:
             self.lineFeatureS[-1].reset()
             self.lineFeatureS.pop(-1)
             self.linePointsS = []
 
-    def drawMarker(self, point, idx=None, pointType='pole', color=POLE_COLOR,
-                   firstPoint=False):
+    def drawMarker(
+        self,
+        point,
+        idx=None,
+        pointType="pole",
+        color=POLE_COLOR,
+        firstPoint=False,
+    ):
         qgsPoint = self.convertToQgsPoint(point)
-        if pointType == 'anchor':
+        if pointType == "anchor":
             marker = QgsAnchorMarker(self.canvas, color)
         else:
             marker = QgsPoleMarker(self.canvas, color, firstPoint)
@@ -186,7 +194,7 @@ class MapMarkerTool(QgsMapTool):
         else:
             self.markers.insert(idx, marker)
         self.canvas.refresh()
-    
+
     def updateMarker(self, point, idx):
         qgsPoint = self.convertToQgsPoint(point)
         self.markers[idx].setCenter(qgsPoint)
@@ -205,26 +213,26 @@ class MapMarkerTool(QgsMapTool):
                 del marker
             self.markers = []
         self.canvas.refresh()
-    
+
     def removeIntermediateMarkers(self):
         if not len(self.markers) >= 3:
             return
-        for idx in reversed(range(1, len(self.markers)-1)):
+        for idx in reversed(range(1, len(self.markers) - 1)):
             marker = self.markers[idx]
             self.canvas.scene().removeItem(marker)
             del marker
             self.markers.pop(idx)
         self.canvas.refresh()
-    
+
     def hideMarker(self, idx):
         marker = self.markers[idx]
         self.canvas.scene().removeItem(marker)
         del marker
         self.canvas.refresh()
-        
+
     def showMarker(self, point, idx, pointType, color=POLE_COLOR):
         qgsPoint = self.convertToQgsPoint(point)
-        if pointType == 'anchor':
+        if pointType == "anchor":
             marker = QgsAnchorMarker(self.canvas, color)
         else:
             marker = QgsPoleMarker(self.canvas, color)
@@ -233,12 +241,12 @@ class MapMarkerTool(QgsMapTool):
         self.markers.pop(idx)
         self.markers.insert(idx, marker)
         self.canvas.refresh()
-    
+
     def deactivateCursor(self):
         if self.poleCursor:
             self.canvas.scene().removeItem(self.poleCursor)
         self.poleCursor = None
-    
+
     def updateCursor(self, point, color=POLE_COLOR):
         qgsPoint = self.convertToQgsPoint(point)
         if not self.poleCursor:
@@ -252,7 +260,7 @@ class MapMarkerTool(QgsMapTool):
         qgFeat = QgsFeature()
         qgFeat.setGeometry(line)
         return qgFeat
-    
+
     @staticmethod
     def convertToQgsPoint(point):
         qgsPoint = None

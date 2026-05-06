@@ -17,7 +17,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- """
+"""
 
 from qgis.PyQt.QtCore import QCoreApplication, QSize, Qt
 from qgis.PyQt.QtGui import QIcon, QPixmap
@@ -34,7 +34,7 @@ from qgis.PyQt.QtWidgets import (
     QPushButton,
     QSizePolicy,
     QVBoxLayout,
-    QWidget
+    QWidget,
 )
 from SEILAPLAN.tools.configHandler import ConfigHandler
 
@@ -42,40 +42,43 @@ from .guiHelperFunctions import getAbsoluteIconPath, sanitizeFilename
 
 
 class DialogSaveParamset(QDialog):
-    
+
     def __init__(self, parent):
         """Dialog to set the name of the saved parameter set."""
-        
+
         QDialog.__init__(self, parent)
-        
+
         self.paramData = None
         self.availableSets = None
         self.savePath = None
         self.setname = None
-        self.setWindowTitle(self.tr('Name Parameterset'))
+        self.setWindowTitle(self.tr("Name Parameterset"))
         main_widget = QWidget(self)
-        
+
         # Build gui
         hbox = QHBoxLayout()
-        setnameLabel = QLabel(self.tr('Bezeichnung Parameterset'))
+        setnameLabel = QLabel(self.tr("Bezeichnung Parameterset"))
         self.setnameField = QLineEdit()
         self.setnameField.setMinimumWidth(400)
         self.setnameField.setSizePolicy(
-            QSizePolicy(QSizePolicy.Policy.Expanding,
-                        QSizePolicy.Policy.Fixed))
-        
+            QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        )
+
         hbox.addWidget(setnameLabel)
         hbox.addWidget(self.setnameField)
-        
+
         # Create Ok/Cancel Button and connect signal
         buttonBox = QDialogButtonBox(main_widget)
-        buttonBox.setStandardButtons(QDialogButtonBox.StandardButton.Cancel |
-                                     QDialogButtonBox.StandardButton.Ok)
+        buttonBox.setStandardButtons(
+            QDialogButtonBox.StandardButton.Cancel | QDialogButtonBox.StandardButton.Ok
+        )
         buttonBox.button(QDialogButtonBox.StandardButton.Ok).setText(self.tr("OK"))
-        buttonBox.button(QDialogButtonBox.StandardButton.Cancel).setText(self.tr("Abbrechen"))
+        buttonBox.button(QDialogButtonBox.StandardButton.Cancel).setText(
+            self.tr("Abbrechen")
+        )
         buttonBox.accepted.connect(self.apply)
         buttonBox.rejected.connect(self.onCancel)
-        
+
         # Layout
         container = QVBoxLayout(main_widget)
         container.addLayout(hbox)
@@ -98,14 +101,14 @@ class DialogSaveParamset(QDialog):
         **kwargs
         """
         return QCoreApplication.translate(type(self).__name__, message)
-    
+
     def setData(self, availableSets, savePath):
         self.availableSets = availableSets
         self.savePath = savePath
-    
+
     def getNewSetname(self):
         return self.setname
-    
+
     def checkName(self, setname):
         if setname in self.availableSets:
             return False
@@ -113,102 +116,118 @@ class DialogSaveParamset(QDialog):
         if not fileName:
             return False
         return True
-    
+
     def apply(self):
         setname = self.setnameField.text()
         valid = self.checkName(setname)
         if not valid:
-            QMessageBox.information(self, self.tr('Fehler'),
-                self.tr('Bitte geben Sie einen gueltigen Dateinamen fuer das '
-                        'Parameterset an'), QMessageBox.StandardButton.Ok)
+            QMessageBox.information(
+                self,
+                self.tr("Fehler"),
+                self.tr(
+                    "Bitte geben Sie einen gueltigen Dateinamen fuer das "
+                    "Parameterset an"
+                ),
+                QMessageBox.StandardButton.Ok,
+            )
             return
         self.setname = setname
         self.close()
-    
+
     def onCancel(self):
-        self.setnameField.setText('')
+        self.setnameField.setText("")
         self.close()
 
 
 class DialogOutputOptions(QDialog):
-    
+
     def __init__(self, parent, confHandler):
         """
         :type confHandler: configHandler.ConfigHandler
         """
         QDialog.__init__(self, parent)
-        
+
         self.confHandler: ConfigHandler = confHandler
         self.saveSuccessful = False
-        
-        self.setWindowTitle(self.tr('Output Optionen'))
+
+        self.setWindowTitle(self.tr("Output Optionen"))
         main_widget = QWidget(self)
-        
+
         # Build up gui
-        
+
         # Project title
         hbox1 = QHBoxLayout()
-        projectNameLabel = QLabel(self.tr('Projektname'))
+        projectNameLabel = QLabel(self.tr("Projektname"))
         projectNameLabel.setMinimumWidth(100)
         self.projectField = QLineEdit()
         self.projectField.setMinimumWidth(400)
         self.projectField.setSizePolicy(
-            QSizePolicy(QSizePolicy.Policy.Expanding,
-                        QSizePolicy.Policy.Fixed))
+            QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        )
         hbox1.addWidget(projectNameLabel)
         hbox1.addWidget(self.projectField)
-        
+
         # Save path
         hbox2 = QHBoxLayout()
-        saveLabel = QLabel(self.tr('Speicherpfad'))
+        saveLabel = QLabel(self.tr("Speicherpfad"))
         saveLabel.setMinimumWidth(100)
         self.pathField = QComboBox()
         self.pathField.setMinimumWidth(400)
         self.pathField.setSizePolicy(
-            QSizePolicy(QSizePolicy.Policy.Expanding,
-                        QSizePolicy.Policy.Fixed))
-        
+            QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        )
+
         openButton = QPushButton()
         openButton.setMaximumSize(QSize(27, 27))
         icon = QIcon()
-        iconPath = getAbsoluteIconPath('icon_open.png')
+        iconPath = getAbsoluteIconPath("icon_open.png")
         icon.addPixmap(QPixmap(iconPath), QIcon.Mode.Normal, QIcon.State.Off)
         openButton.setIcon(icon)
         openButton.setIconSize(QSize(24, 24))
         openButton.clicked.connect(self.onChoosePath)
-        
+
         hbox2.addWidget(saveLabel)
         hbox2.addWidget(self.pathField)
         hbox2.addWidget(openButton)
         # Create checkboxes
-        questionLabel = QLabel(self.tr('Welche Produkte sollen erzeugt werden?'))
-        questionLabel.setStyleSheet('font-weight: bold;')
-        self.checkBoxShortReport = QCheckBox(self.tr('Kurzbericht'))
-        self.checkBoxReport = QCheckBox(self.tr('Technischer Bericht'))
-        self.checkBoxPlot = QCheckBox(self.tr('Diagramm'))
-        self.checkBoxBirdView = QCheckBox(self.tr('inkl. Vogelperspektive'))
-        self.checkBoxBirdViewLegend = QCheckBox(self.tr('Legende Vogelperspektive'))
-        geodataLabel = QLabel(self.tr('Geodaten (Stuetzen, Seillinie, Gelaende)'))
-        geodataLabel.setStyleSheet('padding-top: 10px;')
-        self.checkBoxCsv = QCheckBox('CSV')
-        self.checkBoxGpkg = QCheckBox('GeoPackage')
-        self.checkBoxShape = QCheckBox('ESRI Shapefile')
-        self.checkBoxKML = QCheckBox('KML')
+        questionLabel = QLabel(self.tr("Welche Produkte sollen erzeugt werden?"))
+        questionLabel.setStyleSheet("font-weight: bold;")
+        self.checkBoxShortReport = QCheckBox(self.tr("Kurzbericht"))
+        self.checkBoxReport = QCheckBox(self.tr("Technischer Bericht"))
+        self.checkBoxPlot = QCheckBox(self.tr("Diagramm"))
+        self.checkBoxBirdView = QCheckBox(self.tr("inkl. Vogelperspektive"))
+        self.checkBoxBirdViewLegend = QCheckBox(self.tr("Legende Vogelperspektive"))
+        geodataLabel = QLabel(self.tr("Geodaten (Stuetzen, Seillinie, Gelaende)"))
+        geodataLabel.setStyleSheet("padding-top: 10px;")
+        self.checkBoxCsv = QCheckBox("CSV")
+        self.checkBoxGpkg = QCheckBox("GeoPackage")
+        self.checkBoxShape = QCheckBox("ESRI Shapefile")
+        self.checkBoxKML = QCheckBox("KML")
         self.checkBoxDXF = QCheckBox(f"DXF ({self.tr('inkl. Profilansicht')})")
-        
+
         # Create Ok/Cancel Button and connect signal
         buttonBox = QDialogButtonBox(main_widget)
-        buttonBox.setStandardButtons(QDialogButtonBox.StandardButton.Save |
-                                     QDialogButtonBox.StandardButton.Cancel)
-        buttonBox.button(QDialogButtonBox.StandardButton.Save).setText(self.tr("Speichern"))
-        buttonBox.button(QDialogButtonBox.StandardButton.Cancel).setText(self.tr("Abbrechen"))
-        buttonBox.button(QDialogButtonBox.StandardButton.Cancel).clicked.connect(self.onCancel)
-        buttonBox.button(QDialogButtonBox.StandardButton.Save).clicked.connect(self.onSave)
+        buttonBox.setStandardButtons(
+            QDialogButtonBox.StandardButton.Save
+            | QDialogButtonBox.StandardButton.Cancel
+        )
+        buttonBox.button(QDialogButtonBox.StandardButton.Save).setText(
+            self.tr("Speichern")
+        )
+        buttonBox.button(QDialogButtonBox.StandardButton.Cancel).setText(
+            self.tr("Abbrechen")
+        )
+        buttonBox.button(QDialogButtonBox.StandardButton.Cancel).clicked.connect(
+            self.onCancel
+        )
+        buttonBox.button(QDialogButtonBox.StandardButton.Save).clicked.connect(
+            self.onSave
+        )
         # Layout
         container = QVBoxLayout(main_widget)
         container.addLayout(hbox1)
         container.addLayout(hbox2)
-        container.addWidget(QLabel(''))
+        container.addWidget(QLabel(""))
         container.addWidget(questionLabel)
         container.addWidget(self.checkBoxShortReport)
         container.addWidget(self.checkBoxReport)
@@ -230,7 +249,7 @@ class DialogOutputOptions(QDialog):
         container.addWidget(buttonBox)
         container.setAlignment(Qt.AlignmentFlag.AlignLeft)
         self.setLayout(container)
-        
+
         self.checkBoxPlot.clicked.connect(self.onTogglePlotOption)
 
     def tr(self, message, **kwargs):
@@ -251,53 +270,66 @@ class DialogOutputOptions(QDialog):
 
     def setConfigData(self):
         self.saveSuccessful = False
-        
+
         # Set ticks
-        self.checkBoxShortReport.setChecked(self.confHandler.outputOptions['shortReport'])
-        self.checkBoxReport.setChecked(self.confHandler.outputOptions['report'])
-        self.checkBoxPlot.setChecked(self.confHandler.outputOptions['plot'])
-        self.checkBoxBirdView.setChecked(self.confHandler.outputOptions['birdView'])
-        self.checkBoxBirdViewLegend.setChecked(self.confHandler.outputOptions['birdViewLegend'])
-        self.checkBoxCsv.setChecked(self.confHandler.outputOptions['csv'])
-        self.checkBoxGpkg.setChecked(self.confHandler.outputOptions['gpkg'])
-        self.checkBoxShape.setChecked(self.confHandler.outputOptions['shape'])
-        self.checkBoxKML.setChecked(self.confHandler.outputOptions['kml'])
-        self.checkBoxDXF.setChecked(self.confHandler.outputOptions['dxf'])
-        
+        self.checkBoxShortReport.setChecked(
+            self.confHandler.outputOptions["shortReport"]
+        )
+        self.checkBoxReport.setChecked(self.confHandler.outputOptions["report"])
+        self.checkBoxPlot.setChecked(self.confHandler.outputOptions["plot"])
+        self.checkBoxBirdView.setChecked(self.confHandler.outputOptions["birdView"])
+        self.checkBoxBirdViewLegend.setChecked(
+            self.confHandler.outputOptions["birdViewLegend"]
+        )
+        self.checkBoxCsv.setChecked(self.confHandler.outputOptions["csv"])
+        self.checkBoxGpkg.setChecked(self.confHandler.outputOptions["gpkg"])
+        self.checkBoxShape.setChecked(self.confHandler.outputOptions["shape"])
+        self.checkBoxKML.setChecked(self.confHandler.outputOptions["kml"])
+        self.checkBoxDXF.setChecked(self.confHandler.outputOptions["dxf"])
+
         # Project name
         self.projectField.setText(self.confHandler.project.getProjectName())
-        
+
         # Dropdown Paths
         for i in reversed(range(self.pathField.count())):
             self.pathField.removeItem(i)
         for path in reversed(self.confHandler.commonPaths):
             self.pathField.addItem(path)
-    
+
     def onChoosePath(self):
-        title = self.tr('Output Ordner auswaehlen')
-        folder = QFileDialog.getExistingDirectory(self, title,
-            self.confHandler.getCurrentPath(), QFileDialog.Option.ShowDirsOnly)
+        title = self.tr("Output Ordner auswaehlen")
+        folder = QFileDialog.getExistingDirectory(
+            self,
+            title,
+            self.confHandler.getCurrentPath(),
+            QFileDialog.Option.ShowDirsOnly,
+        )
         if folder:
             self.pathField.insertItem(0, folder)
             self.pathField.setCurrentIndex(0)
-    
+
     def onTogglePlotOption(self):
         self.checkBoxBirdView.setEnabled(self.checkBoxPlot.isChecked())
         self.checkBoxBirdViewLegend.setEnabled(self.checkBoxPlot.isChecked())
-    
+
     def onSave(self):
         # Save checkbox status
         options = {
-            'report': int(self.checkBoxReport.isChecked()),
-            'shortReport': int(self.checkBoxShortReport.isChecked()),
-            'plot': int(self.checkBoxPlot.isChecked()),
-            'birdView': int(self.checkBoxBirdView.isEnabled() and self.checkBoxBirdView.isChecked()),
-            'birdViewLegend': int(self.checkBoxBirdViewLegend.isEnabled() and self.checkBoxBirdViewLegend.isChecked()),
-            'csv': int(self.checkBoxCsv.isChecked()),
-            'gpkg': int(self.checkBoxGpkg.isChecked()),
-            'shape': int(self.checkBoxShape.isChecked()),
-            'kml': int(self.checkBoxKML.isChecked()),
-            'dxf': int(self.checkBoxDXF.isChecked()),
+            "report": int(self.checkBoxReport.isChecked()),
+            "shortReport": int(self.checkBoxShortReport.isChecked()),
+            "plot": int(self.checkBoxPlot.isChecked()),
+            "birdView": int(
+                self.checkBoxBirdView.isEnabled() and self.checkBoxBirdView.isChecked()
+            ),
+            "birdViewLegend": int(
+                self.checkBoxBirdViewLegend.isEnabled()
+                and self.checkBoxBirdViewLegend.isChecked()
+            ),
+            "csv": int(self.checkBoxCsv.isChecked()),
+            "gpkg": int(self.checkBoxGpkg.isChecked()),
+            "shape": int(self.checkBoxShape.isChecked()),
+            "kml": int(self.checkBoxKML.isChecked()),
+            "dxf": int(self.checkBoxDXF.isChecked()),
         }
         # Update project name
         self.confHandler.project.setProjectName(self.projectField.text())
@@ -307,7 +339,7 @@ class DialogOutputOptions(QDialog):
         self.confHandler.addPath(self.pathField.currentText())
         self.saveSuccessful = True
         self.close()
-    
+
     def onCancel(self):
         self.saveSuccessful = False
         self.close()

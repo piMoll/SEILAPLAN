@@ -18,6 +18,7 @@
  *                                                                         *
  ***************************************************************************/
 """
+
 import csv
 
 import numpy as np
@@ -28,10 +29,10 @@ from .outputGeo import GPS_CRS, latLonToUtmCode, reprojectToCrs
 
 
 class CsvVertexReader(AbstractSurveyReader):
-    
+
     def __init__(self, path):
         AbstractSurveyReader.__init__(self, path)
-        
+
         self.sep = None
         self.notes = []
         self.idxMark = None
@@ -43,48 +44,65 @@ class CsvVertexReader(AbstractSurveyReader):
         self.idxHD = None
         self.idxH = None
         self.idxAz = None
-        
+
         self.checkStructure()
 
     def checkStructure(self):
-    
-        with open(self.path, newline='') as file:
+
+        with open(self.path, newline="") as file:
             reader = csv.reader(file)
-            sep = ','
+            sep = ","
             for row in reader:
                 if len(row) == 1:
-                    row = row[0].split(';')
-                    sep = ';'
+                    row = row[0].split(";")
+                    sep = ";"
                 if len(row) == 1:
-                    row = row[0].split(',')
-                    sep = ','
-            
+                    row = row[0].split(",")
+                    sep = ","
+
                 # Analyse header line
-                idxMark = [idx for idx, h in enumerate(row) if
-                           self.formatHeader(h) == 'MARK']
-                idxTYPE = [idx for idx, h in enumerate(row) if
-                           self.formatHeader(h) == 'TYPE']
-                idxLon = [idx for idx, h in enumerate(row) if
-                          self.formatHeader(h) == 'LON']
-                idxLat = [idx for idx, h in enumerate(row) if
-                          self.formatHeader(h) == 'LAT']
-                idxSEQ = [idx for idx, h in enumerate(row) if
-                          self.formatHeader(h) == 'SEQ']
-                idxAlti = [idx for idx, h in enumerate(row) if
-                           self.formatHeader(h) == 'ALTITUDE']
-                idxHD = [idx for idx, h in enumerate(row) if
-                         self.formatHeader(h) == 'HD']
-                idxH = [idx for idx, h in enumerate(row) if
-                         self.formatHeader(h) == 'H']
-                idxAz = [idx for idx, h in enumerate(row) if
-                         self.formatHeader(h) == 'AZ']
+                idxMark = [
+                    idx for idx, h in enumerate(row) if self.formatHeader(h) == "MARK"
+                ]
+                idxTYPE = [
+                    idx for idx, h in enumerate(row) if self.formatHeader(h) == "TYPE"
+                ]
+                idxLon = [
+                    idx for idx, h in enumerate(row) if self.formatHeader(h) == "LON"
+                ]
+                idxLat = [
+                    idx for idx, h in enumerate(row) if self.formatHeader(h) == "LAT"
+                ]
+                idxSEQ = [
+                    idx for idx, h in enumerate(row) if self.formatHeader(h) == "SEQ"
+                ]
+                idxAlti = [
+                    idx
+                    for idx, h in enumerate(row)
+                    if self.formatHeader(h) == "ALTITUDE"
+                ]
+                idxHD = [
+                    idx for idx, h in enumerate(row) if self.formatHeader(h) == "HD"
+                ]
+                idxH = [idx for idx, h in enumerate(row) if self.formatHeader(h) == "H"]
+                idxAz = [
+                    idx for idx, h in enumerate(row) if self.formatHeader(h) == "AZ"
+                ]
                 break
-    
+
         # Check if data is in vertex format
-        if len(idxTYPE) == 1 and len(idxTYPE) == 1 and len(idxSEQ) == 1 \
-                and len(idxAlti) == 1 and len(idxHD) == 1 and len(idxH) == 1 \
-                and len(idxAz) == 1 and len(idxLat) == 1 and len(idxLon) == 1:
-    
+        if (
+            len(idxTYPE) == 1
+            and len(idxTYPE) == 1
+            and len(idxSEQ) == 1
+            and len(idxAlti) == 1
+            and len(idxHD) == 1
+            and len(idxH) == 1
+            and len(idxAz) == 1
+            and len(idxLat) == 1
+            and len(idxLon) == 1
+        ):
+
             self.sep = sep
             self.idxMark = idxMark[0]
             self.idxTYPE = idxTYPE[0]
@@ -95,38 +113,58 @@ class CsvVertexReader(AbstractSurveyReader):
             self.idxHD = idxHD[0]
             self.idxH = idxH[0]
             self.idxAz = idxAz[0]
-            
+
             self.valid = True
 
     def readOutData(self):
         try:
             # Readout mark (marks the rows with measurements) and measuring
             #  type separately because the data is of type string
-            (mark, dataType) = np.genfromtxt(self.path, delimiter=self.sep,
-                                             dtype=str, usecols=(self.idxMark,
-                                             self.idxTYPE), unpack=True)
+            mark, dataType = np.genfromtxt(
+                self.path,
+                delimiter=self.sep,
+                dtype=str,
+                usecols=(self.idxMark, self.idxTYPE),
+                unpack=True,
+            )
             # Analyse when data rows start
-            skipHead = np.where(mark == '$')[0][0]
+            skipHead = np.where(mark == "$")[0][0]
             # Read out numerical values
-            (seq, alti,
-                hd, h, az,
-                lon, lat) = np.genfromtxt(self.path, delimiter=self.sep,
-                                         usecols=(self.idxSEQ, self.idxAlti,
-                                                  self.idxHD, self.idxH, self.idxAz,
-                                                  self.idxLon, self.idxLat),
-                                         skip_header=skipHead, unpack=True)
+            seq, alti, hd, h, az, lon, lat = np.genfromtxt(
+                self.path,
+                delimiter=self.sep,
+                usecols=(
+                    self.idxSEQ,
+                    self.idxAlti,
+                    self.idxHD,
+                    self.idxH,
+                    self.idxAz,
+                    self.idxLon,
+                    self.idxLat,
+                ),
+                skip_header=skipHead,
+                unpack=True,
+            )
         except ValueError:
             return False
-    
+
         # See if dimensions of extracted numerical data and mark fit
-        if not (mark[skipHead:].size == seq.size == alti.size ==
-                hd.size == h.size == az.size == lon.size == lat.size):
+        if not (
+            mark[skipHead:].size
+            == seq.size
+            == alti.size
+            == hd.size
+            == h.size
+            == az.size
+            == lon.size
+            == lat.size
+        ):
             return False
-    
+
         # Create a mask to mark missing / wrong values and skip them when
         #  processing
         mask_use = np.array([True] * seq.size)
-    
+
         # Check if there are multiple measurement series by searching for
         #  seq = 1 or the lowest value. Only take the longest sequence of
         #  measurements
@@ -140,9 +178,12 @@ class CsvVertexReader(AbstractSurveyReader):
         sequence_len.append(seq.size - last_start)
         # Find sequence start and end index
         start_of_longest_sequence = sequence_starts[np.argmax(sequence_len)]
-        end_of_longest_sequence = sequence_starts[np.argmax(sequence_len) + 1] \
-            if sequence_len == seq.size else -1
-    
+        end_of_longest_sequence = (
+            sequence_starts[np.argmax(sequence_len) + 1]
+            if sequence_len == seq.size
+            else -1
+        )
+
         # Update mask by setting every other measurement series to False
         mask_use[:start_of_longest_sequence] = False
         if end_of_longest_sequence != -1:
@@ -152,17 +193,19 @@ class CsvVertexReader(AbstractSurveyReader):
         # there is most certainly an issue with the CSV data
         if np.sum(seq == 1) > 1:
             # Only add a warning
-            self.warnMsg = self.tr('Die CSV-Datei enthaelt mehr als eine '
-                                   'Messreihe. Es wurde nur die laengste Messreihe geladen.')
+            self.warnMsg = self.tr(
+                "Die CSV-Datei enthaelt mehr als eine "
+                "Messreihe. Es wurde nur die laengste Messreihe geladen."
+            )
 
         # Check if there are rows of type '3P': These are measurements of
         #  possible tree poles
-        treePosition = seq[np.where(dataType[skipHead:] == '3P')[0]]
-        treeAltitude = alti[np.where(dataType[skipHead:] == '3P')[0]]
-        
+        treePosition = seq[np.where(dataType[skipHead:] == "3P")[0]]
+        treeAltitude = alti[np.where(dataType[skipHead:] == "3P")[0]]
+
         # Check for entries of other type than 'TRAIL' and filter them out
-        mask_use *= dataType[skipHead:] == 'TRAIL'
-        
+        mask_use *= dataType[skipHead:] == "TRAIL"
+
         # Apply mask to measurement values
         seq = seq[mask_use].astype(int)
         alti = alti[mask_use]
@@ -172,50 +215,55 @@ class CsvVertexReader(AbstractSurveyReader):
         lat = lat[mask_use]
         # Check if some gps measurements are missing
         mask_gps = ~(np.isnan(lon) + np.isnan(lat))
-    
+
         # Quality checks
-    
+
         # If relative measurements are missing, we cannot create a line
-        if np.sum(np.isnan(az)) > 0 \
-                or np.sum(np.isnan(hd)) > 0:
-            self.errorMsg = self.tr('Die Messdaten sind unvollstaendig, '
-                                    'die CSV-Datei kann nicht geladen werden.')
+        if np.sum(np.isnan(az)) > 0 or np.sum(np.isnan(hd)) > 0:
+            self.errorMsg = self.tr(
+                "Die Messdaten sind unvollstaendig, "
+                "die CSV-Datei kann nicht geladen werden."
+            )
             return False
-    
+
         # CAN'T DO THIS CHECK ANYMORE BECAUSE THERE CAN BE 3P POINTS
         # # Check if the sequence numbers are in order and that there are no gaps
         # if np.sum(np.cumsum(np.array([1] * seq.size)) == seq) != seq.size:
         #     # Only add a warning, create the profile ether way
         #     self.errorMsg = self.tr('Die CSV-Datei enthaelt Messluecken, '
         #                             'das erstellte Profil koennte fehlerhaft sein.')
-    
+
         # Check if at least one pair of absolute coordinates are present to
         #  transform relative measurements into destination coordinate system
         if lon[mask_gps].size == 0 or lat[mask_gps].size == 0:
-            self.errorMsg = self.tr('Die CSV-Datei enthaelt keine '
-                                    'GPS-Koordinaten, das Profil kann nicht erstellt werden.')
+            self.errorMsg = self.tr(
+                "Die CSV-Datei enthaelt keine "
+                "GPS-Koordinaten, das Profil kann nicht erstellt werden."
+            )
             return False
-    
+
         # Calculate X/Y coordinate relative to the first point (0, 0)
         #  by adding the distance (horizontalDist * sin(azimuth))
         relCoords = np.array(
-            [np.cumsum(hd * np.sin(np.radians(az))),
-             np.cumsum(hd * np.cos(np.radians(az)))
-             ])
-    
+            [
+                np.cumsum(hd * np.sin(np.radians(az))),
+                np.cumsum(hd * np.cos(np.radians(az))),
+            ]
+        )
+
         # Guess UTM epsg code by analysing lat, lon values
         try:
             utmEpsg = latLonToUtmCode(lat[mask_gps][0], lon[mask_gps][0])
         except Exception:
             self.errorMsg = self.tr(
-                'Die CSV-Datei enthaelt ungueltige GPS-Koordinaten.')
+                "Die CSV-Datei enthaelt ungueltige GPS-Koordinaten."
+            )
             return False
-    
+
         # Transform GPS coordinates to projected UTM coordinates
-        utmx, utmy = reprojectToCrs(lon[mask_gps], lat[mask_gps], GPS_CRS,
-                                    utmEpsg)
+        utmx, utmy = reprojectToCrs(lon[mask_gps], lat[mask_gps], GPS_CRS, utmEpsg)
         utmCoords = np.array([utmx, utmy])
-    
+
         # Calculate mean distance to UTM coords but only on rows where
         #  GPS coords are present
         deltaX = utmCoords[0] - relCoords[0][mask_gps]
@@ -223,34 +271,35 @@ class CsvVertexReader(AbstractSurveyReader):
         meanDist = np.mean(np.sqrt(np.square(deltaX) + np.square(deltaY)))
         # Calculate mean azimut to UTM coords
         meanAz = np.mean(np.arctan(deltaX / deltaY))
-    
+
         # Move relative coordinates to UTM system
-        relCoordsNew = np.array([
-            relCoords[0] + meanDist * np.sin(meanAz),
-            relCoords[1] + meanDist * np.cos(meanAz)
-        ])
+        relCoordsNew = np.array(
+            [
+                relCoords[0] + meanDist * np.sin(meanAz),
+                relCoords[1] + meanDist * np.cos(meanAz),
+            ]
+        )
         # Create and add first point (=location where first dist and angle
         #  where measured from) by going "back" from first relative measurement
-        firstPnt = [meanDist * np.sin(meanAz),
-                    meanDist * np.cos(meanAz)]
+        firstPnt = [meanDist * np.sin(meanAz), meanDist * np.cos(meanAz)]
         relCoordsWithFirstPnt = np.insert(relCoordsNew, 0, firstPnt, axis=1)
         # Height of first point is simple first altitude measurement minus first
         #  relative height measurement
         altiWithFirstPnt = np.insert(alti, 0, alti[0] - h[0])
         self.nr = np.insert(seq, 0, 0)
-        
+
         # Translate back to WGS84
-        gpsx, gpsy = reprojectToCrs(relCoordsWithFirstPnt[0],
-                                    relCoordsWithFirstPnt[1], utmEpsg, GPS_CRS)
-        self.surveyPoints = {
-            'x': gpsx,
-            'y': gpsy,
-            'z': altiWithFirstPnt
-        }
+        gpsx, gpsy = reprojectToCrs(
+            relCoordsWithFirstPnt[0],
+            relCoordsWithFirstPnt[1],
+            utmEpsg,
+            GPS_CRS,
+        )
+        self.surveyPoints = {"x": gpsx, "y": gpsy, "z": altiWithFirstPnt}
         self.spatialRef = QgsCoordinateReferenceSystem(GPS_CRS)
-        
+
         if len(treePosition) > 0:
-            self.notes = [''] * len(seq)
+            self.notes = [""] * len(seq)
             for treeCount, treeNr in enumerate(treePosition):
                 # Sequence of tree ground point comes one before
                 terrainNr = int(treeNr) - 1
@@ -260,21 +309,25 @@ class CsvVertexReader(AbstractSurveyReader):
                 arrayIdx = np.where(seq == terrainNr)[0]
                 if len(arrayIdx) > 0:
                     treeHeight = treeAltitude[treeCount] - alti[arrayIdx[0]]
-                    self.notes[arrayIdx[0]] = f'3P, h = {treeHeight:0.1f}m'
-            
+                    self.notes[arrayIdx[0]] = f"3P, h = {treeHeight:0.1f}m"
+
             # Add entry for first point
-            self.notes.insert(0, '')
-        
+            self.notes.insert(0, "")
+
         # QS: Calculate difference between GPS coords (in UTM) and relative
         #  measurements that were moved to UTM system
-        utmDistDiff = np.max(np.sqrt((relCoordsNew[0] - utmx)**2 + (relCoordsNew[1] - utmy)**2))
+        utmDistDiff = np.max(
+            np.sqrt((relCoordsNew[0] - utmx) ** 2 + (relCoordsNew[1] - utmy) ** 2)
+        )
         if utmDistDiff > 3.0:
             # Show a warning if differences are high
             if self.warnMsg:
-                self.warnMsg += '\n\n'
-            self.warnMsg += self.tr('Die CSV-Datei enthaelt grosse Abweichungen '
-                'zwischen GPS-Koordinaten und Distanz- Winkelmessungen, '
-                'das erstellte Profil koennte fehlerhaft sein.')
+                self.warnMsg += "\n\n"
+            self.warnMsg += self.tr(
+                "Die CSV-Datei enthaelt grosse Abweichungen "
+                "zwischen GPS-Koordinaten und Distanz- Winkelmessungen, "
+                "das erstellte Profil koennte fehlerhaft sein."
+            )
             self.warnMsg += f" ({self.tr('Max. Abweichung')}: {utmDistDiff:0.1f} m)"
-    
+
         return True

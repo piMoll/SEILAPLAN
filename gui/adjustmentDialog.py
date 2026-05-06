@@ -18,6 +18,7 @@
  *                                                                         *
  ***************************************************************************/
 """
+
 import os
 
 from qgis.PyQt import uic
@@ -27,7 +28,7 @@ from qgis.PyQt.QtWidgets import QDialog, QMessageBox, QTextEdit
 from SEILAPLAN import PLUGIN_DIR
 from SEILAPLAN.core.cablelineFinal import (
     preciseCable,
-    updateWithCableCoordinates
+    updateWithCableCoordinates,
 )
 from SEILAPLAN.tools.birdViewMapExtractor import extractMapBackground
 from SEILAPLAN.tools.calcThreshold import ThresholdUpdater
@@ -36,13 +37,16 @@ from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
 from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
 from SEILAPLAN.tools.globals import PolesOrigin, ResultQuality
 from SEILAPLAN.tools.outputGeo import (
-    addToMap, generateCoordTable,
-    organizeDataForExport, writeGeodata
+    addToMap,
+    generateCoordTable,
+    organizeDataForExport,
+    writeGeodata,
 )
 from SEILAPLAN.tools.outputReport import (
-    createOutputFolder, generateReport,
+    createOutputFolder,
+    generateReport,
     generateReportText,
-    generateShortReport
+    generateShortReport,
 )
 from SEILAPLAN.tools.poles import Poles
 from SEILAPLAN.tools.profile import Profile
@@ -50,14 +54,15 @@ from SEILAPLAN.tools.profile import Profile
 from .adjustmentDialog_params import AdjustmentDialogParams
 from .adjustmentDialog_thresholds import AdjustmentDialogThresholds
 from .adjustmentPlot import (
-    AdjustmentPlot, calculatePlotDimensions,
-    saveImgAsPdfWithMpl
+    AdjustmentPlot,
+    calculatePlotDimensions,
+    saveImgAsPdfWithMpl,
 )
 from .birdViewWidget import BirdViewWidget
 from .guiHelperFunctions import (
     addBackgroundMap,
     DialogWithImage,
-    getAbsoluteIconPath
+    getAbsoluteIconPath,
 )
 from .mapMarker import MapMarkerTool
 from .plotting_tools import MyNavigationToolbar
@@ -66,7 +71,7 @@ from .saveDialog import DialogOutputOptions
 
 # This loads the .ui file so that PyQt can populate the plugin with the
 #  elements from Qt Designer
-UI_FILE = os.path.join(os.path.dirname(__file__), 'adjustmentDialog.ui')
+UI_FILE = os.path.join(os.path.dirname(__file__), "adjustmentDialog.ui")
 FORM_CLASS, _ = uic.loadUiType(UI_FILE)
 
 
@@ -77,20 +82,20 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
     position, height, angle and the properties of the cable line. The cable
     line is then recalculated and the new layout is shown in a plot.
     """
-    
+
     def __init__(self, interface, confHandler, onCloseCallback):
 
         super(AdjustmentDialog, self).__init__(interface.mainWindow())
-        
+
         self.iface = interface
         # Is called when window is closed (necessary for parallel run)
         self.onCloseCallback = onCloseCallback
         # Control variable that gets returned in callback so parent knows how
         # to proceed when this dialog is closed
         self.returnToProjectWindow = None
-        
+
         self.msgBar = self.iface.messageBar()
-        
+
         # Management of Parameters and settings
         self.confHandler: ConfigHandler = confHandler
         self.confHandler.setDialog(self)
@@ -102,19 +107,19 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         self.returnToProjectWindow = None
         # Max distance the anchors can move away from initial position
         self.anchorBuffer = self.projectHandler.heightSource.buffer
-        
+
         # Load data
         self.result = {}
         self.cableline = {}
-        
+
         # Setup GUI from UI-file
         self.setupUi(self)
         self.setDialogTitle()
         # Language
         self.locale = QSettings().value("locale/userLocale")[0:2]
-        
+
         self.drawTool = MapMarkerTool(self.iface.mapCanvas())
-        
+
         # Create plot
         self.plot = AdjustmentPlot(self)
         # Pan/Zoom tools for plot, pan already active
@@ -122,8 +127,11 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         tbar.pan()
         self.plot.setToolbar(tbar)
         self.plotContainer.addWidget(self.plot)
-        self.toolbarContainer.addWidget(tbar, alignment=Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
-        
+        self.toolbarContainer.addWidget(
+            tbar,
+            alignment=Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop,
+        )
+
         # Fill tab widget with data
         self.poleLayout = CustomPoleWidget(self.tabPoles, self.poleGrid, self.poles)
         # self.poleLayout.sig_zoomIn.connect(self.zoomToPole)
@@ -131,43 +139,45 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         self.poleLayout.sig_createPole.connect(self.addPole)
         self.poleLayout.sig_updatePole.connect(self.updatePole)
         self.poleLayout.sig_deletePole.connect(self.deletePole)
-        
+
         # Threshold (thd) tab
         self.thdLayout = AdjustmentDialogThresholds(self)
         self.thdLayout.sig_clickedRow.connect(self.onChangeThresholdTopic)
         self.thdUpdater = ThresholdUpdater(self.thdLayout)
         self.selectedPlotTopic = None
-        
+
         # Parameter tab
         self.paramLayout = AdjustmentDialogParams(self, self.paramHandler)
-        
+
         # Fill bird view widget with data
-        self.birdViewLayout = BirdViewWidget(self.tabBirdView, self.birdViewGrid, self.poles)
+        self.birdViewLayout = BirdViewWidget(
+            self.tabBirdView, self.birdViewGrid, self.poles
+        )
         self.birdViewLayout.sig_updatePole.connect(self.onUpdateBirdViewParams)
         self.tabWidget.currentChanged.connect(self.onBirdViewVisible)
-        
+
         # Project header
         self.prHeaderFields = {
-            'PrVerf': self.fieldPrVerf,
-            'PrNr': self.fieldPrNr,
-            'PrGmd': self.fieldPrGmd,
-            'PrWald': self.fieldPrWald,
-            'PrBemerkung': self.fieldPrBemerkung,
+            "PrVerf": self.fieldPrVerf,
+            "PrNr": self.fieldPrNr,
+            "PrGmd": self.fieldPrGmd,
+            "PrWald": self.fieldPrWald,
+            "PrBemerkung": self.fieldPrBemerkung,
         }
-        
+
         # Thread for instant recalculation when poles or parameters are changed
         self.timer = QTimer()
         self.configurationHasChanged = False
         self.refreshPoleWidgetRows = False
         self.isRecalculating = False
         self.unsavedChanges = True
-        
+
         # Save dialog
         self.saveDialog = DialogOutputOptions(self, self.confHandler)
-        
+
         # Dialog with explanatory images
         self.imgBox = DialogWithImage()
-        
+
         # Connect signals
         self.btnClose.clicked.connect(self.onClose)
         self.btnSave.clicked.connect(self.onSave)
@@ -183,14 +193,14 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         self.infoBirdViewCategory.clicked.connect(self.onInfo)
         self.infoBirdViewPosition.clicked.connect(self.onInfo)
         self.infoBirdViewAbspann.clicked.connect(self.onInfo)
-    
-    def tr(self, message, context='', **kwargs):
+
+    def tr(self, message, context="", **kwargs):
         """Get the translation for a string using Qt translation API.
         We implement this ourselves since we do not inherit QObject.
 
         :param message: String for translation.
         :type message: str, QString
-        
+
         :param context: String for translation.
         :type context: str, QString
 
@@ -201,10 +211,10 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         ----------
         **kwargs
         """
-        if context == '':
+        if context == "":
             context = type(self).__name__
         return QCoreApplication.translate(context, message)
-    
+
     def initData(self, result, resultQuality):
         if not result:
             self.close()
@@ -213,95 +223,113 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         self.result = result
         # If only poles are defined but cable line hasn't been calculated yet,
         #  run the cable calculation now
-        if not self.result['cableline']:
+        if not self.result["cableline"]:
             try:
                 params = self.paramHandler.getSimpleParameterDict()
-                cableline, force, \
-                    seil_possible = preciseCable(params, self.poles,
-                                                 self.result['optSTA'])
-                self.result['cableline'] = cableline
-                self.result['force'] = force
-            
+                cableline, force, seil_possible = preciseCable(
+                    params, self.poles, self.result["optSTA"]
+                )
+                self.result["cableline"] = cableline
+                self.result["force"] = force
+
             except Exception as e:
-                QMessageBox.critical(self, self.tr('Unerwarteter Fehler '
-                    'bei Berechnung der Seillinie'), str(e), QMessageBox.StandardButton.Ok)
+                QMessageBox.critical(
+                    self,
+                    self.tr("Unerwarteter Fehler " "bei Berechnung der Seillinie"),
+                    str(e),
+                    QMessageBox.StandardButton.Ok,
+                )
                 return
-        
-        groundClear = self.profile.updateProfileAnalysis(self.result['cableline'])
-        self.cableline = {**self.result['cableline'], **groundClear}
-        self.result['cableline'] = self.cableline
-        
+
+        groundClear = self.profile.updateProfileAnalysis(self.result["cableline"])
+        self.cableline = {**self.result["cableline"], **groundClear}
+        self.result["cableline"] = self.cableline
+
         self.updateRecalcStatus(resultQuality)
-        
+
         # Draw profile in diagram
-        self.plot.initData(self.profile.di_disp, self.profile.zi_disp,
-                           self.profile.peakLoc_x, self.profile.peakLoc_z,
-                           self.profile.surveyPnts)
+        self.plot.initData(
+            self.profile.di_disp,
+            self.profile.zi_disp,
+            self.profile.peakLoc_x,
+            self.profile.peakLoc_z,
+            self.profile.surveyPnts,
+        )
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
-        
+
         # Create layout to modify poles
-        self.poleLayout.setInitialGui([self.profile.di_disp[0], self.profile.di_disp[-1]])
+        self.poleLayout.setInitialGui(
+            [self.profile.di_disp[0], self.profile.di_disp[-1]]
+        )
         self.birdViewLayout.updateGui()
 
         # Fill in cable parameters
         self.paramLayout.fillInParams()
-        
+
         # Fill in Threshold data
-        self.thdUpdater.update(self.result, self.paramHandler, self.poles,
-            self.profile, resultQuality in [ResultQuality.SuccessfulOptimization, ResultQuality.CableLiftsOff])
+        self.thdUpdater.update(
+            self.result,
+            self.paramHandler,
+            self.poles,
+            self.profile,
+            resultQuality
+            in [
+                ResultQuality.SuccessfulOptimization,
+                ResultQuality.CableLiftsOff,
+            ],
+        )
         # Add plot topics in drop down
-        self.fieldPlotTopic.addItem(self.tr('Diagrammanzeige') + '...',
-                                    userData=-1)
+        self.fieldPlotTopic.addItem(self.tr("Diagrammanzeige") + "...", userData=-1)
         for topic in self.thdUpdater.topics:
             self.fieldPlotTopic.addItem(topic.name, userData=topic.id)
         self.fieldPlotTopic.setCurrentIndex(0)
         self.fieldPlotTopic.currentIndexChanged.connect(self.onChangePlotTopic)
-        
+
         # Mark profile line and poles on map
         self.updateLineOnMap()
         self.addMarkerToMap()
-        
+
         # Fill in project header data
         self.fillInPrHeaderData()
-        
+
         # Start Thread to recalculate cable line every 300 milliseconds
         self.timer.timeout.connect(self.recalculate)
         self.timer.start(300)
-        
+
         self.plot.zoomOut()
-        
+
     def setDialogTitle(self):
-        dialogTitle = self.tr('Manuelle Anpassung', 'AdjustmentDialogUI')
+        dialogTitle = self.tr("Manuelle Anpassung", "AdjustmentDialogUI")
         projectTitle = self.projectHandler.getProjectName()
         self.setWindowTitle(f"{dialogTitle} // {projectTitle}")
-    
+
     def zoomToPole(self, idx):
         self.plot.zoomTo(self.poles.poles[idx])
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
-    
+
     def zoomOut(self):
         self.plot.zoomOut()
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
-    
+
     def updatePole(self, idx, property_name, newVal):
         prevAnchorA = self.poles.hasAnchorA is True
         prevAnchorE = self.poles.hasAnchorE is True
         self.poles.update(idx, property_name, newVal)
         # Update markers on map
         for i, pole in enumerate(self.poles.poles):
-            if pole['active']:
+            if pole["active"]:
                 self.updateMarkerOnMap(i)
         self.updateLineOnMap()
         # Update anchors
         self.updateAnchorMarkerState(prevAnchorA, prevAnchorE)
         # self.plot.zoomTo(self.poles.poles[idx])
         self.poleLayout.changeRow(idx, property_name, newVal, prevAnchorA, prevAnchorE)
-        if property_name == 'name':
+        if property_name == "name":
             # No redraw when user only changes name
             return
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         self.configurationHasChanged = True
-    
+
     def addPole(self, idx):
         newPoleIdx = idx + 1
         self.poles.add(newPoleIdx, None, manually=True)
@@ -310,7 +338,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         # self.plot.zoomOut()
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         self.configurationHasChanged = True
-    
+
     def deletePole(self, idx):
         self.poles.delete(idx)
         self.refreshPoleWidgetRows = True
@@ -318,7 +346,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         # self.plot.zoomOut()
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
         self.configurationHasChanged = True
-    
+
     def updateAnchorMarkerState(self, prevAnchorA, prevAnchorE):
         """Update anchor markers on map: depending on nature of pole change,
         anchors can be activated or deactivated in self.poles.update."""
@@ -326,99 +354,119 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
             idxA = 0
             if self.poles.hasAnchorA:
                 # Anchor A was activated
-                point = [self.poles.poles[0]['coordx'],
-                         self.poles.poles[0]['coordy']]
-                self.drawTool.showMarker(point, idxA, 'anchor')
+                point = [
+                    self.poles.poles[0]["coordx"],
+                    self.poles.poles[0]["coordy"],
+                ]
+                self.drawTool.showMarker(point, idxA, "anchor")
             else:
                 # Anchor A was deactivated
                 self.drawTool.hideMarker(idxA)
 
         if prevAnchorE is not self.poles.hasAnchorE:
-            idxE = len(self.poles.poles)-1
+            idxE = len(self.poles.poles) - 1
             if self.poles.hasAnchorE:
                 # Anchor E was activated
-                point = [self.poles.poles[-1]['coordx'],
-                         self.poles.poles[-1]['coordy']]
-                self.drawTool.showMarker(point, idxE, 'anchor')
+                point = [
+                    self.poles.poles[-1]["coordx"],
+                    self.poles.poles[-1]["coordy"],
+                ]
+                self.drawTool.showMarker(point, idxE, "anchor")
             else:
                 # Anchor E was deactivated
                 self.drawTool.hideMarker(idxE)
-    
+
     def updateLineOnMap(self):
         self.drawTool.updateLine(
-            [[self.poles.firstPole['coordx'], self.poles.firstPole['coordy']],
-             [self.poles.lastPole['coordx'], self.poles.lastPole['coordy']]],
-            drawMarker=False)
-    
+            [
+                [
+                    self.poles.firstPole["coordx"],
+                    self.poles.firstPole["coordy"],
+                ],
+                [self.poles.lastPole["coordx"], self.poles.lastPole["coordy"]],
+            ],
+            drawMarker=False,
+        )
+
     def addMarkerToMap(self, idx=-1):
         # Mark all poles except anchors on map
         if idx == -1:
             for idx, pole in enumerate(self.poles.poles):
-                self.drawTool.drawMarker([pole['coordx'], pole['coordy']],
-                                         idx, pointType=pole['poleType'],
-                                         firstPoint=(idx == self.poles.idxA))
-                if not pole['active']:
+                self.drawTool.drawMarker(
+                    [pole["coordx"], pole["coordy"]],
+                    idx,
+                    pointType=pole["poleType"],
+                    firstPoint=(idx == self.poles.idxA),
+                )
+                if not pole["active"]:
                     self.drawTool.hideMarker(idx)
         else:
             # Add a new pole to the map
             pole = self.poles.poles[idx]
-            self.drawTool.drawMarker([pole['coordx'], pole['coordy']], idx,
-                                     pointType=pole['poleType'])
-    
+            self.drawTool.drawMarker(
+                [pole["coordx"], pole["coordy"]],
+                idx,
+                pointType=pole["poleType"],
+            )
+
     def updateMarkerOnMap(self, idx):
-        point = [self.poles.poles[idx]['coordx'],
-                 self.poles.poles[idx]['coordy']]
+        point = [
+            self.poles.poles[idx]["coordx"],
+            self.poles.poles[idx]["coordy"],
+        ]
         self.drawTool.updateMarker(point, idx)
 
     def onUpdateBirdViewParams(self, idx, property_name, newVal):
         self.poles.update(idx, property_name, newVal)
-    
+
     def onBirdViewVisible(self, tabIdx):
         if tabIdx == self.tabWidget.indexOf(self.tabBirdView):
             self.birdViewLayout.updateGui()
-    
+
     def onClickMapButton(self):
         statusMsg, severity = addBackgroundMap(self.iface.mapCanvas())
-        self.msgBar.pushMessage(self.tr('Hintergrundkarte laden'), statusMsg, severity)
-    
+        self.msgBar.pushMessage(self.tr("Hintergrundkarte laden"), statusMsg, severity)
+
     def onInfo(self):
-        title = 'info'
-        msg = ''
+        title = "info"
+        msg = ""
         imageName = None
-        if self.sender().objectName() == 'infoQ':
-            title = self.tr('Gesamtlast')
-            msg = self.tr('Erklaerung Gesamtlast')
-        if self.sender().objectName() == 'infoSK':
-            title = self.tr('Tragseilspannkraft (Anfangspunkt)')
-            msg = self.tr('Erklaerung Tragseilspannkraft (Anfangspunkt)')
-        if self.sender().objectName() == 'infoSFT':
-            title = self.tr('Sicherheitsfaktor Tragseil', 'SeilaplanPluginDialog')
-            msg = self.tr('Sicherheitsfaktor Tragseil Erklaerung', 'SeilaplanPluginDialog')
-        elif self.sender().objectName() == 'infoBirdViewGeneral':
-            title = self.tr('Konfiguration Vogelperspektive')
-            msg = self.tr('Erklaerung Vogelperspektive')
-        elif self.sender().objectName() == 'infoBirdViewCategory':
-            title = self.tr('Stuetzenkategorie')
-            imageName = 'Vogelperspektive_Kategorie.png'
-        elif self.sender().objectName() == 'infoBirdViewPosition':
-            title = self.tr('Stuetzenposition')
-            msg = self.tr('Erklaerung Stuetzenposition')
-        elif self.sender().objectName() == 'infoBirdViewAbspann':
-            title = self.tr('Abspann')
-            msg = self.tr('Erklaerung Abspann')
-        elif self.sender().objectName() == 'infoPlotTopic':
+        if self.sender().objectName() == "infoQ":
+            title = self.tr("Gesamtlast")
+            msg = self.tr("Erklaerung Gesamtlast")
+        if self.sender().objectName() == "infoSK":
+            title = self.tr("Tragseilspannkraft (Anfangspunkt)")
+            msg = self.tr("Erklaerung Tragseilspannkraft (Anfangspunkt)")
+        if self.sender().objectName() == "infoSFT":
+            title = self.tr("Sicherheitsfaktor Tragseil", "SeilaplanPluginDialog")
+            msg = self.tr(
+                "Sicherheitsfaktor Tragseil Erklaerung",
+                "SeilaplanPluginDialog",
+            )
+        elif self.sender().objectName() == "infoBirdViewGeneral":
+            title = self.tr("Konfiguration Vogelperspektive")
+            msg = self.tr("Erklaerung Vogelperspektive")
+        elif self.sender().objectName() == "infoBirdViewCategory":
+            title = self.tr("Stuetzenkategorie")
+            imageName = "Vogelperspektive_Kategorie.png"
+        elif self.sender().objectName() == "infoBirdViewPosition":
+            title = self.tr("Stuetzenposition")
+            msg = self.tr("Erklaerung Stuetzenposition")
+        elif self.sender().objectName() == "infoBirdViewAbspann":
+            title = self.tr("Abspann")
+            msg = self.tr("Erklaerung Abspann")
+        elif self.sender().objectName() == "infoPlotTopic":
             plotTopic = self.thdUpdater.getPlotTopicById(self.selectedPlotTopic)
             if plotTopic:
                 desc = plotTopic.getDescription()
-                title = desc['title']
-                msg = desc['message']
-        
+                title = desc["title"]
+                msg = desc["message"]
+
         if imageName:
             # Show an info image
-            imgPath = os.path.join(PLUGIN_DIR, 'img',
-                                   f'{self.locale}_{imageName}')
+            imgPath = os.path.join(PLUGIN_DIR, "img", f"{self.locale}_{imageName}")
             if not os.path.exists(imgPath):
-                imgPath = os.path.join(PLUGIN_DIR, 'img', f'de_{imageName}')
+                imgPath = os.path.join(PLUGIN_DIR, "img", f"de_{imageName}")
             self.imgBox.setWindowTitle(title)
             # Load image
             myPixmap = QPixmap(str(imgPath))
@@ -434,7 +482,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         #  for recalculation
         self.paramHandler.prepareForCalculation(self.profile.direction)
         self.configurationHasChanged = True
-    
+
     def onPrHeaderChanged(self):
         self.unsavedChanges = True
 
@@ -454,90 +502,108 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
             else:
                 prHeader[key] = field.text()
         self.projectHandler.setPrHeader(prHeader)
-    
+
     def updateRecalcStatus(self, status):
         # TODO: Status label has moved
         return
         color = None
-        green = '#b6ddb5'
-        yellow = '#f4e27a'
-        red = '#e8c4ca'
+        green = "#b6ddb5"
+        yellow = "#f4e27a"
+        red = "#e8c4ca"
         if status == ResultQuality.SuccessfulOptimization:
             self.recalcStatus_txt.setText(
-                self.tr('Optimierung erfolgreich abgeschlossen'))
-            self.recalcStatus_ico.setPixmap(QPixmap(getAbsoluteIconPath('icon_green.png')))
+                self.tr("Optimierung erfolgreich abgeschlossen")
+            )
+            self.recalcStatus_ico.setPixmap(
+                QPixmap(getAbsoluteIconPath("icon_green.png"))
+            )
         elif status == ResultQuality.CableLiftsOff:
             self.recalcStatus_txt.setText(
-                self.tr('Tragseil hebt bei mindestens einer Stuetze ab'))
-            self.recalcStatus_ico.setPixmap(QPixmap(getAbsoluteIconPath('icon_yellow.png')))
+                self.tr("Tragseil hebt bei mindestens einer Stuetze ab")
+            )
+            self.recalcStatus_ico.setPixmap(
+                QPixmap(getAbsoluteIconPath("icon_yellow.png"))
+            )
             color = yellow
         elif status == ResultQuality.LineNotComplete:
             self.recalcStatus_txt.setText(
-                self.tr('Nicht genuegend Stuetzenstandorte bestimmbar'))
-            self.recalcStatus_ico.setPixmap(QPixmap(getAbsoluteIconPath('icon_yellow.png')))
+                self.tr("Nicht genuegend Stuetzenstandorte bestimmbar")
+            )
+            self.recalcStatus_ico.setPixmap(
+                QPixmap(getAbsoluteIconPath("icon_yellow.png"))
+            )
             color = yellow
         elif status == PolesOrigin.OnlyStartEnd:
-            self.recalcStatus_txt.setText(
-                self.tr('Stuetzen manuell platzieren'))
-            self.recalcStatus_ico.setPixmap(QPixmap(getAbsoluteIconPath('icon_green.png')))
+            self.recalcStatus_txt.setText(self.tr("Stuetzen manuell platzieren"))
+            self.recalcStatus_ico.setPixmap(
+                QPixmap(getAbsoluteIconPath("icon_green.png"))
+            )
             color = yellow
         elif status == PolesOrigin.SavedFile:
-            self.recalcStatus_txt.setText(
-                self.tr('Stuetzen aus Projektdatei geladen'))
-            self.recalcStatus_ico.setPixmap(QPixmap(getAbsoluteIconPath('icon_green.png')))
+            self.recalcStatus_txt.setText(self.tr("Stuetzen aus Projektdatei geladen"))
+            self.recalcStatus_ico.setPixmap(
+                QPixmap(getAbsoluteIconPath("icon_green.png"))
+            )
             color = yellow
         elif status == ResultQuality.SuccessfulRerun:
-            self.recalcStatus_txt.setText(self.tr('Seillinie neu berechnet.'))
-            self.recalcStatus_ico.setPixmap(QPixmap(getAbsoluteIconPath('icon_green.png')))
+            self.recalcStatus_txt.setText(self.tr("Seillinie neu berechnet."))
+            self.recalcStatus_ico.setPixmap(
+                QPixmap(getAbsoluteIconPath("icon_green.png"))
+            )
         elif status == ResultQuality.Error:
-            self.recalcStatus_txt.setText(
-                self.tr('Fehler aufgetreten'))
-            self.recalcStatus_ico.setPixmap(QPixmap(getAbsoluteIconPath('icon_yellow.png')))
+            self.recalcStatus_txt.setText(self.tr("Fehler aufgetreten"))
+            self.recalcStatus_ico.setPixmap(
+                QPixmap(getAbsoluteIconPath("icon_yellow.png"))
+            )
             color = red
-        elif status == 'saveDone':
-            self.recalcStatus_txt.setText(self.tr('Ergebnisse gespeichert'))
-            self.recalcStatus_ico.setPixmap(QPixmap(getAbsoluteIconPath('icon_save.png')))
+        elif status == "saveDone":
+            self.recalcStatus_txt.setText(self.tr("Ergebnisse gespeichert"))
+            self.recalcStatus_ico.setPixmap(
+                QPixmap(getAbsoluteIconPath("icon_save.png"))
+            )
             color = green
-        stylesheet = ''
+        stylesheet = ""
         if color:
             stylesheet = f"background-color:{color};"
         self.recalcStatus_txt.setStyleSheet(stylesheet)
-    
+
     def recalculate(self):
         if not self.configurationHasChanged or self.isRecalculating:
             return
         self.isRecalculating = True
-        
+
         try:
             params = self.paramHandler.getSimpleParameterDict()
-            cableline, force, seil_possible = preciseCable(params, self.poles,
-                                                           self.paramHandler.getTensileForce())
+            cableline, force, seil_possible = preciseCable(
+                params, self.poles, self.paramHandler.getTensileForce()
+            )
         except Exception as e:
             self.updateRecalcStatus(ResultQuality.Error)
             self.isRecalculating = False
             self.configurationHasChanged = False
             return
-        
+
         # Ground clearance
         groundClear = self.profile.updateProfileAnalysis(cableline)
         self.cableline = {**cableline, **groundClear}
-        self.result['cableline'] = self.cableline
-        self.result['force'] = force
+        self.result["cableline"] = self.cableline
+        self.result["force"] = force
 
         # Update Plot
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
-        
+
         # Update Threshold data
-        self.thdUpdater.update(self.result, self.paramHandler, self.poles,
-                               self.profile, False)
+        self.thdUpdater.update(
+            self.result, self.paramHandler, self.poles, self.profile, False
+        )
         self.onRefreshTopicInPlot()
-        
+
         # cable line lifts off of pole
         if not seil_possible:
             self.updateRecalcStatus(ResultQuality.CableLiftsOff)
         else:
             self.updateRecalcStatus(ResultQuality.SuccessfulRerun)
-        
+
         if self.refreshPoleWidgetRows:
             self.refreshPoleWidgetRows = False
             self.poleLayout.refresh()
@@ -551,13 +617,13 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
 
     def onChangeThresholdTopic(self, row):
         """This function is either called by the Threshold updater when
-         the cable has been recalculated or when user clicks on a table row."""
-        
+        the cable has been recalculated or when user clicks on a table row."""
+
         try:
             thItem = self.thdUpdater.getThresholdTopics()[row]
         except IndexError:
             thItem = None
-        
+
         # Click on row was emitted but row is already selected -> deselect
         if thItem is None or thItem.id == self.selectedPlotTopic:
             # Remove markers from plot
@@ -571,184 +637,216 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
 
         self.plot.showMarkers(thItem.plotMarkers)
         self.selectedPlotTopic = thItem.id
-        
+
         # Synchronize plot topic dropdown with currently selected threshold topic
         for idx, item in enumerate(self.thdUpdater.topics):
             if self.selectedPlotTopic == item.id:
                 self.fieldPlotTopic.blockSignals(True)
-                self.fieldPlotTopic.setCurrentIndex(idx+1)
+                self.fieldPlotTopic.setCurrentIndex(idx + 1)
                 self.fieldPlotTopic.blockSignals(False)
                 break
-    
+
     def onRefreshTopicInPlot(self):
         item = self.thdUpdater.getPlotTopicById(self.selectedPlotTopic)
         if item:
             self.plot.showMarkers(item.plotMarkers)
         else:
             self.plot.removeMarkers()
-        
+
     def onChangePlotTopic(self):
         self.selectedPlotTopic = self.fieldPlotTopic.currentData()
         # Select topic in threshold table
-        self.thdLayout.select(self.thdUpdater.getSortIdxByThresholdTopicId(self.selectedPlotTopic))
+        self.thdLayout.select(
+            self.thdUpdater.getSortIdxByThresholdTopicId(self.selectedPlotTopic)
+        )
         # Paint the new topic
         self.onRefreshTopicInPlot()
 
     def onClose(self):
         self.returnToProjectWindow = False
         self.close()
-    
+
     def onReturnToProjectWindow(self):
         self.readoutPrHeaderData()
         self.returnToProjectWindow = True
         self.close()
-    
+
     def onSave(self):
         self.saveDialog.setConfigData()
         self.saveDialog.exec()
-        
+
         if self.saveDialog.saveSuccessful:
             self.readoutPrHeaderData()
             self.setDialogTitle()
             self.confHandler.updateUserSettings()
             self.createOutput()
             self.unsavedChanges = False
-    
+
     def createOutput(self):
         outputFolder = self.confHandler.getCurrentPath()
         projName = self.projectHandler.getProjectName()
         outputLoc, projName_unique = createOutputFolder(outputFolder, projName)
-        
-        updateWithCableCoordinates(self.cableline, self.projectHandler.points['A'],
-                                   self.projectHandler.azimut)
-        poles = [pole for pole in self.poles.poles if pole['active']]
+
+        updateWithCableCoordinates(
+            self.cableline,
+            self.projectHandler.points["A"],
+            self.projectHandler.azimut,
+        )
+        poles = [pole for pole in self.poles.poles if pole["active"]]
         # Save project file
-        self.confHandler.saveSettings(os.path.join(outputLoc,
-                                      f"{self.tr('Projekteinstellungen')}.json"))
+        self.confHandler.saveSettings(
+            os.path.join(outputLoc, f"{self.tr('Projekteinstellungen')}.json")
+        )
 
         # Create short report
-        if self.confHandler.getOutputOption('shortReport'):
-            generateShortReport(self.confHandler, self.result, projName_unique,
-                                outputLoc)
+        if self.confHandler.getOutputOption("shortReport"):
+            generateShortReport(
+                self.confHandler, self.result, projName_unique, outputLoc
+            )
 
         # Create technical report
-        if self.confHandler.getOutputOption('report'):
-            reportText = generateReportText(self.confHandler, self.result, projName_unique)
+        if self.confHandler.getOutputOption("report"):
+            reportText = generateReportText(
+                self.confHandler, self.result, projName_unique
+            )
             generateReport(reportText, outputLoc)
-        
+
         # Create plot
-        if self.confHandler.getOutputOption('plot'):
-            includingBirdView = self.confHandler.getOutputOption('birdView')
-            plotSavePath = os.path.join(outputLoc, self.tr('Diagramm.pdf'))
-            width, height, ratio = calculatePlotDimensions(self.profile.di_disp, self.profile.zi_disp)
-            
-            printPlot = AdjustmentPlot(self, width, height, 150,
-                                       withBirdView=includingBirdView,
-                                       profilePlotRatio=ratio, asPdf=True)
-            printPlot.initData(self.profile.di_disp, self.profile.zi_disp,
-                               self.profile.peakLoc_x, self.profile.peakLoc_z,
-                               self.profile.surveyPnts)
+        if self.confHandler.getOutputOption("plot"):
+            includingBirdView = self.confHandler.getOutputOption("birdView")
+            plotSavePath = os.path.join(outputLoc, self.tr("Diagramm.pdf"))
+            width, height, ratio = calculatePlotDimensions(
+                self.profile.di_disp, self.profile.zi_disp
+            )
+
+            printPlot = AdjustmentPlot(
+                self,
+                width,
+                height,
+                150,
+                withBirdView=includingBirdView,
+                profilePlotRatio=ratio,
+                asPdf=True,
+            )
+            printPlot.initData(
+                self.profile.di_disp,
+                self.profile.zi_disp,
+                self.profile.peakLoc_x,
+                self.profile.peakLoc_z,
+                self.profile.surveyPnts,
+            )
             printPlot.updatePlot(self.poles.getAsArray(), self.cableline)
-            printPlot.layoutDiagrammForPrint(projName_unique, poles, self.poles.direction)
+            printPlot.layoutDiagrammForPrint(
+                projName_unique, poles, self.poles.direction
+            )
             imgPath = None
             if includingBirdView:
                 # Create second plot
                 xlim, ylim = printPlot.createBirdView(poles, self.projectHandler.azimut)
                 # Extract the map background
-                imgPath = extractMapBackground(outputLoc, xlim, ylim,
-                            self.projectHandler.points['A'], self.projectHandler.azimut)
+                imgPath = extractMapBackground(
+                    outputLoc,
+                    xlim,
+                    ylim,
+                    self.projectHandler.points["A"],
+                    self.projectHandler.azimut,
+                )
                 printPlot.addBackgroundMap(imgPath)
             printPlot.exportPdf(plotSavePath)
             # Delete map background
             if imgPath:
                 os.remove(imgPath)
-        
-        if self.confHandler.getOutputOption('birdViewLegend'):
-            imageName = 'Vogelperspektive_Kategorie.png'
-            imgPath = os.path.join(PLUGIN_DIR, 'img',
-                                   f'{self.locale}_{imageName}')
+
+        if self.confHandler.getOutputOption("birdViewLegend"):
+            imageName = "Vogelperspektive_Kategorie.png"
+            imgPath = os.path.join(PLUGIN_DIR, "img", f"{self.locale}_{imageName}")
             if not os.path.exists(imgPath):
-                imgPath = os.path.join(PLUGIN_DIR, 'img', f'de_{imageName}')
-            saveImgAsPdfWithMpl(imgPath, os.path.join(outputLoc, self.tr('Vogelperspektive Legende') + '.pdf'))
-        
+                imgPath = os.path.join(PLUGIN_DIR, "img", f"de_{imageName}")
+            saveImgAsPdfWithMpl(
+                imgPath,
+                os.path.join(outputLoc, self.tr("Vogelperspektive Legende") + ".pdf"),
+            )
+
         # Generate geo data
-        if (self.confHandler.getOutputOption('csv') or
-                self.confHandler.outputOptions['gpkg'] or
-                self.confHandler.outputOptions['shape'] or
-                self.confHandler.outputOptions['kml'] or
-                self.confHandler.outputOptions['dxf']):
-            
+        if (
+            self.confHandler.getOutputOption("csv")
+            or self.confHandler.outputOptions["gpkg"]
+            or self.confHandler.outputOptions["shape"]
+            or self.confHandler.outputOptions["kml"]
+            or self.confHandler.outputOptions["dxf"]
+        ):
+
             # Put geo data in separate sub folder
-            savePath = os.path.join(outputLoc, 'geodata')
+            savePath = os.path.join(outputLoc, "geodata")
             os.makedirs(savePath)
             epsg = self.projectHandler.heightSource.spatialRef
-            geodata = organizeDataForExport(poles, self.cableline,
-                                            self.profile)
+            geodata = organizeDataForExport(poles, self.cableline, self.profile)
 
-            title = self.tr('Unerwarteter Fehler')
-            msg = self.tr('Erstellen der Geodaten nicht moeglich')
+            title = self.tr("Unerwarteter Fehler")
+            msg = self.tr("Erstellen der Geodaten nicht moeglich")
             addedToMap = False
-            
-            if self.confHandler.getOutputOption('csv'):
+
+            if self.confHandler.getOutputOption("csv"):
                 try:
-                    generateCoordTable(self.cableline, self.profile,
-                                       poles, savePath)
+                    generateCoordTable(self.cableline, self.profile, poles, savePath)
                 except Exception as e:
-                    msg = f'{msg}:\n{e}'
+                    msg = f"{msg}:\n{e}"
                     self.showMessage(title, msg)
-            if self.confHandler.getOutputOption('gpkg'):
+            if self.confHandler.getOutputOption("gpkg"):
                 try:
-                    gpkgFiles = writeGeodata(geodata, 'GPKG', epsg, savePath)
+                    gpkgFiles = writeGeodata(geodata, "GPKG", epsg, savePath)
                     addToMap(gpkgFiles, projName_unique)
                     addedToMap = True
                 except Exception as e:
-                    msg = f'{msg}:\n{e}'
+                    msg = f"{msg}:\n{e}"
                     self.showMessage(title, msg)
-            if self.confHandler.getOutputOption('shape'):
+            if self.confHandler.getOutputOption("shape"):
                 try:
-                    shapeFiles = writeGeodata(geodata, 'SHP', epsg, savePath)
+                    shapeFiles = writeGeodata(geodata, "SHP", epsg, savePath)
                     if not addedToMap:
                         addToMap(shapeFiles, projName_unique)
                 except Exception as e:
-                    msg = f'{msg}:\n{e}'
+                    msg = f"{msg}:\n{e}"
                     self.showMessage(title, msg)
-            if self.confHandler.getOutputOption('kml'):
+            if self.confHandler.getOutputOption("kml"):
                 try:
-                    writeGeodata(geodata, 'KML', epsg, savePath)
+                    writeGeodata(geodata, "KML", epsg, savePath)
                 except Exception as e:
-                    msg = f'{msg}:\n{e}'
+                    msg = f"{msg}:\n{e}"
                     self.showMessage(title, msg)
-            if self.confHandler.getOutputOption('dxf'):
+            if self.confHandler.getOutputOption("dxf"):
                 try:
-                    writeGeodata(geodata, 'DXF', epsg, savePath)
+                    writeGeodata(geodata, "DXF", epsg, savePath)
                 except Exception as e:
-                    msg = f'{msg}:\n{e}'
+                    msg = f"{msg}:\n{e}"
                     self.showMessage(title, msg)
-            
-        self.updateRecalcStatus('saveDone')
-    
+
+        self.updateRecalcStatus("saveDone")
+
     def showMessage(self, title, message):
         QMessageBox.critical(self, title, message, QMessageBox.StandardButton.Ok)
-    
+
     def cleanUp(self, endLoop=False):
         self.drawTool.reset()
         if self.timer:
             self.timer.stop()
-    
+
     def closeEvent(self, QCloseEvent):
         if self.isRecalculating or self.configurationHasChanged:
             QCloseEvent.ignore()
             return
-        
+
         # Check for unsaved changes before closing
         if self.unsavedChanges:
             msgBox = QMessageBox(self)
             msgBox.setIcon(QMessageBox.Icon.Information)
-            msgBox.setWindowTitle(self.tr('Nicht gespeicherte Aenderungen'))
-            msgBox.setText(self.tr('Moechten Sie die Ergebnisse speichern?'))
-            msgBox.setStandardButtons(QMessageBox.StandardButton.Cancel |
-                                      QMessageBox.StandardButton.No |
-                                      QMessageBox.StandardButton.Yes)
+            msgBox.setWindowTitle(self.tr("Nicht gespeicherte Aenderungen"))
+            msgBox.setText(self.tr("Moechten Sie die Ergebnisse speichern?"))
+            msgBox.setStandardButtons(
+                QMessageBox.StandardButton.Cancel
+                | QMessageBox.StandardButton.No
+                | QMessageBox.StandardButton.Yes
+            )
             cancelBtn = msgBox.button(QMessageBox.StandardButton.Cancel)
             cancelBtn.setText(self.tr("Abbrechen"))
             noBtn = msgBox.button(QMessageBox.StandardButton.No)
@@ -756,18 +854,18 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
             yesBtn = msgBox.button(QMessageBox.StandardButton.Yes)
             yesBtn.setText(self.tr("Ja"))
             msgBox.exec()
-            
+
             if msgBox.clickedButton() == yesBtn:
                 self.onSave()
-            
+
             if msgBox.clickedButton() == cancelBtn:
                 # Cancel closing
                 QCloseEvent.ignore()
                 return
-            
+
             if msgBox.clickedButton() == noBtn:
                 # Nothing to do
                 pass
-        
+
         self.cleanUp()
         self.onCloseCallback(self.returnToProjectWindow)

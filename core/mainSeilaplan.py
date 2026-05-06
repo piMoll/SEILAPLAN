@@ -34,10 +34,10 @@ def main(progress, project):
     :type project: projectHandler.ProjectConfHandler
     """
     project: ProjectConfHandler
-    
+
     if progress.isCanceled():
         return False
-    
+
     params = project.params.getSimpleParameterDict()
     profile = project.profile
     poles = project.poles
@@ -45,50 +45,52 @@ def main(progress, project):
     # Search suitable pole positions along profile
     # TODO: Refactor into profile Class
     gp, StuetzenPos, diIdx, R_R = stuePos(
-        params, profile, project.noPoleSection, project.fixedPoles)
-    
-    # Extend params dictionary TODO: better solution?
-    params['R_R'] = R_R
-    params['Ank'] = poles.anchor
+        params, profile, project.noPoleSection, project.fixedPoles
+    )
 
-    out = optimization(params, profile, StuetzenPos, progress,
-                       project.fixedPoles, [project.A_type, project.E_type])
+    # Extend params dictionary TODO: better solution?
+    params["R_R"] = R_R
+    params["Ank"] = poles.anchor
+
+    out = optimization(
+        params,
+        profile,
+        StuetzenPos,
+        progress,
+        project.fixedPoles,
+        [project.A_type, project.E_type],
+    )
     if not out:
         if not progress.isCanceled():
             progress.exception = "Fehler in Optimierungsalgorithmus."
         return False
 
-    progress.sig_text.emit('msg_seillinie')
+    progress.sig_text.emit("msg_seillinie")
     [HM, HMidx, optValue, optSTA, optiLen] = out
 
     project.params.setOptSTA(optSTA[0])
-    
+
     stuetzDist = np.int32(diIdx[HMidx])
 
     # Check result status
     if not HMidx or HMidx == [0]:
         # Not a single pole location was calculated, no cable line possible
-        progress.exception = (
-            "Aufgrund der Gelaendeform oder der Eingabeparameter konnten keine Stuetzenstandorte bestimmt werden.")
+        progress.exception = "Aufgrund der Gelaendeform oder der Eingabeparameter konnten keine Stuetzenstandorte bestimmt werden."
         return False
     # Corresponds last optimized pole with end point?
-    if int(poles.lastPole['d']) != int(stuetzDist[-1]):
+    if int(poles.lastPole["d"]) != int(stuetzDist[-1]):
         # It was not possible to calculate poles along the entire profile
         progress.status.append(ResultQuality.LineNotComplete)
-    
+
     # Save optimized poles to Pole() object
     optiPoles = []
     for idx, d in enumerate(stuetzDist):
-        name = ''
+        name = ""
         # Check if this is a fixed pole
-        for fPole in project.fixedPoles['poles']:
-            if d == fPole['d']:
-                name = fPole['name']
-        optiPoles.append({
-            'd': d,
-            'h': HM[idx],
-            'name': name
-        })
+        for fPole in project.fixedPoles["poles"]:
+            if d == fPole["d"]:
+                name = fPole["name"]
+        optiPoles.append({"d": d, "h": HM[idx], "name": name})
     poles.updateAllPoles(PolesOrigin.Optimization, optiPoles)
 
     # Calculate precise cable line data
@@ -101,9 +103,9 @@ def main(progress, project):
 
     progress.sig_value.emit(optiLen * 1.005)
     return {
-        'cableline': cableline,
-        'optSTA': optSTA[0],
-        'optSTA_arr': optSTA,
-        'force': force,
-        'optLen': optiLen
+        "cableline": cableline,
+        "optSTA": optSTA[0],
+        "optSTA_arr": optSTA,
+        "force": force,
+        "optLen": optiLen,
     }

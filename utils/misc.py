@@ -2,8 +2,10 @@ from qgis.core import QgsMessageLog, QgsSettings
 from qgis.PyQt.QtCore import QSettings
 from SEILAPLAN import __version__ as current_version, DEBUG
 
-QGIS_SETTINGS_GROUP_PLUGINS = 'app/plugin_repositories'
-SEILAPLAN_PLUGIN_REPO = 'https://raw.githubusercontent.com/piMoll/SEILAPLAN/master/plugin.xml'
+QGIS_SETTINGS_GROUP_PLUGINS = "app/plugin_repositories"
+SEILAPLAN_PLUGIN_REPO = (
+    "https://raw.githubusercontent.com/piMoll/SEILAPLAN/master/plugin.xml"
+)
 
 
 def versionAsInteger(version=current_version):
@@ -11,9 +13,9 @@ def versionAsInteger(version=current_version):
     Converts a version string in the format 'x.y.z' into an integer for
     easier comparison.
     """
-    if len(version.split('.')) != 3:
+    if len(version.split(".")) != 3:
         raise ValueError
-    return int(''.join([f'{int(n):02d}' for n in version.split('.')]))
+    return int("".join([f"{int(n):02d}" for n in version.split(".")]))
 
 
 def removeOldSeilaplanPluginRepo():
@@ -22,25 +24,24 @@ def removeOldSeilaplanPluginRepo():
      after version 3.7.0 of SEILAPLAN. This is due to SEILAPLAN moving from its
      own GitHub-based repository to the official QGIS plugin repository.
     """
-    if versionAsInteger() <= versionAsInteger('3.7.0'):
+    if versionAsInteger() <= versionAsInteger("3.7.0"):
         return
-    
+
     settings = QgsSettings()
     settings.beginGroup(QGIS_SETTINGS_GROUP_PLUGINS)
     for key in settings.childGroups():
         url = settings.value(key + "/url", "", type=str)
         if url == SEILAPLAN_PLUGIN_REPO:
             if DEBUG:
-                msg = f'Found SEILAPLAN plugin repository at {key}!'
+                msg = f"Found SEILAPLAN plugin repository at {key}!"
             else:
                 settings.remove(key)
-                msg = f'Removing old SEILAPLAN plugin repository at {url}'
-            QgsMessageLog.logMessage(msg, 'SEILAPLAN')
+                msg = f"Removing old SEILAPLAN plugin repository at {url}"
+            QgsMessageLog.logMessage(msg, "SEILAPLAN")
             break
 
 
 def is_dark_mode():
     settings = QSettings()
     theme = settings.value("UI/UITheme", "default")
-    return any([name in theme.lower() for name in
-                   ["gray", "dark", "night", "black"]])
+    return any([name in theme.lower() for name in ["gray", "dark", "night", "black"]])

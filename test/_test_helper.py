@@ -14,9 +14,11 @@ def calculate_cable_line(conf, project_file=BASIC_PROJECT_FILE):
     profile = project.profile
     poles = project.poles
     simpleParams = params.getSimpleParameterDict()
-    cableline, force, seil_possible = preciseCable(simpleParams, poles, result['optSTA'])
+    cableline, force, seil_possible = preciseCable(
+        simpleParams, poles, result["optSTA"]
+    )
     groundClear = profile.updateProfileAnalysis(cableline)
     cableline = {**cableline, **groundClear}
-    result['cableline'] = cableline
-    result['force'] = force
+    result["cableline"] = cableline
+    result["force"] = force
     return result, params, poles, profile, resultQuality

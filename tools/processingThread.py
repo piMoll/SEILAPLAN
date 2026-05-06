@@ -31,19 +31,19 @@ from .outputReport import getTimestamp
 
 
 class ProcessingTask(QgsTask):
-    """ Seperate Thread to run calculations without blocking QGIS. This class
+    """Seperate Thread to run calculations without blocking QGIS. This class
     runs the algorithm, sends progress information to the progress gui and
     generates the results (diagram, pdf, geodata...).
     """
-    
+
     # Signals
     sig_jobEnded = pyqtSignal(bool)
     sig_jobError = pyqtSignal(str)
     sig_value = pyqtSignal(float)
     sig_range = pyqtSignal(list)
     sig_text = pyqtSignal(str)
-    
-    def __init__(self, projectConfig, description='SEILAPLAN'):
+
+    def __init__(self, projectConfig, description="SEILAPLAN"):
 
         super().__init__(description, QgsTask.CanCancel)
 
@@ -52,9 +52,9 @@ class ProcessingTask(QgsTask):
         self.projectConfig: ProjectConfHandler = projectConfig
         self.result = None
         self.status = []
-    
+
     def run(self):
-        
+
         # # Uncomment when trying to debug the optimization algorithm
         # from SEILAPLAN import enable_remote_debugging
         # enable_remote_debugging()
@@ -70,10 +70,10 @@ class ProcessingTask(QgsTask):
         if not result:
             # Result will be False if there was an error or the user canceled
             return False
-        self.sig_value.emit(result['optLen'] * 1.01)
+        self.sig_value.emit(result["optLen"] * 1.01)
 
         # Calculate duration and generate time stamp
-        result['duration'] = getTimestamp(t_start)
+        result["duration"] = getTimestamp(t_start)
 
         self.result = result
 
@@ -86,12 +86,12 @@ class ProcessingTask(QgsTask):
         # result['poles'] = self.projInfo.poles.poles
         # pickle.dump(result, f)
         # f.close()
-        
+
         return True
-        
+
     def getResult(self):
         return self.result, max(self.status)
-    
+
     def finished(self, result):
         """This method is automatically called when self.run returns. result
         is the return value from self.run.
@@ -103,6 +103,6 @@ class ProcessingTask(QgsTask):
         else:
             # Show successful run or user abort on progress gui
             self.sig_jobEnded.emit(result)
-    
+
     def cancel(self):
         super().cancel()

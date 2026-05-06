@@ -17,7 +17,8 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- """
+"""
+
 import csv
 
 import numpy as np
@@ -26,39 +27,36 @@ from .heightSource import AbstractSurveyReader
 
 
 class CsvXyzReader(AbstractSurveyReader):
-    
+
     def __init__(self, path):
         AbstractSurveyReader.__init__(self, path)
-        
+
         self.sep = None
         self.idxX = None
         self.idxY = None
         self.idxZ = None
-        
+
         self.checkStructure()
-        
+
     def checkStructure(self):
-        
-        with open(self.path, newline='') as file:
+
+        with open(self.path, newline="") as file:
             reader = csv.reader(file)
-            sep = ','
+            sep = ","
             for row in reader:
                 if len(row) == 1:
-                    row = row[0].split(';')
-                    sep = ';'
+                    row = row[0].split(";")
+                    sep = ";"
                 if len(row) == 1:
-                    row = row[0].split(',')
-                    sep = ','
-                    
+                    row = row[0].split(",")
+                    sep = ","
+
                 # Analyse header line
-                idxX = [idx for idx, h in enumerate(row) if
-                        self.formatHeader(h) == 'X']
-                idxY = [idx for idx, h in enumerate(row) if
-                        self.formatHeader(h) == 'Y']
-                idxZ = [idx for idx, h in enumerate(row) if
-                        self.formatHeader(h) == 'Z']
+                idxX = [idx for idx, h in enumerate(row) if self.formatHeader(h) == "X"]
+                idxY = [idx for idx, h in enumerate(row) if self.formatHeader(h) == "Y"]
+                idxZ = [idx for idx, h in enumerate(row) if self.formatHeader(h) == "Z"]
                 break
-        
+
         # Check if data is in x, y, z format
         if len(idxX) == 1 and len(idxY) == 1 and len(idxZ) == 1:
             self.sep = sep
@@ -66,14 +64,19 @@ class CsvXyzReader(AbstractSurveyReader):
             self.idxY = idxY[0]
             self.idxZ = idxZ[0]
             self.valid = True
-    
+
     def readOutData(self):
         if not self.valid:
             return False
         try:
-            x, y, z = np.genfromtxt(self.path, delimiter=self.sep, dtype='float64',
-                                    usecols=(self.idxX, self.idxY, self.idxZ),
-                                    unpack=True, skip_header=1)
+            x, y, z = np.genfromtxt(
+                self.path,
+                delimiter=self.sep,
+                dtype="float64",
+                usecols=(self.idxX, self.idxY, self.idxZ),
+                unpack=True,
+                skip_header=1,
+            )
         except TypeError as e:
             return False
         if isinstance(x, float) or isinstance(y, float) or isinstance(z, float):
@@ -87,10 +90,6 @@ class CsvXyzReader(AbstractSurveyReader):
         if len(x) < 2:
             return False
 
-        self.surveyPoints = {
-            'x': x,
-            'y': y,
-            'z': z
-        }
+        self.surveyPoints = {"x": x, "y": y, "z": z}
         self.nr = np.arange(len(x)) + 1
         return True

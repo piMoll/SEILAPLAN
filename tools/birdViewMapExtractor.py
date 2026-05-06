@@ -18,6 +18,7 @@
  *                                                                         *
  ***************************************************************************/
 """
+
 from math import degrees, radians
 import os
 
@@ -29,7 +30,7 @@ from qgis.core import (
     QgsPointXY,
     QgsPrintLayout,
     QgsProject,
-    QgsRectangle
+    QgsRectangle,
 )
 
 
@@ -40,11 +41,11 @@ def extractMapBackground(savePath, xlim, ylim, startPoint, azimut):
     # Calculate necessary rotation of viewport from horizontal (east-west)
     #  to correct orientation of the cable line
     rotation = azimut - radians(90)
-    
+
     # Dimension of viewport
     width = xMax - xMin
     height = yMax - yMin
-    
+
     # First we create the viewport that contains the start point and is
     #  orientated perfectly east-west
     lowerLeft = QgsPointXY(eCoord + xMin, nCoord + yMin)
@@ -67,7 +68,9 @@ def extractMapBackground(savePath, xlim, ylim, startPoint, azimut):
     #  Placing the viewport in the center is necessary, because in the subsequent
     #  rotation of the map canvas bellow, the rotation is applied to the
     #  center of the map extract / viewport.
-    viewport = QgsRectangle.fromCenterAndSize(QgsPointXY(eCenter, nCenter), width, height)
+    viewport = QgsRectangle.fromCenterAndSize(
+        QgsPointXY(eCenter, nCenter), width, height
+    )
 
     # Create the QGIS print layout
     project = QgsProject.instance()
@@ -76,7 +79,7 @@ def extractMapBackground(savePath, xlim, ylim, startPoint, azimut):
     # If we want to see the layout, we can give it a name and add it to the manager
     # layout.setName("Seilaplan BirdView Layout")
     # project.layoutManager().addLayout(layout)
-    
+
     # Create a map item
     mapExtract = QgsLayoutItemMap(layout)
     # Item needs a fixed size that is the same as the bird view plot and fits
@@ -89,17 +92,16 @@ def extractMapBackground(savePath, xlim, ylim, startPoint, azimut):
     mapExtract.setMapRotation(degrees(mapRotation))
     # Add the map to the layout
     layout.addLayoutItem(mapExtract)
-    
+
     # Export the layout to an image file
     exporter = QgsLayoutExporter(layout)
     imgOpt = exporter.ImageExportSettings()
     imgOpt.cropToContents = True
     imgOpt.dpi = 300
     imgOpt.exportMeta = False
-    
-    saveFile = os.path.join(savePath, 'temp_birdview.png')
+
+    saveFile = os.path.join(savePath, "temp_birdview.png")
     exporter.exportToImage(saveFile, imgOpt)
     # Cleanup
     del layout
     return saveFile
-

@@ -3,13 +3,13 @@ from qgis.PyQt.QtCore import QEventLoop, QUrl
 
 
 class FileFetcher:
-    
+
     def __init__(self, url, filePath):
         self.url = QUrl(url)
         self.filePath = filePath
         self.success = False
         self.run()
-        
+
     def error(self):
         self.success = False
 

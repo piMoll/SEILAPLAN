@@ -33,7 +33,7 @@ from . import PLUGIN_DIR
 try:
     import reportlab
 except ModuleNotFoundError:
-    libPath = os.path.join(PLUGIN_DIR, 'lib')
+    libPath = os.path.join(PLUGIN_DIR, "lib")
     if libPath not in sys.path:
         sys.path.insert(-1, libPath)
 
@@ -51,7 +51,7 @@ except ImportError:
     # On QGIS Version 3.10.9 and 3.14.15 there is a bug that prevents
     #  importing scipy.interpolate.
     ERROR = 1 if ERROR == 1 else 2
-    
+
 if not ERROR:
     # Import seilaplan plugin entry point
     from .seilaplanRun import SeilaplanRun
@@ -60,21 +60,21 @@ if not ERROR:
 
 class SeilaplanPlugin:
     """QGIS Plugin Implementation."""
-    
+
     def __init__(self, iface):
         # Save reference to the QGIS interface
         self.iface = iface
-        
+
         # Initialize locale
         # Default locale is english
-        useLocale = os.path.join(PLUGIN_DIR, 'i18n',
-                                     'SeilaplanPlugin_en.qm')
+        useLocale = os.path.join(PLUGIN_DIR, "i18n", "SeilaplanPlugin_en.qm")
         # Get locale from QGIS settings
         qgisLocale = QSettings().value("locale/userLocale")[0:2]
-        localePath = os.path.join(PLUGIN_DIR, 'i18n',
-                                  'SeilaplanPlugin_{}.qm'.format(qgisLocale))
+        localePath = os.path.join(
+            PLUGIN_DIR, "i18n", "SeilaplanPlugin_{}.qm".format(qgisLocale)
+        )
 
-        if qgisLocale in ['de', 'en', 'fr', 'it'] and os.path.exists(localePath):
+        if qgisLocale in ["de", "en", "fr", "it"] and os.path.exists(localePath):
             useLocale = localePath
 
         self.translator = QTranslator()
@@ -90,15 +90,15 @@ class SeilaplanPlugin:
 
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
-        icon = QIcon(getAbsoluteIconPath('icon_app.png'))
-        self.action = QAction(icon, self.tr('SEILAPLAN'), self.iface.mainWindow())
+        icon = QIcon(getAbsoluteIconPath("icon_app.png"))
+        self.action = QAction(icon, self.tr("SEILAPLAN"), self.iface.mainWindow())
         self.action.triggered.connect(self.run)
         self.action.setEnabled(True)
-        self.action.setStatusTip(self.tr('SEILAPLAN'))
-        self.action.setWhatsThis(self.tr('SEILAPLAN'))
+        self.action.setStatusTip(self.tr("SEILAPLAN"))
+        self.action.setWhatsThis(self.tr("SEILAPLAN"))
         # Adds plugin icon to Plugins toolbar
         self.iface.addToolBarIcon(self.action)
-        self.iface.addPluginToMenu(self.tr('SEILAPLAN'), self.action)
+        self.iface.addPluginToMenu(self.tr("SEILAPLAN"), self.action)
 
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
@@ -106,10 +106,10 @@ class SeilaplanPlugin:
         for run in self.pluginRuns:
             run.close()
             del run
-            
-        self.iface.removePluginMenu(self.tr('SEILAPLAN'), self.action)
+
+        self.iface.removePluginMenu(self.tr("SEILAPLAN"), self.action)
         self.iface.removeToolBarIcon(self.action)
-    
+
     def handleImportErrors(self):
         def showError():
             msgBox = QMessageBox(self.iface.mainWindow())
@@ -119,30 +119,35 @@ class SeilaplanPlugin:
             msgBox.setStandardButtons(QMessageBox.StandardButton.Ok)
             msgBox.show()
             msgBox.exec()
-        
+
         if ERROR == 1:
-            barTitle = self.tr('SEILAPLAN Fehler')
-            shortMessage = self.tr('Bibliothek scipy nicht vorhanden.')
-            longMessage = self.tr('Seilaplan benoetigt die Python Bibliothek scipy um Berechnungen durchzufuehren.')
-        else:   # ERROR == 2
-            barTitle = self.tr('SEILAPLAN Fehler')
-            shortMessage = self.tr('Fehlerhafte QGIS Version.')
-            longMessage = self.tr('Aufgrund eines Fehlers in QGIS kann Seilaplan in der aktuell installierten Version nicht ausgefuehrt werden.')
-    
+            barTitle = self.tr("SEILAPLAN Fehler")
+            shortMessage = self.tr("Bibliothek scipy nicht vorhanden.")
+            longMessage = self.tr(
+                "Seilaplan benoetigt die Python Bibliothek scipy um Berechnungen durchzufuehren."
+            )
+        else:  # ERROR == 2
+            barTitle = self.tr("SEILAPLAN Fehler")
+            shortMessage = self.tr("Fehlerhafte QGIS Version.")
+            longMessage = self.tr(
+                "Aufgrund eines Fehlers in QGIS kann Seilaplan in der aktuell installierten Version nicht ausgefuehrt werden."
+            )
+
         widget = self.iface.messageBar().createMessage(barTitle, shortMessage)
         button = QPushButton(widget)
         button.setText(self.tr("Weitere Informationen"))
         button.pressed.connect(showError)
         widget.layout().addWidget(button)
         self.iface.messageBar().pushWidget(widget, Qgis.Warning)
-    
+
     @staticmethod
     def preparationTasks():
         """Contains cleanup tasks that run before the plugin is opened."""
-        
+
         # All versions later than 3.7.0 are published on the official QGIS
         # plugin repository. The old GitHub-based repo is removed.
         from SEILAPLAN.utils.misc import removeOldSeilaplanPluginRepo
+
         removeOldSeilaplanPluginRepo()
 
     def run(self):
@@ -150,11 +155,11 @@ class SeilaplanPlugin:
         if ERROR:
             self.handleImportErrors()
             return
-        
+
         # Create a SeilaplanRun instance and save reference. This allows to
         #  run the plugin multiple times in parallel
         seilaplanRun = SeilaplanRun(self.iface)
         self.pluginRuns.append(seilaplanRun)
-        
+
         # Start the run by showing the project window
         seilaplanRun.showProjectWindow()

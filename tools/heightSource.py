@@ -18,6 +18,7 @@
  *                                                                         *
  ***************************************************************************/
 """
+
 from qgis.core import QgsCoordinateReferenceSystem
 from qgis.PyQt.QtCore import QCoreApplication
 
@@ -25,42 +26,45 @@ from .outputGeo import GPS_CRS
 
 
 class AbstractHeightSource(object):
-    
+
     def __init__(self):
         self.path = None
         self.spatialRef = None
         self.contourLayer = None
         self.extent = []
-        self.errorMsg = ''
+        self.errorMsg = ""
         self.buffer = (None, None)
         self.valid = False
-    
+
     def getAsStr(self):
-        return self.path or ''
-    
+        return self.path or ""
+
     def prepareData(self, *args):
         raise NotImplementedError
-    
+
     def getHeightAtPoints(self, coords):
         raise NotImplementedError
-    
+
     def guessCrs(self):
-        if self.extent and -180 <= self.extent[0] <= 180 \
-                and -90 <= self.extent[1] <= 90:
+        if (
+            self.extent
+            and -180 <= self.extent[0] <= 180
+            and -90 <= self.extent[1] <= 90
+        ):
             self.spatialRef = QgsCoordinateReferenceSystem(GPS_CRS)
         else:
             self.spatialRef = QgsCoordinateReferenceSystem()
-    
+
     def tr(self, message, **kwargs):
         """Get the translation for a string using Qt translation API.
         We implement this ourselves since we do not inherit QObject.
-    
+
         :param message: String for translation.
         :type message: str, QString
-    
+
         :returns: Translated version of message.
         :rtype: QString
-    
+
         Parameters
         ----------
         **kwargs
@@ -69,17 +73,17 @@ class AbstractHeightSource(object):
 
 
 class AbstractSurveyReader:
-    
+
     def __init__(self, path):
         self.valid = False
-        self.errorMsg = ''
-        self.warnMsg = ''
+        self.errorMsg = ""
+        self.warnMsg = ""
         self.path = path
         self.spatialRef = None
         self.surveyPoints = {}
         self.nr = None
         self.prHeaderData = {}
-    
+
     def checkStructure(self, *args):
         raise NotImplementedError
 

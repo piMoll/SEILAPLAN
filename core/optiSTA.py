@@ -14,8 +14,19 @@
 from .cableline import calcCable, calcBandH
 
 
-def calcSTA(IS, zi, di, sc, befGSK, H_Anfangsmast, H_Endmast, z_null,
-            z_ende, d_null, d_ende):
+def calcSTA(
+    IS,
+    zi,
+    di,
+    sc,
+    befGSK,
+    H_Anfangsmast,
+    H_Endmast,
+    z_null,
+    z_ende,
+    d_null,
+    d_ende,
+):
     """
     Berechnet den Bereich der Anfangsseilzugkraft STA, welcher für den
     betrachteten Abschnitt möglich ist!
@@ -39,8 +50,8 @@ def calcSTA(IS, zi, di, sc, befGSK, H_Anfangsmast, H_Endmast, z_null,
     sc        Soil Clearance, gibt den minimalen Bodenabstand an
     """
     # Input Variablen
-    zul_SK = float(IS["zul_SK"])    # [kN] zulaessige Seilkraft!
-    min_Anfangszugkraft = float(IS["min_SK"])   # [kN]
+    zul_SK = float(IS["zul_SK"])  # [kN] zulaessige Seilkraft!
+    min_Anfangszugkraft = float(IS["min_SK"])  # [kN]
     CableLineImpossible = False
     # ACHTUNG: Ist nicht immer 1. Main File beachten!!
     Detail = 1.0
@@ -48,8 +59,9 @@ def calcSTA(IS, zi, di, sc, befGSK, H_Anfangsmast, H_Endmast, z_null,
     # Test der maximal zulässigen Seilkraft
     Speicher = []
     STA = zul_SK
-    [b, h, feld] = calcBandH(zi, di, H_Anfangsmast, H_Endmast, z_null,
-                             z_ende, d_null, d_ende)
+    [b, h, feld] = calcBandH(
+        zi, di, H_Anfangsmast, H_Endmast, z_null, z_ende, d_null, d_ende
+    )
 
     out = calcCable(IS, zi, di, sc, befGSK, z_null, STA, b, h, feld)
     Cable_Possible, Seilkraft = out[0], out[1]
@@ -106,9 +118,9 @@ def calcSTA(IS, zi, di, sc, befGSK, H_Anfangsmast, H_Endmast, z_null,
     # import numpy as np
     # print np.sort(np.array(Speicher), 0)
     for element in Speicher:
-        if element[1] and element[2]:   # Wenn beide Werte True sind
+        if element[1] and element[2]:  # Wenn beide Werte True sind
             Reihe.append(element)
-    #print np.sort(np.array(Speicher)[:,0])
+    # print np.sort(np.array(Speicher)[:,0])
     if Reihe:
         Min = min(Reihe)[0]
         Max = max(Reihe)[0]

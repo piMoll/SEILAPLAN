@@ -20,13 +20,14 @@
  ***************************************************************************/
  This script initializes the plugin, making it known to QGIS.
 """
+
 import os
 
-__version__ = '3.7.1'
+__version__ = "3.7.1"
 
 DEBUG = False
 PLUGIN_DIR = os.path.dirname(__file__)
-PROJECT_URL = 'https://pimoll.github.io/SEILAPLAN/'
+PROJECT_URL = "https://pimoll.github.io/SEILAPLAN/"
 
 
 def classFactory(iface):
@@ -36,8 +37,9 @@ def classFactory(iface):
     :type iface: QgsInterface
     """
     enable_remote_debugging()
-    
+
     from .seilaplanPlugin import SeilaplanPlugin
+
     return SeilaplanPlugin(iface)
 
 
@@ -45,13 +47,20 @@ def enable_remote_debugging():
     if DEBUG:
         # To allow remote debugging with PyCharm, add pydevd to the path
         import sys
+
         sys.path.append(
-            '/snap/pycharm-professional/current/debug-eggs/pydevd-pycharm.egg')
+            "/snap/pycharm-professional/current/debug-eggs/pydevd-pycharm.egg"
+        )
         try:
             import pydevd_pycharm
-            pydevd_pycharm.settrace('localhost', port=53100, suspend=False,
-                                    stdout_to_server=True,
-                                    stderr_to_server=True)
+
+            pydevd_pycharm.settrace(
+                "localhost",
+                port=53100,
+                suspend=False,
+                stdout_to_server=True,
+                stderr_to_server=True,
+            )
         except ConnectionRefusedError:
             pass
         except ImportError:
