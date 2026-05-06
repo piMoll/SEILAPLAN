@@ -577,7 +577,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
             cableline, force, seil_possible = preciseCable(
                 params, self.poles, self.paramHandler.getTensileForce()
             )
-        except Exception as e:
+        except Exception:
             self.updateRecalcStatus(ResultQuality.Error)
             self.isRecalculating = False
             self.configurationHasChanged = False

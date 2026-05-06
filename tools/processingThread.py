@@ -63,7 +63,7 @@ class ProcessingTask(QgsTask):
         try:
             # Run optimization
             result = main(self, self.projectConfig)
-        except Exception as e:
+        except Exception:
             self.exception = traceback.format_exc()
             return False
 

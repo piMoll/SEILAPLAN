@@ -119,7 +119,7 @@ class Raster(AbstractHeightSource):
             del self.ds
             self.path = "/vsimem/in_memory_copy.tif"
             return gdal.Open(self.path)
-        except Exception as e:
+        except Exception:
             raise Exception("Not able to copy raster into temporary tif file.")
 
     def prepareData(self, points, azimut, anchorLen):
@@ -171,7 +171,7 @@ class Raster(AbstractHeightSource):
 
         try:
             self.noDataValue = self.ds.GetRasterBand(1).GetNoDataValue()
-        except Exception as e:
+        except Exception:
             self.noDataValue = None
 
         upx, xres, xskew, upy, yskew, yres = subraster.GetGeoTransform()

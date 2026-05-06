@@ -39,7 +39,6 @@ from matplotlib.patches import Rectangle
 from matplotlib.pyplot import imread
 import matplotlib.patheffects as pe
 
-from .plotting_tools import zoom_with_wheel
 from SEILAPLAN.tools.birdViewSymbol import BirdViewSymbol, BirdViewSymbolLoader
 from SEILAPLAN.utils.misc import is_dark_mode
 
@@ -138,7 +137,7 @@ class AdjustmentPlot(FigureCanvas):
         self.isZoomed = False
 
         # Enable zoom with scroll wheel
-        zoomFunc = zoom_with_wheel(self, self.axes, zoomScale=1.3)
+        # zoomFunc = zoom_with_wheel(self, self.axes, zoomScale=1.3)
 
         self.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
         FigureCanvas.setSizePolicy(

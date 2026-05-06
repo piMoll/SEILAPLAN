@@ -37,7 +37,6 @@ from matplotlib.figure import Figure
 from matplotlib.collections import LineCollection
 
 from .mapMarker import PROFILE_COLOR, POLE_COLOR, SECTION_COLOR
-from .plotting_tools import zoom_with_wheel
 from SEILAPLAN.utils.misc import is_dark_mode
 
 
@@ -76,7 +75,7 @@ class ProfilePlot(FigureCanvas):
         self.evtPressSection = None
 
         # Enable zoom with scroll wheel
-        zoomFunc = zoom_with_wheel(self, self.axes, zoomScale=1.3)
+        # zoomFunc = zoom_with_wheel(self, self.axes, zoomScale=1.3)
 
         self.axes.set_aspect("equal", "datalim")
         self.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
@@ -227,7 +226,7 @@ class ProfilePlot(FigureCanvas):
     def onMouseMoveP(self, event):
         if not event.inaxes:
             return
-        x, y = event.xdata, event.ydata
+        x, _ = event.xdata, event.ydata
         indx = np.argmax(self.x_data >= x)
         if indx == 0:
             # Cursor outside of profile
@@ -286,7 +285,7 @@ class ProfilePlot(FigureCanvas):
     def onMouseMoveS(self, event):
         if not event.inaxes:
             return
-        x, y = event.xdata, event.ydata
+        x, _ = event.xdata, event.ydata
         indx = np.argmax(self.x_data >= x)
         if indx == 0:
             # Cursor outside of profile

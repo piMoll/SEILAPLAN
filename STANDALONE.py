@@ -116,7 +116,7 @@ def optimizeCableLine(conf: ConfigHandler):
         print("Start optimization...")
         # Start optimization
         res = mainSeilaplan(task, conf.project)
-    except Exception as e:
+    except Exception:
         # Catch errors and print them to console
         print(traceback.format_exc())
         exit()
@@ -215,7 +215,7 @@ if __name__ == "__main__":
     config: ConfigHandler = ConfigHandler()
     configLoaded = config.loadSettings(savedProjectFile)
     if not configLoaded:
-        print(f"ERROR: Project file does not exist or cannot be loaded.")
+        print("ERROR: Project file does not exist or cannot be loaded.")
         qgs.exitQgis()
         exit()
 

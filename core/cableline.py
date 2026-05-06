@@ -150,10 +150,6 @@ def calcCable(IS, zi, di, sc, befGSK, z_null, STA, b, h, feld):
     bquad_feld = bquad[feld]
     b_feld = b[feld]
 
-    # Spezielle Klasse und Methode zur schnelleren Summenbildung initialisieren
-    vSumInstance = vectorSum(sizeB)
-    calcSum = vSumInstance.functionToCall
-
     # Berechnung der Sehne
     c = (bquad + h**2) ** 0.5
     c_sum = np.sum(c, axis=0)

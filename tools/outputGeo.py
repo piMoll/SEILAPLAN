@@ -367,7 +367,7 @@ def createVirtualRaster(rasterList):
     }
     try:
         algOutput = run("gdal:buildvirtualraster", processingParams)
-    except (RuntimeError, QgsProcessingException) as e:
+    except (RuntimeError, QgsProcessingException):
         raise RuntimeError
     else:
         rasterLyr = QgsRasterLayer(algOutput["OUTPUT"], VIRTUALRASTER)

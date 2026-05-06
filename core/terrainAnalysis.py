@@ -124,7 +124,6 @@ def stuePos(IS, gp, noPoleSection, fixedPoles):
 
     # Letztes Element hinzufügen
     ############################
-    di_ind = np.copy(locb)
     # gp["last_element_add"] = False
     if gp.di[-1] > gp.di_s[-1]:
         # vorher di / zi

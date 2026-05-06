@@ -466,7 +466,7 @@ class PlotTopic(object):
             for idx, threshold in enumerate(
                 self.threshold if isinstance(self.threshold, list) else [self.threshold]
             ):
-                text = text.replace(f"_threshold_{idx+1}_", f"{threshold}")
+                text = text.replace(f"_threshold_{idx + 1}_", f"{threshold}")
             descriptionWithThresholdValue[part] = text
         return descriptionWithThresholdValue
 
