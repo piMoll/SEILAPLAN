@@ -386,21 +386,10 @@ class Canvas(_PDFColorSetter):
         If encrypt is an instance of reportlab.lib.pdfencrypt.StandardEncryption, this object is
         used to encrypt the pdf. This allows more finegrained control over the encryption settings.
         '''
-        if encrypt:
-            from reportlab.lib import pdfencrypt
-            if isStr(encrypt): #encrypt is the password itself
-                if isUnicode(encrypt):
-                    encrypt = encrypt.encode('utf-8')
-                encrypt = pdfencrypt.StandardEncryption(encrypt)    #now it's the encrypt object
-                encrypt.setAllPermissions(1)
-            elif not isinstance(encrypt, pdfencrypt.StandardEncryption):
-                raise TypeError('Expected string or instance of reportlab.lib.pdfencrypt.StandardEncryption as encrypt parameter but got %r' % encrypt)
-            self._doc.encrypt = encrypt
-        else:
-            try:
-                del self._doc.encrypt
-            except AttributeError:
-                pass
+        try:
+            del self._doc.encrypt
+        except AttributeError:
+            pass
 
     def init_graphics_state(self):
         #initial graphics state, never modify any of these in place
