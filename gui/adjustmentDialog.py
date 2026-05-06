@@ -205,16 +205,6 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
             context = type(self).__name__
         return QCoreApplication.translate(context, message)
     
-    def loadData(self, pickleFile):
-        """ Is used to load testdata from pickl object in debug mode """
-        import pickle
-        f = open(pickleFile, 'rb')
-        dump = pickle.load(f)
-        f.close()
-        
-        self.poles.poles = dump['poles']
-        self.initData(dump, ResultQuality.SuccessfulOptimization)
-    
     def initData(self, result, resultQuality):
         if not result:
             self.close()

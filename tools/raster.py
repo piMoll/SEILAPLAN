@@ -166,7 +166,7 @@ class Raster(AbstractHeightSource):
         try:
             self.noDataValue = self.ds.GetRasterBand(1).GetNoDataValue()
         except Exception as e:
-            pass
+            self.noDataValue = None
         
         upx, xres, xskew, upy, yskew, yres = subraster.GetGeoTransform()
         # This raster has its origin in the upper left corner, so y-axis is

@@ -60,15 +60,15 @@ Code Structure:
 ########################################################################################################
 
 
-import zipfile
-import re
+from datetime import datetime, timedelta
 import os
-import sys
+import re
 import shutil
+import sys
+import time
 import warnings
 from xml.etree import cElementTree as ET
-import time
-from datetime import datetime, timedelta
+import zipfile
 
 EXCEL_STARTDATE = datetime(1899,12,30)
 
@@ -645,8 +645,7 @@ def writexl(db, fn):
             shutil.rmtree(folder)
         except PermissionError:
             # windows sometimes messes up cleaning this up in python3
-            time.sleep(1)
-            os.system(r'rmdir /s /q {}'.format(folder))
+            continue
 
 
 def writexl_alt_writer(db, path):

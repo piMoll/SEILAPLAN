@@ -95,7 +95,7 @@ class SurveyData(AbstractHeightSource):
                     success = reader.readOutData()
                     sourceType = self.SOURCE_CSV_XYZ
                 except Exception:
-                    pass
+                    success = False
         
         if sourceType == self.SOURCE_CSV_VERTEX or not sourceType:
             reader = CsvVertexReader(self.path)
@@ -105,7 +105,7 @@ class SurveyData(AbstractHeightSource):
                     sourceType = self.SOURCE_CSV_VERTEX
                     self.plotNotes = reader.notes
                 except Exception:
-                    pass
+                    success = False
     
         if sourceType == self.SOURCE_EXCEL_PROTOCOL:
             reader = ExcelProtocolReader(self.path)
@@ -114,7 +114,7 @@ class SurveyData(AbstractHeightSource):
                     success = reader.readOutData()
                     self.plotNotes = reader.notes['onPoint']
                 except Exception:
-                    pass
+                    success = False
         
         if reader:
             self.errorMsg = reader.errorMsg
