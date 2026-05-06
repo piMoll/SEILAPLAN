@@ -53,6 +53,8 @@ class CellStyle(PropertySet):
     background = 'white'
     valign = "BOTTOM"
     href = None
+    direction = None
+    shaping = None
     destination = None
     def __init__(self, name, parent=None):
         self.name = name
@@ -89,6 +91,8 @@ class TableStyle:
         return "TableStyle(\n%s\n) # end TableStyle" % "  \n".join(map(repr, self._cmds))
     def getCommands(self):
         return self._cmds
+
+ShadowStyle = namedtuple('ShadowStyle', 'dx dy color0 color1 nshades', defaults=(10,-10, 'grey','white',30))
 
 def _rowLen(x):
     return not isinstance(x,(tuple,list)) and 1 or len(x)
@@ -264,7 +268,7 @@ class Table(Flowable):
                 hAlign=None,vAlign=None, normalizedData=0, cellStyles=None, rowSplitRange=None,
                 spaceBefore=None,spaceAfter=None, longTableOptimize=None, minRowHeights=None,
                 cornerRadii=__UNSET__, #or [topLeft, topRight, bottomLeft bottomRight]
-                renderCB=None,
+                renderCB=None, shadow=None
                 ):
         self.ident = ident
         self.hAlign = hAlign or 'CENTER'
@@ -369,7 +373,9 @@ class Table(Flowable):
             elif lmrh<nrows:
                 minRowHeights = minRowHeights+(nrows-lmrh)*minRowHeights.__class__((0,))
         self._minRowHeights = minRowHeights
-
+        if shadow and not isinstance(shadow,ShadowStyle):
+            raise ValueError(f'Table shadow argument should be None or a ShadowStyle instance not {shadow!r}')
+        self._shadow = shadow
 
     def __repr__(self):
         "incomplete, but better than nothing"
@@ -480,6 +486,8 @@ class Table(Flowable):
         if not V: return 0,0
         aW = w - s.leftPadding - s.rightPadding
         aH = aH - s.topPadding - s.bottomPadding
+        if aW<0:
+            raise ValueError(f'{self.identity()}: flowable given negative availWidth={aW} == width={w} - leftPadding={s.leftPadding} - rightPadding={s.rightPadding}')
         t = 0
         w = 0
         canv = getattr(self,'canv',None)
@@ -929,7 +937,7 @@ class Table(Flowable):
                 #transfer percentages to the defined cols
                 d = []
                 for colNo, w in minimums.items():
-                    if w.endswith('%'):
+                    if isinstance(w,str) and w.endswith('%'):
                         W[colNo] = w = availWidth*float(w[:-1])/percentTotal
                         totalDefined += w
                         d.append(colNo)
@@ -1439,6 +1447,10 @@ only rows may be strings with values in {_SPECIALROWS!r}''')
             if er>=n: er -= n
             self._addCommand((c[0],)+((sc, sr), (ec, er))+tuple(c[3:]))
 
+    def _getPossibleHeight(self,default):
+        f = getattr(self,'_frame',None)
+        return default if f is None else f._height - f._topPadding - f._bottomPadding
+
     def _splitCell(self, value, style, oldHeight, newHeight, width):
         # Content height of the new top row
         height0 = newHeight - style.topPadding
@@ -1448,50 +1460,50 @@ only rows may be strings with values in {_SPECIALROWS!r}''')
         if isinstance(value, (tuple, list)):
             newCellContent = []
             postponedContent = []
-            split = False
-            cellHeight = self._listCellGeom(value, width, style)[1]
+            flowable_split_attempted = False
+            FH = []
+            cellHeight = self._listCellGeom(value, width, style,H=FH)[1]
 
             if style.valign == "MIDDLE":
                 usedHeight = (oldHeight - cellHeight) / 2
             else:
                 usedHeight = 0
 
-            for flowable in value:
-                if split:
-                    if flowable.height <= height1:
-                        postponedContent.append(flowable)
-                        # Shrink the available height:
-                        height1 -= flowable.height
-                    else:
-                        # The content doesn't fit after the split:
-                        return []
-                elif usedHeight + flowable.height <= height0:
+            for flowable,_fh in zip(value,FH):
+                flowable_height = getattr(flowable,'height',_fh)
+                if flowable_split_attempted:
+                    # the flowable split may have failed, but we made some progress,
+                    # so postpone everything else and hope it can be split/wrapped later on
+                    postponedContent.append(flowable)
+                elif usedHeight + flowable_height + flowable.getSpaceBefore() <= height0:
                     newCellContent.append(flowable)
-                    usedHeight += flowable.height
+                    usedHeight += flowable_height + flowable.getSpaceBefore() + flowable.getSpaceAfter()
                 else:
                     # This is where we need to split
-                    splits = flowable.split(width, height0-usedHeight)
-                    if splits:
-                        newCellContent.append(splits[0])
-                        postponedContent.append(splits[1])
+                    splitHeight = height0-usedHeight-flowable.getSpaceBefore()
+                    splits = None
+                    if hasattr(flowable,'_findSplit'):
+                        _w,_H, S0, S1 = flowable._findSplit(getattr(self,'canv',None),width,splitHeight,mergeSpace=1,obj=None,content=None,paraFix=True)
+                        if S0 and S1:
+                            splits = S0
+                            newCellContent.extend(S0)
+                            postponedContent.extend(S1)
                     else:
-                        # We couldn't split this flowable at the desired
-                        # point. If we already has added previous paragraphs
-                        # to the content, just add everything after the split.
-                        # Also try adding it after the split if valign isn't TOP
-                        if newCellContent or style.valign != "TOP":
-                            if flowable.height <= height1:
-                                postponedContent.append(flowable)
-                                # Shrink the available height:
-                                height1 -= flowable.height
-                            else:
-                                # The content doesn't fit after the split:
-                                return []
-                        else:
-                            # We could not split this, so we fail:
+                        splits = flowable.split(width, splitHeight)
+                        if splits:
+                            newCellContent.append(splits[0])
+                            postponedContent.append(splits[1])
+                    if not splits:
+                        # We couldn't split this flowable at the desired point
+                        if (not newCellContent) and style.valign == "TOP":
+                            # This is the first flowable in the cell, and the cell
+                            # is top-aligned - since splitting the flowable failed,
+                            # splitting the cell has failed.
                             return []
 
-                    split = True
+                        # postpone this flowable, and hope we can wrap/split later
+                        postponedContent.append(flowable)
+                    flowable_split_attempted = True
 
             return (tuple(newCellContent), tuple(postponedContent))
 
@@ -2007,6 +2019,7 @@ only rows may be strings with values in {_SPECIALROWS!r}''')
                 longTableOptimize=self._longTableOptimize,
                 cornerRadii=getattr(self,'_cornerRadii',None),
                 renderCB=getattr(self,'_renderCB',None),
+                shadow=getattr(self,'_shadow',None),
                 )
 
             T._linecmds = self._stretchCommands(n, self._linecmds, lim)
@@ -2028,6 +2041,7 @@ only rows may be strings with values in {_SPECIALROWS!r}''')
 
         cornerRadii = getattr(self,'_cornerRadii',None)
         renderCB = getattr(self,'_renderCB',None)
+        shadow=getattr(self,'_shadow',None)
         R0 = self.__class__( data[:n], colWidths=T._colWidths, rowHeights=splitH[:n],
                 repeatRows=repeatRows, repeatCols=repeatCols, splitByRow=self.splitByRow,
                 splitInRow=self.splitInRow, normalizedData=1, cellStyles=T._cellStyles[:n],
@@ -2036,6 +2050,7 @@ only rows may be strings with values in {_SPECIALROWS!r}''')
                 longTableOptimize=lto,
                 cornerRadii=cornerRadii[:2] if cornerRadii else None,
                 renderCB=renderCB,
+                shadow=shadow,
                 )
 
         nrows = T._nrows
@@ -2078,6 +2093,7 @@ only rows may be strings with values in {_SPECIALROWS!r}''')
                     longTableOptimize=lto,
                     cornerRadii = cornerRadii,
                     renderCB = renderCB,
+                    shadow=shadow,
                     )
             R1._cr_1_1(n,nrows,repeatRows,_linecmds,doInRowSplit)
             R1._cr_1_1(n,nrows,repeatRows,T._bkgrndcmds,doInRowSplit,_srflMode=True)
@@ -2094,6 +2110,7 @@ only rows may be strings with values in {_SPECIALROWS!r}''')
                     longTableOptimize=lto,
                     cornerRadii = ([0,0] + cornerRadii[2:]) if cornerRadii else None,
                     renderCB = renderCB,
+                    shadow=shadow,
                     )
 
             R1._cr_1_0(n,_linecmds,doInRowSplit)
@@ -2167,7 +2184,40 @@ only rows may be strings with values in {_SPECIALROWS!r}''')
         # We can't split this table in any way, raise an error:
         return []
 
-    def _makeRoundedCornersClip(self, FUZZ=rl_config._FUZZ):
+    def _makeShadow1(self):
+        dx, dy, sc0, sc1, nshades = self._shadow
+        sc0 = colors.toColor(sc0)
+        sc1 = colors.toColor(sc1)
+        c = self.canv
+        dwf = 1/(nshades+0.5)
+        ddx = dx/nshades
+        ddy = dy/nshades
+        wf = 0
+        for i in reversed(range(1,nshades+1)):
+            c.saveState()
+            c.translate(i*ddx,i*ddy)
+            c.setFillColor(colors.linearlyInterpolatedColor(sc1, sc0, 0, 1, wf))
+            self._makeRoundedCornersClip(clip=False, fill=1)
+            wf += dwf
+            c.restoreState()
+        c.saveState()
+        x0, y0, w, h, *_ = self._roundingRectDef
+        c.setFillColor(colors.white)
+        self._makeRoundedCornersClip(clip=False, fill=1)
+        c.restoreState()
+
+    def _makeShadow(self):
+        if not self._shadow: return
+        if getattr(self,'_cornerRadii',None) is None:
+            try:
+                self._cornerRadii = 0.01,0.01,0.01,0.01
+                self._makeShadow1()
+            finally:
+                self._cornerRadii = None
+        else:
+            self._makeShadow1()
+
+    def _makeRoundedCornersClip(self, FUZZ=rl_config._FUZZ, clip=True, stroke=0, fill=0, deltas=(0,0,0,0)):
         self._roundingRectDef = None
         cornerRadii = getattr(self,'_cornerRadii',None)
         if not cornerRadii or max(cornerRadii)<=FUZZ: return
@@ -2183,19 +2233,22 @@ only rows may be strings with values in {_SPECIALROWS!r}''')
         rp = self._rowpositions
         cp = self._colpositions
 
-        x0 = cp[0]
-        y0 = rp[nrows]
-        x1 = cp[ncols]
-        y1 = rp[0]
+        x0 = cp[0] + deltas[0]
+        y0 = rp[nrows] + deltas[1]
+        x1 = cp[ncols] + deltas[2]
+        y1 = rp[0] + deltas[3]
         w = x1 - x0
         h = y1 - y0
         self._roundingRectDef = RoundingRectDef(x0, y0, w, h, x1, y1, ar, [])
-        P = self.canv.beginPath()
-        P.roundRect(x0, y0, w, h, ar)
         c = self.canv
-        c.addLiteral('%begin table rect clip')
-        c.clipPath(P,stroke=0)
-        c.addLiteral('%end table rect clip')
+        P = c.beginPath()
+        P.roundRect(x0, y0, w, h, ar)
+        if clip:
+            c.addLiteral('%begin table rect clip')
+            c.clipPath(P,stroke=stroke)
+            c.addLiteral('%end table rect clip')
+        else:
+            c.drawPath(P,stroke=stroke,fill=fill)
 
     def _restoreRoundingObscuredLines(self):
         x0, y0, w, h, x1, y1, ar, SL = self._roundingRectDef
@@ -2282,6 +2335,7 @@ only rows may be strings with values in {_SPECIALROWS!r}''')
         if renderCB:
             renderCB(self,'startTable')
             renderCB(self,'startBG')
+        self._makeShadow()
         self._makeRoundedCornersClip()
         self._drawBkgrnd()
         if renderCB: renderCB(self,'endBG')
@@ -2542,9 +2596,19 @@ only rows may be strings with values in {_SPECIALROWS!r}''')
             else:
                 raise ValueError(f'Bad valign: {valign!a}')
 
-            for v in vals:
-                draw(x, y, v)
-                y -= leading
+            drawKwds = {}
+            direction = cellstyle.direction
+            if direction: drawKwds['direction'] = direction
+            shaping = cellstyle.shaping
+            if shaping: drawKwds['shaping'] = shaping
+            if drawKwds:
+                for v in vals:
+                    draw(x, y, v, **drawKwds)
+                    y -= leading
+            else:
+                for v in vals:
+                    draw(x, y, v)
+                    y -= leading
             onDraw = getattr(cellval,'onDraw',None)
             if onDraw:
                 onDraw(self.canv,cellval.kind,cellval.label)
@@ -2646,6 +2710,10 @@ def _setCellStyle(cellStyles, i, j, op, values):
         new.href = values[0]
     elif op == 'DESTINATION':
         new.destination = values[0]
+    elif op == 'DIRECTION':
+        new.direction = values[0]
+    elif op == 'SHAPING':
+        new.shaping = values[0]
 
 GRID_STYLE = TableStyle(
     [('GRID', (0,0), (-1,-1), 0.25, colors.black),

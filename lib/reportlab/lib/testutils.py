@@ -14,8 +14,12 @@ nothing more than "reportlab.whatever..."
 
 import sys, os, fnmatch, re, functools
 from configparser import ConfigParser
-import unittest
+import unittest, random
 from reportlab.lib.utils import isCompactDistro, __rl_loader__, rl_isdir, asUnicode
+from reportlab.rl_config import invariant as rl_invariant
+
+def invariantSeed(n):
+    if rl_invariant: random.seed(n)
 
 def haveRenderPM():
     from reportlab.graphics.renderPM import _getPMBackend, RenderPMError
@@ -23,6 +27,16 @@ def haveRenderPM():
         return _getPMBackend()
     except RenderPMError:
         return False
+
+DEJAVUSANS = ('DejaVuSans','DejaVuSans-Bold','DejaVuSans-Oblique','DejaVuSans-BoldOblique')
+def haveDejaVu():
+    from reportlab.pdfbase.ttfonts import TTFont
+    for x in DEJAVUSANS:
+        try:
+            TTFont(x,x+'.ttf')
+        except:
+            return False
+    return True
 
 # Helper functions.
 def isWritable(D):

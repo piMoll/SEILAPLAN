@@ -55,7 +55,7 @@ def isNative(v):
 _rl_NoneType=type(None)
 strTypes = (str,bytes)
 def _digester(s):
-    return md5(s if isBytes(s) else s.encode('utf8')).hexdigest()
+    return md5(s if isBytes(s) else s.encode('utf8'),usedforsecurity=False).hexdigest()
 
 def asBytes(v,enc='utf8'):
     if isinstance(v,bytes): return v
@@ -116,10 +116,10 @@ def bytestr(x,enc='utf8'):
         return str(x).encode(enc)
 
 def encode_label(args):
-    return base64_encodebytes(pickle.dumps(args)).strip().decode('latin1')
+    return base64_encodebytes(ascii(args).encode('ascii')).strip().decode('ascii')
 
 def decode_label(label):
-    return pickle.loads(base64_decodebytes(label.encode('latin1')))
+    return literal_eval(base64_decodebytes(label.encode('ascii')).decode('ascii'))
 
 def rawUnicode(s):
     '''converts first 256 unicodes 1-1'''
@@ -471,9 +471,11 @@ def open_for_read_by_name(name,mode='b'):
         return BytesIO(s)
 
 from urllib.parse import unquote, urlparse
-from urllib.request import urlopen
-def rlUrlRead(name):
-    return urlopen(name).read()
+from urllib.request import urlopen, Request
+def rlUrlRead(name, headers=None):
+    if headers==None: headers = {}
+    headers.setdefault('User-Agent','ReportLabAgent')
+    return urlopen(Request(name,headers=headers)).read()
 
 def open_for_read(name,mode='b'):
     #auto initialized function`
@@ -1328,14 +1330,28 @@ def yieldNoneSplits(L):
             yield L[i:]
             break
 
-class _rl_repr:
-    hide = True
-    @staticmethod
-    def __call__(obj):
-        klass = obj.__class__
-        return (f'<{klass.__module__}.{klass.__name__} object at 0x?hidden?>' if _rl_repr.hide
-                else super(klass,obj).__repr__())
-_rl_repr = _rl_repr()
-
 def _rl_docdent(s):
     return '\n'.join((_.lstrip() for _ in s.split('\n')))
+
+class KlassStore:
+    def __init__(self,lim=127):
+        self.lim = lim
+        self.store = {}
+
+    def add(self,k,v):
+        if not (isinstance(k,str) and isinstance(v,type)):
+            raise ValueError(f'{self.__class__.__name__}.add takes (str,type) arguments not ({type(k),type(v)})') 
+        store = self.store
+        store[k] = v
+        if len(store)>=self.lim:
+            for _ in list(store.keys())[:-self.lim]:
+                del store[_]
+
+    def __contains__(self,k):
+        return k in self.store
+
+    def __getitem__(self,k):
+        return self.store[k]
+
+    def get(self,k,default=None):
+        return self.store.get(k,default)
