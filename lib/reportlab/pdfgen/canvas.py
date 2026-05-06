@@ -12,19 +12,29 @@ __all__ = [
         ]
 ENABLE_TRACKING = 1 # turn this off to do profile testing w/o tracking
 
-import re
 import hashlib
+from math import cos, pi, sin, tan
+import re
 from string import digits
-from math import sin, cos, tan, pi
+
 from reportlab import rl_config
-from reportlab.pdfbase import pdfdoc
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfgen  import pathobject
-from reportlab.pdfgen.textobject import PDFTextObject, _PDFColorSetter
-from reportlab.lib.colors import black, _chooseEnforceColorSpace, Color, CMYKColor, toColor
-from reportlab.lib.utils import ImageReader, isSeq, isStr, isUnicode, _digester, asUnicode
-from reportlab.lib.rl_accel import fp_str, escapePDF
 from reportlab.lib.boxstuff import aspectRatioFix
+from reportlab.lib.colors import (
+    _chooseEnforceColorSpace,
+    black,
+    CMYKColor,
+    Color,
+    toColor
+)
+from reportlab.lib.rl_accel import escapePDF, fp_str
+from reportlab.lib.utils import _digester, ImageReader, isSeq, isStr, isUnicode
+from reportlab.pdfbase import pdfdoc, pdfmetrics
+from reportlab.pdfgen import pathobject
+from reportlab.pdfgen.textobject import (
+    _PDFColorSetter,
+    bidiShapedText,
+    PDFTextObject
+)
 
 digitPat = re.compile(r'\d')  #used in decimal alignment
 
@@ -367,6 +377,7 @@ class Canvas(_PDFColorSetter):
         self.state_stack = []
 
         self.setEncrypt(encrypt)
+        self._namedCB = {}  # named callbacks
 
     def setEncrypt(self, encrypt):
         '''
@@ -1129,9 +1140,11 @@ class Canvas(_PDFColorSetter):
         """
         #check if we've done this one already...
         if isUnicode(command):
-            rawName = 'PS' + hashlib.md5(command.encode('utf-8')).hexdigest()
+            rawName = 'PS' + hashlib.md5(command.encode('utf-8'),
+                                         usedforsecurity=False).hexdigest()
         else:
-            rawName = 'PS' + hashlib.md5(command).hexdigest()
+            rawName = 'PS' + hashlib.md5(command,
+                                         usedforsecurity=False).hexdigest()
         regName = self._doc.getXObjectName(rawName)
         psObj = self._doc.idToObject.get(regName, None)
         if not psObj:
@@ -1606,10 +1619,12 @@ class Canvas(_PDFColorSetter):
         # The methods below are a high-level convenience.
         # use PDFTextObject for multi-line text.
         ##################################################
-
-    def drawString(self, x, y, text, mode=None, charSpace=0, direction=None, wordSpace=None):
+    
+    def drawString(self, x, y, text, mode=None, charSpace=0, direction=None,
+                   wordSpace=None, shaping=False):
         """Draws a string in the current text styles."""
-        text = asUnicode(text)
+        text, width = bidiShapedText(text, direction, fontName=self._fontname,
+                                     fontSize=self._fontsize, shaping=shaping)
         #we could inline this for speed if needed
         t = self.beginText(x, y, direction=direction)
         if mode is not None: t.setTextRenderMode(mode)
@@ -1620,15 +1635,15 @@ class Canvas(_PDFColorSetter):
         if wordSpace: t.setWordSpace(0)
         if mode is not None: t.setTextRenderMode(0)
         self.drawText(t)
-
-    def drawRightString(self, x, y, text, mode=None, charSpace=0, direction=None, wordSpace=None):
+    
+    def drawRightString(self, x, y, text, mode=None, charSpace=0,
+                        direction=None, wordSpace=None, shaping=False):
         """Draws a string right-aligned with the x coordinate"""
-        if not isinstance(text, str):
-            text = text.decode('utf-8')
-        width = self.stringWidth(text, self._fontname, self._fontsize)
+        text, width = bidiShapedText(text, direction, fontName=self._fontname,
+                                     fontSize=self._fontsize, shaping=shaping)
         if charSpace: width += (len(text)-1)*charSpace
         if wordSpace: width += (text.count(u' ')+text.count(u'\xa0')-1)*wordSpace
-        t = self.beginText(x - width, y, direction=direction)
+        t = self.beginText(x - width, y)
         if mode is not None: t.setTextRenderMode(mode)
         if charSpace: t.setCharSpace(charSpace)
         if wordSpace: t.setWordSpace(wordSpace)
@@ -1637,17 +1652,17 @@ class Canvas(_PDFColorSetter):
         if wordSpace: t.setWordSpace(0)
         if mode is not None: t.setTextRenderMode(0)
         self.drawText(t)
-
-    def drawCentredString(self, x, y, text, mode=None, charSpace=0, direction=None, wordSpace=None):
+    
+    def drawCentredString(self, x, y, text, mode=None, charSpace=0,
+                          direction=None, wordSpace=None, shaping=False):
         """Draws a string centred on the x coordinate. 
         
         We're British, dammit, and proud of our spelling!"""
-        if not isinstance(text, str):
-            text = text.decode('utf-8')
-        width = self.stringWidth(text, self._fontname, self._fontsize)
+        text, width = bidiShapedText(text, direction, fontName=self._fontname,
+                                     fontSize=self._fontsize, shaping=shaping)
         if charSpace: width += (len(text)-1)*charSpace
         if wordSpace: width += (text.count(u' ')+text.count(u'\xa0')-1)*wordSpace
-        t = self.beginText(x - 0.5*width, y, direction=direction)
+        t = self.beginText(x - 0.5 * width, y)
         if mode is not None: t.setTextRenderMode(mode)
         if charSpace: t.setCharSpace(charSpace)
         if wordSpace: t.setWordSpace(wordSpace)
@@ -1656,8 +1671,10 @@ class Canvas(_PDFColorSetter):
         if wordSpace: t.setWordSpace(0)
         if mode is not None: t.setTextRenderMode(0)
         self.drawText(t)
-
-    def drawAlignedString(self, x, y, text, pivotChar=rl_config.decimalSymbol, mode=None, charSpace=0, direction=None, wordSpace=None):
+    
+    def drawAlignedString(self, x, y, text, pivotChar=rl_config.decimalSymbol,
+                          mode=None, charSpace=0, direction=None,
+                          wordSpace=None, shaping=False):
         """Draws a string aligned on the first '.' (or other pivot character).
 
         The centre position of the pivot character will be used as x.
@@ -1699,19 +1716,23 @@ class Canvas(_PDFColorSetter):
                 leftText = leftText[0:-1]
 
             self.drawRightString(x-0.5*pivW, y, leftText, mode=mode, charSpace=charSpace,
-                    direction=direction, wordSpace=wordSpace)
+                                 direction=direction, wordSpace=wordSpace,
+                                 shaping=shaping)
             self.drawString(x-0.5*pivW, y, rightText, mode=mode, charSpace=charSpace,
-                    direction=direction, wordSpace=wordSpace)
+                            direction=direction, wordSpace=wordSpace,
+                            shaping=shaping)
 
         else:
             #normal case
             leftText = parts[0]
             self.drawRightString(x-0.5*pivW, y, leftText, mode=mode, charSpace=charSpace,
-                    direction=direction, wordSpace=wordSpace)
+                                 direction=direction, wordSpace=wordSpace,
+                                 shaping=shaping)
             if len(parts) > 1:
                 rightText = pivotChar + parts[1]
                 self.drawString(x-0.5*pivW, y, rightText, mode=mode, charSpace=charSpace,
-                        direction=direction, wordSpace=wordSpace)
+                                direction=direction, wordSpace=wordSpace,
+                                shaping=shaping)
 
     def getAvailableFonts(self):
         """Returns the list of PostScript font names available.
@@ -2011,6 +2032,12 @@ class Canvas(_PDFColorSetter):
             if da: self.setDash(da)
         self.rect(x1,y1,width,height)
         if ss: self.restoreState()
+    
+    def setNamedCB(self, name, cb):
+        self._namedCB[name] = cb
+    
+    def getNamedCB(self, name):
+        return self._namedCB.get(name, None)
 
 if __name__ == '__main__':
     print('For test scripts, look in tests')
