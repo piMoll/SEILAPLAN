@@ -1,5 +1,18 @@
 # build
 
+### 0. Do security check
+See: https://plugins.qgis.org/docs/security-scanning
+
+```shell
+# Install the security tools
+pip install bandit detect-secrets flake8
+
+# Run checks on your plugin directory
+bandit -r your_plugin_directory/
+detect-secrets scan your_plugin_directory/
+flake8 your_plugin_directory/
+```
+
 ### 1. Update changelog
 
 ### 2. Change version information --> Version format: x.y.z
