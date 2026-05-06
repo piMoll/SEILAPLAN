@@ -25,10 +25,14 @@ import numpy as np
 from qgis.PyQt.QtCore import QCoreApplication, QSize, Qt, QT_VERSION_STR
 from qgis.PyQt.QtWidgets import QSizePolicy
 
-if QT_VERSION_STR.startswith('5'):
-    from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+if QT_VERSION_STR.startswith("5"):
+    from matplotlib.backends.backend_qt5agg import (
+        FigureCanvasQTAgg as FigureCanvas,
+    )
 else:
-    from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
+    from matplotlib.backends.backend_qtagg import (
+        FigureCanvasQTAgg as FigureCanvas,
+    )
 from matplotlib.figure import Figure
 from matplotlib.collections import LineCollection
 
@@ -38,25 +42,24 @@ from SEILAPLAN.utils.misc import is_dark_mode
 
 
 class ProfilePlot(FigureCanvas):
-    
+
     def __init__(self, parent=None, width=10, height=4, dpi=72):
         self.win = parent
-        background_color = '#7a7a7a' if is_dark_mode() else '#efefef'
-        self.fig = Figure(figsize=(width, height), dpi=dpi,
-                          facecolor=background_color)
+        background_color = "#7a7a7a" if is_dark_mode() else "#efefef"
+        self.fig = Figure(figsize=(width, height), dpi=dpi, facecolor=background_color)
         self.axes = self.fig.add_subplot(111)
         self.axes.set_facecolor(background_color)
-        
+
         FigureCanvas.__init__(self, self.fig)
         self.setParent(parent)
-        
+
         self.linePoints = []
         self.line_exists = False
         self.profile = None
         self.labelScale = None
         # Reference to toolbar
         self.tbar = None
-        
+
         # Mouse position
         self.x_data = None
         self.y_data = None
@@ -71,20 +74,21 @@ class ProfilePlot(FigureCanvas):
         self.evtPressPole = None
         self.evtMoveSection = None
         self.evtPressSection = None
-        
+
         # Enable zoom with scroll wheel
         zoomFunc = zoom_with_wheel(self, self.axes, zoomScale=1.3)
-        
-        self.axes.set_aspect('equal', 'datalim')
+
+        self.axes.set_aspect("equal", "datalim")
         self.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
-        FigureCanvas.setSizePolicy(self, QSizePolicy.Policy.Expanding,
-                                   QSizePolicy.Policy.Expanding)
+        FigureCanvas.setSizePolicy(
+            self, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
+        )
         self.setMinimumSize(QSize(600, 400))
         FigureCanvas.updateGeometry(self)
-        
+
         # Fit plot tightly into window
         self.fig.tight_layout(pad=0.2, w_pad=0.1, h_pad=0.1)
-        
+
     def plotData(self, plotData):
         """
         :type plotData: tool.profile.Profile
@@ -92,7 +96,7 @@ class ProfilePlot(FigureCanvas):
         self.axes.clear()
         self.__setupAxes()
         self.profile = plotData
-        
+
         # Set plot extent
         xmin = np.min(self.profile.di_disp)
         ymin = np.min(self.profile.zi_disp)
@@ -102,74 +106,110 @@ class ProfilePlot(FigureCanvas):
         # Data point of profile
         self.x_data = self.profile.di
         self.y_data = self.profile.zi
-    
+
         # Add plot data (whole profile)
         pltSegs = np.column_stack([self.profile.di_disp, self.profile.zi_disp])
         pltSegs = tuple(map(tuple, pltSegs))
-        lineColl = LineCollection([pltSegs], linewidths=1.5, colors='#004f03')
+        lineColl = LineCollection([pltSegs], linewidths=1.5, colors="#004f03")
         self.axes.add_collection(lineColl)
         # Add profile section between A and E
         pltSegsAE = np.column_stack([self.x_data, self.y_data])
         pltSegsAE = tuple(map(tuple, pltSegsAE))
-        lineCollAE = LineCollection([pltSegsAE], linewidths=2.5, picker=True,
-                                  colors=PROFILE_COLOR, label='LBL')
+        lineCollAE = LineCollection(
+            [pltSegsAE],
+            linewidths=2.5,
+            picker=True,
+            colors=PROFILE_COLOR,
+            label="LBL",
+        )
         self.axes.add_collection(lineCollAE)
 
         # Draw start and end
-        self.axes.scatter(self.x_data[[0, -1]], self.y_data[[0, -1]],
-                          zorder=100, c=POLE_COLOR, s=80, marker='o')
+        self.axes.scatter(
+            self.x_data[[0, -1]],
+            self.y_data[[0, -1]],
+            zorder=100,
+            c=POLE_COLOR,
+            s=80,
+            marker="o",
+        )
         # Label
-        self.axes.text(self.x_data[0], self.y_data[0] + self.labelScale,
-                       'A', ha='center', va='bottom', fontsize=12)
-        self.axes.text(self.x_data[-1], self.y_data[-1] + self.labelScale,
-                       'E', ha='center', va='bottom', fontsize=12)
-        
+        self.axes.text(
+            self.x_data[0],
+            self.y_data[0] + self.labelScale,
+            "A",
+            ha="center",
+            va="bottom",
+            fontsize=12,
+        )
+        self.axes.text(
+            self.x_data[-1],
+            self.y_data[-1] + self.labelScale,
+            "E",
+            ha="center",
+            va="bottom",
+            fontsize=12,
+        )
+
         if self.profile.surveyPnts is not None:
             # Add markers for survey points
-            for pointX, pointY, idx, notes in zip(self.profile.surveyPnts['d'],
-                                                  self.profile.surveyPnts['z'],
-                                                  self.profile.surveyPnts['nr'],
-                                                  self.profile.surveyPnts['notes']):
-                self.axes.plot([pointX, pointX],
-                               [pointY, pointY - 5 * self.labelScale],
-                               color='green', linewidth=1.5)
+            for pointX, pointY, idx, notes in zip(
+                self.profile.surveyPnts["d"],
+                self.profile.surveyPnts["z"],
+                self.profile.surveyPnts["nr"],
+                self.profile.surveyPnts["notes"],
+            ):
+                self.axes.plot(
+                    [pointX, pointX],
+                    [pointY, pointY - 5 * self.labelScale],
+                    color="green",
+                    linewidth=1.5,
+                )
                 labelText = f"{idx}"
                 rot = 0
-                ha = 'center'
-                va = 'top'
+                ha = "center"
+                va = "top"
                 if notes:
                     labelText = f"{idx}{':' if notes else ''} {notes if len(notes) <= 25 else notes[:22] + '...'}"
                     # For less placement issues, labels are rotated 45°
                     rot = 55
-                    ha = 'right'
-                    va = 'center'
+                    ha = "right"
+                    va = "center"
                     # Label rotation is switched if profile line inclines
                     if self.y_data[0] < self.y_data[-1]:
                         rot = 305
-                        ha = 'left'
-                self.axes.text(pointX, pointY - 6 * self.labelScale,
-                               labelText, ha=ha, va=va, fontsize=12, color='green',
-                               rotation=rot, rotation_mode='anchor')
+                        ha = "left"
+                self.axes.text(
+                    pointX,
+                    pointY - 6 * self.labelScale,
+                    labelText,
+                    ha=ha,
+                    va=va,
+                    fontsize=12,
+                    color="green",
+                    rotation=rot,
+                    rotation_mode="anchor",
+                )
 
         # Init cursor cross position
         self.xcursor = self.x_data[floor(len(self.x_data) / 2)]
         self.ycursor = self.y_data[floor(len(self.x_data) / 2)]
-        self.lx = self.axes.axhline(lw=1.5, ls='dashed', y=self.ycursor)
-        self.ly = self.axes.axvline(lw=1.5, ls='dashed', x=self.xcursor)
+        self.lx = self.axes.axhline(lw=1.5, ls="dashed", y=self.ycursor)
+        self.ly = self.axes.axvline(lw=1.5, ls="dashed", x=self.xcursor)
         self.ly.set_visible(False)
         self.lx.set_visible(False)
-        
+
         self.axes.set_xlim(xmin - 2 * self.labelScale, xmax + 2 * self.labelScale)
         self.axes.set_ylim(ymin - 2 * self.labelScale, ymax + 2 * self.labelScale)
-        
+
         self.draw()
         # Set new plot extent as home extent (for home button)
         self.tbar.update()
         self.tbar.push_current()
 
     def acitvateCrosshairPole(self):
-        self.evtMovePole = self.mpl_connect('motion_notify_event', self.onMouseMoveP)
-        self.evtPressPole = self.mpl_connect('button_press_event', self.onMousePressP)
+        self.evtMovePole = self.mpl_connect("motion_notify_event", self.onMouseMoveP)
+        self.evtPressPole = self.mpl_connect("button_press_event", self.onMousePressP)
         self.ly.set_color(POLE_COLOR)
         self.lx.set_color(POLE_COLOR)
         self.ly.set_visible(True)
@@ -213,8 +253,7 @@ class ProfilePlot(FigureCanvas):
         self.win.addPole(posX, None)
 
     def createPoint(self, posX, posY):
-        scat = self.axes.scatter(posX, posY, zorder=100, c=POLE_COLOR, s=80,
-                                 marker='s')
+        scat = self.axes.scatter(posX, posY, zorder=100, c=POLE_COLOR, s=80, marker="s")
         self.draw()
         return scat
 
@@ -223,9 +262,11 @@ class ProfilePlot(FigureCanvas):
         self.draw()
 
     def activateCrosshairSection(self):
-        """ Cursor cross for defining sections without supports."""
-        self.evtMoveSection = self.mpl_connect('motion_notify_event', self.onMouseMoveS)
-        self.evtPressSection = self.mpl_connect('button_press_event', self.onMousePressS)
+        """Cursor cross for defining sections without supports."""
+        self.evtMoveSection = self.mpl_connect("motion_notify_event", self.onMouseMoveS)
+        self.evtPressSection = self.mpl_connect(
+            "button_press_event", self.onMousePressS
+        )
         self.ly.set_color(SECTION_COLOR)
         self.lx.set_color(SECTION_COLOR)
         self.win.activateMapCursor(1, SECTION_COLOR)
@@ -282,36 +323,53 @@ class ProfilePlot(FigureCanvas):
             self.win.finishLine(x)
             self.deactivateCrosshairSection()
         self.draw()
-    
+
     def drawSection(self, x, y):
         self.linePoints.append([x, y])
-        self.axes.vlines(x, y - self.labelScale, y + self.labelScale, lw=2,
-                         color=SECTION_COLOR)
+        self.axes.vlines(
+            x,
+            y - self.labelScale,
+            y + self.labelScale,
+            lw=2,
+            color=SECTION_COLOR,
+        )
         if len(self.linePoints) == 2:
             idxA = np.argmax(self.x_data >= self.linePoints[0][0])
             idxE = np.argmax(self.x_data > self.linePoints[1][0])
-            self.axes.plot(self.x_data[idxA:idxE], self.y_data[idxA:idxE],
-                           linewidth=2, color=SECTION_COLOR)
+            self.axes.plot(
+                self.x_data[idxA:idxE],
+                self.y_data[idxA:idxE],
+                linewidth=2,
+                color=SECTION_COLOR,
+            )
             self.linePoints = []
 
     def __setupAxes(self):
         self.axes.set_xlabel(self.tr("Horizontaldistanz [m]"), fontsize=11)
         self.axes.set_ylabel(self.tr("Hoehe [m.ue.M]"), fontsize=11)
-        grid_color = '#636363' if is_dark_mode() else '#c7c7c7'
-        self.axes.grid(which='major', color=grid_color, lw=1)
-        self.axes.grid(which='minor', color=grid_color, lw=1, linestyle=':')
-        self.axes.ticklabel_format(style='plain', useOffset=False)
-        self.axes.tick_params(axis="both", which="major", length=5, width=1,
-                              bottom=True, top=False, left=True, right=False)
+        grid_color = "#636363" if is_dark_mode() else "#c7c7c7"
+        self.axes.grid(which="major", color=grid_color, lw=1)
+        self.axes.grid(which="minor", color=grid_color, lw=1, linestyle=":")
+        self.axes.ticklabel_format(style="plain", useOffset=False)
+        self.axes.tick_params(
+            axis="both",
+            which="major",
+            length=5,
+            width=1,
+            bottom=True,
+            top=False,
+            left=True,
+            right=False,
+        )
         self.axes.tick_params(axis="both", which="both", direction="in")
         self.axes.minorticks_on()
-    
+
     def setToolbar(self, tbar):
         self.tbar = tbar
-    
+
     def reset(self):
         self.axes.clear()
-    
+
     def tr(self, message, **kwargs):
         """Get the translation for a string using Qt translation API.
         We implement this ourselves since we do not inherit QObject.

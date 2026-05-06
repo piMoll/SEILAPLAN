@@ -22,6 +22,7 @@
  https://github.com/eliben/code-for-blog/blob/master/2009/qt_mpl_bars.py
  http://www.technicaljar.com/?p=688
 """
+
 from math import floor
 
 import numpy as np
@@ -38,7 +39,7 @@ from qgis.PyQt.QtWidgets import (
     QSizePolicy,
     QSpacerItem,
     QVBoxLayout,
-    QWidget
+    QWidget,
 )
 
 from .guiHelperFunctions import getAbsoluteIconPath
@@ -57,9 +58,9 @@ class ProfileDialog(QDialog):
         self.iface = interface
         self.projectHandler = projectHandler
         self.drawTool = drawTool
-        self.setWindowTitle(self.tr('Gelaendelinie'))
+        self.setWindowTitle(self.tr("Gelaendelinie"))
         self.setWindowModality(Qt.WindowModality.WindowModal)
-        
+
         self.profile = None
         # Array with properties fixed poles
         self.poleData = []
@@ -84,38 +85,48 @@ class ProfileDialog(QDialog):
         self.layout = QGridLayout()
 
         # GUI fields
-        stueTitle = QLabel('<b>' + self.tr('Stuetzenoptimierung einschraenken') + '</b>')
+        stueTitle = QLabel(
+            "<b>" + self.tr("Stuetzenoptimierung einschraenken") + "</b>"
+        )
         hbox = QHBoxLayout()
         line1 = QFrame()
         line1.setFrameShape(QFrame.Shape.HLine)
         line1.setFrameShadow(QFrame.Shadow.Sunken)
 
         # Create labels and buttons
-        self.fixStueAdd = QPushButton(self.tr('Fixe Stuetze definieren'))
-        self.noStueAdd = QPushButton(self.tr('Abschnitt ohne Stuetzen definieren'))
+        self.fixStueAdd = QPushButton(self.tr("Fixe Stuetze definieren"))
+        self.noStueAdd = QPushButton(self.tr("Abschnitt ohne Stuetzen definieren"))
         self.noStueDel = QPushButton()
         icon = QIcon()
-        icon.addPixmap(QPixmap(getAbsoluteIconPath('icon_bin.png')),
-                       QIcon.Mode.Normal, QIcon.State.Off)
+        icon.addPixmap(
+            QPixmap(getAbsoluteIconPath("icon_bin.png")),
+            QIcon.Mode.Normal,
+            QIcon.State.Off,
+        )
         self.noStueDel.setIcon(icon)
         self.noStueDel.setIconSize(QSize(16, 16))
-        self.fixStueAdd.setToolTip(self.tr('Tooltip Fixe Stuetzen'))
-        self.noStueAdd.setToolTip(self.tr('Tooltip Abschnitte ohne Stuetzen'))
-        self.noStueDel.setToolTip(self.tr('Tooltip Abschnitte loeschen'))
-        spacerItem1 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding,
-                                        QSizePolicy.Policy.Minimum)
+        self.fixStueAdd.setToolTip(self.tr("Tooltip Fixe Stuetzen"))
+        self.noStueAdd.setToolTip(self.tr("Tooltip Abschnitte ohne Stuetzen"))
+        self.noStueDel.setToolTip(self.tr("Tooltip Abschnitte loeschen"))
+        spacerItem1 = QSpacerItem(
+            40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum
+        )
         hbox.addWidget(self.fixStueAdd)
         hbox.addItem(spacerItem1)
         hbox.addWidget(self.noStueAdd)
         hbox.addWidget(self.noStueDel)
         hbox.setAlignment(self.noStueAdd, Qt.AlignmentFlag.AlignRight)
-        btnBoxSpacer = QSpacerItem(40, 40, QSizePolicy.Policy.Fixed,
-                                        QSizePolicy.Policy.Fixed)
+        btnBoxSpacer = QSpacerItem(
+            40, 40, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed
+        )
         self.buttonBox = QDialogButtonBox(main_widget)
         self.buttonBox.setStandardButtons(QDialogButtonBox.StandardButton.Ok)
         # Build up Gui
         self.container.addWidget(self.sc)
-        self.container.addWidget(tbar, alignment=Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
+        self.container.addWidget(
+            tbar,
+            alignment=Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop,
+        )
         self.container.addWidget(line1)
         self.container.addWidget(stueTitle)
         self.container.addLayout(hbox)
@@ -129,9 +140,11 @@ class ProfileDialog(QDialog):
         self.noStueDel.clicked.connect(self.deleteSections)
         self.buttonBox.accepted.connect(self.Apply)
         self.setLayout(self.container)
-        
+
         # Gui's functionality for fixed pole gui fields
-        self.poleLayout = CustomPoleWidget(self, self.layout, self.poleData, 'profileDialog')
+        self.poleLayout = CustomPoleWidget(
+            self, self.layout, self.poleData, "profileDialog"
+        )
         self.poleLayout.sig_updatePole.connect(self.updatePole)
         self.poleLayout.sig_deletePole.connect(self.deletePole)
         self.poleLayout.setInitialGui([self.profileMin, self.profileMax])
@@ -151,7 +164,7 @@ class ProfileDialog(QDialog):
         **kwargs
         """
         return QCoreApplication.translate(type(self).__name__, message)
-    
+
     def setProfile(self, profile):
         self.profile = profile
         self.xdata = self.profile.di
@@ -159,7 +172,7 @@ class ProfileDialog(QDialog):
         self.profileMax = floor(self.xdata[-1])
         # Draw profile in diagram
         self.sc.plotData(self.profile)
-    
+
     def reset(self):
         """Resets the window and remove all pole layouts. Markers do not have
         to be deleted, they are reset when new profile line is drawn. Plot
@@ -179,11 +192,17 @@ class ProfileDialog(QDialog):
         self.poleLayout.poleArr = self.poleData
         # Set the max ranges
         self.poleLayout.distRange = [self.profileMin, self.profileMax]
-        
+
         for pole in poles:
-            self.addPole(pole['d'], pole['z'], pole['h'], name=pole['name'], layoutUpdate=False)
+            self.addPole(
+                pole["d"],
+                pole["z"],
+                pole["h"],
+                name=pole["name"],
+                layoutUpdate=False,
+            )
         self.poleLayout.refresh()
-        
+
         for section in sections:
             # Draw line onto map
             self.activateMapLine(section[0])
@@ -193,77 +212,81 @@ class ProfileDialog(QDialog):
                 z = self.getZValue(x)
                 self.sc.drawSection(x, z)
         self.sc.draw()
-    
-    def addPole(self, d, z, h=None, name='', angle=False, layoutUpdate=True):
+
+    def addPole(self, d, z, h=None, name="", angle=False, layoutUpdate=True):
         """Called when user clicks onto plot window to create fixed pole.
         Function creates a new row in gui with properties of pole, creates a
         point in the plot and a marker on the map."""
         idx = 0
         for i, pole in enumerate(reversed(self.poleData)):
-            if pole['d'] <= d:
+            if pole["d"] <= d:
                 idx = len(self.poleData) - i
                 break
         if not z:
             z = self.getZValue(d)
         if not name:
-            name = self.tr('fixe Stuetze')
+            name = self.tr("fixe Stuetze")
         # Draw point on plot
         drawnPoint = self.sc.createPoint(d, z)
         # Draw marker onto map
-        self.createMapMarker(d, idx+1)
+        self.createMapMarker(d, idx + 1)
         # Save new fixed pole in list
-        self.poleData.insert(idx, {
-            'name': name,
-            'nr': idx+1,
-            'poleType': 'fixed',
-            'd': d,
-            'z': z,
-            'h': h,
-            'angle': angle,
-            'bundstelle': False,
-            'active': True,
-            'plotPoint': drawnPoint
-        })
+        self.poleData.insert(
+            idx,
+            {
+                "name": name,
+                "nr": idx + 1,
+                "poleType": "fixed",
+                "d": d,
+                "z": z,
+                "h": h,
+                "angle": angle,
+                "bundstelle": False,
+                "active": True,
+                "plotPoint": drawnPoint,
+            },
+        )
         if layoutUpdate:
             self.poleLayout.refresh()
-        
+
     def updatePole(self, idx, property_name, val):
         """Called when user manually changes distance or height values in
         LineEdits. Function updates point in plot and marker on map."""
         if self.poleData[idx][property_name] == val:
             return
-        if property_name == 'd':
+        if property_name == "d":
             # Calculate z value
-            self.poleData[idx]['z'] = self.getZValue(val)
+            self.poleData[idx]["z"] = self.getZValue(val)
             # Update in plot
-            self.sc.deletePoint(self.poleData[idx]['plotPoint'])
-            self.poleData[idx]['plotPoint'] = \
-                self.sc.createPoint(val, self.poleData[idx]['z'])
+            self.sc.deletePoint(self.poleData[idx]["plotPoint"])
+            self.poleData[idx]["plotPoint"] = self.sc.createPoint(
+                val, self.poleData[idx]["z"]
+            )
             # Update on map
             marker = self.projectHandler.transform2MapCoords(float(val))
-            self.drawTool.updateMarker(marker, idx+1)
-        
-        if property_name in ['d', 'h']:
+            self.drawTool.updateMarker(marker, idx + 1)
+
+        if property_name in ["d", "h"]:
             self.poleData[idx][property_name] = round(val, 0)
         else:
             self.poleData[idx][property_name] = val
         self.poleLayout.changeRow(idx, property_name, val)
-    
+
     def deletePole(self, idx):
         """Called when user clicks on delete button on pole row. Function
         removes point in plot, marker on map and row in gui."""
-        self.sc.deletePoint(self.poleData[idx]['plotPoint'])
-        self.drawTool.removeMarker(idx+1)
+        self.sc.deletePoint(self.poleData[idx]["plotPoint"])
+        self.drawTool.removeMarker(idx + 1)
         self.poleData.pop(idx)
         self.poleLayout.refresh()
-    
+
     def getZValue(self, dist):
         return self.zdata[np.argmax(self.xdata >= dist)]
-    
+
     def createMapMarker(self, horiDist, idx):
         point = self.projectHandler.transform2MapCoords(float(horiDist))
         self.drawTool.drawMarker(point, idx)
-        
+
     def deactivateMapCursor(self):
         self.drawTool.deactivateCursor()
 
@@ -288,18 +311,18 @@ class ProfileDialog(QDialog):
         endPoint = self.projectHandler.transform2MapCoords(horiDist)
         self.drawTool.updateSectionLine(endPoint)
         self.drawTool.deactivateCursor()
-    
+
     def deleteSections(self):
         if self.noPoleSection:
             # Redraw profile
             self.sc.plotData(self.profile)
             # Redraw markers of pole
             for pole in self.poleData:
-                pole['plotPoint'] = self.sc.createPoint(pole['d'], pole['z'])
+                pole["plotPoint"] = self.sc.createPoint(pole["d"], pole["z"])
             # Delete all sections in map
             self.drawTool.deleteSectionLines()
             self.noPoleSection = []
-    
+
     def stopActiveEdits(self):
         self.deactivateMapCursor()
         self.drawTool.clearUnfinishedLines()
@@ -309,7 +332,7 @@ class ProfileDialog(QDialog):
 
     def Apply(self):
         self.close()
-    
+
     def closeEvent(self, event):
         self.stopActiveEdits()
         self.projectHandler.setFixedPoles(self.poleData)

@@ -30,16 +30,15 @@ from qgis.PyQt.QtWidgets import (
     QPushButton,
     QSizePolicy,
     QSpacerItem,
-    QVBoxLayout
+    QVBoxLayout,
 )
 
 
 class ProgressDialog(QDialog):
-    """ Progress dialog shows progress bar for algorithm.
-    """
+    """Progress dialog shows progress bar for algorithm."""
 
     def __init__(self, parent, onCloseCallback):
-        
+
         super(ProgressDialog, self).__init__(parent)
 
         self.workerThread = None
@@ -48,12 +47,14 @@ class ProgressDialog(QDialog):
         # Control variable that gets returned in callback so parent knows how
         # to proceed when this dialog is closed
         self.continueToAdjustment = None
-        
+
         self.messageTxt = {
-            'msg_optimierung': self.tr('Berechnung der optimalen Stuetzenpositionen...'),
-            'msg_seillinie': self.tr('Berechnung der optimale Seillinie...')
+            "msg_optimierung": self.tr(
+                "Berechnung der optimalen Stuetzenpositionen..."
+            ),
+            "msg_seillinie": self.tr("Berechnung der optimale Seillinie..."),
         }
-        
+
         # Build GUI Elements
         self.setWindowTitle(self.tr("SEILAPLAN wird ausgefuehrt"))
         self.resize(500, 100)
@@ -67,19 +68,26 @@ class ProgressDialog(QDialog):
         self.resultLabel = QLabel(self)
         self.resultLabel.setMaximumWidth(500)
         self.resultLabel.setSizePolicy(
-            QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding))
+            QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding)
+        )
         self.resultLabel.setWordWrap(True)
-        spacer1 = QSpacerItem(20, 20, QSizePolicy.Policy.Fixed,
-                              QSizePolicy.Policy.Fixed)
+        spacer1 = QSpacerItem(
+            20, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed
+        )
         self.rerunButton = QPushButton(self.tr("zurueck zum Startfenster"))
         self.rerunButton.setVisible(False)
-        spacer2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding,
-                             QSizePolicy.Policy.Minimum)
+        spacer2 = QSpacerItem(
+            40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum
+        )
         self.cancelButton.setStandardButtons(QDialogButtonBox.StandardButton.Cancel)
-        self.cancelButton.button(QDialogButtonBox.StandardButton.Cancel).setText(self.tr("Abbrechen"))
+        self.cancelButton.button(QDialogButtonBox.StandardButton.Cancel).setText(
+            self.tr("Abbrechen")
+        )
         self.cancelButton.clicked.connect(self.onAbort)
         self.closeButton.setStandardButtons(QDialogButtonBox.StandardButton.Close)
-        self.closeButton.button(QDialogButtonBox.StandardButton.Close).setText(self.tr("Schliessen"))
+        self.closeButton.button(QDialogButtonBox.StandardButton.Close).setText(
+            self.tr("Schliessen")
+        )
         self.closeButton.clicked.connect(self.close)
         self.hbox.addWidget(self.rerunButton)
         self.hbox.addItem(spacer2)
@@ -88,7 +96,7 @@ class ProgressDialog(QDialog):
         self.hbox.addWidget(self.closeButton)
         self.hbox.setAlignment(self.closeButton, Qt.AlignmentFlag.AlignHCenter)
         self.closeButton.hide()
-        
+
         self.container.addWidget(self.progressBar)
         self.container.addWidget(self.statusLabel)
         self.container.addWidget(self.resultLabel)
@@ -112,11 +120,11 @@ class ProgressDialog(QDialog):
         **kwargs
         """
         return QCoreApplication.translate(type(self).__name__, message)
-        
+
     def setThread(self, workerThread):
         self.workerThread = workerThread
         self.connectThreadSignals()
-    
+
     def connectThreadSignals(self):
         # Connect signals of thread
         self.workerThread.sig_jobEnded.connect(self.jobEnded)
@@ -125,7 +133,7 @@ class ProgressDialog(QDialog):
         self.workerThread.sig_range.connect(self.rangeFromThread)
         self.workerThread.sig_text.connect(self.textFromThread)
         self.rerunButton.clicked.connect(self.onRerun)
-    
+
     def jobEnded(self, success):
         self.setWindowTitle("SEILAPLAN")
         if success:
@@ -137,45 +145,44 @@ class ProgressDialog(QDialog):
             self.statusLabel.setText(self.tr("Berechnungen abgebrochen."))
             self.progressBar.setValue(self.progressBar.minimum())
             self.finallyDo()
-    
+
     def valueFromThread(self, value):
         self.progressBar.setValue(int(value))
-    
+
     def rangeFromThread(self, range_vals):
         self.progressBar.setRange(int(round(range_vals[0])), int(round(range_vals[1])))
-    
+
     def maxFromThread(self, max):
         self.progressBar.setValue(self.progressBar.maximum())
-    
+
     def textFromThread(self, message):
         self.statusLabel.setText(self.messageTxt[message])
-    
+
     def onAbort(self):
-        self.setWindowTitle('SEILAPLAN')
-        self.statusLabel.setText(self.tr(
-            'Laufender Prozess wird abgebrochen...'))
+        self.setWindowTitle("SEILAPLAN")
+        self.statusLabel.setText(self.tr("Laufender Prozess wird abgebrochen..."))
         self.workerThread.cancel()  # Terminates process cleanly
-    
+
     def onError(self, exception_string):
-        self.setWindowTitle(self.tr('SEILAPLAN: Berechnung fehlgeschlagen'))
-        self.statusLabel.setText(self.tr('Ein Fehler ist aufgetreten:'))
+        self.setWindowTitle(self.tr("SEILAPLAN: Berechnung fehlgeschlagen"))
+        self.statusLabel.setText(self.tr("Ein Fehler ist aufgetreten:"))
         self.resultLabel.setText(self.tr(exception_string))
         self.resultLabel.setHidden(False)
         self.progressBar.setValue(self.progressBar.minimum())
         self.setLayout(self.container)
         self.finallyDo()
-    
+
     def onRerun(self):
         self.continueToAdjustment = False
         self.close()
-    
+
     def finallyDo(self):
         self.rerunButton.setVisible(True)
         self.cancelButton.hide()
         self.closeButton.show()
-    
+
     def cleanUp(self, endLoop=False):
         pass
-    
+
     def closeEvent(self, QCloseEvent):
         self.onCloseCallback(self.continueToAdjustment)

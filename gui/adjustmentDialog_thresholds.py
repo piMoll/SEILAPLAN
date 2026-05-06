@@ -18,13 +18,14 @@
  *                                                                         *
  ***************************************************************************/
 """
+
 from qgis.PyQt.QtCore import (
     pyqtSignal,
     QAbstractTableModel,
     QModelIndex,
     QObject,
     QSize,
-    Qt
+    Qt,
 )
 from qgis.PyQt.QtGui import QBrush, QColor, QIcon, QPixmap, QStandardItemModel
 from qgis.PyQt.QtWidgets import (
@@ -32,7 +33,7 @@ from qgis.PyQt.QtWidgets import (
     QMessageBox,
     QPushButton,
     QTableView,
-    QWidget
+    QWidget,
 )
 from SEILAPLAN.utils.misc import is_dark_mode
 
@@ -43,16 +44,11 @@ class AdjustmentDialogThresholds(QObject):
     FONT_COLOR = QColor(255, 255, 255) if is_dark_mode() else QColor(0, 0, 0)
     COLOR_ERROR = QColor(224, 103, 103)
     COLOR_ATTENTION = QColor(237, 148, 76)
-    COLOR_NEUTRAL = QColor(53, 53, 53) if is_dark_mode() \
-        else QColor(255, 255, 255)
-    COLOR = {
-        1: COLOR_NEUTRAL,
-        2: COLOR_ATTENTION,
-        3: COLOR_ERROR
-    }
-    
+    COLOR_NEUTRAL = QColor(53, 53, 53) if is_dark_mode() else QColor(255, 255, 255)
+    COLOR = {1: COLOR_NEUTRAL, 2: COLOR_ATTENTION, 3: COLOR_ERROR}
+
     sig_clickedRow = pyqtSignal(int)
-    
+
     def __init__(self, parent):
         """
         :type parent: gui.adjustmentDialog.AdjustmentDialog
@@ -62,24 +58,28 @@ class AdjustmentDialogThresholds(QObject):
         self.tbl: QTableView = self.parent.tableThresholds
         self.model = None
         self.selectedRow = None
-        
+
         # Icons
         self.iconOk = QIcon()
         self.iconOk.addPixmap(
-            QPixmap(getAbsoluteIconPath('icon_green.png')),
-            QIcon.Mode.Normal, QIcon.State.Off)
+            QPixmap(getAbsoluteIconPath("icon_green.png")),
+            QIcon.Mode.Normal,
+            QIcon.State.Off,
+        )
         self.iconErr = QIcon()
         self.iconErr.addPixmap(
-            QPixmap(getAbsoluteIconPath('icon_exclamation.png')),
-            QIcon.Mode.Normal, QIcon.State.Off)
+            QPixmap(getAbsoluteIconPath("icon_exclamation.png")),
+            QIcon.Mode.Normal,
+            QIcon.State.Off,
+        )
 
         self.tbl.clicked.connect(self.onClick)
-    
+
     def initTableGrid(self, header, rowCount):
         self.model = QStandardItemModel(rowCount, len(header), self.tbl)
         self.tbl.setModel(self.model)
         self.model.setHorizontalHeaderLabels(header)
-    
+
     def updateData(self, tblData, init=False):
         # Update value itself
         for row, rowData in enumerate(tblData):
@@ -91,13 +91,15 @@ class AdjustmentDialogThresholds(QObject):
                     # Create clickable info button in first column
                     btnWidget = self.createInfoBtn(cellData)
                     self.tbl.setIndexWidget(self.model.index(row, col), btnWidget)
-                
+
                 self.model.setData(self.model.index(row, col), cellData)
                 # Init all cells with a neutral background
-                self.model.setData(self.model.index(row, col),
-                                   QBrush(self.COLOR[1]),
-                                   Qt.ItemDataRole.BackgroundRole)
-        
+                self.model.setData(
+                    self.model.index(row, col),
+                    QBrush(self.COLOR[1]),
+                    Qt.ItemDataRole.BackgroundRole,
+                )
+
         if init:
             # Adjust column widths to data
             self.tbl.resizeColumnsToContents()
@@ -107,25 +109,30 @@ class AdjustmentDialogThresholds(QObject):
                 self.tbl.setColumnWidth(idx, max(currSize, 100))
             self.tbl.setColumnWidth(1, min(self.tbl.sizeHintForColumn(1), 200))
             self.tbl.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-    
+
     def colorBackground(self, row, col, color):
         # Update background color
         colorVal = self.COLOR[color]
-        self.model.setData(self.model.index(row, col),
-                           QBrush(colorVal), Qt.ItemDataRole.BackgroundRole)
+        self.model.setData(
+            self.model.index(row, col),
+            QBrush(colorVal),
+            Qt.ItemDataRole.BackgroundRole,
+        )
         # Set the font color for a good contrast, especially in dark mode
-        self.model.setData(self.model.index(row, col),
-                           QBrush(self.FONT_COLOR),
-                           Qt.ItemDataRole.ForegroundRole)
-    
+        self.model.setData(
+            self.model.index(row, col),
+            QBrush(self.FONT_COLOR),
+            Qt.ItemDataRole.ForegroundRole,
+        )
+
     def updateTabIcon(self, warn):
-        """ Updates icon of QTabWidget with an exclamation mark or check
+        """Updates icon of QTabWidget with an exclamation mark or check
         mark depending on presents of exceeded thresholds."""
         if warn:
             self.parent.tabWidget.setTabIcon(2, self.iconErr)
         else:
             self.parent.tabWidget.setTabIcon(2, self.iconOk)
-    
+
     def onClick(self, item):
         # Row is already selected
         if self.selectedRow == item.row():
@@ -136,24 +143,28 @@ class AdjustmentDialogThresholds(QObject):
             self.selectedRow = item.row()
         # Emit select signal
         self.sig_clickedRow.emit(item.row())
-    
+
     def select(self, row):
         if row is None:
             self.tbl.clearSelection()
         elif row >= 0:
             self.tbl.selectRow(row)
         self.selectedRow = row
-    
+
     def createInfoBtn(self, cellData):
-        button = QPushButton('?')
+        button = QPushButton("?")
         button.setMaximumSize(QSize(22, 22))
         button.setFlat(True)
         button.setCursor(Qt.CursorShape.WhatsThisCursor)
         # Fill info text into message box
         button.clicked.connect(
-            lambda: QMessageBox.information(self.parent, cellData['title'],
-                                            cellData['message'],
-                                            QMessageBox.StandardButton.Ok))
+            lambda: QMessageBox.information(
+                self.parent,
+                cellData["title"],
+                cellData["message"],
+                QMessageBox.StandardButton.Ok,
+            )
+        )
         cellWidget = QWidget()
         # Add layout to center button in cell
         layout = QHBoxLayout(cellWidget)
@@ -164,31 +175,42 @@ class AdjustmentDialogThresholds(QObject):
 
 
 class ThresholdTblModel(QAbstractTableModel):
-    
+
     def __init__(self, dataset, header, parent=None):
         QAbstractTableModel.__init__(self, parent)
         self.dataset = dataset
         self.header = header
-    
+
     def rowCount(self, index=QModelIndex()):
         return len(self.dataset)
-    
+
     def columnCount(self, index=QModelIndex()):
         return len(self.header)
-    
-    def headerData(self, col, orientation=Qt.Orientation.Horizontal, role=Qt.ItemDataRole.DisplayRole):
-        if orientation == Qt.Orientation.Horizontal and role == Qt.ItemDataRole.DisplayRole:
+
+    def headerData(
+        self,
+        col,
+        orientation=Qt.Orientation.Horizontal,
+        role=Qt.ItemDataRole.DisplayRole,
+    ):
+        if (
+            orientation == Qt.Orientation.Horizontal
+            and role == Qt.ItemDataRole.DisplayRole
+        ):
             return self.header[col]
         return None
-    
+
     def setData(self, index, value, role=Qt.ItemDataRole.EditRole):
-        """ Adjust the data (set it to <value>) depending on the given
-            index and role."""
+        """Adjust the data (set it to <value>) depending on the given
+        index and role."""
         if role != Qt.ItemDataRole.EditRole and role != Qt.ItemDataRole.BackgroundRole:
             return False
-        
-        if index.isValid() and 0 <= index.row() < len(self.dataset) \
-                and 0 <= index.column() < len(self.header):
+
+        if (
+            index.isValid()
+            and 0 <= index.row() < len(self.dataset)
+            and 0 <= index.column() < len(self.header)
+        ):
 
             self.dataset[index.row()][index.column()] = value
             self.dataChanged.emit(index, index)

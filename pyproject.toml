@@ -1,0 +1,20 @@
+[tool.black]
+line-length = 88
+target-version = ["py311", "py312"]
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # Directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+  | lib
+)/
+'''
+# Use single quotes for string normalization
+skip-string-normalization = false

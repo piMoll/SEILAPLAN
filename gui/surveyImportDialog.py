@@ -18,6 +18,7 @@
  *                                                                         *
  ***************************************************************************/
 """
+
 import os
 
 from qgis.PyQt import uic
@@ -25,7 +26,7 @@ from qgis.PyQt.QtWidgets import (
     QDialog,
     QDialogButtonBox,
     QFileDialog,
-    QMessageBox
+    QMessageBox,
 )
 from SEILAPLAN.tools.configHandler import ConfigHandler
 from SEILAPLAN.tools.fileFetcher import FileFetcher
@@ -33,7 +34,7 @@ from SEILAPLAN.tools.survey import SurveyData
 
 # This loads the .ui file so that PyQt can populate the plugin with the
 #  elements from Qt Designer
-UI_FILE = os.path.join(os.path.dirname(__file__), 'surveyImportDialog.ui')
+UI_FILE = os.path.join(os.path.dirname(__file__), "surveyImportDialog.ui")
 FORM_CLASS, _ = uic.loadUiType(UI_FILE)
 
 
@@ -42,42 +43,48 @@ class SurveyImportDialog(QDialog, FORM_CLASS):
     Dialog window that allows to import different types of table bases
     survey data.
     """
-    
+
     def __init__(self, parent, confHandler):
         """
         :type confHandler: configHandler.ConfigHandler
         """
         super(SurveyImportDialog, self).__init__(parent)
-        
+
         self.confHandler: ConfigHandler = confHandler
-        self.surveyType = ''
-        self.filePath = ''
+        self.surveyType = ""
+        self.filePath = ""
         self.doImport = False
 
         # Setup GUI (from ui_surveyImportDialog.py)
         self.setupUi(self)
-        
+
         self.setButtonEnableState()
         self.connectGuiElements()
-        
+
     def connectGuiElements(self):
         """Connect GUI elements with functions."""
         self.radioCsvXyz.clicked.connect(self.onSelectSurveyType)
         self.radioCsvVertex.clicked.connect(self.onSelectSurveyType)
         self.radioExcelProtocol.clicked.connect(self.onSelectSurveyType)
-        
+
         self.buttonOpenSurvey.clicked.connect(self.onOpenFile)
-        
+
         self.buttonTemplateCsvXyz.clicked.connect(
-            lambda: self.onDownloadTemplate('csvXyz'))
+            lambda: self.onDownloadTemplate("csvXyz")
+        )
         self.buttonTemplateExcelProtocol.clicked.connect(
-            lambda: self.onDownloadTemplate('excelProtocol'))
+            lambda: self.onDownloadTemplate("excelProtocol")
+        )
 
         self.buttonBox.accepted.connect(self.onImport)
         self.buttonBox.rejected.connect(self.onCancel)
-        self.buttonBox.button(QDialogButtonBox.StandardButton.Ok).setText(self.tr('Import'))
-        self.buttonBox.button(QDialogButtonBox.StandardButton.Cancel).setText(self.tr('Abbrechen'))
-    
+        self.buttonBox.button(QDialogButtonBox.StandardButton.Ok).setText(
+            self.tr("Import")
+        )
+        self.buttonBox.button(QDialogButtonBox.StandardButton.Cancel).setText(
+            self.tr("Abbrechen")
+        )
+
     def onSelectSurveyType(self):
         newSurveyType = None
         if self.radioCsvXyz.isChecked():
@@ -86,74 +93,87 @@ class SurveyImportDialog(QDialog, FORM_CLASS):
             newSurveyType = SurveyData.SOURCE_CSV_VERTEX
         elif self.radioExcelProtocol.isChecked():
             newSurveyType = SurveyData.SOURCE_EXCEL_PROTOCOL
-        
+
         # Reset file path if the file type is not valid anymore
-        if ('CSV' in newSurveyType.upper()
-                and 'CSV' not in self.surveyType.upper()) \
-            or ('EXCEL' in newSurveyType.upper()
-                and 'EXCEL' not in self.surveyType.upper()):
-            self.filePath = ''
+        if (
+            "CSV" in newSurveyType.upper() and "CSV" not in self.surveyType.upper()
+        ) or (
+            "EXCEL" in newSurveyType.upper() and "EXCEL" not in self.surveyType.upper()
+        ):
+            self.filePath = ""
             self.fieldSurveyFilePath.setText(self.filePath)
-        
+
         self.surveyType = newSurveyType
         self.setButtonEnableState()
-    
+
     def onOpenFile(self):
-        if self.surveyType in [SurveyData.SOURCE_CSV_XYZ, SurveyData.SOURCE_CSV_VERTEX]:
-            fFilter = self.tr('csv Dateien (*.csv)')
+        if self.surveyType in [
+            SurveyData.SOURCE_CSV_XYZ,
+            SurveyData.SOURCE_CSV_VERTEX,
+        ]:
+            fFilter = self.tr("csv Dateien (*.csv)")
         elif self.surveyType == SurveyData.SOURCE_EXCEL_PROTOCOL:
-            fFilter = self.tr('Excel Dateien (*.xlsx)')
+            fFilter = self.tr("Excel Dateien (*.xlsx)")
         else:
             # No survey type selected
             return
-        
-        title = self.tr('Gelaendeprofil laden')
+
+        title = self.tr("Gelaendeprofil laden")
         path = self.confHandler.getCurrentPath()
         filename, _ = QFileDialog.getOpenFileName(self, title, path, fFilter)
-        
+
         if filename:
             self.filePath = filename
             self.fieldSurveyFilePath.setText(self.filePath)
-        
+
         self.setButtonEnableState()
-    
+
     def setButtonEnableState(self):
         if self.surveyType:
             self.buttonOpenSurvey.setEnabled(True)
             if self.filePath:
-                self.buttonBox.button(QDialogButtonBox.StandardButton.Ok).setEnabled(True)
+                self.buttonBox.button(QDialogButtonBox.StandardButton.Ok).setEnabled(
+                    True
+                )
             else:
-                self.buttonBox.button(QDialogButtonBox.StandardButton.Ok).setDisabled(True)
+                self.buttonBox.button(QDialogButtonBox.StandardButton.Ok).setDisabled(
+                    True
+                )
         else:
             self.buttonOpenSurvey.setDisabled(True)
             self.buttonBox.button(QDialogButtonBox.StandardButton.Ok).setDisabled(True)
-    
+
     def onDownloadTemplate(self, templateName):
-        title = self.tr('Vorlage speichern')
+        title = self.tr("Vorlage speichern")
         path = self.confHandler.getCurrentPath()
-        folder = QFileDialog.getExistingDirectory(self, title, path,
-                                                  QFileDialog.Option.ShowDirsOnly)
+        folder = QFileDialog.getExistingDirectory(
+            self, title, path, QFileDialog.Option.ShowDirsOnly
+        )
         if folder:
             templateUrl, filename = self.confHandler.getTemplateUrl(templateName)
             savepath = os.path.join(folder, filename)
             filefetcher = FileFetcher(templateUrl, savepath)
 
             if filefetcher.success:
-                msg = self.tr('Vorlage erfolgreich heruntergeladen.')
+                msg = self.tr("Vorlage erfolgreich heruntergeladen.")
             else:
-                msg = self.tr('Download nicht erfolgreich. Link fuer manuellen Download: _templateUrl_')\
-                    .replace('_templateUrl_', templateUrl)
-            QMessageBox.information(self, self.tr('Download Vorlage'),
-                                    msg, QMessageBox.StandardButton.Ok)
-    
+                msg = self.tr(
+                    "Download nicht erfolgreich. Link fuer manuellen Download: _templateUrl_"
+                ).replace("_templateUrl_", templateUrl)
+            QMessageBox.information(
+                self,
+                self.tr("Download Vorlage"),
+                msg,
+                QMessageBox.StandardButton.Ok,
+            )
+
     def onImport(self):
         if self.surveyType and self.filePath:
             self.doImport = True
-    
+
     def onCancel(self):
         self.doImport = False
-    
+
     def closeEvent(self, QCloseEvent):
         # When user clicks 'x'
         self.doImport = False
-    

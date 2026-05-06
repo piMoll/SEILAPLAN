@@ -10,6 +10,7 @@
 # Licence:     <your licence>
 #------------------------------------------------------------------------------
 """
+
 import os
 
 import numpy as np
@@ -25,7 +26,9 @@ def ismember(a, b):
     for i, elt in enumerate(b):
         if elt not in bind:
             bind[elt] = i
-    return [bind.get(itm, None) for itm in a]  # None can be replaced by any other "not in b" value
+    return [
+        bind.get(itm, None) for itm in a
+    ]  # None can be replaced by any other "not in b" value
 
 
 def stuePos(IS, gp, noPoleSection, fixedPoles):
@@ -60,16 +63,20 @@ def stuePos(IS, gp, noPoleSection, fixedPoles):
     lim_u = buf
     lim_o = di[-1] - buf + 1
     diff = np.zeros(profilLen)
-    diff[lim_u:lim_o] = gp.zi_n[lim_u:lim_o] - (gp.zi_n[lim_u-buf:lim_o-buf]
-                                             + gp.zi_n[lim_u+buf:lim_o+buf]) / 2
+    diff[lim_u:lim_o] = (
+        gp.zi_n[lim_u:lim_o]
+        - (gp.zi_n[lim_u - buf : lim_o - buf] + gp.zi_n[lim_u + buf : lim_o + buf]) / 2
+    )
 
     # Peaks mit Programm peakdetect ermitteln
-    peakLoc_raw = peakdetect(diff, di, 1)[0]        # Ergibt nicht die exakt gleichen Resultate wie die Matlab Version
+    peakLoc_raw = peakdetect(diff, di, 1)[
+        0
+    ]  # Ergibt nicht die exakt gleichen Resultate wie die Matlab Version
     if len(peakLoc_raw) > 0:
-        peakIdx = np.array(peakLoc_raw, dtype=int)[:,:1].flatten()
+        peakIdx = np.array(peakLoc_raw, dtype=int)[:, :1].flatten()
     else:
         peakIdx = []
-    ld = np.where(np.array(diff)>10)[0]
+    ld = np.where(np.array(diff) > 10)[0]
     # Verschneiden
     peakLoc = np.intersect1d(peakIdx, ld)
     gp.setPeakLocations(peakLoc)
@@ -82,9 +89,8 @@ def stuePos(IS, gp, noPoleSection, fixedPoles):
         noStue += (gp.di_s > anf) * (gp.di_s < end)
     # Stützenpositionen sind definiert durch Peaks, fixe Stützenpositionen
     #   und benutzerdefinierte Bereiche ohne Stützen
-    possiblePos = np.hstack([gp.di_s[noStue == 0], peakLoc,
-                             fixedPoles['HM_fix_d']])
-    possiblePos = np.sort(possiblePos).astype('int')
+    possiblePos = np.hstack([gp.di_s[noStue == 0], peakLoc, fixedPoles["HM_fix_d"]])
+    possiblePos = np.sort(possiblePos).astype("int")
 
     locb = np.unique(ismember(possiblePos, di))
     # xi = gp['xi'][locb]      # Nur für Baum Support nötig
@@ -95,20 +101,20 @@ def stuePos(IS, gp, noPoleSection, fixedPoles):
     # Bodenfreiheit
     ###############
     # Hier muss der minimale Bodenabstand nicht eingehalten werden
-    bodenabst = IS['Bodenabst_min']  # float
-    clearA = IS['Bodenabst_A']       # int
-    clearE = IS['Bodenabst_E']       # int
+    bodenabst = IS["Bodenabst_min"]  # float
+    clearA = IS["Bodenabst_A"]  # int
+    clearE = IS["Bodenabst_E"]  # int
 
     groundClear = np.ones(profilLen) * bodenabst
-    groundClear[di < clearA+1] = 0
-    groundClear[di > (di[-1]-clearE)] = 0
+    groundClear[di < clearA + 1] = 0
+    groundClear[di > (di[-1] - clearE)] = 0
     gp.sc = groundClear
     gp.sc_s = groundClear[locb]
 
     # Befahrbarkeit
     ###############
-    befGSK_A = IS['Befahr_A']        # int
-    befGSK_E = IS['Befahr_E']        # int
+    befGSK_A = IS["Befahr_A"]  # int
+    befGSK_E = IS["Befahr_E"]  # int
 
     befahrbar = np.ones(profilLen)
     befahrbar[di < befGSK_A + 1] = 0
@@ -150,28 +156,28 @@ def stuePos(IS, gp, noPoleSection, fixedPoles):
             # Ungeeignete Standorte erhalten den Wert 0
             Maststandort[idx] = 0
     # Zusätzliche Maststandorte dort wo der Benutzer sie angegeben hat
-    idxFix = ismember(fixedPoles['HM_fix_d'], gp.di_s)
+    idxFix = ismember(fixedPoles["HM_fix_d"], gp.di_s)
     Maststandort[idxFix] = 1
     # Idee an den ersten fünf und letzten fünf Stellen nach Anfangs- und End-
     #   stütze soll immer eine Stütze möglich sein, wegen zum Teil tiefen
     #   Anfangs- und Endstützenhoehen (0m)
     startBereich = [i for i in range(1, min(5, len(Maststandort)))]
-    endBereich = [-1 * (i+1) for i in startBereich]
+    endBereich = [-1 * (i + 1) for i in startBereich]
     Maststandort[tuple([startBereich])] = 1
     Maststandort[tuple([endBereich])] = 1
 
     # Rückerichtung bestimmen
     #########################
-    if IS['Seilsys'] == 1:      # Mehrseil-System
+    if IS["Seilsys"] == 1:  # Mehrseil-System
         R_R = 0
-    else:                       # Zweiseil-System
+    else:  # Zweiseil-System
         try:
             index = [i for i in range(len(gp.di_s) - 1, -1, -1) if di[i] < 100][0]
         except IndexError:
             index = -1
         if gp.zi_s[index] > gp.zi_s[0]:
-            R_R = -1    # runter
+            R_R = -1  # runter
         else:
-            R_R = 1     # rauf
+            R_R = 1  # rauf
 
     return gp, Maststandort, locb, R_R

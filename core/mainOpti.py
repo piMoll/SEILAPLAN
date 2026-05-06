@@ -12,6 +12,7 @@
 # Licence:      <your licence>
 #------------------------------------------------------------------------------
 """
+
 import numpy as np
 
 from .optiSTA import calcSTA
@@ -48,7 +49,7 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
     Value: Zielfunktionswert der Lösung
     OptSTA: Optimale Werte der Anfangszugkraft STA
     """
-    
+
     # TODO: Matrix  Grossbuchstaben, Array = Kleinbuchstaben
 
     # Vektoren in neuen Variabeln abspeichern
@@ -58,12 +59,12 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
     di_n = profile.di_n
     sc = profile.sc
     befGSK = profile.befGSK
-    min_HM = IS["HM_min"]                # int
-    max_HM = IS["HM_max"]                # int
-    Abstufung_HM = IS["HM_Delta"]        # int
+    min_HM = IS["HM_min"]  # int
+    max_HM = IS["HM_max"]  # int
+    Abstufung_HM = IS["HM_Delta"]  # int
     Min_Dist_Mast = int(IS["Min_Dist_Mast"])  # int
-    dfix = np.array(fixedPoles['HM_fix_d'])
-    hfix = np.array(fixedPoles['HM_fix_h'])
+    dfix = np.array(fixedPoles["HM_fix_d"])
+    hfix = np.array(fixedPoles["HM_fix_h"])
     sfix = dfix.size
     # treeSupp = gp.tree
 
@@ -72,24 +73,26 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
 
     posAnz = int(np.sum(StuetzenPos))
     posIdx = np.where(StuetzenPos == 1)[0][1:-1]
-    posIdxEnd = StuetzenPos.size-1      # Annahme: Letzte Position in StuetzenPos ist immer 1 ==> Endstütze RICHTIG???
-    hStufung = range(min_HM, max_HM+1, Abstufung_HM)
+    posIdxEnd = (
+        StuetzenPos.size - 1
+    )  # Annahme: Letzte Position in StuetzenPos ist immer 1 ==> Endstütze RICHTIG???
+    hStufung = range(min_HM, max_HM + 1, Abstufung_HM)
 
     # Anfangsstütze
-    if pole_type[0] == 'pole':
+    if pole_type[0] == "pole":
         # Punkttyp: Stütze - Anfangsstütze mit variabler Höhe
 
         # Falls der Bodenabstand ab 0 m geprüft wird, ist die minimale Stuetzenhoehe am Anfang
         # immer gleich dem minimal gefordertem Bodenabstand
-        if IS['Bodenabst_A'] == 0:
-            min_HM_Anf = IS['Bodenabst_min']
+        if IS["Bodenabst_A"] == 0:
+            min_HM_Anf = IS["Bodenabst_min"]
         else:
             min_HM_Anf = 0
 
-        hStufungAnf = range(int(min_HM_Anf), max_HM+1, Abstufung_HM)
+        hStufungAnf = range(int(min_HM_Anf), max_HM + 1, Abstufung_HM)
         stufenAnzAnf = len(hStufungAnf)
-    
-    elif pole_type[0] == 'pole_anchor':
+
+    elif pole_type[0] == "pole_anchor":
         # Punkttyp: Verankerung - Anfangsstütze mit 0m Höhe
         min_HM_Anf = 0
         hStufungAnf = min_HM_Anf
@@ -101,9 +104,9 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
         min_HM_Anf = IS["HM_Kran"]
 
     # Endstütze
-    if pole_type[1] == 'pole':
-        if IS['Bodenabst_E'] == 0:
-            min_HM_End = IS['Bodenabst_min']
+    if pole_type[1] == "pole":
+        if IS["Bodenabst_E"] == 0:
+            min_HM_End = IS["Bodenabst_min"]
         else:
             min_HM_End = 0
 
@@ -116,19 +119,21 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
         min_HM_End = 0
         hStufungEnd = min_HM_End
         stufenAnzEnd = 1
-    
+
     arraySize = stufenAnzAnf + (posAnz - 2) * len(hStufung) + stufenAnzEnd
 
     # Pos = Längenposition für den Knoten i
     Pos = np.empty(arraySize).astype(int)
     Pos[0:stufenAnzAnf] = 0
-    Pos[stufenAnzAnf:-stufenAnzEnd] = np.ravel(np.array([posIdx]*len(hStufung)), order = 'F')
+    Pos[stufenAnzAnf:-stufenAnzEnd] = np.ravel(
+        np.array([posIdx] * len(hStufung)), order="F"
+    )
     Pos[-stufenAnzEnd:] = [posIdxEnd] * stufenAnzEnd
 
     # HM = Höhe der Stütze des Knoten i
     HM = np.empty(arraySize)
     HM[0:stufenAnzAnf] = hStufungAnf
-    HM[stufenAnzAnf:-stufenAnzEnd] = np.tile(hStufung, posAnz-2)
+    HM[stufenAnzAnf:-stufenAnzEnd] = np.tile(hStufung, posAnz - 2)
     HM[-stufenAnzEnd:] = hStufungEnd
 
     # Position der Stützen in hochaufgelöstem Horizontaldistanz-Vektor gp[di]
@@ -148,20 +153,24 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
     testRes = (test1G * test2G) + ((test3G + test4G) * test1G)
     testRes = np.swapaxes(testRes, 0, 1)
     # Indices der möglichen Knoten generieren
-    [aa, ee] = np.where(testRes == True)        # aa_n.size = 4638, max(aa_n) = 96
-    optiLen = aa.size     # Anzahl Optimierungsdurchläufe
-    a = Pos[aa]                                   # a.size = 4638, max(a) = 28
+    [aa, ee] = np.where(testRes == True)  # aa_n.size = 4638, max(aa_n) = 96
+    optiLen = aa.size  # Anzahl Optimierungsdurchläufe
+    a = Pos[aa]  # a.size = 4638, max(a) = 28
     e = Pos[ee]
     HeightA = HM[aa]
     HeightE = HM[ee]
 
     # Falls fixe Stützen vorhanden sind, kann Optimierungs-Problem gekürzt werden
     if sfix > 0:
-        pa = di[a].astype(int) # di[Pos[a]]
+        pa = di[a].astype(int)  # di[Pos[a]]
         pe = di[e].astype(int)
         # n-dimensionales Array (n=sfix), in jeder Dim ein anderer Wert aus dfix/hfix
-        DFix = np.add(np.zeros((sfix, optiLen)), np.reshape(dfix, (sfix, 1))).astype(int)
-        HFix = np.add(np.zeros((sfix, optiLen)), np.reshape(hfix, (sfix, 1))).astype(int)
+        DFix = np.add(np.zeros((sfix, optiLen)), np.reshape(dfix, (sfix, 1))).astype(
+            int
+        )
+        HFix = np.add(np.zeros((sfix, optiLen)), np.reshape(hfix, (sfix, 1))).astype(
+            int
+        )
         # Abspeichern wo Höhe nicht definiert wurde (== False)
         HFix_notEmpty = HFix != -1
         # Tests um festzustellen ob Knoten nötig ist
@@ -174,12 +183,12 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
         Cc = (Cha * Ca) + (Che * Ce)
         CC = np.sum(Cc, axis=0, dtype=bool)
 
-        AA = ERG + CC       # alles was True ist, muss gelöscht werden
+        AA = ERG + CC  # alles was True ist, muss gelöscht werden
         # Knoten aktualisieren
-        newIdx = np.where(AA == False)[0]        # neue, verkürze Indices
+        newIdx = np.where(AA == False)[0]  # neue, verkürze Indices
         aa = aa[newIdx]
         ee = ee[newIdx]
-        optiLen = aa.size     # Anzahl Optimierungsdurchläufe aktualisieren
+        optiLen = aa.size  # Anzahl Optimierungsdurchläufe aktualisieren
         HeightA = HM[aa]
         HeightE = HM[ee]
     Pos_gp_A = Pos_gp[aa]
@@ -194,18 +203,18 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
     d_ende = di[-1]
 
     # Progressbar einrichten
-    progress.sig_range.emit([0, optiLen*1.02])
-    progress.sig_text.emit('msg_optimierung')
+    progress.sig_range.emit([0, optiLen * 1.02])
+    progress.sig_text.emit("msg_optimierung")
 
     for i in range(optiLen):
         if progress.isCanceled():
             # Überprüfen ob vom Benutzer ein Abbruch durchgeführt wurde
             return False
         progress.sig_value.emit(i)
-        zi_part = zi_n[Pos_gp_A[i]:Pos_gp_E[i]+1]
-        di_part = di_n[Pos_gp_A[i]:Pos_gp_E[i]+1]
-        sc_part = sc[Pos_gp_A[i]:Pos_gp_E[i]+1]
-        befGSK_part = befGSK[Pos_gp_A[i]:Pos_gp_E[i]+1]
+        zi_part = zi_n[Pos_gp_A[i] : Pos_gp_E[i] + 1]
+        di_part = di_n[Pos_gp_A[i] : Pos_gp_E[i] + 1]
+        sc_part = sc[Pos_gp_A[i] : Pos_gp_E[i] + 1]
+        befGSK_part = befGSK[Pos_gp_A[i] : Pos_gp_E[i] + 1]
 
         # z_null definieren:
         if di_part[0] == d_null:  # falls erstes Feld geprueft wird!
@@ -220,10 +229,19 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
             z_ende = zi[-1] * 0.1 + min_HM_End
 
         # Zweifel-Methode
-        [CableLineImpossible,
-        Min, Max] = calcSTA(IS, zi_part, di_part, sc_part,
-                            befGSK_part, HeightA[i], HeightE[i],
-                            z_null, z_ende, d_null, d_ende)
+        [CableLineImpossible, Min, Max] = calcSTA(
+            IS,
+            zi_part,
+            di_part,
+            sc_part,
+            befGSK_part,
+            HeightA[i],
+            HeightE[i],
+            z_null,
+            z_ende,
+            d_null,
+            d_ende,
+        )
 
         if not CableLineImpossible:
             MinSTA[i] = Min
@@ -235,7 +253,7 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
     # [Loesung_HM, stueIdx,
     #     Value, OptSTA] = findOptiSolution(zi, di, HeightE, Pos, HM, MinSTA,
     #                                    MaxSTA, aa, ee, arraySize, IS)
-    natStuetze = IS['HM_nat']
+    natStuetze = IS["HM_nat"]
     kStuetz = HeightE > natStuetze
     kStuetzA = HeightA > natStuetze
 
@@ -244,21 +262,23 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
 
     # KostStue = ((HeightE == 0) * 1 + (HeightE > 0) * (HeightE + 100)**2) * (1 + (4*(kStuetz + 0)))
     # Auch noch die erste Stuetze soll einen Penalty Wert erhalten --> 2te Zeile
-    KostStue = ((HeightE == 0) * 1 + (HeightE > 0) * (HeightE + 100)**2) * (1 + (4*(kStuetz + 0))) + \
-        (aa == 0) * ((HeightA == 0) * 1 + (HeightA > 0) * (HeightA + 100)**2) * (1 + (4*(kStuetzA + 0)))
+    KostStue = ((HeightE == 0) * 1 + (HeightE > 0) * (HeightE + 100) ** 2) * (
+        1 + (4 * (kStuetz + 0))
+    ) + (aa == 0) * ((HeightA == 0) * 1 + (HeightA > 0) * (HeightA + 100) ** 2) * (
+        1 + (4 * (kStuetzA + 0))
+    )
     indexMax = np.where(Pos == np.max(Pos))[0]
-    emptyMatrix = np.zeros((arraySize+1, arraySize+1))      # Entspricht N+2
+    emptyMatrix = np.zeros((arraySize + 1, arraySize + 1))  # Entspricht N+2
 
-    min_SK = IS['min_SK']
-    zul_SK = IS['zul_SK']
-    mem = np.array([np.inf] * (zul_SK+1))
-    memLength = np.zeros(zul_SK+1)
-    min_path = ''
-    min_dist = float('inf')
+    min_SK = IS["min_SK"]
+    zul_SK = IS["zul_SK"]
+    mem = np.array([np.inf] * (zul_SK + 1))
+    memLength = np.zeros(zul_SK + 1)
+    min_path = ""
+    min_dist = float("inf")
     Max_LengthInLP = 0
 
-
-    for sk in range(min_SK, zul_SK+1):
+    for sk in range(min_SK, zul_SK + 1):
         G = emptyMatrix
         ind = (MinSTA < sk) & (MaxSTA > sk)
         G[aa, ee] = KostStue * ind
@@ -268,18 +288,22 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
         G_n = np.zeros((size_of_matrix_G + 1, size_of_matrix_G + 1))
         G_n[:-1, :-1] = G
         ind_start = np.where(Pos == 0)[0]
-        
+
         # Matrix erweitern
         G_n[ind_start, size_of_matrix_G] = 1
         G_n[size_of_matrix_G, ind_start] = 1
         # Shortest Path
         Weight = sps.csc_matrix(G_n)
-        dist, predecessors = sps.csgraph.dijkstra(Weight, directed=True,
-                                indices=size_of_matrix_G, return_predecessors=True)
-        dist = dist[:- 1]
-        
-        LengthInLP = np.where(dist < float('inf'))[0][-1]
-        dist = dist[LengthInLP]-1
+        dist, predecessors = sps.csgraph.dijkstra(
+            Weight,
+            directed=True,
+            indices=size_of_matrix_G,
+            return_predecessors=True,
+        )
+        dist = dist[:-1]
+
+        LengthInLP = np.where(dist < float("inf"))[0][-1]
+        dist = dist[LengthInLP] - 1
 
         # Route of shortest path
         i = LengthInLP
@@ -294,7 +318,7 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
         memLength[sk] = LengthInLP
         if LengthInLP >= Max_LengthInLP:
             if LengthInLP > Max_LengthInLP:
-                min_dist = float('inf')
+                min_dist = float("inf")
                 min_path = []
                 Max_LengthInLP = LengthInLP
             if dist < min_dist:
@@ -302,14 +326,16 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
                 min_path = path
 
     min_path = min_path[::-1]
-    Ind_Max_Length = [var for var in range(zul_SK+1)
-                      if memLength[var] == max(memLength)]
-    mem_neu = np.array([np.inf] * (zul_SK+1))
+    Ind_Max_Length = [
+        var for var in range(zul_SK + 1) if memLength[var] == max(memLength)
+    ]
+    mem_neu = np.array([np.inf] * (zul_SK + 1))
     mem_neu[Ind_Max_Length] = mem[Ind_Max_Length]
 
     # Indizes beachten!
-    OptSTA = np.array([var for var in range(zul_SK+1)
-                       if mem_neu[var] == min(mem_neu)])
+    OptSTA = np.array(
+        [var for var in range(zul_SK + 1) if mem_neu[var] == min(mem_neu)]
+    )
 
     min_path = min_path[:-1]
     Value = min_dist
@@ -321,6 +347,18 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
 
     ## Weitere Kontrollwerte:
 
-    res_mat = np.array([aa,ee,MinSTA,MaxSTA,HeightE,HeightA,Pos_gp_A,Pos_gp_E,KostStue])
+    res_mat = np.array(
+        [
+            aa,
+            ee,
+            MinSTA,
+            MaxSTA,
+            HeightE,
+            HeightA,
+            Pos_gp_A,
+            Pos_gp_E,
+            KostStue,
+        ]
+    )
 
     return Loesung_HM, stueIdx, Value, OptSTA, optiLen

@@ -18,6 +18,7 @@
  *                                                                         *
  ***************************************************************************/
 """
+
 import traceback
 
 from qgis.PyQt.QtCore import QCoreApplication
@@ -25,20 +26,21 @@ from qgis.PyQt.QtWidgets import QMessageBox
 
 
 class AbstractConfHandler(object):
-    
+
     def __init__(self):
         self.dialog = None
-    
+
     def setDialog(self, dialog):
         self.dialog = dialog
-    
-    def onError(self, message=None, title=''):
+
+    def onError(self, message=None, title=""):
         if not title:
-            title = self.tr('Fehler', 'AbstractConfHandler')
+            title = self.tr("Fehler", "AbstractConfHandler")
         if not message:
             message = traceback.format_exc()
-        QMessageBox.information(self.dialog, title, message,
-                                QMessageBox.StandardButton.Ok)
+        QMessageBox.information(
+            self.dialog, title, message, QMessageBox.StandardButton.Ok
+        )
 
     def tr(self, message, context=None, **kwargs):
         """Get the translation for a string using Qt translation API.
@@ -46,7 +48,7 @@ class AbstractConfHandler(object):
 
         :param message: String for translation.
         :type message: str, QString
-        
+
         :param context: Context to find the translation string.
         :type context: str, QString
 
