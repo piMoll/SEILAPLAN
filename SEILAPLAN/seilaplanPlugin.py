@@ -27,7 +27,7 @@ from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QMessageBox, QPushButton
 from qgis.core import Qgis
 
-from . import PLUGIN_DIR
+from SEILAPLAN import PLUGIN_DIR
 
 # Add shipped libraries to the python path if missing
 try:
