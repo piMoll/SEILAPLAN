@@ -5,30 +5,15 @@ import zipfile
 PKG_NAME = "SEILAPLAN"
 # Includes all the top level paths that should be included when building the zip file
 TOP_LEVEL_INCLUDES = [
-    "config",
-    "core",
-    "gui",
-    "help",
-    "i18n",
-    "img",
-    "lib",
-    "tools",
-    "utils",
-    "__init__.py",
-    "changelog.md",
-    "LICENSE",
-    "metadata.txt",
     "README.md",
-    "seilaplanPlugin.py",
-    "seilaplanRun.py",
+    "CHANGELOG.md",
+    "LICENSE",
 ]
 # Search for these patterns to exclude folders and files
 PATTERN_EXCLUDES = [
     "__pycache__",
     ".pro",
     ".ts",
-    "set_german_translation",
-    "commonPaths.txt",
     "_pole_symbols.svg",
 ]
 
