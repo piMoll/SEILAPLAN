@@ -78,16 +78,6 @@ class ProcessingTask(QgsTask):
 
         self.result = result
 
-        # import pickle
-        # import os
-        # storeDump = 'pickl_20191018'
-        # homePath = '/home/pi/Projects/seilaplan/pickle_dumps'
-        # storefile = os.path.join(homePath, '{}.pckl'.format(storeDump))
-        # f = open(storefile, 'wb')
-        # result['poles'] = self.projInfo.poles.poles
-        # pickle.dump(result, f)
-        # f.close()
-
         return True
 
     def getResult(self):

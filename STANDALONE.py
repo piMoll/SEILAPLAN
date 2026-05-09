@@ -16,6 +16,8 @@ To run the script, the following variables have to be set:
 
 import sys
 
+from SEILAPLAN import PLUGIN_DIR
+
 # ################# PATH TO CURRENT QGIS PYTHON LOCATION ######################
 if "WIN" in sys.platform.upper():
     sys.path.append(r"C:\Program Files\QGIS 3.4\apps\qgis-ltr\python")
@@ -31,7 +33,7 @@ import os
 try:
     import reportlab
 except ModuleNotFoundError:
-    libPath = os.path.join(os.path.dirname(__file__), "lib")
+    libPath = os.path.join(PLUGIN_DIR, "lib")
     if libPath not in sys.path:
         sys.path.insert(-1, libPath)
 
@@ -201,9 +203,7 @@ if __name__ == "__main__":
     qgs.initQgis()
     # Load translations
     translator = QTranslator()
-    translator.load(
-        os.path.join(os.path.dirname(__file__), "i18n", "SeilaplanPlugin_de.qm")
-    )
+    translator.load(os.path.join(PLUGIN_DIR, "i18n", "SeilaplanPlugin_de.qm"))
     QCoreApplication.installTranslator(translator)
 
     # Project settings are loaded
