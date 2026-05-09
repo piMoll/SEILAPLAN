@@ -4,8 +4,7 @@ target-version = ["py311", "py312"]
 include = '\.pyi?$'
 extend-exclude = '''
 /(
-  # Directories
-  \.eggs
+  | \.eggs
   | \.git
   | \.hg
   | \.mypy_cache
@@ -21,25 +20,17 @@ skip-string-normalization = false
 
 [tool.flake8]
 # Ignore conflicts with Black (autoformatter)
-extend-ignore = ["E203", "E266", "E501", "W503", "F403", "F401"]
+extend-ignore = ["E203", "E266", "E501", "W503", "W504", "F403", "F401", "QGS201", "QGS202", "QGS105"]
 max-line-length = 88
 # Exclude typical hidden or generated directories
-exclude = [
-".git",
-"__pycache__",
-"dist",
-"build",
-".venv",
-"venv",
-"env",
-"migrations",
-"lib"]
+exclude = [".git","__pycache__","dist","build",".venv","venv","env","migrations","lib"]
 # Enforce complexity threshold (optional but recommended)
 max-complexity = 15
 
 # 5. Show source code and statistics
 show-source = true
 statistics = true
+count = true
 
 
 [tool.isort]
