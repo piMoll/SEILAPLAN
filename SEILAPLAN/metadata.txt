@@ -33,7 +33,7 @@ changelog=Version 3.7.1 (August 2025)
     - Ermögliche das Laden von SEILAPLAN-Projektdateien, welche Cloud Optimized GeoTiffs (COG) enthalten
     - Diverse Unterhaltsarbeiten
     
-    Vollständiger Changelog unter: https://github.com/piMoll/SEILAPLAN/blob/master/changelog.md
+    Vollständiger Changelog unter: https://github.com/piMoll/SEILAPLAN/blob/master/CHANGELOG.md
 
     ***
     [EN]

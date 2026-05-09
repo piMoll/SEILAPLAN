@@ -1,6 +1,6 @@
 [**GitHub Repository**](https://github.com/piMoll/SEILAPLAN)
 
-[**Changelog**](https://github.com/piMoll/SEILAPLAN/blob/master/changelog.md)
+[**Changelog**](https://github.com/piMoll/SEILAPLAN/blob/master/CHANGELOG.md)
 
 # SEILAPLAN
 
