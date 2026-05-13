@@ -32,9 +32,10 @@ unter https://seilaplan.wsl.ch
 Voraussetzung für die Verwendung von SEILAPLAN ist [QGIS](https://qgis.org/), ein frei verfügbares geografisches Informationssystem zur Betrachtung und Analyse von Geodaten.
 
 Es wird empfohlen, eine aktuelle Langzeitversion (LTS) von QGIS zu benutzen und diese regelmässig zu aktualisieren.
-Seilaplan kann mit QGIS Version 3 (>3.22) verwendet werden und ist kompatibel
-mit der bevorstehenden Version 4.
-Das Plugin kann unter Linux, Windows und OS X ausgeführt werden.
+Seilaplan kann mit QGIS Version 3 (>3.22) und >4.0 verwendet werden.
+Das Plugin kann unter Linux, Windows und MacOS ausgeführt werden.
+
+Für MacOS wird die Version 3.44 oder später empfohlen, da in gewissen früheren Versionen notwendige Python-Bibliotheken fehlen.
 
 1. QGIS [herunterladen](https://qgis.org/download/) und installieren
 2. In QGIS den Plugin-Manager öffnen: Menü _Erweiterungen > Erweiterungen verwalten und installieren_
@@ -44,8 +45,6 @@ Das Plugin kann unter Linux, Windows und OS X ausgeführt werden.
 
 Weitere Informationen, erste Schritte und Fehlerbehebungen finden sich im PDF: [SEILAPLAN_Installation_und_erste_Schritte.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/SEILAPLAN_Installation_und_erste_Schritte.pdf)
 
-> [!CAUTION]
-> In QGIS 3.44 für macOS fehlen gewisse Python Bibliotheken. Es wird empfohlen, bis auf Weiteres QGIS LTR 3.40 zu verwenden.
 
 ## **Weiterführende Dokumentation**
 
@@ -148,9 +147,11 @@ geodata.
 
 It is recommended to install a current Long Term Support (LTS) version of QGIS
 and update it regularly.
-Seilaplan can be used in QGIS version 3 (>3.22) and is compatible with the
-upcoming version 4.
-The plugin runs on Linux, Windows and OS X.
+Seilaplan can be used in QGIS version 3 (>3.22) and >4.0.
+The plugin runs on Linux, Windows and MacOS.
+
+Please note that on MacOS QGIS version 3.44 or later is recommended, as necessary
+Python libraries are missing in some earlier versions.
 
 1. Download and install QGIS [here](https://qgis.org/download/)
 2. Open the Plugin Manager in QGIS: Menu _Plugins > Manage and Install Plugins_
@@ -165,9 +166,6 @@ Further information, first steps and troubleshooting can be found in the PDF
 (in
 german): [SEILAPLAN_Installation_und_erste_Schritte.pdf](https://github.com/piMoll/SEILAPLAN/raw/master/help/SEILAPLAN_Installation_und_erste_Schritte.pdf)
 
-
-> [!CAUTION]
-> In QGIS 3.44 for macOS some Python libraries are missing. It is recommended to use QGIS LTR 3.40 instead.
 
 ## Obtaining elevation data for Switzerland
 
