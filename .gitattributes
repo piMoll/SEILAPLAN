@@ -1,0 +1,4 @@
+SEILAPLAN/i18n/*.pro export-ignore
+SEILAPLAN/i18n/*.ts export-ignore
+SEILAPLAN/tests/** export-ignore
+SEILAPLAN/config/birdView/_pole_symbols.svg export-ignore
