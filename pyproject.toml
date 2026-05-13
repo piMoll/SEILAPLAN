@@ -1,3 +1,20 @@
+
+# Dependencies
+# -----------------------------------
+
+optional-dependencies.dev =[
+    "flake8",
+    "flake8-pyproject",
+    "flake8-qgis",
+    "bandit",
+    "black",
+    "isort",
+    "qgis-plugin-ci",
+]
+
+# Code Quality
+# -----------------------------------
+
 [tool.black]
 line-length = 88
 target-version = ["py311", "py312"]

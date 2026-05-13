@@ -2,6 +2,7 @@ import os
 import sys
 import tempfile
 
+from osgeo import gdal
 from qgis.core import QgsApplication
 from qgis.testing import unittest
 
@@ -13,6 +14,7 @@ if libPath not in sys.path:
     sys.path.insert(-1, libPath)
 
 SEILAPLAN.DEBUG = True
+gdal.UseExceptions()
 
 TEST_DIR = os.path.dirname(__file__)
 TESTDATA_DIR = os.path.join(TEST_DIR, "testdata")
@@ -20,9 +22,6 @@ TMP_DIR = os.path.join(TESTDATA_DIR, "tmp")
 
 if not os.path.exists(TMP_DIR):
     os.makedirs(TMP_DIR)
-
-# Was necessary at one point, not anymore though
-# os.environ["XDG_SESSION_TYPE"] = "xcb"
 
 QGIS_APP = QgsApplication([], False)
 tmpdir = tempfile.mkdtemp("", "QGIS-PythonTestConfigPath-")
