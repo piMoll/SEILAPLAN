@@ -12,6 +12,16 @@ optional-dependencies.dev =[
     "qgis-plugin-ci",
 ]
 
+
+# Packaging
+# -----------------------------------
+
+[tool.qgis-plugin-ci]
+plugin_path = "SEILAPLAN"
+project_slug = "SEILAPLAN"
+github_organization_slug = "piMoll"
+
+
 # Code Quality
 # -----------------------------------
 
