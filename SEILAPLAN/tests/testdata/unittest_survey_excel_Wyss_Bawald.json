@@ -1,31 +1,31 @@
 {
-    "projectname": "unittest_dhm_crane_anchor_6_poles",
+    "projectname": "23 ÜK-C GR 19_23 W30 Bawald",
     "version": "3.5.3",
     "header": {
-        "PrVerf": "Unittest",
-        "PrNr": "Unittest 000",
-        "PrGmd": "Oberägeri",
-        "PrWald": "Hinterwald",
-        "PrBemerkung": "Test project"
+        "PrVerf": "K.Wyss",
+        "PrNr": "19/23",
+        "PrGmd": "Maladers",
+        "PrWald": "Bawald",
+        "PrBemerkung": ""
     },
     "heightsource": {
-        "type": "dhm",
-        "surveyType": null,
-        "source": "{HOMEPATH}/test/testdata/dhm.tiff",
+        "type": "survey",
+        "surveyType": "excelProtocol",
+        "source": "{HOMEPATH}/tests/testdata/unittest_feldaufnahmeprotokoll_Wyss_Bawald.xlsx",
         "crs": "EPSG:2056"
     },
     "profile": {
         "start": {
             "coordinates": [
-                2744855.616961695,
-                1189660.624561445
+                2762426.9999999995,
+                1190728.0
             ],
-            "type": "crane"
+            "type": "pole_anchor"
         },
         "end": {
             "coordinates": [
-                2744623.5336833997,
-                1189461.696037192
+                2762307.2982812757,
+                1190378.3798895986
             ],
             "type": "pole_anchor"
         },
@@ -35,106 +35,92 @@
     "poles": [
         {
             "idx": 0,
-            "name": "Seilkran",
-            "poleType": "crane",
+            "name": "TA Fi⌀ 60cm",
+            "poleType": "pole_anchor",
             "d": 0.0,
-            "h": 12.0,
-            "z": 1253.9126660529864,
+            "h": 0.0,
+            "z": -2.013798905413649e-11,
             "angle": 0.0,
             "manually": false,
             "active": true,
-            "category": "mobiler_seilkran",
+            "category": "normaler_ankerbaum",
             "position": "mitte",
-            "abspann": "anfang"
+            "abspann": null
         },
         {
             "idx": 1,
-            "name": "Stütze A",
+            "name": "EM Fi ⌀ 45cm, 0,3m li",
             "poleType": "pole",
-            "d": 40.0,
-            "h": 12.0,
-            "z": 1243.4937887052106,
+            "d": 53.0,
+            "h": 9.0,
+            "z": -15.155329683089548,
             "angle": 0.0,
             "manually": true,
             "active": true,
-            "category": "vorziehstuetze_1",
-            "position": "links",
+            "category": "endmast",
+            "position": "rechts",
             "abspann": "ende"
         },
         {
             "idx": 2,
-            "name": "Stütze B; Ø 28cm; Fi",
+            "name": "S Fi ⌀ 50cm, 0,7m re",
             "poleType": "pole",
-            "d": 97.0,
-            "h": 13.2,
-            "z": 1226.7947154926728,
+            "d": 133.0,
+            "h": 14.0,
+            "z": -46.80406833686566,
             "angle": 0.0,
             "manually": true,
             "active": true,
             "category": "vorziehstuetze_2",
             "position": "links",
-            "abspann": "flach"
+            "abspann": "ende"
         },
         {
             "idx": 3,
-            "name": "Stütze c",
+            "name": "S Fi ⌀ 50cm, 2,4m li",
             "poleType": "pole",
-            "d": 182.0,
-            "h": 11.4,
-            "z": 1203.736937384254,
-            "angle": 11,
+            "d": 206.0,
+            "h": 12.0,
+            "z": -76.23510780714636,
+            "angle": 0.0,
             "manually": true,
             "active": true,
-            "category": "vorgeneigte_stuetze",
-            "position": "links",
-            "abspann": "anfang"
+            "category": "vorziehstuetze_2",
+            "position": "rechts",
+            "abspann": "ende"
         },
         {
             "idx": 4,
-            "name": "Stütze D",
+            "name": "S Fi ⌀ 50cm, 1,1m re",
             "poleType": "pole",
-            "d": 250.0,
-            "h": 12.000000000000002,
-            "z": 1178.0707556254379,
+            "d": 328.0,
+            "h": 10.0,
+            "z": -136.35360059221972,
             "angle": 0.0,
             "manually": true,
             "active": true,
             "category": "vorziehstuetze_1",
-            "position": "rechts",
+            "position": "links",
             "abspann": "ende"
         },
         {
             "idx": 5,
-            "name": "Stütze E; Préfére 00cm; Fi",
-            "poleType": "pole",
-            "d": 290.0,
-            "h": 12.0,
-            "z": 1156.1639025307168,
-            "angle": 0.0,
-            "manually": true,
-            "active": true,
-            "category": "vorgeneigte_stuetze",
-            "position": "rechts",
-            "abspann": "ende"
-        },
-        {
-            "idx": 6,
-            "name": "Verankerung",
+            "name": "TA Fi ⌀ 55cm, 1,0m li",
             "poleType": "pole_anchor",
-            "d": 305.0,
+            "d": 369.0,
             "h": 0.0,
-            "z": 1148.5659519567498,
+            "z": -152.29950948334923,
             "angle": 0.0,
             "manually": false,
             "active": true,
-            "category": "endmast",
-            "position": "links",
-            "abspann": "ende"
+            "category": "normaler_ankerbaum",
+            "position": "mitte",
+            "abspann": null
         }
     ],
     "params": {
-        "setname": "",
-        "optSTA": 70,
+        "setname": "W30 ibW",
+        "optSTA": null,
         "parameterList": [
             {
                 "name": "Seilsys",
@@ -163,7 +149,7 @@
             {
                 "name": "Bodenabst_min",
                 "label": "Min. Abstand zwischen Tragseil und Boden",
-                "value": "6.8",
+                "value": "8",
                 "unit": "m"
             },
             {
@@ -181,25 +167,25 @@
             {
                 "name": "Q",
                 "label": "Gesamtlast",
-                "value": "35",
+                "value": "20",
                 "unit": "kN"
             },
             {
                 "name": "qT",
                 "label": "Metergewicht Tragseil",
-                "value": "0.0232",
+                "value": "0.025",
                 "unit": "kN/m"
             },
             {
                 "name": "D",
                 "label": "Durchmesser Tragseil",
-                "value": "22",
+                "value": "26",
                 "unit": "mm"
             },
             {
                 "name": "MBK",
                 "label": "Mindestbruchkraft Tragseil",
-                "value": "424",
+                "value": "439",
                 "unit": "kN"
             },
             {
@@ -217,13 +203,13 @@
             {
                 "name": "SK",
                 "label": "Tragseilspannkraft (Anfangspunkt)",
-                "value": "70",
+                "value": "120",
                 "unit": "kN"
             },
             {
                 "name": "Anlagetyp",
                 "label": "Anlagetyp",
-                "value": "Spezieller Anlagetyp Rosa",
+                "value": "W30",
                 "unit": ""
             },
             {
@@ -241,13 +227,13 @@
             {
                 "name": "HM_min",
                 "label": "Minimale Sattelhöhe",
-                "value": "8",
+                "value": "7",
                 "unit": "m"
             },
             {
                 "name": "HM_max",
                 "label": "Maximale Sattelhöhe",
-                "value": "22",
+                "value": "18",
                 "unit": "m"
             },
             {
@@ -307,7 +293,7 @@
             {
                 "name": "Bundstelle",
                 "label": "Bundstelle über Sattelleiste",
-                "value": "1.5",
+                "value": "3",
                 "unit": "m"
             }
         ]

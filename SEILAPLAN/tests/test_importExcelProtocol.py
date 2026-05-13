@@ -1,6 +1,6 @@
 from copy import deepcopy
 import os
-from test import TESTDATA_DIR
+from tests import TESTDATA_DIR
 import unittest
 from unittest import mock
 
