@@ -1,5 +1,5 @@
 import os
-from test import TESTDATA_DIR
+from tests import TESTDATA_DIR
 import unittest
 
 from qgis.core import QgsCoordinateReferenceSystem, QgsRasterLayer

@@ -1,5 +1,5 @@
 {
-    "projectname": "unittest_dhm_anchor_anchor_6_poles",
+    "projectname": "unittest_dhm_crane_anchor_6_poles",
     "version": "3.5.3",
     "header": {
         "PrVerf": "Unittest",
@@ -11,7 +11,7 @@
     "heightsource": {
         "type": "dhm",
         "surveyType": null,
-        "source": "{HOMEPATH}/test/testdata/dhm.tiff",
+        "source": "{HOMEPATH}/tests/testdata/dhm.tiff",
         "crs": "EPSG:2056"
     },
     "profile": {
@@ -20,14 +20,14 @@
                 2744855.616961695,
                 1189660.624561445
             ],
-            "type": "pole"
+            "type": "crane"
         },
         "end": {
             "coordinates": [
                 2744623.5336833997,
                 1189461.696037192
             ],
-            "type": "pole"
+            "type": "pole_anchor"
         },
         "fixedPoles": [],
         "noPoleSection": []
@@ -35,120 +35,106 @@
     "poles": [
         {
             "idx": 0,
-            "name": "Verankerung",
-            "poleType": "anchor",
-            "d": -20.0,
-            "h": 0.0,
-            "z": 1244.0292061105945,
-            "angle": 0.0,
-            "manually": false,
-            "active": true,
-            "category": null,
-            "position": null,
-            "abspann": null
-        },
-        {
-            "idx": 1,
-            "name": "Anfangsstütze",
-            "poleType": "pole",
+            "name": "Seilkran",
+            "poleType": "crane",
             "d": 0.0,
             "h": 12.0,
             "z": 1253.9126660529864,
-            "angle": 1,
+            "angle": 0.0,
             "manually": false,
             "active": true,
-            "category": null,
-            "position": null,
-            "abspann": null
+            "category": "mobiler_seilkran",
+            "position": "mitte",
+            "abspann": "anfang"
+        },
+        {
+            "idx": 1,
+            "name": "Stütze A",
+            "poleType": "pole",
+            "d": 40.0,
+            "h": 12.0,
+            "z": 1243.4937887052106,
+            "angle": 0.0,
+            "manually": true,
+            "active": true,
+            "category": "vorziehstuetze_1",
+            "position": "links",
+            "abspann": "ende"
         },
         {
             "idx": 2,
-            "name": "neue Stütze",
+            "name": "Stütze B; Ø 28cm; Fi",
             "poleType": "pole",
-            "d": 76.0,
-            "h": 12.0,
-            "z": 1233.7329502885796,
+            "d": 97.0,
+            "h": 13.2,
+            "z": 1226.7947154926728,
             "angle": 0.0,
             "manually": true,
             "active": true,
-            "category": null,
-            "position": null,
-            "abspann": null
+            "category": "vorziehstuetze_2",
+            "position": "links",
+            "abspann": "flach"
         },
         {
             "idx": 3,
-            "name": "neue Stütze",
+            "name": "Stütze c",
             "poleType": "pole",
-            "d": 152.0,
-            "h": 13.1,
-            "z": 1208.5946345853422,
-            "angle": 0,
+            "d": 182.0,
+            "h": 11.4,
+            "z": 1203.736937384254,
+            "angle": 11,
             "manually": true,
             "active": true,
-            "category": null,
-            "position": null,
-            "abspann": null
+            "category": "vorgeneigte_stuetze",
+            "position": "links",
+            "abspann": "anfang"
         },
         {
             "idx": 4,
-            "name": "neue Stütze",
+            "name": "Stütze D",
             "poleType": "pole",
-            "d": 198.0,
-            "h": 12.6,
-            "z": 1198.518224470363,
+            "d": 250.0,
+            "h": 12.000000000000002,
+            "z": 1178.0707556254379,
             "angle": 0.0,
             "manually": true,
             "active": true,
-            "category": null,
-            "position": null,
-            "abspann": null
+            "category": "vorziehstuetze_1",
+            "position": "rechts",
+            "abspann": "ende"
         },
         {
             "idx": 5,
-            "name": "neue Stütze",
+            "name": "Stütze E; Préfére 00cm; Fi",
             "poleType": "pole",
-            "d": 253.0,
+            "d": 290.0,
             "h": 12.0,
-            "z": 1176.702902928115,
-            "angle": 6,
+            "z": 1156.1639025307168,
+            "angle": 0.0,
             "manually": true,
             "active": true,
-            "category": null,
-            "position": null,
-            "abspann": null
+            "category": "vorgeneigte_stuetze",
+            "position": "rechts",
+            "abspann": "ende"
         },
         {
             "idx": 6,
-            "name": "Endstütze",
-            "poleType": "pole",
+            "name": "Verankerung",
+            "poleType": "pole_anchor",
             "d": 305.0,
-            "h": 12.0,
+            "h": 0.0,
             "z": 1148.5659519567498,
             "angle": 0.0,
             "manually": false,
             "active": true,
-            "category": null,
-            "position": null,
-            "abspann": null
-        },
-        {
-            "idx": 7,
-            "name": "Verankerung",
-            "poleType": "anchor",
-            "d": 325.0,
-            "h": 0.0,
-            "z": 1141.737094113212,
-            "angle": 0.0,
-            "manually": false,
-            "active": true,
-            "category": null,
-            "position": null,
-            "abspann": null
+            "category": "endmast",
+            "position": "links",
+            "abspann": "ende"
         }
     ],
     "params": {
         "setname": "",
-        "optSTA": null,
+        "optSTA": 70,
         "parameterList": [
             {
                 "name": "Seilsys",
@@ -321,7 +307,7 @@
             {
                 "name": "Bundstelle",
                 "label": "Bundstelle über Sattelleiste",
-                "value": "3",
+                "value": "1.5",
                 "unit": "m"
             }
         ]
