@@ -27,6 +27,43 @@
       <number>0</number>
      </property>
      <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="recalcStatus_ico">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap>icons/icon_reload.png</pixmap>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="recalcStatus_txt">
+         <property name="text">
+          <string>Neuberechnung...</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="plotContainer"/>
+     </item>
+     <item>
       <layout class="QHBoxLayout" name="plotFooterLayout">
        <property name="spacing">
         <number>6</number>
@@ -66,9 +103,6 @@
         </widget>
        </item>
       </layout>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="plotContainer"/>
      </item>
     </layout>
    </item>
@@ -193,7 +227,7 @@
               <x>0</x>
               <y>0</y>
               <width>666</width>
-              <height>368</height>
+              <height>346</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout">
@@ -239,7 +273,7 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>666</width>
+              <width>652</width>
               <height>393</height>
              </rect>
             </property>
@@ -1004,7 +1038,7 @@
               <x>0</x>
               <y>0</y>
               <width>666</width>
-              <height>331</height>
+              <height>309</height>
              </rect>
             </property>
             <layout class="QGridLayout" name="gridLayout_2">
@@ -1389,20 +1423,19 @@
       </widget>
      </item>
      <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+      <widget class="QLabel" name="infoPluginState">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
-       <property name="sizeHint" stdset="0">
+       <property name="maximumSize">
         <size>
-         <width>40</width>
-         <height>20</height>
+         <width>16777215</width>
+         <height>16777215</height>
         </size>
        </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QLabel" name="infoPluginState">
        <property name="text">
         <string/>
        </property>
@@ -1410,19 +1443,6 @@
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_5">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
      </item>
      <item>
       <widget class="QPushButton" name="btnClose">
