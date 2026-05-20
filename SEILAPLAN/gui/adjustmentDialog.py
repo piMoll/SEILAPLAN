@@ -494,8 +494,6 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         self.projectHandler.setPrHeader(prHeader)
 
     def updateRecalcStatus(self, status):
-        # TODO: Status label has moved
-        return
         color = None
         green = "#b6ddb5"
         yellow = "#f4e27a"
