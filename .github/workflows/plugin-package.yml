@@ -12,9 +12,11 @@ concurrency:
 on:
   push:
     branches:
-      - plugin-ci
+      - dev
+      - master
   pull_request:
     branches:
+      - dev
       - master
   release:
     types: [published]
