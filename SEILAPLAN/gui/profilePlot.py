@@ -38,6 +38,7 @@ from matplotlib.figure import Figure
 from SEILAPLAN.utils.misc import is_dark_mode
 
 from .mapMarker import POLE_COLOR, PROFILE_COLOR, SECTION_COLOR
+from .plotting_tools import zoom_with_wheel
 
 
 class ProfilePlot(FigureCanvas):
@@ -75,7 +76,7 @@ class ProfilePlot(FigureCanvas):
         self.evtPressSection = None
 
         # Enable zoom with scroll wheel
-        # zoomFunc = zoom_with_wheel(self, self.axes, zoomScale=1.3)
+        zoomFunc = zoom_with_wheel(self, self.axes, zoomScale=1.3)
 
         self.axes.set_aspect("equal", "datalim")
         self.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
