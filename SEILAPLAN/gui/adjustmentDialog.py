@@ -512,7 +512,14 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
             self.recalcStatus_ico.setPixmap(
                 QPixmap(getAbsoluteIconPath("icon_yellow.png"))
             )
-            color = yellow
+            color = red
+            # If no plot topic is selected, default to 'leerseilknickwinkel'
+            # to show the position of the liftoff
+            if self.selectedPlotTopic is None:
+                for idx, item in enumerate(self.thdUpdater.topics):
+                    if item.id == "leerseilknickwinkel":
+                        self.fieldPlotTopic.setCurrentIndex(idx + 1)
+
         elif status == ResultQuality.LineNotComplete:
             self.recalcStatus_txt.setText(
                 self.tr("Nicht genuegend Stuetzenstandorte bestimmbar")
