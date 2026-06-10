@@ -600,6 +600,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
             if rlyr["name"] in selectedRasters:
                 rasterLyrList.append(rlyr["lyr"])
 
+        self.projectHandler.resetHeightSource()
         if len(rasterLyrList) == 1:
             self.projectHandler.setHeightSource(rasterLyrList[0], "dhm")
         elif len(rasterLyrList) > 1:
