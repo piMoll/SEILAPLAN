@@ -25,7 +25,14 @@ from processing.core.Processing import Processing
 from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QCoreApplication, QFileInfo, QSettings, Qt
 from qgis.PyQt.QtGui import QPixmap
-from qgis.PyQt.QtWidgets import QComboBox, QDialog, QFileDialog, QMessageBox, QTextEdit
+from qgis.PyQt.QtWidgets import (
+    QApplication,
+    QComboBox,
+    QDialog,
+    QFileDialog,
+    QMessageBox,
+    QTextEdit,
+)
 from qgis.core import (
     QgsCoordinateReferenceSystem,
     QgsPointXY,
@@ -93,7 +100,6 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
         self.rasterField = QgsCheckableComboBoxOwn(self.groupBox_2)
         self.rasterField.setObjectName("rasterField2")
         self.gridLayout_15.addWidget(self.rasterField, 0, 2, 1, 1)
-        self.virtRaster = None
 
         # Language
         self.locale = QSettings().value("locale/userLocale")[0:2]
@@ -585,9 +591,13 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
 
     def onChangeRaster(self):
         """Triggered by choosing a raster from the drop down menu."""
-        self.setRaster()
-        # Update start and end point
-        self.checkPoints()
+        try:
+            QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+            self.setRaster()
+            # Update start and end point
+            self.checkPoints()
+        finally:
+            QApplication.restoreOverrideCursor()
 
     def setRaster(self, selectedRasters: list = None):
         """Sets selected raster in project handler"""
@@ -903,7 +913,9 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
             self.projectHandler.heightSource.contourLayer is None
             and self.projectHandler.heightSourceType in ["dhm", "dhm_list"]
         ):
+            QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
             createContours(self.canvas, self.projectHandler.heightSource)
+            QApplication.restoreOverrideCursor()
 
     def onFinishedLineDraw(self, linecoord):
         self.projectHandler.resetProfile()
@@ -915,8 +927,10 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
 
     def onShowProfile(self):
         try:
+            QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
             profile = self.projectHandler.preparePreviewProfile()
         except Exception:
+            QApplication.restoreOverrideCursor()
             QMessageBox.critical(
                 self,
                 self.tr("Fehler"),
@@ -929,6 +943,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
                 self.projectHandler.fixedPoles["poles"],
                 self.projectHandler.noPoleSection,
             )
+            QApplication.restoreOverrideCursor()
             self.profileWin.exec()
 
     def onLoadProjects(self):
@@ -938,16 +953,21 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
             self, title, self.confHandler.getCurrentPath(), fFilter
         )
         if filename:
-            self.confHandler.reset()
-            success = self.confHandler.loadSettings(filename)
-            if success:
-                self.setupContent()
-            else:
-                QMessageBox.critical(
-                    self,
-                    self.tr("Fehler beim Laden"),
-                    self.tr("Projektdatei konnte nicht geladen werden."),
-                )
+            success = False
+            QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+            try:
+                self.confHandler.reset()
+                if self.confHandler.loadSettings(filename):
+                    self.setupContent()
+                    success = True
+            finally:
+                QApplication.restoreOverrideCursor()
+                if not success:
+                    QMessageBox.critical(
+                        self,
+                        self.tr("Fehler"),
+                        self.tr("Projektdatei konnte nicht geladen werden."),
+                    )
 
     def onSaveProject(self):
         title = self.tr("Projekt speichern")
@@ -964,13 +984,12 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
             ),
             fFilter,
         )
-
         if filename:
+            QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
             if filename[-5:] != ".json":
                 filename += ".json"
             self.confHandler.saveSettings(filename)
-        else:
-            return False
+            QApplication.restoreOverrideCursor()
 
     def onTypeAChange(self):
         idx = self.fieldTypeA.currentIndex()

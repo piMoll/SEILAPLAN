@@ -24,7 +24,7 @@ import os
 from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QCoreApplication, QSettings, Qt, QTimer
 from qgis.PyQt.QtGui import QPixmap
-from qgis.PyQt.QtWidgets import QDialog, QMessageBox, QTextEdit
+from qgis.PyQt.QtWidgets import QDialog, QMessageBox, QTextEdit, QApplication
 
 from SEILAPLAN import PLUGIN_DIR
 from SEILAPLAN.core.cablelineFinal import preciseCable, updateWithCableCoordinates
@@ -678,145 +678,155 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
             self.unsavedChanges = False
 
     def createOutput(self):
-        outputFolder = self.confHandler.getCurrentPath()
-        projName = self.projectHandler.getProjectName()
-        outputLoc, projName_unique = createOutputFolder(outputFolder, projName)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+        try:
+            outputFolder = self.confHandler.getCurrentPath()
+            projName = self.projectHandler.getProjectName()
+            outputLoc, projName_unique = createOutputFolder(outputFolder, projName)
 
-        updateWithCableCoordinates(
-            self.cableline,
-            self.projectHandler.points["A"],
-            self.projectHandler.azimut,
-        )
-        poles = [pole for pole in self.poles.poles if pole["active"]]
-        # Save project file
-        self.confHandler.saveSettings(
-            os.path.join(outputLoc, f"{self.tr('Projekteinstellungen')}.json")
-        )
-
-        # Create short report
-        if self.confHandler.getOutputOption("shortReport"):
-            generateShortReport(
-                self.confHandler, self.result, projName_unique, outputLoc
+            updateWithCableCoordinates(
+                self.cableline,
+                self.projectHandler.points["A"],
+                self.projectHandler.azimut,
+            )
+            poles = [pole for pole in self.poles.poles if pole["active"]]
+            # Save project file
+            self.confHandler.saveSettings(
+                os.path.join(outputLoc, f"{self.tr('Projekteinstellungen')}.json")
             )
 
-        # Create technical report
-        if self.confHandler.getOutputOption("report"):
-            reportText = generateReportText(
-                self.confHandler, self.result, projName_unique
-            )
-            generateReport(reportText, outputLoc)
-
-        # Create plot
-        if self.confHandler.getOutputOption("plot"):
-            includingBirdView = self.confHandler.getOutputOption("birdView")
-            plotSavePath = os.path.join(outputLoc, self.tr("Diagramm.pdf"))
-            width, height, ratio = calculatePlotDimensions(
-                self.profile.di_disp, self.profile.zi_disp
-            )
-
-            printPlot = AdjustmentPlot(
-                self,
-                width,
-                height,
-                150,
-                withBirdView=includingBirdView,
-                profilePlotRatio=ratio,
-                asPdf=True,
-            )
-            printPlot.initData(
-                self.profile.di_disp,
-                self.profile.zi_disp,
-                self.profile.peakLoc_x,
-                self.profile.peakLoc_z,
-                self.profile.surveyPnts,
-            )
-            printPlot.updatePlot(self.poles.getAsArray(), self.cableline)
-            printPlot.layoutDiagrammForPrint(
-                projName_unique, poles, self.poles.direction
-            )
-            imgPath = None
-            if includingBirdView:
-                # Create second plot
-                xlim, ylim = printPlot.createBirdView(poles, self.projectHandler.azimut)
-                # Extract the map background
-                imgPath = extractMapBackground(
-                    outputLoc,
-                    xlim,
-                    ylim,
-                    self.projectHandler.points["A"],
-                    self.projectHandler.azimut,
+            # Create short report
+            if self.confHandler.getOutputOption("shortReport"):
+                generateShortReport(
+                    self.confHandler, self.result, projName_unique, outputLoc
                 )
-                printPlot.addBackgroundMap(imgPath)
-            printPlot.exportPdf(plotSavePath)
-            # Delete map background
-            if imgPath:
-                os.remove(imgPath)
 
-        if self.confHandler.getOutputOption("birdViewLegend"):
-            imageName = "Vogelperspektive_Kategorie.png"
-            imgPath = os.path.join(PLUGIN_DIR, "img", f"{self.locale}_{imageName}")
-            if not os.path.exists(imgPath):
-                imgPath = os.path.join(PLUGIN_DIR, "img", f"de_{imageName}")
-            saveImgAsPdfWithMpl(
-                imgPath,
-                os.path.join(outputLoc, self.tr("Vogelperspektive Legende") + ".pdf"),
-            )
+            # Create technical report
+            if self.confHandler.getOutputOption("report"):
+                reportText = generateReportText(
+                    self.confHandler, self.result, projName_unique
+                )
+                generateReport(reportText, outputLoc)
 
-        # Generate geo data
-        if (
-            self.confHandler.getOutputOption("csv")
-            or self.confHandler.outputOptions["gpkg"]
-            or self.confHandler.outputOptions["shape"]
-            or self.confHandler.outputOptions["kml"]
-            or self.confHandler.outputOptions["dxf"]
-        ):
+            # Create plot
+            if self.confHandler.getOutputOption("plot"):
+                includingBirdView = self.confHandler.getOutputOption("birdView")
+                plotSavePath = os.path.join(outputLoc, self.tr("Diagramm.pdf"))
+                width, height, ratio = calculatePlotDimensions(
+                    self.profile.di_disp, self.profile.zi_disp
+                )
 
-            # Put geo data in separate sub folder
-            savePath = os.path.join(outputLoc, "geodata")
-            os.makedirs(savePath)
-            epsg = self.projectHandler.heightSource.spatialRef
-            geodata = organizeDataForExport(poles, self.cableline, self.profile)
+                printPlot = AdjustmentPlot(
+                    self,
+                    width,
+                    height,
+                    150,
+                    withBirdView=includingBirdView,
+                    profilePlotRatio=ratio,
+                    asPdf=True,
+                )
+                printPlot.initData(
+                    self.profile.di_disp,
+                    self.profile.zi_disp,
+                    self.profile.peakLoc_x,
+                    self.profile.peakLoc_z,
+                    self.profile.surveyPnts,
+                )
+                printPlot.updatePlot(self.poles.getAsArray(), self.cableline)
+                printPlot.layoutDiagrammForPrint(
+                    projName_unique, poles, self.poles.direction
+                )
+                imgPath = None
+                if includingBirdView:
+                    # Create second plot
+                    xlim, ylim = printPlot.createBirdView(
+                        poles, self.projectHandler.azimut
+                    )
+                    # Extract the map background
+                    imgPath = extractMapBackground(
+                        outputLoc,
+                        xlim,
+                        ylim,
+                        self.projectHandler.points["A"],
+                        self.projectHandler.azimut,
+                    )
+                    printPlot.addBackgroundMap(imgPath)
 
-            title = self.tr("Unerwarteter Fehler")
-            msg = self.tr("Erstellen der Geodaten nicht moeglich")
-            addedToMap = False
+                printPlot.exportPdf(plotSavePath)
+                # Delete map background
+                if imgPath:
+                    os.remove(imgPath)
 
-            if self.confHandler.getOutputOption("csv"):
-                try:
-                    generateCoordTable(self.cableline, self.profile, poles, savePath)
-                except Exception as e:
-                    msg = f"{msg}:\n{e}"
-                    self.showMessage(title, msg)
-            if self.confHandler.getOutputOption("gpkg"):
-                try:
-                    gpkgFiles = writeGeodata(geodata, "GPKG", epsg, savePath)
-                    addToMap(gpkgFiles, projName_unique)
-                    addedToMap = True
-                except Exception as e:
-                    msg = f"{msg}:\n{e}"
-                    self.showMessage(title, msg)
-            if self.confHandler.getOutputOption("shape"):
-                try:
-                    shapeFiles = writeGeodata(geodata, "SHP", epsg, savePath)
-                    if not addedToMap:
-                        addToMap(shapeFiles, projName_unique)
-                except Exception as e:
-                    msg = f"{msg}:\n{e}"
-                    self.showMessage(title, msg)
-            if self.confHandler.getOutputOption("kml"):
-                try:
-                    writeGeodata(geodata, "KML", epsg, savePath)
-                except Exception as e:
-                    msg = f"{msg}:\n{e}"
-                    self.showMessage(title, msg)
-            if self.confHandler.getOutputOption("dxf"):
-                try:
-                    writeGeodata(geodata, "DXF", epsg, savePath)
-                except Exception as e:
-                    msg = f"{msg}:\n{e}"
-                    self.showMessage(title, msg)
+            if self.confHandler.getOutputOption("birdViewLegend"):
+                imageName = "Vogelperspektive_Kategorie.png"
+                imgPath = os.path.join(PLUGIN_DIR, "img", f"{self.locale}_{imageName}")
+                if not os.path.exists(imgPath):
+                    imgPath = os.path.join(PLUGIN_DIR, "img", f"de_{imageName}")
+                saveImgAsPdfWithMpl(
+                    imgPath,
+                    os.path.join(
+                        outputLoc, self.tr("Vogelperspektive Legende") + ".pdf"
+                    ),
+                )
 
-        self.updateRecalcStatus("saveDone")
+            # Generate geo data
+            if (
+                self.confHandler.getOutputOption("csv")
+                or self.confHandler.outputOptions["gpkg"]
+                or self.confHandler.outputOptions["shape"]
+                or self.confHandler.outputOptions["kml"]
+                or self.confHandler.outputOptions["dxf"]
+            ):
+
+                # Put geo data in separate sub folder
+                savePath = os.path.join(outputLoc, "geodata")
+                os.makedirs(savePath)
+                epsg = self.projectHandler.heightSource.spatialRef
+                geodata = organizeDataForExport(poles, self.cableline, self.profile)
+
+                title = self.tr("Unerwarteter Fehler")
+                msg = self.tr("Erstellen der Geodaten nicht moeglich")
+                addedToMap = False
+
+                if self.confHandler.getOutputOption("csv"):
+                    try:
+                        generateCoordTable(
+                            self.cableline, self.profile, poles, savePath
+                        )
+                    except Exception as e:
+                        msg = f"{msg}:\n{e}"
+                        self.showMessage(title, msg)
+                if self.confHandler.getOutputOption("gpkg"):
+                    try:
+                        gpkgFiles = writeGeodata(geodata, "GPKG", epsg, savePath)
+                        addToMap(gpkgFiles, projName_unique)
+                        addedToMap = True
+                    except Exception as e:
+                        msg = f"{msg}:\n{e}"
+                        self.showMessage(title, msg)
+                if self.confHandler.getOutputOption("shape"):
+                    try:
+                        shapeFiles = writeGeodata(geodata, "SHP", epsg, savePath)
+                        if not addedToMap:
+                            addToMap(shapeFiles, projName_unique)
+                    except Exception as e:
+                        msg = f"{msg}:\n{e}"
+                        self.showMessage(title, msg)
+                if self.confHandler.getOutputOption("kml"):
+                    try:
+                        writeGeodata(geodata, "KML", epsg, savePath)
+                    except Exception as e:
+                        msg = f"{msg}:\n{e}"
+                        self.showMessage(title, msg)
+                if self.confHandler.getOutputOption("dxf"):
+                    try:
+                        writeGeodata(geodata, "DXF", epsg, savePath)
+                    except Exception as e:
+                        msg = f"{msg}:\n{e}"
+                        self.showMessage(title, msg)
+        finally:
+            QApplication.restoreOverrideCursor()
+            self.updateRecalcStatus("saveDone")
 
     def showMessage(self, title, message):
         QMessageBox.critical(self, title, message, QMessageBox.StandardButton.Ok)

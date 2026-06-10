@@ -1,4 +1,5 @@
 from qgis.core import QgsApplication
+from qgis.PyQt.QtWidgets import QApplication
 
 from SEILAPLAN.gui.adjustmentDialog import AdjustmentDialog
 from SEILAPLAN.gui.progressDialog import ProgressDialog
@@ -108,6 +109,8 @@ class SeilaplanRun:
     def close(self):
         # Save user settings
         self.confHandler.updateUserSettings()
+        # Restore the default cursor, just in case
+        QApplication.restoreOverrideCursor()
 
         # Cleanup any markers in map and delete dialogs
         for dialog in [

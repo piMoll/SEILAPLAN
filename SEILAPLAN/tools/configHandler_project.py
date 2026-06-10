@@ -511,6 +511,7 @@ class ProjectConfHandler(AbstractConfHandler):
             return False
         if self.heightSource.errorMsg:
             self.onError(self.heightSource.errorMsg)
+            return False
         return profile
 
     def setPrHeader(self, prHeaderData):
