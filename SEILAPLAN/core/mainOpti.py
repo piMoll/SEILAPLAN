@@ -152,7 +152,7 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
     testRes = (test1G * test2G) + ((test3G + test4G) * test1G)
     testRes = np.swapaxes(testRes, 0, 1)
     # Indices der möglichen Knoten generieren
-    [aa, ee] = np.where(testRes == True)  # aa_n.size = 4638, max(aa_n) = 96
+    aa, ee = np.where(testRes == True)  # noqa: E712
     optiLen = aa.size  # Anzahl Optimierungsdurchläufe
     a = Pos[aa]  # a.size = 4638, max(a) = 28
     e = Pos[ee]
@@ -184,7 +184,8 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
 
         AA = ERG + CC  # alles was True ist, muss gelöscht werden
         # Knoten aktualisieren
-        newIdx = np.where(AA == False)[0]  # neue, verkürze Indices
+        # neue, verkürze Indices
+        newIdx = np.where(AA == False)[0]  # noqa: E712
         aa = aa[newIdx]
         ee = ee[newIdx]
         optiLen = aa.size  # Anzahl Optimierungsdurchläufe aktualisieren

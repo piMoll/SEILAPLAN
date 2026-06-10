@@ -76,7 +76,7 @@ class ProfilePlot(FigureCanvas):
         self.evtPressSection = None
 
         # Enable zoom with scroll wheel
-        zoomFunc = zoom_with_wheel(self, self.axes, zoomScale=1.3)
+        zoomFunc = zoom_with_wheel(self, self.axes, zoomScale=1.3)  # noqa: F841
 
         self.axes.set_aspect("equal", "datalim")
         self.setFocusPolicy(Qt.FocusPolicy.ClickFocus)

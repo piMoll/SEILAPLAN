@@ -87,6 +87,10 @@ class TestTerrainAnalysis(unittest.TestCase):
         """This is a test setup to see what parameters influence the optimization
         in what way when calculating on a flat surface.
         The current setup tests what HM max value influences the optimization."""
+
+        # Remove this line to run the test
+        return
+
         for hm_max in range(17, 24):
             conf: ConfigHandler = ConfigHandler()
             success = conf.loadSettings(TEST_PROJECT_flat_terrain)

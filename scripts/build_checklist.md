@@ -8,9 +8,18 @@ See: https://plugins.qgis.org/docs/security-scanning
 pip install bandit detect-secrets flake8
 
 # Run checks on your plugin directory
-bandit -r your_plugin_directory/
-detect-secrets scan your_plugin_directory/
-flake8 your_plugin_directory/
+# Check if there are medium or high severity issues in the plugin, ignoring the lib folder
+bandit -r SEILAPLAN/ -a vuln -f screen -x lib
+# List only high severity issues in the plugin
+bandit -r SEILAPLAN/ --severity-level high -a vuln -f screen -x lib
+# Check if there are issues in the lib folder
+bandit -r SEILAPLAN/lib --severity-level high -a vuln -f screen
+
+# Check if there are secrets in the plugin
+detect-secrets scan SEILAPLAN/
+
+# Do a flake8 check on the plugin, ignoring the C901 error "too complex"
+flake8 SEILAPLAN/ --ignore=C901
 ```
 
 ### 1. Update changelog
