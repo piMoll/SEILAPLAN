@@ -2412,6 +2412,11 @@ Stuetze Endmast</source>
         <source>Bundstelle ueber Sattelleiste</source>
         <translation>Punto d’attacco sopra scanalatura della sella</translation>
     </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1772"/>
+        <source>Parameter für die Optimierung</source>
+        <translation>Parametri di ottimizzazione</translation>
+    </message>
 </context>
 <context>
     <name>SeilaplanPlugin</name>

@@ -2419,6 +2419,11 @@ Stuetze Endmast</source>
         <source>Bundstelle ueber Sattelleiste</source>
         <translation>Hauteur de fixation au-dessus de l‘étrier</translation>
     </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1772"/>
+        <source>Parameter für die Optimierung</source>
+        <translation>Paramètres d'optimisation</translation>
+    </message>
 </context>
 <context>
     <name>SeilaplanPlugin</name>

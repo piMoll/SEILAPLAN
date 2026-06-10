@@ -2396,6 +2396,11 @@ Stuetze Endmast</source>
         <source>Bundstelle ueber Sattelleiste</source>
         <translation>Bundstelle über Tragseilsattel</translation>
     </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1772"/>
+        <source>Parameter für die Optimierung</source>
+        <translation>Parameter für die Optimierung</translation>
+    </message>
 </context>
 <context>
     <name>SeilaplanPlugin</name>

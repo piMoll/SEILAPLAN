@@ -2413,6 +2413,11 @@ loaded (with/without a hold-down lug)</translation>
         <source>Bundstelle ueber Sattelleiste</source>
         <translation>Mounting height of the skyline saddle</translation>
     </message>
+    <message>
+        <location filename="../gui/seilaplanDialog.ui" line="1772"/>
+        <source>Parameter für die Optimierung</source>
+        <translation>Optimization Parameters</translation>
+    </message>
 </context>
 <context>
     <name>SeilaplanPlugin</name>
