@@ -2,19 +2,21 @@
 
 ## NEXT
 ### Neue Features
-- Verbesserung der Übersichtlichkeit im Bearbeitungsfenster
-    - Statusanzeige der Seillinienberechnung direkt im Diagramm
-    - Allgemeine Plugin-Benachrichtigungen (Speichern, Laden) im unteren Bereich
-    - Diagramm-Funktionalitäten oberhalb des Diagramms
-    - Verbessertes Scroll-Verhalten bei vielen Stützen
-    - Fragezeichen-Buttons weniger prominent
-- Geodaten-Export nach GeoPackage
-- Verbesserung der Benutzeroberfläche und Diagramme für QGIS Dark-Mode
-- Startfenster: Parameter-Reiter "Optimierung #1" und "Optimierung #2" zu "Optimierung" und "Diverses" umbenennen
+- Geodaten-Export ins GeoPackage-Format
+- Diverse Verbesserungen der Benutzeroberfläche
+    - Besseres Scroll-Verhalten im Bearbeitungsfenster wenn viele Stützen aufgelistet werden
+    - Bei langandauernden Prozessen (Speichern, Laden etc.) den Mauscursor als Ladesymbol anzeigen
+    - Fragezeichen-Buttons weniger prominent darstellen
+    - Diagrammfarben für die Darstellung im QGIS Dark-Mode verbessern
+    - Startfenster: Parameter-Reiter "Optimierung #1" und "Optimierung #2" zu "Optimierung" und "Diverses" umbenennen
 - Überprüfe und warne, wenn Parameterwert "Bodenabstand: einzuhalten ab / bis ..." 0 Meter beträgt und Bauelement "Verankerung" ausgewählt ist
+- Die Warnung, dass das Tragseil bei einer Stütze abhebt, wird prominenter angezeigt
+- Diverse Unterhaltsarbeiten, Release-Automatisierung und Verbesserung der Code-Qualität
 
 ### Fehlerbehebung
 - Karte zentriert nicht auf Rasterlayer, wenn in der Auswahlliste mehrere Raster ausgewählt werden
+- Wenn ein Cloud-optimiertes GeoTIFF-Raster ausgewählt ist, können keine Höhenlinien berechnet werden
+- Neue SEILAPLAN Plugin-Versionen werden vom Plugin-Manager nicht erkannt
 
 ## Version 3.7.1 (August 2025)
 ### Fehlerbehebung
