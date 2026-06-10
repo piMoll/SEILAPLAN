@@ -44,6 +44,7 @@ from qgis.core import (
     QgsTextFormat,
     QgsVectorLayer,
     QgsVectorLayerSimpleLabeling,
+    QgsProcessing,
 )
 
 from SEILAPLAN import DEBUG, PLUGIN_DIR
@@ -98,8 +99,12 @@ class DialogWithImage(QDialog):
 
 def createContours(canvas, heightSource):
     contourName = tr("Hoehenlinien_") + heightSource.name
-    crs = heightSource.spatialRef
-    outputPath = os.path.join(os.path.dirname(heightSource.path), contourName + ".shp")
+    if isCogRaster(heightSource.path):
+        outputPath = QgsProcessing.TEMPORARY_OUTPUT
+    else:
+        outputPath = os.path.join(
+            os.path.dirname(heightSource.path), contourName + ".shp"
+        )
     if os.path.exists(outputPath):
         contourLyr = QgsVectorLayer(outputPath, contourName, "ogr")
     else:
@@ -114,6 +119,7 @@ def createContours(canvas, heightSource):
         contourLyr = QgsVectorLayer(algOutput["OUTPUT"], contourName, "ogr")
 
     # contourLyr the same CRS as qgis project
+    crs = heightSource.spatialRef
     contourLyr.setCrs(crs)
     addLayerToQgis(contourLyr, "top")
     canvas.refresh()
@@ -126,6 +132,11 @@ def inSwitzerland():
         return True
     else:
         return False
+
+
+def isCogRaster(path):
+    """Checks if this path is a streamed resource like a COG"""
+    return path.startswith("/vsicurl/")
 
 
 def addBackgroundMap(canvas):
