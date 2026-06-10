@@ -123,8 +123,7 @@ def optimization(IS, profile, StuetzenPos, progress, fixedPoles, pole_type):
     arraySize = stufenAnzAnf + (posAnz - 2) * len(hStufung) + stufenAnzEnd
 
     # Pos = Längenposition für den Knoten i
-    Pos = np.empty(arraySize).astype(int)
-    Pos[0:stufenAnzAnf] = 0
+    Pos = np.zeros(arraySize, dtype=int)
     Pos[stufenAnzAnf:-stufenAnzEnd] = np.ravel(
         np.array([posIdx] * len(hStufung)), order="F"
     )
