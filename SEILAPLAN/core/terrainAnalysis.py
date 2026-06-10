@@ -68,17 +68,24 @@ def stuePos(IS, gp, noPoleSection, fixedPoles):
         - (gp.zi_n[lim_u - buf : lim_o - buf] + gp.zi_n[lim_u + buf : lim_o + buf]) / 2
     )
 
-    # Peaks mit Programm peakdetect ermitteln
-    peakLoc_raw = peakdetect(diff, di, 1)[
-        0
-    ]  # Ergibt nicht die exakt gleichen Resultate wie die Matlab Version
+    # Peaks mit peakdetect ermitteln
+
+    # Ergibt nicht die exakt gleichen Resultate wie die Matlab Version
+    peakLoc_raw = peakdetect(diff, di, 5)[0]
     if len(peakLoc_raw) > 0:
         peakIdx = np.array(peakLoc_raw, dtype=int)[:, :1].flatten()
     else:
         peakIdx = []
-    ld = np.where(np.array(diff) > 10)[0]
-    # Verschneiden
-    peakLoc = np.intersect1d(peakIdx, ld)
+
+    is_peak_threshold = 10
+    peakLoc = []
+    # Find peaks with a start threshold of 10 and slowly get lower until enough peaks are found
+    while len(peakLoc) < 3 and is_peak_threshold > 0:
+        ld = np.where(np.array(diff) > is_peak_threshold)[0]
+        # Verschneiden
+        peakLoc = np.intersect1d(peakIdx, ld)
+        is_peak_threshold -= 1
+
     gp.setPeakLocations(peakLoc)
 
     # Bereiche ohne Stützen (benutzerdefiniert) aufbereiten

@@ -1,0 +1,216 @@
+{
+    "projectname": "unittest_peakdetect",
+    "version": "3.7.1",
+    "header": {
+        "PrVerf": "",
+        "PrNr": "",
+        "PrGmd": "",
+        "PrWald": "",
+        "PrBemerkung": ""
+    },
+    "heightsource": {
+        "type": "dhm",
+        "surveyType": null,
+        "source": "{HOMEPATH}/tests/testdata/dhm.tiff",
+        "crs": "EPSG:2056"
+    },
+    "profile": {
+        "start": {
+            "coordinates": [
+                2744671.9479838707,
+                1189602.5491935485
+            ],
+            "type": "pole"
+        },
+        "end": {
+            "coordinates": [
+                2744607.2713709674,
+                1189486.812096774
+            ],
+            "type": "pole"
+        },
+        "fixedPoles": [],
+        "noPoleSection": []
+    },
+    "poles": [],
+    "params": {
+        "setname": "",
+        "optSTA": null,
+        "parameterList": [
+            {
+                "name": "Seilsys",
+                "label": "Seilsystem",
+                "value": "Zweiseil-System",
+                "unit": ""
+            },
+            {
+                "name": "HM_Kran",
+                "label": "Höhe Mast Mobilseilkran",
+                "value": "12",
+                "unit": "m"
+            },
+            {
+                "name": "Befahr_A",
+                "label": "Tragseil befahrbar ab ... vom Anfangspunkt",
+                "value": "1",
+                "unit": "m"
+            },
+            {
+                "name": "Befahr_E",
+                "label": "Tragseil befahrbar bis ... vor dem Endpunkt",
+                "value": "0",
+                "unit": "m"
+            },
+            {
+                "name": "Bodenabst_min",
+                "label": "Min. Abstand zwischen Tragseil und Boden",
+                "value": "7",
+                "unit": "m"
+            },
+            {
+                "name": "Bodenabst_A",
+                "label": "einzuhalten ab ... vom Anfangspunkt",
+                "value": "20",
+                "unit": "m"
+            },
+            {
+                "name": "Bodenabst_E",
+                "label": "einzuhalten bis ... vor dem Endpunkt",
+                "value": "20",
+                "unit": "m"
+            },
+            {
+                "name": "Q",
+                "label": "Gesamtlast",
+                "value": "35",
+                "unit": "kN"
+            },
+            {
+                "name": "qT",
+                "label": "Metergewicht Tragseil",
+                "value": "0.0232",
+                "unit": "kN/m"
+            },
+            {
+                "name": "D",
+                "label": "Durchmesser Tragseil",
+                "value": "22",
+                "unit": "mm"
+            },
+            {
+                "name": "MBK",
+                "label": "Mindestbruchkraft Tragseil",
+                "value": "424",
+                "unit": "kN"
+            },
+            {
+                "name": "qZ",
+                "label": "Metergewicht Zugseil",
+                "value": "0.0073",
+                "unit": "kN/m"
+            },
+            {
+                "name": "qR",
+                "label": "Metergewicht Rückholseil",
+                "value": "0",
+                "unit": "kN/m"
+            },
+            {
+                "name": "SK",
+                "label": "Tragseilspannkraft (Anfangspunkt)",
+                "value": "70",
+                "unit": "kN"
+            },
+            {
+                "name": "Anlagetyp",
+                "label": "Anlagetyp",
+                "value": "",
+                "unit": ""
+            },
+            {
+                "name": "Min_Dist_Mast",
+                "label": "Minimaler Abstand zwischen Stützen",
+                "value": "10",
+                "unit": "m"
+            },
+            {
+                "name": "L_Delta",
+                "label": "Min. Abstand mögl. Stützenstandorte",
+                "value": "10",
+                "unit": "m"
+            },
+            {
+                "name": "HM_min",
+                "label": "Minimale Sattelhöhe",
+                "value": "8",
+                "unit": "m"
+            },
+            {
+                "name": "HM_max",
+                "label": "Maximale Sattelhöhe",
+                "value": "22",
+                "unit": "m"
+            },
+            {
+                "name": "HM_Delta",
+                "label": "Abstufungsintervall",
+                "value": "2",
+                "unit": "m"
+            },
+            {
+                "name": "HM_nat",
+                "label": "Künstliche Stütze ab Sattelhöhe von",
+                "value": "22",
+                "unit": "m"
+            },
+            {
+                "name": "E",
+                "label": "Elastizitätsmodul Tragseil",
+                "value": "100",
+                "unit": "kN/mm2"
+            },
+            {
+                "name": "FuellF",
+                "label": "Füllfaktor",
+                "value": "0.7",
+                "unit": ""
+            },
+            {
+                "name": "SF_T",
+                "label": "Sicherheitsfaktor Tragseil",
+                "value": "3",
+                "unit": ""
+            },
+            {
+                "name": "LeerKnickMit",
+                "label": "Grenzwert min. Leerseilknickwinkel mit Niederhaltelasche",
+                "value": "1",
+                "unit": "°"
+            },
+            {
+                "name": "LeerKnickOhne",
+                "label": "Grenzwert min. Leerseilknickwinkel ohne Niederhaltelasche",
+                "value": "3",
+                "unit": "°"
+            },
+            {
+                "name": "LastKnickSt",
+                "label": "Grenzwert max. Lastseilknickwinkel bei Stütze",
+                "value": "30",
+                "unit": "°"
+            },
+            {
+                "name": "LastKnickEnd",
+                "label": "Grenzwert max. Lastseilknickwinkel bei Endmast",
+                "value": "60",
+                "unit": "°"
+            },
+            {
+                "name": "Bundstelle",
+                "label": "Bundstelle über Tragseilsattel",
+                "value": "3",
+                "unit": "m"
+            }
+        ]
+    }
+}
