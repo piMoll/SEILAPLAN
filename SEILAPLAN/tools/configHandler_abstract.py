@@ -38,6 +38,8 @@ class AbstractConfHandler(object):
             title = self.tr("Fehler", "AbstractConfHandler")
         if not message:
             message = traceback.format_exc()
+        if not self.dialog:
+            return
         QMessageBox.information(
             self.dialog, title, message, QMessageBox.StandardButton.Ok
         )

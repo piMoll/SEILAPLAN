@@ -97,7 +97,10 @@ class ProjectConfHandler(AbstractConfHandler):
             surveySourceType=surveyType,
         )
 
-        if self.heightSource and self.heightSourceType == "survey":
+        if self.heightSource is None or not self.heightSource.valid:
+            return False
+
+        if self.heightSourceType == "survey":
             self.heightSource: SurveyData
             self.heightSource.reprojectToCrs(heightSource["crs"])
 

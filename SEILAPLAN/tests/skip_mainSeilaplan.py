@@ -1,44 +1,12 @@
 import numpy as np
-from qgis.PyQt.QtCore import pyqtSignal
-from qgis.core import QgsTask
 from qgis.testing import unittest
 
 from SEILAPLAN.core.mainSeilaplan import main as main
 from SEILAPLAN.tool_.mainSeilaplan import main as main_
 from SEILAPLAN.tools.configHandler import ConfigHandler
+from ._test_helper import MockTask
 
 from . import BASIC_PROJECT_FILE
-
-
-class ProcessingTask(QgsTask):
-    """Dummy Class to handle the progress information events from the
-    algorithm"""
-
-    # Signals
-    sig_jobEnded = pyqtSignal(bool)
-    sig_jobError = pyqtSignal(str)
-    sig_value = pyqtSignal(float)
-    sig_range = pyqtSignal(list)
-    sig_text = pyqtSignal(str)
-    sig_result = pyqtSignal(list)
-
-    def __init__(self, confHandler, description="Dummy"):
-        super().__init__(description, QgsTask.CanCancel)
-        self.state = False
-        self.exception = None
-        self.confHandler = confHandler
-        self.projInfo = confHandler.project
-        self.resultStatus = None
-        self.result = None
-
-    def isCanceled(self):
-        return
-
-    def emit(*args):
-        return
-
-    def cancel(self):
-        super().cancel()
 
 
 class TestMainResults(unittest.TestCase):
@@ -96,7 +64,7 @@ class TestMainResults(unittest.TestCase):
         conf_ = ConfigHandler()
         conf_.loadSettings(BASIC_PROJECT_FILE)
         conf_.prepareForCalculation()
-        rslt_ = main_(ProcessingTask(conf_), self.inputData_, self.projInfo_)
+        rslt_ = main_(MockTask(conf_), self.inputData_, self.projInfo_)
         result_, resultStatus_ = rslt_
         [
             t_start_,
@@ -113,7 +81,7 @@ class TestMainResults(unittest.TestCase):
         # New calc
         poles = self.conf.project.poles
         profile = self.conf.project.profile
-        rslt = main(ProcessingTask(self.conf), self.conf.project)
+        rslt = main(MockTask(self.conf), self.conf.project)
         resultStatus, result = rslt
         [t_start, cableline, kraft, optSTA, optiLen] = result
 
