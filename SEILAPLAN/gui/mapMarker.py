@@ -91,19 +91,19 @@ class MapMarkerTool(QgsMapTool):
 
     def deactivate(self):
         self.canvas.setCursor(QCursor(Qt.CursorShape.OpenHandCursor))
-        self.linePoints = []
+        self.linePoints.clear()
         self.isActive = False
 
     def reset(self):
         self.removeMarker()
         self.canvas.setMapTool(self.savedTool)
         self.rubberband.reset()
-        self.linePoints = []
+        self.linePoints.clear()
         self.dblclktemp = None
         self.lineFeature = None
         for line in self.lineFeatureS:
             line.reset()
-        self.lineFeatureS = []
+        self.lineFeatureS.clear()
         self.deactivateCursor()
 
     def canvasMoveEvent(self, event):
@@ -166,14 +166,14 @@ class MapMarkerTool(QgsMapTool):
     def deleteSectionLines(self):
         for line in self.lineFeatureS:
             line.reset()
-            self.linePoints = []
-        self.lineFeatureS = []
+        self.linePoints.clear()
+        self.lineFeatureS.clear()
 
     def clearUnfinishedLines(self):
         if len(self.linePointsS) == 1:
             self.lineFeatureS[-1].reset()
             self.lineFeatureS.pop(-1)
-            self.linePointsS = []
+            self.linePointsS.clear()
 
     def drawMarker(
         self,
@@ -211,7 +211,7 @@ class MapMarkerTool(QgsMapTool):
             for marker in self.markers:
                 self.canvas.scene().removeItem(marker)
                 del marker
-            self.markers = []
+            self.markers.clear()
         self.canvas.refresh()
 
     def removeIntermediateMarkers(self):

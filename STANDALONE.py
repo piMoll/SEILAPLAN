@@ -290,7 +290,6 @@ if __name__ == "__main__":
         )
         printPlot.updatePlot(poles.getAsArray(), cableline)
         printPlot.layoutDiagrammForPrint(projName_unique, polesList, poles.direction)
-        imgPath = None
 
         # Create Bird View
         ###

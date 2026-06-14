@@ -179,8 +179,8 @@ class ProfileDialog(QDialog):
         points are reset when plot is cleared at next setProfile()."""
         # Delete pole rows in gui
         self.poleLayout.removeAll()
-        self.poleData = []
-        self.noPoleSection = []
+        self.poleData.clear()
+        self.noPoleSection.clear()
         self.profileMax = None
         self.sc.reset()
 
@@ -321,7 +321,7 @@ class ProfileDialog(QDialog):
                 pole["plotPoint"] = self.sc.createPoint(pole["d"], pole["z"])
             # Delete all sections in map
             self.drawTool.deleteSectionLines()
-            self.noPoleSection = []
+            self.noPoleSection.clear()
 
     def stopActiveEdits(self):
         self.deactivateMapCursor()

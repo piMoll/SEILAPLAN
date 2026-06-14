@@ -126,7 +126,7 @@ class BirdViewWidget(QObject):
     def removeRows(self):
         for poleRow in reversed(self.poleRows):
             poleRow.remove()
-        self.poleRows = []
+        self.poleRows.clear()
 
     def onRowChange(self, idx, property_name, newVal):
         self.sig_updatePole.emit(idx, property_name, newVal)

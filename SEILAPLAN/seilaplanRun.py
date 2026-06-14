@@ -9,9 +9,9 @@ from SEILAPLAN.tools.processingThread import ProcessingTask
 
 
 class SeilaplanRun:
-    """Handles the program flow, manages settings/configuration and keeps a
+    """Handles the program flow, manages settings, configuration and keeps a
     hold on the plugin state and calculation results between different dialog
-    windows. Allows to run the plugin multiple times in parallel."""
+    windows. Allows running the plugin multiple times in parallel."""
 
     def __init__(self, interface):
         self.iface = interface
@@ -30,7 +30,7 @@ class SeilaplanRun:
             self.projectWindow = SeilaplanPluginDialog(
                 self.iface, self.confHandler, self.onCloseProjectWindow
             )
-            # Setup dialog for first show
+            # Set up dialog for first show
             self.projectWindow.setupContentForFirstRun()
         else:
             # Updating dialog state when coming back from the adjustment window
@@ -40,9 +40,9 @@ class SeilaplanRun:
         #  block the event loop in case a second Seilaplan instance is started.
         self.projectWindow.show()
 
-    def onCloseProjectWindow(self, runOptimization: bool or None):
+    def onCloseProjectWindow(self, runOptimization: bool | None):
         """Gets called by the Project dialog on closing."""
-        if runOptimization is True:
+        if runOptimization:
             # Continue with optimization algorithm
             self.startOptimization()
         elif runOptimization is False:
@@ -69,7 +69,7 @@ class SeilaplanRun:
         # Show progress bar and start event loop
         self.progressDialog.show()
 
-    def onCloseProgressWindow(self, continueToAdjustment: bool or None):
+    def onCloseProgressWindow(self, continueToAdjustment: bool | None):
         """Gets called by the Progress dialog on closing."""
         # Get result if calculation was successful
         result, resultQuality = None, None
@@ -80,7 +80,7 @@ class SeilaplanRun:
         self.progressDialog.deleteLater()
         del self.workerThread
 
-        if continueToAdjustment is True:
+        if continueToAdjustment:
             self.showAdjustmentWindow(result, resultQuality)
         elif continueToAdjustment is False:
             # User chose to go back to project window
@@ -96,9 +96,9 @@ class SeilaplanRun:
         self.adjustmentWindow.initData(result, resultQuality)
         self.adjustmentWindow.show()
 
-    def onCloseAdjustmentWindow(self, returnToProjectWindow: bool or None):
+    def onCloseAdjustmentWindow(self, returnToProjectWindow: bool | None):
         """Gets called by the Adjustment dialog on closing."""
-        if returnToProjectWindow is True:
+        if returnToProjectWindow:
             self.adjustmentWindow.deleteLater()
             # Reset configuration
             self.confHandler.reset()

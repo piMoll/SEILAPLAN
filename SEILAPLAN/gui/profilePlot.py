@@ -280,7 +280,7 @@ class ProfilePlot(FigureCanvas):
         self.ly.set_visible(False)
         self.lx.set_visible(False)
         self.line_exists = False
-        self.linePoints = []
+        self.linePoints.clear()
         self.draw()
 
     def onMouseMoveS(self, event):
@@ -342,7 +342,7 @@ class ProfilePlot(FigureCanvas):
                 linewidth=2,
                 color=SECTION_COLOR,
             )
-            self.linePoints = []
+            self.linePoints.clear()
 
     def __setupAxes(self):
         self.axes.set_xlabel(self.tr("Horizontaldistanz [m]"), fontsize=11)

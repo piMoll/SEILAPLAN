@@ -473,6 +473,4 @@ class PlotTopic(object):
         self.currentExtrema = None
         self.isOpti = False
         self.exceedsThreshold = False
-        for marker in self.plotMarkers:
-            del marker
-        self.plotMarkers = []
+        self.plotMarkers.clear()

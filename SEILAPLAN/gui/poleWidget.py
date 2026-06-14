@@ -86,7 +86,7 @@ class CustomPoleWidget(QObject):
         self.createPoleRows()
 
     def createPoleRows(self):
-        self.poleRows = []
+        self.poleRows.clear()
         for idx, pole in enumerate(self.poleArr):
             delBtn = False
             addBtn = False
@@ -307,7 +307,7 @@ class CustomPoleWidget(QObject):
     def removeAll(self):
         for pole in self.poleRows:
             pole.remove()
-        self.poleRows = []
+        self.poleRows.clear()
 
     def tr(self, message, **kwargs):
         return QCoreApplication.translate(type(self).__name__, message)

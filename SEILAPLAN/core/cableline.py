@@ -64,25 +64,6 @@ def checkCable(zi, si, sc, befGSK, SeilSys, R_R):
     return Cable_Possible
 
 
-class vectorSum:
-    """Ersetzt Pythons numpy.sum, da es bei kurzen Arrays performanter ist,
-    wenn Vektorelemente einzeln (vektor[i]) summiert werden.
-    """
-
-    def __init__(self, sizeB):
-        self.sizeB = sizeB
-        self.functionToCall = "calcSum{}".format(sizeB)
-
-    def calcSum1(self, vector):
-        return vector
-
-    def calcSum2(self, vector):
-        return vector[0] + vector[1]
-
-    def calcSum3(self, vector):
-        return vector[0] + vector[1] + vector[2]
-
-
 def calcCable(IS, zi, di, sc, befGSK, z_null, STA, b, h, feld):
     """Berechnung der Seillinie basierend auf der Methode von Zweifel
 
@@ -215,8 +196,6 @@ def calcCable(IS, zi, di, sc, befGSK, z_null, STA, b, h, feld):
             # delta s für die Belastung im betrachteten Abschnitt
             delta_s[feld] *= 0.25
             delta_s_sum = np.sum(delta_s, axis=0)
-            # delta_s_sum = vectorSum(delta_s, sizeB)
-            # delta_s_sum = getattr(vSumInstance, calcSum)(delta_s)
 
             UeberLaenge_Vollseil = d_c + delta_s_sum
 
