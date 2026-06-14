@@ -227,6 +227,9 @@ class ThresholdUpdater:
                     resultData["cableline"]["groundclear_di"] - dtop[idx + 1]
                 )
                 fieldEndIdx = d_diff.argmin()
+                if fieldEndIdx <= fieldStartIdx:
+                    # This is a field that is less than 1 meter long, can't calculate ground distance
+                    continue
                 # Search for the minimal value in the current cable field
                 localMinima = np.nanmin(localCopy[fieldStartIdx:fieldEndIdx])
                 # NAN values will be ignored
@@ -379,8 +382,6 @@ class ThresholdUpdater:
 
         if topic.isOpti:
             topic.optiExtrema = deepcopy(topic.currentExtrema)
-
-        return topic
 
     def getZCoordinateFromTerrain(self, xLocation):
         return self.profile.zi_disp[
