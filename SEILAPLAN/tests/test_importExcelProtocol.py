@@ -1,11 +1,10 @@
 from copy import deepcopy
 import os
-from tests import TESTDATA_DIR
 import unittest
 from unittest import mock
 
 import numpy as np
-
+from tests import TESTDATA_DIR
 from tools.importExcelProtocol import ExcelProtocolReader
 
 

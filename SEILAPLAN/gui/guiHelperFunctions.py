@@ -38,13 +38,13 @@ from qgis.core import (
     QgsPalLayerSettings,
     QgsPoint,
     QgsPointXY,
+    QgsProcessing,
     QgsProject,
     QgsRasterLayer,
     QgsTextBufferSettings,
     QgsTextFormat,
     QgsVectorLayer,
     QgsVectorLayerSimpleLabeling,
-    QgsProcessing,
 )
 
 from SEILAPLAN import DEBUG, PLUGIN_DIR

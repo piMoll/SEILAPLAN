@@ -4,9 +4,9 @@ from qgis.testing import unittest
 from SEILAPLAN.core.mainSeilaplan import main as main
 from SEILAPLAN.tool_.mainSeilaplan import main as main_
 from SEILAPLAN.tools.configHandler import ConfigHandler
-from ._test_helper import MockTask
 
 from . import BASIC_PROJECT_FILE
+from ._test_helper import MockTask
 
 
 class TestMainResults(unittest.TestCase):

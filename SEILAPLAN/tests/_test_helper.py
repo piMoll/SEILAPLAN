@@ -1,9 +1,10 @@
-from qgis.core import QgsTask
 from qgis.PyQt.QtCore import pyqtSignal
+from qgis.core import QgsTask
+from tools.configHandler import ConfigHandler
+
 from SEILAPLAN.core.cablelineFinal import preciseCable
 from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
 from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
-from tools.configHandler import ConfigHandler
 
 from . import BASIC_PROJECT_FILE
 

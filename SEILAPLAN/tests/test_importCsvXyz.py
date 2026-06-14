@@ -1,9 +1,8 @@
 import os
-from tests import TESTDATA_DIR
 import unittest
 
 import numpy as np
-
+from tests import TESTDATA_DIR
 from tools.importCsvXyz import CsvXyzReader
 
 from . import TMP_DIR

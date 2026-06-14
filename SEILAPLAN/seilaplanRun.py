@@ -1,5 +1,5 @@
-from qgis.core import QgsApplication
 from qgis.PyQt.QtWidgets import QApplication
+from qgis.core import QgsApplication
 
 from SEILAPLAN.gui.adjustmentDialog import AdjustmentDialog
 from SEILAPLAN.gui.progressDialog import ProgressDialog
