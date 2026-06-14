@@ -190,14 +190,14 @@ def preciseCable(IS, poles, STA):
     # Round the decimeter values and then convert to int to use as index
     lenSeil = int(round(b_cum[-1] * multipl, 0)) + 1
 
-    b1 = np.zeros(lenSeil)  # 1 cm Schritte zwischen den Stützen
+    b1_base = np.zeros(lenSeil)  # 1 cm Schritte zwischen den Stützen
     # Leere Koordinaten Arrays initialisieren
-    y_leer = np.copy(b1)
-    H = np.copy(b1)
-    y_last_zweifel = np.copy(b1)
-    z_coord_leer = np.copy(b1)
-    z_coord_zweifel = np.copy(b1)
-    l_coord = np.copy(b1)
+    y_leer = np.copy(b1_base)
+    H = np.copy(b1_base)
+    y_last_zweifel = np.copy(b1_base)
+    z_coord_leer = np.copy(b1_base)
+    z_coord_zweifel = np.copy(b1_base)
+    l_coord = np.copy(b1_base)
 
     start = 0
     for n in range(anzFelder):
@@ -205,9 +205,12 @@ def preciseCable(IS, poles, STA):
         Hmn = Hm[n]
         s_small = int(round(bn * multipl, 0))
         end = start + s_small + 1
-        b1 = np.arange(0, bn + step, step)
+        b1 = np.arange(0, end - start, 1) / 10
         b2 = bn - b1
-        l_coord[start:end] = laengenprofil_y[n] + b1
+        try:
+            l_coord[start:end] = laengenprofil_y[n] + b1
+        except ValueError as e:
+            raise ValueError(f"Seilfeld nicht berechenbar - {e}") from e
         y_leer[start:end] = b1 * b2 / (bn * HT[n]) * (Q_Null + c[n] * qT / 2)
         # Interpolationsbeziehung für die Berechnung der Lastwegkurve
         H[start:end] = (
