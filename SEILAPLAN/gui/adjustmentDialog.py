@@ -20,11 +20,14 @@
 """
 
 import os
+import traceback
+from typing import Literal
 
 from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QCoreApplication, QSettings, Qt, QTimer
 from qgis.PyQt.QtGui import QPixmap
-from qgis.PyQt.QtWidgets import QDialog, QMessageBox, QTextEdit, QApplication
+from qgis.PyQt.QtWidgets import QApplication, QDialog, QMessageBox, QTextEdit
+from qgis.core import Qgis
 
 from SEILAPLAN import PLUGIN_DIR
 from SEILAPLAN.core.cablelineFinal import preciseCable, updateWithCableCoordinates
@@ -48,6 +51,7 @@ from SEILAPLAN.tools.outputReport import (
 )
 from SEILAPLAN.tools.poles import Poles
 from SEILAPLAN.tools.profile import Profile
+from SEILAPLAN.utils.qgis_helper import log
 
 from .adjustmentDialog_params import AdjustmentDialogParams
 from .adjustmentDialog_thresholds import AdjustmentDialogThresholds
@@ -223,19 +227,18 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
                 self.result["force"] = force
 
             except Exception as e:
-                QMessageBox.critical(
-                    self,
-                    self.tr("Unerwarteter Fehler " "bei Berechnung der Seillinie"),
-                    str(e),
-                    QMessageBox.StandardButton.Ok,
+                log(
+                    f"Error calculating initial cableline: {e}",
+                    Qgis.MessageLevel.Critical,
                 )
+                self.updateStatus(ResultQuality.Error)
                 return
 
         groundClear = self.profile.updateProfileAnalysis(self.result["cableline"])
         self.cableline = {**self.result["cableline"], **groundClear}
         self.result["cableline"] = self.cableline
 
-        self.updateRecalcStatus(resultQuality)
+        self.updateStatus(resultQuality)
 
         # Draw profile in diagram
         self.plot.initData(
@@ -493,26 +496,21 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
                 prHeader[key] = field.text()
         self.projectHandler.setPrHeader(prHeader)
 
-    def updateRecalcStatus(self, status):
-        color = None
-        green = "#b6ddb5"
-        yellow = "#f4e27a"
-        red = "#e8c4ca"
+    def updateStatus(
+        self,
+        status: ResultQuality | PolesOrigin | str | None = None,
+        state: Literal["info", "success", "warning", "error"] | None = None,
+    ):
         if status == ResultQuality.SuccessfulOptimization:
+            state = "success"
             self.recalcStatus_txt.setText(
                 self.tr("Optimierung erfolgreich abgeschlossen")
             )
-            self.recalcStatus_ico.setPixmap(
-                QPixmap(getAbsoluteIconPath("icon_green.png"))
-            )
         elif status == ResultQuality.CableLiftsOff:
+            state = "error"
             self.recalcStatus_txt.setText(
                 self.tr("Tragseil hebt bei mindestens einer Stuetze ab")
             )
-            self.recalcStatus_ico.setPixmap(
-                QPixmap(getAbsoluteIconPath("icon_yellow.png"))
-            )
-            color = red
             # If no plot topic is selected, default to 'leerseilknickwinkel'
             # to show the position of the liftoff
             if self.selectedPlotTopic is None:
@@ -521,59 +519,69 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
                         self.fieldPlotTopic.setCurrentIndex(idx + 1)
 
         elif status == ResultQuality.LineNotComplete:
+            state = "warning"
             self.recalcStatus_txt.setText(
                 self.tr("Nicht genuegend Stuetzenstandorte bestimmbar")
             )
-            self.recalcStatus_ico.setPixmap(
-                QPixmap(getAbsoluteIconPath("icon_yellow.png"))
-            )
-            color = yellow
         elif status == PolesOrigin.OnlyStartEnd:
+            state = "info"
             self.recalcStatus_txt.setText(self.tr("Stuetzen manuell platzieren"))
-            self.recalcStatus_ico.setPixmap(
-                QPixmap(getAbsoluteIconPath("icon_green.png"))
-            )
-            color = yellow
         elif status == PolesOrigin.SavedFile:
+            state = "info"
             self.recalcStatus_txt.setText(self.tr("Stuetzen aus Projektdatei geladen"))
-            self.recalcStatus_ico.setPixmap(
-                QPixmap(getAbsoluteIconPath("icon_green.png"))
-            )
-            color = yellow
         elif status == ResultQuality.SuccessfulRerun:
+            state = "info"
             self.recalcStatus_txt.setText(self.tr("Seillinie neu berechnet."))
-            self.recalcStatus_ico.setPixmap(
-                QPixmap(getAbsoluteIconPath("icon_green.png"))
-            )
         elif status == ResultQuality.Error:
+            state = "error"
             self.recalcStatus_txt.setText(self.tr("Fehler aufgetreten"))
-            self.recalcStatus_ico.setPixmap(
-                QPixmap(getAbsoluteIconPath("icon_yellow.png"))
-            )
-            color = red
         elif status == "saveDone":
+            state = "success"
             self.recalcStatus_txt.setText(self.tr("Ergebnisse gespeichert"))
-            self.recalcStatus_ico.setPixmap(
-                QPixmap(getAbsoluteIconPath("icon_save.png"))
-            )
-            color = green
+        elif status and state:
+            # Handle any other status by displaying the status text and setting the appropriate icon and color
+            self.recalcStatus_txt.setText(status)
+
+        icon = None
+        color = None
         stylesheet = ""
+        if state == "info":
+            icon = "icon_information.png"
+            color = None
+        elif state == "success":
+            icon = "icon_green.png"
+            color = "#b6ddb5"
+        elif state == "warning":
+            icon = "icon_yellow.png"
+            color = "#f4e27a"
+        elif state == "error":
+            icon = "icon_red.png"
+            color = "#e8c4ca"
+        if icon:
+            self.recalcStatus_ico.setPixmap(QPixmap(getAbsoluteIconPath(icon)))
         if color:
             stylesheet = f"background-color:{color};"
         self.recalcStatus_txt.setStyleSheet(stylesheet)
+        self.recalcStatus_ico.setStyleSheet("padding-right: 10px;" + stylesheet)
 
     def recalculate(self):
         if not self.configurationHasChanged or self.isRecalculating:
             return
         self.isRecalculating = True
+        recalcResultStatus = (ResultQuality.SuccessfulRerun, None)
 
         try:
             params = self.paramHandler.getSimpleParameterDict()
             cableline, force, seil_possible = preciseCable(
                 params, self.poles, self.paramHandler.getTensileForce()
             )
-        except Exception:
-            self.updateRecalcStatus(ResultQuality.Error)
+        except Exception as e:
+            stacktrace = traceback.format_exc()
+            log(
+                f"Error recalculating cableline: {e}\n{stacktrace}",
+                Qgis.MessageLevel.Critical,
+            )
+            self.updateStatus(ResultQuality.Error)
             self.isRecalculating = False
             self.configurationHasChanged = False
             return
@@ -584,6 +592,10 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         self.result["cableline"] = self.cableline
         self.result["force"] = force
 
+        # Cable line lifts off of pole
+        if not seil_possible:
+            recalcResultStatus = (ResultQuality.CableLiftsOff, None)
+
         # Update Plot
         self.plot.updatePlot(self.poles.getAsArray(), self.cableline)
 
@@ -593,12 +605,6 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         )
         self.onRefreshTopicInPlot()
 
-        # cable line lifts off of pole
-        if not seil_possible:
-            self.updateRecalcStatus(ResultQuality.CableLiftsOff)
-        else:
-            self.updateRecalcStatus(ResultQuality.SuccessfulRerun)
-
         if self.refreshPoleWidgetRows:
             self.refreshPoleWidgetRows = False
             self.poleLayout.refresh()
@@ -606,6 +612,9 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
             # Bundstelle has to always be updated, since any property change
             # can change this value
             self.poleLayout.updateBundstelle()
+
+        self.updateStatus(*recalcResultStatus)
+
         self.configurationHasChanged = False
         self.isRecalculating = False
         self.unsavedChanges = True
@@ -826,7 +835,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
                         self.showMessage(title, msg)
         finally:
             QApplication.restoreOverrideCursor()
-            self.updateRecalcStatus("saveDone")
+            self.updateStatus("saveDone")
 
     def showMessage(self, title, message):
         QMessageBox.critical(self, title, message, QMessageBox.StandardButton.Ok)

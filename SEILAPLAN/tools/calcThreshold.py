@@ -1,13 +1,16 @@
 from copy import deepcopy
 from math import floor
 from typing import List
+import traceback
 
 import numpy as np
 from qgis.PyQt.QtCore import QCoreApplication
+from qgis.core import Qgis
 
 from SEILAPLAN.gui.adjustmentDialog_thresholds import AdjustmentDialogThresholds
 from SEILAPLAN.gui.adjustmentPlot import PlotMarker
 from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
+from SEILAPLAN.utils.qgis_helper import log
 
 
 class ThresholdUpdater:
@@ -49,7 +52,11 @@ class ThresholdUpdater:
             topic.reset()
             topic.isOpti = resultFromOptimization
             # Calculate new extrema
-            self.checkThreshold(topic, resultData)
+            try:
+                self.checkThreshold(topic, resultData)
+            except Exception as e:
+                log_message = f"Error calculating threshold for topic {topic.id}: {e}\n{traceback.format_exc()}"
+                log(log_message, Qgis.MessageLevel.Warning)
 
         # Update layout with new extrema
         if firstRun:
