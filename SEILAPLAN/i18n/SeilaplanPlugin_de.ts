@@ -1938,6 +1938,11 @@ Bitte passen Sie die Eingabe an.</translation>
         <source>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</source>
         <translation>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</translation>
     </message>
+    <message>
+        <location filename="../tools/configHandler_project.py" line="282"/>
+        <source>Hoehendaten konnten nicht geladen werden.</source>
+        <translation>Hoehendaten konnten nicht geladen werden.</translation>
+    </message>
 </context>
 <context>
     <name>Raster</name>

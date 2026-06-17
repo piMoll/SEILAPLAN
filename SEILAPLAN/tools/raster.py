@@ -25,7 +25,9 @@ import os
 import numpy as np
 from osgeo import gdal
 from osgeo.gdal import Dataset
-from qgis.core import QgsCoordinateReferenceSystem, QgsRasterLayer
+from qgis.core import Qgis, QgsCoordinateReferenceSystem, QgsRasterLayer
+
+from SEILAPLAN.utils.qgis_helper import log
 
 from .heightSource import AbstractHeightSource
 
@@ -43,6 +45,8 @@ class Raster(AbstractHeightSource):
 
     def __init__(self, layer=None, path=None):
         AbstractHeightSource.__init__(self)
+        gdal.UseExceptions()
+
         self.layer: QgsRasterLayer = None
         self.name = None
         self.cols = None
@@ -86,17 +90,29 @@ class Raster(AbstractHeightSource):
             self.valid = True
 
     def calculateExtent(self):
-        self.ds = gdal.Open(self.path)
+        try:
+            self.ds = gdal.Open(self.path)
+        except Exception as e:
+            log(f"Error when creating gdal dataset: {e}")
+            return
         if not self.ds:
-            raise Exception
+            log(f"Raster {self.path} can't be opened with gdal")
+            return
 
         upx, xres, xskew, upy, yskew, yres = self.ds.GetGeoTransform()
         if yres > 0:
             # If yres is positive, we've got a raster that has it's
             #  origin in the bottom left instead of the top left corner.
             #  Let's change that by saving a copy as a tiff.
-            self.ds = self.saveCopyAsTiff()
-            upx, xres, xskew, upy, yskew, yres = self.ds.GetGeoTransform()
+            try:
+                self.ds = self.saveCopyAsTiff()
+                upx, xres, xskew, upy, yskew, yres = self.ds.GetGeoTransform()
+            except Exception as e:
+                log(
+                    f"Not able to copy raster into temporary tif file with gdal: {e}",
+                    Qgis.MessageLevel.Critical,
+                )
+                return
 
         self.cols = self.ds.RasterXSize
         self.rows = self.ds.RasterYSize
@@ -114,13 +130,10 @@ class Raster(AbstractHeightSource):
         not work well with gdal translate, e.g. ASCII xyz files; their origin
         is in the bottom-left corner instead of the top-left corner.
         """
-        try:
-            gdal.Warp("/vsimem/in_memory_copy.tif", self.ds, format="GTiff")
-            del self.ds
-            self.path = "/vsimem/in_memory_copy.tif"
-            return gdal.Open(self.path)
-        except Exception:
-            raise Exception("Not able to copy raster into temporary tif file.")
+        gdal.Warp("/vsimem/in_memory_copy.tif", self.ds, format="GTiff")
+        del self.ds
+        self.path = "/vsimem/in_memory_copy.tif"
+        return gdal.Open(self.path)
 
     def prepareData(self, points, azimut, anchorLen):
         [Ax, Ay] = points["A"]
@@ -156,14 +169,19 @@ class Raster(AbstractHeightSource):
         # same cellsize as the original raster. If needed, the coordinates in
         # 'projWin' are shifted so that the raster does not have to be
         # resampled.
-        subraster = gdal.Translate(
-            "/vsimem/in_memory_output.tif",
-            self.ds,
-            projWin=[pointXmin, pointYmax, pointXmax, pointYmin],
-            format="GTiff",
-        )
+        try:
+            subraster = gdal.Translate(
+                "/vsimem/in_memory_output.tif",
+                self.ds,
+                projWin=[pointXmin, pointYmax, pointXmax, pointYmin],
+                format="GTiff",
+            )
 
-        z = subraster.ReadAsArray()
+            z = subraster.ReadAsArray()
+        except Exception as e:
+            log(f"Not able to create subraster with gdal: {e}")
+            return
+
         if np.ndim(z) > 2:
             # Assumption: Height information is in the first raster band
             z = z[:][:][0]

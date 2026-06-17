@@ -1960,6 +1960,11 @@ Veuillez adapter la saisie.</translation>
         <source>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</source>
         <translation>Fichier du grille _path_ n&apos;existe pas, grille n&apos;a pas pu être chargé.</translation>
     </message>
+    <message>
+        <location filename="../tools/configHandler_project.py" line="282"/>
+        <source>Hoehendaten konnten nicht geladen werden.</source>
+        <translation>Les données d'altitude n'ont pas pu être chargées.</translation>
+    </message>
 </context>
 <context>
     <name>Raster</name>

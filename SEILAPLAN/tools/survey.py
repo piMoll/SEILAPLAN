@@ -127,6 +127,7 @@ class SurveyData(AbstractHeightSource):
             self.prHeaderData = reader.prHeaderData
             if not reader.valid and not self.errorMsg:
                 self.errorMsg = self.tr("Ungueltiges Format oder fehlende Daten.")
+                return
 
         if success:
             self.projectOnLine()

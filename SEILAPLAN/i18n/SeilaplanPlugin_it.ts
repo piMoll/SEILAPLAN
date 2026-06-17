@@ -1948,6 +1948,11 @@ Si prega di adattare l&apos;input.</translation>
         <source>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</source>
         <translation>File della griglia _path_ non esiste, griglia non ha potuto essere caricato.</translation>
     </message>
+    <message>
+        <location filename="../tools/configHandler_project.py" line="282"/>
+        <source>Hoehendaten konnten nicht geladen werden.</source>
+        <translation>Non è stato possibile caricare i dati d&apos;altezza.</translation>
+    </message>
 </context>
 <context>
     <name>Raster</name>

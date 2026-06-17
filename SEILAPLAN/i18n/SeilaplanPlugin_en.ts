@@ -1955,6 +1955,11 @@ Please change the input.</translation>
         <source>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</source>
         <translation>Raster file _path_ is not present, raster cannot be loaded.</translation>
     </message>
+    <message>
+        <location filename="../tools/configHandler_project.py" line="282"/>
+        <source>Hoehendaten konnten nicht geladen werden.</source>
+        <translation>Height data cannot be loaded.</translation>
+    </message>
 </context>
 <context>
     <name>Raster</name>

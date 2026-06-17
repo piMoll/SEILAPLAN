@@ -40,9 +40,7 @@ class AbstractConfHandler(object):
             message = traceback.format_exc()
         if not self.dialog:
             return
-        QMessageBox.information(
-            self.dialog, title, message, QMessageBox.StandardButton.Ok
-        )
+        QMessageBox.warning(self.dialog, title, message, QMessageBox.StandardButton.Ok)
 
     def tr(self, message, context=None, **kwargs):
         """Get the translation for a string using Qt translation API.

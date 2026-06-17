@@ -21,10 +21,12 @@
 
 import json
 from math import atan2, cos, pi, sin
+import traceback
 
-from qgis.core import QgsDistanceArea, QgsPointXY, QgsRasterLayer
+from qgis.core import Qgis, QgsDistanceArea, QgsPointXY, QgsRasterLayer
 
 from SEILAPLAN import __version__ as version
+from SEILAPLAN.utils.qgis_helper import log
 
 from .configHandler_abstract import AbstractConfHandler
 from .configHandler_params import ParameterConfHandler
@@ -222,6 +224,7 @@ class ProjectConfHandler(AbstractConfHandler):
         """
         self.resetHeightSource()
         heights = None
+        errorMsg = ""
         if sourceType == "dhm":
             heights = Raster(layer, sourcePath)
         elif sourceType == "dhm_list":
@@ -239,9 +242,7 @@ class ProjectConfHandler(AbstractConfHandler):
                             lyr.dataProvider().dataSourceUri() for lyr in rasterList
                         ]
                     except RuntimeError:
-                        self.onError(
-                            self.tr("Fehler beim Kombinieren der Rasterkacheln")
-                        )
+                        errorMsg = self.tr("Fehler beim Kombinieren der Rasterkacheln")
                 elif isinstance(rasterList[0], str):
                     # List of paths is provided because a project file is
                     #  loaded. We create layers first, then create virtual layer
@@ -250,9 +251,7 @@ class ProjectConfHandler(AbstractConfHandler):
                         if not rasterExistsAtPath(path):
                             self.onError(
                                 self.tr(
-                                    "Raster-Datei _path_ ist "
-                                    "nicht vorhanden, Raster kann nicht geladen "
-                                    "werden."
+                                    "Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden."
                                 ).replace("_path_", path)
                             )
                             break
@@ -263,10 +262,9 @@ class ProjectConfHandler(AbstractConfHandler):
                             virtLayer = createVirtualRaster(layerlist)
                             self.virtRasterSource = rasterList
                     except RuntimeError:
-                        self.onError(
-                            self.tr("Fehler beim Kombinieren der Rasterkacheln.")
-                        )
-                heights = Raster(virtLayer)
+                        errorMsg = self.tr("Fehler beim Kombinieren der Rasterkacheln.")
+                if virtLayer:
+                    heights = Raster(virtLayer)
         elif sourceType == "survey":
             heights = SurveyData(sourcePath, surveySourceType)
             if heights.valid:
@@ -278,12 +276,17 @@ class ProjectConfHandler(AbstractConfHandler):
                         "Anlagetyp", heights.prHeaderData["Anlagetyp"]
                     )
 
+        if heights and heights.errorMsg:
+            errorMsg = heights.errorMsg
+            heights.errorMsg = ""
+
         if heights and heights.valid:
             self.heightSource = heights
             self.heightSourceType = sourceType
-        if heights and heights.errorMsg:
-            self.onError(heights.errorMsg)
-            heights.errorMsg = ""
+        else:
+            self.onError(
+                errorMsg or self.tr("Hoehendaten konnten nicht geladen werden.")
+            )
 
         # Points are either empty (raster) or they are the first and last point
         # of survey data
@@ -503,8 +506,21 @@ class ProjectConfHandler(AbstractConfHandler):
             self.heightSource.prepareData(
                 self.points, self.azimut, self.params.ANCHOR_LEN
             )
+        except Exception as e:
+            trace = traceback.format_exc()
+            log(
+                f"Error when preparing height source data: {e}\n{trace}",
+                Qgis.MessageLevel.Warning,
+            )
+            self.onError(
+                f"{self.tr('Unerwarteter Fehler bei der Erstellung des Profils.')}\n{e}"
+            )
+            return False
+        try:
             profile = Profile(self)
         except Exception as e:
+            trace = traceback.format_exc()
+            log(f"Error when creating profile: {e}\n{trace}", Qgis.MessageLevel.Warning)
             self.onError(
                 f"{self.tr('Unerwarteter Fehler bei der Erstellung des Profils.')}\n{e}"
             )

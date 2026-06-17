@@ -1,5 +1,6 @@
 from typing import Union
 
+from osgeo import gdal
 from qgis.PyQt.QtWidgets import QApplication
 from qgis.core import QgsApplication
 
@@ -17,6 +18,8 @@ class SeilaplanRun:
 
     def __init__(self, interface):
         self.iface = interface
+
+        gdal.UseExceptions()
 
         # Each run of the plugin has its own ConfigHandler instance
         self.confHandler: ConfigHandler = ConfigHandler()
