@@ -75,8 +75,8 @@ if QGIS_VERSION_INT >= 33800:
 else:
     from qgis.PyQt.QtCore import QVariant
 
-    type_string = QVariant.String
-    type_double = QVariant.Double
+    type_string = QVariant.String  # noqa: QGS402
+    type_double = QVariant.Double  # noqa: QGS402
 
 
 def organizeDataForExport(poles, cableline, profile):

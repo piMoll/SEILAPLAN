@@ -1,4 +1,4 @@
-from qgis._core import Qgis, QgsMessageLog
+from qgis.core import Qgis, QgsMessageLog
 
 from SEILAPLAN import DEBUG
 

@@ -183,9 +183,8 @@ def preciseCable(IS, poles, STA):
     # Achtung, komplett anders implementier als in matlab!
 
     # Um genauere Seildaten zu erhalten, muss Schrittgrösse von defaul=1 auf
-    # Submeter reduziert werden. Siehe matlab: DP = 0.01 m
+    # Submeter reduziert werden. Siehe matlab: DP = 0.01 m, also multiplikation mit 10
     Q_Null = 0
-    step = 0.1
     multipl = 10
     # Round the decimeter values and then convert to int to use as index
     lenSeil = int(round(b_cum[-1] * multipl, 0)) + 1
