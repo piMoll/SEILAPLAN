@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>710</width>
-    <height>602</height>
+    <height>930</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -61,7 +61,11 @@
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="plotContainer"/>
+      <layout class="QVBoxLayout" name="plotContainer">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetDefaultConstraint</enum>
+       </property>
+      </layout>
      </item>
      <item>
       <layout class="QHBoxLayout" name="plotFooterLayout">
@@ -153,10 +157,16 @@
      <item>
       <widget class="QTabWidget" name="tabWidget">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>330</height>
+        </size>
        </property>
        <property name="baseSize">
         <size>
@@ -227,7 +237,7 @@
               <x>0</x>
               <y>0</y>
               <width>666</width>
-              <height>368</height>
+              <height>696</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout">
@@ -253,18 +263,6 @@
         <layout class="QVBoxLayout" name="verticalLayout_10">
          <item>
           <widget class="QScrollArea" name="scrollArea">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>0</height>
-            </size>
-           </property>
            <property name="widgetResizable">
             <bool>true</bool>
            </property>
@@ -276,12 +274,6 @@
               <width>432</width>
               <height>393</height>
              </rect>
-            </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_3">
              <item>
@@ -779,6 +771,19 @@
            </widget>
           </widget>
          </item>
+         <item>
+          <spacer name="verticalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>1</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
         </layout>
        </widget>
        <widget class="QWidget" name="tabThreshold">
@@ -793,22 +798,37 @@
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_12">
          <item>
-          <widget class="QLabel" name="label_21">
-           <property name="font">
-            <font>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Kennwerte und Maximalwerte</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout_4">
+          <layout class="QVBoxLayout" name="verticalLayout_11">
            <item>
-            <layout class="QVBoxLayout" name="verticalLayout_8">
+            <widget class="QLabel" name="label_21">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Kennwerte und Maximalwerte</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_20">
+             <property name="font">
+              <font>
+               <italic>true</italic>
+              </font>
+             </property>
+             <property name="text">
+              <string>Klick auf Zeile markiert Position der Grenzwert-Ueberschreitung im Diagramm.</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_4">
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout">
                <item>
@@ -817,7 +837,7 @@
                   <bool>true</bool>
                  </property>
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                  <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
@@ -825,7 +845,7 @@
                  <property name="minimumSize">
                   <size>
                    <width>0</width>
-                   <height>240</height>
+                   <height>50</height>
                   </size>
                  </property>
                  <property name="locale">
@@ -900,25 +920,6 @@
            </item>
           </layout>
          </item>
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout_11">
-           <item>
-            <widget class="QLabel" name="label_20">
-             <property name="font">
-              <font>
-               <italic>true</italic>
-              </font>
-             </property>
-             <property name="text">
-              <string>Klick auf Zeile markiert Position der Grenzwert-Ueberschreitung im Diagramm.</string>
-             </property>
-             <property name="wordWrap">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
         </layout>
        </widget>
        <widget class="QWidget" name="tabBirdView">
@@ -934,6 +935,9 @@
         <layout class="QVBoxLayout" name="verticalLayout_9">
          <item>
           <layout class="QVBoxLayout" name="DescLayout">
+           <property name="spacing">
+            <number>3</number>
+           </property>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_10">
              <item>
@@ -1041,8 +1045,8 @@
               <height>105</height>
              </rect>
             </property>
-            <layout class="QGridLayout" name="gridLayout_2">
-             <item row="0" column="0">
+            <layout class="QVBoxLayout" name="verticalLayout_7">
+             <item>
               <layout class="QGridLayout" name="birdViewGrid" columnstretch="0,0,0,0,0" columnminimumwidth="0,0,0,0,0">
                <item row="0" column="3">
                 <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -1259,7 +1263,7 @@
                </item>
               </layout>
              </item>
-             <item row="1" column="0">
+             <item>
               <spacer name="verticalSpacer">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
