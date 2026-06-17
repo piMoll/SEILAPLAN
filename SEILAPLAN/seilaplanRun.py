@@ -1,3 +1,5 @@
+from typing import Union
+
 from qgis.PyQt.QtWidgets import QApplication
 from qgis.core import QgsApplication
 
@@ -40,7 +42,7 @@ class SeilaplanRun:
         #  block the event loop in case a second Seilaplan instance is started.
         self.projectWindow.show()
 
-    def onCloseProjectWindow(self, runOptimization: bool | None):
+    def onCloseProjectWindow(self, runOptimization: Union[bool, None]):
         """Gets called by the Project dialog on closing."""
         if runOptimization:
             # Continue with optimization algorithm
@@ -69,7 +71,7 @@ class SeilaplanRun:
         # Show progress bar and start event loop
         self.progressDialog.show()
 
-    def onCloseProgressWindow(self, continueToAdjustment: bool | None):
+    def onCloseProgressWindow(self, continueToAdjustment: Union[bool, None]):
         """Gets called by the Progress dialog on closing."""
         # Get result if calculation was successful
         result, resultQuality = None, None
@@ -96,7 +98,7 @@ class SeilaplanRun:
         self.adjustmentWindow.initData(result, resultQuality)
         self.adjustmentWindow.show()
 
-    def onCloseAdjustmentWindow(self, returnToProjectWindow: bool | None):
+    def onCloseAdjustmentWindow(self, returnToProjectWindow: Union[bool, None]):
         """Gets called by the Adjustment dialog on closing."""
         if returnToProjectWindow:
             self.adjustmentWindow.deleteLater()

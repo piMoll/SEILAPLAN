@@ -21,7 +21,7 @@
 
 import os
 import traceback
-from typing import Literal
+from typing import Literal, Union
 
 from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QCoreApplication, QSettings, Qt, QTimer
@@ -498,8 +498,8 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
 
     def updateStatus(
         self,
-        status: ResultQuality | PolesOrigin | str | None = None,
-        state: Literal["info", "success", "warning", "error"] | None = None,
+        status: Union[ResultQuality, PolesOrigin, str, None] = None,
+        state: Union[Literal["info", "success", "warning", "error"], None] = None,
     ):
         if status == ResultQuality.SuccessfulOptimization:
             state = "success"
