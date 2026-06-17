@@ -30,7 +30,7 @@ os.environ["QGIS_CUSTOM_CONFIG_PATH"] = tmpdir
 QGIS_APP.initQgis()
 
 
-def stopTestRun(self):
+def stopTestRun(_self):
     """Called once after all tests are executed."""
     if QGIS_APP:
         QGIS_APP.exitQgis()

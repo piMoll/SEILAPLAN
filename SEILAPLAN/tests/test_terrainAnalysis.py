@@ -25,48 +25,48 @@ class TestTerrainAnalysis(unittest.TestCase):
     def tearDownClass(cls):
         pass
 
-    def test_peak_detect_horizontal_line_fails_with_pole_anchors(self):
+    def test_peak_detect_horizontal_line_with_pole_anchors(self):
         conf: ConfigHandler = ConfigHandler()
         success = conf.loadSettings(TEST_PROJECT_flat_terrain)
         if not success:
             raise Exception("Not able to load project file")
         conf.project.A_type = "pole_anchor"
         conf.project.E_type = "pole_anchor"
+        conf.params.setParameter("Seilsys", 1)
         conf.prepareForCalculation(True)
         task = MockTask(conf)
         result = main(task, conf.project)
 
-        self.assertFalse(result)
-        self.assertIn("Aufgrund der Gelaendeform", task.exception)
+        self.assertTrue(result)
 
-    def test_peak_detect_horizontal_line_fails_with_poles(self):
+    def test_peak_detect_horizontal_line_with_poles(self):
         conf: ConfigHandler = ConfigHandler()
         success = conf.loadSettings(TEST_PROJECT_flat_terrain)
         if not success:
             raise Exception("Not able to load project file")
         conf.project.A_type = "pole"
         conf.project.E_type = "pole"
+        conf.params.setParameter("Seilsys", 1)
         conf.prepareForCalculation(True)
         task = MockTask(conf)
         result = main(task, conf.project)
 
-        self.assertFalse(result)
-        self.assertIn("Aufgrund der Gelaendeform", task.exception)
+        self.assertTrue(result)
 
-    def test_peak_detect_horizontal_line_fails_with_poles_and_low_ground_distance(self):
+    def test_peak_detect_horizontal_line_with_poles_and_low_ground_distance(self):
         conf: ConfigHandler = ConfigHandler()
         success = conf.loadSettings(TEST_PROJECT_flat_terrain)
         if not success:
             raise Exception("Not able to load project file")
         conf.project.A_type = "pole"
         conf.project.E_type = "pole"
+        conf.params.setParameter("Seilsys", 1)
         conf.params.setParameter("Bodenabst_min", 1.0)
         conf.prepareForCalculation(True)
         task = MockTask(conf)
         result = main(task, conf.project)
 
-        self.assertFalse(result)
-        self.assertIn("Aufgrund der Gelaendeform", task.exception)
+        self.assertTrue(result)
 
     def test_peak_detect_finds_maxima(self):
         conf: ConfigHandler = ConfigHandler()
@@ -103,7 +103,9 @@ class TestTerrainAnalysis(unittest.TestCase):
             # conf.params.setParameter("SF_T", 3)
             # conf.params.setParameter("Bodenabst_min", 1)
             # conf.params.setParameter("Befahr_A", 1)
-            conf.params.setParameter("Befahr_E", 1)
+            # conf.params.setParameter("Befahr_E", 1)
+            # Mehrseilsystem
+            conf.params.setParameter("Seilsys", 1)
             conf.params.setParameter("HM_Delta", 1)
             conf.params.setParameter("HM_min", 5)
             conf.params.setParameter("HM_max", hm_max)
