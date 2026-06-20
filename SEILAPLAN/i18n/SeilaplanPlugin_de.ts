@@ -1858,7 +1858,7 @@ Bitte passen Sie die Eingabe an.</translation>
     <message>
         <location filename="../gui/progressDialog.py" line="168"/>
         <source>Aufgrund der Gelaendeform oder der Eingabeparameter konnten keine Stuetzenstandorte bestimmt werden.</source>
-        <translation>Aufgrund der Geländeform oder der Eingabeparameter konnten keine Stützenstandorte bestimmt werden.</translation>
+        <translation>Aufgrund der Geländeform oder der Eingabeparameter konnten keine Stützenstandorte bestimmt werden. Stellen Sie beispielsweise sicher, dass bei flachem Gelände ein Mehrseilsystem ausgewählt ist.</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="168"/>

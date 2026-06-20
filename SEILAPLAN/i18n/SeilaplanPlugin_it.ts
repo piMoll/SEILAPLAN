@@ -1868,7 +1868,7 @@ Si prega di adattare l&apos;input.</translation>
     <message>
         <location filename="../gui/progressDialog.py" line="168"/>
         <source>Aufgrund der Gelaendeform oder der Eingabeparameter konnten keine Stuetzenstandorte bestimmt werden.</source>
-        <translation>A causa della forma del terreno o dei valori d’input, non è stato possibile determinare la posizioni di cavalletti.</translation>
+        <translation>A causa della forma del terreno o dei valori d’input, non è stato possibile determinare la posizioni di cavalletti. Assicuratevi, ad esempio, di scegliere un sistema a più funi se il terreno è pianeggiante.</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="168"/>

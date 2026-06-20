@@ -1880,7 +1880,7 @@ Veuillez adapter la saisie.</translation>
     <message>
         <location filename="../gui/progressDialog.py" line="168"/>
         <source>Aufgrund der Gelaendeform oder der Eingabeparameter konnten keine Stuetzenstandorte bestimmt werden.</source>
-        <translation>En raison de la forme du terrain ou des valeurs d’entrée, aucun emplacement des supports n’a pu être déterminé.</translation>
+        <translation>En raison de la forme du terrain ou des valeurs d’entrée, aucun emplacement des supports n’a pu être déterminé. Veillez par exemple à choisir un système à plusieurs câbles lorsque le terrain est plat.</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="168"/>

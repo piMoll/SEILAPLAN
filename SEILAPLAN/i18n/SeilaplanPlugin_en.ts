@@ -1875,7 +1875,7 @@ Please change the input.</translation>
     <message>
         <location filename="../gui/progressDialog.py" line="168"/>
         <source>Aufgrund der Gelaendeform oder der Eingabeparameter konnten keine Stuetzenstandorte bestimmt werden.</source>
-        <translation>Due to the shape of the terrain or the input values, no support positions could be determined.</translation>
+        <translation>Due to the shape of the terrain or the input values, no support positions could be determined. For example, make sure to select a multi-cable system for flat terrain.</translation>
     </message>
     <message>
         <location filename="../gui/progressDialog.py" line="168"/>
