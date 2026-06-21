@@ -1953,12 +1953,17 @@ Please change the input.</translation>
     <message>
         <location filename="../tools/configHandler_project.py" line="258"/>
         <source>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</source>
-        <translation>Raster file _path_ is not present, raster cannot be loaded.</translation>
+        <translation>Raster file _path_ does not exist, raster cannot be loaded.</translation>
     </message>
     <message>
         <location filename="../tools/configHandler_project.py" line="282"/>
         <source>Hoehendaten konnten nicht geladen werden.</source>
         <translation>Height data cannot be loaded.</translation>
+    </message>
+    <message>
+        <location filename="../tools/configHandler_project.py" line="282"/>
+        <source>_path_ ist nicht vorhanden.</source>
+        <translation>_path_ does not exist.</translation>
     </message>
 </context>
 <context>
@@ -1966,7 +1971,7 @@ Please change the input.</translation>
     <message>
         <location filename="../tools/raster.py" line="70"/>
         <source>Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden.</source>
-        <translation>Raster file _path_ is not present, raster cannot be loaded.</translation>
+        <translation>Raster file _path_ does not exist, raster cannot be loaded.</translation>
     </message>
     <message>
         <location filename="../tools/raster.py" line="205"/>

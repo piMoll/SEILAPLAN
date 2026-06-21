@@ -1953,6 +1953,11 @@ Si prega di adattare l&apos;input.</translation>
         <source>Hoehendaten konnten nicht geladen werden.</source>
         <translation>Non è stato possibile caricare i dati d&apos;altezza.</translation>
     </message>
+    <message>
+        <location filename="../tools/configHandler_project.py" line="282"/>
+        <source>_path_ ist nicht vorhanden.</source>
+        <translation>File _path_ non esiste.</translation>
+    </message>
 </context>
 <context>
     <name>Raster</name>

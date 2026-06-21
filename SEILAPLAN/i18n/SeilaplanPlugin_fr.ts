@@ -1965,6 +1965,11 @@ Veuillez adapter la saisie.</translation>
         <source>Hoehendaten konnten nicht geladen werden.</source>
         <translation>Les données d'altitude n'ont pas pu être chargées.</translation>
     </message>
+    <message>
+        <location filename="../tools/configHandler_project.py" line="282"/>
+        <source>_path_ ist nicht vorhanden.</source>
+        <translation>Fichier _path_ n&apos;existe pas.</translation>
+    </message>
 </context>
 <context>
     <name>Raster</name>

@@ -96,7 +96,7 @@ class ConfigHandler:
             self.fromSavedProject = True
         return success
 
-    def loadFromJsonFile(self, filename):
+    def loadFromJsonFile(self, filename: str):
         """Read out settings from a structured json file."""
         if not os.path.exists(filename):
             return False
@@ -109,7 +109,7 @@ class ConfigHandler:
 
             # Projekt
             try:
-                prLoadSuccessful = self.project.setConfigFromFile(settings)
+                prLoadSuccessful = self.project.setConfigFromFile(settings, filename)
                 if not prLoadSuccessful:
                     return prLoadSuccessful
             except KeyError:
@@ -233,16 +233,16 @@ class ConfigHandler:
         else:
             return False
 
-    def saveSettings(self, filename):
+    def saveSettings(self, projectFilePath: str):
         """Save settings to json file."""
-        projectSettings = self.project.getSettings()
+        projectSettings = self.project.getSettings(os.path.dirname(projectFilePath))
         paramSettings = self.params.getSettings()
         settings = {**projectSettings, **paramSettings}
 
-        if os.path.exists(filename):
-            os.remove(filename)
+        if os.path.exists(projectFilePath):
+            os.remove(projectFilePath)
 
-        with open(filename, "w", encoding="utf8") as f:
+        with open(projectFilePath, "w", encoding="utf8") as f:
             json.dump(settings, f, ensure_ascii=False, indent=4, cls=OwnJsonEncoder)
 
     def loadUserSettings(self):

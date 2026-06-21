@@ -21,11 +21,17 @@
 
 import json
 from math import atan2, cos, pi, sin
+import os
 import traceback
 
 from qgis.core import Qgis, QgsDistanceArea, QgsPointXY, QgsRasterLayer
 
 from SEILAPLAN import __version__ as version
+from SEILAPLAN.utils.misc import versionAsInteger
+from SEILAPLAN.utils.path_handler import (
+    calculate_path_candidates,
+    get_relative_path,
+)
 from SEILAPLAN.utils.qgis_helper import log
 
 from .configHandler_abstract import AbstractConfHandler
@@ -64,6 +70,7 @@ class ProjectConfHandler(AbstractConfHandler):
 
         # Project data
         self.projectName = None
+        self.projectDir = None
         self.heightSource: AbstractHeightSource = None
         self.heightSourceType = None
         self.surveyType = None
@@ -83,19 +90,43 @@ class ProjectConfHandler(AbstractConfHandler):
         # Poles from a loaded project file
         self.polesFromFile = []
 
-    def setConfigFromFile(self, settings):
+    def setConfigFromFile(self, settings, projectFilePath: str):
         """Load configuration from json file."""
         self.setProjectName(settings["projectname"])
+        # Current project dir and original project dir can be different if the project
+        #  was moved to another location
+        self.projectDir = os.path.dirname(projectFilePath)
         self.setPrHeader(settings["header"])
 
         heightSource = settings["heightsource"]
+        heightSourcePath = settings["heightsource"]["source"]
+
+        # From 3.8.0 onwards, height source paths are saved relatively to the project
+        #  directory. We're looking for the height source relative to the original
+        #  project dir first, then relative to the current project dir
+        if versionAsInteger(settings["version"]) >= versionAsInteger("3.8.0"):
+            originalProjectDir = settings.get("projectDir", self.projectDir)
+            pathCandidates = calculate_path_candidates(
+                heightSourcePath,
+                [originalProjectDir, self.projectDir, os.path.expanduser("~")],
+            )
+            if len(pathCandidates) == 0:
+                self.onError(
+                    self.tr("Hoehendaten konnten nicht geladen werden.\n")
+                    + self.tr("_path_ ist nicht vorhanden.").replace(
+                        "_path_", heightSource["source"]
+                    )
+                )
+                return False
+            else:
+                heightSourcePath = pathCandidates[0]
         surveyType = None
         if "surveyType" in heightSource:
             surveyType = heightSource["surveyType"]
         self.setHeightSource(
             None,
             sourceType=heightSource["type"],
-            sourcePath=heightSource["source"],
+            sourcePath=heightSourcePath,
             surveySourceType=surveyType,
         )
 
@@ -199,18 +230,27 @@ class ProjectConfHandler(AbstractConfHandler):
         self.projectName = "seilaplan_{}".format(timestamp)
         return self.projectName
 
-    def getHeightSourceAsStr(self, source=False, formatting=None):
+    def getHeightSourceAsStr(self, source=False, formatting=None, relativeToDir=None):
         """Get path of height model. If source is requested, return original
-        raster files of virtual raster instead."""
+        raster files of virtual raster instead. Paths can be calculated relative
+        to another path."""
         if source and self.virtRasterSource:
+            pathList = self.virtRasterSource
+            if relativeToDir:
+                pathList = [
+                    get_relative_path(absPath, relativeToDir) for absPath in pathList
+                ]
             if formatting == "comma":
-                return ", ".join(self.virtRasterSource)
+                return ", ".join(pathList)
             elif formatting == "json":
-                return self.virtRasterSource
+                return source
             else:
-                return self.virtRasterSource
+                return source
         else:
-            return self.heightSource.getAsStr()
+            path = self.heightSource.getAsStr()
+            if relativeToDir and path:
+                path = get_relative_path(path, relativeToDir)
+            return path
 
     def setHeightSource(
         self, layer, sourceType="dhm", sourcePath=None, surveySourceType=None
@@ -421,16 +461,19 @@ class ProjectConfHandler(AbstractConfHandler):
     def setNoPoleSection(self, noPoles):
         self.noPoleSection = noPoles
 
-    def getSettings(self):
+    def getSettings(self, projectDir: str):
         """Return settings in a dictionary form to save to json file."""
         return {
             "projectname": self.getProjectName(),
+            "projectDir": projectDir,
             "version": version,
             "header": self.prHeader,
             "heightsource": {
                 "type": self.heightSourceType,
                 "surveyType": self.surveyType,
-                "source": self.getHeightSourceAsStr(source=True, formatting="json"),
+                "source": self.getHeightSourceAsStr(
+                    source=True, formatting="json", relativeToDir=projectDir
+                ),
                 "crs": self.heightSource.spatialRef.authid(),
             },
             "profile": {

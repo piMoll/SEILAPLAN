@@ -1943,6 +1943,11 @@ Bitte passen Sie die Eingabe an.</translation>
         <source>Hoehendaten konnten nicht geladen werden.</source>
         <translation>Hoehendaten konnten nicht geladen werden.</translation>
     </message>
+    <message>
+        <location filename="../tools/configHandler_project.py" line="282"/>
+        <source>_path_ ist nicht vorhanden.</source>
+        <translation>_path_ ist nicht vorhanden.</translation>
+    </message>
 </context>
 <context>
     <name>Raster</name>

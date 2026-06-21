@@ -7,9 +7,10 @@ from qgis.core import QgsApplication
 from qgis.testing import unittest
 
 import SEILAPLAN
+from SEILAPLAN import PLUGIN_DIR
 
 # Add shipped libraries to python path
-libPath = os.path.join(os.path.dirname(os.path.dirname(__file__)), "lib")
+libPath = os.path.join(PLUGIN_DIR, "lib")
 if libPath not in sys.path:
     sys.path.insert(-1, libPath)
 
@@ -17,8 +18,8 @@ SEILAPLAN.DEBUG = True
 gdal.UseExceptions()
 
 TEST_DIR = os.path.dirname(__file__)
-TESTDATA_DIR = os.path.join(TEST_DIR, "testdata")
-TMP_DIR = os.path.join(TESTDATA_DIR, "tmp")
+TESTDATA_DIR = os.path.join(str(TEST_DIR), "testdata")
+TMP_DIR = os.path.join(str(TESTDATA_DIR), "tmp")
 
 if not os.path.exists(TMP_DIR):
     os.makedirs(TMP_DIR)
@@ -35,24 +36,16 @@ def stopTestRun(_self):
     if QGIS_APP:
         QGIS_APP.exitQgis()
 
-    # Cleanup temporary project files that got created via project_file_loader()
-    for file in os.listdir(TMP_DIR):
-        os.remove(os.path.join(TMP_DIR, file))
+    # Cleanup temporary project files
+    for file in os.listdir(str(TMP_DIR)):
+        os.remove(os.path.join(str(TMP_DIR), file))
 
 
 setattr(unittest.TestResult, "stopTestRun", stopTestRun)
 
 
 def project_file_loader(fileName):
-    file_path = os.path.join(TESTDATA_DIR, fileName)
-    file_path_tmp = os.path.join(TMP_DIR, fileName)
-    # Replace any path placeholders with absolute path
-    with open(file_path, "r") as f:
-        project_content = f.read()
-    project_content = project_content.replace("{HOMEPATH}", SEILAPLAN.PLUGIN_DIR)
-    with open(file_path_tmp, "w") as f:
-        f.write(project_content)
-    return file_path_tmp
+    return os.path.join(str(TESTDATA_DIR), fileName)
 
 
 BASIC_PROJECT_FILE = project_file_loader("unittest_dhm_crane_poleanchor_6_poles.json")
