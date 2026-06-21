@@ -51,6 +51,7 @@ from SEILAPLAN.tools.outputReport import (
 )
 from SEILAPLAN.tools.poles import Poles
 from SEILAPLAN.tools.profile import Profile
+from SEILAPLAN.utils.guiHelperFunctions import addBackgroundMap
 from SEILAPLAN.utils.plugin_utils import getAbsoluteIconPath
 from SEILAPLAN.utils.qgis_logger import log
 
@@ -58,7 +59,6 @@ from .adjustmentDialog_params import AdjustmentDialogParams
 from .adjustmentDialog_thresholds import AdjustmentDialogThresholds
 from .adjustmentPlot import AdjustmentPlot, calculatePlotDimensions, saveImgAsPdfWithMpl
 from .birdViewWidget import BirdViewWidget
-from .guiHelperFunctions import addBackgroundMap
 from .imageDialog import DialogWithImage
 from .mapMarker import MapMarkerTool
 from .plotting_tools import MyNavigationToolbar
