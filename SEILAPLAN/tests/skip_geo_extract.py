@@ -3,11 +3,10 @@ import os
 import numpy as np
 from qgis.testing import unittest
 
+from SEILAPLAN.tests import BASIC_PROJECT_FILE, TESTDATA_DIR
 from SEILAPLAN.tool_.geoExtract import calcAnker, calcProfile, generateDhm, updateAnker
 from SEILAPLAN.tool_.mainSeilaplan import checkInputParams
 from SEILAPLAN.tools.configHandler import ConfigHandler
-
-from . import BASIC_PROJECT_FILE, TESTDATA_DIR
 
 
 @unittest.skip("deprecated, needs to be rewritten")
