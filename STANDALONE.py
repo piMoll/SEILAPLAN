@@ -45,15 +45,15 @@ from qgis.core import QgsApplication, QgsTask
 from SEILAPLAN.core.cableline_final import preciseCable, updateWithCableCoordinates
 from SEILAPLAN.core.main_seilaplan import main as mainSeilaplan
 from SEILAPLAN.gui.adjustment_plot import AdjustmentPlot, calculatePlotDimensions
-from SEILAPLAN.tools.birdViewMapExtractor import extractMapBackground
+from SEILAPLAN.tools.bird_view_map_extractor import extractMapBackground
 from SEILAPLAN.tools.configHandler import ConfigHandler
 from SEILAPLAN.tools.globals import ResultQuality
-from SEILAPLAN.tools.outputGeo import (
+from SEILAPLAN.tools.output_geo import (
     generateCoordTable,
     organizeDataForExport,
     writeGeodata,
 )
-from SEILAPLAN.tools.outputReport import (
+from SEILAPLAN.tools.output_report import (
     createOutputFolder,
     generateReport,
     generateReportText,

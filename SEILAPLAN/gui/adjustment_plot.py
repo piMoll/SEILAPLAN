@@ -39,7 +39,7 @@ import matplotlib.patheffects as pe
 from matplotlib.pyplot import imread
 
 from SEILAPLAN.gui.plotting_tools import zoom_with_wheel
-from SEILAPLAN.tools.birdViewSymbol import BirdViewSymbol, BirdViewSymbolLoader
+from SEILAPLAN.tools.bird_view_symbol import BirdViewSymbol, BirdViewSymbolLoader
 from SEILAPLAN.utils.qgis_utils import is_dark_mode
 
 

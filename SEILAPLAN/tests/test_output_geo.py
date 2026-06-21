@@ -6,7 +6,7 @@ import numpy as np
 from qgis.core import QgsCoordinateReferenceSystem
 
 from SEILAPLAN.tests import TMP_DIR
-from SEILAPLAN.tools.outputGeo import saveLineGeometry, savePointGeometry
+from SEILAPLAN.tools.output_geo import saveLineGeometry, savePointGeometry
 
 
 class TestOutputGeo(unittest.TestCase):

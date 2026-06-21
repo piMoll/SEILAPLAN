@@ -44,19 +44,19 @@ from SEILAPLAN.gui.map_marker import MapMarkerTool
 from SEILAPLAN.gui.plotting_tools import MyNavigationToolbar
 from SEILAPLAN.gui.pole_widget import CustomPoleWidget
 from SEILAPLAN.gui.save_dialog import DialogOutputOptions
-from SEILAPLAN.tools.birdViewMapExtractor import extractMapBackground
-from SEILAPLAN.tools.calcThreshold import ThresholdUpdater
+from SEILAPLAN.tools.bird_view_map_extractor import extractMapBackground
+from SEILAPLAN.tools.calc_threshold import ThresholdUpdater
 from SEILAPLAN.tools.configHandler import ConfigHandler
 from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
 from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
 from SEILAPLAN.tools.globals import PolesOrigin, ResultQuality
-from SEILAPLAN.tools.outputGeo import (
+from SEILAPLAN.tools.output_geo import (
     addToMap,
     generateCoordTable,
     organizeDataForExport,
     writeGeodata,
 )
-from SEILAPLAN.tools.outputReport import (
+from SEILAPLAN.tools.output_report import (
     createOutputFolder,
     generateReport,
     generateReportText,

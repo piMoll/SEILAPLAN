@@ -23,7 +23,7 @@ import csv
 
 import numpy as np
 
-from SEILAPLAN.tools.heightSource import AbstractSurveyReader
+from SEILAPLAN.tools.height_source import AbstractSurveyReader
 
 
 class CsvXyzReader(AbstractSurveyReader):

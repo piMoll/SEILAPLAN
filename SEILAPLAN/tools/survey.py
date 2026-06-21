@@ -25,11 +25,11 @@ import os
 import numpy as np
 from qgis.core import QgsCoordinateReferenceSystem
 
-from SEILAPLAN.tools.heightSource import AbstractHeightSource
+from SEILAPLAN.tools.height_source import AbstractHeightSource
 from SEILAPLAN.tools.importCsvVertex import CsvVertexReader
 from SEILAPLAN.tools.importCsvXyz import CsvXyzReader
 from SEILAPLAN.tools.importExcelProtocol import ExcelProtocolReader
-from SEILAPLAN.tools.outputGeo import CH_CRS, reprojectToCrs
+from SEILAPLAN.tools.output_geo import CH_CRS, reprojectToCrs
 
 # Check if library scipy is present. On linux scipy isn't included in
 #  the standard qgis python interpreter

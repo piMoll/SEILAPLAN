@@ -22,8 +22,8 @@
 import numpy as np
 
 from SEILAPLAN.lib.pylightxl import pylightxl as xl
-from SEILAPLAN.tools.heightSource import AbstractSurveyReader
-from SEILAPLAN.tools.outputGeo import GPS_CRS, reprojectToCrs
+from SEILAPLAN.tools.height_source import AbstractSurveyReader
+from SEILAPLAN.tools.output_geo import GPS_CRS, reprojectToCrs
 
 
 class ExcelProtocolReader(AbstractSurveyReader):

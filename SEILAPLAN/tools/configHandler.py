@@ -32,7 +32,7 @@ from qgis.core import QgsSettings
 from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
 from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
 from SEILAPLAN.tools.globals import PolesOrigin
-from SEILAPLAN.tools.outputReport import getTimestamp
+from SEILAPLAN.tools.output_report import getTimestamp
 
 
 class ConfigHandler:

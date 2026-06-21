@@ -50,8 +50,8 @@ from SEILAPLAN.gui.survey_import_dialog import SurveyImportDialog
 from SEILAPLAN.tools.configHandler import ConfigHandler
 from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
 from SEILAPLAN.tools.configHandler_project import ProjectConfHandler, castToNum
-from SEILAPLAN.tools.heightSource import AbstractHeightSource
-from SEILAPLAN.tools.outputGeo import CH_CRS
+from SEILAPLAN.tools.height_source import AbstractHeightSource
+from SEILAPLAN.tools.output_geo import CH_CRS
 from SEILAPLAN.tools.raster import rasterExistsAtPath
 from SEILAPLAN.tools.survey import SurveyData
 from SEILAPLAN.utils.plugin_utils import getAbsoluteIconPath

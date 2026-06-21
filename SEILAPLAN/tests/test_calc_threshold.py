@@ -3,7 +3,7 @@ import unittest
 
 from SEILAPLAN.tests import MINIMAL_PROJECT_FILE
 from SEILAPLAN.tests._test_helper import calculate_cable_line
-from SEILAPLAN.tools.calcThreshold import PlotTopic, ThresholdUpdater
+from SEILAPLAN.tools.calc_threshold import PlotTopic, ThresholdUpdater
 from SEILAPLAN.tools.configHandler import ConfigHandler
 from SEILAPLAN.tools.globals import ResultQuality
 

@@ -30,8 +30,8 @@ from SEILAPLAN import __version__ as version
 from SEILAPLAN.tools.configHandler_abstract import AbstractConfHandler
 from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
 from SEILAPLAN.tools.globals import PolesOrigin
-from SEILAPLAN.tools.heightSource import AbstractHeightSource
-from SEILAPLAN.tools.outputGeo import createVirtualRaster
+from SEILAPLAN.tools.height_source import AbstractHeightSource
+from SEILAPLAN.tools.output_geo import createVirtualRaster
 from SEILAPLAN.tools.poles import Poles
 from SEILAPLAN.tools.profile import Profile
 from SEILAPLAN.tools.raster import Raster, rasterExistsAtPath

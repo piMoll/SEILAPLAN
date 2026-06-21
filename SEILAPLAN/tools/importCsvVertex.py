@@ -24,8 +24,8 @@ import csv
 import numpy as np
 from qgis.core import QgsCoordinateReferenceSystem
 
-from SEILAPLAN.tools.heightSource import AbstractSurveyReader
-from SEILAPLAN.tools.outputGeo import GPS_CRS, latLonToUtmCode, reprojectToCrs
+from SEILAPLAN.tools.height_source import AbstractSurveyReader
+from SEILAPLAN.tools.output_geo import GPS_CRS, latLonToUtmCode, reprojectToCrs
 
 
 class CsvVertexReader(AbstractSurveyReader):

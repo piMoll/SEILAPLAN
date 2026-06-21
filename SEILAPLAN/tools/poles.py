@@ -4,7 +4,7 @@ import numpy as np
 from qgis.PyQt.QtCore import QCoreApplication
 
 from SEILAPLAN.tools.globals import PolesOrigin
-from SEILAPLAN.tools.heightSource import AbstractHeightSource
+from SEILAPLAN.tools.height_source import AbstractHeightSource
 
 # Notwendiger BHD [cm]: { Angriffswinkel (kleiner als 10) [°]: Tragkraft Ankerbaum [kn], ...}
 #   Angriffswinkel 0 - 10°: guenstig
