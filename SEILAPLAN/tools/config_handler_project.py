@@ -107,7 +107,7 @@ class ProjectConfHandler(AbstractConfHandler):
             originalProjectDir = settings.get("projectDir", self.projectDir)
             pathCandidates = calculate_path_candidates(
                 heightSourcePath,
-                [originalProjectDir, self.projectDir, os.path.expanduser("~")],
+                [originalProjectDir, self.projectDir],
             )
             if len(pathCandidates) == 0:
                 self.onError(
