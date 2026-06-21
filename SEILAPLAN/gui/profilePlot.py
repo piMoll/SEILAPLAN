@@ -37,7 +37,7 @@ from matplotlib.figure import Figure
 
 from SEILAPLAN.gui.mapMarker import POLE_COLOR, PROFILE_COLOR, SECTION_COLOR
 from SEILAPLAN.gui.plotting_tools import zoom_with_wheel
-from SEILAPLAN.utils.plugin_utils import is_dark_mode
+from SEILAPLAN.utils.qgis_utils import is_dark_mode
 
 
 class ProfilePlot(FigureCanvas):

@@ -21,7 +21,7 @@
 
 import os
 
-from qgis.PyQt.QtCore import QCoreApplication, QFileInfo
+from qgis.PyQt.QtCore import QCoreApplication, QFileInfo, QSettings
 from qgis.PyQt.QtGui import QColor, QFont
 from qgis.core import (
     Qgis,
@@ -245,3 +245,9 @@ def addLayerToQgis(layer, position: str = "", layerGroupName: str = ""):
             layerTree.insertLayer(0, layer)
         elif position == "bottom":
             layerTree.insertLayer(-1, layer)
+
+
+def is_dark_mode():
+    settings = QSettings()
+    theme = settings.value("UI/UITheme", "default")
+    return any([name in theme.lower() for name in ["gray", "dark", "night", "black"]])

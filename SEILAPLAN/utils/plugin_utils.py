@@ -1,6 +1,5 @@
 import os
 
-from qgis.PyQt.QtCore import QSettings
 from qgis.core import QgsMessageLog, QgsSettings
 
 from SEILAPLAN import DEBUG, PLUGIN_DIR
@@ -43,12 +42,6 @@ def removeOldSeilaplanPluginRepo():
                 msg = f"Removing old SEILAPLAN plugin repository at {url}"
             QgsMessageLog.logMessage(msg, "SEILAPLAN")
             break
-
-
-def is_dark_mode():
-    settings = QSettings()
-    theme = settings.value("UI/UITheme", "default")
-    return any([name in theme.lower() for name in ["gray", "dark", "night", "black"]])
 
 
 def getAbsoluteIconPath(iconFileName: str):
