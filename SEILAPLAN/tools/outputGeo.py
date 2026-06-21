@@ -42,7 +42,7 @@ from qgis.core import (
 )
 
 from SEILAPLAN import DEBUG
-from SEILAPLAN.utils.guiHelperFunctions import addLayerToQgis
+from SEILAPLAN.utils.qgis_utils import addLayerToQgis
 
 try:
     from processing import run

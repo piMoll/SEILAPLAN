@@ -48,13 +48,13 @@ from SEILAPLAN.tools.heightSource import AbstractHeightSource
 from SEILAPLAN.tools.outputGeo import CH_CRS
 from SEILAPLAN.tools.raster import rasterExistsAtPath
 from SEILAPLAN.tools.survey import SurveyData
-from SEILAPLAN.utils.guiHelperFunctions import (
+from SEILAPLAN.utils.plugin_utils import getAbsoluteIconPath
+from SEILAPLAN.utils.qgis_utils import (
     addBackgroundMap,
     addLayerToQgis,
     createContours,
     createProfileLayers,
 )
-from SEILAPLAN.utils.plugin_utils import getAbsoluteIconPath
 
 from .checkableComboBoxOwn import QgsCheckableComboBoxOwn
 from .imageDialog import DialogWithImage

@@ -51,9 +51,9 @@ from SEILAPLAN.tools.outputReport import (
 )
 from SEILAPLAN.tools.poles import Poles
 from SEILAPLAN.tools.profile import Profile
-from SEILAPLAN.utils.guiHelperFunctions import addBackgroundMap
 from SEILAPLAN.utils.plugin_utils import getAbsoluteIconPath
 from SEILAPLAN.utils.qgis_logger import log
+from SEILAPLAN.utils.qgis_utils import addBackgroundMap
 
 from .adjustmentDialog_params import AdjustmentDialogParams
 from .adjustmentDialog_thresholds import AdjustmentDialogThresholds
