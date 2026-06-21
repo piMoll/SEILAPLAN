@@ -27,12 +27,12 @@ import traceback
 from qgis.core import Qgis, QgsDistanceArea, QgsPointXY, QgsRasterLayer
 
 from SEILAPLAN import __version__ as version
-from SEILAPLAN.utils.misc import versionAsInteger
 from SEILAPLAN.utils.path_handler import (
     calculate_path_candidates,
     get_relative_path,
 )
-from SEILAPLAN.utils.qgis_helper import log
+from SEILAPLAN.utils.plugin_utils import versionAsInteger
+from SEILAPLAN.utils.qgis_logger import log
 
 from .configHandler_abstract import AbstractConfHandler
 from .configHandler_params import ParameterConfHandler

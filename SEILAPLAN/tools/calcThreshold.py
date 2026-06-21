@@ -10,7 +10,7 @@ from qgis.core import Qgis
 from SEILAPLAN.gui.adjustmentDialog_thresholds import AdjustmentDialogThresholds
 from SEILAPLAN.gui.adjustmentPlot import PlotMarker
 from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
-from SEILAPLAN.utils.qgis_helper import log
+from SEILAPLAN.utils.qgis_logger import log
 
 
 class ThresholdUpdater:

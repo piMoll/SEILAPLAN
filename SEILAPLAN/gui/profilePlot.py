@@ -35,7 +35,7 @@ else:
 from matplotlib.collections import LineCollection
 from matplotlib.figure import Figure
 
-from SEILAPLAN.utils.misc import is_dark_mode
+from SEILAPLAN.utils.plugin_utils import is_dark_mode
 
 from .mapMarker import POLE_COLOR, PROFILE_COLOR, SECTION_COLOR
 from .plotting_tools import zoom_with_wheel

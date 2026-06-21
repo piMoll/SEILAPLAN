@@ -54,7 +54,7 @@ except ImportError:
 
 if not ERROR:
     # Import seilaplan plugin entry point
-    from SEILAPLAN.utils.misc import getAbsoluteIconPath
+    from SEILAPLAN.utils.plugin_utils import getAbsoluteIconPath
 
     from .seilaplanRun import SeilaplanRun
 
@@ -147,7 +147,7 @@ class SeilaplanPlugin:
 
         # All versions later than 3.7.0 are published on the official QGIS
         # plugin repository. The old GitHub-based repo is removed.
-        from SEILAPLAN.utils.misc import removeOldSeilaplanPluginRepo
+        from SEILAPLAN.utils.plugin_utils import removeOldSeilaplanPluginRepo
 
         removeOldSeilaplanPluginRepo()
 

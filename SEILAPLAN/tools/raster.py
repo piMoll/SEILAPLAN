@@ -27,7 +27,7 @@ from osgeo import gdal
 from osgeo.gdal import Dataset
 from qgis.core import Qgis, QgsCoordinateReferenceSystem, QgsRasterLayer
 
-from SEILAPLAN.utils.qgis_helper import log
+from SEILAPLAN.utils.qgis_logger import log
 
 from .heightSource import AbstractHeightSource
 

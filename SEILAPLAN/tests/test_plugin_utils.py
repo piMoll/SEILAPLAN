@@ -1,6 +1,6 @@
 import unittest
 
-from utils.misc import versionAsInteger
+from utils.plugin_utils import versionAsInteger
 
 
 class TestVersionAsInteger(unittest.TestCase):

@@ -37,7 +37,7 @@ from qgis.PyQt.QtWidgets import (
 )
 
 from SEILAPLAN.tools.poles import Poles
-from SEILAPLAN.utils.misc import getAbsoluteIconPath
+from SEILAPLAN.utils.plugin_utils import getAbsoluteIconPath
 
 
 class CustomPoleWidget(QObject):

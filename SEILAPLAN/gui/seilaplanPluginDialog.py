@@ -48,7 +48,7 @@ from SEILAPLAN.tools.heightSource import AbstractHeightSource
 from SEILAPLAN.tools.outputGeo import CH_CRS
 from SEILAPLAN.tools.raster import rasterExistsAtPath
 from SEILAPLAN.tools.survey import SurveyData
-from SEILAPLAN.utils.misc import getAbsoluteIconPath
+from SEILAPLAN.utils.plugin_utils import getAbsoluteIconPath
 
 from .checkableComboBoxOwn import QgsCheckableComboBoxOwn
 from .guiHelperFunctions import (

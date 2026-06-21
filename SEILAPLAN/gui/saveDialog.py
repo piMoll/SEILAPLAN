@@ -38,7 +38,7 @@ from qgis.PyQt.QtWidgets import (
 )
 
 from SEILAPLAN.tools.configHandler import ConfigHandler
-from SEILAPLAN.utils.misc import getAbsoluteIconPath
+from SEILAPLAN.utils.plugin_utils import getAbsoluteIconPath
 
 from .guiHelperFunctions import sanitizeFilename
 
