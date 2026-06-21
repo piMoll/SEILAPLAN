@@ -1,15 +1,3 @@
-# execute everything in plugin/
-
-# [deprecated] Compile resources
-#pyrcc5 -o resources/resources.py resources/resources.qrc
-
-# [deprecated] Compile gui -> ui files are  loaded directly via uic.loadUiType()
-#pyuic5 gui/seilaplanDialog.ui -o gui/ui_seilaplanDialog.py
-#pyuic5 gui/adjustmentDialog.ui -o gui/ui_adjustmentDialog.py
-#pyuic5 gui/surveyImportDialog.ui -o gui/ui_surveyImportDialog.py
-
-# When DEBUG is True, the resources path in ui files is removed, so loadUiType() works.
-# When opening the ui file in the QtDesigner, resources have to be selected again.
 
 # get new translation texts
 cd SEILAPLAN
@@ -20,9 +8,12 @@ bash i18n/update-strings.sh SeilaplanPlugin_de SeilaplanPlugin_en SeilaplanPlugi
 ##  comments.
 
 # compile translations
-# Currently, this needs a conda env with Python 3.9, since the ubuntu 24.04 
-#  system python is at 3.12 and there are no pyqt6 tools currently for this version
 cd SEILAPLAN
 lrelease i18n/SeilaplanPlugin_de.ts i18n/SeilaplanPlugin_en.ts i18n/SeilaplanPlugin_fr.ts i18n/SeilaplanPlugin_it.ts
 
 
+# Sort imports
+pre-commit run --all-files isort
+
+# Check for big issues
+pre-commit run --all-files flake8
