@@ -1,5 +1,5 @@
+from qgis.PyQt.QtCore import QSize, Qt, pyqtSignal
 from qgis.PyQt.QtWidgets import QSizePolicy
-from qgis.PyQt.QtCore import Qt, pyqtSignal, QSize
 from qgis.gui import QgsCheckableComboBox
 
 
@@ -10,7 +10,6 @@ class QgsCheckableComboBoxOwn(QgsCheckableComboBox):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.setMinimumSize(QSize(200, 27))
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
 
