@@ -4,7 +4,7 @@ from SEILAPLAN.core.main_seilaplan import main
 from SEILAPLAN.core.terrain_analysis import stuePos
 from SEILAPLAN.tests import project_file_loader
 from SEILAPLAN.tests._test_helper import MockTask
-from SEILAPLAN.tools.configHandler import ConfigHandler
+from SEILAPLAN.tools.config_handler import ConfigHandler
 
 # Flat terrain, 111m cable line
 TEST_PROJECT_flat_terrain = project_file_loader("unittest_peakdetect_flat_surface.json")

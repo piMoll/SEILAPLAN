@@ -5,7 +5,7 @@ from SEILAPLAN.core.main_seilaplan import main as main
 from SEILAPLAN.tests import BASIC_PROJECT_FILE
 from SEILAPLAN.tests._test_helper import MockTask
 from SEILAPLAN.tool_.mainSeilaplan import main as main_
-from SEILAPLAN.tools.configHandler import ConfigHandler
+from SEILAPLAN.tools.config_handler import ConfigHandler
 
 
 class TestMainResults(unittest.TestCase):

@@ -4,7 +4,7 @@ import unittest
 import numpy as np
 
 from SEILAPLAN.tests import TESTDATA_DIR, TMP_DIR
-from SEILAPLAN.tools.importCsvXyz import CsvXyzReader
+from SEILAPLAN.tools.import_csv_xyz import CsvXyzReader
 
 
 class TestCsvXyzReader(unittest.TestCase):

@@ -7,7 +7,7 @@ from qgis.core import QgsCoordinateReferenceSystem
 from SEILAPLAN.core.cableline_final import preciseCable
 from SEILAPLAN.tests import project_file_loader
 from SEILAPLAN.tests._test_helper import calculate_cable_line
-from SEILAPLAN.tools.configHandler import ConfigHandler
+from SEILAPLAN.tools.config_handler import ConfigHandler
 from SEILAPLAN.tools.poles import Poles
 
 TEST_PROJECT_Bawald = project_file_loader("unittest_survey_excel_Wyss_Bawald.json")

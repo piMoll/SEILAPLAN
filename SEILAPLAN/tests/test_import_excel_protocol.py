@@ -6,7 +6,7 @@ from unittest import mock
 import numpy as np
 
 from SEILAPLAN.tests import TESTDATA_DIR
-from SEILAPLAN.tools.importExcelProtocol import ExcelProtocolReader
+from SEILAPLAN.tools.import_excel_protocol import ExcelProtocolReader
 
 
 class TestExcelProtocolReader(unittest.TestCase):

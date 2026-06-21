@@ -46,7 +46,7 @@ from SEILAPLAN.core.cableline_final import preciseCable, updateWithCableCoordina
 from SEILAPLAN.core.main_seilaplan import main as mainSeilaplan
 from SEILAPLAN.gui.adjustment_plot import AdjustmentPlot, calculatePlotDimensions
 from SEILAPLAN.tools.bird_view_map_extractor import extractMapBackground
-from SEILAPLAN.tools.configHandler import ConfigHandler
+from SEILAPLAN.tools.config_handler import ConfigHandler
 from SEILAPLAN.tools.globals import ResultQuality
 from SEILAPLAN.tools.output_geo import (
     generateCoordTable,

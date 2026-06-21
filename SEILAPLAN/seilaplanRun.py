@@ -7,8 +7,8 @@ from qgis.core import QgsApplication
 from SEILAPLAN.gui.adjustment_dialog import AdjustmentDialog
 from SEILAPLAN.gui.progress_dialog import ProgressDialog
 from SEILAPLAN.gui.seilaplan_plugin_dialog import SeilaplanPluginDialog
-from SEILAPLAN.tools.configHandler import ConfigHandler
-from SEILAPLAN.tools.processingThread import ProcessingTask
+from SEILAPLAN.tools.config_handler import ConfigHandler
+from SEILAPLAN.tools.processing_thread import ProcessingTask
 
 
 class SeilaplanRun:

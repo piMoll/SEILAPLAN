@@ -28,7 +28,7 @@ import os
 from qgis.core import QgsSettings
 
 from SEILAPLAN import PLUGIN_DIR
-from SEILAPLAN.tools.configHandler_abstract import AbstractConfHandler
+from SEILAPLAN.tools.config_handler_abstract import AbstractConfHandler
 from SEILAPLAN.utils.qgis_utils import sanitizeFilename
 
 

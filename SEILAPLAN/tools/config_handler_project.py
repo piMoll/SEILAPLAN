@@ -27,8 +27,8 @@ import traceback
 from qgis.core import Qgis, QgsDistanceArea, QgsPointXY, QgsRasterLayer
 
 from SEILAPLAN import __version__ as version
-from SEILAPLAN.tools.configHandler_abstract import AbstractConfHandler
-from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
+from SEILAPLAN.tools.config_handler_abstract import AbstractConfHandler
+from SEILAPLAN.tools.config_handler_params import ParameterConfHandler
 from SEILAPLAN.tools.globals import PolesOrigin
 from SEILAPLAN.tools.height_source import AbstractHeightSource
 from SEILAPLAN.tools.output_geo import createVirtualRaster

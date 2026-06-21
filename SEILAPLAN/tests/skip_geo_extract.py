@@ -6,7 +6,7 @@ from qgis.testing import unittest
 from SEILAPLAN.tests import BASIC_PROJECT_FILE, TESTDATA_DIR
 from SEILAPLAN.tool_.geoExtract import calcAnker, calcProfile, generateDhm, updateAnker
 from SEILAPLAN.tool_.mainSeilaplan import checkInputParams
-from SEILAPLAN.tools.configHandler import ConfigHandler
+from SEILAPLAN.tools.config_handler import ConfigHandler
 
 
 @unittest.skip("deprecated, needs to be rewritten")

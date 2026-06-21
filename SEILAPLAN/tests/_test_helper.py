@@ -1,11 +1,11 @@
 from qgis.PyQt.QtCore import pyqtSignal
 from qgis.core import QgsTask
-from tools.configHandler import ConfigHandler
+from tools.config_handler import ConfigHandler
 
 from SEILAPLAN.core.cableline_final import preciseCable
 from SEILAPLAN.tests import BASIC_PROJECT_FILE
-from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
-from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
+from SEILAPLAN.tools.config_handler_params import ParameterConfHandler
+from SEILAPLAN.tools.config_handler_project import ProjectConfHandler
 
 
 def calculate_cable_line(conf: ConfigHandler, project_file=BASIC_PROJECT_FILE):

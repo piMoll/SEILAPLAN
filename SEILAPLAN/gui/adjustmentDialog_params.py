@@ -19,7 +19,7 @@
  ***************************************************************************/
 """
 
-from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
+from SEILAPLAN.tools.config_handler_params import ParameterConfHandler
 
 
 class AdjustmentDialogParams(object):

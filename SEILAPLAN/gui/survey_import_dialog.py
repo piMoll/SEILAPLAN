@@ -24,7 +24,7 @@ import os
 from qgis.PyQt import uic
 from qgis.PyQt.QtWidgets import QDialog, QDialogButtonBox, QFileDialog, QMessageBox
 
-from SEILAPLAN.tools.configHandler import ConfigHandler
+from SEILAPLAN.tools.config_handler import ConfigHandler
 from SEILAPLAN.tools.file_fetcher import FileFetcher
 from SEILAPLAN.tools.survey import SurveyData
 

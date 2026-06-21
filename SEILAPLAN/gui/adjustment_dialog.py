@@ -46,9 +46,9 @@ from SEILAPLAN.gui.pole_widget import CustomPoleWidget
 from SEILAPLAN.gui.save_dialog import DialogOutputOptions
 from SEILAPLAN.tools.bird_view_map_extractor import extractMapBackground
 from SEILAPLAN.tools.calc_threshold import ThresholdUpdater
-from SEILAPLAN.tools.configHandler import ConfigHandler
-from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
-from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
+from SEILAPLAN.tools.config_handler import ConfigHandler
+from SEILAPLAN.tools.config_handler_params import ParameterConfHandler
+from SEILAPLAN.tools.config_handler_project import ProjectConfHandler
 from SEILAPLAN.tools.globals import PolesOrigin, ResultQuality
 from SEILAPLAN.tools.output_geo import (
     addToMap,

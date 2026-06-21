@@ -29,8 +29,8 @@ import numpy
 from qgis.PyQt.QtCore import QSettings
 from qgis.core import QgsSettings
 
-from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
-from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
+from SEILAPLAN.tools.config_handler_params import ParameterConfHandler
+from SEILAPLAN.tools.config_handler_project import ProjectConfHandler
 from SEILAPLAN.tools.globals import PolesOrigin
 from SEILAPLAN.tools.output_report import getTimestamp
 

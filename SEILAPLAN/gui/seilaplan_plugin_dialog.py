@@ -47,9 +47,9 @@ from SEILAPLAN.gui.map_marker import MapMarkerTool
 from SEILAPLAN.gui.profileDialog import ProfileDialog
 from SEILAPLAN.gui.save_dialog import DialogSaveParamset
 from SEILAPLAN.gui.survey_import_dialog import SurveyImportDialog
-from SEILAPLAN.tools.configHandler import ConfigHandler
-from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
-from SEILAPLAN.tools.configHandler_project import ProjectConfHandler, castToNum
+from SEILAPLAN.tools.config_handler import ConfigHandler
+from SEILAPLAN.tools.config_handler_params import ParameterConfHandler
+from SEILAPLAN.tools.config_handler_project import ProjectConfHandler, castToNum
 from SEILAPLAN.tools.height_source import AbstractHeightSource
 from SEILAPLAN.tools.output_geo import CH_CRS
 from SEILAPLAN.tools.raster import rasterExistsAtPath
