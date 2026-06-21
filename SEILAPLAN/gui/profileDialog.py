@@ -43,15 +43,15 @@ from qgis.PyQt.QtWidgets import (
 )
 
 from SEILAPLAN.gui.plotting_tools import MyNavigationToolbar
-from SEILAPLAN.gui.poleWidget import CustomPoleWidget
-from SEILAPLAN.gui.profilePlot import ProfilePlot
+from SEILAPLAN.gui.pole_widget import CustomPoleWidget
+from SEILAPLAN.gui.profile_plot import ProfilePlot
 from SEILAPLAN.utils.plugin_utils import getAbsoluteIconPath
 
 
 class ProfileDialog(QDialog):
     def __init__(self, parent, interface, drawTool, projectHandler):
         """
-        :type drawTool: gui.mapMarker.MapMarkerTool
+        :type drawTool: gui.map_marker.MapMarkerTool
         :type projectHandler: projectHandler.ProjectConfHandler
         """
         QDialog.__init__(self, parent)

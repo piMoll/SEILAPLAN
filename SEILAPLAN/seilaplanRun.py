@@ -4,9 +4,9 @@ from osgeo import gdal
 from qgis.PyQt.QtWidgets import QApplication
 from qgis.core import QgsApplication
 
-from SEILAPLAN.gui.adjustmentDialog import AdjustmentDialog
-from SEILAPLAN.gui.progressDialog import ProgressDialog
-from SEILAPLAN.gui.seilaplanPluginDialog import SeilaplanPluginDialog
+from SEILAPLAN.gui.adjustment_dialog import AdjustmentDialog
+from SEILAPLAN.gui.progress_dialog import ProgressDialog
+from SEILAPLAN.gui.seilaplan_plugin_dialog import SeilaplanPluginDialog
 from SEILAPLAN.tools.configHandler import ConfigHandler
 from SEILAPLAN.tools.processingThread import ProcessingTask
 

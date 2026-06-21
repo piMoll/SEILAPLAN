@@ -33,17 +33,17 @@ from SEILAPLAN import PLUGIN_DIR
 from SEILAPLAN.core.cableline_final import preciseCable, updateWithCableCoordinates
 from SEILAPLAN.gui.adjustmentDialog_params import AdjustmentDialogParams
 from SEILAPLAN.gui.adjustmentDialog_thresholds import AdjustmentDialogThresholds
-from SEILAPLAN.gui.adjustmentPlot import (
+from SEILAPLAN.gui.adjustment_plot import (
     AdjustmentPlot,
     calculatePlotDimensions,
     saveImgAsPdfWithMpl,
 )
-from SEILAPLAN.gui.birdViewWidget import BirdViewWidget
-from SEILAPLAN.gui.imageDialog import DialogWithImage
-from SEILAPLAN.gui.mapMarker import MapMarkerTool
+from SEILAPLAN.gui.bird_view_widget import BirdViewWidget
+from SEILAPLAN.gui.image_dialog import DialogWithImage
+from SEILAPLAN.gui.map_marker import MapMarkerTool
 from SEILAPLAN.gui.plotting_tools import MyNavigationToolbar
-from SEILAPLAN.gui.poleWidget import CustomPoleWidget
-from SEILAPLAN.gui.saveDialog import DialogOutputOptions
+from SEILAPLAN.gui.pole_widget import CustomPoleWidget
+from SEILAPLAN.gui.save_dialog import DialogOutputOptions
 from SEILAPLAN.tools.birdViewMapExtractor import extractMapBackground
 from SEILAPLAN.tools.calcThreshold import ThresholdUpdater
 from SEILAPLAN.tools.configHandler import ConfigHandler

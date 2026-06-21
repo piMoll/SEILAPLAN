@@ -44,7 +44,7 @@ from qgis.core import QgsApplication, QgsTask
 
 from SEILAPLAN.core.cableline_final import preciseCable, updateWithCableCoordinates
 from SEILAPLAN.core.main_seilaplan import main as mainSeilaplan
-from SEILAPLAN.gui.adjustmentPlot import AdjustmentPlot, calculatePlotDimensions
+from SEILAPLAN.gui.adjustment_plot import AdjustmentPlot, calculatePlotDimensions
 from SEILAPLAN.tools.birdViewMapExtractor import extractMapBackground
 from SEILAPLAN.tools.configHandler import ConfigHandler
 from SEILAPLAN.tools.globals import ResultQuality

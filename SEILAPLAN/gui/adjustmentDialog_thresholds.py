@@ -51,7 +51,7 @@ class AdjustmentDialogThresholds(QObject):
 
     def __init__(self, parent):
         """
-        :type parent: gui.adjustmentDialog.AdjustmentDialog
+        :type parent: gui.adjustment_dialog.AdjustmentDialog
         """
         super().__init__()
         self.parent = parent

@@ -30,7 +30,7 @@ class AdjustmentDialogParams(object):
 
     def __init__(self, parent, paramHandler):
         """
-        :type parent: gui.adjustmentDialog.AdjustmentDialog
+        :type parent: gui.adjustment_dialog.AdjustmentDialog
         :type paramHandler: tools.configHandler_params.ParamConfHandler
         """
         self.parent = parent

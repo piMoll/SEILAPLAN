@@ -41,6 +41,12 @@ from qgis.core import (
 )
 
 from SEILAPLAN import PROJECT_URL
+from SEILAPLAN.gui.checkable_combo_box import QgsCheckableComboBoxOwn
+from SEILAPLAN.gui.image_dialog import DialogWithImage
+from SEILAPLAN.gui.map_marker import MapMarkerTool
+from SEILAPLAN.gui.profileDialog import ProfileDialog
+from SEILAPLAN.gui.save_dialog import DialogSaveParamset
+from SEILAPLAN.gui.survey_import_dialog import SurveyImportDialog
 from SEILAPLAN.tools.configHandler import ConfigHandler
 from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
 from SEILAPLAN.tools.configHandler_project import ProjectConfHandler, castToNum
@@ -55,13 +61,6 @@ from SEILAPLAN.utils.qgis_utils import (
     createContours,
     createProfileLayers,
 )
-
-from .checkableComboBoxOwn import QgsCheckableComboBoxOwn
-from .imageDialog import DialogWithImage
-from .mapMarker import MapMarkerTool
-from .profileDialog import ProfileDialog
-from .saveDialog import DialogSaveParamset
-from .surveyImportDialog import SurveyImportDialog
 
 # This loads the .ui file so that PyQt can populate the plugin with the
 #  elements from Qt Designer
