@@ -1,7 +1,7 @@
 import numpy as np
 from qgis.testing import unittest
 
-from SEILAPLAN.core.mainSeilaplan import main as main
+from SEILAPLAN.core.main_seilaplan import main as main
 from SEILAPLAN.tool_.mainSeilaplan import main as main_
 from SEILAPLAN.tools.configHandler import ConfigHandler
 

@@ -25,7 +25,7 @@ import traceback
 from qgis.PyQt.QtCore import pyqtSignal
 from qgis.core import QgsTask
 
-from SEILAPLAN.core.mainSeilaplan import main
+from SEILAPLAN.core.main_seilaplan import main
 from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
 from SEILAPLAN.tools.outputReport import getTimestamp
 

@@ -30,7 +30,7 @@ from qgis.PyQt.QtWidgets import QApplication, QDialog, QMessageBox, QTextEdit
 from qgis.core import Qgis
 
 from SEILAPLAN import PLUGIN_DIR
-from SEILAPLAN.core.cablelineFinal import preciseCable, updateWithCableCoordinates
+from SEILAPLAN.core.cableline_final import preciseCable, updateWithCableCoordinates
 from SEILAPLAN.gui.adjustmentDialog_params import AdjustmentDialogParams
 from SEILAPLAN.gui.adjustmentDialog_thresholds import AdjustmentDialogThresholds
 from SEILAPLAN.gui.adjustmentPlot import (

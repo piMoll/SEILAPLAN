@@ -15,8 +15,8 @@
 
 import numpy as np
 
-from SEILAPLAN.core.optiSTA import calcSTA
-from SEILAPLAN.core.terrainAnalysis import ismember
+from SEILAPLAN.core.opti_sta import calcSTA
+from SEILAPLAN.core.terrain_analysis import ismember
 
 try:
     import scipy.sparse as sps

@@ -42,8 +42,8 @@ import traceback
 from qgis.PyQt.QtCore import QCoreApplication, QTranslator, pyqtSignal
 from qgis.core import QgsApplication, QgsTask
 
-from SEILAPLAN.core.cablelineFinal import preciseCable, updateWithCableCoordinates
-from SEILAPLAN.core.mainSeilaplan import main as mainSeilaplan
+from SEILAPLAN.core.cableline_final import preciseCable, updateWithCableCoordinates
+from SEILAPLAN.core.main_seilaplan import main as mainSeilaplan
 from SEILAPLAN.gui.adjustmentPlot import AdjustmentPlot, calculatePlotDimensions
 from SEILAPLAN.tools.birdViewMapExtractor import extractMapBackground
 from SEILAPLAN.tools.configHandler import ConfigHandler

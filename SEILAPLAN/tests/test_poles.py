@@ -4,7 +4,7 @@ import unittest
 from numpy import nan
 from qgis.core import QgsCoordinateReferenceSystem
 
-from SEILAPLAN.core.cablelineFinal import preciseCable
+from SEILAPLAN.core.cableline_final import preciseCable
 from SEILAPLAN.tests import project_file_loader
 from SEILAPLAN.tests._test_helper import calculate_cable_line
 from SEILAPLAN.tools.configHandler import ConfigHandler

@@ -21,9 +21,9 @@
 
 import numpy as np
 
-from SEILAPLAN.core.cablelineFinal import preciseCable
-from SEILAPLAN.core.mainOpti import optimization
-from SEILAPLAN.core.terrainAnalysis import stuePos
+from SEILAPLAN.core.cableline_final import preciseCable
+from SEILAPLAN.core.main_opti import optimization
+from SEILAPLAN.core.terrain_analysis import stuePos
 from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
 from SEILAPLAN.tools.globals import PolesOrigin, ResultQuality
 
