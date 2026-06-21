@@ -173,7 +173,7 @@ def addOsmBackgroundMap():
     if layerName not in already_added:
         # Add OSM layer
         xmlPath = os.path.join(PLUGIN_DIR, "config", "OSM_Karte.xml")
-        baseName = QFileInfo(xmlPath).baseName()
+        baseName = QFileInfo(xmlPath).completeBaseName()
         osmLyr = QgsRasterLayer(xmlPath, baseName)
     return osmLyr
 

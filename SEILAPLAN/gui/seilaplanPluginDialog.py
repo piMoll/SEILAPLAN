@@ -665,7 +665,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
                 # Raster is still at same location in file system
                 if rasterExistsAtPath(path):
                     # Load raster
-                    newRaster = QFileInfo(path).baseName()
+                    newRaster = QFileInfo(path).completeBaseName()
                     rasterLyr = QgsRasterLayer(path, newRaster)
                     addLayerToQgis(rasterLyr, "top")
                     # Update drop down menu
