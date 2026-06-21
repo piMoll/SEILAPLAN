@@ -54,7 +54,7 @@ except ImportError:
 
 if not ERROR:
     # Import seilaplan plugin entry point
-    from SEILAPLAN.gui.guiHelperFunctions import getAbsoluteIconPath
+    from SEILAPLAN.utils.misc import getAbsoluteIconPath
 
     from .seilaplanRun import SeilaplanRun
 

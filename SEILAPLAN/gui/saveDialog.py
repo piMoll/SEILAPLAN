@@ -38,8 +38,9 @@ from qgis.PyQt.QtWidgets import (
 )
 
 from SEILAPLAN.tools.configHandler import ConfigHandler
+from SEILAPLAN.utils.misc import getAbsoluteIconPath
 
-from .guiHelperFunctions import getAbsoluteIconPath, sanitizeFilename
+from .guiHelperFunctions import sanitizeFilename
 
 
 class DialogSaveParamset(QDialog):

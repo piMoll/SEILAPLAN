@@ -1,7 +1,9 @@
+import os
+
 from qgis.PyQt.QtCore import QSettings
 from qgis.core import QgsMessageLog, QgsSettings
 
-from SEILAPLAN import DEBUG
+from SEILAPLAN import DEBUG, PLUGIN_DIR
 from SEILAPLAN import __version__ as current_version
 
 QGIS_SETTINGS_GROUP_PLUGINS = "app/plugin_repositories"
@@ -47,3 +49,10 @@ def is_dark_mode():
     settings = QSettings()
     theme = settings.value("UI/UITheme", "default")
     return any([name in theme.lower() for name in ["gray", "dark", "night", "black"]])
+
+
+def getAbsoluteIconPath(iconFileName: str):
+    absPath = os.path.join(PLUGIN_DIR, "gui", "icons", iconFileName)
+    if not os.path.exists(absPath):
+        return str(os.path.join(PLUGIN_DIR, "gui", "icons", "icon_red.png"))
+    return str(absPath)

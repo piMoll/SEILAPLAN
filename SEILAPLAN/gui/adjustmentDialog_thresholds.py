@@ -36,9 +36,7 @@ from qgis.PyQt.QtWidgets import (
     QWidget,
 )
 
-from SEILAPLAN.utils.misc import is_dark_mode
-
-from .guiHelperFunctions import getAbsoluteIconPath
+from SEILAPLAN.utils.misc import getAbsoluteIconPath, is_dark_mode
 
 
 class AdjustmentDialogThresholds(QObject):

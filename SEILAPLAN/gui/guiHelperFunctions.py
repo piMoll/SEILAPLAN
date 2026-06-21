@@ -61,13 +61,6 @@ def tr(message, **kwargs):
     return QCoreApplication.translate("@default", message)
 
 
-def getAbsoluteIconPath(iconFileName: str):
-    absPath = os.path.join(PLUGIN_DIR, "gui", "icons", iconFileName)
-    if not os.path.exists(absPath):
-        return str(os.path.join(PLUGIN_DIR, "gui", "icons", "icon_red.png"))
-    return str(absPath)
-
-
 def createContours(canvas, heightSource):
     contourName = tr("Hoehenlinien_") + heightSource.name
     if isCogRaster(heightSource.path):

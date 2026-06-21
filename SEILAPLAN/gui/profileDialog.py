@@ -42,7 +42,8 @@ from qgis.PyQt.QtWidgets import (
     QWidget,
 )
 
-from .guiHelperFunctions import getAbsoluteIconPath
+from SEILAPLAN.utils.misc import getAbsoluteIconPath
+
 from .plotting_tools import MyNavigationToolbar
 from .poleWidget import CustomPoleWidget
 from .profilePlot import ProfilePlot
