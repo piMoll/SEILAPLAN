@@ -1,6 +1,6 @@
 {
   "projectname": "seilaplan_20260503_0915",
-  "version": "3.7.1",
+  "version": "3.8.0",
   "header": {
     "PrVerf": "",
     "PrNr": "",
@@ -11,7 +11,7 @@
   "heightsource": {
     "type": "dhm",
     "surveyType": null,
-    "source": "{HOMEPATH}/tests/testdata/dhm_flat.tif",
+    "source": "dhm_flat.tif",
     "crs": "EPSG:2056"
   },
   "profile": {

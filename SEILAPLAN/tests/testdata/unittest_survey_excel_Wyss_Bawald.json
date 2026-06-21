@@ -1,6 +1,6 @@
 {
     "projectname": "23 ÜK-C GR 19_23 W30 Bawald",
-    "version": "3.5.3",
+    "version": "3.8.0",
     "header": {
         "PrVerf": "K.Wyss",
         "PrNr": "19/23",
@@ -11,7 +11,7 @@
     "heightsource": {
         "type": "survey",
         "surveyType": "excelProtocol",
-        "source": "{HOMEPATH}/tests/testdata/unittest_feldaufnahmeprotokoll_Wyss_Bawald.xlsx",
+        "source": "unittest_feldaufnahmeprotokoll_Wyss_Bawald.xlsx",
         "crs": "EPSG:2056"
     },
     "profile": {

@@ -1,6 +1,6 @@
 {
     "projectname": "unittest_dhm_anchor_anchor_4_poles_uphill",
-    "version": "3.5.3",
+    "version": "3.8.0",
     "header": {
         "PrVerf": "Unittest",
         "PrNr": "Unittest 000",
@@ -11,7 +11,7 @@
     "heightsource": {
         "type": "dhm",
         "surveyType": null,
-        "source": "{HOMEPATH}/tests/testdata/dhm.tiff",
+        "source": "dhm.tiff",
         "crs": "EPSG:2056"
     },
     "profile": {
