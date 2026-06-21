@@ -11,7 +11,7 @@
 #------------------------------------------------------------------------------
 """
 
-from .cableline import calcBandH, calcCable
+from SEILAPLAN.core.cableline import calcBandH, calcCable
 
 
 def calcSTA(

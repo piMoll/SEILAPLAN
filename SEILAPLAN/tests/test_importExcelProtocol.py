@@ -4,8 +4,9 @@ import unittest
 from unittest import mock
 
 import numpy as np
-from tests import TESTDATA_DIR
-from tools.importExcelProtocol import ExcelProtocolReader
+
+from SEILAPLAN.tests import TESTDATA_DIR
+from SEILAPLAN.tools.importExcelProtocol import ExcelProtocolReader
 
 
 class TestExcelProtocolReader(unittest.TestCase):

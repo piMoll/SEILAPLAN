@@ -27,8 +27,7 @@ from qgis.core import QgsTask
 
 from SEILAPLAN.core.mainSeilaplan import main
 from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
-
-from .outputReport import getTimestamp
+from SEILAPLAN.tools.outputReport import getTimestamp
 
 
 class ProcessingTask(QgsTask):

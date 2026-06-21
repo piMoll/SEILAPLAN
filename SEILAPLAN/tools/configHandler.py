@@ -29,10 +29,10 @@ import numpy
 from qgis.PyQt.QtCore import QSettings
 from qgis.core import QgsSettings
 
-from .configHandler_params import ParameterConfHandler
-from .configHandler_project import ProjectConfHandler
-from .globals import PolesOrigin
-from .outputReport import getTimestamp
+from SEILAPLAN.tools.configHandler_params import ParameterConfHandler
+from SEILAPLAN.tools.configHandler_project import ProjectConfHandler
+from SEILAPLAN.tools.globals import PolesOrigin
+from SEILAPLAN.tools.outputReport import getTimestamp
 
 
 class ConfigHandler:

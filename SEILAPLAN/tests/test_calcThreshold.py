@@ -1,12 +1,11 @@
 from typing import List
 import unittest
 
+from SEILAPLAN.tests import MINIMAL_PROJECT_FILE
+from SEILAPLAN.tests._test_helper import calculate_cable_line
 from SEILAPLAN.tools.calcThreshold import PlotTopic, ThresholdUpdater
 from SEILAPLAN.tools.configHandler import ConfigHandler
 from SEILAPLAN.tools.globals import ResultQuality
-
-from . import MINIMAL_PROJECT_FILE
-from ._test_helper import calculate_cable_line
 
 
 class TestCalcThreshold(unittest.TestCase):

@@ -23,7 +23,7 @@ from math import floor
 
 import numpy as np
 
-from .survey import SurveyData
+from SEILAPLAN.tools.survey import SurveyData
 
 
 class Profile(object):

@@ -2,10 +2,9 @@ import os
 import unittest
 
 import numpy as np
-from tests import TESTDATA_DIR
-from tools.importCsvXyz import CsvXyzReader
 
-from . import TMP_DIR
+from SEILAPLAN.tests import TESTDATA_DIR, TMP_DIR
+from SEILAPLAN.tools.importCsvXyz import CsvXyzReader
 
 
 class TestCsvXyzReader(unittest.TestCase):

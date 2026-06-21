@@ -38,10 +38,9 @@ from matplotlib.patches import Rectangle
 import matplotlib.patheffects as pe
 from matplotlib.pyplot import imread
 
+from SEILAPLAN.gui.plotting_tools import zoom_with_wheel
 from SEILAPLAN.tools.birdViewSymbol import BirdViewSymbol, BirdViewSymbolLoader
 from SEILAPLAN.utils.plugin_utils import is_dark_mode
-
-from .plotting_tools import zoom_with_wheel
 
 
 class PlotMarker(object):

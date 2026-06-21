@@ -31,6 +31,19 @@ from qgis.core import Qgis
 
 from SEILAPLAN import PLUGIN_DIR
 from SEILAPLAN.core.cablelineFinal import preciseCable, updateWithCableCoordinates
+from SEILAPLAN.gui.adjustmentDialog_params import AdjustmentDialogParams
+from SEILAPLAN.gui.adjustmentDialog_thresholds import AdjustmentDialogThresholds
+from SEILAPLAN.gui.adjustmentPlot import (
+    AdjustmentPlot,
+    calculatePlotDimensions,
+    saveImgAsPdfWithMpl,
+)
+from SEILAPLAN.gui.birdViewWidget import BirdViewWidget
+from SEILAPLAN.gui.imageDialog import DialogWithImage
+from SEILAPLAN.gui.mapMarker import MapMarkerTool
+from SEILAPLAN.gui.plotting_tools import MyNavigationToolbar
+from SEILAPLAN.gui.poleWidget import CustomPoleWidget
+from SEILAPLAN.gui.saveDialog import DialogOutputOptions
 from SEILAPLAN.tools.birdViewMapExtractor import extractMapBackground
 from SEILAPLAN.tools.calcThreshold import ThresholdUpdater
 from SEILAPLAN.tools.configHandler import ConfigHandler
@@ -54,16 +67,6 @@ from SEILAPLAN.tools.profile import Profile
 from SEILAPLAN.utils.plugin_utils import getAbsoluteIconPath
 from SEILAPLAN.utils.qgis_logger import log
 from SEILAPLAN.utils.qgis_utils import addBackgroundMap
-
-from .adjustmentDialog_params import AdjustmentDialogParams
-from .adjustmentDialog_thresholds import AdjustmentDialogThresholds
-from .adjustmentPlot import AdjustmentPlot, calculatePlotDimensions, saveImgAsPdfWithMpl
-from .birdViewWidget import BirdViewWidget
-from .imageDialog import DialogWithImage
-from .mapMarker import MapMarkerTool
-from .plotting_tools import MyNavigationToolbar
-from .poleWidget import CustomPoleWidget
-from .saveDialog import DialogOutputOptions
 
 # This loads the .ui file so that PyQt can populate the plugin with the
 #  elements from Qt Designer

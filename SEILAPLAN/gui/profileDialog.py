@@ -42,11 +42,10 @@ from qgis.PyQt.QtWidgets import (
     QWidget,
 )
 
+from SEILAPLAN.gui.plotting_tools import MyNavigationToolbar
+from SEILAPLAN.gui.poleWidget import CustomPoleWidget
+from SEILAPLAN.gui.profilePlot import ProfilePlot
 from SEILAPLAN.utils.plugin_utils import getAbsoluteIconPath
-
-from .plotting_tools import MyNavigationToolbar
-from .poleWidget import CustomPoleWidget
-from .profilePlot import ProfilePlot
 
 
 class ProfileDialog(QDialog):

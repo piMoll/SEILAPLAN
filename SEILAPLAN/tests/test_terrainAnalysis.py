@@ -1,8 +1,7 @@
 import unittest
 
-from core.terrainAnalysis import stuePos
-
 from SEILAPLAN.core.mainSeilaplan import main
+from SEILAPLAN.core.terrainAnalysis import stuePos
 from SEILAPLAN.tests import project_file_loader
 from SEILAPLAN.tests._test_helper import MockTask
 from SEILAPLAN.tools.configHandler import ConfigHandler

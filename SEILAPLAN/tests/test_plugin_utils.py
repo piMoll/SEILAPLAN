@@ -1,6 +1,6 @@
 import unittest
 
-from utils.plugin_utils import versionAsInteger
+from SEILAPLAN.utils.plugin_utils import versionAsInteger
 
 
 class TestVersionAsInteger(unittest.TestCase):

@@ -5,11 +5,10 @@ from numpy import nan
 from qgis.core import QgsCoordinateReferenceSystem
 
 from SEILAPLAN.core.cablelineFinal import preciseCable
+from SEILAPLAN.tests import project_file_loader
+from SEILAPLAN.tests._test_helper import calculate_cable_line
 from SEILAPLAN.tools.configHandler import ConfigHandler
 from SEILAPLAN.tools.poles import Poles
-
-from . import project_file_loader
-from ._test_helper import calculate_cable_line
 
 TEST_PROJECT_Bawald = project_file_loader("unittest_survey_excel_Wyss_Bawald.json")
 TEST_PROJECT_A_A = project_file_loader("unittest_dhm_anchor_anchor_6_poles.json")

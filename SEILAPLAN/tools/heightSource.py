@@ -22,7 +22,7 @@
 from qgis.PyQt.QtCore import QCoreApplication
 from qgis.core import QgsCoordinateReferenceSystem
 
-from .outputGeo import GPS_CRS
+from SEILAPLAN.tools.outputGeo import GPS_CRS
 
 
 class AbstractHeightSource(object):

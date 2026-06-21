@@ -15,7 +15,7 @@ import os
 
 import numpy as np
 
-from .peakdetect import peakdetect
+from SEILAPLAN.core.peakdetect import peakdetect
 
 p = 21
 nl = os.linesep
