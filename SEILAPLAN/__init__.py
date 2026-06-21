@@ -38,7 +38,7 @@ def classFactory(iface):
     """
     enable_remote_debugging()
 
-    from .seilaplanPlugin import SeilaplanPlugin
+    from .seilaplan_plugin import SeilaplanPlugin
 
     return SeilaplanPlugin(iface)
 

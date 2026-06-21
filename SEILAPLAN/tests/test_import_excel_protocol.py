@@ -60,7 +60,7 @@ class TestExcelProtocolReader(unittest.TestCase):
             "A26": "3",
         }
 
-    @mock.patch("tools.importExcelProtocol.xl.readxl")
+    @mock.patch("tools.import_excel_protocol.xl.readxl")
     def test_check_structure_valid_template(self, mock_readxl):
         mock_sheet = mock.Mock()
         mock_sheet.address.return_value = "v3.4"
@@ -71,7 +71,7 @@ class TestExcelProtocolReader(unittest.TestCase):
 
         self.assertTrue(reader.valid)
 
-    @mock.patch("tools.importExcelProtocol.xl.readxl")
+    @mock.patch("tools.import_excel_protocol.xl.readxl")
     def test_check_structure_invalid_template(self, mock_readxl):
         mock_sheet = mock.Mock()
         mock_sheet.address.side_effect = ValueError
@@ -82,7 +82,7 @@ class TestExcelProtocolReader(unittest.TestCase):
 
         self.assertFalse(reader.valid)
 
-    @mock.patch("tools.importExcelProtocol.xl.readxl")
+    @mock.patch("tools.import_excel_protocol.xl.readxl")
     def test_readOutData_minimal_valid_protocol(self, mock_readxl):
         mock_sheet = mock.Mock()
         mock_sheet.address.side_effect = lambda address: {
@@ -109,7 +109,7 @@ class TestExcelProtocolReader(unittest.TestCase):
         )
         self.assertTrue(np.array_equal(reader.surveyPoints["z"], np.array([0, 0])))
 
-    @mock.patch("tools.importExcelProtocol.xl.readxl")
+    @mock.patch("tools.import_excel_protocol.xl.readxl")
     def test_readOutData_invalid_abs_point_coordinates(self, mock_readxl):
         mock_sheet = mock.Mock()
         mock_protocol = deepcopy(self.mock_protocol)
@@ -124,7 +124,7 @@ class TestExcelProtocolReader(unittest.TestCase):
         self.assertFalse(result)
         self.assertEqual(reader.errorMsg, "Koordinatenwerte sind ungueltig")
 
-    @mock.patch("tools.importExcelProtocol.xl.readxl")
+    @mock.patch("tools.import_excel_protocol.xl.readxl")
     def test_readOutData_invalid_template_version(self, mock_readxl):
         mock_sheet = mock.Mock()
         mock_protocol = deepcopy(self.mock_protocol)
@@ -142,7 +142,7 @@ class TestExcelProtocolReader(unittest.TestCase):
             "Veraltetes Template, Daten koennen nicht eingelesen werden",
         )
 
-    @mock.patch("tools.importExcelProtocol.xl.readxl")
+    @mock.patch("tools.import_excel_protocol.xl.readxl")
     def test_readOutData_invalid_abs_point_number(self, mock_readxl):
         mock_sheet = mock.Mock()
         mock_protocol = deepcopy(self.mock_protocol)
@@ -157,7 +157,7 @@ class TestExcelProtocolReader(unittest.TestCase):
         self.assertFalse(result)
         self.assertEqual(reader.errorMsg, "Punkt-Nr. nicht in Protokoll vorhanden")
 
-    @mock.patch("tools.importExcelProtocol.xl.readxl")
+    @mock.patch("tools.import_excel_protocol.xl.readxl")
     def test_readOutData_incomplete_first_measurements(self, mock_readxl):
         mock_sheet = mock.Mock()
         mock_protocol = deepcopy(self.mock_protocol)
@@ -175,7 +175,7 @@ class TestExcelProtocolReader(unittest.TestCase):
             reader.errorMsg,
         )
 
-    @mock.patch("tools.importExcelProtocol.xl.readxl")
+    @mock.patch("tools.import_excel_protocol.xl.readxl")
     def test_readOutData_azimut_full_100(self, mock_readxl):
         mock_sheet = mock.Mock()
         mock_protocol_azi_100 = deepcopy(self.mock_protocol)
@@ -205,7 +205,7 @@ class TestExcelProtocolReader(unittest.TestCase):
             np.array_equal(reader.surveyPoints["z"], np.array([300, 300, 300, 300]))
         )
 
-    @mock.patch("tools.importExcelProtocol.xl.readxl")
+    @mock.patch("tools.import_excel_protocol.xl.readxl")
     def test_readOutData_azimut_full_300(self, mock_readxl):
         mock_sheet = mock.Mock()
         mock_protocol_azi_300 = deepcopy(self.mock_protocol)
@@ -235,7 +235,7 @@ class TestExcelProtocolReader(unittest.TestCase):
             np.array_equal(reader.surveyPoints["z"], np.array([300, 300, 300, 300]))
         )
 
-    @mock.patch("tools.importExcelProtocol.xl.readxl")
+    @mock.patch("tools.import_excel_protocol.xl.readxl")
     def test_readOutData_azimut_full_400(self, mock_readxl):
         mock_sheet = mock.Mock()
         mock_protocol_azi_400 = deepcopy(self.mock_protocol)
@@ -265,7 +265,7 @@ class TestExcelProtocolReader(unittest.TestCase):
             np.array_equal(reader.surveyPoints["z"], np.array([300, 300, 300, 300]))
         )
 
-    @mock.patch("tools.importExcelProtocol.xl.readxl")
+    @mock.patch("tools.import_excel_protocol.xl.readxl")
     def test_readOutData_read_notes(self, mock_readxl):
         mock_sheet = mock.Mock()
         mock_protocol = deepcopy(self.mock_protocol)
