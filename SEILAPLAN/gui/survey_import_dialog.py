@@ -30,7 +30,7 @@ from SEILAPLAN.tools.survey import SurveyData
 
 # This loads the .ui file so that PyQt can populate the plugin with the
 #  elements from Qt Designer
-UI_FILE = os.path.join(os.path.dirname(__file__), "surveyImportDialog.ui")
+UI_FILE = os.path.join(os.path.dirname(__file__), "survey_import_dialog.ui")
 FORM_CLASS, _ = uic.loadUiType(UI_FILE)
 
 

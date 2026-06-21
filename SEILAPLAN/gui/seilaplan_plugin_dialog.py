@@ -44,7 +44,7 @@ from SEILAPLAN import PROJECT_URL
 from SEILAPLAN.gui.checkable_combo_box import QgsCheckableComboBoxOwn
 from SEILAPLAN.gui.image_dialog import DialogWithImage
 from SEILAPLAN.gui.map_marker import MapMarkerTool
-from SEILAPLAN.gui.profileDialog import ProfileDialog
+from SEILAPLAN.gui.profile_dialog import ProfileDialog
 from SEILAPLAN.gui.save_dialog import DialogSaveParamset
 from SEILAPLAN.gui.survey_import_dialog import SurveyImportDialog
 from SEILAPLAN.tools.config_handler import ConfigHandler
@@ -64,7 +64,7 @@ from SEILAPLAN.utils.qgis_utils import (
 
 # This loads the .ui file so that PyQt can populate the plugin with the
 #  elements from Qt Designer
-UI_FILE = os.path.join(os.path.dirname(__file__), "seilaplanDialog.ui")
+UI_FILE = os.path.join(os.path.dirname(__file__), "seilaplan_dialog.ui")
 FORM_CLASS, _ = uic.loadUiType(UI_FILE)
 
 

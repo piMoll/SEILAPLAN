@@ -31,8 +31,8 @@ from qgis.core import Qgis
 
 from SEILAPLAN import PLUGIN_DIR
 from SEILAPLAN.core.cableline_final import preciseCable, updateWithCableCoordinates
-from SEILAPLAN.gui.adjustmentDialog_params import AdjustmentDialogParams
-from SEILAPLAN.gui.adjustmentDialog_thresholds import AdjustmentDialogThresholds
+from SEILAPLAN.gui.adjustment_dialog_params import AdjustmentDialogParams
+from SEILAPLAN.gui.adjustment_dialog_thresholds import AdjustmentDialogThresholds
 from SEILAPLAN.gui.adjustment_plot import (
     AdjustmentPlot,
     calculatePlotDimensions,
@@ -70,7 +70,7 @@ from SEILAPLAN.utils.qgis_utils import addBackgroundMap
 
 # This loads the .ui file so that PyQt can populate the plugin with the
 #  elements from Qt Designer
-UI_FILE = os.path.join(os.path.dirname(__file__), "adjustmentDialog.ui")
+UI_FILE = os.path.join(os.path.dirname(__file__), "adjustment_dialog.ui")
 FORM_CLASS, _ = uic.loadUiType(UI_FILE)
 
 
