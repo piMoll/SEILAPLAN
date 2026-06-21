@@ -7,7 +7,7 @@ repos:
       - id: check-case-conflict
       - id: check-illegal-windows-names
       - id: check-json
-      - id: debug-statements
+#      - id: debug-statements # Can't use because of the way the debugger is imported (only when DEBUG = True)
       - id: end-of-file-fixer
       - id: fix-byte-order-marker
       - id: trailing-whitespace
