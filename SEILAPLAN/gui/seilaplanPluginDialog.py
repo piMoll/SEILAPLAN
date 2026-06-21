@@ -51,13 +51,13 @@ from SEILAPLAN.tools.survey import SurveyData
 
 from .checkableComboBoxOwn import QgsCheckableComboBoxOwn
 from .guiHelperFunctions import (
-    DialogWithImage,
     addBackgroundMap,
     addLayerToQgis,
     createContours,
     createProfileLayers,
     getAbsoluteIconPath,
 )
+from .imageDialog import DialogWithImage
 from .mapMarker import MapMarkerTool
 from .profileDialog import ProfileDialog
 from .saveDialog import DialogSaveParamset
