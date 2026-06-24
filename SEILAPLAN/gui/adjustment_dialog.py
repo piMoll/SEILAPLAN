@@ -27,7 +27,13 @@ from qgis.core import Qgis
 from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QCoreApplication, QSettings, Qt, QTimer
 from qgis.PyQt.QtGui import QPixmap
-from qgis.PyQt.QtWidgets import QApplication, QDialog, QMessageBox, QTextEdit
+from qgis.PyQt.QtWidgets import (
+    QApplication,
+    QDialog,
+    QDialogButtonBox,
+    QMessageBox,
+    QTextEdit,
+)
 
 from SEILAPLAN import PLUGIN_DIR
 from SEILAPLAN.core.cableline_final import preciseCable, updateWithCableCoordinates
@@ -181,8 +187,15 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         self.imgBox = DialogWithImage()
 
         # Connect signals
-        self.btnClose.clicked.connect(self.onClose)
-        self.btnSave.clicked.connect(self.onSave)
+        self.btnBox.button(QDialogButtonBox.StandardButton.Close).setText(
+            self.tr("Schliessen")
+        )
+        self.btnBox.button(QDialogButtonBox.StandardButton.Close).clicked.connect(
+            self.onClose
+        )
+        self.btnBox.button(QDialogButtonBox.StandardButton.Save).clicked.connect(
+            self.onSave
+        )
         self.btnBackToStart.clicked.connect(self.onReturnToProjectWindow)
         for field in self.prHeaderFields.values():
             field.textChanged.connect(self.onPrHeaderChanged)
