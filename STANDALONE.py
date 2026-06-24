@@ -39,8 +39,8 @@ except ModuleNotFoundError:
 
 import traceback
 
-from qgis.PyQt.QtCore import QCoreApplication, QTranslator, pyqtSignal
 from qgis.core import QgsApplication, QgsTask
+from qgis.PyQt.QtCore import pyqtSignal, QCoreApplication, QTranslator
 
 from SEILAPLAN.core.cableline_final import preciseCable, updateWithCableCoordinates
 from SEILAPLAN.core.main_seilaplan import main as mainSeilaplan

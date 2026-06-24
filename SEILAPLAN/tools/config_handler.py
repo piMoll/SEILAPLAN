@@ -26,8 +26,8 @@ import re
 import time
 
 import numpy
-from qgis.PyQt.QtCore import QSettings
 from qgis.core import QgsSettings
+from qgis.PyQt.QtCore import QSettings
 
 from SEILAPLAN.tools.config_handler_params import ParameterConfHandler
 from SEILAPLAN.tools.config_handler_project import ProjectConfHandler

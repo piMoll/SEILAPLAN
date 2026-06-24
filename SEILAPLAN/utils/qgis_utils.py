@@ -21,8 +21,6 @@
 
 import os
 
-from qgis.PyQt.QtCore import QCoreApplication, QFileInfo, QSettings
-from qgis.PyQt.QtGui import QColor, QFont
 from qgis.core import (
     Qgis,
     QgsFeature,
@@ -38,6 +36,8 @@ from qgis.core import (
     QgsVectorLayer,
     QgsVectorLayerSimpleLabeling,
 )
+from qgis.PyQt.QtCore import QCoreApplication, QFileInfo, QSettings
+from qgis.PyQt.QtGui import QColor, QFont
 
 from SEILAPLAN import DEBUG, PLUGIN_DIR
 

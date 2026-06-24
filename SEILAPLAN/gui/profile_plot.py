@@ -22,7 +22,7 @@
 from math import floor
 
 import numpy as np
-from qgis.PyQt.QtCore import QT_VERSION_STR, QCoreApplication, QSize, Qt
+from qgis.PyQt.QtCore import QCoreApplication, QSize, Qt, QT_VERSION_STR
 from qgis.PyQt.QtWidgets import QSizePolicy
 
 if QT_VERSION_STR.startswith("5"):

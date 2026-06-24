@@ -19,7 +19,7 @@
  ***************************************************************************/
 """
 
-from qgis.PyQt.QtCore import QCoreApplication, QObject, Qt, pyqtSignal
+from qgis.PyQt.QtCore import pyqtSignal, QCoreApplication, QObject, Qt
 from qgis.PyQt.QtGui import QStandardItem, QStandardItemModel
 from qgis.PyQt.QtWidgets import QComboBox, QGridLayout, QLabel, QSizePolicy, QWidget
 

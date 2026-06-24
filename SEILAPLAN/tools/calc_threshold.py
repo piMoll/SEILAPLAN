@@ -4,8 +4,8 @@ import traceback
 from typing import List
 
 import numpy as np
-from qgis.PyQt.QtCore import QCoreApplication
 from qgis.core import Qgis
+from qgis.PyQt.QtCore import QCoreApplication
 
 from SEILAPLAN.gui.adjustment_dialog_thresholds import AdjustmentDialogThresholds
 from SEILAPLAN.gui.adjustment_plot import PlotMarker

@@ -23,20 +23,20 @@ import os
 import traceback
 from typing import Literal, Union
 
+from qgis.core import Qgis
 from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QCoreApplication, QSettings, Qt, QTimer
 from qgis.PyQt.QtGui import QPixmap
 from qgis.PyQt.QtWidgets import QApplication, QDialog, QMessageBox, QTextEdit
-from qgis.core import Qgis
 
 from SEILAPLAN import PLUGIN_DIR
 from SEILAPLAN.core.cableline_final import preciseCable, updateWithCableCoordinates
 from SEILAPLAN.gui.adjustment_dialog_params import AdjustmentDialogParams
 from SEILAPLAN.gui.adjustment_dialog_thresholds import AdjustmentDialogThresholds
 from SEILAPLAN.gui.adjustment_plot import (
-    PLOT_OUTPUT_DIMENSIONS,
     AdjustmentPlot,
     calculatePlotDimensions,
+    PLOT_OUTPUT_DIMENSIONS,
     saveImgAsPdfWithMpl,
 )
 from SEILAPLAN.gui.bird_view_widget import BirdViewWidget

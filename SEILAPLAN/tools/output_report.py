@@ -28,7 +28,7 @@ import numpy as np
 from qgis.PyQt.QtCore import QCoreApplication
 from reportlab.graphics.shapes import colors
 from reportlab.lib.pagesizes import A4, portrait
-from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import cm
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Table, TableStyle
 

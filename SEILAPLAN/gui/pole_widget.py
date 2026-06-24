@@ -22,7 +22,7 @@
 from typing import List
 
 from numpy import nan
-from qgis.PyQt.QtCore import QCoreApplication, QObject, QSize, Qt, pyqtSignal
+from qgis.PyQt.QtCore import pyqtSignal, QCoreApplication, QObject, QSize, Qt
 from qgis.PyQt.QtGui import QIcon, QPixmap
 from qgis.PyQt.QtWidgets import (
     QCheckBox,

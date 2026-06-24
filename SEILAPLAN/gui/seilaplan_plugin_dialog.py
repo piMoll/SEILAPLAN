@@ -22,6 +22,12 @@
 import os
 
 from processing.core.Processing import Processing
+from qgis.core import (
+    QgsCoordinateReferenceSystem,
+    QgsPointXY,
+    QgsProject,
+    QgsRasterLayer,
+)
 from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QCoreApplication, QFileInfo, QSettings, Qt
 from qgis.PyQt.QtGui import QPixmap
@@ -33,12 +39,6 @@ from qgis.PyQt.QtWidgets import (
     QMessageBox,
     QTextEdit,
 )
-from qgis.core import (
-    QgsCoordinateReferenceSystem,
-    QgsPointXY,
-    QgsProject,
-    QgsRasterLayer,
-)
 
 from SEILAPLAN import PROJECT_URL
 from SEILAPLAN.gui.checkable_combo_box import QgsCheckableComboBoxOwn
@@ -49,7 +49,7 @@ from SEILAPLAN.gui.save_dialog import DialogSaveParamset
 from SEILAPLAN.gui.survey_import_dialog import SurveyImportDialog
 from SEILAPLAN.tools.config_handler import ConfigHandler
 from SEILAPLAN.tools.config_handler_params import ParameterConfHandler
-from SEILAPLAN.tools.config_handler_project import ProjectConfHandler, castToNum
+from SEILAPLAN.tools.config_handler_project import castToNum, ProjectConfHandler
 from SEILAPLAN.tools.height_source import AbstractHeightSource
 from SEILAPLAN.tools.output_geo import CH_CRS
 from SEILAPLAN.tools.raster import rasterExistsAtPath

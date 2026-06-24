@@ -1,8 +1,8 @@
 from typing import Union
 
 from osgeo import gdal
-from qgis.PyQt.QtWidgets import QApplication
 from qgis.core import QgsApplication
+from qgis.PyQt.QtWidgets import QApplication
 
 from SEILAPLAN.gui.adjustment_dialog import AdjustmentDialog
 from SEILAPLAN.gui.progress_dialog import ProgressDialog

@@ -1,6 +1,6 @@
-from qgis.PyQt.QtCore import QSize, Qt, pyqtSignal
-from qgis.PyQt.QtWidgets import QSizePolicy
 from qgis.gui import QgsCheckableComboBox
+from qgis.PyQt.QtCore import pyqtSignal, QSize, Qt
+from qgis.PyQt.QtWidgets import QSizePolicy
 
 
 class QgsCheckableComboBoxOwn(QgsCheckableComboBox):

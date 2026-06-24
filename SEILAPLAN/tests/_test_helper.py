@@ -1,5 +1,5 @@
-from qgis.PyQt.QtCore import pyqtSignal
 from qgis.core import QgsTask
+from qgis.PyQt.QtCore import pyqtSignal
 from tools.config_handler import ConfigHandler
 
 from SEILAPLAN.core.cableline_final import preciseCable
