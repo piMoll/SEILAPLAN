@@ -33,6 +33,7 @@ from qgis.PyQt.QtWidgets import (
     QMessageBox,
     QPushButton,
     QSizePolicy,
+    QSpacerItem,
     QVBoxLayout,
     QWidget,
 )
@@ -142,7 +143,7 @@ class DialogSaveParamset(QDialog):
 
 class DialogOutputOptions(QDialog):
 
-    def __init__(self, parent, confHandler):
+    def __init__(self, parent, confHandler, exportSizes):
         """
         :type confHandler: configHandler.ConfigHandler
         """
@@ -196,6 +197,12 @@ class DialogOutputOptions(QDialog):
         self.checkBoxShortReport = QCheckBox(self.tr("Kurzbericht"))
         self.checkBoxReport = QCheckBox(self.tr("Technischer Bericht"))
         self.checkBoxPlot = QCheckBox(self.tr("Diagramm"))
+        self.plotSizeSelector = QComboBox()
+        self.plotSizeSelector.setSizePolicy(
+            QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
+        )
+        for size in exportSizes:
+            self.plotSizeSelector.addItem(self.tr(size), size)
         self.checkBoxBirdView = QCheckBox(self.tr("inkl. Vogelperspektive"))
         self.checkBoxBirdViewLegend = QCheckBox(self.tr("Legende Vogelperspektive"))
         geodataLabel = QLabel(self.tr("Geodaten (Stuetzen, Seillinie, Gelaende)"))
@@ -232,7 +239,14 @@ class DialogOutputOptions(QDialog):
         container.addWidget(questionLabel)
         container.addWidget(self.checkBoxShortReport)
         container.addWidget(self.checkBoxReport)
-        container.addWidget(self.checkBoxPlot)
+        plotBox = QHBoxLayout()
+        plotBox.addWidget(self.checkBoxPlot)
+        plotBox.addWidget(self.plotSizeSelector)
+        spacer = QSpacerItem(
+            20, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
+        )
+        plotBox.addItem(spacer)
+        container.addLayout(plotBox)
         vboxPlot = QVBoxLayout(main_widget)
         vboxPlot.setContentsMargins(20, 0, 0, 0)
         vboxPlot.addWidget(self.checkBoxBirdView)
@@ -278,6 +292,8 @@ class DialogOutputOptions(QDialog):
         )
         self.checkBoxReport.setChecked(self.confHandler.outputOptions["report"])
         self.checkBoxPlot.setChecked(self.confHandler.outputOptions["plot"])
+        idx = self.plotSizeSelector.findData(self.confHandler.outputOptions["plotSize"])
+        self.plotSizeSelector.setCurrentIndex(idx)
         self.checkBoxBirdView.setChecked(self.confHandler.outputOptions["birdView"])
         self.checkBoxBirdViewLegend.setChecked(
             self.confHandler.outputOptions["birdViewLegend"]
@@ -319,6 +335,7 @@ class DialogOutputOptions(QDialog):
             "report": int(self.checkBoxReport.isChecked()),
             "shortReport": int(self.checkBoxShortReport.isChecked()),
             "plot": int(self.checkBoxPlot.isChecked()),
+            "plotSize": str(self.plotSizeSelector.currentData()),
             "birdView": int(
                 self.checkBoxBirdView.isEnabled() and self.checkBoxBirdView.isChecked()
             ),

@@ -255,6 +255,7 @@ class ConfigHandler:
             "report": s.value(f"{self.SETTING_PREFIX}report", 0, int),
             "shortReport": s.value(f"{self.SETTING_PREFIX}shortReport", 1, int),
             "plot": s.value(f"{self.SETTING_PREFIX}plot", 1, int),
+            "plotSize": s.value(f"{self.SETTING_PREFIX}plotSize", "A4", str),
             "birdView": s.value(f"{self.SETTING_PREFIX}birdView", 1, int),
             "birdViewLegend": s.value(f"{self.SETTING_PREFIX}birdViewLegend", 0, int),
             "gpkg": s.value(f"{self.SETTING_PREFIX}gpkg", 0, int),
@@ -298,6 +299,7 @@ class ConfigHandler:
             self.outputOptions["shortReport"],
         )
         s.setValue(f"{self.SETTING_PREFIX}plot", self.outputOptions["plot"])
+        s.setValue(f"{self.SETTING_PREFIX}plotSize", self.outputOptions["plotSize"])
         s.setValue(f"{self.SETTING_PREFIX}birdView", self.outputOptions["birdView"])
         s.setValue(
             f"{self.SETTING_PREFIX}birdViewLegend",

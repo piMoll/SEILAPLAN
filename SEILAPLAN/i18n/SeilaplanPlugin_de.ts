@@ -1493,6 +1493,16 @@ nach Zweifel</translation>
         <translation>Diagramm</translation>
     </message>
     <message>
+        <location filename="../gui/saveDialog.py" line="206"/>
+        <source>A4</source>
+        <translation>Papierformat A4</translation>
+    </message>
+    <message>
+        <location filename="../gui/saveDialog.py" line="206"/>
+        <source>A3</source>
+        <translation>Papierformat A3</translation>
+    </message>
+    <message>
         <location filename="../gui/saveDialog.py" line="185"/>
         <source>Geodaten (Stuetzen, Seillinie, Gelaende)</source>
         <translation>Geodaten (Stützen, Seillinie, Gelände)</translation>

@@ -1513,6 +1513,16 @@ clearance</translation>
         <translation>Diagram</translation>
     </message>
     <message>
+        <location filename="../gui/saveDialog.py" line="206"/>
+        <source>A4</source>
+        <translation>Paper size A4</translation>
+    </message>
+    <message>
+        <location filename="../gui/saveDialog.py" line="206"/>
+        <source>A3</source>
+        <translation>Paper size A3</translation>
+    </message>
+    <message>
         <location filename="../gui/saveDialog.py" line="185"/>
         <source>Geodaten (Stuetzen, Seillinie, Gelaende)</source>
         <translation>Geodata (supports, cable road, terrain)</translation>

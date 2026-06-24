@@ -1507,6 +1507,16 @@ terra minimale</translation>
         <translation>Grafico</translation>
     </message>
     <message>
+        <location filename="../gui/saveDialog.py" line="206"/>
+        <source>A4</source>
+        <translation>Formato carta A4</translation>
+    </message>
+    <message>
+        <location filename="../gui/saveDialog.py" line="206"/>
+        <source>A3</source>
+        <translation>Formato carta A3</translation>
+    </message>
+    <message>
         <location filename="../gui/saveDialog.py" line="185"/>
         <source>Geodaten (Stuetzen, Seillinie, Gelaende)</source>
         <translation>Dati geografici (avalletti, linea di gru a cavo, linea del terreno)</translation>

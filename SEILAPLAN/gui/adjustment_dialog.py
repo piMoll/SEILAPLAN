@@ -34,6 +34,7 @@ from SEILAPLAN.core.cableline_final import preciseCable, updateWithCableCoordina
 from SEILAPLAN.gui.adjustment_dialog_params import AdjustmentDialogParams
 from SEILAPLAN.gui.adjustment_dialog_thresholds import AdjustmentDialogThresholds
 from SEILAPLAN.gui.adjustment_plot import (
+    PLOT_OUTPUT_DIMENSIONS,
     AdjustmentPlot,
     calculatePlotDimensions,
     saveImgAsPdfWithMpl,
@@ -172,7 +173,9 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         self.unsavedChanges = True
 
         # Save dialog
-        self.saveDialog = DialogOutputOptions(self, self.confHandler)
+        self.saveDialog = DialogOutputOptions(
+            self, self.confHandler, PLOT_OUTPUT_DIMENSIONS.keys()
+        )
 
         # Dialog with explanatory images
         self.imgBox = DialogWithImage()
@@ -727,7 +730,9 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
                 includingBirdView = self.confHandler.getOutputOption("birdView")
                 plotSavePath = os.path.join(outputLoc, self.tr("Diagramm.pdf"))
                 width, height, ratio = calculatePlotDimensions(
-                    self.profile.di_disp, self.profile.zi_disp
+                    self.profile.di_disp,
+                    self.profile.zi_disp,
+                    self.confHandler.getOutputOption("plotSize"),
                 )
 
                 printPlot = AdjustmentPlot(

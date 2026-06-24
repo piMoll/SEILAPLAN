@@ -42,6 +42,9 @@ from SEILAPLAN.gui.plotting_tools import zoom_with_wheel
 from SEILAPLAN.tools.bird_view_symbol import BirdViewSymbol, BirdViewSymbolLoader
 from SEILAPLAN.utils.qgis_utils import is_dark_mode
 
+# Page dimensions in inch
+PLOT_OUTPUT_DIMENSIONS = {"A4": (11.69, 8.27), "A3": (16.53, 11.69)}
+
 
 class PlotMarker(object):
 
@@ -56,13 +59,14 @@ class PlotMarker(object):
 class AdjustmentPlot(FigureCanvas):
 
     ZOOM_TO_DISTANCE = 20
+    SCREEN_DPI = 72
 
     def __init__(
         self,
         parent=None,
         width=5.0,
         height=4.0,
-        dpi=72,
+        dpi=SCREEN_DPI,
         withBirdView=False,
         profilePlotRatio=3,
         asPdf=False,
@@ -717,9 +721,9 @@ class AdjustmentPlot(FigureCanvas):
         return QCoreApplication.translate(type(self).__name__, message)
 
 
-def calculatePlotDimensions(xData, yData):
-    # Landscape A4 dimensions
-    width, height = 11.69, 8.27  # A4 dimensions in inch
+def calculatePlotDimensions(xData, yData, output_size: str):
+    # Dimensions in inch
+    width, height = PLOT_OUTPUT_DIMENSIONS[output_size]
     # Define height to width ratio and reduce it by 4% to make up for empty
     #  space between subplots
     pageHeightRatio = (height / width) * 0.96
@@ -736,8 +740,8 @@ def calculatePlotDimensions(xData, yData):
     dataHeightRatio = (data_yhi - data_ylow) / (data_xhi - data_xlow)
 
     # If the data does not fit on the landscape page, we turn the page to portrait
-    if dataHeightRatio > pageHeightRatio:
-        height, width = 11.69, 8.27
+    if output_size == "A4" and dataHeightRatio > pageHeightRatio:
+        height, width = reversed(list(PLOT_OUTPUT_DIMENSIONS[output_size]))
         ratio = (data_yhi - data_ylow) / 60
 
     return width, height, ratio
@@ -746,7 +750,7 @@ def calculatePlotDimensions(xData, yData):
 def saveImgAsPdfWithMpl(imgPath, savePath, dpi=300):
     """Loads an image into a plot and saves it as a pdf. This is a workaround
     to be able to save PDF without an additional library."""
-    height, width = 11.69, 8.27  # A4 dimensions in inch
+    height, width = PLOT_OUTPUT_DIMENSIONS["A4"]
     fig = Figure(figsize=(width, height), dpi=dpi)
     axis = fig.add_subplot(111)
     img = imread(imgPath)

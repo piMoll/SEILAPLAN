@@ -1519,6 +1519,16 @@ minimale</translation>
         <translation>Diagramme</translation>
     </message>
     <message>
+        <location filename="../gui/saveDialog.py" line="206"/>
+        <source>A4</source>
+        <translation>Format de papier A4</translation>
+    </message>
+    <message>
+        <location filename="../gui/saveDialog.py" line="206"/>
+        <source>A3</source>
+        <translation>Format de papier A3</translation>
+    </message>
+    <message>
         <location filename="../gui/saveDialog.py" line="185"/>
         <source>Geodaten (Stuetzen, Seillinie, Gelaende)</source>
         <translation>Données géographiques (supports, ligne de câble, terrain)</translation>
