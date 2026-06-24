@@ -1541,7 +1541,7 @@ minimale</translation>
     <message>
         <location filename="../gui/saveDialog.py" line="205"/>
         <source>Speichern</source>
-        <translation>Sauvegarder</translation>
+        <translation>Enregister</translation>
     </message>
     <message>
         <location filename="../gui/saveDialog.py" line="206"/>
@@ -2161,7 +2161,7 @@ Veuillez adapter la saisie.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1261"/>
         <source>Optimierung</source>
-        <translation>Optionnel #1</translation>
+        <translation>Optimisation</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1650"/>
@@ -2349,7 +2349,7 @@ Veuillez adapter la saisie.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2301"/>
         <source>Horizontaldistanz</source>
-        <translation>Distance horizontale [m]</translation>
+        <translation>Distance horizontale</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2345"/>

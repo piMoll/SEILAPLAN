@@ -2153,7 +2153,7 @@ Si prega di adattare l&apos;input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1261"/>
         <source>Optimierung</source>
-        <translation>Opzionale #1</translation>
+        <translation>Ottimizzazione</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="1650"/>
@@ -2337,7 +2337,7 @@ Si prega di adattare l&apos;input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2301"/>
         <source>Horizontaldistanz</source>
-        <translation>Distanza orizzontale [m]</translation>
+        <translation>Distanza orizzontale</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2345"/>

@@ -2339,7 +2339,7 @@ Please change the input.</translation>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2301"/>
         <source>Horizontaldistanz</source>
-        <translation>Horizontal dist. [m]</translation>
+        <translation>Horizontal dist.</translation>
     </message>
     <message>
         <location filename="../gui/seilaplanDialog.ui" line="2345"/>

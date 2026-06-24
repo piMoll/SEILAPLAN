@@ -188,7 +188,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
 
         # Connect signals
         self.btnBox.button(QDialogButtonBox.StandardButton.Close).setText(
-            self.tr("Schliessen")
+            self.tr("Schliessen", "AdjustmentDialogUI")
         )
         self.btnBox.button(QDialogButtonBox.StandardButton.Close).clicked.connect(
             self.onClose
@@ -581,7 +581,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
         if icon:
             self.recalcStatus_ico.setPixmap(QPixmap(getAbsoluteIconPath(icon)))
         if color:
-            stylesheet = f"background-color:{color};"
+            stylesheet = f"background-color:{color};color:black;"
         self.recalcStatus_txt.setStyleSheet(stylesheet)
         self.recalcStatus_ico.setStyleSheet("padding-right: 10px;" + stylesheet)
 

@@ -219,12 +219,6 @@ class DialogOutputOptions(QDialog):
             QDialogButtonBox.StandardButton.Save
             | QDialogButtonBox.StandardButton.Cancel
         )
-        buttonBox.button(QDialogButtonBox.StandardButton.Save).setText(
-            self.tr("Speichern")
-        )
-        buttonBox.button(QDialogButtonBox.StandardButton.Cancel).setText(
-            self.tr("Abbrechen")
-        )
         buttonBox.button(QDialogButtonBox.StandardButton.Cancel).clicked.connect(
             self.onCancel
         )

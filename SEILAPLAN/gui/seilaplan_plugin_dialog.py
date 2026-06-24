@@ -136,6 +136,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
         # Additional GIS-Layers
         self.osmLyrButton.setEnabled(False)
         self.contourLyrButton.setEnabled(False)
+        self.buttonShowProf.setEnabled(False)
 
         # Connect GUI elements from dialog window with functions
         self.connectGuiElements()
