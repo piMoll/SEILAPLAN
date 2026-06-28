@@ -12,10 +12,13 @@ class PolesOrigin(Enum):
 class ResultQuality(Enum):
     """Describes the quality of the calculated result."""
 
-    SuccessfulOptimization = 1  # Optimization produced a complete cable line
-    SuccessfulRerun = 2  # Cable line was recalculated after change in adjustment window
-    CableLiftsOff = 3  # Cable line lifts off a pole
-    LineNotComplete = (
-        4  # Optimization was partially successful but cable line stops before end point
-    )
-    Error = 5  # Optimization or rerun threw an unexpected error
+    # Optimization produced a complete cable line
+    SuccessfulOptimization = 1
+    # Cable line was recalculated after change in adjustment window
+    SuccessfulRerun = 2
+    # Cable line lifts off a pole
+    CableLiftsOff = 3
+    # Optimization was partially successful but cable line stops before end point
+    LineNotComplete = 4
+    # Optimization or rerun threw an unexpected error
+    Error = 5

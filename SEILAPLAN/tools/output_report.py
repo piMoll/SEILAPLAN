@@ -79,11 +79,12 @@ def replaceRecursively(text, findText, replaceWith, fullReplace=True):
     elif type(text) is list:
         return [replaceRecursively(x, findText, replaceWith, fullReplace) for x in text]
     elif type(text) is set:
-        return {replaceRecursively(x, findText, replaceWith, fullReplace) for x in text}
+        return (replaceRecursively(x, findText, replaceWith, fullReplace) for x in text)
     else:
         return text
 
 
+# fmt: off
 def generateReportText(confHandler, result, projname):
     """Arrange texts and values for report generation.
 
@@ -488,20 +489,8 @@ def generateReportText(confHandler, result, projname):
         [[tr("Annahmen")]],
     ]
 
-    text = [
-        headers,
-        str_time,
-        str_posi,
-        str_abst,
-        str_opti,
-        str_laen,
-        str_durc,
-        str_seil,
-        str_stue,
-        str_wink,
-        str_nach,
-        str_para,
-    ]
+    text = [headers, str_time, str_posi, str_abst, str_opti, str_laen, str_durc,
+            str_seil, str_stue, str_wink, str_nach, str_para]
     # Remove nan values with a minus
     str_report = replaceRecursively(text, "nan ", "-")
     # Replace the often used but unsupported diameter symbol with a lower
@@ -538,44 +527,18 @@ def generateShortReport(confHandler, result, projname, outputLoc):
     ###
     s_gener = [
         [tr("Datum"), result["duration"][2]],
-        [
-            tr("Projektverfasser"),
-            (prHeader["PrVerf"] or "-"),
-            tr("Projektnummer"),
-            (prHeader["PrNr"] or "-"),
-        ],
-        [
-            tr("Gemeinde"),
-            (prHeader["PrGmd"] or "-"),
-            tr("Waldort"),
-            (prHeader["PrWald"] or "-"),
-        ],
-        [
-            tr("Anlagetyp"),
-            (confHandler.params.getParameterAsStr("Anlagetyp") or "-"),
-            "",
-            "",
-        ],
-        [
-            tr("Bemerkung"),
-            ("\n".join(textwrap.wrap(prHeader["PrBemerkung"], 100) or "-")),
-        ],
+        [tr("Projektverfasser"), (prHeader["PrVerf"] or "-"), tr("Projektnummer"), (prHeader["PrNr"] or "-")],
+        [tr("Gemeinde"), (prHeader["PrGmd"] or "-"), tr("Waldort"), (prHeader["PrWald"] or "-")],
+        [tr("Anlagetyp"), (confHandler.params.getParameterAsStr("Anlagetyp") or "-"), "", ""],
+        [tr("Bemerkung"), ("\n".join(textwrap.wrap(prHeader["PrBemerkung"], 100) or "-"))],
     ]
     s_gener = replaceRecursively(s_gener, "\u2300", "\u00f8", False)
 
     # Input values
     ###
     param = {}
-    param_list = [
-        "D",
-        "MBK",
-        "Q",
-        "Bodenabst_min",
-        "Bodenabst_A",
-        "Bodenabst_E",
-        "SF_T",
-        "E",
-    ]
+    param_list = ["D", "MBK", "Q", "Bodenabst_min", "Bodenabst_A",
+                  "Bodenabst_E", "SF_T", "E"]
 
     for key in param_list:
         p = confHandler.params.params[key]
@@ -598,17 +561,9 @@ def generateShortReport(confHandler, result, projname, outputLoc):
 
     # Pole dimensions
     ###
-    s_dimen = [
-        [
-            tr("Nr."),
-            tr("Bezeichnung"),
-            tr("Sattelhoehe"),
-            tr("Neigung"),
-            tr("Min. BHD"),
-            tr("Bundstelle"),
-            tr("Kategorie"),
-        ]
-    ]
+    s_dimen = [[tr("Nr."), tr("Bezeichnung"), tr("Sattelhoehe"),
+                tr("Neigung"), tr("Min. BHD"), tr("Bundstelle"),
+                tr("Kategorie")]]
     add_footnote = False
     for pole in polesArray:
         if pole["angriff"] > 45:
@@ -677,15 +632,9 @@ def generateShortReport(confHandler, result, projname, outputLoc):
     # Fields
     ###
     s_field1 = [
-        [
-            tr("Azimut"),
-            "{:.1f} {} / {:.1f} °".format(az_gon, tr("gon"), az_grad),
-        ],
+        [tr("Azimut"), "{:.1f} {} / {:.1f} °".format(az_gon, tr("gon"), az_grad),],
         [tr("Berechnete Seillaenge"), f"{kraft['LaengeSeil'][1]:.1f} m"],
-        [
-            tr("Max. Abstand Leerseil - Boden"),
-            f"{cableline['maxDistToGround']:.1f} m",
-        ],
+        [tr("Max. Abstand Leerseil - Boden"), f"{cableline['maxDistToGround']:.1f} m",],
         [],
     ]
     s_field2 = [
@@ -805,12 +754,7 @@ def generateShortReport(confHandler, result, projname, outputLoc):
         ("TOPPADDING", (0, 0), (-1, 0), 15),
         ("FONT", (0, 1), (-1, -1), font, fontSize),
         ("ALIGN", (0, 0), (-1, -1), "RIGHT"),
-        (
-            "ROWBACKGROUNDS",
-            (0, 1),
-            (-1, -1),
-            [colors.whitesmoke, colors.transparent],
-        ),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.whitesmoke, colors.transparent]),
         ("VALIGN", (0, 1), (-1, -1), "MIDDLE"),
     ]
     # Align second column left, rest is right aligned
@@ -827,19 +771,16 @@ def generateShortReport(confHandler, result, projname, outputLoc):
     ]
 
     # Headers
-    h_titel = Table(
-        [[f"{tr('SEILAPLAN Projekt')}: {projname}"]],
-        colWidths=widthT,
-        style=style_t,
-    )
-    h_input = Table([[tr("Eingabewerte")]], colWidths=widthT, style=style_h)
-    h_dimen = Table(
-        [[tr("Stuetzen- und Ankerdimensionen")]],
-        colWidths=widthT,
-        style=style_h,
-    )
-    h_force = Table([[tr("Kraefte und Winkel")]], colWidths=widthT, style=style_h)
-    h_field = Table([[tr("Anker- und Spannfelder")]], colWidths=widthT, style=style_h)
+    h_titel = Table([[f"{tr("SEILAPLAN Projekt")}: {projname}"]],
+                    colWidths=widthT, style=style_t)
+    h_input = Table([[tr("Eingabewerte")]],
+                    colWidths=widthT, style=style_h)
+    h_dimen = Table([[tr("Stuetzen- und Ankerdimensionen")]],
+                    colWidths=widthT, style=style_h)
+    h_force = Table([[tr("Kraefte und Winkel")]],
+                    colWidths=widthT, style=style_h)
+    h_field = Table([[tr("Anker- und Spannfelder")]],
+                    colWidths=widthT, style=style_h)
 
     # Build paragraphs
     data = []
@@ -929,36 +870,14 @@ def generateReport(reportText, outputLoc):
     )
     elements = []
 
-    [
-        headers,
-        str_time,
-        str_posi,
-        str_abst,
-        str_opti,
-        str_laen,
-        str_durc,
-        [str_seil1, str_seil2, str_seil3, str_seil4],
-        [str_stue1, str_stue2],
-        str_wink,
-        str_nach,
-        str_para,
-    ] = reportText
+    [headers, str_time, str_posi, str_abst, str_opti, str_laen,
+        str_durc, [str_seil1, str_seil2, str_seil3, str_seil4],
+        [str_stue1, str_stue2], str_wink, str_nach, str_para] = reportText
 
-    [
-        h_tite,
-        h_posi,
-        h_abst,
-        h_opti,
-        h_leng,
-        h_durc,
-        h_seil,
-        h_stue,
-        h_wink,
-        h_nach,
-        h_anna,
-    ] = headers
+    [h_tite, h_posi, h_abst, h_opti, h_leng,
+        h_durc, h_seil, h_stue, h_wink, h_nach, h_anna] = headers
 
-    widthT, _ = [width - 2 * margin, height - 2 * margin]
+    widthT, _ = [width-2*margin, height-2*margin]
     wi_doc = [widthT]
     wi_clo = [2.7 * cm]
     wi_abk = [1.7 * cm]
@@ -977,69 +896,46 @@ def generateReport(reportText, outputLoc):
     fontBold = "Helvetica-Bold"
     fontHeader = "Helvetica-Oblique"
 
-    title_style = TableStyle(
-        [
-            ("ALIGN", (0, 0), (-1, -1), "LEFT"),
-            ("BACKGROUND", (0, 0), (-1, -1), colors.lightgrey),
-            ("FONT", (0, 0), (-1, -1), font, 8),
-            ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-        ]
-    )
-    stdStyleA = [
-        ("ALIGN", (1, 0), (-1, -1), "RIGHT"),  # after first column align right
-        ("FONT", (0, 0), (-1, -1), font, fontSize),
-    ]
-    stdStyleB = [
-        ("FONT", (1, 0), (-1, -1), font, fontSize),
-        ("ALIGN", (2, 0), (-1, -1), "RIGHT"),
-    ]
+    title_style = TableStyle([
+        ("ALIGN", (0, 0), (-1, -1), "LEFT"),
+        ("BACKGROUND", (0, 0), (-1, -1), colors.lightgrey),
+        ("FONT", (0, 0), (-1, -1), font, 8),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+        ])
+    stdStyleA = [("ALIGN", (1, 0), (-1, -1), "RIGHT"),  # after first column align right
+                 ("FONT", (0, 0), (-1, -1), font, fontSize)]
+    stdStyleB = [("FONT", (1, 0), (-1, -1), font, fontSize),
+                 ("ALIGN", (2, 0), (-1, -1), "RIGHT")]
 
     t_tite1 = Table(h_tite, wi_doc, [0.8 * cm])
     rowheights = len(str_time) * he_row
     rowheights[7] = (str_time[7][1].count("\n") + 1) * he_row[0]
     rowheights[8] = (str_time[8][1].count("\n") + 1) * he_row[0]
     t_tite2 = Table(str_time, [None, None], rowHeights=rowheights)
-    t_tite1.setStyle(
-        TableStyle(
-            [
-                ("ALIGN", (0, 0), (-1, -1), "LEFT"),
-                ("VALIGN", (0, 0), (-1, -1), "TOP"),
-                ("FONT", (0, 0), (-1, -1), fontBold, 13),
-                ("BACKGROUND", (0, 0), (-1, -1), colors.lightgrey),
-                ("LINEBELOW", (0, 0), (-1, -1), 1, colors.black),
-            ]
-        )
-    )
-    t_tite2.setStyle(
-        TableStyle(
-            [
-                ("FONT", (0, 0), (-1, -1), font, fontSize),
-                ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-                ("LEFTPADDING", (0, 0), (0, -1), lPadd),
-            ]
-        )
-    )
+    t_tite1.setStyle(TableStyle([
+        ("ALIGN", (0, 0), (-1, -1), "LEFT"),
+        ("VALIGN", (0, 0), (-1, -1), "TOP"),
+        ("FONT", (0, 0), (-1, -1), fontBold, 13),
+        ("BACKGROUND", (0, 0), (-1, -1), colors.lightgrey),
+        ("LINEBELOW", (0, 0), (-1, -1), 1, colors.black),
+    ]))
+    t_tite2.setStyle(TableStyle([("FONT", (0, 0), (-1, -1), font, fontSize),
+                                 ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+                                 ("LEFTPADDING", (0, 0), (0, -1), lPadd)]))
 
     t_posi1 = Table(h_posi, wi_doc, he_rowT)
-    t_posi2 = Table(str_posi, [None] + 9 * [None], len(str_posi) * he_row)
+    t_posi2 = Table(str_posi, [None] + 9*[None], len(str_posi) * he_row)
     t_posi1.setStyle(title_style)
-    t_posi2.setStyle(
-        TableStyle(
-            stdStyleA
-            + [
-                ("ALIGN", (1, 0), (1, -1), "LEFT"),
-                ("FONT", (0, 0), (-1, 0), fontHeader, smallfontSize),
-            ]
-            + [("ALIGN", (7, 0), (9, -1), "LEFT")]
-        )
-    )  # style for 3 bird view rows
+    t_posi2.setStyle(TableStyle(stdStyleA + [
+        ("ALIGN", (1, 0), (1, -1), "LEFT"),
+        ("FONT", (0, 0), (-1, 0), fontHeader, smallfontSize)]
+                                + [("ALIGN", (7, 0), (9, -1), "LEFT")]))    # style for 3 bird view rows
 
     t_abst1 = Table(h_abst, wi_doc, he_rowT)
-    t_abst2 = Table(str_abst, 3 * [None], len(str_abst) * he_row)
+    t_abst2 = Table(str_abst, 3*[None], len(str_abst) * he_row)
     t_abst1.setStyle(title_style)
-    t_abst2.setStyle(
-        TableStyle(stdStyleA + [("FONT", (0, 1), (-1, 1), fontHeader, smallfontSize)])
-    )
+    t_abst2.setStyle(TableStyle(stdStyleA + [
+        ("FONT", (0, 1), (-1, 1), fontHeader, smallfontSize)]))
 
     t_opti1 = Table(h_opti, wi_doc, he_rowT)
     t_opti2 = Table(str_opti, [None] + wi_clo, len(str_opti) * he_row)
@@ -1049,28 +945,15 @@ def generateReport(reportText, outputLoc):
     t_laen1 = Table(h_leng, wi_doc, he_rowT)
     t_laen2 = Table(str_laen, [None] + [None] + [1.5 * cm] * fieldCount, 4 * he_row)
     t_laen1.setStyle(title_style)
-    t_laen2.setStyle(
-        TableStyle(stdStyleA + [("FONT", (2, 0), (-1, 0), fontHeader, smallfontSize)])
-    )  # field headers
+    t_laen2.setStyle(TableStyle(stdStyleA + [
+        ("FONT", (2, 0), (-1, 0), fontHeader, smallfontSize)]))  # field headers
 
     t_durc1 = Table(h_durc, wi_doc, he_rowT)
     t_durc2 = Table(str_durc, wi_abk + [None] + [1.5 * cm] * fieldCount, 4 * he_row)
     t_durc1.setStyle(title_style)
-    t_durc2.setStyle(
-        TableStyle(
-            stdStyleB
-            + [
-                (
-                    "FONT",
-                    (2, 0),
-                    (-1, 0),
-                    fontHeader,
-                    smallfontSize,
-                ),  # field headers
-                ("FONT", (0, 0), (0, -1), font, smallfontSize),
-            ]
-        )
-    )  # abbreviation in first column
+    t_durc2.setStyle(TableStyle(stdStyleB + [
+        ("FONT", (2, 0), (-1, 0), fontHeader, smallfontSize),  # field headers
+        ("FONT", (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
 
     # Control font sizes and widths for cases with lots of poles
     labelWidth = [6.8 * cm]
@@ -1093,248 +976,74 @@ def generateReport(reportText, outputLoc):
         padding = 1
 
     t_seil0 = Table(h_seil, wi_doc, he_rowT)
-    t_seil1 = Table(
-        str_seil1,
-        wi_abk + [None] + [0.0 * cm] + colWidth * poleCount,
-        len(str_seil1) * he_row,
-    )
-    t_seil2 = Table(
-        str_seil2,
-        wi_abk + [None] + [1.5 * cm] * fieldCount,
-        len(str_seil2) * he_row,
-    )
-    t_seil3 = Table(str_seil3, wi_abk + [None] + [1 * cm], len(str_seil3) * he_row)
-    t_seil4 = Table(
-        str_seil4,
-        wi_abk + [None] + [1.5 * cm] * fieldCount,
-        len(str_seil4) * he_row,
-    )
+    t_seil1 = Table(str_seil1, wi_abk + [None] + [0.0*cm] + colWidth*poleCount, len(str_seil1)*he_row)
+    t_seil2 = Table(str_seil2, wi_abk + [None] + [1.5*cm]*fieldCount, len(str_seil2)*he_row)
+    t_seil3 = Table(str_seil3, wi_abk + [None] + [1*cm], len(str_seil3)*he_row)
+    t_seil4 = Table(str_seil4, wi_abk + [None] + [1.5*cm]*fieldCount, len(str_seil4)*he_row)
     t_seil0.setStyle(title_style)
-    t_seil1.setStyle(
-        TableStyle(
-            stdStyleB
-            + [
-                (
-                    "FONT",
-                    (0, 0),
-                    (-1, 0),
-                    fontHeader,
-                    fontSize,
-                ),  # first row = subsection
-                (
-                    "FONT",
-                    (3, 3),
-                    (-1, 3),
-                    fontHeader,
-                    smallfontSize,
-                ),  # pole header
-                (
-                    "FONT",
-                    (0, 0),
-                    (0, -1),
-                    font,
-                    smallfontSize,
-                ),  # abbreviation in first column
-                ("BOTTOMPADDING", (0, -1), (-1, -1), 0),
-            ]
-        )
-    )
-    t_seil2.setStyle(
-        TableStyle(
-            stdStyleB
-            + [
-                (
-                    "FONT",
-                    (2, 0),
-                    (-1, 0),
-                    fontHeader,
-                    smallfontSize,
-                ),  # pole header
-                (
-                    "FONT",
-                    (0, 0),
-                    (0, -1),
-                    font,
-                    smallfontSize,
-                ),  # abbreviation in first column
-                ("TOPPADDING", (0, 0), (-1, 0), 0),
-            ]
-        )
-    )
-    t_seil3.setStyle(
-        TableStyle(
-            stdStyleB
-            + [
-                (
-                    "FONT",
-                    (0, 0),
-                    (-1, 0),
-                    fontHeader,
-                    fontSize,
-                ),  # first row = subsection
-                ("FONT", (0, 0), (0, -1), font, smallfontSize),
-            ]
-        )
-    )  # abbreviation in first column
-    t_seil4.setStyle(
-        TableStyle(
-            stdStyleB
-            + [
-                (
-                    "FONT",
-                    (0, 0),
-                    (1, 0),
-                    fontHeader,
-                    fontSize,
-                ),  # first row = subsection
-                (
-                    "FONT",
-                    (2, 0),
-                    (-1, 0),
-                    fontHeader,
-                    smallfontSize,
-                ),  # field header
-                ("FONT", (0, 0), (0, -1), font, smallfontSize),
-            ]
-        )
-    )  # abbreviation in first column
+    t_seil1.setStyle(TableStyle(stdStyleB + [
+        ("FONT", (0, 0), (-1, 0), fontHeader, fontSize),  # first row = subsection
+        ("FONT", (3, 3), (-1, 3), fontHeader, smallfontSize),  # pole header
+        ("FONT", (0, 0), (0, -1), font, smallfontSize),  # abbreviation in first column
+        ("BOTTOMPADDING", (0, -1), (-1, -1), 0)]))
+    t_seil2.setStyle(TableStyle(stdStyleB + [
+        ("FONT", (2, 0), (-1, 0), fontHeader, smallfontSize),  # pole header
+        ("FONT", (0, 0), (0, -1), font, smallfontSize),  # abbreviation in first column
+        ("TOPPADDING", (0, 0), (-1, 0), 0)]))
+    t_seil3.setStyle(TableStyle(stdStyleB + [
+        ("FONT", (0, 0), (-1, 0), fontHeader, fontSize),  # first row = subsection
+        ("FONT", (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
+    t_seil4.setStyle(TableStyle(stdStyleB + [
+        ("FONT", (0, 0), (1, 0), fontHeader, fontSize),  # first row = subsection
+        ("FONT", (2, 0), (-1, 0), fontHeader, smallfontSize),  # field header
+        ("FONT", (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
 
     t_stue1 = Table(h_stue, wi_doc, he_rowT)
-    t_stue2 = Table(
-        str_stue1,
-        wi_abk + labelWidth + colWidth * poleCount,
-        len(str_stue1) * he_row,
-    )
-    t_stue3 = Table(
-        str_stue2,
-        wi_abk + labelWidth + colWidthHalf * poleCount,
-        len(str_stue2) * he_row,
-    )
+    t_stue2 = Table(str_stue1, wi_abk + labelWidth + colWidth*poleCount, len(str_stue1)*he_row)
+    t_stue3 = Table(str_stue2, wi_abk + labelWidth + colWidthHalf*poleCount, len(str_stue2)*he_row)
     t_stue1.setStyle(title_style)
     stueStyle = stdStyleB + [
         ("FONT", (2, 0), (-1, 0), fontHeader, smallfontSize),  # field header
         ("FONT", (1, 0), (1, 1), fontHeader, colFontSize),  # subsection
-        (
-            "FONT",
-            (0, 0),
-            (0, -1),
-            font,
-            smallfontSize,
-        ),  # abbreviation in first column
-        ("LEFTPADDING", (2, 0), (-1, -1), padding),  # table padding
+        ("FONT", (0, 0), (0, -1), font, smallfontSize),     # abbreviation in first column
+        ("LEFTPADDING", (2, 0), (-1, -1), padding),         # table padding
         ("RIGHTPADDING", (2, 0), (-1, -1), padding),
     ]
-    t_stue2.setStyle(
-        TableStyle(
-            stueStyle
-            + [
-                ("FONT", (1, 1), (1, -1), font, colFontSize),  # Label
-                ("FONT", (2, 1), (-1, -1), font, colFontSize),  # Number values
-            ]
-        )
-    )
+    t_stue2.setStyle(TableStyle(stueStyle + [
+        ("FONT", (1, 1), (1, -1), font, colFontSize),       # Label
+        ("FONT", (2, 1), (-1, -1), font, colFontSize)       # Number values
+    ]))
     steuStyleHalfCol = stueStyle + [
-        ("FONT", (2, 0), (-1, 1), fontHeader, smallfontSize),  # field header
-        ("FONT", (1, 2), (1, -1), font, colFontSize),  # Label
-        ("FONT", (2, 2), (-1, -1), font, colFontSize),  # Number values
+        ("FONT", (2, 0), (-1, 1), fontHeader, smallfontSize),       # field header
+        ("FONT", (1, 2), (1, -1), font, colFontSize),               # Label
+        ("FONT", (2, 2), (-1, -1), font, colFontSize),              # Number values
         ("ALIGN", (2, 1), (2, -1), "CENTER"),
-        ("ALIGN", (-2, 1), (-2, -1), "CENTER"),
-    ]
-    for i in range(2, poleCount * 2 + 2, 2):
+        ("ALIGN", (-2, 1), (-2, -1), "CENTER")]
+    for i in range(2, poleCount*2+2, 2):
         steuStyleHalfCol += [
-            (
-                "LINEBEFORE",
-                (i, 0),
-                (i, 0),
-                0.5,
-                colors.lightgrey,
-            ),  # line left of pole title
-            (
-                "LINEBEFORE",
-                (i, 1),
-                (i, -1),
-                0.5,
-                colors.lightgrey,
-            ),  # line left of left pole value
+            ("LINEBEFORE", (i, 0), (i, 0), 0.5, colors.lightgrey),     # line left of pole title
+            ("LINEBEFORE", (i, 1), (i, -1), 0.5, colors.lightgrey),     # line left of left pole value
             ("RIGHTPADDING", (i, 1), (i, -1), 1),
         ]
     t_stue3.setStyle(TableStyle(steuStyleHalfCol))
 
     t_wink1 = Table(h_wink, wi_doc, he_rowT)
-    t_wink2 = Table(str_wink, wi_abk + [None] + colWidth * fieldCount, 7 * he_row)
+    t_wink2 = Table(str_wink, wi_abk + [None] + colWidth*fieldCount, 7*he_row)
     t_wink1.setStyle(title_style)
-    t_wink2.setStyle(
-        TableStyle(
-            stdStyleB
-            + [
-                (
-                    "FONT",
-                    (1, 0),
-                    (1, 0),
-                    fontHeader,
-                    fontSize,
-                ),  # heading empty cable
-                (
-                    "FONT",
-                    (1, 4),
-                    (1, 4),
-                    fontHeader,
-                    fontSize,
-                ),  # heading load cable
-                (
-                    "FONT",
-                    (2, 0),
-                    (-1, 0),
-                    fontHeader,
-                    smallfontSize,
-                ),  # field header
-                (
-                    "FONT",
-                    (2, 4),
-                    (-1, 4),
-                    fontHeader,
-                    smallfontSize,
-                ),  # field header
-                ("FONT", (0, 0), (0, -1), font, smallfontSize),
-            ]
-        )
-    )  # abbreviation in first column
+    t_wink2.setStyle(TableStyle(stdStyleB + [
+        ("FONT", (1, 0), (1, 0), fontHeader, fontSize),  # heading empty cable
+        ("FONT", (1, 4), (1, 4), fontHeader, fontSize),  # heading load cable
+        ("FONT", (2, 0), (-1, 0), fontHeader, smallfontSize),  # field header
+        ("FONT", (2, 4), (-1, 4), fontHeader, smallfontSize),  # field header
+        ("FONT", (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
 
     t_nach1 = Table(h_nach, wi_doc, he_rowT)
-    t_nach2 = Table(
-        str_nach,
-        wi_abk + [None] + colWidth * fieldCount,
-        len(str_nach) * he_row,
-    )
+    t_nach2 = Table(str_nach, wi_abk + [None] + colWidth * fieldCount, len(str_nach) * he_row)
     t_nach1.setStyle(title_style)
-    t_nach2.setStyle(
-        TableStyle(
-            stdStyleB
-            + [
-                (
-                    "FONT",
-                    (2, 0),
-                    (-1, 0),
-                    fontHeader,
-                    smallfontSize,
-                ),  # field header
-                (
-                    "FONT",
-                    (0, 0),
-                    (0, -1),
-                    font,
-                    smallfontSize,
-                ),  # abbreviation in first column
-                (
-                    "FONT",
-                    (0, len(str_nach) - 1),
-                    (-1, len(str_nach) - 1),
-                    font,
-                    7,
-                ),
-            ]
-        )
-    )  # Comment
+    t_nach2.setStyle(TableStyle(stdStyleB + [
+        ("FONT", (2, 0), (-1, 0), fontHeader, smallfontSize),  # field header
+        ("FONT", (0, 0), (0, -1), font, smallfontSize),  # abbreviation in first column
+        ("FONT", (0, len(str_nach)-1), (-1, len(str_nach)-1), font, 7)]))  # Comment
 
     t_anna1 = Table(h_anna, wi_doc, he_rowT)
     t_anna2 = Table(
@@ -1375,6 +1084,7 @@ def generateReport(reportText, outputLoc):
     elements.append(Table(data, colWidths=wi_doc))
     doc1.build(elements)
     del elements
+# fmt: on
 
 
 def createOutputFolder(outputPath, projectName):

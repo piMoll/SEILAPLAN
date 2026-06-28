@@ -22,19 +22,25 @@ detect-secrets scan SEILAPLAN/
 flake8 SEILAPLAN/ --ignore=C901
 ```
 
+### 1. Create translation files
+``` bash
+cd SEILAPLAN
+lrelease i18n/SeilaplanPlugin_de.ts i18n/SeilaplanPlugin_en.ts i18n/SeilaplanPlugin_fr.ts i18n/SeilaplanPlugin_it.ts
+```
+
 ### 1. Update changelog
 
-### 2. Change version information --> Version format: x.y.z
+### 1. Change version information --> Version format: x.y.z
 1. metadata.txt: Add short changelog with new title --> No need to change version, done automatically by ci-plugin
 2. __init__.py: Change version
 3. __init__.py: Set DEBUG to False
 4. If template of field survey profile was changed, update its version
 
-### 3. Create pull request with automatically attached plugin zip file
+### 1. Create pull request with automatically attached plugin zip file
 
-### 4. Do UI testing and Merge pull request
+### 1. Do UI testing and Merge pull request
 
-### 5. Create release on github
+### 1. Create release on github
 1. Create new tag with correct version vx.y.z
 2. Title: Seilaplan vx.y.z
 3. Text: Add change log
