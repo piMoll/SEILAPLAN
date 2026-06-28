@@ -40,7 +40,7 @@ from matplotlib.pyplot import imread
 
 from SEILAPLAN.gui.plotting_tools import zoom_with_wheel
 from SEILAPLAN.tools.bird_view_symbol import BirdViewSymbol, BirdViewSymbolLoader
-from SEILAPLAN.utils.qgis_utils import is_dark_mode
+from SEILAPLAN.utils.qgis_utils import isQgisInDarkMode as inDarkMode
 
 # Page dimensions in inch
 PLOT_OUTPUT_DIMENSIONS = {"A4": (11.69, 8.27), "A3": (16.53, 11.69)}
@@ -74,19 +74,19 @@ class AdjustmentPlot(FigureCanvas):
         self.win = parent
         self.dpi = dpi
         self.COLOR_MARKER = {
-            0: "#403e3d" if is_dark_mode() and not asPdf else "#696969",
+            0: "#403e3d" if inDarkMode() and not asPdf else "#696969",
             # grey = neutral
-            1: "#1d6532" if is_dark_mode() and not asPdf else "#4a6b55",
+            1: "#1d6532" if inDarkMode() and not asPdf else "#4a6b55",
             # dark green = ok
-            2: "#b95f00" if is_dark_mode() and not asPdf else "#e38400",
+            2: "#b95f00" if inDarkMode() and not asPdf else "#e38400",
             # orange = attention
-            3: "#c04040" if is_dark_mode() and not asPdf else "#e06767",
+            3: "#c04040" if inDarkMode() and not asPdf else "#e06767",
             # red = error
         }
-        self.COLOR_PLOT_BG = "#7a7a7a" if is_dark_mode() and not asPdf else "#efefef"
-        self.COLOR_AXES_BG = "#7a7a7a" if is_dark_mode() and not asPdf else "#fbfbfb"
-        self.COLOR_GRID = "#636363" if is_dark_mode() and not asPdf else "#c7c7c7"
-        self.COLOR_MARKER_BG = "#a3a3a3" if is_dark_mode() and not asPdf else "#fbfbfb"
+        self.COLOR_PLOT_BG = "#7a7a7a" if inDarkMode() and not asPdf else "#efefef"
+        self.COLOR_AXES_BG = "#7a7a7a" if inDarkMode() and not asPdf else "#fbfbfb"
+        self.COLOR_GRID = "#636363" if inDarkMode() and not asPdf else "#c7c7c7"
+        self.COLOR_MARKER_BG = "#a3a3a3" if inDarkMode() and not asPdf else "#fbfbfb"
         self.asPdf = asPdf
 
         self.fig = Figure(

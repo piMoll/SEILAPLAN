@@ -37,14 +37,14 @@ from qgis.PyQt.QtWidgets import (
 )
 
 from SEILAPLAN.utils.plugin_utils import getAbsoluteIconPath
-from SEILAPLAN.utils.qgis_utils import is_dark_mode
+from SEILAPLAN.utils.qgis_utils import isQgisInDarkMode
 
 
 class AdjustmentDialogThresholds(QObject):
-    FONT_COLOR = QColor(255, 255, 255) if is_dark_mode() else QColor(0, 0, 0)
+    FONT_COLOR = QColor(255, 255, 255) if isQgisInDarkMode() else QColor(0, 0, 0)
     COLOR_ERROR = QColor(224, 103, 103)
     COLOR_ATTENTION = QColor(237, 148, 76)
-    COLOR_NEUTRAL = QColor(53, 53, 53) if is_dark_mode() else QColor(255, 255, 255)
+    COLOR_NEUTRAL = QColor(53, 53, 53) if isQgisInDarkMode() else QColor(255, 255, 255)
     COLOR = {1: COLOR_NEUTRAL, 2: COLOR_ATTENTION, 3: COLOR_ERROR}
 
     sig_clickedRow = pyqtSignal(int)

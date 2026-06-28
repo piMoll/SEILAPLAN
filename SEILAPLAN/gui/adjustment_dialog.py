@@ -72,8 +72,7 @@ from SEILAPLAN.tools.output_report import (
 from SEILAPLAN.tools.poles import Poles
 from SEILAPLAN.tools.profile import Profile
 from SEILAPLAN.utils.plugin_utils import getAbsoluteIconPath
-from SEILAPLAN.utils.qgis_logger import log
-from SEILAPLAN.utils.qgis_utils import addBackgroundMap
+from SEILAPLAN.utils.qgis_utils import addBackgroundMap, log
 
 # This loads the .ui file so that PyQt can populate the plugin with the
 #  elements from Qt Designer

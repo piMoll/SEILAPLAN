@@ -25,6 +25,7 @@ from qgis.core import (
     Qgis,
     QgsFeature,
     QgsGeometry,
+    QgsMessageLog,
     QgsPalLayerSettings,
     QgsPoint,
     QgsPointXY,
@@ -247,7 +248,15 @@ def addLayerToQgis(layer, position: str = "", layerGroupName: str = ""):
             layerTree.insertLayer(-1, layer)
 
 
-def is_dark_mode():
+def isQgisInDarkMode():
     settings = QSettings()
     theme = settings.value("UI/UITheme", "default")
     return any([name in theme.lower() for name in ["gray", "dark", "night", "black"]])
+
+
+def log(msg, level=Qgis.MessageLevel.Info, debugMsg=False):
+    if debugMsg:
+        if not DEBUG:
+            return
+        msg = f"DEBUG {msg}"
+    QgsMessageLog.logMessage(str(msg), "SEILAPLAN", level)

@@ -41,7 +41,7 @@ from SEILAPLAN.utils.path_handler import (
     get_relative_path,
 )
 from SEILAPLAN.utils.plugin_utils import versionAsInteger
-from SEILAPLAN.utils.qgis_logger import log
+from SEILAPLAN.utils.qgis_utils import log
 
 
 def castToNum(formattedNum):

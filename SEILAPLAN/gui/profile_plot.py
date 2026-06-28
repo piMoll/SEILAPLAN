@@ -37,14 +37,14 @@ from matplotlib.figure import Figure
 
 from SEILAPLAN.gui.map_marker import POLE_COLOR, PROFILE_COLOR, SECTION_COLOR
 from SEILAPLAN.gui.plotting_tools import zoom_with_wheel
-from SEILAPLAN.utils.qgis_utils import is_dark_mode
+from SEILAPLAN.utils.qgis_utils import isQgisInDarkMode
 
 
 class ProfilePlot(FigureCanvas):
 
     def __init__(self, parent=None, width=10, height=4, dpi=72):
         self.win = parent
-        background_color = "#7a7a7a" if is_dark_mode() else "#efefef"
+        background_color = "#7a7a7a" if isQgisInDarkMode() else "#efefef"
         self.fig = Figure(figsize=(width, height), dpi=dpi, facecolor=background_color)
         self.axes = self.fig.add_subplot(111)
         self.axes.set_facecolor(background_color)
@@ -346,7 +346,7 @@ class ProfilePlot(FigureCanvas):
     def __setupAxes(self):
         self.axes.set_xlabel(self.tr("Horizontaldistanz [m]"), fontsize=11)
         self.axes.set_ylabel(self.tr("Hoehe [m.ue.M]"), fontsize=11)
-        grid_color = "#636363" if is_dark_mode() else "#c7c7c7"
+        grid_color = "#636363" if isQgisInDarkMode() else "#c7c7c7"
         self.axes.grid(which="major", color=grid_color, lw=1)
         self.axes.grid(which="minor", color=grid_color, lw=1, linestyle=":")
         self.axes.ticklabel_format(style="plain", useOffset=False)

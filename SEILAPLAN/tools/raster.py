@@ -28,7 +28,7 @@ from osgeo.gdal import Dataset
 from qgis.core import Qgis, QgsCoordinateReferenceSystem, QgsRasterLayer
 
 from SEILAPLAN.tools.height_source import AbstractHeightSource
-from SEILAPLAN.utils.qgis_logger import log
+from SEILAPLAN.utils.qgis_utils import log
 
 # Check if library scipy is present. On linux scipy isn't included in
 #  the standard qgis python interpreter
