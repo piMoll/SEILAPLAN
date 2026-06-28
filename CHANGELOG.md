@@ -1,22 +1,25 @@
 # Seilaplan Changelog
 
-## NEXT
+## Version 3.8.0 (Juni 2026)
 ### Neue Features
-- Geodaten-Export ins GeoPackage-Format
-- Diverse Verbesserungen der Benutzeroberfläche
-    - Besseres Scroll-Verhalten im Bearbeitungsfenster wenn viele Stützen aufgelistet werden
-    - Bei langandauernden Prozessen (Speichern, Laden etc.) den Mauscursor als Ladesymbol anzeigen
-    - Fragezeichen-Buttons weniger prominent darstellen
-    - Diagrammfarben für die Darstellung im QGIS Dark-Mode verbessern
-    - Startfenster: Parameter-Reiter "Optimierung #1" und "Optimierung #2" zu "Optimierung" und "Diverses" umbenennen
-- Überprüfe und warne, wenn Parameterwert "Bodenabstand: einzuhalten ab / bis ..." 0 Meter beträgt und Bauelement "Verankerung" ausgewählt ist
-- Die Warnung, dass das Tragseil bei einer Stütze abhebt, wird prominenter angezeigt
-- Diverse Unterhaltsarbeiten, Release-Automatisierung und Verbesserung der Code-Qualität
+- Export von Geodaten im GeoPackage-Format (*.gpkg)
+- PDF-Export des Diagramms in den Papierformaten A4 und A3
+- Relative Speicherung der Pfade zu Höhendaten in der SEILAPLAN-Projektdatei, sodass Projekte und Höhendaten gemeinsam verschoben und wieder geöffnet werden können
+- Verbesserungen der Benutzeroberfläche
+    - Verbesserte Scrollbarkeit im Bearbeitungsfenster bei vielen Stützen und wenig verfügbarem Platz
+    - Anzeige eines Ladesymbols im Mauscursor bei langandauernden Prozessen (z.B. Speichern oder Laden)
+    - Weniger prominente Darstellung der Fragezeichen-Schaltflächen
+    - Verbesserte Darstellung der Benutzeroberfläche und des Diagramms im QGIS-Dark-Mode
+    - Umbenennung der Reiter im Startfenster von „Optimierung #1“ und „Optimierung #2“ zu „Optimierung“ und „Diverses“
+    - Deutlichere Hervorhebung der Warnung „...Tragseil hebt bei mindestens einer Stütze ab“ im Bearbeitungsfenster
+- Warnung ausgeben, wenn der Parameter „Bodenabstand: einzuhalten ab / bis …“ auf 0 m gesetzt ist und gleichzeitig das Bauelement „Verankerung“ ausgewählt wurde
+- Verbesserte und empfindlichere Erkennung günstiger Geländeformen für die Positionierung von Stützen während der Optimierung
+- Diverse Unterhaltsarbeiten, Verbesserungen der Codequalität sowie Automatisierung des Release-Prozesses
 
 ### Fehlerbehebung
-- Karte zentriert nicht auf Rasterlayer, wenn in der Auswahlliste mehrere Raster ausgewählt werden
-- Wenn ein Cloud-optimiertes GeoTIFF-Raster ausgewählt ist, können keine Höhenlinien berechnet werden
-- Neue SEILAPLAN Plugin-Versionen werden vom Plugin-Manager nicht erkannt
+- Karte wird korrekt auf Rasterlayer zentriert, auch wenn mehrere Raster in der Auswahlliste ausgewählt werden
+- Höhenlinien können nun auch aus Cloud-optimierten GeoTIFF-Rastern (COG) berechnet werden
+- Neue Versionen des SEILAPLAN-Plugins werden vom Plugin-Manager wieder erkannt und können aktualisiert werden
 
 ## Version 3.7.1 (August 2025)
 ### Fehlerbehebung
@@ -167,7 +170,7 @@
 
 ## Version 3.1 (November 2020)
 ### Neue Features
-* Einführung Maschinen-Parameter "Grundspannung" 
+* Einführung Maschinen-Parameter "Grundspannung"
 * Angabe des Durchmessers der Bundstelle im Kurzbericht
 
 ### Fehlerbehebung

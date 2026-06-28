@@ -15,39 +15,39 @@ about=[DE]
     Dokumentation: https://seilaplan.wsl.ch
     ***
     Bont, Moll, Ramstein, Frutig, Heinimann, Schweier (2022). Introducing Seilaplan, a QGIS plugin for cable road layout planning. Croatian Journal of Forest Engineering, 2022. https://doi.org/10.5552/crojfe.2022.1824
-version=3.7.1
+version=0.0.0
 author=Bont, Moll, Ramstein, Frutig, Heinimann, Schweier
 email=seilaplanplugin@gmail.com
-changelog=Version 3.7.1 (August 2025)
-     - Unter Qt6 kann nach Auswahl eines Rasters keine Seillinie definiert werden
+changelog=Version 3.8.0 (Juni 2026)
+     Neue Features
+     - Export von Geodaten im GeoPackage-Format (*.gpkg)
+     - PDF-Export des Diagramms in den Papierformaten A4 und A3
+     - Relative Speicherung der Pfade zu Höhendaten in der SEILAPLAN-Projektdatei, sodass Projekte und Höhendaten gemeinsam verschoben und wieder geöffnet werden können
+     - Diverse Verbesserungen der Benutzeroberfläche und der Codequalität
 
-    Version 3.7.0 (Juli 2025)
+     Fehlerbehebung
+     - Karte wird korrekt auf Rasterlayer zentriert, auch wenn mehrere Raster in der Auswahlliste ausgewählt werden
+     - Höhenlinien können nun auch aus Cloud-optimierten GeoTIFF-Rastern (COG) berechnet werden
+     - Neue Versionen des SEILAPLAN-Plugins werden vom Plugin-Manager wieder erkannt und können aktualisiert werden
 
-    Neue Features
-    - Upgrade für die Verwendung unter QGIS 4.0 und Qt 6 (ab Oktober 2025)
-    - Umzug ins offizielle QGIS Plugin Verzeichnis (bestehende Benutzer/innen müssen nichts tun)
-    
-    Fehlerbehebung
-    - Behebe ein Problem, dass die Verwendung von XYZ Rastern verhindert
-    - Behebe Fehlermeldung beim Löschen von Stützensymbolen in der Karte
-    - Ermögliche das Laden von SEILAPLAN-Projektdateien, welche Cloud Optimized GeoTiffs (COG) enthalten
-    - Diverse Unterhaltsarbeiten
-    
     Vollständiger Changelog unter: https://github.com/piMoll/SEILAPLAN/blob/master/CHANGELOG.md
 
     ***
     [EN]
-    
+
     New features
-    - Upgrade for QGIS 4.0 and Qt 6 (October 2025)
-    - Move to the official qgis plugin repository (no action needed for existing users)
-    
+    - Export geospatial data in GeoPackage format (*.gpkg)
+    - Export diagrams as PDF in A4 and A3 paper formats
+    - Store elevation data paths as relative paths in SEILAPLAN project files, allowing projects and elevation data to be moved and reopened together
+    - Various user interface and code quality improvements
+
     Fixes
-    - Fix bug preventing usage of XYZ rasters
-    - Fix problems when deleting support symbols in the map
-    - Allow loading of SEILAPLAN project files that include cloud optimized GeoTIFFs
-    - Various maintenance work
-        
+    - The map is now correctly centered on raster layers, even when multiple raster layers are selected
+    - Contour lines can now also be generated from Cloud Optimized GeoTIFF (COG) rasters
+    - New SEILAPLAN plugin versions are now correctly detected by the QGIS Plugin Manager and can be updated
+
+    Full changelog: https://github.com/piMoll/SEILAPLAN/blob/master/CHANGELOG.md
+
 # Tags are comma separated with spaces allowed
 tags=analysis,forestry,forest,planning,design,optimization,wald,planung,optimierung
 homepage=https://seilaplan.wsl.ch
@@ -59,4 +59,3 @@ icon=gui/icons/icon_app.png
 experimental=False
 # deprecated flag (applies to the whole plugin, not just a single version)
 deprecated=False
-
