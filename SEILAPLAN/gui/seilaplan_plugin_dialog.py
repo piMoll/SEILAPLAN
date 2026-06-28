@@ -52,8 +52,8 @@ from SEILAPLAN.tools.config_handler_params import ParameterConfHandler
 from SEILAPLAN.tools.config_handler_project import castToNum, ProjectConfHandler
 from SEILAPLAN.tools.height_source import AbstractHeightSource
 from SEILAPLAN.tools.output_geo import CH_CRS
-from SEILAPLAN.tools.raster import rasterExistsAtPath
 from SEILAPLAN.tools.survey import SurveyData
+from SEILAPLAN.utils.path_handler import path_exists_or_is_remote
 from SEILAPLAN.utils.plugin_utils import getAbsoluteIconPath
 from SEILAPLAN.utils.qgis_utils import (
     addBackgroundMap,
@@ -663,7 +663,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
                     break
             if not rasterInQGIS:
                 # Raster is still at same location in file system
-                if rasterExistsAtPath(path):
+                if path_exists_or_is_remote(path):
                     # Load raster
                     newRaster = QFileInfo(path).completeBaseName()
                     rasterLyr = QgsRasterLayer(path, newRaster)

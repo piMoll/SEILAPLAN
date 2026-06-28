@@ -20,7 +20,6 @@
 """
 
 from math import cos, pi, sin
-import os
 
 import numpy as np
 from osgeo import gdal
@@ -28,6 +27,7 @@ from osgeo.gdal import Dataset
 from qgis.core import Qgis, QgsCoordinateReferenceSystem, QgsRasterLayer
 
 from SEILAPLAN.tools.height_source import AbstractHeightSource
+from SEILAPLAN.utils.path_handler import path_exists_or_is_remote
 from SEILAPLAN.utils.qgis_utils import log
 
 # Check if library scipy is present. On linux scipy isn't included in
@@ -69,7 +69,7 @@ class Raster(AbstractHeightSource):
 
         # Get raster info from path to raster file
         elif path:
-            if not rasterExistsAtPath(path):
+            if not path_exists_or_is_remote(path):
                 self.errorMsg = self.tr(
                     "Raster-Datei _path_ ist nicht vorhanden, "
                     "Raster kann nicht geladen werden."
@@ -260,7 +260,3 @@ class Raster(AbstractHeightSource):
                 "Profillinie enthaelt Datenluecken, bitte Start-/ Endpunkt anpassen."
             )
         return points_lin
-
-
-def rasterExistsAtPath(rasterPath) -> bool:
-    return os.path.exists(rasterPath) or rasterPath.startswith("/vsicurl/")

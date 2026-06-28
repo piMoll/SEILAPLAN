@@ -1951,7 +1951,7 @@ Bitte passen Sie die Eingabe an.</translation>
     <message>
         <location filename="../tools/configHandler_project.py" line="282"/>
         <source>Hoehendaten konnten nicht geladen werden.</source>
-        <translation>Hoehendaten konnten nicht geladen werden.</translation>
+        <translation>Höhendaten konnten nicht geladen werden.</translation>
     </message>
     <message>
         <location filename="../tools/configHandler_project.py" line="282"/>

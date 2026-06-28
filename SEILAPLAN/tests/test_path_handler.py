@@ -171,11 +171,6 @@ class TestPathHandler(unittest.TestCase):
         self.assertTrue(is_remote_or_virtual("/vsizip//tmp/archive.zip/file.tif"))
         self.assertTrue(is_remote_or_virtual("/vsis3/my-bucket/file.tif"))
 
-    def test_is_remote_or_virtual_detects_network_paths(self):
-        self.assertTrue(is_remote_or_virtual(r"\\server\share\file.tif"))
-        self.assertTrue(is_remote_or_virtual(r"\\192.168.1.10\gis"))
-        self.assertTrue(is_remote_or_virtual(r"//server/share/data.gpkg"))
-
     def test_is_remote_or_virtual_detects_cloud_schemes(self):
         self.assertTrue(is_remote_or_virtual("s3://my-bucket/file.tif"))
         self.assertTrue(is_remote_or_virtual("gs://my-bucket/file.tif"))

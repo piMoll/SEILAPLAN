@@ -34,11 +34,12 @@ from SEILAPLAN.tools.height_source import AbstractHeightSource
 from SEILAPLAN.tools.output_geo import createVirtualRaster
 from SEILAPLAN.tools.poles import Poles
 from SEILAPLAN.tools.profile import Profile
-from SEILAPLAN.tools.raster import Raster, rasterExistsAtPath
+from SEILAPLAN.tools.raster import Raster
 from SEILAPLAN.tools.survey import SurveyData
 from SEILAPLAN.utils.path_handler import (
     calculate_path_candidates,
     get_relative_path,
+    path_exists_or_is_remote,
 )
 from SEILAPLAN.utils.plugin_utils import versionAsInteger
 from SEILAPLAN.utils.qgis_utils import log
@@ -92,10 +93,10 @@ class ProjectConfHandler(AbstractConfHandler):
     def setConfigFromFile(self, settings, projectFilePath: str):
         """Load configuration from json file."""
         self.setProjectName(settings["projectname"])
+        self.setPrHeader(settings["header"])
         # Current project dir and original project dir can be different if the project
         #  was moved to another location
         self.projectDir = os.path.dirname(projectFilePath)
-        self.setPrHeader(settings["header"])
 
         heightSource = settings["heightsource"]
         heightSourcePath = settings["heightsource"]["source"]
@@ -109,16 +110,21 @@ class ProjectConfHandler(AbstractConfHandler):
                 heightSourcePath,
                 [originalProjectDir, self.projectDir],
             )
-            if len(pathCandidates) == 0:
-                self.onError(
-                    self.tr("Hoehendaten konnten nicht geladen werden.\n")
-                    + self.tr("_path_ ist nicht vorhanden.").replace(
-                        "_path_", heightSource["source"]
-                    )
+        else:
+            # heighSource path is absolute, check if it exists / is remote
+            pathCandidates = [
+                path for path in [heightSourcePath] if path_exists_or_is_remote(path)
+            ]
+        if len(pathCandidates) == 0:
+            self.onError(
+                self.tr("Hoehendaten konnten nicht geladen werden.\n")
+                + self.tr("_path_ ist nicht vorhanden.").replace(
+                    "_path_", heightSourcePath
                 )
-                return False
-            else:
-                heightSourcePath = pathCandidates[0]
+            )
+            return False
+        else:
+            heightSourcePath = pathCandidates[0]
         surveyType = None
         if "surveyType" in heightSource:
             surveyType = heightSource["surveyType"]
@@ -287,7 +293,7 @@ class ProjectConfHandler(AbstractConfHandler):
                     #  loaded. We create layers first, then create virtual layer
                     layerlist = []
                     for i, path in enumerate(rasterList):
-                        if not rasterExistsAtPath(path):
+                        if not path_exists_or_is_remote(path):
                             self.onError(
                                 self.tr(
                                     "Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden."
@@ -322,7 +328,8 @@ class ProjectConfHandler(AbstractConfHandler):
         if heights and heights.valid:
             self.heightSource = heights
             self.heightSourceType = sourceType
-        else:
+
+        if errorMsg or not heights or not heights.valid:
             self.onError(
                 errorMsg or self.tr("Hoehendaten konnten nicht geladen werden.")
             )

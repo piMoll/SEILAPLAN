@@ -23,19 +23,16 @@ CLOUD_SCHEMES = {
 }
 
 
-def is_remote_or_virtual(path):
+def is_remote_or_virtual(path) -> bool:
     """Checks if a path leads to a virtual or remote resource."""
     path = str(path)
     if any(path.startswith(prefix) for prefix in GDAL_VIRTUAL_FILE_PREFIX):
-        return True
-    if path.startswith("\\\\") or path.startswith("//"):
-        # Network locations
         return True
     parsed = urlparse(path)
     return parsed.scheme.lower() in CLOUD_SCHEMES
 
 
-def path_exists_or_is_remote(path):
+def path_exists_or_is_remote(path) -> bool:
     return is_remote_or_virtual(path) or os.path.exists(path)
 
 
@@ -83,7 +80,8 @@ def calculate_path_candidates(relative_path: str, base_path_list: List[str]):
     """Generates a list of possible absolute path candidates based on a relative path
     and a list of possible paths it is relative to.
     Tests if the path exists. If it's a remote resource, it's not tested but added to
-    the candidate list directly."""
+    the candidate list directly. Remote resources are dealt with later when using gdal
+    to load the geodata."""
     path_candidates = []
     for base_path in base_path_list:
         path_candidates.append(
