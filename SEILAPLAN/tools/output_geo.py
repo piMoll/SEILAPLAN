@@ -37,6 +37,7 @@ from qgis.core import (
     QgsProject,
     QgsRasterLayer,
     QgsVectorFileWriter,
+    QgsVectorLayer,
     QgsWkbTypes,
 )
 from qgis.PyQt.QtCore import QCoreApplication
@@ -120,23 +121,23 @@ def organizeDataForExport(poles, cableline, profile):
     }
 
 
-def writeGeodata(geodata, geoFormat, epsg, savePath):
+def writeGeodata(geodata, geoFormat, epsg, saveDir, fileName="geodata"):
     spatialRef = QgsCoordinateReferenceSystem(epsg)
 
     fileEnding = f".{geoFormat.lower()}"
     if geoFormat == "GPKG":
-        basePath = os.path.join(savePath, "geodata" + fileEnding)
+        basePath = os.path.join(saveDir, fileName + fileEnding)
         stuePath = basePath
         seilLeerPath = basePath
         seilLastPath = basePath
         terrainPath = basePath
     else:
-        savePath = os.path.join(savePath, geoFormat.lower())
-        os.makedirs(savePath)
-        stuePath = os.path.join(savePath, tr("stuetzen") + fileEnding)
-        seilLeerPath = os.path.join(savePath, tr("leerseil") + fileEnding)
-        seilLastPath = os.path.join(savePath, tr("lastseil") + fileEnding)
-        terrainPath = os.path.join(savePath, tr("terrain") + fileEnding)
+        saveDir = str(os.path.join(saveDir, geoFormat.lower()))
+        os.makedirs(saveDir)
+        stuePath = os.path.join(saveDir, tr("stuetzen") + fileEnding)
+        seilLeerPath = os.path.join(saveDir, tr("leerseil") + fileEnding)
+        seilLastPath = os.path.join(saveDir, tr("lastseil") + fileEnding)
+        terrainPath = os.path.join(saveDir, tr("terrain") + fileEnding)
 
     if geoFormat == "SHP":
         geoFormat = "ESRI Shapefile"
@@ -183,16 +184,16 @@ def writeGeodata(geodata, geoFormat, epsg, savePath):
     if geoFormat == "DXF":
         # For DXF, we create an additional file containing the side view
         #  (dist and height) of the data
-        profilePath = os.path.join(savePath, tr("profilansicht") + fileEnding)
+        profilePath = os.path.join(saveDir, tr("profilansicht") + fileEnding)
         saveLineGeometry(
             profilePath, geodata["profile"], spatialRef, geoFormat, "", False
         )
 
     geoOutput = {
-        "stuetzen": stuePath,
-        "leerseil": seilLeerPath,
-        "lastseil": seilLastPath,
-        "terrain": terrainPath,
+        tr("stuetzen"): stuePath,
+        tr("leerseil"): seilLeerPath,
+        tr("lastseil"): seilLastPath,
+        tr("terrain"): terrainPath,
     }
     return geoOutput
 
@@ -328,21 +329,18 @@ def checkShpPath(path):
             os.remove(path + ending)
 
 
-def addToMap(geodata, projName):
-    """Adds the shape file to the qgis project."""
-    from qgis.core import QgsVectorLayer
+def addToMap(exportedFiles, groupName: str):
+    """Adds a dictionary of exported files as layers to the qgis project."""
+    for layerName, filePath in exportedFiles.items():
+        if filePath.endswith(".gpkg"):
+            filePath = f"{filePath}|layername={layerName}"
 
-    polesLyr = QgsVectorLayer(geodata["stuetzen"], tr("stuetzen"), "ogr")
-    emptyLineLyr = QgsVectorLayer(geodata["leerseil"], tr("leerseil"), "ogr")
-    loadLineLyr = QgsVectorLayer(geodata["lastseil"], tr("lastseil"), "ogr")
-    terrainLyr = QgsVectorLayer(geodata["terrain"], tr("terrain"), "ogr")
+        layer = QgsVectorLayer(filePath, layerName, "ogr")
 
-    for layer in [polesLyr, emptyLineLyr, loadLineLyr, terrainLyr]:
         layer.setProviderEncoding("UTF-8")
         layer.dataProvider().setEncoding("UTF-8")
-
         # Add layer to map
-        addLayerToQgis(layer, "", projName)
+        addLayerToQgis(layer, "", groupName)
 
 
 def createVirtualRaster(rasterList):

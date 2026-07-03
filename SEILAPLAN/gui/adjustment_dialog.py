@@ -829,7 +829,9 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
                         self.showMessage(title, msg)
                 if self.confHandler.getOutputOption("gpkg"):
                     try:
-                        gpkgFiles = writeGeodata(geodata, "GPKG", epsg, savePath)
+                        gpkgFiles = writeGeodata(
+                            geodata, "GPKG", epsg, savePath, projName_unique
+                        )
                         addToMap(gpkgFiles, projName_unique)
                         addedToMap = True
                     except Exception as e:
