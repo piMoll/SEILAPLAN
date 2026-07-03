@@ -248,9 +248,9 @@ class ProjectConfHandler(AbstractConfHandler):
             if formatting == "comma":
                 return ", ".join(pathList)
             elif formatting == "json":
-                return source
+                return pathList
             else:
-                return source
+                return pathList
         else:
             path = self.heightSource.getAsStr()
             if relativeToDir and path:
