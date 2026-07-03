@@ -771,7 +771,7 @@ def generateShortReport(confHandler, result, projname, outputLoc):
     ]
 
     # Headers
-    h_titel = Table([[f"{tr("SEILAPLAN Projekt")}: {projname}"]],
+    h_titel = Table([[f"{tr('SEILAPLAN Projekt')}: {projname}"]],
                     colWidths=widthT, style=style_t)
     h_input = Table([[tr("Eingabewerte")]],
                     colWidths=widthT, style=style_h)
