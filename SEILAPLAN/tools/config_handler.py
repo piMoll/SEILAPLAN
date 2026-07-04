@@ -109,9 +109,7 @@ class ConfigHandler:
 
             # Projekt
             try:
-                prLoadSuccessful = self.project.setConfigFromFile(settings, filename)
-                if not prLoadSuccessful:
-                    return prLoadSuccessful
+                self.project.setConfigFromFile(settings, filename)
             except KeyError:
                 return False
 
