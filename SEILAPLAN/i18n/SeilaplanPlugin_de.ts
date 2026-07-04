@@ -2856,7 +2856,7 @@ SEILAPLAN ist eine freie Software: Sie können sie unter den Bedingungen der GNU
     <message>
         <location filename="../gui/surveyImportDialog.ui" line="64"/>
         <source>Exportdatei des Hagloef Vertex Messgeraetes (*.csv)</source>
-        <translation>Exportdatei des Hagloef Vertex Messgerätes (*.csv)</translation>
+        <translation>Exportdatei des Haglöf Vertex Messgerätes (*.csv)</translation>
     </message>
     <message>
         <location filename="../gui/surveyImportDialog.ui" line="78"/>
