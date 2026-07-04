@@ -115,7 +115,7 @@ class TestPathHandler(unittest.TestCase):
         same_geodata_path = get_absolute_path_from_relative(relative_path, project_path)
         self.assertEqual(same_geodata_path, data_path)
 
-    def test_calculate_path_candidate_with_local_paths(self):
+    def test_calculate_path_candidate_with_local_paths_that_dont_exist(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             base_dir = Path(tmpdir)
             first_path = base_dir / "first"
@@ -123,21 +123,52 @@ class TestPathHandler(unittest.TestCase):
             second_path = base_dir / "second"
             second_path.mkdir(parents=True)
 
-            # Relative path does not exist in any of the base path candidates
+            # Relative path do not exist in any of the base path candidates
             path_candidates = calculate_path_candidates(
                 "relative/file.txt", [str(first_path), str(second_path)]
             )
-            self.assertEqual(path_candidates, [])
+            self.assertEqual(
+                path_candidates,
+                [
+                    str(first_path / "relative" / "file.txt"),
+                    str(second_path / "relative" / "file.txt"),
+                ],
+            )
+
+    def test_calculate_path_candidate_with_local_paths_that_partially_exist(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            base_dir = Path(tmpdir)
+            first_path = base_dir / "first"
+            first_path.mkdir(parents=True)
+            second_path = base_dir / "second"
+            second_path.mkdir(parents=True)
 
             relative_path = first_path / "relative"
             relative_path.mkdir(parents=True)
             relative_file = relative_path / "file.txt"
             relative_file.write_text("content", encoding="utf-8")
 
-            path_candidates2 = calculate_path_candidates(
+            # Only one of these paths actually exists, but they should both be returned
+            path_candidates = calculate_path_candidates(
                 "relative/file.txt", [str(first_path), str(second_path)]
             )
-            self.assertEqual(path_candidates2, [str(relative_file)])
+            self.assertEqual(
+                path_candidates,
+                [str(relative_file), str(second_path / "relative" / "file.txt")],
+            )
+
+    def test_calculate_path_candidate_with_local_paths_that_do_exist(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            base_dir = Path(tmpdir)
+            first_path = base_dir / "first"
+            first_path.mkdir(parents=True)
+            second_path = base_dir / "second"
+            second_path.mkdir(parents=True)
+
+            relative_path1 = first_path / "relative"
+            relative_path1.mkdir(parents=True)
+            relative_file1 = relative_path1 / "file.txt"
+            relative_file1.write_text("content", encoding="utf-8")
 
             relative_path2 = second_path / "relative"
             relative_path2.mkdir(parents=True)
@@ -148,7 +179,7 @@ class TestPathHandler(unittest.TestCase):
                 "relative/file.txt", [str(first_path), str(second_path)]
             )
             self.assertEqual(
-                path_candidates2, [str(relative_file), str(relative_file2)]
+                path_candidates2, [str(relative_file1), str(relative_file2)]
             )
 
     def test_calculate_path_candidate_with_streamed_geotiff(self):
