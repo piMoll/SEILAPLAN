@@ -23,6 +23,7 @@ import json
 from math import atan2, cos, pi, sin
 import os
 import traceback
+from typing import List
 
 from qgis.core import Qgis, QgsDistanceArea, QgsPointXY, QgsRasterLayer
 
@@ -38,6 +39,7 @@ from SEILAPLAN.tools.raster import Raster
 from SEILAPLAN.tools.survey import SurveyData
 from SEILAPLAN.utils.path_handler import (
     calculate_path_candidates,
+    get_absolute_path_from_relative,
     get_relative_path,
     path_exists_or_is_remote,
 )
@@ -99,48 +101,28 @@ class ProjectConfHandler(AbstractConfHandler):
         self.projectDir = os.path.dirname(projectFilePath)
 
         heightSource = settings["heightsource"]
-        heightSourcePath = settings["heightsource"]["source"]
-
         # From 3.8.0 onwards, height source paths are saved relatively to the project
         #  directory. We're looking for the height source relative to the original
         #  project dir first, then relative to the current project dir
-        if versionAsInteger(settings["version"]) >= versionAsInteger("3.8.0"):
-            originalProjectDir = settings.get("projectDir", self.projectDir)
-            pathCandidates = calculate_path_candidates(
-                heightSourcePath,
-                [originalProjectDir, self.projectDir],
-            )
-        else:
-            # heighSource path is absolute, check if it exists / is remote
-            pathCandidates = [
-                path for path in [heightSourcePath] if path_exists_or_is_remote(path)
-            ]
-        if len(pathCandidates) == 0:
-            self.onError(
-                self.tr("Hoehendaten konnten nicht geladen werden.\n")
-                + self.tr("_path_ ist nicht vorhanden.").replace(
-                    "_path_", heightSourcePath
-                )
-            )
-            return False
-        else:
-            heightSourcePath = pathCandidates[0]
-        surveyType = None
-        if "surveyType" in heightSource:
-            surveyType = heightSource["surveyType"]
-        self.setHeightSource(
-            None,
-            sourceType=heightSource["type"],
-            sourcePath=heightSourcePath,
-            surveySourceType=surveyType,
+        heightSourcePath = self.checkHeightSourcePathExists(
+            heightSource["source"],
+            [
+                settings.get("projectDir", self.projectDir),
+                self.projectDir,
+            ],
+            settings["version"],
         )
-
-        if self.heightSource is None or not self.heightSource.valid:
-            return False
-
-        if self.heightSourceType == "survey":
-            self.heightSource: SurveyData
-            self.heightSource.reprojectToCrs(heightSource["crs"])
+        self.resetHeightSource()
+        if heightSourcePath is not None:
+            self.setHeightSource(
+                None,
+                sourceType=heightSource["type"],
+                sourcePath=heightSourcePath,
+                surveySourceType=heightSource.get("surveyType"),
+            )
+            if self.surveyType is not None:
+                self.heightSource: SurveyData
+                self.heightSource.reprojectToCrs(heightSource["crs"])
 
         self.setPoint("A", settings["profile"]["start"]["coordinates"])
         self.setPoint("E", settings["profile"]["end"]["coordinates"])
@@ -151,7 +133,43 @@ class ProjectConfHandler(AbstractConfHandler):
         self.setNoPoleSection(settings["profile"]["noPoleSection"])
 
         self.polesFromFile = settings["poles"]
-        return True
+
+    def checkHeightSourcePathExists(
+        self,
+        pathsFromFile: str,
+        basePathCandidates: List[str],
+        fileVersion: str,
+    ):
+        resolvedPaths = []
+        if isinstance(pathsFromFile, str):
+            pathsFromFile = [pathsFromFile]
+
+        for path in pathsFromFile:
+            # Check path exists relative to the list of supplied basePathCandidates
+            if versionAsInteger(fileVersion) >= versionAsInteger("3.8.0"):
+                pathCandidates = calculate_path_candidates(
+                    path,
+                    basePathCandidates,
+                )
+            else:
+                # Settings file is older than 3.8.0, so heighSource path is absolute:
+                #  check if it exists / is remote
+                pathCandidates = [
+                    path for path in [path] if path_exists_or_is_remote(path)
+                ]
+            if not pathCandidates or len(pathCandidates) == 0:
+                nonExistentPath = get_absolute_path_from_relative(
+                    path, basePathCandidates[0]
+                )
+                self.onError(
+                    self.tr("Hoehendaten konnten nicht geladen werden.\n")
+                    + self.tr("_path_ ist nicht vorhanden.").replace(
+                        "_path_", nonExistentPath
+                    )
+                )
+                return None
+            resolvedPaths.append(pathCandidates[0])
+        return resolvedPaths if len(resolvedPaths) > 1 else resolvedPaths[0]
 
     def setConfigFromFileOld(self, property_name, value):
         """Load settings from old style text file."""
