@@ -78,10 +78,14 @@ def get_absolute_path_from_relative(
 
 def calculate_path_candidates(relative_path: str, base_path_list: List[str]):
     """Generates a list of possible absolute path candidates based on a relative path
-    and a list of possible paths it is relative to. Does not test if the paths exist."""
+    and a list of possible paths it is relative to.
+    Tests if the path exists. If it's a remote resource, it's not tested but added to
+    the candidate list directly. Remote resources are dealt with later when using gdal
+    to load the geodata."""
     path_candidates = []
     for base_path in base_path_list:
         path_candidates.append(
             get_absolute_path_from_relative(relative_path, base_path)
         )
-    return path_candidates
+
+    return [path for path in path_candidates if path_exists_or_is_remote(path)]
