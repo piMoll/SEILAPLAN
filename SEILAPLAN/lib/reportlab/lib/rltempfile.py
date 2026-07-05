@@ -13,7 +13,10 @@ whatever if needed.
 '''
 _rl_tempdir=None
 __all__ = ('get_rl_tempdir', 'get_rl_tempdir')
-import os, tempfile
+import os
+import tempfile
+
+
 def _rl_getuid():
     if hasattr(os,'getuid'):
         return os.getuid()
@@ -34,5 +37,5 @@ def get_rl_tempdir(*subdirs):
 
 def get_rl_tempfile(fn=None):
     if not fn:
-        fn = tempfile.mktemp()
+        fn = tempfile.mktemp()  # nosec
     return os.path.join(get_rl_tempdir(),fn)

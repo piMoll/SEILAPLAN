@@ -2313,7 +2313,7 @@ def utility_xml_namespace(file):
 
     ns_map = []
 
-    for event, elem in ET.iterparse(file, events):
+    for event, elem in ET.iterparse(file, events):  # nosec
         if event == "start-ns":
             elem = ('default', elem[1]) if elem[0] == '' else elem
             ns_map.append(elem)

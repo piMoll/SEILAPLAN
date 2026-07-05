@@ -5,15 +5,16 @@ __version__='3.3.0'
 __doc__="""This modules defines a collection of markers used in charts.
 """
 
-from reportlab.graphics.shapes import Rect, Circle, Polygon, Drawing, Group
-from reportlab.graphics.widgets.signsandsymbols import SmileyFace
+from math import cos, pi, sin
+
+from reportlab.graphics.shapes import Circle, Drawing, Group, Polygon, Rect
 from reportlab.graphics.widgetbase import Widget
-from reportlab.lib.validators import isNumber, isColorOrNone, OneOf, Validator
+from reportlab.graphics.widgets.flags import _Symbol, Flag
+from reportlab.graphics.widgets.signsandsymbols import SmileyFace
 from reportlab.lib.attrmap import AttrMap, AttrMapValue
 from reportlab.lib.colors import black
 from reportlab.lib.utils import isClass
-from reportlab.graphics.widgets.flags import Flag, _Symbol
-from math import sin, cos, pi
+from reportlab.lib.validators import isColorOrNone, isNumber, OneOf, Validator
 _toradians = pi/180.0
 
 class Marker(Widget):
@@ -242,4 +243,4 @@ def makeMarker(name,**kw):
 if __name__=='__main__':
     D = Drawing()
     D.add(Marker())
-    D.save(fnRoot='Marker',formats=['pdf'], outDir='/tmp')
+    D.save(fnRoot='Marker',formats=['pdf'], outDir='/tmp')  # nosec

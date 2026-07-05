@@ -8,19 +8,23 @@ __doc__="""CID (Asian multi-byte) font support.
 This defines classes to represent CID fonts.  They know how to calculate
 their own width and how to write themselves into PDF files."""
 
-import os
-import marshal
-import time
 from hashlib import md5
+import marshal
+import os
+import time
 
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase._cidfontdata import allowedTypeFaces, allowedEncodings, CIDFontInfo, \
-     defaultUnicodeEncodings, widthsByUnichar
-from reportlab.pdfgen.canvas import Canvas
-from reportlab.pdfbase import pdfdoc
 from reportlab.lib.rl_accel import escapePDF
+from reportlab.lib.utils import isBytes, isSeq
+from reportlab.pdfbase import pdfdoc, pdfmetrics
+from reportlab.pdfbase._cidfontdata import (
+    allowedEncodings,
+    allowedTypeFaces,
+    CIDFontInfo,
+    defaultUnicodeEncodings,
+    widthsByUnichar
+)
+from reportlab.pdfgen.canvas import Canvas
 from reportlab.rl_config import CMapSearchPath
-from reportlab.lib.utils import isSeq, isBytes
 
 #quick hackery for 2.0 release.  Now we always do unicode, and have built in
 #the CMAP data, any code to load CMap files is not needed.
@@ -202,10 +206,10 @@ class CIDEncoding(pdfmetrics.Encoding):
     def fastLoad(self, directory):
         started = time.clock()
         f = open(os.path.join(directory, self.name + '.fastmap'), 'rb')
-        self._mapFileHash = marshal.load(f)
-        self._codeSpaceRanges = marshal.load(f)
-        self._notDefRanges = marshal.load(f)
-        self._cmap = marshal.load(f)
+        self._mapFileHash = marshal.load(f)  # nosec
+        self._codeSpaceRanges = marshal.load(f)  # nosec
+        self._notDefRanges = marshal.load(f)  # nosec
+        self._cmap = marshal.load(f)  # nosec
         f.close()
         finished = time.clock()
         #print 'loaded %s in %0.4f seconds' % (self.name, finished - started)
@@ -251,7 +255,7 @@ class CIDTypeFace(pdfmetrics.TypeFace):
         """Expands Adobe nested list structure to get a dictionary of widths.
 
         Here is an example of such a structure.::
-        
+
             (
             # starting at character ID 1, next n  characters have the widths given.
             1,  (277,305,500,668,668,906,727,305,445,445,508,668,305,379,305,539),
@@ -266,7 +270,7 @@ class CIDTypeFace(pdfmetrics.TypeFace):
             # these must be half width katakana and the like.
             231, 632, 500
             )
-        
+
         """
         data = compactWidthArray[:]
         widths = {}
@@ -510,7 +514,3 @@ if __name__=='__main__':
     from reportlab.pdfbase import cidfonts
     doctest.testmod(cidfonts)
     #test()
-
-
-
-

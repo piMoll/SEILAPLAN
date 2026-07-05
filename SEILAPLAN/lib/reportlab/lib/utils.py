@@ -4,15 +4,22 @@
 __version__='3.5.34'
 __doc__='''Gazillions of miscellaneous internal utility functions'''
 
-import os, pickle, sys, time, types, datetime, importlib
 from ast import literal_eval
 from base64 import decodebytes as base64_decodebytes, encodebytes as base64_encodebytes
-from io import BytesIO
+import datetime
 from hashlib import md5
+import importlib
+from io import BytesIO
+import os
+import pickle
+import sys
+import time
+import types
 
-from reportlab.lib.rltempfile import get_rl_tempfile, get_rl_tempdir
-from . rl_safe_eval import rl_safe_exec, rl_safe_eval, safer_globals, rl_extended_literal_eval
 from PIL import Image
+
+from .rl_safe_eval import rl_safe_eval
+
 
 class __UNSET__:
     @staticmethod
@@ -77,7 +84,7 @@ def asUnicodeEx(v,enc='utf8'):
         return v.decode(enc) if isinstance(v,bytes) else str(v)
     except:
         annotateException('asUnicodeEx(%s,enc=%s) error: ' % (ascii(v),ascii(enc)))
-    
+
 def asNative(v,enc='utf8'):
     return asUnicode(v,enc=enc)
 
@@ -338,7 +345,7 @@ def isSourceDistro():
 def normalize_path(p):
     return os.path.normcase(os.path.abspath(os.path.normpath(p)))
 
-_importlib_invalidate_caches = getattr(importlib,'invalidate_caches',lambda :None) 
+_importlib_invalidate_caches = getattr(importlib,'invalidate_caches',lambda :None)
 
 def recursiveImport(modulename, baseDir=None, noCWD=0, debug=0):
     """Dynamically imports possible packagized module, or raises ImportError"""
@@ -475,7 +482,7 @@ from urllib.request import urlopen, Request
 def rlUrlRead(name, headers=None):
     if headers==None: headers = {}
     headers.setdefault('User-Agent','ReportLabAgent')
-    return urlopen(Request(name,headers=headers)).read()
+    return urlopen(Request(name,headers=headers)).read()  # nosec
 
 def open_for_read(name,mode='b'):
     #auto initialized function`
@@ -743,7 +750,7 @@ class ImageReader:
         else:
             return None
 
-class LazyImageReader(ImageReader): 
+class LazyImageReader(ImageReader):
     pass #now same as base class since we intern everything
 
 def getImageData(imageFileName):
@@ -757,21 +764,21 @@ class DebugMemo:
     '''Intended as a simple report back encapsulator
 
     Typical usages:
-        
+
     1. To record error data::
-        
+
         dbg = DebugMemo(fn='dbgmemo.dbg',myVar=value)
         dbg.add(anotherPayload='aaaa',andagain='bbb')
         dbg.dump()
 
     2. To show the recorded info::
-        
+
         dbg = DebugMemo(fn='dbgmemo.dbg',mode='r')
         dbg.load()
         dbg.show()
 
     3. To re-use recorded information::
-        
+
         dbg = DebugMemo(fn='dbgmemo.dbg',mode='r')
             dbg.load()
         myTestFunc(dbg.payload('myVar'),dbg.payload('andagain'))
@@ -782,7 +789,7 @@ class DebugMemo:
     def __init__(self,fn='rl_dbgmemo.dbg',mode='w',getScript=1,modules=(),capture_traceback=1, stdout=None, **kw):
         import socket
         self.fn = fn
-        if not stdout: 
+        if not stdout:
             self.stdout = sys.stdout
         else:
             if hasattr(stdout,'write'):
@@ -805,7 +812,7 @@ class DebugMemo:
         md=None
         try:
             import marshal
-            md=marshal.loads(__rl_loader__.get_data('meta_data.mar'))
+            md=marshal.loads(__rl_loader__.get_data('meta_data.mar'))  # nosec
             project_version=md['project_version']
         except:
             pass
@@ -906,7 +913,7 @@ class DebugMemo:
         return f.getvalue()
 
     def _load(self,f):
-        self.store = pickle.load(f)
+        self.store = pickle.load(f)  # nosec
 
     def load(self):
         f = open(self.fn,'rb')
@@ -1091,19 +1098,19 @@ import itertools
 def prev_this_next(items):
     """
     Loop over a collection with look-ahead and look-back.
-    
-    From Thomas Guest, 
+
+    From Thomas Guest,
     http://wordaligned.org/articles/zippy-triples-served-with-python
-    
+
     Seriously useful looping tool (Google "zippy triples")
     lets you loop a collection and see the previous and next items,
     which get set to None at the ends.
-    
+
     To be used in layout algorithms where one wants a peek at the
     next item coming down the pipe.
 
     """
-    
+
     extend = itertools.chain([None], items, [None])
     prev, this, next = itertools.tee(extend, 3)
     try:
@@ -1120,7 +1127,7 @@ def commasplit(s):
     To escape a comma, double it. Individual items are stripped.
     To avoid the ambiguity of 3 successive commas to denote a comma at the beginning
     or end of an item, add a space between the item seperator and the escaped comma.
-    
+
     >>> commasplit(u'a,b,c') == [u'a', u'b', u'c']
     True
     >>> commasplit('a,, , b , c    ') == [u'a,', u'b', u'c']
@@ -1145,17 +1152,17 @@ def commasplit(s):
         i+=1
     r[-1] = r[-1].strip()
     return r
-    
+
 def commajoin(l):
     '''
     Inverse of commasplit, except that whitespace around items is not conserved.
     Adds more whitespace than needed for simplicity and performance.
-    
+
     >>> commasplit(commajoin(['a', 'b', 'c'])) == [u'a', u'b', u'c']
     True
     >>> commasplit((commajoin([u'a,', u' b ', u'c'])) == [u'a,', u'b', u'c']
     True
-    >>> commasplit((commajoin([u'a ', u',b', u'c'])) == [u'a', u',b', u'c'] 
+    >>> commasplit((commajoin([u'a ', u',b', u'c'])) == [u'a', u',b', u'c']
     '''
     return u','.join([ u' ' + asUnicode(i).replace(u',', u',,') + u' ' for i in l ])
 
@@ -1203,7 +1210,7 @@ def escapeOnce(data):
     data = data.replace("&amp;gt;", "&gt;")
     data = data.replace("&amp;lt;", "&lt;")
     return data
-    
+
 class IdentStr(str):
     '''useful for identifying things that get split'''
     def __new__(cls,value):
@@ -1340,7 +1347,7 @@ class KlassStore:
 
     def add(self,k,v):
         if not (isinstance(k,str) and isinstance(v,type)):
-            raise ValueError(f'{self.__class__.__name__}.add takes (str,type) arguments not ({type(k),type(v)})') 
+            raise ValueError(f'{self.__class__.__name__}.add takes (str,type) arguments not ({type(k),type(v)})')
         store = self.store
         store[k] = v
         if len(store)>=self.lim:
