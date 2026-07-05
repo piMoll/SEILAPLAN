@@ -37,8 +37,8 @@ from qgis.core import (
     QgsVectorLayer,
     QgsVectorLayerSimpleLabeling,
 )
-from qgis.PyQt.QtCore import QCoreApplication, QFileInfo, QSettings
-from qgis.PyQt.QtGui import QColor, QFont
+from qgis.PyQt.QtCore import QCoreApplication, QFileInfo, QSettings, Qt
+from qgis.PyQt.QtGui import QColor, QFont, QGuiApplication
 
 from SEILAPLAN import DEBUG, PLUGIN_DIR
 
@@ -251,7 +251,16 @@ def addLayerToQgis(layer, position: str = "", layerGroupName: str = ""):
 def isQgisInDarkMode():
     settings = QSettings()
     theme = settings.value("UI/UITheme", "default")
-    return any([name in theme.lower() for name in ["gray", "dark", "night", "black"]])
+    isDarkQgisTheme = any(
+        [name in theme.lower() for name in ["gray", "dark", "night", "black"]]
+    )
+    try:
+        isDarkSystemColorScheme = (
+            QGuiApplication.styleHints().colorScheme() == Qt.ColorScheme.Dark
+        )
+    except Exception:
+        isDarkSystemColorScheme = False
+    return isDarkQgisTheme or isDarkSystemColorScheme
 
 
 def log(msg, level=Qgis.MessageLevel.Info, debugMsg=False):
