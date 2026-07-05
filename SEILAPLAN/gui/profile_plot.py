@@ -151,6 +151,7 @@ class ProfilePlot(FigureCanvas):
         )
 
         if self.profile.surveyPnts is not None:
+            surveyCol = "#00400d" if isQgisInDarkMode() else "green"
             # Add markers for survey points
             for pointX, pointY, idx, notes in zip(
                 self.profile.surveyPnts["d"],
@@ -161,7 +162,7 @@ class ProfilePlot(FigureCanvas):
                 self.axes.plot(
                     [pointX, pointX],
                     [pointY, pointY - 5 * self.labelScale],
-                    color="green",
+                    color=surveyCol,
                     linewidth=1.5,
                 )
                 labelText = f"{idx}"
@@ -185,7 +186,7 @@ class ProfilePlot(FigureCanvas):
                     ha=ha,
                     va=va,
                     fontsize=12,
-                    color="green",
+                    color=surveyCol,
                     rotation=rot,
                     rotation_mode="anchor",
                 )

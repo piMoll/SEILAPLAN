@@ -87,6 +87,7 @@ class AdjustmentPlot(FigureCanvas):
         self.COLOR_AXES_BG = "#7a7a7a" if inDarkMode() and not asPdf else "#fbfbfb"
         self.COLOR_GRID = "#636363" if inDarkMode() and not asPdf else "#c7c7c7"
         self.COLOR_MARKER_BG = "#a3a3a3" if inDarkMode() and not asPdf else "#fbfbfb"
+        self.COLOR_SURVEY_PNTS = "#00400d" if inDarkMode() and not asPdf else "green"
         self.asPdf = asPdf
 
         self.fig = Figure(
@@ -251,7 +252,7 @@ class AdjustmentPlot(FigureCanvas):
                 self.axes.plot(
                     [pointX, pointX],
                     [pointY, pointY - 6 * self.labelBuffer * scale],
-                    color="green",
+                    color=self.COLOR_SURVEY_PNTS,
                     linewidth=1.5 * scale,
                     zorder=2,
                 )
@@ -276,7 +277,7 @@ class AdjustmentPlot(FigureCanvas):
                     ha=ha,
                     va=va,
                     fontsize=fontSize,
-                    color="green",
+                    color=self.COLOR_SURVEY_PNTS,
                     rotation=rot,
                     rotation_mode="anchor",
                 )
