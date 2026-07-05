@@ -1,0 +1,1479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0" idbasedtr="true">
+ <class>AdjustmentDialogUI</class>
+ <widget class="QDialog" name="AdjustmentDialogUI">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>742</width>
+    <height>889</height>
+   </rect>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::ClickFocus</enum>
+  </property>
+  <property name="windowTitle">
+   <string>Manuelle Anpassung</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>icons/icon_app.png</normaloff>icons/icon_app.png</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="recalcStatus_ico">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>icons/icon_reload.png</pixmap>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="recalcStatus_txt">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QScrollArea" name="scrollArea_3">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents_3">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>722</width>
+        <height>806</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="2" column="0">
+        <layout class="QVBoxLayout" name="tabLayout">
+         <item>
+          <widget class="QTabWidget" name="tabWidget">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>330</height>
+            </size>
+           </property>
+           <property name="baseSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="currentIndex">
+            <number>0</number>
+           </property>
+           <widget class="QWidget" name="tabPoles">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::ClickFocus</enum>
+            </property>
+            <attribute name="title">
+             <string>Stuetzen</string>
+            </attribute>
+            <layout class="QVBoxLayout" name="verticalLayout_6">
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_5">
+               <item>
+                <widget class="QLabel" name="label_17">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Feinjustierung der Stuetzen</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QScrollArea" name="scrollArea_2">
+               <property name="autoFillBackground">
+                <bool>false</bool>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Plain</enum>
+               </property>
+               <property name="horizontalScrollBarPolicy">
+                <enum>Qt::ScrollBarAsNeeded</enum>
+               </property>
+               <property name="widgetResizable">
+                <bool>true</bool>
+               </property>
+               <widget class="QWidget" name="scrollAreaWidgetContents_2">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>0</y>
+                  <width>678</width>
+                  <height>629</height>
+                 </rect>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout">
+                 <item>
+                  <layout class="QGridLayout" name="poleGrid"/>
+                 </item>
+                </layout>
+               </widget>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="tabParameters">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <attribute name="title">
+             <string>Parameter</string>
+            </attribute>
+            <layout class="QVBoxLayout" name="verticalLayout_10">
+             <item>
+              <widget class="QScrollArea" name="scrollArea">
+               <property name="widgetResizable">
+                <bool>true</bool>
+               </property>
+               <widget class="QWidget" name="scrollAreaWidgetContents">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>0</y>
+                  <width>678</width>
+                  <height>656</height>
+                 </rect>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_3">
+                 <item>
+                  <layout class="QGridLayout" name="gridLayout_3">
+                   <item row="7" column="0">
+                    <widget class="QLabel" name="label_10">
+                     <property name="text">
+                      <string>Grundspannung Tragseil (Anfangssp.)</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="4" column="0">
+                    <widget class="QLabel" name="label_12">
+                     <property name="text">
+                      <string>Mindestbruchkraft Tragseil</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="2">
+                    <widget class="QLabel" name="label_5">
+                     <property name="text">
+                      <string>kN/m</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="7" column="2">
+                    <widget class="QLabel" name="label_15">
+                     <property name="text">
+                      <string>kN</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="10" column="4">
+                    <widget class="QPushButton" name="infoSFT">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>20</width>
+                       <height>22</height>
+                      </size>
+                     </property>
+                     <property name="cursor">
+                      <cursorShape>WhatsThisCursor</cursorShape>
+                     </property>
+                     <property name="text">
+                      <string>?</string>
+                     </property>
+                     <property name="autoDefault">
+                      <bool>false</bool>
+                     </property>
+                     <property name="flat">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="label_5">
+                     <property name="text">
+                      <string>Parameterset auswaehlen</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="7" column="1">
+                    <widget class="QLineEdit" name="fieldSK">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>80</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>130</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="0">
+                    <widget class="QLabel" name="label_2">
+                     <property name="text">
+                      <string>Gesamtlast</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="1">
+                    <widget class="QLineEdit" name="fieldqT">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>80</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>130</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="9" column="1" colspan="2">
+                    <widget class="QLineEdit" name="fieldAnlagetyp">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>120</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>300</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                     <property name="maxLength">
+                      <number>50</number>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="4" column="1">
+                    <widget class="QLineEdit" name="fieldMBK">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>80</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>130</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="0">
+                    <widget class="QLabel" name="label_4">
+                     <property name="text">
+                      <string>Gewicht Tragseil</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="6" column="0">
+                    <widget class="QLabel" name="label_9">
+                     <property name="text">
+                      <string>Gewicht Rueckholseil</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="10" column="0">
+                    <widget class="QLabel" name="label_19">
+                     <property name="text">
+                      <string>Sicherheitsfaktor</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="8" column="0">
+                    <widget class="QLabel" name="label">
+                     <property name="text">
+                      <string>Minimaler Abstand Tragseil - Boden</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QLineEdit" name="fieldQ">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>80</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>130</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="4" column="2">
+                    <widget class="QLabel" name="label_23">
+                     <property name="text">
+                      <string>kN</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="3" column="0">
+                    <widget class="QLabel" name="label_6">
+                     <property name="text">
+                      <string>Durchmesser Tragseil</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1" colspan="3">
+                    <widget class="QComboBox" name="fieldParamSet"/>
+                   </item>
+                   <item row="3" column="1">
+                    <widget class="QLineEdit" name="fieldD">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>80</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>130</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="6" column="1">
+                    <widget class="QLineEdit" name="fieldqR">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>80</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>130</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="5" column="1">
+                    <widget class="QLineEdit" name="fieldqZ">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>80</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>130</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="8" column="2">
+                    <widget class="QLabel" name="label_22">
+                     <property name="text">
+                      <string>m</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="5" column="2">
+                    <widget class="QLabel" name="label_13">
+                     <property name="text">
+                      <string>kN/m</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="4">
+                    <widget class="QPushButton" name="infoQ">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>20</width>
+                       <height>22</height>
+                      </size>
+                     </property>
+                     <property name="cursor">
+                      <cursorShape>WhatsThisCursor</cursorShape>
+                     </property>
+                     <property name="text">
+                      <string>?</string>
+                     </property>
+                     <property name="autoDefault">
+                      <bool>false</bool>
+                     </property>
+                     <property name="default">
+                      <bool>false</bool>
+                     </property>
+                     <property name="flat">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="3" column="2">
+                    <widget class="QLabel" name="label_11">
+                     <property name="text">
+                      <string>mm</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="2">
+                    <widget class="QLabel" name="label_3">
+                     <property name="text">
+                      <string>kN</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="3">
+                    <spacer name="horizontalSpacer_4">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item row="10" column="1">
+                    <widget class="QLineEdit" name="fieldSFT">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>80</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>130</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="9" column="0">
+                    <widget class="QLabel" name="label_107">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>Anlagetyp</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="5" column="0">
+                    <widget class="QLabel" name="label_8">
+                     <property name="text">
+                      <string>Gewicht Zugseil</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="6" column="2">
+                    <widget class="QLabel" name="label_14">
+                     <property name="text">
+                      <string>kN/m</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="7" column="4">
+                    <widget class="QPushButton" name="infoSK">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>20</width>
+                       <height>22</height>
+                      </size>
+                     </property>
+                     <property name="cursor">
+                      <cursorShape>WhatsThisCursor</cursorShape>
+                     </property>
+                     <property name="text">
+                      <string>?</string>
+                     </property>
+                     <property name="autoDefault">
+                      <bool>false</bool>
+                     </property>
+                     <property name="flat">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="8" column="1">
+                    <widget class="QLineEdit" name="fieldBabstMin">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>80</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>130</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <spacer name="verticalSpacer">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>1</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                </layout>
+               </widget>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="tabThreshold">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <attribute name="title">
+             <string>Kennwerte</string>
+            </attribute>
+            <layout class="QVBoxLayout" name="verticalLayout_12">
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_11">
+               <item>
+                <widget class="QLabel" name="label_21">
+                 <property name="font">
+                  <font>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Kennwerte und Maximalwerte</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_20">
+                 <property name="font">
+                  <font>
+                   <italic>true</italic>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Klick auf Zeile markiert Position der Grenzwert-Ueberschreitung im Diagramm.</string>
+                 </property>
+                 <property name="wordWrap">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QTableView" name="tableThresholds">
+                 <property name="enabled">
+                  <bool>true</bool>
+                 </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>215</height>
+                  </size>
+                 </property>
+                 <property name="locale">
+                  <locale language="German" country="Switzerland"/>
+                 </property>
+                 <property name="frameShape">
+                  <enum>QFrame::StyledPanel</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Sunken</enum>
+                 </property>
+                 <property name="verticalScrollBarPolicy">
+                  <enum>Qt::ScrollBarAsNeeded</enum>
+                 </property>
+                 <property name="horizontalScrollBarPolicy">
+                  <enum>Qt::ScrollBarAsNeeded</enum>
+                 </property>
+                 <property name="sizeAdjustPolicy">
+                  <enum>QAbstractScrollArea::AdjustToContents</enum>
+                 </property>
+                 <property name="autoScroll">
+                  <bool>true</bool>
+                 </property>
+                 <property name="editTriggers">
+                  <set>QAbstractItemView::NoEditTriggers</set>
+                 </property>
+                 <property name="showDropIndicator" stdset="0">
+                  <bool>false</bool>
+                 </property>
+                 <property name="selectionMode">
+                  <enum>QAbstractItemView::SingleSelection</enum>
+                 </property>
+                 <property name="selectionBehavior">
+                  <enum>QAbstractItemView::SelectRows</enum>
+                 </property>
+                 <property name="wordWrap">
+                  <bool>true</bool>
+                 </property>
+                 <property name="cornerButtonEnabled">
+                  <bool>false</bool>
+                 </property>
+                 <attribute name="horizontalHeaderHighlightSections">
+                  <bool>false</bool>
+                 </attribute>
+                 <attribute name="horizontalHeaderStretchLastSection">
+                  <bool>true</bool>
+                 </attribute>
+                 <attribute name="verticalHeaderVisible">
+                  <bool>false</bool>
+                 </attribute>
+                 <attribute name="verticalHeaderMinimumSectionSize">
+                  <number>40</number>
+                 </attribute>
+                </widget>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_3">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>1</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="tabBirdView">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <attribute name="title">
+             <string>Vogelperspektive</string>
+            </attribute>
+            <layout class="QVBoxLayout" name="verticalLayout_9">
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_4">
+               <item>
+                <layout class="QVBoxLayout" name="DescLayout">
+                 <property name="spacing">
+                  <number>3</number>
+                 </property>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_10">
+                   <item>
+                    <widget class="QLabel" name="label_7">
+                     <property name="font">
+                      <font>
+                       <bold>true</bold>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>Konfiguration Vogelperspektive</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="infoBirdViewGeneral">
+                     <property name="maximumSize">
+                      <size>
+                       <width>22</width>
+                       <height>22</height>
+                      </size>
+                     </property>
+                     <property name="cursor">
+                      <cursorShape>WhatsThisCursor</cursorShape>
+                     </property>
+                     <property name="text">
+                      <string>?</string>
+                     </property>
+                     <property name="flat">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="horizontalSpacer_11">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_11">
+                   <item>
+                    <widget class="QLabel" name="label_16">
+                     <property name="font">
+                      <font>
+                       <italic>true</italic>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>Darstellung der Seillinie und Stuetzen aus der Vogelperspektive.</string>
+                     </property>
+                     <property name="wordWrap">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="mapBackgroundButton">
+                     <property name="maximumSize">
+                      <size>
+                       <width>27</width>
+                       <height>27</height>
+                      </size>
+                     </property>
+                     <property name="toolTip">
+                      <string>Hintergrundkarte laden um sie in der Vogelperspektive darzustellen.</string>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="icon">
+                      <iconset>
+                       <normaloff>icons/icon_map.png</normaloff>icons/icon_map.png</iconset>
+                     </property>
+                     <property name="autoDefault">
+                      <bool>false</bool>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="QScrollArea" name="scrollArea_4">
+                 <property name="widgetResizable">
+                  <bool>true</bool>
+                 </property>
+                 <widget class="QWidget" name="scrollAreaWidgetContents_4">
+                  <property name="geometry">
+                   <rect>
+                    <x>0</x>
+                    <y>0</y>
+                    <width>676</width>
+                    <height>593</height>
+                   </rect>
+                  </property>
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_7">
+                   <item>
+                    <layout class="QGridLayout" name="birdViewGrid">
+                     <item row="0" column="1">
+                      <layout class="QHBoxLayout" name="horizontalLayout_8">
+                       <item>
+                        <widget class="QLabel" name="label_43">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>35</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string>Stuetzenbez.</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                     <item row="0" column="3">
+                      <layout class="QHBoxLayout" name="horizontalLayout_5">
+                       <item>
+                        <widget class="QLabel" name="label_48">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string>Position Stuetze</string>
+                         </property>
+                         <property name="wordWrap">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QPushButton" name="infoBirdViewPosition">
+                         <property name="maximumSize">
+                          <size>
+                           <width>22</width>
+                           <height>22</height>
+                          </size>
+                         </property>
+                         <property name="cursor">
+                          <cursorShape>WhatsThisCursor</cursorShape>
+                         </property>
+                         <property name="text">
+                          <string>?</string>
+                         </property>
+                         <property name="flat">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <spacer name="horizontalSpacer_9">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>1</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                      </layout>
+                     </item>
+                     <item row="0" column="4">
+                      <layout class="QHBoxLayout" name="horizontalLayout_6">
+                       <item>
+                        <widget class="QLabel" name="label_47">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>35</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string>Ausrichtung Abspannseile</string>
+                         </property>
+                         <property name="wordWrap">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QPushButton" name="infoBirdViewAbspann">
+                         <property name="maximumSize">
+                          <size>
+                           <width>22</width>
+                           <height>22</height>
+                          </size>
+                         </property>
+                         <property name="cursor">
+                          <cursorShape>WhatsThisCursor</cursorShape>
+                         </property>
+                         <property name="text">
+                          <string>?</string>
+                         </property>
+                         <property name="flat">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <spacer name="horizontalSpacer_12">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>1</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                      </layout>
+                     </item>
+                     <item row="0" column="0">
+                      <widget class="QLabel" name="label_44">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>20</width>
+                         <height>35</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>Nr.</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="2">
+                      <layout class="QHBoxLayout" name="horizontalLayout_4">
+                       <item>
+                        <widget class="QLabel" name="label_45">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>35</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string>Kategorie</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QPushButton" name="infoBirdViewCategory">
+                         <property name="maximumSize">
+                          <size>
+                           <width>22</width>
+                           <height>22</height>
+                          </size>
+                         </property>
+                         <property name="cursor">
+                          <cursorShape>WhatsThisCursor</cursorShape>
+                         </property>
+                         <property name="text">
+                          <string>?</string>
+                         </property>
+                         <property name="flat">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <spacer name="horizontalSpacer_8">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>20</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <spacer name="verticalSpacer_4">
+                     <property name="orientation">
+                      <enum>Qt::Vertical</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>20</width>
+                       <height>1</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </widget>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="tabHeaderData">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <attribute name="title">
+             <string>Kopfdaten</string>
+            </attribute>
+            <layout class="QVBoxLayout" name="verticalLayout_13">
+             <item>
+              <layout class="QGridLayout" name="gridLayout_5">
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_32">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Projektnummer</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_34">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Gemeinde</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="label_41">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Waldort</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QLineEdit" name="fieldPrNr"/>
+               </item>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_26">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Projektverfasser</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="fieldPrVerf">
+                 <property name="minimumSize">
+                  <size>
+                   <width>380</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="0">
+                <widget class="QLabel" name="label_24">
+                 <property name="text">
+                  <string>Bemerkungen
+(erscheint in Berichten)</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QLineEdit" name="fieldPrGmd"/>
+               </item>
+               <item row="3" column="1">
+                <widget class="QLineEdit" name="fieldPrWald"/>
+               </item>
+               <item row="4" column="1">
+                <widget class="QTextEdit" name="fieldPrBemerkung">
+                 <property name="lineWidth">
+                  <number>1</number>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>1</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="0" column="0">
+        <layout class="QVBoxLayout" name="plotLayout">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item>
+          <layout class="QVBoxLayout" name="plotContainer">
+           <property name="sizeConstraint">
+            <enum>QLayout::SetDefaultConstraint</enum>
+           </property>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="plotFooterLayout">
+           <property name="spacing">
+            <number>6</number>
+           </property>
+           <item>
+            <layout class="QHBoxLayout" name="toolbarContainer"/>
+           </item>
+           <item>
+            <widget class="QComboBox" name="fieldPlotTopic"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="infoPlotTopic">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>20</width>
+               <height>22</height>
+              </size>
+             </property>
+             <property name="cursor">
+              <cursorShape>WhatsThisCursor</cursorShape>
+             </property>
+             <property name="text">
+              <string>?</string>
+             </property>
+             <property name="autoDefault">
+              <bool>false</bool>
+             </property>
+             <property name="flat">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item row="1" column="0">
+        <layout class="QHBoxLayout" name="titleLayout">
+         <item>
+          <widget class="QLabel" name="label_18">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Manuelle Anpassung der Seillinie</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="footerLayout">
+     <item>
+      <widget class="QPushButton" name="btnBackToStart">
+       <property name="toolTip">
+        <string>Manuelle Anpassungen verwerfen und zurueck zum Startfenster wechseln</string>
+       </property>
+       <property name="text">
+        <string>zurueck zum Startfenster</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDialogButtonBox" name="btnBox">
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Close|QDialogButtonBox::Save</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>fieldPlotTopic</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>fieldParamSet</tabstop>
+  <tabstop>fieldQ</tabstop>
+  <tabstop>fieldqT</tabstop>
+  <tabstop>fieldD</tabstop>
+  <tabstop>fieldMBK</tabstop>
+  <tabstop>fieldqZ</tabstop>
+  <tabstop>fieldqR</tabstop>
+  <tabstop>fieldSK</tabstop>
+  <tabstop>fieldBabstMin</tabstop>
+  <tabstop>fieldAnlagetyp</tabstop>
+  <tabstop>fieldSFT</tabstop>
+  <tabstop>fieldPrVerf</tabstop>
+  <tabstop>fieldPrNr</tabstop>
+  <tabstop>fieldPrGmd</tabstop>
+  <tabstop>fieldPrWald</tabstop>
+  <tabstop>fieldPrBemerkung</tabstop>
+  <tabstop>btnBackToStart</tabstop>
+  <tabstop>infoSFT</tabstop>
+  <tabstop>infoSK</tabstop>
+  <tabstop>infoBirdViewPosition</tabstop>
+  <tabstop>infoBirdViewCategory</tabstop>
+  <tabstop>infoBirdViewAbspann</tabstop>
+  <tabstop>infoBirdViewGeneral</tabstop>
+  <tabstop>mapBackgroundButton</tabstop>
+  <tabstop>infoPlotTopic</tabstop>
+  <tabstop>infoQ</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>
