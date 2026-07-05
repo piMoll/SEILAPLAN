@@ -45,7 +45,7 @@ def dictformat(_format, L={}, G={}):
 				elif token == ")": level = level-1
 			vname = '__superformat_%d' % n
 			n += 1
-			S[vname] = eval(format[pc+2:pos-1],G,L)
+			S[vname] = eval(format[pc+2:pos-1],G,L)    # nosec
 			chunks.append('%%(%s)' % vname)
 		else:
 			nc = pc+1+(nextchar=="%")

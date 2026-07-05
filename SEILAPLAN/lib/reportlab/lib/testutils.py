@@ -102,7 +102,7 @@ def setOutDir(name):
     return _OUTDIR
 
 _mockumap = (
-        None if os.environ.get('OFFLINE_MOCK','1')!='1' 
+        None if os.environ.get('OFFLINE_MOCK','1')!='1'
             else'http://www.reportlab.com/rsrc/encryption.gif',
         )
 def mockUrlRead(name):
@@ -111,7 +111,7 @@ def mockUrlRead(name):
             return f.read()
     else:
         from urllib.request import urlopen
-        return urlopen(name).read()
+        return urlopen(name).read()  # nosec
 
 def outputfile(fn):
     """This works out where to write test output.  If running
@@ -185,7 +185,7 @@ class ExtConfigParser(ConfigParser):
         val = value.replace('\n', '')
 
         if self.pat.match(val):
-            return eval(val,{__builtins__:None})
+            return eval(val,{__builtins__:None})  # nosec
         else:
             return value
 

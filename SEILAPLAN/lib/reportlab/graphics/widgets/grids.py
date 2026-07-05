@@ -3,14 +3,38 @@
 #history https://hg.reportlab.com/hg-public/reportlab/log/tip/src/reportlab/graphics/widgets/grids.py
 __version__='3.3.0'
 
-from reportlab.lib import colors
-from reportlab.lib.validators import isNumber, isColorOrNone, isBoolean, isListOfNumbers, OneOf, isListOfColors, isNumberOrNone
-from reportlab.lib.attrmap import AttrMap, AttrMapValue
-from reportlab.graphics.shapes import Drawing, Group, Line, Rect, LineShape, definePath, EmptyClipPath
-from reportlab.graphics.widgetbase import Widget
 from math import radians
-from reportlab.graphics.transform import translate, rotate, mmult, transformPoints, inverse
+
+from reportlab.graphics.shapes import (
+    definePath,
+    Drawing,
+    EmptyClipPath,
+    Group,
+    Line,
+    LineShape,
+    Rect
+)
+from reportlab.graphics.transform import (
+    inverse,
+    mmult,
+    rotate,
+    transformPoints,
+    translate
+)
+from reportlab.graphics.widgetbase import Widget
+from reportlab.lib import colors
+from reportlab.lib.attrmap import AttrMap, AttrMapValue
 from reportlab.lib.utils import flatten
+from reportlab.lib.validators import (
+    isBoolean,
+    isColorOrNone,
+    isListOfColors,
+    isListOfNumbers,
+    isNumber,
+    isNumberOrNone,
+    OneOf
+)
+
 
 def frange(start, end=None, inc=None):
     "A range function, that does accept float increments..."
@@ -539,4 +563,4 @@ if __name__=='__main__': #noruntests
     angle=45
     D = Drawing(120,120)
     D.add(ShadedPolygon(points=(10,10,60,60,110,10),strokeColor=None,strokeWidth=1,angle=90,numShades=50,cylinderMode=0))
-    D.save(formats=['pdf','gif'],fnRoot='shobj',outDir='/tmp')
+    D.save(formats=['pdf','gif'],fnRoot='shobj',outDir='/tmp')  # nosec

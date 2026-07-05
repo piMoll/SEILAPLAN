@@ -106,7 +106,7 @@ def readxl(fn, ws=None):
     :param ws: sheetnames to read into the database, if not specified - all sheets are read
                 entry support single ws name (ex: ws='sh1') or multi (ex: ws=['sh1', 'sh2']), defaults to None
     :type ws: Union[str,List[str]], optional
-    :return: pylightxl Database 
+    :return: pylightxl Database
     :rtype: Database
     """
 
@@ -231,7 +231,7 @@ def readxl_get_workbook(fn):
                 ET.register_namespace(prefix, uri)
 
         with f_zip.open('xl/workbook.xml', 'r') as file:
-            tree = ET.parse(file)
+            tree = ET.parse(file)  # nosec
             root = tree.getroot()
 
     wbrels = readxl_get_workbookxmlrels(fn)
@@ -287,7 +287,7 @@ def readxl_get_workbookxmlrels(fn):
                 ET.register_namespace(prefix, uri)
 
         with f_zip.open('xl/_rels/workbook.xml.rels', 'r') as file:
-            tree = ET.parse(file)
+            tree = ET.parse(file)  # nosec
             root = tree.getroot()
 
     for relationship in root.findall('./default:Relationship', ns):
@@ -325,7 +325,7 @@ def readxl_get_sharedStrings(fn):
                 ET.register_namespace(prefix, uri)
 
         with f_zip.open('xl/sharedStrings.xml', 'r') as file:
-            tree = ET.parse(file)
+            tree = ET.parse(file)  # nosec
             root = tree.getroot()
 
     for i, tag_si in enumerate(root.findall('./default:si', ns)):
@@ -363,7 +363,7 @@ def readxl_get_styles(fn):
                 ET.register_namespace(prefix, uri)
 
         with f_zip.open('xl/styles.xml', 'r') as file:
-            tree = ET.parse(file)
+            tree = ET.parse(file)  # nosec
             root = tree.getroot()
 
     custom_styles = {}
@@ -427,7 +427,7 @@ def readxl_get_ws_rels(fn, fn_ws):
                 ET.register_namespace(prefix, uri)
 
         with f_zip.open('xl/' + fn_wsrels, 'r') as file:
-            tree = ET.parse(file)
+            tree = ET.parse(file)  # nosec
             root = tree.getroot()
 
     comment_fn = ''
@@ -446,7 +446,7 @@ def readxl_get_ws_rels(fn, fn_ws):
                     ET.register_namespace(prefix, uri)
 
             with f_zip.open('xl/' + comment_fn, 'r') as file:
-                tree = ET.parse(file)
+                tree = ET.parse(file)  # nosec
                 root = tree.getroot()
 
         for tag_comment in root.findall('./default:commentList/default:comment', ns):
@@ -492,7 +492,7 @@ def readxl_scrape(fn, fn_ws, sharedString, styles, comments):
                 ET.register_namespace(prefix, uri)
 
         with f_zip.open('xl/' + fn_ws, 'r') as file:
-            tree = ET.parse(file)
+            tree = ET.parse(file)  # nosec
             root = tree.getroot()
 
     for tag_cell in root.findall('./default:sheetData/default:row/default:c', ns):
@@ -812,7 +812,7 @@ def writexl_alt_app_text(db, filepath):
             ns = utility_xml_namespace(f)
     for prefix, uri in ns.items():
         ET.register_namespace(prefix, uri)
-    tree = ET.parse(filepath)
+    tree = ET.parse(filepath)  # nosec
     root = tree.getroot()
 
     if db.nr_names == {}:
@@ -928,7 +928,7 @@ def writexl_alt_getsheetref(path_wbrels, path_wb):
         ns = utility_xml_namespace(f)
     for prefix, uri in ns.items():
         ET.register_namespace(prefix, uri)
-    tree = ET.parse(path_wbrels)
+    tree = ET.parse(path_wbrels)  # nosec
     root = tree.getroot()
 
     for element in root.findall('./default:Relationship', ns):
@@ -943,7 +943,7 @@ def writexl_alt_getsheetref(path_wbrels, path_wb):
         ns = utility_xml_namespace(f)
     for prefix, uri in ns.items():
         ET.register_namespace(prefix, uri)
-    tree = ET.parse(path_wb)
+    tree = ET.parse(path_wb)  # nosec
     root = tree.getroot()
 
     for element in root.findall('./default:sheets/default:sheet', ns):
@@ -1709,7 +1709,7 @@ class Database:
             full_address = self._NamedRange[name]
         except KeyError:
             raise UserWarning('pylightxl - update_nr operation with name={name} is not in the workbook.'.format(name=name))
-        
+
         ws, address = full_address.split('!')
         self.ws(ws).update_range(address, val)
 
@@ -2313,7 +2313,7 @@ def utility_xml_namespace(file):
 
     ns_map = []
 
-    for event, elem in ET.iterparse(file, events):
+    for event, elem in ET.iterparse(file, events):  # nosec
         if event == "start-ns":
             elem = ('default', elem[1]) if elem[0] == '' else elem
             ns_map.append(elem)

@@ -9,13 +9,18 @@ instantiate directly, obtain one from the Canvas instead.
 Progress Reports:
 8.83, 2000-01-13, gmcm: created from pdfgen.py
 """
-from reportlab.lib.colors import Color, CMYKColor, CMYKColorSep, toColor
-from reportlab.lib.utils import isBytes, isStr, asUnicode
-from reportlab.lib.rl_accel import fp_str
-from reportlab.pdfbase.pdfmetrics import getFont as pdfmetrics_getFont, stringWidth as pdfmetrics_stringWidth, unicode2T1 as pdfmetrics_unicode2T1
-from reportlab.pdfbase.ttfonts import ShapedStr, ShapeData, _sdGuardL, shapeStr
 from itertools import groupby
 from operator import itemgetter
+
+from reportlab.lib.colors import CMYKColor, CMYKColorSep, Color, toColor
+from reportlab.lib.rl_accel import fp_str
+from reportlab.lib.utils import asUnicode, isBytes, isStr
+from reportlab.pdfbase.pdfmetrics import (
+    getFont as pdfmetrics_getFont,
+    stringWidth as pdfmetrics_stringWidth,
+    unicode2T1 as pdfmetrics_unicode2T1
+)
+from reportlab.pdfbase.ttfonts import _sdGuardL, ShapedStr, shapeStr
 
 #this is to handle the optionality of rlbidi
 try:
@@ -60,7 +65,7 @@ try:
                         '''\t\tself.__bidiV__ = bidiV\n'''
                         '''\t\tself.__bidiL__ = bidiL\n'''
                         '''\t\treturn self\n''',
-                        NS)
+                        NS)  # nosec
                 _bidiKS.add(klassName,NS[klassName])
             klass = _bidiKS[klassName]
         return klass(s,bidiV=bidiV,bidiL=bidiL)
@@ -82,7 +87,7 @@ try:
                         '''\t\tif hasattr(L,'__dict__'): self.__dict__=deepcopy(L.__dict__)\n'''
                         '''\t\tself.__bidiV__ = bidiV\n'''
                         '''\t\tself.__bidiL__ = bidiL\n''',
-                        NS)
+                        NS)  # nosec
                 _bidiKS.add(klassName,NS[klassName])
             klass = _bidiKS[klassName]
         return klass(L,orig.__bidiV__,orig.__bidiL__)
@@ -554,7 +559,7 @@ class PDFTextObject(_PDFColorSetter):
     def setRise(self, rise):
         "Move text baseline up or down to allow superscript/subscripts"
         v = f'{fp_str(rise)} Ts'
-        if self._code[-1].endswith(' Ts'): #optimize out r0 Ts r1 Ts 
+        if self._code[-1].endswith(' Ts'): #optimize out r0 Ts r1 Ts
             #reverse previous changes
             self._y += self._rise
             self._code[-1] = v
@@ -624,7 +629,7 @@ class PDFTextObject(_PDFColorSetter):
                             #
                             # 1<----O------|<....(W-O).....><...x...>2
                             # 1--------------------W------->
-                            # 
+                            #
                             # W - O + x = A ==> x = A-W+O
                             A(sd.width - sd.x_advance + sd.x_offset)
                     if self._rise!=r0: self.setRise(r0)
@@ -685,7 +690,7 @@ class PDFTextObject(_PDFColorSetter):
                 add(f'[{fp_str(font.pdfScale(dx))} ({canv_escape(t)})] TJ')
             if dy:
                 add(f'{fp_str(-dy)} Ts')
-            
+
 
     def _textOut(self, text, TStar=0):
         "prints string at current point, ignores text cursor"

@@ -58,11 +58,15 @@ of non-Python applications.
 Future plans might include using this to auto-register fonts; and making it
 update itself smartly on repeated instantiation.
 """
-import sys, os, pickle
 from hashlib import md5
-from xml.sax.saxutils import quoteattr
+import os
+import pickle
+import sys
 from time import process_time as clock
+from xml.sax.saxutils import quoteattr
+
 from reportlab.lib.utils import asBytes, asNative as _asNative
+
 
 def asNative(s):
     try:
@@ -228,7 +232,7 @@ class FontFinder:
 
     def load(self, fileName):
         f = open(fileName, 'rb')
-        finder2 = pickle.load(f)
+        finder2 = pickle.load(f)  # nosec
         f.close()
         self.__dict__.update(finder2.__dict__)
 

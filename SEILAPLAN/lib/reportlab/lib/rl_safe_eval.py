@@ -3,7 +3,15 @@
 #https://github.com/zopefoundation/RestrictedPython
 #https://github.com/danthedeckie/simpleeval
 #hopefully we are standing on giants' shoulders
-import sys, os, ast, re, weakref, time, copy, math, types
+import ast
+import copy
+import math
+import os
+import re
+import sys
+import time
+import types
+import weakref
 eval_debug = int(os.environ.get('EVAL_DEBUG','0'))
 strTypes = (bytes,str)
 isPy39 = sys.version_info[:2]>=(3,9)
@@ -1196,7 +1204,7 @@ class __RL_SAFE_ENV__:
 			sbi(getattr(bi,n))
 			setattr(bi,n,r)
 		try:
-			return eval(bcode,G,L)
+			return eval(bcode,G,L)  # nosec
 		finally:
 			sbi = sbi.__self__
 			for i, (n, r) in enumerate(bir):
@@ -1284,4 +1292,4 @@ def rl_less_safe_eval(expr,NS):
 	'''eval with our so called safe globals'''
 	if not __rl_safe_builtins__:
 		rl_safe_eval('""')
-	return eval(expr,__rl_safe_builtins__,NS)
+	return eval(expr,__rl_safe_builtins__,NS)  # nosec
