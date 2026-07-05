@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import Enum, IntEnum
 
 
 class PolesOrigin(Enum):
@@ -9,7 +9,7 @@ class PolesOrigin(Enum):
     OnlyStartEnd = 3  # Only start and end pole  and maybe some fixed poles are defined
 
 
-class ResultQuality(Enum):
+class ResultQuality(IntEnum):
     """Describes the quality of the calculated result."""
 
     # Optimization produced a complete cable line
