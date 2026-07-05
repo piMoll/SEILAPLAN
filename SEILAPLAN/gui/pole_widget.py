@@ -319,7 +319,7 @@ class PoleRow(object):
     in the vertical layout.
     """
 
-    POLE_LABEL_WIDTH = 220
+    POLE_LABEL_WIDTH = 180
     SPINNER_WIDTH = 85
 
     def __init__(

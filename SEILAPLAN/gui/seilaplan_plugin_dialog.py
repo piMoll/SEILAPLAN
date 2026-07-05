@@ -952,6 +952,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
             )
             QApplication.restoreOverrideCursor()
             self.profileWin.exec()
+        QApplication.restoreOverrideCursor()
 
     def onLoadProjects(self):
         title = self.tr("Projekt laden")
