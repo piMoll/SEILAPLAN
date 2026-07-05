@@ -23,7 +23,7 @@ import json
 from math import atan2, cos, pi, sin
 import os
 import traceback
-from typing import List
+from typing import List, Union
 
 from qgis.core import Qgis, QgsDistanceArea, QgsPointXY, QgsRasterLayer
 
@@ -72,7 +72,6 @@ class ProjectConfHandler(AbstractConfHandler):
 
         # Project data
         self.projectName = None
-        self.projectDir = None
         self.heightSource: AbstractHeightSource = None
         self.heightSourceType = None
         self.surveyType = None
@@ -96,19 +95,14 @@ class ProjectConfHandler(AbstractConfHandler):
         """Load configuration from json file."""
         self.setProjectName(settings["projectname"])
         self.setPrHeader(settings["header"])
-        # Current project dir and original project dir can be different if the project
-        #  was moved to another location
-        self.projectDir = os.path.dirname(projectFilePath)
 
         heightSource = settings["heightsource"]
-        # From 3.8.0 onwards, height source paths are saved relatively to the project
-        #  directory. We're looking for the height source relative to the original
-        #  project dir first, then relative to the current project dir
-        heightSourcePath = self.checkHeightSourcePathExists(
+        currentProjectDir = os.path.dirname(projectFilePath)
+        heightSourcePath = self.calculateAbsolutePath(
             heightSource["source"],
             [
-                settings.get("projectDir", self.projectDir),
-                self.projectDir,
+                currentProjectDir,
+                settings.get("projectDir", currentProjectDir),
             ],
             settings["version"],
         )
@@ -120,7 +114,7 @@ class ProjectConfHandler(AbstractConfHandler):
                 sourcePath=heightSourcePath,
                 surveySourceType=heightSource.get("surveyType"),
             )
-            if self.surveyType is not None:
+            if self.heightSourceType == "survey":
                 self.heightSource: SurveyData
                 self.heightSource.reprojectToCrs(heightSource["crs"])
 
@@ -134,42 +128,51 @@ class ProjectConfHandler(AbstractConfHandler):
 
         self.polesFromFile = settings["poles"]
 
-    def checkHeightSourcePathExists(
+    def calculateAbsolutePath(
         self,
-        pathsFromFile: str,
+        pathsFromFile: Union[List[str], str],
         basePathCandidates: List[str],
         fileVersion: str,
     ):
+        if versionAsInteger(fileVersion) < versionAsInteger("3.8.0"):
+            # Path from older project file, this is already an absolute path
+            return pathsFromFile
+
+        # From 3.8.0 onwards, height source paths are saved relatively to the project
+        #  directory. We're looking for the height source relative to the current
+        #  project dir first, then relative to the original project dir
         resolvedPaths = []
+        nonResolvedPaths = []
+        isListOfPaths = True
         if isinstance(pathsFromFile, str):
             pathsFromFile = [pathsFromFile]
+            isListOfPaths = False
 
         for path in pathsFromFile:
-            # Check path exists relative to the list of supplied basePathCandidates
-            if versionAsInteger(fileVersion) >= versionAsInteger("3.8.0"):
-                pathCandidates = calculate_path_candidates(
-                    path,
-                    basePathCandidates,
-                )
-            else:
-                # Settings file is older than 3.8.0, so heighSource path is absolute:
-                #  check if it exists / is remote
-                pathCandidates = [
-                    path for path in [path] if path_exists_or_is_remote(path)
-                ]
-            if not pathCandidates or len(pathCandidates) == 0:
-                nonExistentPath = get_absolute_path_from_relative(
+            pathCandidates = calculate_path_candidates(
+                path,
+                basePathCandidates,
+            )
+            # Save non-resolved paths to inform the user later
+            if len(pathCandidates) < 1:
+                nonResolvedPath = get_absolute_path_from_relative(
                     path, basePathCandidates[0]
                 )
-                self.onError(
-                    self.tr("Hoehendaten konnten nicht geladen werden.\n")
-                    + self.tr("_path_ ist nicht vorhanden.").replace(
-                        "_path_", nonExistentPath
-                    )
+                nonResolvedPaths.append(nonResolvedPath)
+            else:
+                resolvedPaths.append(pathCandidates[0])
+
+        if len(nonResolvedPaths) > 0:
+            self.onError(
+                self.tr("Hoehendaten konnten nicht geladen werden.\n")
+                + self.tr("_path_ ist nicht vorhanden.").replace(
+                    "_path_", ",\n".join(nonResolvedPaths)
                 )
-                return None
-            resolvedPaths.append(pathCandidates[0])
-        return resolvedPaths if len(resolvedPaths) > 1 else resolvedPaths[0]
+            )
+        if isListOfPaths:
+            return resolvedPaths if len(resolvedPaths) > 0 else None
+        else:
+            return resolvedPaths[0] if len(resolvedPaths) == 1 else None
 
     def setConfigFromFileOld(self, property_name, value):
         """Load settings from old style text file."""
@@ -309,21 +312,22 @@ class ProjectConfHandler(AbstractConfHandler):
                 elif isinstance(rasterList[0], str):
                     # List of paths is provided because a project file is
                     #  loaded. We create layers first, then create virtual layer
-                    layerlist = []
+                    layerList = []
                     for i, path in enumerate(rasterList):
                         if not path_exists_or_is_remote(path):
-                            self.onError(
-                                self.tr(
-                                    "Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden."
-                                ).replace("_path_", path)
-                            )
+                            errorMsg = self.tr(
+                                "Raster-Datei _path_ ist nicht vorhanden, Raster kann nicht geladen werden."
+                            ).replace("_path_", path)
                             break
-                        else:
-                            layerlist.append(QgsRasterLayer(path, f"Raster {i}"))
+                        rasterLyr = QgsRasterLayer(path, f"Raster {i}")
+                        if rasterLyr.isValid():
+                            layerList.append(rasterLyr)
                     try:
-                        if layerlist:
-                            virtLayer = createVirtualRaster(layerlist)
-                            self.virtRasterSource = rasterList
+                        if len(layerList) > 0:
+                            virtLayer = createVirtualRaster(layerList)
+                            self.virtRasterSource = [
+                                lyr.dataProvider().dataSourceUri() for lyr in layerList
+                            ]
                     except RuntimeError:
                         errorMsg = self.tr("Fehler beim Kombinieren der Rasterkacheln.")
                 if virtLayer:
