@@ -640,51 +640,58 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
         # Activate/Deactivate other ui elements
         self.toggleCableLineUI(rasterValid)
 
-    def searchForRaster(self, rasterpaths):
+    def searchForRaster(self, rasterPaths):
         """Checks if a raster from a saved project is present in the table
         of content or exists at the given location (path).
         """
-        if isinstance(rasterpaths, str):
-            rasterpaths = [rasterpaths]
+        if isinstance(rasterPaths, str):
+            rasterPaths = [rasterPaths]
 
         availRaster = self.getAvailableRaster()
-        rasterNameList = []
+        nonResolvedRasterPaths = []
+        foundRasterNames = []
         self.rasterField.blockSignals(True)
-        for path in rasterpaths:
-            rasterInQGIS = False
+        for path in rasterPaths:
+            foundRaster = None
             for i, rlyr in enumerate(availRaster):
                 lyrPath = rlyr["lyr"].dataProvider().dataSourceUri()
                 # Raster has been loaded in QGIS project already
                 if lyrPath == path:
                     # Sets the dhm name in the drop down
                     self.rasterField.setItemCheckState(i, Qt.CheckState.Checked)
-                    rasterNameList.append(rlyr["name"])
-                    rasterInQGIS = True
+                    foundRaster = rlyr["name"]
                     break
-            if not rasterInQGIS:
+            if not foundRaster:
                 # Raster is still at same location in file system
                 if path_exists_or_is_remote(path):
                     # Load raster
                     newRaster = QFileInfo(path).completeBaseName()
                     rasterLyr = QgsRasterLayer(path, newRaster)
-                    addLayerToQgis(rasterLyr, "top")
-                    # Update drop down menu
+                    if rasterLyr.isValid():
+                        addLayerToQgis(rasterLyr, "top")
+                        foundRaster = newRaster
 
-                    dropdownItems = self.updateRasterList()
-                    for idx, item in enumerate(dropdownItems):
-                        if item["name"] == newRaster:
-                            self.rasterField.setItemCheckState(
-                                idx, Qt.CheckState.Checked
-                            )
-                            break
-                    rasterNameList.append(newRaster)
-        if not rasterNameList:
+                        # Update drop down menu
+                        dropdownItems = self.updateRasterList()
+                        for idx, item in enumerate(dropdownItems):
+                            if item["name"] == foundRaster:
+                                self.rasterField.setItemCheckState(
+                                    idx, Qt.CheckState.Checked
+                                )
+                                break
+            if foundRaster:
+                foundRasterNames.append(foundRaster)
+            else:
+                nonResolvedRasterPaths.append(path)
+        if nonResolvedRasterPaths:
             self.rasterField.deselectAllOptions()
-            txt = self.tr("Raster '{}' nicht vorhanden".format(", ".join(rasterpaths)))
+            txt = self.tr(
+                "Raster '{}' nicht vorhanden".format(", ".join(nonResolvedRasterPaths))
+            )
             title = self.tr("Fehler beim Laden des Rasters")
             QMessageBox.information(self, title, txt)
         self.rasterField.blockSignals(False)
-        return rasterNameList
+        return foundRasterNames
 
     def checkEqualSpatialRef(self):
         # Check spatial reference of newly added raster
