@@ -500,7 +500,7 @@ def generateReportText(confHandler, result, projname):
     return str_report
 
 
-def generateShortReport(confHandler, result, projname, outputLoc):
+def generateShortReport(confHandler, result, projname, outputLoc):  # noqa: E226
 
     styles = getSampleStyleSheet()
     styles.add(
@@ -877,7 +877,7 @@ def generateReport(reportText, outputLoc):
     [h_tite, h_posi, h_abst, h_opti, h_leng,
         h_durc, h_seil, h_stue, h_wink, h_nach, h_anna] = headers
 
-    widthT, _ = [width-2*margin, height-2*margin]
+    widthT, _ = [width - 2 * margin, height - 2 * margin]
     wi_doc = [widthT]
     wi_clo = [2.7 * cm]
     wi_abk = [1.7 * cm]
@@ -901,7 +901,7 @@ def generateReport(reportText, outputLoc):
         ("BACKGROUND", (0, 0), (-1, -1), colors.lightgrey),
         ("FONT", (0, 0), (-1, -1), font, 8),
         ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-        ])
+    ])
     stdStyleA = [("ALIGN", (1, 0), (-1, -1), "RIGHT"),  # after first column align right
                  ("FONT", (0, 0), (-1, -1), font, fontSize)]
     stdStyleB = [("FONT", (1, 0), (-1, -1), font, fontSize),
@@ -924,15 +924,15 @@ def generateReport(reportText, outputLoc):
                                  ("LEFTPADDING", (0, 0), (0, -1), lPadd)]))
 
     t_posi1 = Table(h_posi, wi_doc, he_rowT)
-    t_posi2 = Table(str_posi, [None] + 9*[None], len(str_posi) * he_row)
+    t_posi2 = Table(str_posi, [None] + 9 * [None], len(str_posi) * he_row)
     t_posi1.setStyle(title_style)
     t_posi2.setStyle(TableStyle(stdStyleA + [
         ("ALIGN", (1, 0), (1, -1), "LEFT"),
         ("FONT", (0, 0), (-1, 0), fontHeader, smallfontSize)]
-                                + [("ALIGN", (7, 0), (9, -1), "LEFT")]))    # style for 3 bird view rows
+        + [("ALIGN", (7, 0), (9, -1), "LEFT")]))    # style for 3 bird view rows
 
     t_abst1 = Table(h_abst, wi_doc, he_rowT)
-    t_abst2 = Table(str_abst, 3*[None], len(str_abst) * he_row)
+    t_abst2 = Table(str_abst, 3 * [None], len(str_abst) * he_row)
     t_abst1.setStyle(title_style)
     t_abst2.setStyle(TableStyle(stdStyleA + [
         ("FONT", (0, 1), (-1, 1), fontHeader, smallfontSize)]))
@@ -976,10 +976,10 @@ def generateReport(reportText, outputLoc):
         padding = 1
 
     t_seil0 = Table(h_seil, wi_doc, he_rowT)
-    t_seil1 = Table(str_seil1, wi_abk + [None] + [0.0*cm] + colWidth*poleCount, len(str_seil1)*he_row)
-    t_seil2 = Table(str_seil2, wi_abk + [None] + [1.5*cm]*fieldCount, len(str_seil2)*he_row)
-    t_seil3 = Table(str_seil3, wi_abk + [None] + [1*cm], len(str_seil3)*he_row)
-    t_seil4 = Table(str_seil4, wi_abk + [None] + [1.5*cm]*fieldCount, len(str_seil4)*he_row)
+    t_seil1 = Table(str_seil1, wi_abk + [None] + [0.0 * cm] + colWidth * poleCount, len(str_seil1) * he_row)
+    t_seil2 = Table(str_seil2, wi_abk + [None] + [1.5 * cm] * fieldCount, len(str_seil2) * he_row)
+    t_seil3 = Table(str_seil3, wi_abk + [None] + [1 * cm], len(str_seil3) * he_row)
+    t_seil4 = Table(str_seil4, wi_abk + [None] + [1.5 * cm] * fieldCount, len(str_seil4) * he_row)
     t_seil0.setStyle(title_style)
     t_seil1.setStyle(TableStyle(stdStyleB + [
         ("FONT", (0, 0), (-1, 0), fontHeader, fontSize),  # first row = subsection
@@ -999,8 +999,8 @@ def generateReport(reportText, outputLoc):
         ("FONT", (0, 0), (0, -1), font, smallfontSize)]))  # abbreviation in first column
 
     t_stue1 = Table(h_stue, wi_doc, he_rowT)
-    t_stue2 = Table(str_stue1, wi_abk + labelWidth + colWidth*poleCount, len(str_stue1)*he_row)
-    t_stue3 = Table(str_stue2, wi_abk + labelWidth + colWidthHalf*poleCount, len(str_stue2)*he_row)
+    t_stue2 = Table(str_stue1, wi_abk + labelWidth + colWidth * poleCount, len(str_stue1) * he_row)
+    t_stue3 = Table(str_stue2, wi_abk + labelWidth + colWidthHalf * poleCount, len(str_stue2) * he_row)
     t_stue1.setStyle(title_style)
     stueStyle = stdStyleB + [
         ("FONT", (2, 0), (-1, 0), fontHeader, smallfontSize),  # field header
@@ -1019,7 +1019,7 @@ def generateReport(reportText, outputLoc):
         ("FONT", (2, 2), (-1, -1), font, colFontSize),              # Number values
         ("ALIGN", (2, 1), (2, -1), "CENTER"),
         ("ALIGN", (-2, 1), (-2, -1), "CENTER")]
-    for i in range(2, poleCount*2+2, 2):
+    for i in range(2, poleCount * 2 + 2, 2):
         steuStyleHalfCol += [
             ("LINEBEFORE", (i, 0), (i, 0), 0.5, colors.lightgrey),     # line left of pole title
             ("LINEBEFORE", (i, 1), (i, -1), 0.5, colors.lightgrey),     # line left of left pole value
@@ -1028,7 +1028,7 @@ def generateReport(reportText, outputLoc):
     t_stue3.setStyle(TableStyle(steuStyleHalfCol))
 
     t_wink1 = Table(h_wink, wi_doc, he_rowT)
-    t_wink2 = Table(str_wink, wi_abk + [None] + colWidth*fieldCount, 7*he_row)
+    t_wink2 = Table(str_wink, wi_abk + [None] + colWidth * fieldCount, 7 * he_row)
     t_wink1.setStyle(title_style)
     t_wink2.setStyle(TableStyle(stdStyleB + [
         ("FONT", (1, 0), (1, 0), fontHeader, fontSize),  # heading empty cable
@@ -1043,7 +1043,7 @@ def generateReport(reportText, outputLoc):
     t_nach2.setStyle(TableStyle(stdStyleB + [
         ("FONT", (2, 0), (-1, 0), fontHeader, smallfontSize),  # field header
         ("FONT", (0, 0), (0, -1), font, smallfontSize),  # abbreviation in first column
-        ("FONT", (0, len(str_nach)-1), (-1, len(str_nach)-1), font, 7)]))  # Comment
+        ("FONT", (0, len(str_nach) - 1), (-1, len(str_nach) - 1), font, 7)]))  # Comment
 
     t_anna1 = Table(h_anna, wi_doc, he_rowT)
     t_anna2 = Table(
