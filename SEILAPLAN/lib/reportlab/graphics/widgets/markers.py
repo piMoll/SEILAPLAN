@@ -5,16 +5,15 @@ __version__='3.3.0'
 __doc__="""This modules defines a collection of markers used in charts.
 """
 
-from math import cos, pi, sin
-
-from reportlab.graphics.shapes import Circle, Drawing, Group, Polygon, Rect
-from reportlab.graphics.widgetbase import Widget
-from reportlab.graphics.widgets.flags import _Symbol, Flag
+from reportlab.graphics.shapes import Rect, Circle, Polygon, Drawing, Group
 from reportlab.graphics.widgets.signsandsymbols import SmileyFace
+from reportlab.graphics.widgetbase import Widget
+from reportlab.lib.validators import isNumber, isColorOrNone, OneOf, Validator
 from reportlab.lib.attrmap import AttrMap, AttrMapValue
 from reportlab.lib.colors import black
 from reportlab.lib.utils import isClass
-from reportlab.lib.validators import isColorOrNone, isNumber, OneOf, Validator
+from reportlab.graphics.widgets.flags import Flag, _Symbol
+from math import sin, cos, pi
 _toradians = pi/180.0
 
 class Marker(Widget):

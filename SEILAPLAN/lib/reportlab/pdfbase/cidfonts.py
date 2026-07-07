@@ -8,23 +8,19 @@ __doc__="""CID (Asian multi-byte) font support.
 This defines classes to represent CID fonts.  They know how to calculate
 their own width and how to write themselves into PDF files."""
 
-from hashlib import md5
-import marshal
 import os
+import marshal
 import time
+from hashlib import md5
 
-from reportlab.lib.rl_accel import escapePDF
-from reportlab.lib.utils import isBytes, isSeq
-from reportlab.pdfbase import pdfdoc, pdfmetrics
-from reportlab.pdfbase._cidfontdata import (
-    allowedEncodings,
-    allowedTypeFaces,
-    CIDFontInfo,
-    defaultUnicodeEncodings,
-    widthsByUnichar
-)
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase._cidfontdata import allowedTypeFaces, allowedEncodings, CIDFontInfo, \
+     defaultUnicodeEncodings, widthsByUnichar
 from reportlab.pdfgen.canvas import Canvas
+from reportlab.pdfbase import pdfdoc
+from reportlab.lib.rl_accel import escapePDF
 from reportlab.rl_config import CMapSearchPath
+from reportlab.lib.utils import isSeq, isBytes
 
 #quick hackery for 2.0 release.  Now we always do unicode, and have built in
 #the CMAP data, any code to load CMap files is not needed.

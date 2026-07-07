@@ -4,22 +4,15 @@
 __version__='3.5.34'
 __doc__='''Gazillions of miscellaneous internal utility functions'''
 
+import os, pickle, sys, time, types, datetime, importlib
 from ast import literal_eval
 from base64 import decodebytes as base64_decodebytes, encodebytes as base64_encodebytes
-import datetime
-from hashlib import md5
-import importlib
 from io import BytesIO
-import os
-import pickle
-import sys
-import time
-import types
+from hashlib import md5
 
+from reportlab.lib.rltempfile import get_rl_tempfile, get_rl_tempdir
+from . rl_safe_eval import rl_safe_exec, rl_safe_eval, safer_globals, rl_extended_literal_eval
 from PIL import Image
-
-from .rl_safe_eval import rl_safe_eval
-
 
 class __UNSET__:
     @staticmethod

@@ -3,15 +3,7 @@
 #https://github.com/zopefoundation/RestrictedPython
 #https://github.com/danthedeckie/simpleeval
 #hopefully we are standing on giants' shoulders
-import ast
-import copy
-import math
-import os
-import re
-import sys
-import time
-import types
-import weakref
+import sys, os, ast, re, weakref, time, copy, math, types
 eval_debug = int(os.environ.get('EVAL_DEBUG','0'))
 strTypes = (bytes,str)
 isPy39 = sys.version_info[:2]>=(3,9)

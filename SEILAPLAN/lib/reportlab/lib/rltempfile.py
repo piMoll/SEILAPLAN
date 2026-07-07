@@ -13,10 +13,7 @@ whatever if needed.
 '''
 _rl_tempdir=None
 __all__ = ('get_rl_tempdir', 'get_rl_tempdir')
-import os
-import tempfile
-
-
+import os, tempfile
 def _rl_getuid():
     if hasattr(os,'getuid'):
         return os.getuid()

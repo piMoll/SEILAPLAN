@@ -9,18 +9,13 @@ instantiate directly, obtain one from the Canvas instead.
 Progress Reports:
 8.83, 2000-01-13, gmcm: created from pdfgen.py
 """
+from reportlab.lib.colors import Color, CMYKColor, CMYKColorSep, toColor
+from reportlab.lib.utils import isBytes, isStr, asUnicode
+from reportlab.lib.rl_accel import fp_str
+from reportlab.pdfbase.pdfmetrics import getFont as pdfmetrics_getFont, stringWidth as pdfmetrics_stringWidth, unicode2T1 as pdfmetrics_unicode2T1
+from reportlab.pdfbase.ttfonts import ShapedStr, ShapeData, _sdGuardL, shapeStr
 from itertools import groupby
 from operator import itemgetter
-
-from reportlab.lib.colors import CMYKColor, CMYKColorSep, Color, toColor
-from reportlab.lib.rl_accel import fp_str
-from reportlab.lib.utils import asUnicode, isBytes, isStr
-from reportlab.pdfbase.pdfmetrics import (
-    getFont as pdfmetrics_getFont,
-    stringWidth as pdfmetrics_stringWidth,
-    unicode2T1 as pdfmetrics_unicode2T1
-)
-from reportlab.pdfbase.ttfonts import _sdGuardL, ShapedStr, shapeStr
 
 #this is to handle the optionality of rlbidi
 try:
