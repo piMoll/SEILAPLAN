@@ -1,5 +1,13 @@
 # Seilaplan Changelog
 
+## Version 3.8.1 (Juli 2026)
+### Neue Features
+- Neues Seilaplan Logo
+
+### Fehlerbehebung
+- Verberge Scrollbar im Tab "Kennwerte" und "Vogelperspektive" wenn Bearbeitungsfenster gross genug ist
+- Entferne "experimentell" Plugin-Markierung
+
 ## Version 3.8.0 (Juni 2026)
 ### Neue Features
 - Export von Geodaten im GeoPackage-Format (*.gpkg)
