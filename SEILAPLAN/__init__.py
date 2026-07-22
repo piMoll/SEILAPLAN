@@ -23,11 +23,12 @@
 
 import os
 
-__version__ = "3.8.0"
+__version__ = "3.8.1"
 
 DEBUG = False
 PLUGIN_DIR = os.path.dirname(__file__)
-PROJECT_URL = "https://pimoll.github.io/SEILAPLAN/"
+REPO_URL = "https://pimoll.github.io/SEILAPLAN/"
+PROJECT_URL = "https://seilaplan.wsl.ch"
 
 
 def classFactory(iface):
@@ -61,7 +62,5 @@ def enable_remote_debugging():
                 stdout_to_server=True,
                 stderr_to_server=True,
             )
-        except ConnectionRefusedError:
-            pass
-        except ImportError:
+        except (ConnectionRefusedError, ImportError, AttributeError):
             pass

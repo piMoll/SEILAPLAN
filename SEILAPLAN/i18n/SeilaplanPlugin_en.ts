@@ -1050,6 +1050,11 @@ loaded skyline</translation>
         <source>Vogelperspektive Legende</source>
         <translation>Legend for the bird&apos;s eye view</translation>
     </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="503"/>
+        <source>Das Seilsystem wird nicht angepasst.</source>
+        <translation>The cable system won't be changed.</translation>
+    </message>
 </context>
 <context>
     <name>AdjustmentDialogUI</name>

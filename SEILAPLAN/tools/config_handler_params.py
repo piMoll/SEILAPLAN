@@ -2,7 +2,7 @@
 /***************************************************************************
  SeilaplanPlugin
                                  A QGIS plugin
- Seilkran-Layoutplaner
+ Seillinien-Layoutplaner
                               -------------------
         begin                : 2013
         copyright            : (C) 2015 by ETH Zürich
@@ -30,6 +30,14 @@ from qgis.core import QgsSettings
 from SEILAPLAN import PLUGIN_DIR
 from SEILAPLAN.tools.config_handler_abstract import AbstractConfHandler
 from SEILAPLAN.utils.qgis_utils import sanitizeFilename
+
+
+class ParameterError(Exception):
+    pass
+
+
+class SeilsystemError(ParameterError):
+    pass
 
 
 class ParameterConfHandler(AbstractConfHandler):
@@ -476,8 +484,6 @@ class ParameterConfHandler(AbstractConfHandler):
             #  the correct rope weights
             self.setPullRope(profileDirection)
 
-        return True
-
     def updateAnchorLen(self, buffer, poletype_A, poletype_E):
         # Check buffer length
         anchor_A = self.ANCHOR_LEN if buffer[0] > self.ANCHOR_LEN else buffer[0]
@@ -500,9 +506,7 @@ class ParameterConfHandler(AbstractConfHandler):
                 qz1 = qZ
                 qz2 = qR
             else:  # Zweiseil-System
-                msg = self.tr("Kein Zweiseil-System moeglich")
-                self.onError(msg)
-                return False
+                raise SeilsystemError(self.tr("Kein Zweiseil-System moeglich"))
         elif direction == "down":
             if seilsys == 1:  # Mehrseil-System
                 qz1 = qZ
@@ -511,10 +515,14 @@ class ParameterConfHandler(AbstractConfHandler):
                 qz1 = qZ
                 qz2 = 0
         else:
-            return False
+            raise ParameterError("Profile direction unknown")
         self.derievedParams["qz1"] = {"value": qz1}
         self.derievedParams["qz2"] = {"value": qz2}
-        return True
+
+    def fallBackToSupportedCableSystem(self, direction):
+        self.setParameter("Seilsys", 1)
+        if direction in ["up", "down"]:
+            self.setPullRope(direction)
 
     def getSimpleParameterDict(self):
         # Shorthand dictionary for use in algorithm

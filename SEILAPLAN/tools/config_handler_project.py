@@ -2,7 +2,7 @@
 /***************************************************************************
  SeilaplanPlugin
                                  A QGIS plugin
- Seilkran-Layoutplaner
+ Seillinien-Layoutplaner
                               -------------------
         begin                : 2013
         copyright            : (C) 2015 by ETH Zürich
@@ -29,7 +29,7 @@ from qgis.core import Qgis, QgsDistanceArea, QgsPointXY, QgsRasterLayer
 
 from SEILAPLAN import __version__ as version
 from SEILAPLAN.tools.config_handler_abstract import AbstractConfHandler
-from SEILAPLAN.tools.config_handler_params import ParameterConfHandler
+from SEILAPLAN.tools.config_handler_params import ParameterConfHandler, ParameterError
 from SEILAPLAN.tools.globals import PolesOrigin
 from SEILAPLAN.tools.height_source import AbstractHeightSource
 from SEILAPLAN.tools.output_geo import createVirtualRaster
@@ -638,7 +638,10 @@ class ProjectConfHandler(AbstractConfHandler):
             return False
         # Now that height of point A and B is known, pull rope forces are
         #  calculated
-        if not self.params.setPullRope(self.profile.direction):
+        try:
+            self.params.setPullRope(self.profile.direction)
+        except ParameterError as e:
+            self.onError(str(e))
             return False
 
         # Initialize pole data (start/end point and anchors)

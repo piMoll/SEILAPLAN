@@ -1,4 +1,4 @@
-# SEILAPLAN Seilkran-Layoutplaner
+# SEILAPLAN Seillinien-Layoutplaner
 
 _german_
 

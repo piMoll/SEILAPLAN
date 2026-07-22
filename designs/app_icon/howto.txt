@@ -1,0 +1,13 @@
+Create grey border:
+
+1. Modify paths in group "Icon"
+2. Duplicate group, select all paths in new group
+3. Menu Path > Stroke to Path (if necessary)
+4. Menu Path > Combine
+6. Menu Path > Outset (3x)
+7. Set Fill Color to f4f4f4ff
+9. Export as PNG 64x64
+
+
+
+The app icon needs to be one with a greyish border so it is visible in QGIS dark and light mode.

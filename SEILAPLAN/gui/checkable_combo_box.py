@@ -12,6 +12,9 @@ class QgsCheckableComboBoxOwn(QgsCheckableComboBox):
         super().__init__(*args, **kwargs)
         self.setMinimumSize(QSize(200, 27))
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        # Disable auto scrolling so the user isn't confused about missing items
+        #  at the beginning of the list
+        self.view().setAutoScroll(False)
 
     def hidePopup(self):
         super().hidePopup()

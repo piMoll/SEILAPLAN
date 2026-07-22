@@ -6,18 +6,37 @@ description=Seillinien-Layoutplaner — A cable road layout planner
 about=[DE]
     SEILAPLAN ermöglicht die einfache und effiziente Planung von Seillinien unter Berücksichtigung topografischer Gegebenheiten. Die implementierte Berechnungsmethode basiert auf der Methode von Zweifel (1960) und beschreibt die Kettenlinie, unter Annahme einer beidseitig fixierten Verankerung des Tragseils.
     Dieses QGIS-Plugin ist ein Hilfsmittel. Jede Lösung muss vor Umsetzung durch eine geschulte Fachperson geprüft werden. Jegliche Haftung wird im Rahmen der GNU General Public Licence Version 2 oder neuere ausgeschlossen (www.gnu.org/licenses).
+
     ***
+
     [EN]
     SEILAPLAN enables simple and efficient planning of cable roads, taking topographical conditions into account. The implemented calculation method is based on the method developed by Zweifel (1960) and describes the catenary, assuming that the skyline is anchored at both ends.
     This QGIS plugin is a tool. Every solution must be checked by a trained specialist before implementation. Any liability is excluded under the GNU General Public License Version 2 or later (www.gnu.org/licenses).
+
     ***
+
     Dokumentation: https://seilaplan.wsl.ch
+
     ***
+
     Bont, Moll, Ramstein, Frutig, Heinimann, Schweier (2022). Introducing Seilaplan, a QGIS plugin for cable road layout planning. Croatian Journal of Forest Engineering, 2022. https://doi.org/10.5552/crojfe.2022.1824
 version=0.0.0
 author=Bont, Moll, Ramstein, Frutig, Heinimann, Schweier
 email=seilaplanplugin@gmail.com
-changelog=Version 3.8.0 (Juni 2026)
+changelog=Version 3.8.1 (Juli 2026)
+
+    Neue Features
+    - Neues SEILAPLAN Logo
+    - Entferne Plugin Status "experimentell"
+
+    Fehlerbehebung
+    - Verberge Scrollbar im Tab "Kennwerte" und "Vogelperspektive" wenn das Bearbeitungsfenster hoch genug ist
+    - Verhindere den Wechsel auf das Zweiseil-System im Bearbeitungsfenster, wenn das Seilsystem aufwärts verläuft
+    - Bei der Seillinienberechnung ungültige Stützen-Felder von 0 Meter Länge erkennen und abfangen
+
+
+     Version 3.8.0 (Juni 2026)
+
      Neue Features
      - Export von Geodaten im GeoPackage-Format (*.gpkg)
      - PDF-Export des Diagramms in den Papierformaten A4 und A3
@@ -33,6 +52,19 @@ changelog=Version 3.8.0 (Juni 2026)
 
     ***
     [EN]
+
+    Version 3.8.1 (July 2026)
+
+    New features
+    - New SEILAPLAN logo
+    - Remove "experimental" status from plugin
+
+    Fixes
+    - Hide scroll bar for tabs "Structural design" und "Bird’s eye view" if the adjustment window is high enough
+    - Prevent switching to the two-cable system in the adjustment dialog if the cable system runs uphill
+    - Detect invalid support spans of 0 meters during cable line calculations
+
+    Version 3.8.0 (June 2026)
 
     New features
     - Export geospatial data in GeoPackage format (*.gpkg)
@@ -55,6 +87,6 @@ repository=https://github.com/piMoll/SEILAPLAN
 category=Plugins
 icon=gui/icons/icon_app.png
 # experimental flag
-experimental=True
+experimental=False
 # deprecated flag (applies to the whole plugin, not just a single version)
 deprecated=False

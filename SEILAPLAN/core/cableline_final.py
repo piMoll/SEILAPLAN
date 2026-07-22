@@ -61,10 +61,13 @@ def preciseCable(IS, poles, STA):
 
     # Field dimension
     b, h = poles.getCableFieldDimension()
-    # Round the field dimensions do dm because this is going to be the
+    # Round the field dimensions do dm because this is going to be
     # the resolution of the cable calculation
     b = np.round(b, 1)
     h = np.round(h, 1)
+
+    if any(b == 0):
+        raise ValueError("At least one field has a length of zero")
 
     anzFelder = b.size
     anzStue = anzFelder + 1

@@ -2,7 +2,7 @@
 /***************************************************************************
  SeilaplanPlugin
                                  A QGIS plugin
- Seilkran-Layoutplaner
+ Seillinien-Layoutplaner
                               -------------------
         begin                : 2013
         copyright            : (C) 2015 by ETH Zürich
@@ -54,7 +54,11 @@ from SEILAPLAN.gui.save_dialog import DialogOutputOptions
 from SEILAPLAN.tools.bird_view_map_extractor import extractMapBackground
 from SEILAPLAN.tools.calc_threshold import ThresholdUpdater
 from SEILAPLAN.tools.config_handler import ConfigHandler
-from SEILAPLAN.tools.config_handler_params import ParameterConfHandler
+from SEILAPLAN.tools.config_handler_params import (
+    ParameterConfHandler,
+    ParameterError,
+    SeilsystemError,
+)
 from SEILAPLAN.tools.config_handler_project import ProjectConfHandler
 from SEILAPLAN.tools.globals import PolesOrigin, ResultQuality
 from SEILAPLAN.tools.output_geo import (
@@ -493,7 +497,14 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
     def onUpdateCableParam(self):
         # Since user can change entire parameter sets, we prepare params
         #  for recalculation
-        self.paramHandler.prepareForCalculation(self.profile.direction)
+        try:
+            self.paramHandler.prepareForCalculation(self.profile.direction)
+        except ParameterError as e:
+            errorMsg = str(e)
+            if isinstance(e, SeilsystemError):
+                self.paramHandler.fallBackToSupportedCableSystem(self.profile.direction)
+                errorMsg += f"\n{self.tr('Das Seilsystem wird nicht angepasst.')}"
+            self.paramHandler.onError(errorMsg)
         self.configurationHasChanged = True
 
     def onPrHeaderChanged(self):
@@ -599,7 +610,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
             stacktrace = traceback.format_exc()
             log(
                 f"Error recalculating cableline: {e}\n{stacktrace}",
-                Qgis.MessageLevel.Critical,
+                Qgis.MessageLevel.Warning,
             )
             self.updateStatus(ResultQuality.Error)
             self.isRecalculating = False

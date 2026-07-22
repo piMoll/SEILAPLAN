@@ -42,6 +42,6 @@ lrelease i18n/SeilaplanPlugin_de.ts i18n/SeilaplanPlugin_en.ts i18n/SeilaplanPlu
 
 ### 1. Create release on github
 1. Create new tag with correct version x.y.z --> no "v" in the beginning!
-2. Title: Seilaplan vx.y.z
+2. Title: Seilaplan x.y.z
 3. Text: Add change log
 4. Assets Will be created automatically by ci-plugin

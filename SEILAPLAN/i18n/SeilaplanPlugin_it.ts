@@ -1052,6 +1052,11 @@ fune caricata</translation>
         <source>Vogelperspektive Legende</source>
         <translation>Leggenda per la vista a volo d&apos;uccello</translation>
     </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="503"/>
+        <source>Das Seilsystem wird nicht angepasst.</source>
+        <translation>Il Sistema di gru a cavo non viene regolato.</translation>
+    </message>
 </context>
 <context>
     <name>AdjustmentDialogUI</name>

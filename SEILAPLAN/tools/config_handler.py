@@ -2,7 +2,7 @@
 /***************************************************************************
  SeilaplanPlugin
                                  A QGIS plugin
- Seilkran-Layoutplaner
+ Seillinien-Layoutplaner
                               -------------------
         begin                : 2013
         copyright            : (C) 2015 by ETH Zürich
@@ -29,7 +29,7 @@ import numpy
 from qgis.core import QgsSettings
 from qgis.PyQt.QtCore import QSettings
 
-from SEILAPLAN.tools.config_handler_params import ParameterConfHandler
+from SEILAPLAN.tools.config_handler_params import ParameterConfHandler, ParameterError
 from SEILAPLAN.tools.config_handler_project import ProjectConfHandler
 from SEILAPLAN.tools.globals import PolesOrigin
 from SEILAPLAN.tools.output_report import getTimestamp
@@ -364,10 +364,12 @@ class ConfigHandler:
         Initializes pole data.
         :return:
         """
-        success = self.params.prepareForCalculation()
-        if success:
-            success = self.project.prepareForCalculation(runOptimization)
-        return success
+        try:
+            self.params.prepareForCalculation()
+        except ParameterError as e:
+            self.params.onError(str(e))
+            return False
+        return self.project.prepareForCalculation(runOptimization)
 
     def prepareResultWithoutOptimization(self):
         return {
