@@ -276,11 +276,11 @@ class QgsPoleMarker(QgsVertexMarker):
         QgsVertexMarker.__init__(self, canvas)
         self.setColor(QColor(color))
         if firstPoint:
-            self.setIconType(QgsVertexMarker.ICON_BOX)
+            self.setIconType(QgsVertexMarker.IconType.ICON_BOX)
             self.setIconSize(14)
             self.setPenWidth(4)
         else:
-            self.setIconType(QgsVertexMarker.ICON_BOX)
+            self.setIconType(QgsVertexMarker.IconType.ICON_BOX)
             self.setIconSize(11)
             self.setPenWidth(2)
 
@@ -289,7 +289,7 @@ class QgsAnchorMarker(QgsVertexMarker):
     def __init__(self, canvas, color):
         QgsVertexMarker.__init__(self, canvas)
         self.setColor(QColor(color))
-        self.setIconType(QgsVertexMarker.ICON_CIRCLE)
+        self.setIconType(QgsVertexMarker.IconType.ICON_CIRCLE)
         self.setIconSize(8)
         self.setPenWidth(3)
 
@@ -298,6 +298,6 @@ class QgsMovingCross(QgsVertexMarker):
     def __init__(self, canvas, color=CURSOR_COLOR):
         QgsVertexMarker.__init__(self, canvas)
         self.setColor(QColor(color))
-        self.setIconType(QgsVertexMarker.ICON_CROSS)
+        self.setIconType(QgsVertexMarker.IconType.ICON_CROSS)
         self.setIconSize(20)
         self.setPenWidth(3)

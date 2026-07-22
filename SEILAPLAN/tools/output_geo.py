@@ -208,13 +208,15 @@ def createFileWriter(filePath, fields, geomType, spatialRef, geoFormat, layerNam
         options.layerName = layerName
         # Add layer to existing gpkg file, if it exists
         if isfile(filePath):
-            options.actionOnExistingFile = QgsVectorFileWriter.CreateOrOverwriteLayer
+            options.actionOnExistingFile = (
+                QgsVectorFileWriter.ActionOnExistingFile.CreateOrOverwriteLayer
+            )
 
     writer = QgsVectorFileWriter.create(
         filePath, fields, geomType, spatialRef, context, options
     )
 
-    if writer.hasError() != QgsVectorFileWriter.NoError:
+    if writer.hasError() != QgsVectorFileWriter.WriterError.NoError:
         raise Exception(f"{writer.errorMessage()} ({geoFormat})")
 
     return writer

@@ -45,7 +45,7 @@ class ProcessingTask(QgsTask):
 
     def __init__(self, projectConfig, description="SEILAPLAN"):
 
-        super().__init__(description, QgsTask.CanCancel)
+        super().__init__(description, QgsTask.Flag.CanCancel)
 
         self.state = False
         self.exception = None
