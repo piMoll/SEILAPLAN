@@ -365,8 +365,8 @@ class ScriptThatMakesFileTest(unittest.TestCase):
 
     def runTest(self):
         fmt = sys.platform=='win32' and '"%s" %s' or '%s %s'
-        import subprocess
-        out = subprocess.check_output((sys.executable,self.scriptName))
+        import subprocess    # nosec
+        out = subprocess.check_output((sys.executable,self.scriptName))    # nosec
         #p = os.popen(fmt % (sys.executable,self.scriptName),'r')
         #out = p.read()
         if self.verbose:
