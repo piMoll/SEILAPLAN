@@ -503,7 +503,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
             errorMsg = str(e)
             if isinstance(e, SeilsystemError):
                 self.paramHandler.fallBackToSupportedCableSystem(self.profile.direction)
-                errorMsg += f"\n{self.tr("Das Seilsystem wird nicht angepasst.")}"
+                errorMsg += f"\n{self.tr('Das Seilsystem wird nicht angepasst.')}"
             self.paramHandler.onError(errorMsg)
         self.configurationHasChanged = True
 
