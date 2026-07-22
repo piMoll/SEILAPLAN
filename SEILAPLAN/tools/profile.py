@@ -2,7 +2,7 @@
 /***************************************************************************
  SeilaplanPlugin
                                  A QGIS plugin
- Seilkran-Layoutplaner
+ Seillinien-Layoutplaner
                               -------------------
         begin                : 2013
         copyright            : (C) 2015 by ETH Zürich

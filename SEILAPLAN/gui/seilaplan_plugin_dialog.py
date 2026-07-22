@@ -2,7 +2,7 @@
 /***************************************************************************
  SeilaplanPluginDialog
                                  A QGIS plugin
- Seilkran-Layoutplaner
+ Seillinien-Layoutplaner
                              -------------------
         begin                : 2013
         copyright            : (C) 2015 by ETH Zürich
@@ -816,7 +816,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
     def setProjName(self, projname):
         self.projectHandler.setProjectName(projname)
         self.setWindowTitle(
-            f"{self.tr('SEILAPLAN - Seilkran-Layoutplaner', 'SeilaplanDialogUI')} // {projname}"
+            f"{self.tr('SEILAPLAN - Seillinien-Layoutplaner', 'SeilaplanDialogUI')} // {projname}"
         )
 
     def toggleCableLineUI(self, isEnabled):
