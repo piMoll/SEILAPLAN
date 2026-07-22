@@ -1040,6 +1040,11 @@ Lastseil</translation>
         <source>Vogelperspektive Legende</source>
         <translation>Vogelperspektive Legende</translation>
     </message>
+    <message>
+        <location filename="../gui/adjustmentDialog.py" line="503"/>
+        <source>Das Seilsystem wird nicht angepasst.</source>
+        <translation>Das Seilsystem wird nicht angepasst.</translation>
+    </message>
 </context>
 <context>
     <name>AdjustmentDialogUI</name>
@@ -1650,7 +1655,7 @@ nach Zweifel</translation>
     <message>
         <location filename="../tools/configHandler_params.py" line="466"/>
         <source>Kein Zweiseil-System moeglich</source>
-        <translation>Fehler: Kein Zweilseil-System möglich wenn der Anfangspunkt (bei Winde/Maschine) tiefer als der Endpunkt liegt.</translation>
+        <translation>Fehler: Kein Zweiseil-System möglich wenn der Anfangspunkt (bei Winde/Maschine) tiefer als der Endpunkt liegt.</translation>
     </message>
     <message>
         <location filename="../tools/configHandler_params.py" line="269"/>

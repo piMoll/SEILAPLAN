@@ -27,10 +27,12 @@ changelog=Version 3.8.1 (Juli 2026)
 
     Neue Features
     - Neues SEILAPLAN Logo
+    - Entferne Plugin Status "experimentell"
 
     Fehlerbehebung
     - Verberge Scrollbar im Tab "Kennwerte" und "Vogelperspektive" wenn das Bearbeitungsfenster hoch genug ist
-    - Entferne Plugin Status "experimentell"
+    - Verhindere den Wechsel auf das Zweiseil-System im Bearbeitungsfenster, wenn das Seilsystem aufwärts verläuft
+
 
      Version 3.8.0 (Juni 2026)
 
@@ -54,10 +56,11 @@ changelog=Version 3.8.1 (Juli 2026)
 
     New features
     - New SEILAPLAN logo
+    - Remove "experimental" status from plugin
 
     Fixes
     - Hide scroll bar for tabs "Structural design" und "Bird’s eye view" if the adjustment window is high enough
-    - Remove "experimental" status from plugin
+    - Prevent switching to the two-cable system in the adjustment dialog if the cable system runs uphill
 
     Version 3.8.0 (June 2026)
 

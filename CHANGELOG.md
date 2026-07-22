@@ -3,10 +3,11 @@
 ## Version 3.8.1 (Juli 2026)
 ### Neue Features
 - Neues Seilaplan Logo
+- Entferne Plugin Status "experimentell"
 
 ### Fehlerbehebung
 - Verberge Scrollbar im Tab "Kennwerte" und "Vogelperspektive" wenn Bearbeitungsfenster gross genug ist
-- Entferne "experimentell" Plugin-Markierung
+- Verhindere den Wechsel auf das Zweiseil-System im Bearbeitungsfenster, wenn das Seilsystem aufwärts verläuft
 
 ## Version 3.8.0 (Juni 2026)
 ### Neue Features
