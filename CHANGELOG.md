@@ -8,6 +8,7 @@
 ### Fehlerbehebung
 - Verberge Scrollbar im Tab "Kennwerte" und "Vogelperspektive" wenn Bearbeitungsfenster gross genug ist
 - Verhindere den Wechsel auf das Zweiseil-System im Bearbeitungsfenster, wenn das Seilsystem aufwärts verläuft
+- Bei der Seillinienberechnung ungültige Stützen-Felder von 0 Meter Länge erkennen und abfangen
 
 ## Version 3.8.0 (Juni 2026)
 ### Neue Features

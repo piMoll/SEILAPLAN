@@ -610,7 +610,7 @@ class AdjustmentDialog(QDialog, FORM_CLASS):
             stacktrace = traceback.format_exc()
             log(
                 f"Error recalculating cableline: {e}\n{stacktrace}",
-                Qgis.MessageLevel.Critical,
+                Qgis.MessageLevel.Warning,
             )
             self.updateStatus(ResultQuality.Error)
             self.isRecalculating = False

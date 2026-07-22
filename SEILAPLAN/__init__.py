@@ -62,7 +62,5 @@ def enable_remote_debugging():
                 stdout_to_server=True,
                 stderr_to_server=True,
             )
-        except ConnectionRefusedError:
-            pass
-        except ImportError:
+        except (ConnectionRefusedError, ImportError, AttributeError):
             pass

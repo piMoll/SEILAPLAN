@@ -32,6 +32,7 @@ changelog=Version 3.8.1 (Juli 2026)
     Fehlerbehebung
     - Verberge Scrollbar im Tab "Kennwerte" und "Vogelperspektive" wenn das Bearbeitungsfenster hoch genug ist
     - Verhindere den Wechsel auf das Zweiseil-System im Bearbeitungsfenster, wenn das Seilsystem aufwärts verläuft
+    - Bei der Seillinienberechnung ungültige Stützen-Felder von 0 Meter Länge erkennen und abfangen
 
 
      Version 3.8.0 (Juni 2026)
@@ -61,6 +62,7 @@ changelog=Version 3.8.1 (Juli 2026)
     Fixes
     - Hide scroll bar for tabs "Structural design" und "Bird’s eye view" if the adjustment window is high enough
     - Prevent switching to the two-cable system in the adjustment dialog if the cable system runs uphill
+    - Detect invalid support spans of 0 meters during cable line calculations
 
     Version 3.8.0 (June 2026)
 
