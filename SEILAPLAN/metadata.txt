@@ -23,7 +23,12 @@ about=[DE]
 version=0.0.0
 author=Bont, Moll, Ramstein, Frutig, Heinimann, Schweier
 email=seilaplanplugin@gmail.com
-changelog=Version 3.8.1 (Juli 2026)
+changelog=Version 3.8.2 (August 2026)
+
+    Fehlerbehebung
+    - Der PDF-Export des Diagramms wechselt wieder automatisch von Quer- auf Hochformat wenn die Seillinie sehr steil ist
+
+    Version 3.8.1 (Juli 2026)
 
     Neue Features
     - Neues SEILAPLAN Logo
@@ -52,6 +57,11 @@ changelog=Version 3.8.1 (Juli 2026)
 
     ***
     [EN]
+
+    Version 3.8.2 (August 2026)
+
+    Fixes
+    - The PDF-Export automatically switches from landscape to portrait format if the cable road is very steep
 
     Version 3.8.1 (July 2026)
 
