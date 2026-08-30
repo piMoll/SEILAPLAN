@@ -55,7 +55,9 @@ Deactivate the following bandit checks:
 - [B108:hardcoded_tmp_directory]
 - [B110:try_except_pass]
 - [B112:try_except_continue]
+- [B310:blacklist] Audit url open for permitted schemes
 - [B311:blacklist] pseudo-random generators
+- [B313:blacklist] sing xml.etree.cElementTree.parse to parse untrusted XML data
 - [B403:blacklist] pickle module
 - (can't be skipped) [B404:blacklist] subprocess module
 - [B405:blacklist] xml.etree
