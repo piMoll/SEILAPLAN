@@ -539,4 +539,4 @@ if __name__=='__main__': #noruntests
     angle=45
     D = Drawing(120,120)
     D.add(ShadedPolygon(points=(10,10,60,60,110,10),strokeColor=None,strokeWidth=1,angle=90,numShades=50,cylinderMode=0))
-    D.save(formats=['pdf','gif'],fnRoot='shobj',outDir='/tmp')  # nosec
+    D.save(formats=['pdf','gif'],fnRoot='shobj',outDir='/tmp')

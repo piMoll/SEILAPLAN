@@ -330,7 +330,7 @@ for fn in __all__:
 del fn, f, G
 
 if __name__=='__main__':
-    import sys, subprocess    # nosec
+    import sys, subprocess
     funclist = ','.join("""add32 asciiBase85Decode asciiBase85Encode
                     calcChecksum escapePDF fp_str hex32
                     instanceStringWidthT1 instanceStringWidthTTF

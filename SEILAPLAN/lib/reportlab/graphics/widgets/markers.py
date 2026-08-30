@@ -242,4 +242,4 @@ def makeMarker(name,**kw):
 if __name__=='__main__':
     D = Drawing()
     D.add(Marker())
-    D.save(fnRoot='Marker',formats=['pdf'], outDir='/tmp')  # nosec
+    D.save(fnRoot='Marker',formats=['pdf'], outDir='/tmp')

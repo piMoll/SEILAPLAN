@@ -475,7 +475,7 @@ from urllib.request import urlopen, Request
 def rlUrlRead(name, headers=None):
     if headers==None: headers = {}
     headers.setdefault('User-Agent','ReportLabAgent')
-    return urlopen(Request(name,headers=headers)).read()  # nosec
+    return urlopen(Request(name,headers=headers)).read()
 
 def open_for_read(name,mode='b'):
     #auto initialized function`

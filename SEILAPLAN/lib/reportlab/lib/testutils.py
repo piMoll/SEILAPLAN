@@ -111,7 +111,7 @@ def mockUrlRead(name):
             return f.read()
     else:
         from urllib.request import urlopen
-        return urlopen(name).read()  # nosec
+        return urlopen(name).read()
 
 def outputfile(fn):
     """This works out where to write test output.  If running
@@ -365,8 +365,8 @@ class ScriptThatMakesFileTest(unittest.TestCase):
 
     def runTest(self):
         fmt = sys.platform=='win32' and '"%s" %s' or '%s %s'
-        import subprocess    # nosec
-        out = subprocess.check_output((sys.executable,self.scriptName))    # nosec
+        import subprocess
+        out = subprocess.check_output((sys.executable,self.scriptName))
         #p = os.popen(fmt % (sys.executable,self.scriptName),'r')
         #out = p.read()
         if self.verbose:
