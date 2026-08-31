@@ -742,7 +742,7 @@ def calculatePlotDimensions(xData, yData, output_size: str):
 
     # If the data does not fit on the landscape page, we turn the page to portrait
     if output_size == "A4" and dataHeightRatio > pageHeightRatio:
-        height, width = reversed(list(PLOT_OUTPUT_DIMENSIONS[output_size]))
+        width, height = reversed(list(PLOT_OUTPUT_DIMENSIONS[output_size]))
         ratio = (data_yhi - data_ylow) / 60
 
     return width, height, ratio

@@ -41,8 +41,8 @@ def dictformat(_format, L={}, G={}):
 				match, pos = _matchorfail(format, pos)
 				tstart, tend = match.regs[3]
 				token = format[tstart:tend]
-				if token == "(": level = level+1
-				elif token == ")": level = level-1
+				if token == "(": level = level+1    # nosec
+				elif token == ")": level = level-1    # nosec
 			vname = '__superformat_%d' % n
 			n += 1
 			S[vname] = eval(format[pc+2:pos-1],G,L)    # nosec

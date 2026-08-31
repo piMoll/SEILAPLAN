@@ -14,6 +14,8 @@ bandit -r SEILAPLAN/ -a vuln -f screen -x lib
 bandit -r SEILAPLAN/ --severity-level high -a vuln -f screen -x lib
 # Check if there are issues in the lib folder
 bandit -r SEILAPLAN/lib --severity-level high -a vuln -f screen
+# Check if any of the following rules turn up in a bandit scan. These are not skippable and appear often in lib/
+bandit -r SEILAPLAN/ -t B105,B404
 
 # Check if there are secrets in the plugin
 detect-secrets scan SEILAPLAN/
@@ -45,3 +47,19 @@ lrelease i18n/SeilaplanPlugin_de.ts i18n/SeilaplanPlugin_en.ts i18n/SeilaplanPlu
 2. Title: Seilaplan x.y.z
 3. Text: Add change log
 4. Assets Will be created automatically by ci-plugin
+
+### 1. Upload to QGIS Plugin Repo
+Deactivate the following bandit checks:
+- [B101:assert_used]
+- (can't be skipped) [B105:hardcoded_password_string]
+- [B108:hardcoded_tmp_directory]
+- [B110:try_except_pass]
+- [B112:try_except_continue]
+- [B310:blacklist] Audit url open for permitted schemes
+- [B311:blacklist] pseudo-random generators
+- [B313:blacklist] sing xml.etree.cElementTree.parse to parse untrusted XML data
+- [B403:blacklist] pickle module
+- (can't be skipped) [B404:blacklist] subprocess module
+- [B405:blacklist] xml.etree
+- [B406:blacklist] Using escape to parse untrusted XML data
+- [B603:subprocess_without_shell_equals_true]

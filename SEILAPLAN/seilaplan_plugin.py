@@ -138,7 +138,7 @@ class SeilaplanPlugin:
         button.setText(self.tr("Weitere Informationen"))
         button.pressed.connect(showError)
         widget.layout().addWidget(button)
-        self.iface.messageBar().pushWidget(widget, Qgis.Warning)
+        self.iface.messageBar().pushWidget(widget, Qgis.MessageLevel.Warning)
 
     @staticmethod
     def preparationTasks():

@@ -111,7 +111,7 @@ def mockUrlRead(name):
             return f.read()
     else:
         from urllib.request import urlopen
-        return urlopen(name).read()  # nosec
+        return urlopen(name).read()
 
 def outputfile(fn):
     """This works out where to write test output.  If running

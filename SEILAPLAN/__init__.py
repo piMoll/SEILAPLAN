@@ -23,7 +23,7 @@
 
 import os
 
-__version__ = "3.8.1"
+__version__ = "3.8.2"
 
 DEBUG = False
 PLUGIN_DIR = os.path.dirname(__file__)
