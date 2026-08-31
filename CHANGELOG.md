@@ -1,5 +1,9 @@
 # Seilaplan Changelog
 
+# Version 3.8.2 (August 2026)
+### Fehlerbehebung
+- Der PDF-Export des Diagramms wechselt wieder automatisch von Quer- auf Hochformat wenn die Seillinie sehr steil ist
+
 ## Version 3.8.1 (Juli 2026)
 ### Neue Features
 - Neues Seilaplan Logo
