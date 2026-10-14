@@ -1086,7 +1086,7 @@ class SeilaplanPluginDialog(QDialog, FORM_CLASS):
             # Show an info image
             imgPath = os.path.join(self.homePath, "img", f"{self.locale}_{imageName}")
             if not os.path.exists(imgPath):
-                imgPath = os.path.join(self.homePath, "img", f"de_{imageName}")
+                imgPath = os.path.join(self.homePath, "img", f"en_{imageName}")
             self.imgBox.setWindowTitle(title)
             # Load image
             myPixmap = QPixmap(str(imgPath))
