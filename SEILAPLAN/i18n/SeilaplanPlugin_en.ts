@@ -134,7 +134,7 @@
     <message>
         <location filename="../tools/outputGeo.py" line="356"/>
         <source>Neigung</source>
-        <translation>Slope</translation>
+        <translation>Inclination</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="45"/>
@@ -171,7 +171,7 @@
     <message>
         <location filename="../tools/outputReport.py" line="114"/>
         <source>Neigung []</source>
-        <translation>Slope [°]</translation>
+        <translation>Inclination [°]</translation>
     </message>
     <message>
         <location filename="../tools/outputReport.py" line="114"/>
@@ -1719,7 +1719,7 @@ Please change the input.</translation>
     <message>
         <location filename="../gui/poleWidget.py" line="103"/>
         <source>Neigung</source>
-        <translation>Slope</translation>
+        <translation>Inclination</translation>
     </message>
     <message>
         <location filename="../gui/poleWidget.py" line="103"/>
