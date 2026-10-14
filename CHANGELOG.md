@@ -1,210 +1,211 @@
-# Seilaplan Changelog
+# SEILAPLAN Changelog
+
+Languages: English | [Deutsch](CHANGELOG.de.md)
 
 ## Unreleased
-### Fehlerbehebung
-- Infografiken werden in Englisch statt in Deutsch angezeigt, falls die Sprache nicht erkannt wird
--
-### Neue Features
-- Übersetzung auf Chinesisch, danke an 蕭宇哲 / Bucks Valley Forestry, Taiwan
+### Fixes
+- Infographics are displayed in English instead of German if the language is not recognized
 
-# Version 3.8.2 (August 2026)
-### Fehlerbehebung
-- Der PDF-Export des Diagramms wechselt wieder automatisch von Quer- auf Hochformat wenn die Seillinie sehr steil ist
+### New Features
+- Translation into Chinese, thanks to 蕭宇哲 / Bucks Valley Forestry, Taiwan
+- Changelog in English
 
-## Version 3.8.1 (Juli 2026)
-### Neue Features
-- Neues Seilaplan Logo
-- Entferne Plugin Status "experimentell"
+## Version 3.8.2 (August 2026)
+### Fixes
+- PDF export of the diagram automatically switches from landscape to portrait format when the cable line is very steep
 
-### Fehlerbehebung
-- Verberge Scrollbar im Tab "Kennwerte" und "Vogelperspektive" wenn Bearbeitungsfenster gross genug ist
-- Verhindere den Wechsel auf das Zweiseil-System im Bearbeitungsfenster, wenn das Seilsystem aufwärts verläuft
-- Bei der Seillinienberechnung ungültige Stützen-Felder von 0 Meter Länge erkennen und abfangen
+## Version 3.8.1 (July 2026)
+### New Features
+- New Seilaplan logo
+- Remove "experimental" plugin status
 
-## Version 3.8.0 (Juni 2026)
-### Neue Features
-- Export von Geodaten im GeoPackage-Format (*.gpkg)
-- PDF-Export des Diagramms in den Papierformaten A4 und A3
-- Relative Speicherung der Pfade zu Höhendaten in der SEILAPLAN-Projektdatei, sodass Projekte und Höhendaten gemeinsam verschoben und wieder geöffnet werden können
-- Verbesserungen der Benutzeroberfläche
-    - Verbesserte Scrollbarkeit im Bearbeitungsfenster bei vielen Stützen und wenig verfügbarem Platz
-    - Anzeige eines Ladesymbols im Mauscursor bei langandauernden Prozessen (z.B. Speichern oder Laden)
-    - Weniger prominente Darstellung der Fragezeichen-Schaltflächen
-    - Verbesserte Darstellung der Benutzeroberfläche und des Diagramms im QGIS-Dark-Mode
-    - Umbenennung der Reiter im Startfenster von „Optimierung #1“ und „Optimierung #2“ zu „Optimierung“ und „Diverses“
-    - Deutlichere Hervorhebung der Warnung „...Tragseil hebt bei mindestens einer Stütze ab“ im Bearbeitungsfenster
-- Warnung ausgeben, wenn der Parameter „Bodenabstand: einzuhalten ab / bis …“ auf 0 m gesetzt ist und gleichzeitig das Bauelement „Verankerung“ ausgewählt wurde
-- Verbesserte und empfindlichere Erkennung günstiger Geländeformen für die Positionierung von Stützen während der Optimierung
-- Diverse Unterhaltsarbeiten, Verbesserungen der Codequalität sowie Automatisierung des Release-Prozesses
+### Fixes
+- Hide scrollbar in the "Parameters" and "Bird's eye view" tabs when the editing window is large enough
+- Prevent switching to the two-cable system in the editing window when the cable system runs uphill
+- Detect and handle invalid support spans of 0 meters length during cable line calculation
 
-### Fehlerbehebung
-- Karte wird korrekt auf Rasterlayer zentriert, auch wenn mehrere Raster in der Auswahlliste ausgewählt werden
-- Höhenlinien können nun auch aus Cloud-optimierten GeoTIFF-Rastern (COG) berechnet werden
-- Neue Versionen des SEILAPLAN-Plugins werden vom Plugin-Manager wieder erkannt und können aktualisiert werden
+## Version 3.8.0 (June 2026)
+### New Features
+- Export of geodata in GeoPackage format (*.gpkg)
+- PDF export of the diagram in A4 and A3 paper formats
+- Relative storage of paths to elevation data in the SEILAPLAN project file, allowing projects and elevation data to be moved and reopened together
+- User interface improvements
+    - Improved scrolling in the editing window when there are many supports and limited available space
+    - Display a loading symbol at the mouse cursor during long-running processes (e.g. saving or loading)
+    - Less prominent display of question mark buttons
+    - Improved colors and contrasts in the user interface and diagram in QGIS Dark Mode
+    - Renamed tabs in the start window from "Optimization #1" and "Optimization #2" to "Optimization" and "Miscellaneous"
+    - Clearer highlighting of the warning "...skyline lifts off the saddle at least on one support" in the editing window
+- Output a warning when the parameter "Ground clearance: to be respected after / up to …" is set to 0 m and the structural element "Anchor" has been selected at the same time
+- Improved and more sensitive detection of favorable terrain shapes for support positioning during optimization
+- Various maintenance work, code quality improvements, and automation of the release process
+
+### Fixes
+- Map is correctly centered on raster layer, even when multiple rasters are selected in the selection list
+- Contour lines can now also be calculated from Cloud Optimized GeoTIFF rasters (COG)
+- New versions of the SEILAPLAN plugin are recognized again by the Plugin Manager and can be updated
 
 ## Version 3.7.1 (August 2025)
-### Fehlerbehebung
-- Unter Qt 6 kann nach Auswahl des Rasters keine Seillinie definiert werden
+### Fixes
+- Under Qt 6, no cable line can be defined after selecting the raster
 
-## Version 3.7.0 (Juli 2025)
-### Neue Features
-- Upgrade für die Verwendung unter QGIS 4.0 und Qt 6 (ab Oktober 2025)
-- Umzug ins offizielle QGIS Plugin Verzeichnis (bestehende Benutzer/innen
-  müssen nichts tun)
+## Version 3.7.0 (July 2025)
+### New Features
+- Upgrade for use under QGIS 4.0 and Qt 6 (from October 2025)
+- Move to the official QGIS plugin repository (existing users do not need to do anything)
 
-### Fehlerbehebung
-- Behebe ein Problem, dass die Verwendung von XYZ Rastern verhindert
-- Behebe Fehlermeldung beim Löschen von Stützensymbolen in der Karte
-- Ermögliche das Laden von Seilaplan-Projektdateien, welche Cloud Optimized
-  GeoTiffs (COG) enthalten
-- Diverse Unterhaltsarbeiten
+### Fixes
+- Fix an issue preventing the use of XYZ rasters
+- Fix error message when deleting support symbols on the map
+- Enable loading of SEILAPLAN project files containing Cloud Optimized GeoTIFFs (COG)
+- Various maintenance work
 
-## Version 3.6.4 (März 2025)
-### Fehlerbehebung
-- Plugin stürzt ab, wenn Stützen im Bearbeitungsfenster editiert oder gelöscht werden
+## Version 3.6.4 (March 2025)
+### Fixes
+- Plugin crashes when supports are edited or deleted in the editing window
 
 ## Version 3.6.3 (November 2024)
-### Fehlerbehebung
-* Kurzbericht: Abschnitt "Anker- und Spannfelder" zeigt zweimal die gleiche Stützenbezeichnung (von -> bis)
-* Vogelperspektive: Punktnummerierung aus Geländeprofil nicht sichtbar
-* Bearbeitungsfenster: Bundstelle wird nur aktualisiert, wenn Änderungen der Stützeneigenschaften mit Eingabetaste abgeschlossen werden
-* Bearbeitungsfenster: Plugin stürzt ab, wenn Stützenneigungen verändert werden
+### Fixes
+- Summary report: Section "Span and anchor fields" shows the same support designation twice (from -> to)
+- Bird's eye view: Point number from terrain profile not visible
+- Editing window: Attachment point is only updated when changes to support properties are confirmed with the Enter key
+- Editing window: Plugin crashes when the inclination of support is changed
 
 ## Version 3.6.2 (September 2024)
-### Fehlerbehebung
-* Fenstergrösse des Plugins lässt sich unter macOS nicht verändern
+### Fixes
+- Plugin window size cannot be resized on macOS
 
 ## Version 3.6.1 (August 2024)
-### Fehlerbehebung
-* Fehlende Zwischenstützen, wenn Projektdatei geladen wird
-* Bearbeitungsfenster: Diagramm springt zurück zu Vollansicht, wenn Seillinie neu berechnet wird
+### Fixes
+- Missing intermediate supports when loading a project file
+- Editing window: Stop diagram resets to full view when cable line is recalculated
 
 ## Version 3.6.0 (August 2024)
-### Neue Features
-* Seilaplan kann mehrfach gestartet werden, um Projekte (bzw. Varianten) parallel zu bearbeiten
-* Neue Parameter um Grenzwerte für Leer- und Lastseilknickwinkel zu definieren (bisher fix 1/3° und 30/60°)
-* Neuer Parameter um die Höhe der Bundstelle über dem Tragseilsattel zu definieren (bisher fix 1.5 m)
-* Bearbeitungsfenster:
-  * Über eine Auswahlliste können zusätzliche Kennwerte (BHD, Durchhang, Knickwinkel, etc.) im Diagramm angezeigt werden
-  * Im neuen Tab "Parameter" kann das verwendete Parameterset ausgetauscht werden
-  * Im Diagramm wird der Seildurchhang statt einmal für die gesamte Seillinie, neu für jedes Seilfeld einzeln ausgegeben
-  * Pro Stütze wird der Bundstellendurchmesser angegeben
-  * Stützenbezeichnungen können neu 42 statt 22 Zeichen lang sein. Im exportierten Diagramm wurde die Lesbarkeit der Bezeichnungen verbessert
-* Vogelperspektive: Angepasstes Symbol für Mehrbaumanker; Abspannseile enden am Anfangs- / Endpunkt der Seillinie, nicht dahinter
-* Exportierte PDFs (Diagramm, Berichte) enthalten den eindeutigen Namen des Projektordners
-* Die automatisch erzeugte Projektbezeichnung enthält die Jahresangabe und ist ISO-ähnlich formatiert
-* Diverse Verbesserung der Benutzerführung: Anpassung von Bezeichnungen und Ergänzen von Hinweisen
+### New Features
+- Seilaplan can be launched multiple times to edit projects (or variants) in parallel
+- New parameters to define limits for empty and loaded rope deflection angles (previously fixed at 1/3° and 30/60°)
+- New parameter to define the height of the attachment point above the skyline saddle (previously fixed at 1.5 m)
+- Editing window:
+  - Additional parameters (DBH, sag, deflection angle, etc.) can be displayed in the diagram via a drop-down list
+  - In the new "Parameters" tab, the parameter set can be changed
+  - In the diagram, cable sag is now output individually for each span instead of once for the entire cable line
+  - Min. attachment point diameter is specified for each support
+  - Support designations can now be 42 instead of 22 characters long. Readability of designations in the exported diagram has been improved
+- Bird's eye view: Adjusted symbol for multi-tree anchors; anchor ropes end at the start / end point of the cable line, not behind it
+- Exported PDFs (diagram, reports) include the unique name of the project folder
+- The automatically generated project name includes the year and is formatted similar to ISO
+- Various improvements to user guidance: adjustment of labels and addition of hints
 
-### Fehlerbehebung
-* Kurzbericht: Korrektur der Angriffswinkel-Berechnung für befahrbare Endstützen
-* Der Standardwert für Parameter 'Bundstelle über Tragseilsattel' ist neu 3.0 m statt bisher 1.5 m, der Wert ist anpassbar
-* Behebe ein Problem beim Erzeugen des Diagramm-PDFs, das ältere QGIS-Versionen zum Absturz bringt
-* Profillinien werden immer zuoberst im QGIS Layerbaum eingefügt, statt beim aktuell ausgewählten Layer
-* Das Pluginfenster bleibt im Vordergrund, wenn in der Karte gezeichnet wird (MacOS)
+### Fixes
+- Summary report: Correction of angle of attack calculation for pass-through end supports
+- Default value for parameter 'Attachment point above skyline saddle' is now 3.0 m instead of previously 1.5 m; the value is customizable
+- Fix an issue when generating diagram PDFs that causes older QGIS versions to crash
+- Profile lines are always inserted at the top of the QGIS layer tree instead of at the currently selected layer
+- The plugin window stays in the foreground when drawing on the map (macOS)
 
-## Version 3.5.3 (Mai 2024)
-### Fehlerbehebung
-* Fehler beim Start des Plugins auf Windows mit QGIS Version 3.36, weil eine scipy-Bibliothek fehlt
+## Version 3.5.3 (May 2024)
+### Fixes
+- Error starting the plugin on Windows with QGIS version 3.36 due to a missing scipy library
 
-## Version 3.5.2 (März 2024)
-### Fehlerbehebung
-* Vogelperspektive
-  * Korrigiere Stützensymbole, wenn sie rechts des Seils und in Richtung des Anfangspunkts orientiert sein sollten
-  * Passe Reihenfolge von Stützentypen in Auswahlliste an; erst Stützen-, dann Ankertypen
+## Version 3.5.2 (March 2024)
+### Fixes
+- Bird's eye view
+  - Correct support symbols when they should be oriented to the right of the cable and towards the start point
+  - Adjust order of support types in selection list: support types first, then anchor types
 
-## Version 3.5.1 (Januar 2024)
-### Fehlerbehebung
-* Vogelperspektive: Überarbeite Stützensymbole, passe Länge der Abspannseile an
-* Ergänze Kennwerte im Bearbeitungsfenster: Zeige die max. Seilzugkraft am höchsten Punkt im Diagramm an
-* Fehler: Verschieben der Stütze ans Ende oder Anfang des Profils verursacht Plugin-Absturz
+## Version 3.5.1 (January 2024)
+### Fixes
+- Bird's eye view: Revise support symbols, adjust length of anchor ropes
+- Add parameters in the editing window: Show maximum cable tension at the highest point in the diagram
+- Bug: Moving a support to the end or start of the profile causes a plugin crash
 
 ## Version 3.5.0 (August 2023)
-### Neue Features
-* Vogelperspektive: Darstellung der Seillinie, Stützen und Abspannseile aus der Vogelperspektive
-  * Konfiguriere Stützenkategorie und -position, sowie Ausrichtung der Abspannseile in einem neuen Tab
-  * Exportiere Vogelperspektive als Diagramm unterhalb des Seitenprofils
-  * Ergänzung der Stützeneigenschaften in Berichten und Geodaten-Export
-* Hintergrundkarte darstellen: Bei QGIS-Projekten im CH-Koordinatensystem wird neu die Schweizer Landeskarte statt der OSM-Karte geladen
+### New Features
+- Bird's eye view: Representation of cable line, supports, and anchor ropes from a bird's eye view
+  - Configure support category and position, as well as anchor rope orientation in a new tab
+  - Export bird's eye view as a diagram below the profile
+  - Addition of support properties in reports and geodata export
+- Display background map: For QGIS projects in the Swiss coordinate system, the Swiss national map is now loaded instead of the OSM map
 
-## Version 3.4.2 (Juni 2023)
-### Fehlerbehebung
-* Geländeprofil aus Haglöf Vertex: Ergänze Standort der ersten Messung (Punkt Nr. 0)
-* Korrigiere die Darstellung des Durchmesser-Symbols in Berichten
-* Problembehebung bei der Erstellung von Profillinien bei Seillinien in Richtung 0, 100, 200 oder 300 Gon
-* Beim Laden von reportlab (Bibliothek für Berichterstellung) wird die im System installierte Version bevorzugt
+## Version 3.4.2 (June 2023)
+### Fixes
+- Terrain profile from Haglöf Vertex: Add location of the first measurement (point no. 0)
+- Correct the display of the diameter symbol in reports
+- Fix issue in the generation of profile lines for cable lines in direction 0, 100, 200, or 300 gon
+- When loading reportlab (report generation library), the system-installed version is preferred
 
-## Version 3.4.1 (Dezember 2022)
-### Neue Features
-* Geländelinie als DXF, KML und Shapefile exportieren
-* Profilansicht (Seitenansicht) als DXF exportieren
-* Überarbeitung des Speichern-Dialogfensters
-* Geodaten in separate Ordner abspeichern
+## Version 3.4.1 (December 2022)
+### New Features
+- Export terrain line as DXF, KML, and Shapefile
+- Export profile view (side view) as DXF
+- Redesign of the save dialog window
+- Save geodata to separate folders
 
-### Fehlerbehebung
-* Kurzbericht: Wert für maximalen Abstand Seil - Boden korrigiert
-* Haglöf Vertex CSV Import: Nur Messungen vom Typ "TRAIL" berücksichtigen, "3P" Messungen als Zusatzinformation im Geländeprofil anzeigen
-* Fehlermeldung beim Erstellen von QGIS Layern behoben
+### Fixes
+- Summary report: Corrected value for maximum cable - ground clearance
+- Haglöf Vertex CSV import: Only consider measurements of type "TRAIL", display "3P" measurements as additional information in the terrain profile
+- Fixed error message when creating QGIS layers
 
-## Version 3.4.0 (Mai 2022)
-### Neue Features
-* Profil-Import aus Feldaufnahmeprotokoll, inkl. Protokoll-Vorlage im Excel-Format
-* Auswahl und Import des Geländeprofils in einem separaten Dialogfenster
-* Vorlage für Profile im CSV Format mit X-, Y-, Z-Koordinaten
-* Erhöhung der max. zulässigen Werte für: Gewicht Last (neu 250 kN), Mindestbruchlast Tragseil (neu 5000 kN), Tragseilspannkraft am Anfangspunkt (neu 1000 kN)
+## Version 3.4.0 (May 2022)
+### New Features
+- Profile import from field survey protocol, including protocol template in Excel format
+- Selection and import of terrain profile in a separate dialog window
+- Template for profiles in CSV format with X, Y, Z coordinates
+- Increase of maximum allowable values for: payload weight (now 250 kN), minimum breaking load of skyline (now 5000 kN), skyline tension at start point (now 1000 kN)
 
-### Fehlerbehebung
-* Besseres Abfangen von Fehlern beim Import von Geländeprofilen
-* Auswahlliste für Raster zeigt keine WMS-Layer mehr
-* Besseres Abfangen von Fehlern beim Aufbereiten von Rasterdaten
-* Verbesserung der Formatierung von Koordinaten-Werte für internationale Benutzer
-* Karten-Markierungen für fixe Stützen verschwinden nach dem Löschen zuverlässig
+### Fixes
+- Better handling of errors during terrain profile import
+- Selection list for rasters no longer shows WMS layers
+- Better handling of errors during raster data preparation
+- Improved formatting of coordinate values for international users
+- Map markers for fixed supports reliably disappear after deletion
 
-## Version 3.3.0 (Januar 2022)
-### Neue Features
-* Erfassen und Speichern von Projekt-Metadaten wie Autor, Projektnummer, Waldort, etc. Projekt-Metadaten werden in den Berichten aufgelistet
-* Projekteinstellungen werden neu im JSON-Format anstatt Textformat abgespeichert (alte Projekteinstellungen im Textformat werden weiterhin unterstützt)
-* Überarbeitung und Vereinheitlichung diverser Fachbegriffe in der deutschen Version
-* Anzeige von Kennwerten im Diagramm des Überarbeitungsfensters: Neu werden Kennwerte immer angezeigt, egal ob der Grenzwert überschritten wurde
-* Die Standardeinstellung für Anfangs- und Endpunkt der Seillinie ist neu eine Verankerung anstatt eine Stütze
+## Version 3.3.0 (January 2022)
+### New Features
+- Recording and saving project metadata such as author, project number, forest location, etc. Project metadata is listed in reports
+- Project settings are now saved in JSON format instead of text format (legacy project settings in text format are still supported)
+- Revision and standardization of various technical terms in the German version
+- Display of parameters in the editing window diagram: Parameters are now always displayed regardless of whether the threshold is exceeded
+- Default setting for start and end points of the cable line is now an anchor instead of a support
 
-### Fehlerbehebung
-* Der Berichtinhalt ist nur teilweise sichtbar, bzw. verschoben, wenn eine Seillinie ohne Zwischenstützen oder nur mit Verankerungen erstellt wird
-* Der Berichtinhalt ist nur teilweise sichtbar, bzw. verschoben, wenn mehr als 7 Stützen aufgelistet werden
-* Im Parameterset "MSK 3t 20/11/8mm" wurde der Seildurchmesser von 22 auf 20 mm korrigiert
-* Der Stützentyp (Verankerung, Stütze, Seilkran) wird korrekt aus den Projekteinstellungen ausgelesen
-* Bei der Erstellung von Geländeprofilen aus Vertex-Dateien werden neu die relativen Distanz- und Winkelmessungen anstatt die GPS-Messungen für die Berechnung verwendet. Die GPS-Messungen werden nur für die Georeferenzierung des Profils benutzt.
-* Beim Öffnen des Geländelinien-Fensters wurde ein leeres Diagramm dargestellt
-* Parametersets verschwinden nach Plugin-Update. Dieses Problem tritt einmalig bei der Aktualisierung auf die aktuelle Version 3.3.0 auf, zukünftig nicht mehr.
-  * Hinweis: Verschwundene Prametersets können Sie wiederherstellen, indem Sie alte Projektdateien laden, die mit dem Parameterset berechnet wurden.
+### Fixes
+- Report content is only partially visible or displaced when a cable line without intermediate supports or with anchors only is created
+- Report content is only partially visible or displaced when more than 7 supports are listed
+- In parameter set "MSK 3t 20/11/8mm", cable diameter was corrected from 22 to 20 mm
+- Support type (anchor, support, yarder) is read correctly from project settings
+- When creating terrain profiles from Vertex files, relative distance and angle measurements are now used for calculation instead of GPS measurements. GPS measurements are only used for georeferencing the profile.
+- When opening the terrain line window, an empty diagram was shown
+- Parameter sets disappear after plugin update. This issue occurs once during update to version 3.3.0, and will not occur in the future.
+  - Note: You can restore lost parameter sets by loading old project files calculated with that parameter set.
 
-## Version 3.2.1 (Juni 2021)
-### Neue Features
-* Fehlermeldung bei Plugin-Installation in QGIS 3.20 / 3.16.8
-* Rasterlayer werden in Auswahlliste nicht selektiert, wenn eine Projektdatei geladen wird
+## Version 3.2.1 (June 2021)
+### New Features
+- Error message during plugin installation in QGIS 3.20 / 3.16.8
+- Raster layers are not selected in dropdown list when loading a project file
 
-## Version 3.2 (Juni 2021)
-### Neue Features
-* Mehrfachauswahl von Raster-Kacheln: Neu können mehrere Rasterlayer ausgewählt werden, sodass die Seillinien über Kachelgrenzen hinweg konstruiert werden kann
+## Version 3.2 (June 2021)
+### New Features
+- Multi-selection of raster tiles: Multiple raster layers can now be selected, allowing cable lines to be constructed across tile boundaries
 
-### Fehlerbehebung
-* Korrektur der Berechnung für Angriffswinkel bei 0 Meter hohen Stützen
+### Fixes
+- Correction of angle of attack calculation for 0 meter high supports
 
 ## Version 3.1 (November 2020)
-### Neue Features
-* Einführung Maschinen-Parameter "Grundspannung"
-* Angabe des Durchmessers der Bundstelle im Kurzbericht
+### New Features
+- Introduction of machine parameter "Initial tension"
+- Specification of attachment point diameter in summary report
 
-### Fehlerbehebung
-* diverse Fehlerkorrekturen
+### Fixes
+- Various bug fixes
 
 ## Version 3.0 (September 2020)
-### Neue Features
-* Überarbeitung des Plugins und Ergänzung von zusätzlichen Eingabeparametern
-* Erweiterung um manuelle Editiermöglichkeiten der Seillinie
-* Übersetzung nach EN, IT, FR
+### New Features
+- Redesign of the plugin and addition of further input parameters
+- Extension with manual editing options for the cable line
+- Translation to EN, IT, FR
 
-## Version 2.0 (Februar 2018)
-Portierung auf QGIS 3
+## Version 2.0 (February 2018)
+Porting to QGIS 3
 
-## Version 1.0 (Mai 2015)
-Initiale Version
+## Version 1.0 (May 2015)
+Initial version

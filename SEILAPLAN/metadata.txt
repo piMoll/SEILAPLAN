@@ -15,7 +15,7 @@ about=[DE]
 
     ***
 
-    Dokumentation: https://seilaplan.wsl.ch
+    Docs: https://seilaplan.wsl.ch (DE, EN, FR, IT)
 
     ***
 
@@ -23,7 +23,9 @@ about=[DE]
 version=0.0.0
 author=Bont, Moll, Ramstein, Frutig, Heinimann, Schweier
 email=seilaplanplugin@gmail.com
-changelog=Version 3.8.2 (August 2026)
+changelog=[DE]
+
+    Version 3.8.2 (August 2026)
 
     Fehlerbehebung
     - Der PDF-Export des Diagramms wechselt wieder automatisch von Quer- auf Hochformat wenn die Seillinie sehr steil ist
@@ -53,7 +55,7 @@ changelog=Version 3.8.2 (August 2026)
      - Höhenlinien können nun auch aus Cloud-optimierten GeoTIFF-Rastern (COG) berechnet werden
      - Neue Versionen des SEILAPLAN-Plugins werden vom Plugin-Manager wieder erkannt und können aktualisiert werden
 
-    Vollständiger Changelog unter: https://github.com/piMoll/SEILAPLAN/blob/master/CHANGELOG.md
+    Vollständiger Changelog unter: https://github.com/piMoll/SEILAPLAN/blob/master/CHANGELOG.de.md
 
     ***
     [EN]
