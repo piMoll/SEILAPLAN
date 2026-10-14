@@ -1,5 +1,12 @@
 # Seilaplan Changelog
 
+## Unreleased
+### Fehlerbehebung
+- Infografiken werden in Englisch statt in Deutsch angezeigt, falls die Sprache nicht erkannt wird
+-
+### Neue Features
+- Übersetzung auf Chinesisch, danke an 蕭宇哲 / Bucks Valley Forestry, Taiwan
+
 # Version 3.8.2 (August 2026)
 ### Fehlerbehebung
 - Der PDF-Export des Diagramms wechselt wieder automatisch von Quer- auf Hochformat wenn die Seillinie sehr steil ist

@@ -74,7 +74,7 @@ class SeilaplanPlugin:
             PLUGIN_DIR, "i18n", "SeilaplanPlugin_{}.qm".format(qgisLocale)
         )
 
-        if qgisLocale in ["de", "en", "fr", "it"] and os.path.exists(localePath):
+        if qgisLocale in ["de", "en", "fr", "it", "zh"] and os.path.exists(localePath):
             useLocale = localePath
 
         self.translator = QTranslator()
